@@ -9,13 +9,13 @@ import {
 import { addFilter, hasFilter } from '@wordpress/hooks';
 import type { StoreDescriptor } from '@wordpress/data';
 import { CartCheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
-import {
-	DefaultNotice,
-	LegacyNotice,
-} from '@woocommerce/editor-components/default-notice';
+import { NoPaymentMethodsNotice } from '@woocommerce/editor-components/no-payment-methods-notice';
+import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
+import { DefaultNotice } from '@woocommerce/editor-components/default-notice';
+import { IncompatiblePaymentGatewaysNotice } from '@woocommerce/editor-components/incompatible-payment-gateways-notice';
 import { useSelect } from '@wordpress/data';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
-import { isWcVersion } from '@woocommerce/settings';
+import { useState } from '@wordpress/element';
 declare module '@wordpress/editor' {
 	let store: StoreDescriptor;
 }
@@ -30,22 +30,25 @@ declare module '@wordpress/block-editor' {
 
 const withSidebarNotices = createHigherOrderComponent(
 	( BlockEdit ) => ( props ) => {
-		const { name: blockName, isSelected: isBlockSelected } = props;
+		const {
+			clientId,
+			name: blockName,
+			isSelected: isBlockSelected,
+		} = props;
 
-		// Show sidebar notices only when a WooCommerce block is selected.
-		if ( ! blockName.startsWith( 'woocommerce/' ) || ! isBlockSelected ) {
-			return <BlockEdit { ...props } />;
-		}
+		const [
+			isIncompatiblePaymentGatewaysNoticeDismissed,
+			setIsIncompatiblePaymentGatewaysNoticeDismissed,
+		] = useState( true );
 
-		const addressFieldOrAccountBlocks = [
-			'woocommerce/checkout-shipping-address-block',
-			'woocommerce/checkout-billing-address-block',
-			'woocommerce/checkout-contact-information-block',
-			'woocommerce/checkout-fields-block',
-		];
-		const { clientId } = props;
-		const { isCart, isCheckout, isAddressFieldBlock } = useSelect(
-			( select ) => {
+		const toggleIncompatiblePaymentGatewaysNoticeDismissedStatus = (
+			isDismissed: boolean
+		) => {
+			setIsIncompatiblePaymentGatewaysNoticeDismissed( isDismissed );
+		};
+
+		const { isCart, isCheckout, isPaymentMethodsBlock, hasPaymentMethods } =
+			useSelect( ( select ) => {
 				const { getBlockParentsByBlockName, getBlockName } =
 					select( blockEditorStore );
 				const parent = getBlockParentsByBlockName( clientId, [
@@ -60,37 +63,62 @@ const withSidebarNotices = createHigherOrderComponent(
 					isCheckout:
 						parent.includes( 'woocommerce/checkout' ) ||
 						currentBlockName === 'woocommerce/checkout',
-					isAddressFieldBlock:
-						addressFieldOrAccountBlocks.includes(
-							currentBlockName
-						),
+					isPaymentMethodsBlock:
+						currentBlockName ===
+						'woocommerce/checkout-payment-block',
+					hasPaymentMethods:
+						select(
+							PAYMENT_STORE_KEY
+						).paymentMethodsInitialized() &&
+						Object.keys(
+							select(
+								PAYMENT_STORE_KEY
+							).getAvailablePaymentMethods()
+						).length > 0,
 				};
-			}
-		);
+			} );
+
+		// Show sidebar notices only when a WooCommerce block is selected.
+		if (
+			! blockName.startsWith( 'woocommerce/' ) ||
+			! isBlockSelected ||
+			! ( isCart || isCheckout )
+		) {
+			return <BlockEdit key="edit" { ...props } />;
+		}
+
 		return (
 			<>
-				{ ( isCart || isCheckout ) && (
-					<InspectorControls>
-						{ isWcVersion( '6.9.0', '>=' ) ? (
+				<InspectorControls>
+					<IncompatiblePaymentGatewaysNotice
+						toggleDismissedStatus={
+							toggleIncompatiblePaymentGatewaysNoticeDismissedStatus
+						}
+						block={
+							isCheckout
+								? 'woocommerce/checkout'
+								: 'woocommerce/cart'
+						}
+					/>
+
+					{ isIncompatiblePaymentGatewaysNoticeDismissed ? (
+						<>
 							<DefaultNotice
 								block={ isCheckout ? 'checkout' : 'cart' }
 							/>
-						) : (
-							<LegacyNotice
+							<CartCheckoutSidebarCompatibilityNotice
 								block={ isCheckout ? 'checkout' : 'cart' }
 							/>
-						) }
+						</>
+					) : null }
 
-						<CartCheckoutSidebarCompatibilityNotice
-							block={ isCheckout ? 'checkout' : 'cart' }
-						/>
-						{ isAddressFieldBlock ? null : (
-							<CartCheckoutFeedbackPrompt />
-						) }
-					</InspectorControls>
-				) }
+					{ isPaymentMethodsBlock && ! hasPaymentMethods && (
+						<NoPaymentMethodsNotice />
+					) }
 
-				<BlockEdit { ...props } />
+					<CartCheckoutFeedbackPrompt />
+				</InspectorControls>
+				<BlockEdit key="edit" { ...props } />
 			</>
 		);
 	},

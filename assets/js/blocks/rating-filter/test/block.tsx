@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import React from 'react';
+import React from '@wordpress/element';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import * as hooks from '@woocommerce/base-context/hooks';
 import userEvent from '@testing-library/user-event';
@@ -17,7 +17,7 @@ jest.mock( '@woocommerce/base-context/hooks', () => ( {
 	...jest.requireActual( '@woocommerce/base-context/hooks' ),
 } ) );
 
-const setWindowUrl = ( { url }: SetWindowUrlParams ) => {
+const setWindowUrl = ( { url }: { url: string } ) => {
 	global.window = Object.create( window );
 	Object.defineProperty( window, 'location', {
 		value: {

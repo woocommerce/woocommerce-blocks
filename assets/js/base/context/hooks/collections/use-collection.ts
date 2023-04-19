@@ -46,6 +46,7 @@ export interface useCollectionOptions {
 	resourceValues?: number[];
 	query?: Record< string, unknown >;
 	shouldSelect?: boolean;
+	isEditor?: boolean;
 }
 
 export const useCollection = (
@@ -80,6 +81,7 @@ export const useCollection = (
 			if ( ! shouldSelect ) {
 				return null;
 			}
+
 			const store = select( storeKey );
 			const args = [
 				namespace,

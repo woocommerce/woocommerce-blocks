@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Component } from 'react';
+import { Component } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import { Disabled } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
@@ -57,7 +57,11 @@ class EditorBlock extends Component {
 		return (
 			<Disabled>
 				{ attributes.showOrderby && reviewRatingsEnabled && (
-					<ReviewSortSelect readOnly value={ attributes.orderby } />
+					<ReviewSortSelect
+						readOnly
+						value={ attributes.orderby }
+						onChange={ () => null }
+					/>
 				) }
 				<ReviewList attributes={ attributes } reviews={ reviews } />
 				{ attributes.showLoadMore && totalReviews > reviews.length && (

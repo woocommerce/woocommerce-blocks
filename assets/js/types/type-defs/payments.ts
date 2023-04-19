@@ -7,12 +7,21 @@ import type { ReactNode } from 'react';
  * Internal dependencies
  */
 import type { CartTotals, Cart } from './cart';
-import {
+import type {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
 } from './cart-response';
 import type { EmptyObjectType } from './objects';
 import type { CheckoutResponseSuccess } from './checkout';
+
+/**
+ * The shape of objects on the `globalPaymentMethods` object from `allSettings`.
+ */
+export interface GlobalPaymentMethod {
+	id: string | number;
+	title: string;
+	description: string;
+}
 
 export interface SupportsConfiguration {
 	showSavedCards?: boolean;

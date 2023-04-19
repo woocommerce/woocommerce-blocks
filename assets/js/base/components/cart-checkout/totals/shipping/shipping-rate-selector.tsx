@@ -2,24 +2,26 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Notice } from 'wordpress-components';
-import classnames from 'classnames';
 import type { CartResponseShippingRate } from '@woocommerce/types';
+import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
 /**
  * Internal dependencies
  */
 import ShippingRatesControl from '../../shipping-rates-control';
 
-interface ShippingRateSelectorProps {
+export interface ShippingRateSelectorProps {
 	hasRates: boolean;
 	shippingRates: CartResponseShippingRate[];
 	isLoadingRates: boolean;
+	isAddressComplete: boolean;
 }
-const ShippingRateSelector = ( {
+
+export const ShippingRateSelector = ( {
 	hasRates,
 	shippingRates,
 	isLoadingRates,
+	isAddressComplete,
 }: ShippingRateSelectorProps ): JSX.Element => {
 	const legend = hasRates
 		? __( 'Shipping options', 'woo-gutenberg-products-block' )
@@ -30,18 +32,20 @@ const ShippingRateSelector = ( {
 			<ShippingRatesControl
 				className="wc-block-components-totals-shipping__options"
 				noResultsMessage={
-					<Notice
-						isDismissible={ false }
-						className={ classnames(
-							'wc-block-components-shipping-rates-control__no-results-notice',
-							'woocommerce-error'
+					<>
+						{ isAddressComplete && (
+							<NoticeBanner
+								isDismissible={ false }
+								className="wc-block-components-shipping-rates-control__no-results-notice"
+								status="warning"
+							>
+								{ __(
+									'There are no shipping options available. Please check your shipping address.',
+									'woo-gutenberg-products-block'
+								) }
+							</NoticeBanner>
 						) }
-					>
-						{ __(
-							'No shipping options were found.',
-							'woo-gutenberg-products-block'
-						) }
-					</Notice>
+					</>
 				}
 				shippingRates={ shippingRates }
 				isLoadingRates={ isLoadingRates }

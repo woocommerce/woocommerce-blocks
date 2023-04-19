@@ -1,17 +1,15 @@
-/**
- * External dependencies
- */
-import { canvas } from '@wordpress/e2e-test-utils';
-
 export const getFormElementIdByLabel = async (
 	text: string,
 	className: string
 ) => {
-	const labelElement = await canvas().waitForXPath(
+	// Remove leading dot if className is passed with it.
+	className = className.replace( /^\./, '' );
+
+	const labelElement = await page.waitForXPath(
 		`//label[contains(text(), "${ text }") and contains(@class, "${ className }")]`,
 		{ visible: true }
 	);
-	return await canvas().evaluate(
+	return await page.evaluate(
 		( label ) => `#${ label.getAttribute( 'for' ) }`,
 		labelElement
 	);

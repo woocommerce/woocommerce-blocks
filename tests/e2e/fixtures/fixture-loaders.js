@@ -481,12 +481,16 @@ const deleteProductAttributes = ( ids ) => {
 	return WooCommerce.post( 'products/attributes/batch', { delete: ids } );
 };
 
-const disableAttributeLookup = () =>
-	WooCommerce.put( 'settings/products/woocommerce_attribute_lookup_enabled', {
-		value: 'no',
-	} );
+const enableAttributeLookupDirectUpdates = () =>
+	WooCommerce.put(
+		'settings/products/woocommerce_attribute_lookup_direct_updates',
+		{
+			value: 'yes',
+		}
+	);
 
 module.exports = {
+	enableAttributeLookupDirectUpdates,
 	createProductAttributes,
 	deleteProductAttributes,
 	setupSettings,
@@ -507,5 +511,4 @@ module.exports = {
 	deleteShippingZones,
 	createBlockPages,
 	deleteBlockPages,
-	disableAttributeLookup,
 };

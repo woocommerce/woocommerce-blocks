@@ -2,7 +2,7 @@
 	"name": "woocommerce/checkout-shipping-methods-block",
 	"version": "1.0.0",
 	"title": "Shipping Options",
-	"description": "Shipping options for your store.",
+	"description": "Display shipping options and rates for your store.",
 	"category": "woocommerce",
 	"supports": {
 		"align": false,
@@ -19,6 +19,10 @@
 				"remove": true,
 				"move": true
 			}
+		},
+		"shippingCostRequiresAddress": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"parent": [ "woocommerce/checkout-fields-block" ],

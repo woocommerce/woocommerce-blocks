@@ -67,8 +67,8 @@ class AssetDataRegistry {
 	 */
 	protected function init() {
 		add_action( 'init', array( $this, 'register_data_script' ) );
-		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 1 );
-		add_action( 'admin_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 1 );
+		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 2 );
+		add_action( 'admin_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 2 );
 	}
 
 	/**
@@ -84,9 +84,11 @@ class AssetDataRegistry {
 			'adminUrl'           => admin_url(),
 			'countries'          => WC()->countries->get_countries(),
 			'currency'           => $this->get_currency_data(),
+			'currentUserId'      => get_current_user_id(),
 			'currentUserIsAdmin' => current_user_can( 'manage_woocommerce' ),
 			'homeUrl'            => esc_url( home_url( '/' ) ),
 			'locale'             => $this->get_locale_data(),
+			'dashboardUrl'       => wc_get_account_endpoint_url( 'dashboard' ),
 			'orderStatuses'      => $this->get_order_statuses(),
 			'placeholderImgSrc'  => wc_placeholder_img_src(),
 			'productsSettings'   => $this->get_products_settings(),
@@ -227,6 +229,8 @@ class AssetDataRegistry {
 		 * Automattic\WooCommerce\Blocks\Package::container()->get( Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry::class )->add( $key, $value )
 		 * ```
 		 *
+		 * @since 5.0.0
+		 *
 		 * @deprecated
 		 * @param array $data Settings data.
 		 * @return array
@@ -364,15 +368,18 @@ class AssetDataRegistry {
 			$this->initialize_core_data();
 			$this->execute_lazy_data();
 
-			$data                   = rawurlencode( wp_json_encode( $this->data ) );
-			$preloaded_api_requests = rawurlencode( wp_json_encode( $this->preloaded_api_requests ) );
+			$data                          = rawurlencode( wp_json_encode( $this->data ) );
+			$wc_settings_script            = "var wcSettings = wcSettings || JSON.parse( decodeURIComponent( '" . esc_js( $data ) . "' ) );";
+			$preloaded_api_requests_script = '';
+
+			if ( count( $this->preloaded_api_requests ) > 0 ) {
+				$preloaded_api_requests        = rawurlencode( wp_json_encode( $this->preloaded_api_requests ) );
+				$preloaded_api_requests_script = "wp.apiFetch.use( wp.apiFetch.createPreloadingMiddleware( JSON.parse( decodeURIComponent( '" . esc_js( $preloaded_api_requests ) . "' ) ) ) );";
+			}
 
 			wp_add_inline_script(
 				$this->handle,
-				"
-				var wcSettings = wcSettings || JSON.parse( decodeURIComponent( '" . esc_js( $data ) . "' ) );
-				wp.apiFetch.use( wp.apiFetch.createPreloadingMiddleware( JSON.parse( decodeURIComponent( '" . esc_js( $preloaded_api_requests ) . "' ) ) ) )
-				",
+				$wc_settings_script . $preloaded_api_requests_script,
 				'before'
 			);
 		}

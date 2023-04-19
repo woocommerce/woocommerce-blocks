@@ -6,7 +6,7 @@ import { getSetting } from '@woocommerce/settings';
 import {
 	PlainPaymentMethods,
 	PlainExpressPaymentMethods,
-} from '@woocommerce/type-defs/payments';
+} from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -18,7 +18,7 @@ export interface PaymentState {
 	status: string;
 	activePaymentMethod: string;
 	activeSavedToken: string;
-	// Avilable payment methods are payment methods which have been validated and can make payment
+	// Available payment methods are payment methods which have been validated and can make payment.
 	availablePaymentMethods: PlainPaymentMethods;
 	availableExpressPaymentMethods: PlainExpressPaymentMethods;
 	savedPaymentMethods:
@@ -30,8 +30,9 @@ export interface PaymentState {
 	expressPaymentMethodsInitialized: boolean;
 	shouldSavePaymentMethod: boolean;
 }
+
 export const defaultPaymentState: PaymentState = {
-	status: PAYMENT_STATUS.PRISTINE,
+	status: PAYMENT_STATUS.IDLE,
 	activePaymentMethod: '',
 	activeSavedToken: '',
 	availablePaymentMethods: {},

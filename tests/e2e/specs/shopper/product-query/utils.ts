@@ -2,11 +2,10 @@
  * External dependencies
  */
 import { insertBlock } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
-
-import { openBlockEditorSettings } from '../../../utils';
 
 export const block = {
 	name: 'Products (Beta)',
@@ -32,16 +31,11 @@ export const addProductQueryBlock = async () => {
 	await page.waitForNetworkIdle();
 };
 
-const enableInheritQueryFromTemplateSetting = async () => {
+export const toggleInheritQueryFromTemplateSetting = async () => {
 	const [ button ] = await page.$x(
 		block.selectors.editor.inheritQueryFromTemplateSetting
 	);
 	await button.click();
-};
-
-export const configurateProductQueryBlock = async () => {
-	await openBlockEditorSettings();
-	await enableInheritQueryFromTemplateSetting();
 };
 
 export const getProductsNameFromClassicTemplate = async () => {

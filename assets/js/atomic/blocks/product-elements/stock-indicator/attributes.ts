@@ -1,20 +1,18 @@
 /**
- * Internal dependencies
+ * External dependencies
  */
-import { BlockAttributes } from './types';
+import type { BlockAttributes } from '@wordpress/blocks';
 
-export const blockAttributes: Record<
-	keyof BlockAttributes,
-	{
-		type: string;
-		default: unknown;
-	}
-> = {
+export const blockAttributes: BlockAttributes = {
 	productId: {
 		type: 'number',
 		default: 0,
 	},
 	isDescendentOfQueryLoop: {
+		type: 'boolean',
+		default: false,
+	},
+	isDescendantOfAllProducts: {
 		type: 'boolean',
 		default: false,
 	},

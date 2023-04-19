@@ -3,6 +3,7 @@
 	"description": "WooCommerce blocks for the Gutenberg editor.",
 	"homepage": "https://woocommerce.com/",
 	"type": "wordpress-plugin",
+	"version": "10.1.0-dev",
 	"keywords": [
 		"gutenberg",
 		"woocommerce",
@@ -19,7 +20,7 @@
 	},
 	"require-dev": {
 		"wp-phpunit/wp-phpunit": "^6.0",
-		"woocommerce/woocommerce-sniffs": "0.1.0",
+		"woocommerce/woocommerce-sniffs": "0.1.3",
 		"yoast/phpunit-polyfills": "^1.0",
 		"mockery/mockery": "^1.4",
 		"wp-hooks/generator": "^0.9.0"

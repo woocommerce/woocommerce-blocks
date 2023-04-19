@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentContext;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
 use Automattic\WooCommerce\StoreApi\Exceptions\InvalidStockLevelsInCartException;
+use Automattic\WooCommerce\StoreApi\Exceptions\InvalidCartException;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\Checkout\Helpers\ReserveStock;
@@ -98,6 +99,43 @@ class Checkout extends AbstractCartRoute {
 			'schema'      => [ $this->schema, 'get_public_item_schema' ],
 			'allow_batch' => [ 'v1' => true ],
 		];
+	}
+
+	/**
+	 * Get the route response based on the type of request.
+	 *
+	 * @param \WP_REST_Request $request Request object.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function get_response( \WP_REST_Request $request ) {
+		$this->load_cart_session( $request );
+		$this->cart_controller->calculate_totals();
+
+		$response    = null;
+		$nonce_check = $this->requires_nonce( $request ) ? $this->check_nonce( $request ) : null;
+
+		if ( is_wp_error( $nonce_check ) ) {
+			$response = $nonce_check;
+		}
+
+		if ( ! $response ) {
+			try {
+				$response = $this->get_response_by_request_method( $request );
+			} catch ( InvalidCartException $error ) {
+				$response = $this->get_route_error_response_from_object( $error->getError(), $error->getCode(), $error->getAdditionalData() );
+			} catch ( RouteException $error ) {
+				$response = $this->get_route_error_response( $error->getErrorCode(), $error->getMessage(), $error->getCode(), $error->getAdditionalData() );
+			} catch ( \Exception $error ) {
+				$response = $this->get_route_error_response( 'woocommerce_rest_unknown_server_error', $error->getMessage(), 500 );
+			}
+		}
+
+		if ( is_wp_error( $response ) ) {
+			$response = $this->error_to_response( $response );
+		}
+
+		return $this->add_response_headers( $response );
 	}
 
 	/**
@@ -217,6 +255,8 @@ class Checkout extends AbstractCartRoute {
 		 * This is similar to existing core hook woocommerce_checkout_order_processed. We're using a new action:
 		 * - To keep the interface focused (only pass $order, not passing request data).
 		 * - This also explicitly indicates these orders are from checkout block/StoreAPI.
+		 *
+		 * @since 7.2.0
 		 *
 		 * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3238
 		 * @example See docs/examples/checkout-order-processed.md
@@ -346,6 +386,8 @@ class Checkout extends AbstractCartRoute {
 		 * - To keep the interface focused (only pass $order, not passing request data).
 		 * - This also explicitly indicates these orders are from checkout block/StoreAPI.
 		 *
+		 * @since 7.2.0
+		 *
 		 * @see https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3686
 		 *
 		 * @param \WC_Order $order Order object.
@@ -414,6 +456,8 @@ class Checkout extends AbstractCartRoute {
 		/**
 		 * Fires when the Checkout Block/Store API updates a customer from the API request data.
 		 *
+		 * @since 8.2.0
+		 *
 		 * @param \WC_Customer $customer Customer object.
 		 * @param \WP_REST_Request $request Full details about the request.
 		 */
@@ -430,6 +474,7 @@ class Checkout extends AbstractCartRoute {
 	private function update_order_from_request( \WP_REST_Request $request ) {
 		$this->order->set_customer_note( $request['customer_note'] ?? '' );
 		$this->order->set_payment_method( $this->get_request_payment_method_id( $request ) );
+		$this->order->set_payment_method_title( $this->get_request_payment_method_title( $request ) );
 
 		wc_do_deprecated_action(
 			'__experimental_woocommerce_blocks_checkout_update_order_from_request',
@@ -458,6 +503,8 @@ class Checkout extends AbstractCartRoute {
 		 *
 		 * This hook gives extensions the chance to update orders based on the data in the request. This can be used in
 		 * conjunction with the ExtendSchema class to post custom data and then process it.
+		 *
+		 * @since 7.2.0
 		 *
 		 * @param \WC_Order $order Order object.
 		 * @param \WP_REST_Request $request Full details about the request.
@@ -532,6 +579,18 @@ class Checkout extends AbstractCartRoute {
 	private function get_request_payment_method_id( \WP_REST_Request $request ) {
 		$payment_method = $this->get_request_payment_method( $request );
 		return is_null( $payment_method ) ? '' : $payment_method->id;
+	}
+
+	/**
+	 * Gets the chosen payment method title from the request.
+	 *
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return string
+	 */
+	private function get_request_payment_method_title( \WP_REST_Request $request ) {
+		$payment_method = $this->get_request_payment_method( $request );
+		return is_null( $payment_method ) ? '' : $payment_method->get_title();
 	}
 
 	/**
@@ -711,6 +770,8 @@ class Checkout extends AbstractCartRoute {
 		 *
 		 * This could be used to add extra validation logic and append errors to the array.
 		 *
+		 * @since 7.2.0
+		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
 		 * @param string $username Customer username.
@@ -724,6 +785,8 @@ class Checkout extends AbstractCartRoute {
 		 *
 		 * This hook filters registration errors. This can be used to manipulate the array of errors before
 		 * they are displayed.
+		 *
+		 * @since 7.2.0
 		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
@@ -743,6 +806,8 @@ class Checkout extends AbstractCartRoute {
 		 *
 		 * This hook filters customer data. It allows user data to be changed, for example, username, password, email,
 		 * first name, last name, and role.
+		 *
+		 * @since 7.2.0
 		 *
 		 * @param array $customer_data An array of customer (user) data.
 		 * @return array
@@ -773,6 +838,8 @@ class Checkout extends AbstractCartRoute {
 		 * Fires after a customer account has been registered.
 		 *
 		 * This hook fires after customer accounts are created and passes the customer data.
+		 *
+		 * @since 7.2.0
 		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *

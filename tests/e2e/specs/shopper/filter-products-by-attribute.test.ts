@@ -9,21 +9,20 @@ import {
 	switchUserToAdmin,
 	publishPost,
 } from '@wordpress/e2e-test-utils';
-import {
-	selectBlockByName,
-	insertBlockUsingSlash,
-} from '@woocommerce/blocks-test-utils';
+import { selectBlockByName } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
  */
 import {
 	BASE_URL,
+	enableApplyFiltersButton,
 	goToTemplateEditor,
-	openBlockEditorSettings,
+	insertAllProductsBlock,
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
+	waitForCanvas,
 } from '../../utils';
 import { saveOrPublish } from '../../../utils';
 
@@ -35,8 +34,6 @@ const block = {
 		editor: {
 			firstAttributeInTheList:
 				'.woocommerce-search-list__list > li > label > input.woocommerce-search-list__item-input',
-			filterButtonToggle:
-				'//label[text()="Show \'Apply filters\' button"]',
 			doneButton: '.wc-block-attribute-filter__selection > button',
 		},
 		frontend: {
@@ -62,6 +59,18 @@ const goToShopPage = () =>
 	} );
 
 describe( `${ block.name } Block`, () => {
+	const insertFilterByAttributeBlock = async () => {
+		await insertBlock( block.name );
+		const canvasEl = canvas();
+
+		// It seems that .click doesn't work well with radio input element.
+		await canvasEl.$eval(
+			block.selectors.editor.firstAttributeInTheList,
+			( el ) => ( el as HTMLInputElement ).click()
+		);
+		await canvasEl.click( selectors.editor.doneButton );
+	};
+
 	describe( 'with All Products Block', () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
@@ -70,16 +79,8 @@ describe( `${ block.name } Block`, () => {
 				title: block.name,
 			} );
 
-			await insertBlockUsingSlash( 'All Products' );
-			await insertBlock( block.name );
-			const canvasEl = canvas();
-
-			// It seems that .click doesn't work well with radio input element.
-			await canvasEl.$eval(
-				block.selectors.editor.firstAttributeInTheList,
-				( el ) => ( el as HTMLInputElement ).click()
-			);
-			await canvasEl.click( selectors.editor.doneButton );
+			await insertAllProductsBlock();
+			await insertFilterByAttributeBlock();
 			await publishPost();
 
 			const link = await page.evaluate( () =>
@@ -111,9 +112,7 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	// Re-enable this test once wordpress/e2e-test-utils is updated.
-	// https://github.com/woocommerce/woocommerce-blocks/issues/7744
-	describe.skip( 'with PHP classic template', () => {
+	describe( 'with PHP classic template', () => {
 		const productCatalogTemplateId =
 			'woocommerce/woocommerce//archive-product';
 
@@ -125,15 +124,7 @@ describe( `${ block.name } Block`, () => {
 			await goToTemplateEditor( {
 				postId: productCatalogTemplateId,
 			} );
-			await insertBlock( block.name );
-			const canvasEl = canvas();
-
-			// It seems that .click doesn't work well with radio input element.
-			await canvasEl.$eval(
-				block.selectors.editor.firstAttributeInTheList,
-				( el ) => ( el as HTMLInputElement ).click()
-			);
-			await canvasEl.click( selectors.editor.doneButton );
+			await insertFilterByAttributeBlock();
 			await saveTemplate();
 		} );
 
@@ -191,12 +182,9 @@ describe( `${ block.name } Block`, () => {
 				postId: productCatalogTemplateId,
 			} );
 
+			await waitForCanvas();
 			await selectBlockByName( block.slug );
-			await openBlockEditorSettings();
-			const [ filterButtonToggle ] = await page.$x(
-				block.selectors.editor.filterButtonToggle
-			);
-			await filterButtonToggle.click();
+			await enableApplyFiltersButton();
 			await saveTemplate();
 			await goToShopPage();
 
@@ -245,22 +233,14 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( 'Products (Beta)' );
-			await insertBlock( block.name );
-			await page.waitForNetworkIdle();
-
-			// It seems that .click doesn't work well with radio input element.
-			await page.$eval(
-				block.selectors.editor.firstAttributeInTheList,
-				( el ) => ( el as HTMLInputElement ).click()
-			);
-			await page.click( selectors.editor.doneButton );
+			await insertFilterByAttributeBlock();
 			await publishPost();
 
 			editorPageUrl = page.url();
 			frontedPageUrl = await page.evaluate( () =>
 				wp.data.select( 'core/editor' ).getPermalink()
 			);
-			await page.goto( frontedPageUrl );
+			await page.goto( frontedPageUrl, { waitUntil: 'networkidle2' } );
 		} );
 
 		it( 'should render products', async () => {
@@ -305,12 +285,10 @@ describe( `${ block.name } Block`, () => {
 
 		it( 'should refresh the page only if the user clicks on button', async () => {
 			await page.goto( editorPageUrl );
-			await openBlockEditorSettings();
+
+			await waitForCanvas();
 			await selectBlockByName( block.slug );
-			const [ filterButtonToggle ] = await page.$x(
-				block.selectors.editor.filterButtonToggle
-			);
-			await filterButtonToggle.click();
+			await enableApplyFiltersButton();
 			await saveOrPublish();
 			await page.goto( frontedPageUrl );
 

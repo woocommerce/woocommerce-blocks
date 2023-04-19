@@ -128,9 +128,9 @@ const SELECTORS = {
 
 const CUSTOMIZED_STRING = 'My awesome customization';
 const WOOCOMMERCE_ID = 'woocommerce/woocommerce';
-const WOOCOMMERCE_PARSED_ID = 'WooCommerce';
+const WOOCOMMERCE_PARSED_ID = 'woocommerce/woocommerceCustomized';
 
-describe.skip( 'Store Editing Templates', () => {
+describe( 'Store Editing Templates', () => {
 	useTheme( 'emptytheme' );
 
 	describe( 'Single Product block template', () => {

@@ -2,13 +2,14 @@
  * External dependencies
  */
 import apiFetch from '@wordpress/api-fetch';
-import { CartResponse } from '@woocommerce/type-defs/cart-response';
+import { CartResponse } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import { CART_API_ERROR } from './constants';
 import type { CartDispatchFromMap, CartResolveSelectFromMap } from './index';
+import { shippingAddressHasValidationErrors } from './utils';
 
 /**
  * Resolver for retrieving all cart data.
@@ -26,6 +27,10 @@ export const getCartData =
 		if ( ! cartData ) {
 			receiveError( CART_API_ERROR );
 			return;
+		}
+
+		if ( ! shippingAddressHasValidationErrors() ) {
+			dispatch.setFullShippingAddressPushed( true );
 		}
 		receiveCart( cartData );
 	};

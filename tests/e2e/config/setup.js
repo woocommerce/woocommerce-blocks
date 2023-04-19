@@ -20,7 +20,7 @@ import {
 	createBlockPages,
 	enablePaymentGateways,
 	createProductAttributes,
-	disableAttributeLookup,
+	enableAttributeLookupDirectUpdates,
 } from '../fixtures/fixture-loaders';
 import { PERFORMANCE_REPORT_FILENAME } from '../../utils/constants';
 
@@ -29,9 +29,12 @@ module.exports = async ( globalConfig ) => {
 	await setupPuppeteer( globalConfig );
 
 	try {
+		await enableAttributeLookupDirectUpdates();
+
 		// do setupSettings separately which hopefully gives a chance for WooCommerce
 		// to be configured before the others are executed.
 		await setupSettings();
+
 		const pages = await createBlockPages();
 
 		/**
@@ -61,9 +64,6 @@ module.exports = async ( globalConfig ) => {
 		products.forEach( async ( productId ) => {
 			await createReviews( productId );
 		} );
-
-		// This is necessary for avoid this bug https://github.com/woocommerce/woocommerce/issues/32065
-		await disableAttributeLookup();
 
 		// Wipe the performance e2e file at the start of every run
 		if ( existsSync( PERFORMANCE_REPORT_FILENAME ) ) {

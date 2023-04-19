@@ -9,6 +9,8 @@ import type { InnerBlockTemplate } from '@wordpress/blocks';
  */
 import { QueryBlockAttributes } from './types';
 import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
+import { VARIATION_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';
+import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
 
 /**
  * Returns an object without a key.
@@ -18,6 +20,9 @@ function objectOmit< T, K extends keyof T >( obj: T, key: K ) {
 
 	return rest;
 }
+
+export const EDIT_ATTRIBUTES_URL =
+	'/wp-admin/edit.php?post_type=product&page=product_attributes';
 
 export const QUERY_LOOP_ID = 'core/query';
 
@@ -74,27 +79,71 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'core/post-template',
-		{},
+		{ __woocommerceNamespace: PRODUCT_TEMPLATE_ID },
 		[
-			[ 'woocommerce/product-image' ],
+			[
+				'woocommerce/product-image',
+				{
+					style: {
+						spacing: {
+							margin: {
+								bottom: '0.75rem',
+								top: '0',
+							},
+						},
+					},
+					imageSizing: ImageSizing.THUMBNAIL,
+				},
+			],
 			[
 				'core/post-title',
 				{
 					textAlign: 'center',
 					level: 3,
 					fontSize: 'medium',
+					style: {
+						spacing: {
+							margin: {
+								bottom: '0.75rem',
+								top: '0',
+							},
+						},
+					},
+					isLink: true,
 					__woocommerceNamespace: PRODUCT_TITLE_ID,
 				},
 				[],
 			],
 			[
 				'woocommerce/product-price',
-				{ textAlign: 'center', fontSize: 'small' },
+				{
+					textAlign: 'center',
+					fontSize: 'small',
+					style: {
+						spacing: {
+							margin: {
+								bottom: '0.75rem',
+								top: '0',
+							},
+						},
+					},
+				},
 				[],
 			],
 			[
 				'woocommerce/product-button',
-				{ textAlign: 'center', fontSize: 'small' },
+				{
+					textAlign: 'center',
+					fontSize: 'small',
+					style: {
+						spacing: {
+							margin: {
+								bottom: '0.75rem',
+								top: '0',
+							},
+						},
+					},
+				},
 				[],
 			],
 		],

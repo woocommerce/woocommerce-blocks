@@ -1,8 +1,9 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * External dependencies
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
-import { hasSpacingStyleSupport } from '@woocommerce/utils';
+import { __experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -19,9 +20,10 @@ export const supports = {
 			fontSize: true,
 			__experimentalSkipSerialization: true,
 		},
-		...( hasSpacingStyleSupport() && {
+		...( typeof getSpacingClassesAndStyles === 'function' && {
 			spacing: {
 				margin: true,
+				padding: true,
 				__experimentalSkipSerialization: true,
 			},
 		} ),

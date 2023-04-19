@@ -10,6 +10,12 @@
 		"html": false,
 		"multiple": false
 	},
+	"example": {
+		"attributes": {
+			"isPreview": true
+		},
+		"viewportWidth": 800
+	},
 	"attributes": {
 		"isPreview": {
 			"type": "boolean",
@@ -35,8 +41,13 @@
 		"requirePhoneField": {
 			"type": "boolean",
 			"default": false
+		},
+		"align": {
+			"type": "string",
+			"default": "wide"
 		}
 	},
 	"textdomain": "woo-gutenberg-products-block",
-	"apiVersion": 2
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
 }

@@ -11,13 +11,13 @@ import {
 } from '@wordpress/e2e-test-utils';
 import { SHOP_PAGE } from '@woocommerce/e2e-utils';
 import { Frame, Page } from 'puppeteer';
-import { insertBlockUsingSlash } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
  */
 import {
 	goToTemplateEditor,
+	insertAllProductsBlock,
 	useTheme,
 	saveTemplate,
 	waitForAllProductsBlockLoaded,
@@ -66,9 +66,7 @@ const insertBlocks = async () => {
 	await insertBlock( block.name );
 };
 
-const configurateFilterProductsByAttributeBlock = async (
-	pageOrCanvas: Page | Frame
-) => {
+const configureAttributeFilterBlock = async ( pageOrCanvas: Page | Frame ) => {
 	await pageOrCanvas.$eval(
 		selectors.editor.firstAttributeInTheList,
 		( el ) => ( el as HTMLElement ).click()
@@ -98,8 +96,8 @@ describe( 'Shopper → Active Filters Block', () => {
 			} );
 
 			await insertBlocks();
-			await insertBlockUsingSlash( 'All Products' );
-			await configurateFilterProductsByAttributeBlock( page );
+			await insertAllProductsBlock();
+			await configureAttributeFilterBlock( page );
 			await publishPost();
 
 			const link = await page.evaluate( () =>
@@ -184,7 +182,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			expect( isRefreshed ).not.toHaveBeenCalled();
 		} );
 
-		it( 'Clicking "Clear All" button removes all active filter', async () => {
+		it( 'Clicking "Clear All" button removes all active filters', async () => {
 			const isRefreshed = jest.fn( () => void 0 );
 			await page.waitForSelector( block.class );
 			await page.waitForSelector(
@@ -223,7 +221,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			await insertBlocks();
 
 			const canvasEl = canvas();
-			await configurateFilterProductsByAttributeBlock( canvasEl );
+			await configureAttributeFilterBlock( canvasEl );
 			await saveTemplate();
 		} );
 
@@ -319,7 +317,7 @@ describe( 'Shopper → Active Filters Block', () => {
 			await expect( page ).toMatch( SIMPLE_PHYSICAL_PRODUCT_NAME );
 		} );
 
-		it( 'Clicking "Clear All" button removes all active filter and the page redirects to the base URL', async () => {
+		it( 'Clicking "Clear All" button removes all active filters and the page redirects to the base URL', async () => {
 			const isRefreshed = jest.fn( () => void 0 );
 			page.on( 'load', isRefreshed );
 			await page.waitForSelector( selectors.frontend.stockFilterBlock );

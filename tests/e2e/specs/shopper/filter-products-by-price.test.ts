@@ -8,20 +8,19 @@ import {
 	switchUserToAdmin,
 	publishPost,
 } from '@wordpress/e2e-test-utils';
-import {
-	selectBlockByName,
-	insertBlockUsingSlash,
-} from '@woocommerce/blocks-test-utils';
+import { selectBlockByName } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
  */
 import {
 	BASE_URL,
+	enableApplyFiltersButton,
 	goToTemplateEditor,
-	openBlockEditorSettings,
+	insertAllProductsBlock,
 	saveTemplate,
 	useTheme,
+	waitForCanvas,
 	waitForAllProductsBlockLoaded,
 } from '../../utils';
 import { clickLink, saveOrPublish } from '../../../utils';
@@ -31,10 +30,6 @@ const block = {
 	slug: 'woocommerce/price-filter',
 	class: '.wc-block-price-filter',
 	selectors: {
-		editor: {
-			filterButtonToggle:
-				'//label[text()="Show \'Apply filters\' button"]',
-		},
 		frontend: {
 			priceMaxAmount: '.wc-block-price-filter__amount--max',
 			productsList: '.wc-block-grid__products > li',
@@ -74,7 +69,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlockUsingSlash( 'All Products' );
+			await insertAllProductsBlock();
 			await insertBlock( 'Active Filters' );
 			await publishPost();
 
@@ -114,9 +109,7 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	// Re-enable this test once wordpress/e2e-test-utils is updated.
-	// https://github.com/woocommerce/woocommerce-blocks/issues/7744
-	describe.skip( 'with PHP classic template', () => {
+	describe( 'with PHP classic template', () => {
 		const productCatalogTemplateId =
 			'woocommerce/woocommerce//archive-product';
 
@@ -187,15 +180,9 @@ describe( `${ block.name } Block`, () => {
 				postId: productCatalogTemplateId,
 			} );
 
+			await waitForCanvas();
 			await selectBlockByName( block.slug );
-			await openBlockEditorSettings();
-			await page.waitForXPath(
-				block.selectors.editor.filterButtonToggle
-			);
-			const [ filterButtonToggle ] = await page.$x(
-				block.selectors.editor.filterButtonToggle
-			);
-			await filterButtonToggle.click();
+			await enableApplyFiltersButton();
 			await saveTemplate();
 			await goToShopPage();
 
@@ -297,16 +284,9 @@ describe( `${ block.name } Block`, () => {
 		it( 'should refresh the page only if the user click on button', async () => {
 			await page.goto( editorPageUrl );
 
-			await openBlockEditorSettings();
+			await waitForCanvas();
 			await selectBlockByName( block.slug );
-			await page.waitForXPath(
-				block.selectors.editor.filterButtonToggle
-			);
-			const [ filterButtonToggle ] = await page.$x(
-				block.selectors.editor.filterButtonToggle
-			);
-			await filterButtonToggle.click();
-
+			await enableApplyFiltersButton();
 			await saveOrPublish();
 			await page.goto( frontedPageUrl );
 

@@ -52,6 +52,7 @@ module.exports = {
 			'prop-types',
 			'react',
 			'requireindex',
+			'react-transition-group',
 		],
 		'import/resolver': {
 			node: {},
@@ -68,6 +69,19 @@ module.exports = {
 			'error',
 			{
 				allowedTextDomain: [ 'woo-gutenberg-products-block' ],
+			},
+		],
+		'@typescript-eslint/no-restricted-imports': [
+			'error',
+			{
+				paths: [
+					{
+						name: 'react',
+						message:
+							'Please use React API through `@wordpress/element` instead.',
+						allowTypeImports: true,
+					},
+				],
 			},
 		],
 		camelcase: [

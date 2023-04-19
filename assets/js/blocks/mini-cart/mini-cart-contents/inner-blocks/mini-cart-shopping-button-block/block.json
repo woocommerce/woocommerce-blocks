@@ -9,7 +9,11 @@
 		"html": false,
 		"multiple": false,
 		"reusable": false,
-		"inserter": true
+		"inserter": true,
+		"color": {
+			"text": true,
+			"background": true
+		}
 	},
 	"attributes": {
 		"lock": {
@@ -20,7 +24,19 @@
 			}
 		}
 	},
+	"styles": [
+		{
+			"name": "fill",
+			"label": "Fill",
+			"isDefault": true
+		},
+		{
+			"name": "outline",
+			"label": "Outline"
+		}
+	],
 	"parent": [ "woocommerce/empty-mini-cart-contents-block" ],
 	"textdomain": "woo-gutenberg-products-block",
-	"apiVersion": 2
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
 }

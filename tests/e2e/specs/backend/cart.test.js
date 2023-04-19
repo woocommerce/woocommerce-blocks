@@ -3,9 +3,10 @@
  */
 import {
 	clickBlockToolbarButton,
-	openDocumentSettingsSidebar,
 	switchUserToAdmin,
-	getAllBlocks,
+	searchForBlock,
+	openGlobalBlockInserter,
+	insertBlock,
 } from '@wordpress/e2e-test-utils';
 import {
 	findLabelWithText,
@@ -18,17 +19,20 @@ import { merchant } from '@woocommerce/e2e-utils';
  * Internal dependencies
  */
 import {
-	searchForBlock,
-	insertBlockDontWaitForInsertClose,
+	openSettingsSidebar,
 	openWidgetEditor,
 	closeModalIfExists,
-	openWidgetsEditorBlockInserter,
 } from '../../utils.js';
 
 const block = {
 	name: 'Cart',
 	slug: 'woocommerce/cart',
 	class: '.wp-block-woocommerce-cart',
+	selectors: {
+		disabledInsertButton:
+			"//button[@aria-disabled='true']//span[text()='Cart']",
+		insertButton: "//button//span[text()='Cart']",
+	},
 };
 
 const filledCartBlock = {
@@ -62,8 +66,83 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can only be inserted once', async () => {
-			await insertBlockDontWaitForInsertClose( block.name );
-			expect( await getAllBlocks() ).toHaveLength( 1 );
+			await openGlobalBlockInserter();
+			await page.keyboard.type( block.name );
+			const button = await page.$x( block.selectors.insertButton );
+			expect( button ).toHaveLength( 0 );
+		} );
+
+		it( 'inner blocks can be added/removed by filters', async () => {
+			// Begin by removing the block.
+			await selectBlockByName( block.slug );
+			const options = await page.$x(
+				'//div[@class="block-editor-block-toolbar"]//button[@aria-label="Options"]'
+			);
+			await options[ 0 ].click();
+			const removeButton = await page.$x(
+				'//button[contains(., "Remove Cart")]'
+			);
+			await removeButton[ 0 ].click();
+			// Expect block to have been removed.
+			await expect( page ).not.toMatchElement( block.class );
+
+			// Register a checkout filter to allow `core/table` block in the Checkout block's inner blocks, add
+			// core/audio into the woocommerce/cart-order-summary-block and remove core/paragraph from all Cart inner
+			// blocks.
+			await page.evaluate(
+				"wc.blocksCheckout.registerCheckoutFilters( 'woo-test-namespace'," +
+					'{ additionalCartCheckoutInnerBlockTypes: ( value, extensions, { block } ) => {' +
+					"    value.push('core/table');" +
+					"    if ( block === 'woocommerce/cart-order-summary-block' ) {" +
+					"        value.push( 'core/audio' );" +
+					'    }' +
+					'    return value;' +
+					'}' +
+					'}' +
+					');'
+			);
+
+			await insertBlock( block.name );
+
+			// Select the shipping address block and try to insert a block. Check the Table block is available.
+			await selectBlockByName( 'woocommerce/cart-order-summary-block' );
+			await page.waitForTimeout( 1000 );
+			const addBlockButton = await page.waitForXPath(
+				'//div[@data-type="woocommerce/cart-order-summary-block"]//button[@aria-label="Add block"]'
+			);
+			await addBlockButton.click();
+			await expect( page ).toFill(
+				'input.components-search-control__input',
+				'Table'
+			);
+			const tableButton = await page.waitForXPath(
+				'//*[@role="option" and contains(., "Table")]'
+			);
+			await expect( tableButton ).not.toBeNull();
+			await expect( page ).toFill(
+				'input.components-search-control__input',
+				'Audio'
+			);
+			const audioButton = await page.waitForXPath(
+				'//*[@role="option" and contains(., "Audio")]'
+			);
+			await expect( audioButton ).not.toBeNull();
+
+			// // Now check the filled cart block and expect only the Table block to be available there.
+			await selectBlockByName( 'woocommerce/filled-cart-block' );
+			const filledCartAddBlockButton = await page.waitForXPath(
+				'//div[@data-type="woocommerce/filled-cart-block"]//button[@aria-label="Add block"]'
+			);
+			await filledCartAddBlockButton.click();
+
+			const filledCartTableButton = await page.waitForXPath(
+				'//*[@role="option" and contains(., "Table")]'
+			);
+			expect( filledCartTableButton ).not.toBeNull();
+			const filledCartAudioButton = await page.$x(
+				'//*[@role="option" and contains(., "Audio")]'
+			);
+			expect( filledCartAudioButton ).toHaveLength( 0 );
 		} );
 
 		it( 'renders without crashing', async () => {
@@ -113,14 +192,14 @@ describe( `${ block.name } Block`, () => {
 
 		describe( 'attributes', () => {
 			beforeEach( async () => {
-				await openDocumentSettingsSidebar();
+				await openSettingsSidebar();
 				await selectBlockByName(
 					'woocommerce/cart-order-summary-shipping-block'
 				);
 			} );
 
 			it( 'can toggle Shipping calculator', async () => {
-				const selector = ` .wc-block-components-totals-shipping__change-address-button`;
+				const selector = `.wc-block-components-totals-shipping__change-address__link`;
 				const toggleLabel = await findLabelWithText(
 					'Shipping calculator'
 				);
@@ -134,8 +213,10 @@ describe( `${ block.name } Block`, () => {
 			await merchant.login();
 			await openWidgetEditor();
 			await closeModalIfExists();
-			await openWidgetsEditorBlockInserter();
 			await searchForBlock( block.name );
+			await page.waitForXPath(
+				`//button//span[text()='${ block.name }']`
+			);
 			const cartButton = await page.$x(
 				`//button//span[text()='${ block.name }']`
 			);

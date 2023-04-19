@@ -5,7 +5,7 @@ import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
-import { ProductResponseItem } from '@woocommerce/type-defs/product-response';
+import { ProductResponseItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -17,6 +17,7 @@ import { Block as ProductSaleBadge } from '../../../atomic/blocks/product-elemen
 import { Block as ProductPrice } from '../../../atomic/blocks/product-elements/price/block';
 import { Block as ProductButton } from '../../../atomic/blocks/product-elements/button/block';
 import AddToCartButton from '../../../atomic/blocks/product-elements/add-to-cart/block';
+import { ImageSizing } from '../../../atomic/blocks/product-elements/image/types';
 
 interface CrossSellsProductProps {
 	product: ProductResponseItem;
@@ -44,12 +45,12 @@ const CartCrossSellsProduct = ( {
 							productId={ product.id }
 							showProductLink={ false }
 							saleBadgeAlign={ 'left' }
-							imageSizing={ 'full-size' }
+							imageSizing={ ImageSizing.SINGLE }
 							isDescendentOfQueryLoop={ false }
 						/>
 						<ProductName
 							align={ '' }
-							headingLevel={ 2 }
+							headingLevel={ 3 }
 							showProductLink={ true }
 						/>
 						<ProductRating />

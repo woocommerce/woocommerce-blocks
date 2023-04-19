@@ -15,11 +15,11 @@ import { isNull, isObject, objectHasProp } from '@woocommerce/types';
  */
 const returnTrue = (): true => true;
 
-type CheckoutFilterFunction = < T >(
-	value: T,
+type CheckoutFilterFunction< U = unknown > = < T >(
+	value: T | U,
 	extensions: Record< string, unknown >,
 	args?: CheckoutFilterArguments
-) => T;
+) => T | U;
 
 type CheckoutFilterArguments =
 	| ( Record< string, unknown > & {
@@ -32,11 +32,12 @@ let checkoutFilters: Record<
 	Record< string, CheckoutFilterFunction >
 > = {};
 
-const cachedValues: Record< string, T > = {};
+let cachedValues: Record< string, unknown > = {};
+
 /**
  * Register filters for a specific extension.
  */
-export const __experimentalRegisterCheckoutFilters = (
+export const registerCheckoutFilters = (
 	namespace: string,
 	filters: Record< string, CheckoutFilterFunction >
 ): void => {
@@ -52,11 +53,30 @@ export const __experimentalRegisterCheckoutFilters = (
 			link: 'https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/bb921d21f42e21f38df2b1c87b48e07aa4cb0538/docs/extensibility/available-filters.md#coupons',
 		} );
 	}
-
+	// Clear cached values when registering new filters because otherwise we get outdated results when applying them.
+	cachedValues = {};
 	checkoutFilters = {
 		...checkoutFilters,
 		[ namespace ]: filters,
 	};
+};
+
+/**
+ * Backward compatibility for __experimentalRegisterCheckoutFilters, this has been graduated to stable now.
+ * Remove after July 2023.
+ */
+export const __experimentalRegisterCheckoutFilters = (
+	namespace: string,
+	filters: Record< string, CheckoutFilterFunction >
+) => {
+	deprecated( '__experimentalRegisterCheckoutFilters', {
+		alternative: 'registerCheckoutFilters',
+		plugin: 'WooCommerce Blocks',
+		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8346',
+		since: '9.6.0',
+		hint: '__experimentalRegisterCheckoutFilters has graduated to stable and this experimental function will be removed.',
+	} );
+	registerCheckoutFilters( namespace, filters );
 };
 
 /**
@@ -179,7 +199,7 @@ const shouldReRunFilters = < T >(
 /**
  * Apply a filter.
  */
-export const __experimentalApplyCheckoutFilter = < T >( {
+export const applyCheckoutFilter = < T >( {
 	filterName,
 	defaultValue,
 	extensions = null,
@@ -201,13 +221,13 @@ export const __experimentalApplyCheckoutFilter = < T >( {
 		! shouldReRunFilters( filterName, arg, extensions, defaultValue ) &&
 		cachedValues[ filterName ] !== undefined
 	) {
-		return cachedValues[ filterName ];
+		return cachedValues[ filterName ] as T;
 	}
 	const filters = getCheckoutFilters( filterName );
 	let value = defaultValue;
 	filters.forEach( ( filter ) => {
 		try {
-			const newValue = filter( value, extensions || {}, arg );
+			const newValue = filter( value, extensions || {}, arg ) as T;
 			if ( typeof newValue !== typeof value ) {
 				throw new Error(
 					sprintf(
@@ -233,4 +253,42 @@ export const __experimentalApplyCheckoutFilter = < T >( {
 	} );
 	cachedValues[ filterName ] = value;
 	return value;
+};
+
+/**
+ * Backward compatibility for __experimentalApplyCheckoutFilter, this has been graduated to stable now.
+ * Remove after July 2023.
+ */
+export const __experimentalApplyCheckoutFilter = < T >( {
+	filterName,
+	defaultValue,
+	extensions = null,
+	arg = null,
+	validation = returnTrue,
+}: {
+	/** Name of the filter to apply. */
+	filterName: string;
+	/** Default value to filter. */
+	defaultValue: T;
+	/** Values extend to REST API response. */
+	extensions?: Record< string, unknown > | null;
+	/** Object containing arguments for the filter function. */
+	arg?: CheckoutFilterArguments;
+	/** Function that needs to return true when the filtered value is passed in order for the filter to be applied. */
+	validation?: ( value: T ) => true | Error;
+} ): T => {
+	deprecated( '__experimentalApplyCheckoutFilter', {
+		alternative: 'applyCheckoutFilter',
+		plugin: 'WooCommerce Blocks',
+		link: 'https://github.com/woocommerce/woocommerce-blocks/pull/8346',
+		since: '9.6.0',
+		hint: '__experimentalApplyCheckoutFilter has graduated to stable and this experimental function will be removed.',
+	} );
+	return applyCheckoutFilter( {
+		filterName,
+		defaultValue,
+		extensions,
+		arg,
+		validation,
+	} );
 };

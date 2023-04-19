@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { select, dispatch } from '@wordpress/data';
-import { PlainPaymentMethods } from '@woocommerce/type-defs/payments';
+import { PlainPaymentMethods } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -60,7 +60,7 @@ export const setDefaultPaymentMethod = async (
 		return;
 	}
 
-	dispatch( PAYMENT_STORE_KEY ).__internalSetPaymentPristine();
+	dispatch( PAYMENT_STORE_KEY ).__internalSetPaymentIdle();
 
 	dispatch( PAYMENT_STORE_KEY ).__internalSetActivePaymentMethod(
 		paymentMethodKeys[ 0 ]

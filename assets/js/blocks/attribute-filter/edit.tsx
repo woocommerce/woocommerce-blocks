@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { sortBy } from 'lodash';
 import { __, sprintf, _n } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import {
@@ -10,11 +11,10 @@ import {
 } from '@wordpress/block-editor';
 import { Icon, category, external } from '@wordpress/icons';
 import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
-import { sortBy } from 'lodash';
 import { getAdminLink, getSetting } from '@woocommerce/settings';
 import BlockTitle from '@woocommerce/editor-components/block-title';
 import classnames from 'classnames';
-import { SearchListItemsType } from '@woocommerce/editor-components/search-list-control/types';
+import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
 import { AttributeSetting } from '@woocommerce/types';
 import {
 	Placeholder,
@@ -23,6 +23,7 @@ import {
 	ToggleControl,
 	Button,
 	ToolbarGroup,
+	Notice,
 	withSpokenMessages,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
@@ -35,10 +36,30 @@ import {
  */
 import Block from './block';
 import './editor.scss';
-import type { EditProps } from './types';
+import type { EditProps, GetNotice } from './types';
 import { UpgradeNotice } from '../filter-wrapper/upgrade';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
+
+const noticeContent = {
+	noAttributes: __(
+		'Please select an attribute to use this filter!',
+		'woo-gutenberg-products-block'
+	),
+	noProducts: __(
+		'There are no products with the selected attributes.',
+		'woo-gutenberg-products-block'
+	),
+};
+
+const getNotice: GetNotice = ( type ) => {
+	const content = noticeContent[ type ];
+	return content ? (
+		<Notice status="warning" isDismissible={ false }>
+			<p>{ content }</p>
+		</Notice>
+	) : null;
+};
 
 const Edit = ( {
 	attributes,
@@ -82,7 +103,7 @@ const Edit = ( {
 		);
 	};
 
-	const onChange = ( selected: SearchListItemsType ) => {
+	const onChange = ( selected: SearchListItem[] ) => {
 		if ( ! selected || ! selected.length ) {
 			return;
 		}
@@ -283,17 +304,10 @@ const Edit = ( {
 							"Show 'Apply filters' button",
 							'woo-gutenberg-products-block'
 						) }
-						help={
-							showFilterButton
-								? __(
-										'Products will only update when the button is clicked.',
-										'woo-gutenberg-products-block'
-								  )
-								: __(
-										'Products will update as soon as attributes are selected.',
-										'woo-gutenberg-products-block'
-								  )
-						}
+						help={ __(
+							'Products will update when the button is clicked.',
+							'woo-gutenberg-products-block'
+						) }
 						checked={ showFilterButton }
 						onChange={ ( value ) =>
 							setAttributes( {
@@ -423,7 +437,11 @@ const Edit = ( {
 						/>
 					) }
 					<Disabled>
-						<Block attributes={ attributes } isEditor />
+						<Block
+							attributes={ attributes }
+							isEditor={ true }
+							getNotice={ getNotice }
+						/>
 					</Disabled>
 				</div>
 			) }

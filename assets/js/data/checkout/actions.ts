@@ -125,16 +125,26 @@ export const __internalSetOrderNotes = ( orderNotes: string ) => ( {
 	orderNotes,
 } );
 
+export const setPrefersCollection = ( prefersCollection: boolean ) => ( {
+	type: types.SET_PREFERS_COLLECTION,
+	prefersCollection,
+} );
+
 /**
- * Register some extra data for an extension. This works with the
- *
- * @param  extensionData An object containing the data to register for an extension
+ * Registers additional data under an extension namespace.
  */
 export const __internalSetExtensionData = (
-	extensionData: Record< string, Record< string, unknown > >
+	// The namespace for the extension. Defaults to 'default'. Must be unique to prevent conflicts.
+	namespace: string,
+	// Data to register under the namespace.
+	extensionData: Record< string, unknown >,
+	// If true, all data under the current extension namespace is replaced. If false, data is appended.
+	replace = false
 ) => ( {
 	type: types.SET_EXTENSION_DATA,
 	extensionData,
+	namespace,
+	replace,
 } );
 
 export type CheckoutAction =
@@ -152,6 +162,7 @@ export type CheckoutAction =
 			| typeof __internalSetUseShippingAsBilling
 			| typeof __internalSetShouldCreateAccount
 			| typeof __internalSetOrderNotes
+			| typeof setPrefersCollection
 			| typeof __internalSetExtensionData
 	  >
 	| Record< string, never >;

@@ -335,6 +335,20 @@ class CartItemSchema extends ProductSchema {
 	public function get_item_response( $cart_item ) {
 		$product = $cart_item['data'];
 
+		/**
+		 * Filter the product permalink.
+		 *
+		 * This is a hook taken from the legacy cart/mini-cart templates that allows the permalink to be changed for a
+		 * product. This is specific to the cart endpoint.
+		 *
+		 * @since 9.9.0
+		 *
+		 * @param string $product_permalink Product permalink.
+		 * @param array  $cart_item         Cart item array.
+		 * @param string $cart_item_key     Cart item key.
+		 */
+		$product_permalink = apply_filters( 'woocommerce_cart_item_permalink', $product->get_permalink(), $cart_item, $cart_item['key'] );
+
 		return [
 			'key'                  => $cart_item['key'],
 			'id'                   => $product->get_id(),
@@ -348,7 +362,7 @@ class CartItemSchema extends ProductSchema {
 			'backorders_allowed'   => (bool) $product->backorders_allowed(),
 			'show_backorder_badge' => (bool) $product->backorders_require_notification() && $product->is_on_backorder( $cart_item['quantity'] ),
 			'sold_individually'    => $product->is_sold_individually(),
-			'permalink'            => $product->get_permalink(),
+			'permalink'            => $product_permalink,
 			'images'               => $this->get_images( $product ),
 			'variation'            => $this->format_variation_data( $cart_item['variation'], $product ),
 			'item_data'            => $this->get_item_data( $cart_item ),
@@ -419,6 +433,8 @@ class CartItemSchema extends ProductSchema {
 				 *
 				 * Filters the variation option name for custom option slugs.
 				 *
+				 * @since 2.5.0
+				 *
 				 * @internal Matches filter name in WooCommerce core.
 				 *
 				 * @param string $value The name to display.
@@ -452,14 +468,28 @@ class CartItemSchema extends ProductSchema {
 		 *
 		 * Filters the variation option name for custom option slugs.
 		 *
+		 * @since 4.3.0
+		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
 		 * @param array $item_data Cart item data. Empty by default.
 		 * @param array $cart_item Cart item array.
 		 * @return array
 		 */
-		$item_data = apply_filters( 'woocommerce_get_item_data', array(), $cart_item );
-		return array_map( [ $this, 'format_item_data_element' ], $item_data );
+		$item_data       = apply_filters( 'woocommerce_get_item_data', array(), $cart_item );
+		$clean_item_data = [];
+		foreach ( $item_data as $data ) {
+			// We will check each piece of data in the item data element to ensure it is scalar. Extensions could add arrays
+			// to this, which would cause a fatal in wp_strip_all_tags. If it is not scalar, we will return an empty array,
+			// which will be filtered out in get_item_data (after this function has run).
+			foreach ( $data as $data_value ) {
+				if ( ! is_scalar( $data_value ) ) {
+					continue 2;
+				}
+			}
+			$clean_item_data[] = $this->format_item_data_element( $data );
+		}
+		return $clean_item_data;
 	}
 
 	/**

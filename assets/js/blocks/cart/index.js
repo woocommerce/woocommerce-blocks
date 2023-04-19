@@ -40,6 +40,7 @@ const settings = {
 		attributes: {
 			isPreview: true,
 		},
+		viewportWidth: 800,
 	},
 	attributes: blockAttributes,
 	edit: Edit,

@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { CurrencyCode } from '@woocommerce/type-defs/currency';
+import type { CurrencyCode } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -67,7 +67,7 @@ export interface CartShippingPackageShippingRate extends CurrencyInfo {
 }
 
 export interface CartShippingRate {
-	package_id: number;
+	package_id: string | number;
 	name: string;
 	destination: BaseAddress;
 	items: Array< ShippingRateItem >;
@@ -185,7 +185,7 @@ export interface CartErrorItem {
 	message: string;
 }
 
-export interface Cart {
+export interface Cart extends Record< string, unknown > {
 	coupons: Array< CartCouponItem >;
 	shippingRates: Array< CartShippingRate >;
 	shippingAddress: CartShippingAddress;
@@ -200,6 +200,7 @@ export interface Cart {
 	fees: Array< CartFeeItem >;
 	totals: CartTotals;
 	errors: Array< CartErrorItem >;
+	paymentMethods: Array< string >;
 	paymentRequirements: Array< string >;
 	extensions: ExtensionsData;
 }
@@ -209,6 +210,8 @@ export interface CartMeta {
 	isCartDataStale: boolean;
 	applyingCoupon: string;
 	removingCoupon: string;
+	/* Whether the full address has been previously pushed to the server */
+	fullShippingAddressPushed: boolean;
 }
 export interface ExtensionCartUpdateArgs {
 	data: Record< string, unknown >;
@@ -216,6 +219,6 @@ export interface ExtensionCartUpdateArgs {
 }
 
 export interface BillingAddressShippingAddress {
-	billing_address: CartBillingAddress;
-	shipping_address: CartShippingAddress;
+	billing_address: Partial< CartBillingAddress >;
+	shipping_address: Partial< CartShippingAddress >;
 }

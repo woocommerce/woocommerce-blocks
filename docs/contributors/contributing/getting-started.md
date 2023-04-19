@@ -2,19 +2,18 @@
 
 ## Table of contents <!-- omit in toc -->
 
--   [Cloning the Git Repository](#cloning-the-git-repository)
--   [Configuring your WordPress site](#configuring-your-wordpress-site)
--   [Installing dependencies](#installing-dependencies)
--   [Building the plugin files](#building-the-plugin-files)
-    -   [Legacy builds](#legacy-builds)
--   [Create a plugin package in ZIP format](#create-a-plugin-package-in-zip-format)
--   [Linting](#linting)
--   [Running the Blocks plugin](#running-the-blocks-plugin)
--   [Developer Tools (Visual Studio Code)](#developer-tools-visual-studio-code)
-    -   [EditorConfig](#editorconfig)
-    -   [ESLint](#eslint)
-    -   [Prettier](#prettier)
--   [Testing](#testing)
+- [Cloning the Git Repository](#cloning-the-git-repository)
+- [Configuring your WordPress site](#configuring-your-wordpress-site)
+- [Installing dependencies](#installing-dependencies)
+- [Building the plugin files](#building-the-plugin-files)
+- [Create a plugin package in ZIP format](#create-a-plugin-package-in-zip-format)
+- [Linting](#linting)
+- [Running the Blocks plugin](#running-the-blocks-plugin)
+- [Developer Tools (Visual Studio Code)](#developer-tools-visual-studio-code)
+    - [EditorConfig](#editorconfig)
+    - [ESLint](#eslint)
+    - [Prettier](#prettier)
+- [Testing](#testing)
 
 Before you can begin contributing to the Blocks plugin there are several steps and tools required to setup your local development environment.
 
@@ -25,7 +24,7 @@ Before you can start modifying files you'll want to clone this repository locall
 To do so from the command line, ensure you have [`git`](https://git-scm.com) installed on your machine, and run the clone command:
 
 ```sh
-git clone https://github.com/woocommerce/woocommerce-gutenberg-products-block.git
+git clone https://github.com/woocommerce/woocommerce-blocks.git
 ```
 
 ## Configuring your WordPress site
@@ -49,15 +48,17 @@ define( 'SCRIPT_DEBUG', true );
 
 To install dependencies, you will need the following tools installed on your machine:
 
--   [`npm` and `node.js`](https://nodejs.org)
--   [`composer`](https://getcomposer.org)
+- `node` and `npm` via [NVM](https://github.com/nvm-sh/nvm#installing-and-updating): While you can always install Node or NPM through other means, we recommend using NVM to ensure you're aligned with the version used by our development teams. Our repository contains [an `.nvmrc` file](../../../.nvmrc) which helps ensure you are using the correct version of Node.
+- [PHP](https://www.php.net/manual/en/install.php): WooCommerce Blocks requires PHP. It is also needed to run Composer and various project build scripts.
+- [Composer](https://getcomposer.org/doc/00-intro.md): We use Composer to manage all of the dependencies for PHP packages and plugins.
 
-See [`package.json` `engines`](../../../package.json) for details of required versions.
+See [`package.json` `engines`](../../../package.json) and [`readme.txt`](../../../readme.txt#L6) for details on required versions.
+<!--  -->
+Once you the above setup, install the dependencies from the command line:
 
-Once you have `node` and `composer` setup, install the dependencies from the command line:
-
--   Change directory to your repo folder, e.g. `$ cd woocommerce-gutenberg-products-block`.
--   Install javascript and php dependencies - `$ npm install && composer install`.
+-   Change directory to your repo folder, e.g. `$ cd woocommerce-blocks`.
+-   Ensure the correct version of Node and NPM are installed - `$ nvm use`
+-   Install JavaScript and PHP dependencies - `$ npm install && composer install`.
 
 ## Building the plugin files
 
@@ -69,17 +70,6 @@ NPM is used to trigger builds. Building is required for the plugin to functional
 These scripts compile the code using `webpack` which is one of the installed dependencies from earlier.
 
 You can also run `$ npx webpack` to run the development build and not keep watching for changes.
-
-### Legacy builds
-
-This plugin supports two type of builds:
-
--   legacy builds (assets have `-legacy` suffix on their file names)
--   main builds (without the `-legacy` prefix)
-
-The legacy builds are loaded in a site environment where the WordPress version doesn't meet minimum requirements for a component used in a set build.
-
-You can read more about legacy builds in the [this doc](../../../assets/js/legacy/README.md).
 
 ## Create a plugin package in ZIP format
 
