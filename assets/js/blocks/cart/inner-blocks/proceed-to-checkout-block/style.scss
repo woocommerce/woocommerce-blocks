@@ -30,6 +30,7 @@
 		position: fixed;
 		width: 100%;
 		z-index: 9999;
+		box-sizing: border-box;
 
 		&::before {
 			box-shadow: 0 -10px 20px 10px currentColor;
