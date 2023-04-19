@@ -33,7 +33,7 @@
 
 		&::before {
 			box-shadow: 0 -10px 20px 10px currentColor;
-			color: color.adjust($gray-400, $alpha: -0.5);
+			color: color.adjust($gray-400, $alpha: -0.7);
 			content: "";
 			height: 100%;
 			left: 0;
