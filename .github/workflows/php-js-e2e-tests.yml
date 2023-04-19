@@ -105,7 +105,11 @@ jobs:
           cache-name: cache-node-modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-modified-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-modified-build-${{ env.cache-name }}-
+            ${{ runner.os }}-modified-build-
+            ${{ runner.os }}-modified-
 
       - name: Setup node version and npm cache
         uses: actions/setup-node@v3
@@ -113,9 +117,11 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
 
-      - name: Install Node Dependencies
+      - name: Install Node dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-optional
+        run: |
+          sed -i 's/"@wordpress\/env": ".*"/"@wordpress\/env": "^4.9.0"/' package.json
+          npm install --no-optional --no-audit
 
       - name: Build Assets
         run: FORCE_REDUCED_MOTION=true npm run build:e2e-test
@@ -150,11 +156,6 @@ jobs:
           WOOCOMMERCE_BLOCKS_PHASE: 3
         run: |
           npm run wp-env start
-          WP_ENV_DIR=$(npm run wp-env install-path --silent 2>&1 | head -1)
-          cd $WP_ENV_DIR
-          mkdir -p tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
-          chmod -R 767 tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
-          cd -
           npm run wp-env:config && npx cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --listTests > ~/.jest-e2e-tests
           npx cross-env JEST_PUPPETEER_CONFIG=tests/e2e/config/jest-puppeteer.config.js cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --runInBand --runTestsByPath $( awk 'NR % 5 == ${{ matrix.part }} - 1' < ~/.jest-e2e-tests )
 
