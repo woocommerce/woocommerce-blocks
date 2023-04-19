@@ -10,6 +10,7 @@ import type { InnerBlockTemplate } from '@wordpress/blocks';
 import { QueryBlockAttributes } from './types';
 import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 import { VARIATION_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';
+import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
 
 /**
  * Returns an object without a key.
@@ -86,7 +87,12 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 			className: 'products-block-post-template',
 		},
 		[
-			[ 'woocommerce/product-image' ],
+			[
+				'woocommerce/product-image',
+				{
+					imageSizing: ImageSizing.THUMBNAIL,
+				},
+			],
 			[
 				'core/post-title',
 				{
