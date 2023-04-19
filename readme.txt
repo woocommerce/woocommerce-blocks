@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.1
 Tested up to: 6.2
 Requires PHP: 7.3
-Stable tag: 10.0.0
+Stable tag: 10.0.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -80,6 +80,20 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 10.0.2 - 2023-04-19 =
+
+#### Bug Fixes
+
+- Fix infinite loop with the registration of Single Product Block (and inner blocks) breaking WP Post and Page editors in WP 6.1. ([9090](https://github.com/woocommerce/woocommerce-blocks/pull/9090))
+
+= 10.0.1 - 2023-04-18 =
+
+#### Bug Fixes
+
+- Product Price Block: Remove ProductSelector support. ([8980](https://github.com/woocommerce/woocommerce-blocks/pull/8980))
+- Single Product Compatibility Layer: add support for custom HTML Blocks. ([9075](https://github.com/woocommerce/woocommerce-blocks/pull/9075))
+- Fix: tax_query should be calculated only if __woocommerceAttributes is valid. ([9049](https://github.com/woocommerce/woocommerce-blocks/pull/9049))
+
 = 10.0.0 - 2023-04-11 =
 
 #### Enhancements
@@ -94,7 +108,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Added the “Products Review” block. ([8857](https://github.com/woocommerce/woocommerce-blocks/pull/8857))
 - New styles for error, info, and success notices across notices created by blocks. Additionally, existing notices in core receive new styles when Cart and Checkout Blocks are in use. ([8659](https://github.com/woocommerce/woocommerce-blocks/pull/8659))
 - Add `additionalCartCheckoutInnerBlockTypes` checkout filter to allow additional block types to be inserted into the Cart and Checkout blocks in the editor. ([8650](https://github.com/woocommerce/woocommerce-blocks/pull/8650))
-- Add Single Product block that allows merchant to select and display a single product on their store. ([8610](https://github.com/woocommerce/woocommerce-blocks/pull/8610))
 - Product Rating: Normalize the height of rating icons and the add review link. ([8399](https://github.com/woocommerce/woocommerce-blocks/pull/8399))
 - Show the collection address in the shipping section of the Checkout sidebar when using a Local Pickup method. ([8305](https://github.com/woocommerce/woocommerce-blocks/pull/8305))
 
