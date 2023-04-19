@@ -72,11 +72,11 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 								'woo-gutenberg-products-block'
 							) }
 							onChange={ ( value ) => {
-								setAttributes(
-									{
-										addToCartBehaviour: value ? 'open_drawer' : 'none'
-									}
-								);
+								setAttributes( {
+									addToCartBehaviour: value
+										? 'open_drawer'
+										: 'none',
+								} );
 							} }
 							help={ __(
 								'Select what happens when a customer adds a product to the cart.',
