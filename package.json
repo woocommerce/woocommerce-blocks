@@ -68,6 +68,7 @@
 		"postinstall": "patch-package",
 		"reformat-files": "prettier --ignore-path .eslintignore --write \"**/*.{js,jsx,json,ts,tsx}\"",
 		"release": "sh ./bin/wordpress-deploy.sh",
+		"rimraf": "./node_modules/rimraf/bin.js",
 		"start": "rimraf build/* && cross-env BABEL_ENV=default CHECK_CIRCULAR_DEPS=true webpack --watch --info-verbosity none",
 		"storybook": "start-storybook  -c ./storybook -p 6006 --ci",
 		"storybook:build": "BABEL_ENV=development build-storybook  -c ./storybook -o ./storybook/dist",
