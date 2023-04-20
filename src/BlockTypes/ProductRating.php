@@ -110,8 +110,6 @@ class ProductRating extends AbstractBlock {
 			$parsed_attributes = $this->parse_attributes( $attributes );
 			$is_descendent_of_single_product_block = $parsed_attributes['isDescendentOfSingleProductBlock'];
 
-			var_dump( $parsed_attributes );
-
 			$styles_and_classes            = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 			$text_align_styles_and_classes = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
 
