@@ -39,9 +39,8 @@
 	</div>
 	<!-- /wp:group -->
 
-	<!-- wp:separator {"align":"full","className":"is-style-wide"} -->
-	<hr class="wp-block-separator alignfull has-alpha-channel-opacity is-style-wide" />
-	<!-- /wp:separator -->
+	<!-- wp:html -->
+	<style>.wp-block-search__input {border:none!important;}</style>
+	<!-- /wp:html -->
 </div>
 <!-- /wp:group -->
-<style>.wp-block-search__input {border:none!important;}</style>
