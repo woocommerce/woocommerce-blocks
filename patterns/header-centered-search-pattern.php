@@ -35,7 +35,7 @@
 
 	<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
 	<div class="wp-block-group">
-		<!-- wp:navigation {"ref":1855,"style":{"typography":{"fontStyle":"normal","fontWeight":"400"}}} /-->
+		<!-- wp:navigation {"style":{"typography":{"fontStyle":"normal","fontWeight":"400"}}} /-->
 	</div>
 	<!-- /wp:group -->
 
