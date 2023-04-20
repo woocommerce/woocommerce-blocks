@@ -147,13 +147,15 @@ const PriceSlider = ( {
 			};
 		}
 
-		const low = 100 * (
-			( minPrice - minConstraint ) / ( maxConstraint - minConstraint )
-		);
+		const low =
+			100 *
+			( ( minPrice - minConstraint ) /
+				( maxConstraint - minConstraint ) );
 
-		const high = 100 * (
-			( maxPrice - minConstraint ) / ( maxConstraint - minConstraint )
-		);
+		const high =
+			100 *
+			( ( maxPrice - minConstraint ) /
+				( maxConstraint - minConstraint ) );
 
 		return {
 			'--low': low + '%',
