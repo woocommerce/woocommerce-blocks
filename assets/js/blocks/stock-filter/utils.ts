@@ -23,9 +23,9 @@ export const getActiveFilters = (
 		? params.split( ',' )
 		: ( params as string[] );
 
-	const filter_keys = Object.keys( filters );
-	return parsedParams.filter( ( param ) =>
-		filter_keys.includes( param )
+	const filterKeys = Object.keys( filters );
+
+	return parsedParams.filter( ( param ) => filterKeys.includes( param ) );
 	);
 };
 
