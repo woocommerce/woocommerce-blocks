@@ -15,23 +15,11 @@
 <!-- wp:query {"queryId":2,"query":{"perPage":"5","pages":0,"offset":0,"postType":"product","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","onbackorder"]},"displayLayout":{"type":"flex","columns":5},"namespace":"woocommerce/product-query","align":"wide","layout":{"type":"default"}} -->
 <div class="wp-block-query alignwide">
 	<!-- wp:post-template {"__woocommerceNamespace":"woocommerce/product-query/product-template"} -->
+
 	<!-- wp:woocommerce/product-image {"isDescendentOfQueryLoop":true,"imageSizing":"thumbnail","style":{"spacing":{"margin":{"bottom":"0.75rem","top":"0"}}}} /-->
+	<!-- wp:post-title {"level":3,"isLink":true,"style":{"spacing":{"margin":{"bottom":"0.75rem","top":"0"}}},"fontSize":"small","__woocommerceNamespace":"woocommerce/product-query/product-title"} /-->
+	<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"textAlign":"left","fontSize":"small","style":{"spacing":{"margin":{"bottom":"0","top":"0"}}}} /-->
 
-	<!-- wp:columns {"isStackedOnMobile":false} -->
-	<div class="wp-block-columns">
-		<!-- wp:column -->
-		<div class="wp-block-column">
-			<!-- wp:post-title {"level":3,"isLink":true,"style":{"spacing":{"margin":{"bottom":"0.75rem","top":"0"}}},"fontSize":"small","__woocommerceNamespace":"woocommerce/product-query/product-title"} /-->
-		</div>
-		<!-- /wp:column -->
-
-		<!-- wp:column -->
-		<div class="wp-block-column">
-			<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"textAlign":"right","fontSize":"small","style":{"spacing":{"margin":{"bottom":"0","top":"0"}}}} /-->
-		</div>
-		<!-- /wp:column -->
-	</div>
-	<!-- /wp:columns -->
 	<!-- /wp:post-template -->
 
 	<!-- wp:paragraph {"placeholder":"Add text or blocks that will display when a query returns no results."} -->
