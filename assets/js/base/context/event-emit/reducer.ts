@@ -13,6 +13,10 @@ import {
 	EventObserversType,
 } from './types';
 
+export function generateUniqueId() {
+	return Math.floor( Math.random() * Date.now() ).toString();
+}
+
 export const actions = {
 	addEventCallback: (
 		eventType: string,
@@ -20,7 +24,7 @@ export const actions = {
 		priority = 10
 	): ActionType => {
 		return {
-			id: uniqueId(),
+			id: generateUniqueId(),
 			type: ACTION.ADD_EVENT_CALLBACK,
 			eventType,
 			callback,
