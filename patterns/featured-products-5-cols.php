@@ -44,7 +44,7 @@
 <div class="wp-block-buttons alignwide">
 	<!-- wp:button {"textAlign":"center"} -->
 	<div class="wp-block-button">
-		<a class="wp-block-button__link has-text-align-center wp-element-button" href="/shop">
+		<a class="wp-block-button__link has-text-align-center wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">
 			Shop All
 		</a>
 	</div>
