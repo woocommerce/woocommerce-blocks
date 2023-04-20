@@ -12,4 +12,3 @@ export * from './create-notice';
 export * from './get-navigation-type';
 export * from './camel-case-keys';
 export * from './debounce';
-export * from './keyby';

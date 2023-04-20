@@ -12,7 +12,7 @@ import {
 	useStoreEvents,
 } from '@woocommerce/base-context/hooks';
 import { sanitizeHTML } from '@woocommerce/utils';
-import { debounce } from 'lodash';
+import { debounce } from '@woocommerce/base-utils';
 import type { ReactElement } from 'react';
 
 /**

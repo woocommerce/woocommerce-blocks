@@ -46,8 +46,8 @@ jest.mock( '@wordpress/data', () => ( {
 } ) );
 
 // Mocking lodash here so we can just call the debounced function directly without waiting for debounce.
-jest.mock( 'lodash', () => ( {
-	...jest.requireActual( 'lodash' ),
+jest.mock( '@woocommerce/base-utils', () => ( {
+	...jest.requireActual( '@woocommerce/base-utils' ),
 	__esModule: true,
 	debounce: jest.fn( ( callback ) => callback ),
 } ) );

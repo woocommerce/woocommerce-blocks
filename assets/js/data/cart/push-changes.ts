@@ -1,9 +1,13 @@
 /**
  * External dependencies
  */
-import { debounce, pick } from 'lodash';
+import { pick } from 'lodash';
 import { select, dispatch } from '@wordpress/data';
-import { pluckEmail, removeAllNotices } from '@woocommerce/base-utils';
+import {
+	pluckEmail,
+	removeAllNotices,
+	debounce,
+} from '@woocommerce/base-utils';
 import {
 	CartBillingAddress,
 	CartShippingAddress,
