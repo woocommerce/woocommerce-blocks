@@ -1,9 +1,10 @@
 /**
  * External dependencies
  */
-import { groupBy, keyBy } from 'lodash';
+import { groupBy } from 'lodash';
 import { Fragment } from '@wordpress/element';
 import { __, _n, sprintf } from '@wordpress/i18n';
+import { keyBy } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
