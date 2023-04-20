@@ -63,7 +63,7 @@ class ProductRating extends AbstractBlock {
 			'productId'               => 0,
 			'isDescendentOfQueryLoop' => false,
 			'textAlign'         => '',
-			'isDescendentOfSingleProductBlock'           => false
+			'isDescendentOfSingleProductBlock'           => false,
 		);
 
 		return wp_parse_args( $attributes, $defaults );
@@ -140,6 +140,7 @@ class ProductRating extends AbstractBlock {
 					/* translators: %s: rating */
 					$label = sprintf( __( 'Rated %s out of 5', 'woo-gutenberg-products-block' ), $average_rating );
 					$customer_reviews_count = sprintf(
+						/* translators: %s is referring to the total of reviews for a product */
 						_n(
 							'(%s customer review)',
 							'(%s customer reviews)',
@@ -148,11 +149,12 @@ class ProductRating extends AbstractBlock {
 						),
 						esc_html( $reviews_count )
 					);
-					$reviews_count_html = sprintf('
-						<span class="wc-block-components-product-rating__reviews_count">
+					$reviews_count_html = sprintf(
+						'<span class="wc-block-components-product-rating__reviews_count">
 							%1$s
 						</span>',
-						$customer_reviews_count);
+						$customer_reviews_count
+					);
 					$html  = sprintf(
 						'<div class="wc-block-components-product-rating__container">
 							<div class="wc-block-components-product-rating__stars wc-block-grid__product-rating__stars" role="img" aria-label="%1$s">
@@ -164,7 +166,7 @@ class ProductRating extends AbstractBlock {
 						esc_attr( $label ),
 						wc_get_star_rating_html( $average_rating, $reviews_count ),
 						$is_descendent_of_single_product_block ? $reviews_count_html : ''
-					) ;
+					);
 				} else {
 					$product_review_url = esc_url( $product_permalink . '#reviews' );
 					$html               = '<a class="wc-block-components-product-rating__link" href="' . $product_review_url . '">' . __( 'Add review', 'woo-gutenberg-products-block' ) . '</a>';
