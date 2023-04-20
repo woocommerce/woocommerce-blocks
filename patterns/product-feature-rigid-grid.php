@@ -21,7 +21,7 @@
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:image -->
-			<figure class="wp-block-image"><img src="/wp-content/plugins/woocommerce/packages/woocommerce-blocks/images/previews/hoodie-with-logo.jpg" /></figure>
+			<figure class="wp-block-image"><img src="<?php echo esc_url( plugins_url() ); ?>/woocommerce-blocks/images/previews/hoodie-with-logo.jpg" /></figure>
 			<!-- /wp:image -->
 
 			<!-- wp:paragraph {"fontSize":"small"} -->
@@ -33,7 +33,7 @@
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:image -->
-			<figure class="wp-block-image"><img src="/wp-content/plugins/woocommerce/packages/woocommerce-blocks/images/previews/long-sleeve-tee.jpg" /></figure>
+			<figure class="wp-block-image"><img src="<?php echo esc_url( plugins_url() ); ?>/woocommerce-blocks/images/previews/long-sleeve-tee.jpg" /></figure>
 			<!-- /wp:image -->
 
 			<!-- wp:paragraph {"fontSize":"small"} -->
@@ -49,7 +49,7 @@
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:image -->
-			<figure class="wp-block-image"><img src="/wp-content/plugins/woocommerce/packages/woocommerce-blocks/images/previews/cap.jpg" /></figure>
+			<figure class="wp-block-image"><img src="<?php echo esc_url( plugins_url() ); ?>/woocommerce-blocks/images/previews/cap.jpg" /></figure>
 			<!-- /wp:image -->
 
 			<!-- wp:paragraph {"fontSize":"small"} -->
@@ -60,7 +60,7 @@
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:image -->
-			<figure class="wp-block-image"><img src="/wp-content/plugins/woocommerce/packages/woocommerce-blocks/images/previews/beanie.jpg" /></figure>
+			<figure class="wp-block-image"><img src="<?php echo esc_url( plugins_url() ); ?>/woocommerce-blocks/images/previews/beanie.jpg" /></figure>
 			<!-- /wp:image -->
 
 			<!-- wp:paragraph {"fontSize":"small"} -->
