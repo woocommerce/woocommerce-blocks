@@ -68,6 +68,7 @@
 		"postinstall": "patch-package",
 		"reformat-files": "prettier --ignore-path .eslintignore --write \"**/*.{js,jsx,json,ts,tsx}\"",
 		"release": "sh ./bin/wordpress-deploy.sh",
+		"rimraf": "./node_modules/rimraf/bin.js",
 		"start": "rimraf build/* && cross-env BABEL_ENV=default CHECK_CIRCULAR_DEPS=true webpack --watch",
 		"storybook": "start-storybook  -c ./storybook -p 6006 --ci",
 		"storybook:build": "BABEL_ENV=development build-storybook  -c ./storybook -o ./storybook/dist",
@@ -93,8 +94,8 @@
 		"wp-env:config": "./bin/wp-env-pre-config.sh"
 	},
 	"devDependencies": {
-		"@actions/core": "1.9.1",
-		"@actions/github": "5.0.3",
+		"@actions/core": "1.10.0",
+		"@actions/github": "5.1.1",
 		"@automattic/color-studio": "2.5.0",
 		"@babel/cli": "7.20.7",
 		"@babel/core": "7.20.7",
@@ -104,7 +105,8 @@
 		"@babel/polyfill": "7.12.1",
 		"@babel/preset-typescript": "7.18.6",
 		"@bartekbp/typescript-checkstyle": "5.0.0",
-		"@octokit/graphql": "4.8.0",
+		"@octokit/action": "5.0.2",
+		"@octokit/graphql": "5.0.5",
 		"@playwright/test": "1.32.3",
 		"@storybook/addon-a11y": "6.5.16",
 		"@storybook/addon-essentials": "6.5.15",
