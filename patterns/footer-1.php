@@ -14,7 +14,7 @@
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
 		<div class="wp-block-group">
 			<!-- wp:site-logo {"style":{"color":{"duotone":"var:preset|duotone|dark-grayscale"}}} /-->
-			<!-- wp:navigation {"ref":242} /-->
+			<!-- wp:navigation /-->
 		</div>
 		<!-- /wp:group -->
 
