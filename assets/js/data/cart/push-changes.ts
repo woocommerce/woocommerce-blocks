@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { pick } from 'lodash';
 import { select, dispatch } from '@wordpress/data';
 import {
 	pluckEmail,
@@ -29,6 +28,15 @@ type CustomerData = {
 };
 
 type BillingOrShippingAddress = CartBillingAddress | CartShippingAddress;
+
+const pick = < Type >( object: Type, keys: string[] ): Type => {
+	return keys.reduce( ( obj, key ) => {
+		if ( object && object.hasOwnProperty( key ) ) {
+			obj[ key as keyof Type ] = object[ key as keyof Type ];
+		}
+		return obj;
+	}, {} as Type );
+};
 
 /**
  * Checks if a cart response contains an email property.
