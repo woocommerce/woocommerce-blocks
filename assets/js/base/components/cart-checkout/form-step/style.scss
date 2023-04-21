@@ -32,14 +32,8 @@
 }
 
 .wc-block-components-checkout-step__heading {
-	display: flex;
-	justify-content: space-between;
-	align-content: center;
-	flex-wrap: wrap;
 	margin: em($gap-small) 0 em($gap);
 	position: relative;
-	align-items: center;
-	gap: em($gap);
 
 	.wc-block-components-express-payment-continue-rule + .wc-block-components-checkout-step & {
 		margin-top: 0;
