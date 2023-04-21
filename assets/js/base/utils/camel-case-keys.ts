@@ -3,17 +3,10 @@
  */
 import { camelCase } from 'change-case';
 
-const mapKeys = (
-	obj: object,
-	mapper: ( value: unknown, key: string ) => string
-) =>
-	Object.entries( obj ).reduce(
-		( acc, [ key, value ] ) => ( {
-			...acc,
-			[ mapper( value, key ) ]: value,
-		} ),
-		{}
-	);
+/**
+ * Internal dependencies
+ */
+import { mapKeys } from './map-keys';
 
 export const camelCaseKeys = ( obj: object ) =>
 	mapKeys( obj, ( _, key ) => camelCase( key ) );
