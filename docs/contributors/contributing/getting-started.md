@@ -49,7 +49,7 @@ define( 'SCRIPT_DEBUG', true );
 To install dependencies, you will need the following tools installed on your machine:
 
 - `node` and `npm` via [NVM](https://github.com/nvm-sh/nvm#installing-and-updating): While you can always install Node or NPM through other means, we recommend using NVM to ensure you're aligned with the version used by our development teams. Our repository contains [an `.nvmrc` file](../../../.nvmrc) which helps ensure you are using the correct version of Node.
-- [PHP](https://www.php.net/manual/en/install): WooCommerce Blocks requires PHP. It is also needed to run Composer and various project build scripts.
+- [PHP](https://www.php.net/manual/en/install.php): WooCommerce Blocks requires PHP. It is also needed to run Composer and various project build scripts.
 - [Composer](https://getcomposer.org/doc/00-intro.md): We use Composer to manage all of the dependencies for PHP packages and plugins.
 
 See [`package.json` `engines`](../../../package.json) and [`readme.txt`](../../../readme.txt#L6) for details on required versions.
