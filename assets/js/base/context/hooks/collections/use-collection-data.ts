@@ -3,10 +3,9 @@
  */
 import { useState, useEffect, useMemo } from '@wordpress/element';
 import { useDebounce } from 'use-debounce';
-import { isEmpty } from 'lodash';
+import { isEmpty, objectHasProp } from '@woocommerce/types';
 import { sort } from 'fast-sort';
 import { useShallowEqual } from '@woocommerce/base-hooks';
-import { objectHasProp } from '@woocommerce/types';
 
 /**
  * Internal dependencies
