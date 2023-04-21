@@ -11,6 +11,7 @@ import { stacks } from '@woocommerce/icons';
 import { isWpVersion } from '@woocommerce/settings';
 import { select, subscribe } from '@wordpress/data';
 import { QueryBlockAttributes } from '@woocommerce/blocks/product-query/types';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -31,6 +32,38 @@ const ARCHIVE_PRODUCT_TEMPLATES = [
 	'woocommerce/woocommerce//taxonomy-product_attribute',
 	'woocommerce/woocommerce//product-search-results',
 ];
+
+const replacePostRequestWithProductRequest = ( options, next ) => {
+	const blockRequest = /\/wp\/v3\/product\?*/;
+	const productsPath = 'wc/store/v1/products';
+	const { path } = options;
+
+	if ( blockRequest.test( path ) ) {
+		// console.log( 'Redirected: ', path );
+	}
+
+	const finalOptions = blockRequest.test( path )
+		? { path: productsPath }
+		: options;
+
+	return next( finalOptions );
+};
+
+const blockPostProductRequestsMiddleware = ( options, next ) => {
+	const blockRequest = /\/wp\/v2\/product\/\d+/;
+	const { path } = options;
+
+	if ( blockRequest.test( path ) ) {
+		// console.log( 'Blocked: ', path );
+	}
+
+	if ( ! blockRequest.test( path ) ) {
+		return next( options );
+	}
+};
+
+apiFetch.use( blockPostProductRequestsMiddleware );
+apiFetch.use( replacePostRequestWithProductRequest );
 
 const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
 	registerBlockVariation( QUERY_LOOP_ID, {
