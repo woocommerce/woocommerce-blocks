@@ -118,6 +118,7 @@ final class SessionHandler extends WC_Session {
 	 *
 	 * @param string $name Method name.
 	 * @param array  $arguments Method arguments.
+	 * @throws \Error If the method does not exist on WC_Session_Handler.
 	 *
 	 * @return void
 	 */
