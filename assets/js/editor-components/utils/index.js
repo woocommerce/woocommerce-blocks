@@ -165,7 +165,8 @@ export const getProductTags = ( { selected = [], search } ) => {
 
 	return Promise.all( requests.map( ( path ) => apiFetch( { path } ) ) ).then(
 		( data ) => {
-			return uniqBy( flatten( data ), 'id' );
+			const flatData = data.flat();
+			return uniqBy( flatData, ( item ) => item.id );
 		}
 	);
 };
