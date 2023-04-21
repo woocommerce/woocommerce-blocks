@@ -2,7 +2,6 @@
 
 namespace Automattic\WooCommerce\StoreApi;
 
-use Automattic\Jetpack\Constants;
 use Automattic\WooCommerce\StoreApi\Utilities\JsonWebToken;
 use WC_Session;
 
@@ -72,7 +71,7 @@ final class SessionHandler extends WC_Session {
 		global $wpdb;
 
 		// This mimics behaviour from default WC_Session_Handler class. There will be no sessions retrieved while WP setup is due.
-		if ( Constants::is_defined( 'WP_SETUP_CONFIG' ) ) {
+		if ( class_exists( \Automattic\Jetpack\Constants::class ) && \Automattic\Jetpack\Constants::is_defined( 'WP_SETUP_CONFIG' ) ) {
 			return false;
 		}
 
@@ -109,5 +108,39 @@ final class SessionHandler extends WC_Session {
 
 			$this->_dirty = false;
 		}
+	}
+
+	/**
+	 * Since there is no interface for the abstract session class, we need to wrap calls for methods present on
+	 * WC_Session_Handler class that do not exist here (mostly cookie related methods) to prevent fatal errors
+	 * due to an optimistic approach to calling methods on the session object.
+	 * An example of this would be https://github.com/woocommerce/woocommerce-blocks/issues/9116
+	 *
+	 * @param string $name Method name.
+	 * @param array  $arguments Method arguments.
+	 *
+	 * @return void
+	 */
+	public static function __callStatic( $name, $arguments ) {
+
+		// If the methods does not exist on WC_Session_Handler, throw an error.
+		if ( ! method_exists( \WC_Session_Handler::class, $name ) ) {
+			throw new \Error( 'Call to undefined method ' . __CLASS__ . '::' . $name() );
+		}
+
+		// If the method exists on WC_Session_Handler, send a doing it wrong notice.
+		wc_doing_it_wrong( __CLASS__ . '::' . $name, 'This method is not supported over Cart-Token API requests.', '10.1.0' );
+	}
+
+	/**
+	 * Wrapper for object methods, calls the static shim.
+	 *
+	 * @param string $name Method name.
+	 * @param array  $arguments Method arguments.
+	 *
+	 * @return void
+	 */
+	public function __call( $name, $arguments ) {
+		self::__callStatic( $name, $arguments );
 	}
 }
