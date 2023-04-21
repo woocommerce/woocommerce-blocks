@@ -129,7 +129,7 @@ final class SessionHandler extends WC_Session {
 			throw new \Error( 'Call to undefined method ' . __CLASS__ . '::' . $name() );
 		}
 
-		// If the method exists on WC_Session_Handler, send a doing it wrong notice.
+		// If the method exists on WC_Session_Handler, send a doing it wrong notice and suppress the fatal.
 		wc_doing_it_wrong( __CLASS__ . '::' . $name, 'This method is not supported over Cart-Token API requests.', '10.1.0' );
 	}
 
