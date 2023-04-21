@@ -3,7 +3,7 @@
  */
 import { dispatch, select } from '@wordpress/data';
 import { previewCart } from '@woocommerce/resource-previews';
-import { cloneDeep } from 'lodash';
+import { klona } from 'klona/json';
 import { Cart, CartResponse } from '@woocommerce/types';
 import { camelCaseKeys } from '@woocommerce/base-utils';
 
@@ -36,11 +36,11 @@ select.mockImplementation( () => {
  */
 const getFreshCarts = (): { oldCart: Cart; newCart: Cart } => {
 	const oldCart = camelCaseKeys(
-		cloneDeep< CartResponse >( previewCart )
-	) as unknown as Cart;
+		klona< CartResponse >( previewCart )
+	) as Cart;
 	const newCart = camelCaseKeys(
-		cloneDeep< CartResponse >( previewCart )
-	) as unknown as Cart;
+		klona< CartResponse >( previewCart )
+	) as Cart;
 	return { oldCart, newCart };
 };
 
