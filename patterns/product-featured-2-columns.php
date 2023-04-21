@@ -47,7 +47,7 @@
 		<!-- /wp:heading -->
 
 		<!-- wp:paragraph -->
-		<p>Tempor diam augue commodo ultrices duis eget vitae. Arcu fermentum ullamcorper nulla at. Tincidunt enim enim mauris.</p>
+		<p>Get ready to start the season right. All the fan favorites in one place at the best price.</p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:buttons -->
