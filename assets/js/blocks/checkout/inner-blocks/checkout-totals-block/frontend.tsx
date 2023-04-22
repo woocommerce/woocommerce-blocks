@@ -3,12 +3,12 @@
  */
 import classnames from 'classnames';
 import { Sidebar } from '@woocommerce/base-components/sidebar-layout';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
-import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 
 const FrontendBlock = ( {
 	children,
