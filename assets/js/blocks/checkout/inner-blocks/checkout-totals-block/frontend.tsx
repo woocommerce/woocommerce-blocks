@@ -8,6 +8,7 @@ import { Sidebar } from '@woocommerce/base-components/sidebar-layout';
  * Internal dependencies
  */
 import './style.scss';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 
 const FrontendBlock = ( {
 	children,
@@ -20,6 +21,9 @@ const FrontendBlock = ( {
 		<Sidebar
 			className={ classnames( 'wc-block-checkout__sidebar', className ) }
 		>
+			<StoreNoticesContainer
+				context={ 'woocommerce/checkout-totals-block' }
+			/>
 			{ children }
 		</Sidebar>
 	);
