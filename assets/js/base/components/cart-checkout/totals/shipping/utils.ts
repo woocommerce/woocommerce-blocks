@@ -4,11 +4,6 @@
 import { getSetting } from '@woocommerce/settings';
 import type { CartResponseShippingRate } from '@woocommerce/type-defs/cart-response';
 import { hasCollectableRate } from '@woocommerce/base-utils';
-import { useShippingData } from '@woocommerce/base-context';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
-import { useDispatch, useSelect } from '@wordpress/data';
-import { useEffect } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Searches an array of packages/rates to see if there are actually any rates
