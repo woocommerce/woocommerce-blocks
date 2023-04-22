@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { useShippingData } from '@woocommerce/base-context';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { useEffect } from '@wordpress/element';
@@ -10,6 +9,11 @@ import {
 	areShippingMethodsMissing,
 	hasShippingRate,
 } from '@woocommerce/base-components/cart-checkout/totals/shipping/utils';
+
+/**
+ * Internal dependencies
+ */
+import { useShippingData } from './shipping/use-shipping-data';
 
 export const useShowShippingTotalWarning = () => {
 	const context = 'woocommerce/checkout-totals-block';
