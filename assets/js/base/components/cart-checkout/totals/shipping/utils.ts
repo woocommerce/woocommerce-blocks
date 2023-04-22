@@ -4,6 +4,11 @@
 import { getSetting } from '@woocommerce/settings';
 import type { CartResponseShippingRate } from '@woocommerce/type-defs/cart-response';
 import { hasCollectableRate } from '@woocommerce/base-utils';
+import { useShippingData } from '@woocommerce/base-context';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Searches an array of packages/rates to see if there are actually any rates
@@ -59,4 +64,38 @@ export const areShippingMethodsMissing = (
 	}
 
 	return false;
+};
+
+export const useShippingTotalWarning = () => {
+	const context = 'woocommerce/checkout-totals-block';
+	const errorNoticeId = 'wc-blocks-totals-shipping-warning';
+
+	const { shippingRates } = useShippingData();
+	const hasRates = hasShippingRate( shippingRates );
+	const prefersCollection = useSelect( ( select ) => {
+		return select( CHECKOUT_STORE_KEY ).prefersCollection();
+	} );
+	const { createInfoNotice, removeNotice } = useDispatch( 'core/notices' );
+	const shippingMethodsMissing = areShippingMethodsMissing(
+		hasRates,
+		prefersCollection,
+		shippingRates
+	);
+	useEffect( () => {
+		removeNotice( errorNoticeId, context );
+
+		if ( shippingMethodsMissing ) {
+			createInfoNotice(
+				__(
+					'Totals will be recalculated when a valid shipping method is selected.',
+					'woo-gutenberg-products-block'
+				),
+				{
+					id: 'wc-blocks-totals-shipping-warning',
+					isDismissible: false,
+					context,
+				}
+			);
+		}
+	}, [ shippingMethodsMissing, createInfoNotice, removeNotice ] );
 };
