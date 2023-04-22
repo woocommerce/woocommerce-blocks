@@ -29,15 +29,6 @@ import CheckoutOrderError from './checkout-order-error';
 import { LOGIN_TO_CHECKOUT_URL, isLoginRequired, reloadPage } from './utils';
 import type { Attributes } from './types';
 import { CheckoutBlockContext } from './context';
-import {
-	areShippingMethodsMissing,
-	hasShippingRate,
-	useShippingTotalWarning,
-} from '@woocommerce/base-components/cart-checkout/totals/shipping/utils';
-import {
-	isAddressComplete,
-	isPackageRateCollectable,
-} from '@woocommerce/base-utils';
 
 const MustLoginPrompt = () => {
 	return (
