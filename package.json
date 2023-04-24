@@ -66,8 +66,11 @@
 		"package-plugin:zip-only": "rimraf woocommerce-gutenberg-products-block.zip && ./bin/build-plugin-zip.sh -z",
 		"package-plugin:deploy": "npm run build:deploy && npm run package-plugin:zip-only",
 		"postinstall": "patch-package",
+		"pre-commit": "lint-staged",
+		"prepare": "husky install",
 		"reformat-files": "prettier --ignore-path .eslintignore --write \"**/*.{js,jsx,json,ts,tsx}\"",
 		"release": "sh ./bin/wordpress-deploy.sh",
+		"rimraf": "./node_modules/rimraf/bin.js",
 		"start": "rimraf build/* && cross-env BABEL_ENV=default CHECK_CIRCULAR_DEPS=true webpack --watch --info-verbosity none",
 		"storybook": "start-storybook  -c ./storybook -p 6006 --ci",
 		"storybook:build": "BABEL_ENV=development build-storybook  -c ./storybook -o ./storybook/dist",
@@ -84,7 +87,7 @@
 		"env:stop": "npm run wp-env stop",
 		"test:help": "wp-scripts test-unit-js --help",
 		"test:performance": "npm run wp-env:config && cross-env NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.performance.config.js -- performance",
-		"test:php": "npm run wp-env run phpunit '/var/www/html/wp-content/plugins/${PWD##*/}/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/${PWD##*/}/phpunit.xml.dist'",
+		"test:php": "wp-env run tests-wordpress /var/www/html/wp-content/plugins/${PWD##*/}/vendor/bin/phpunit -c /var/www/html/wp-content/plugins/${PWD##*/}/phpunit.xml.dist",
 		"test:update": "wp-scripts test-unit-js --updateSnapshot --config tests/js/jest.config.json",
 		"test:watch": "npm run test -- --watch",
 		"ts:check": "tsc --build",
@@ -94,7 +97,7 @@
 	},
 	"devDependencies": {
 		"@actions/core": "1.10.0",
-		"@actions/github": "5.0.3",
+		"@actions/github": "5.1.1",
 		"@automattic/color-studio": "2.5.0",
 		"@babel/cli": "7.18.9",
 		"@babel/core": "7.18.9",
@@ -105,7 +108,7 @@
 		"@babel/preset-typescript": "7.18.6",
 		"@bartekbp/typescript-checkstyle": "5.0.0",
 		"@octokit/action": "5.0.2",
-		"@octokit/graphql": "4.8.0",
+		"@octokit/graphql": "5.0.5",
 		"@playwright/test": "1.32.3",
 		"@storybook/addon-a11y": "6.5.16",
 		"@storybook/addon-essentials": "6.5.9",
@@ -158,7 +161,7 @@
 		"@wordpress/e2e-test-utils": "10.1.0",
 		"@wordpress/e2e-tests": "4.6.0",
 		"@wordpress/element": "4.20.0",
-		"@wordpress/env": "^4.9.0",
+		"@wordpress/env": "5.16.0",
 		"@wordpress/html-entities": "3.24.0",
 		"@wordpress/i18n": "4.24.0",
 		"@wordpress/is-shallow-equal": "4.24.0",
@@ -275,11 +278,6 @@
 	},
 	"optionalDependencies": {
 		"ndb": "1.1.5"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
 	},
 	"lint-staged": {
 		"*.scss": [
