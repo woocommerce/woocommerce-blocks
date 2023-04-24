@@ -32,7 +32,9 @@ const FieldControls = (): JSX.Element => {
 
 	const post = coreEditor?.getCurrentPost();
 
-	const [ fields, setFields ] = useState( post.checkout_custom_fields );
+	const [ fields, setFields ] = useState(
+		post?.checkout_custom_fields || {}
+	);
 
 	useEffect( () => {
 		dispatch( 'core/editor' ).editPost( {
@@ -49,6 +51,7 @@ const FieldControls = (): JSX.Element => {
 		} );
 
 		const shippingFields = {
+			...fields,
 			shipping: parsedFields,
 		};
 
