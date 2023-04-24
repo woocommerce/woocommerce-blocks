@@ -4,6 +4,7 @@
 import CHECKOUT_ACTIONS from './checkout-actions-block/block.json';
 import CHECKOUT_BILLING_ADDRESS from './checkout-billing-address-block/block.json';
 import CHECKOUT_CONTACT_INFORMATION from './checkout-contact-information-block/block.json';
+import CHECKOUT_CUSTOM_FIELDS from './checkout-custom-fields-block/block.json';
 import CHECKOUT_EXPRESS_PAYMENT from './checkout-express-payment-block/block.json';
 import CHECKOUT_FIELDS from './checkout-fields-block/block.json';
 import CHECKOUT_ORDER_NOTE from './checkout-order-note-block/block.json';
@@ -27,6 +28,7 @@ export default {
 	CHECKOUT_ACTIONS,
 	CHECKOUT_BILLING_ADDRESS,
 	CHECKOUT_CONTACT_INFORMATION,
+	CHECKOUT_CUSTOM_FIELDS,
 	CHECKOUT_EXPRESS_PAYMENT,
 	CHECKOUT_FIELDS,
 	CHECKOUT_ORDER_NOTE,

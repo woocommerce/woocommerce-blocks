@@ -80,6 +80,17 @@ registerCheckoutBlock( {
 } );
 
 registerCheckoutBlock( {
+	metadata: metadata.CHECKOUT_CUSTOM_FIELDS,
+	force: true,
+	component: lazy(
+		() =>
+			import(
+				/* webpackChunkName: "checkout-blocks/custom-fields" */ './checkout-custom-fields-block/frontend'
+			)
+	),
+} );
+
+registerCheckoutBlock( {
 	metadata: metadata.CHECKOUT_BILLING_ADDRESS,
 	component: lazy(
 		() =>

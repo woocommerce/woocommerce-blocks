@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { withFilteredAttributes } from '@woocommerce/shared-hocs';
+import { allSettings } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -13,20 +14,32 @@ import attributes from './attributes';
  */
 import Frontend from '../checkout-custom-field-block/frontend';
 
-const templateField = {
-	name: 'the_default_field_name',
-	label: 'The default field',
-	size: '',
-	required: false,
-};
+interface FieldProps {
+	name: string;
+	label: string;
+	required: boolean;
+	type: string;
+	size?: string | undefined;
+}
 
-const storedFields = [ templateField, templateField ];
+interface CustomFields {
+	shipping?: FieldProps[] | undefined;
+	billing?: FieldProps[] | undefined;
+	additional?: FieldProps[] | undefined;
+}
 
-const FrontendBlock = ( { section }: { section: string } ): JSX.Element => {
+const FrontendBlock = ( {
+	section = 'shipping',
+}: {
+	section: string;
+} ): JSX.Element => {
+	const allCustomFields = allSettings.checkoutCustomFields as CustomFields;
+	const sectionFields = allCustomFields[ section as keyof CustomFields ];
+
 	return (
 		<div className="wc-block-checkout__custom_fields">
 			{ `Custom Fields Block Section` }
-			{ storedFields.map( ( field, index ) => (
+			{ sectionFields?.map( ( field, index ) => (
 				<Frontend key={ index } field={ field } section={ section } />
 			) ) }
 		</div>
