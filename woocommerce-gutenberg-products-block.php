@@ -334,7 +334,7 @@ function add_checkout_custom_fields() {
 		array(
 			'get_callback'    => function ( $object ) use ( $field ) {
 				// Get field as single value from post meta.
-				return get_option( $field, [] );
+				return get_option( $field, array() );
 			},
 			'update_callback' => function ( $value, $object ) use ( $field ) {
 				// Update the field/meta value.
@@ -348,12 +348,12 @@ function add_checkout_custom_fields() {
 						'elements' => array(
 							'type'       => 'object',
 							'properties' => array(
-								'id'       => 'integer',
+								// TODO: add priority.
+								'name'     => 'string',
 								'label'    => 'string',
 								'required' => 'boolean',
 								'type'     => 'string',
-								'size'     => 'string', //half|full
-								// 'priority' => 'integer',
+								'size'     => 'string',
 							),
 						),
 					),
@@ -362,12 +362,11 @@ function add_checkout_custom_fields() {
 						'elements' => array(
 							'type'       => 'object',
 							'properties' => array(
-								'id'       => 'integer',
+								'name'     => 'string',
 								'label'    => 'string',
 								'required' => 'boolean',
 								'type'     => 'string',
-								'size'     => 'string', //half|full
-								// 'priority' => 'integer',
+								'size'     => 'string',
 							),
 						),
 					),
@@ -376,26 +375,16 @@ function add_checkout_custom_fields() {
 						'elements' => array(
 							'type'       => 'object',
 							'properties' => array(
-								'id'       => 'integer',
+								'name'     => 'string',
 								'label'    => 'string',
 								'required' => 'boolean',
 								'type'     => 'string',
-								'size'     => 'string', //half|full
-								// 'priority' => 'integer',
+								'size'     => 'string',
 							),
 						),
 					),
 				),
-				// 'arg_options' => array(
-				// 	'sanitize_callback' => function ( $value ) {
-				// 		// Make the value safe for storage.
-				// 		return sanitize_text_field( $value );
-				// 	},
-				// 	'validate_callback' => function ( $value ) {
-				// 		// Valid if it contains exactly 10 English letters.
-				// 		return (bool) preg_match( '/\A[a-z]{10}\Z/', $value );
-				// 	},
-				// ),
+				// TODO: Add sanitize and validate callbacks.
 			),
 		)
 	);
