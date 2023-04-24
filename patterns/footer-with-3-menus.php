@@ -7,12 +7,12 @@
  */
 ?>
 
-<!-- wp:group {"align":"full","style":{"spacing":{"blockGap":"40px"}}} -->
-<div class="wp-block-group alignfull">
+<!-- wp:group {"align":"full","style":{"spacing":{"blockGap":"40px","padding":{"right":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
+<div class="wp-block-group alignfull" style="padding-right:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)">
 	<!-- wp:columns -->
-	<div class="wp-block-columns">
-		<!-- wp:column {"verticalAlignment":"center","width":"70%"} -->
-		<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:70%">
+	<div class="wp-block-columns are-vertically-aligned-top">
+		<!-- wp:column {"verticalAlignment":"top","width":"70%"} -->
+		<div class="wp-block-column is-vertically-aligned-top" style="flex-basis:70%">
 			<!-- wp:group {"style":{"spacing":{"blockGap":"32px"}},"layout":{"type":"flex","flexWrap":"wrap","verticalAlignment":"top"}} -->
 			<div class="wp-block-group"><!-- wp:site-logo {"shouldSyncIcon":false} /-->
 
