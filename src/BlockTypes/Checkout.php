@@ -265,6 +265,8 @@ class Checkout extends AbstractBlock {
 
 		$this->asset_data_registry->add( 'localPickupEnabled', $local_pickup_enabled, true );
 
+		$this->asset_data_registry->add( 'checkoutCustomFields', get_option( 'checkout_custom_fields' ), true );
+
 		$is_block_editor = $this->is_block_editor();
 
 		// Hydrate the following data depending on admin or frontend context.
