@@ -8,7 +8,7 @@
 <!-- wp:columns -->
 <div class="wp-block-columns"><!-- wp:column {"width":"160px"} -->
 	<div class="wp-block-column" style="flex-basis:160px"><!-- wp:image {"align":"left","width":164,"height":164,"sizeSlug":"large","style":{"border":{"radius":"100%"}},"className":"is-style-rounded"} -->
-		<figure class="wp-block-image alignleft size-large is-resized has-custom-border is-style-rounded"><img src="https://s.w.org/images/core/5.8/portrait.jpg" alt="" style="border-radius:100%" width="151" height="151"/></figure>
+		<figure class="wp-block-image alignleft size-large is-resized has-custom-border is-style-rounded"><img src="https://s.w.org/images/core/5.8/portrait.jpg" alt="" style="border-radius:100%" width="164" height="164"/></figure>
 		<!-- /wp:image --></div>
 		<!-- /wp:column -->
 
