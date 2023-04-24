@@ -48,7 +48,7 @@
 			<div class="wp-block-group" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
 				<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search our store","width":240,"widthUnit":"px","buttonText":"Search","buttonPosition":"button-inside","buttonUseIcon":true,"query":{"post_type":"product"},"backgroundColor":"base","textColor":"contrast"} /-->
 
-				<!-- wp:site-title {"textAlign":"right","style":{"typography":{"fontStyle":"normal","fontWeight":"700","fontSize":"14px"},"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} /-->
+				<!-- wp:site-title {"level":0,"textAlign":"right","style":{"typography":{"fontStyle":"normal","fontWeight":"700","fontSize":"14px"},"spacing":{"margin":{"top":"var:preset|spacing|50"}}},"anchor":""} /-->
 
 				<!-- wp:paragraph {"align":"right","style":{"typography":{"fontSize":"12px"}}} -->
 				<p class="has-text-align-right" style="font-size:12px">
