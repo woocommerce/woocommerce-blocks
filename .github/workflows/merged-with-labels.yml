@@ -7,7 +7,6 @@ name: Merged Pull Requests
 jobs:
   remove_labels:
     name: Remove labels
-    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     steps:
       - uses: mondeja/remove-labels-gh-action@v1
