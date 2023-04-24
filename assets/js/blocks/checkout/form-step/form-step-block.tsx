@@ -14,7 +14,6 @@ import { PanelBody, ToggleControl } from '@wordpress/components';
  * Internal dependencies
  */
 import FormStepHeading from './form-step-heading';
-import { CustomFields } from './custom-fields';
 export interface FormStepBlockProps {
 	attributes: { title: string; description: string; showStepNumber: boolean };
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
@@ -70,7 +69,6 @@ export const FormStepBlock = ( {
 					style={ { backgroundColor: 'transparent' } }
 				/>
 			</FormStepHeading>
-			<CustomFields />
 			<div className="wc-block-components-checkout-step__container">
 				<p className="wc-block-components-checkout-step__description">
 					<PlainText
