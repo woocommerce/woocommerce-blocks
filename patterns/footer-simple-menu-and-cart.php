@@ -19,7 +19,7 @@
 
 				<!-- wp:group {"style":{"spacing":{"blockGap":"8px"}},"layout":{"type":"flex","orientation":"vertical","flexWrap":"nowrap"}} -->
 				<div class="wp-block-group">
-					<!-- wp:navigation {"ref":1855,"style":{"spacing":{"blockGap":"var:preset|spacing|30"}}} /-->
+					<!-- wp:navigation {"overlayMenu":"never","style":{"spacing":{"blockGap":"var:preset|spacing|30"}}} /-->
 				</div>
 				<!-- /wp:group -->
 			</div>
