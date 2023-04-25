@@ -1,6 +1,9 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
+use Automattic\WooCommerce\StoreApi\SchemaController;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
+
 /**
  * OrderSchema class.
  */
@@ -20,106 +23,97 @@ class OrderSchema extends AbstractSchema {
 	const IDENTIFIER = 'order';
 
 	/**
+	 * Item schema instance.
+	 *
+	 * @var OrderItemSchema
+	 */
+	public $item_schema;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param ExtendSchema     $extend Rest Extending instance.
+	 * @param SchemaController $controller Schema Controller instance.
+	 */
+	public function __construct( ExtendSchema $extend, SchemaController $controller ) {
+		parent::__construct( $extend, $controller );
+		$this->item_schema = $this->controller->get( OrderItemSchema::IDENTIFIER );
+	}
+
+	/**
 	 * Order schema properties.
 	 *
 	 * @return array
 	 */
 	public function get_properties() {
 		return [
-			'id'         => [
+			'id'     => [
 				'description' => __( 'The order ID to process during checkout.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'line_items' => [
+			'items'  => [
 				'description' => __( 'Line items data.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
 				'items'       => [
 					'type'       => 'object',
-					'properties' => [
-						'id'        => [
-							'description' => __( 'Item ID.', 'woo-gutenberg-products-block' ),
-							'type'        => 'integer',
-							'context'     => [ 'view', 'edit' ],
-							'readonly'    => true,
-						],
-						'name'      => [
-							'description' => __( 'Product name.', 'woo-gutenberg-products-block' ),
-							'type'        => 'mixed',
-							'context'     => [ 'view', 'edit' ],
-						],
-						'quantity'  => [
-							'description' => __( 'Quantity ordered.', 'woo-gutenberg-products-block' ),
-							'type'        => 'integer',
-							'context'     => [ 'view', 'edit' ],
-						],
-						'subtotal'  => [
-							'description' => __( 'Line subtotal (before discounts).', 'woo-gutenberg-products-block' ),
-							'type'        => 'string',
-							'context'     => [ 'view', 'edit' ],
-						],
-						'meta_data' => [
-							'description' => __( 'Meta data.', 'woo-gutenberg-products-block' ),
-							'type'        => 'array',
-							'context'     => [ 'view', 'edit' ],
-							'items'       => [
-								'type'       => 'object',
-								'properties' => [
-									'id'            => [
-										'description' => __( 'Meta ID.', 'woo-gutenberg-products-block' ),
-										'type'        => 'integer',
-										'context'     => [ 'view', 'edit' ],
-										'readonly'    => true,
-									],
-									'key'           => [
-										'description' => __( 'Meta key.', 'woo-gutenberg-products-block' ),
-										'type'        => 'string',
-										'context'     => [ 'view', 'edit' ],
-									],
-									'value'         => [
-										'description' => __( 'Meta value.', 'woo-gutenberg-products-block' ),
-										'type'        => 'mixed',
-										'context'     => [ 'view', 'edit' ],
-									],
-									'display_key'   => [
-										'description' => __( 'Meta key for UI display.', 'woo-gutenberg-products-block' ),
-										'type'        => 'string',
-										'context'     => [ 'view', 'edit' ],
-									],
-									'display_value' => [
-										'description' => __( 'Meta value for UI display.', 'woo-gutenberg-products-block' ),
-										'type'        => 'string',
-										'context'     => [ 'view', 'edit' ],
-									],
-								],
-							],
-						],
-					],
+					'properties' => $this->force_schema_readonly( $this->item_schema->get_properties() ),
 				],
 			],
-			'totals'     => [
+			'totals' => [
 				'description' => __( 'Order totals.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
-				'items'       => [
-					'type'       => 'object',
-					'properties' => [
-						'label' => [
-							'description' => __( 'Label.', 'woo-gutenberg-products-block' ),
+				'readonly'    => true,
+				'properties'  => array_merge(
+					$this->get_store_currency_properties(),
+					[
+						'subtotal'       => [
+							'description' => __( 'Subtotal of the order.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-						'value' => [
-							'description' => __( 'Value.', 'woo-gutenberg-products-block' ),
+						'total_discount' => [
+							'description' => __( 'Total discount from applied coupons.', 'woo-gutenberg-products-block' ),
 							'type'        => 'string',
 							'context'     => [ 'view', 'edit' ],
 							'readonly'    => true,
 						],
-					],
-				],
+						'total_shipping' => [
+							'description' => __( 'Total price of shipping.', 'woo-gutenberg-products-block' ),
+							'type'        => [ 'string', 'null' ],
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'total_fees'     => [
+							'description' => __( 'Total price of any applied fees.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'total_tax'      => [
+							'description' => __( 'Total tax applied to the order.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'total_refund'   => [
+							'description' => __( 'Total refund applied to the order.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'total_price'    => [
+							'description' => __( 'Total price the customer will pay.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+					]
+				),
 			],
 		];
 	}
@@ -132,30 +126,27 @@ class OrderSchema extends AbstractSchema {
 	 */
 	public function get_item_response( $order ) {
 		return [
-			'id'         => $order->get_id(),
-			'line_items' => $this->get_item_data( $order ),
-			'totals'     => $order->get_order_item_totals(),
+			'id'     => $order->get_id(),
+			'items'  => $this->get_item_responses_from_schema( $this->item_schema, $order->get_items() ),
+			'totals' => $this->get_totals( $order ),
 		];
 	}
 
 	/**
-	 * Get items data.
+	 * Get total data.
 	 *
 	 * @param \WC_Order $order Order instance.
 	 * @return array
 	 */
-	private function get_item_data( $order ) {
-		$items = $order->get_items();
-		$data  = [];
-
-		foreach ( $items as $item ) {
-			$data[ $item->get_id() ]['id']        = $item->get_id();
-			$data[ $item->get_id() ]['name']      = $item->get_name();
-			$data[ $item->get_id() ]['meta_data'] = $item->get_all_formatted_meta_data();
-			$data[ $item->get_id() ]['quantity']  = $item->get_quantity();
-			$data[ $item->get_id() ]['subtotal']  = $order->get_line_subtotal( $item );
-		}
-
-		return array_values( $data );
+	public function get_totals( $order ) {
+		return [
+			'subtotal'       => $order->get_subtotal(),
+			'total_discount' => $order->get_total_discount(),
+			'total_shipping' => $order->get_total_shipping(),
+			'total_fees'     => $order->get_total_fees(),
+			'total_tax'      => $order->get_total_tax(),
+			'total_refund'   => $order->get_total_refunded(),
+			'total_price'    => $order->get_total(),
+		];
 	}
 }
