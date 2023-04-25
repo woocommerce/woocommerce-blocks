@@ -140,7 +140,13 @@ const Edit = ( {
 								setAttributes( { width: value } );
 							} }
 							onBlur={ ( e: FocusEvent< HTMLInputElement > ) => {
-								if ( Number( e.target.value ) < MIN_WIDTH ) {
+								if ( e.target.value === '' ) {
+									setAttributes( {
+										width: defaultAttributes.width.default,
+									} );
+								} else if (
+									Number( e.target.value ) < MIN_WIDTH
+								) {
 									setAttributes( {
 										width: MIN_WIDTH,
 									} );
