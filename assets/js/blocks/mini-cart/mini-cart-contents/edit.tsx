@@ -148,7 +148,7 @@ const Edit = ( {
 									Number( e.target.value ) < MIN_WIDTH
 								) {
 									setAttributes( {
-										width: MIN_WIDTH,
+										width: MIN_WIDTH + 'px',
 									} );
 								}
 							} }
