@@ -31,20 +31,21 @@ export const useShowShippingTotalWarning = () => {
 		shippingRates
 	);
 	useEffect( () => {
-		removeNotice( errorNoticeId, context );
-
-		if ( shippingMethodsMissing ) {
-			createInfoNotice(
-				__(
-					'Totals will be recalculated when a valid shipping method is selected.',
-					'woo-gutenberg-products-block'
-				),
-				{
-					id: 'wc-blocks-totals-shipping-warning',
-					isDismissible: false,
-					context,
-				}
-			);
+		if ( ! shippingMethodsMissing ) {
+			removeNotice( errorNoticeId, context );
+			return;
 		}
+
+		createInfoNotice(
+			__(
+				'Totals will be recalculated when a valid shipping method is selected.',
+				'woo-gutenberg-products-block'
+			),
+			{
+				id: 'wc-blocks-totals-shipping-warning',
+				isDismissible: false,
+				context,
+			}
+		);
 	}, [ shippingMethodsMissing, createInfoNotice, removeNotice ] );
 };
