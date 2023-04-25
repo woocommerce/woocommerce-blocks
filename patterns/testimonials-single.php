@@ -18,11 +18,8 @@
 		<!-- /wp:heading -->
 
 		<!-- wp:paragraph {"style":{"typography":{"fontSize":"18px"}}} -->
-		<p style="font-size:18px">
-					In the end the couch wasn't exactly what I was looking for but my experience with the
-					Burrow team was excellent. First in providing a discount when the couch was delayed, then timely feedback
-					and updates as the…
-				</p>
+		<p style="font-size:18px">In the end the couch wasn't exactly what I was looking for but my experience with the Burrow team was excellent. First in providing a discount when the couch was delayed, then timely feedback and updates as the...
+		</p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:paragraph {"style":{"typography":{"fontSize":"18px"},"color":{"text":"#646970"}}} -->
