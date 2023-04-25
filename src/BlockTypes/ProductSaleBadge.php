@@ -78,17 +78,17 @@ class ProductSaleBadge extends AbstractBlock {
 	 * Add default styles for Sale Badge block.
 	 *
 	 * @param WP_Theme_JSON_Data $theme_data The theme data object that is passed as a parameter.
-	 * @return array
+	 * @return WP_Theme_JSON_Data
 	 */
 	public function add_default_sale_badge_styles( $theme_data ) {
+		$theme_data_array = $theme_data->get_data();
+
 		// Get the existing Sale Badge block styles.
-		$block_styles = isset( $theme_data->get_data()['styles']['blocks']['woocommerce/product-sale-badge'] )
-		? $theme_data->get_data()['styles']['blocks']['woocommerce/product-sale-badge']
-		: array();
+		$block_styles = $theme_data_array['styles']['blocks']['woocommerce/product-sale-badge'] ?? array();
 
 		// Return if there are no styles for button element.
 		// Because in this case Sale badge will use styles from style.scss.
-		$button_element = $theme_data->get_data()['styles']['elements']['button'] ?? null;
+		$button_element = $theme_data_array['styles']['elements']['button'] ?? null;
 		if ( ! $button_element ) {
 			return $theme_data;
 		}
@@ -104,13 +104,13 @@ class ProductSaleBadge extends AbstractBlock {
 			),
 		);
 
-		if ( ! isset( $block_styles['color'] ) || ! isset( $block_styles['color']['background'] ) ) {
+		if ( ! isset( $block_styles['color']['background'] ) ) {
 			$default_styles['styles']['blocks']['woocommerce/product-sale-badge']['color']['background'] = array(
 				'ref' => 'styles.elements.button.color.background',
 			);
 		}
 
-		if ( ! isset( $block_styles['color'] ) || ! isset( $block_styles['color']['text'] ) ) {
+		if ( ! isset( $block_styles['color']['text'] ) ) {
 			$default_styles['styles']['blocks']['woocommerce/product-sale-badge']['color']['text'] = array(
 				'ref' => 'styles.elements.button.color.text',
 			);
