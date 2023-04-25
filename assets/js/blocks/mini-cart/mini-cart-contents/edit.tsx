@@ -10,7 +10,7 @@ import {
 import { EditorProvider } from '@woocommerce/base-context';
 import type { TemplateArray } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
-import type { ReactElement } from 'react';
+import type { FocusEvent, ReactElement } from 'react';
 import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
@@ -31,6 +31,7 @@ const ALLOWED_BLOCKS = [
 	'woocommerce/filled-mini-cart-contents-block',
 	'woocommerce/empty-mini-cart-contents-block',
 ];
+const MIN_WIDTH = 300;
 
 interface Props {
 	clientId: string;
@@ -132,6 +133,13 @@ const Edit = ( {
 					<UnitControl
 						onChange={ ( value ) => {
 							setAttributes( { width: value } );
+						} }
+						onBlur={ ( e: FocusEvent< HTMLInputElement > ) => {
+							if ( Number( e.target.value ) < MIN_WIDTH ) {
+								setAttributes( {
+									width: MIN_WIDTH,
+								} );
+							}
 						} }
 						value={ width }
 						units={ [
