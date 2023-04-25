@@ -4,7 +4,7 @@
 
 -   [Structure](#structure)
 -   [Playwright](#playwright)
-    -   [Structure](#structure)
+    -   [Structure](#structure-1)
 
 This living document serves to prescribe coding guidelines specific to the WooCommerce Blocks project E2E tests.
 
@@ -18,12 +18,12 @@ The first folder is named "e2e" and it contains all the E2E tests that were crea
 
 #### Structure
 
-There are two Playwright projects configuration
+There are two Playwright projects configuration:
 
 - blockTheme
 - classicTheme
 
-The blockTheme project runs the tests with the suffix *block_theme*. In this case, the theme is a block theme. The block theme is the default WordPress theme. Currently, it is Twenty Twenty Trhee. You should use this configuration if you want test the block with the Site Editor.
+The blockTheme project runs the tests with the suffix *block_theme*. In this case, the theme is a block theme. The block theme is the default WordPress theme. Currently, it is Twenty Twenty Three. You should use this configuration if you want test the block with the Site Editor.
 
 The classicTheme project runs the tests with the suffix *classic_theme*. In this case, the theme is a Twenty Twenty One. You should use this configuration if you want test the block with a classic theme.
 
@@ -31,11 +31,11 @@ Each block should be have a dedicated folder with a scoped util file if you want
 
 #### Code Guidelines
 
-##### Make tests as isolated as possible - Avoid Side Effects
+##### Make tests as isolated as possible - Avoid side effects
 
 Each test should be completely isolated from another test and should run independently with its own local storage, session storage, data, cookies etc. Test isolation improves reproducibility, makes debugging easier and prevents cascading test failures.
 
-In order to avoid repetition for a particular part of your test you can use before and after hooks. Within your test file add a before hook to run a part of your test before each test such as going to a particular URL or logging in to a part of your app. This keeps your tests isolated as no test relies on another. However it is also ok to have a little duplication when tests are simple enough especially if it keeps your tests clearer and easier to read and maintain. You should avoid to use function that impacts other things. Avoid using functions that impact other tests, such as the deleteAllTemplates function, which restores all templates and can break other tests since E2E tests run in parallel.
+In order to avoid repetition for a particular part of your test you can use before and after hooks. Within your test file add a before hook to run a part of your test before each test such as going to a particular URL or logging in to a part of your app. This keeps your tests isolated as no test relies on another. However it is also ok to have a little duplication when tests are simple enough especially if it keeps your tests clearer and easier to read and maintain. You should avoid to use function that impacts other things. Avoid using functions that impact other tests, such as the deleteAllTemplates function, which restores all templates and can break other tests since E2E tests run in parallel. After running a suite of tests for a specific block, it is important to clean up any changes made during the tests to ensure a clean slate for subsequent test runs.
 
 For more detail see [Make Tests as Isolated as Possible](https://playwright.dev/docs/best-practices#make-tests-as-isolated-as-possible).
 

@@ -8,7 +8,7 @@ import fs from 'fs/promises';
  */
 import { BASE_URL, STORAGE_STATE_PATH } from '../constants';
 
-export class TemplateRevertUtils {
+export class TemplateApiUtils {
 	request: typeof req;
 	constructor( request: typeof req ) {
 		this.request = request;

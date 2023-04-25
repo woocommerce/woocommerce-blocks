@@ -10,10 +10,7 @@ import {
 	RequestUtils,
 } from '@wordpress/e2e-test-utils-playwright';
 
-import {
-	TemplateRevertUtils,
-	STORAGE_STATE_PATH,
-} from '@woocommerce/e2e-utils';
+import { TemplateApiUtils, STORAGE_STATE_PATH } from '@woocommerce/e2e-utils';
 
 /**
  * Set of console logging types observed to protect against unexpected yet
@@ -102,7 +99,7 @@ const test = base.extend<
 		admin: Admin;
 		editor: Editor;
 		pageUtils: PageUtils;
-		templateRevertUtils: TemplateRevertUtils;
+		templateApiUtils: TemplateApiUtils;
 		snapshotConfig: void;
 	},
 	{
@@ -130,8 +127,8 @@ const test = base.extend<
 	pageUtils: async ( { page }, use ) => {
 		await use( new PageUtils( { page } ) );
 	},
-	templateRevertUtils: async ( {}, use ) =>
-		await use( new TemplateRevertUtils( request ) ),
+	templateApiUtils: async ( {}, use ) =>
+		await use( new TemplateApiUtils( request ) ),
 	requestUtils: [
 		async ( {}, use, workerInfo ) => {
 			const requestUtils = await RequestUtils.setup( {

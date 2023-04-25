@@ -115,8 +115,8 @@ test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 		await page.goto( `/shop`, { waitUntil: 'networkidle' } );
 	} );
 
-	test.afterEach( async ( { templateRevertUtils } ) => {
-		await templateRevertUtils.revertTemplate(
+	test.afterEach( async ( { templateApiUtils } ) => {
+		await templateApiUtils.revertTemplate(
 			'woocommerce/woocommerce//archive-product'
 		);
 	} );
