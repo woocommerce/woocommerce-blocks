@@ -339,25 +339,4 @@ class OrderSchema extends AbstractSchema {
 			),
 		];
 	}
-
-	/**
-	 * Get items data.
-	 *
-	 * @param \WC_Order $order Order instance.
-	 * @return array
-	 */
-	private function get_item_data( $order ) {
-		$items = $order->get_items();
-		$data  = [];
-
-		foreach ( $items as $item ) {
-			$data[ $item->get_id() ]['id']        = $item->get_id();
-			$data[ $item->get_id() ]['name']      = $item->get_name();
-			$data[ $item->get_id() ]['meta_data'] = $item->get_all_formatted_meta_data();
-			$data[ $item->get_id() ]['quantity']  = $item->get_quantity();
-			$data[ $item->get_id() ]['subtotal']  = $order->get_line_subtotal( $item );
-		}
-
-		return array_values( $data );
-	}
 }
