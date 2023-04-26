@@ -15,11 +15,15 @@
 		<div class="wp-block-column" style="flex-basis:70%">
 			<!-- wp:group {"style":{"spacing":{"blockGap":"32px"}},"layout":{"type":"flex","flexWrap":"wrap"}} -->
 			<div class="wp-block-group">
-				<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search our store","width":240,"widthUnit":"px","buttonText":"Search","buttonPosition":"button-inside","buttonUseIcon":true,"query":{"post_type":"product"},"backgroundColor":"base","textColor":"contrast"} /-->
+				<!-- wp:group {"style":{"border":{"top":{"width":"1px","style":"solid"},"right":{"width":"1px","style":"solid"},"bottom":{"width":"1px","style":"solid"},"left":{"width":"1px","style":"solid"}}},"layout":{"type":"flex","orientation":"vertical"}} -->
+				<div class="wp-block-group" style="border-top-style:solid;border-top-width:1px;border-right-style:solid;border-right-width:1px;border-bottom-style:solid;border-bottom-width:1px;border-left-style:solid;border-left-width:1px">
+					<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search our store","width":250,"widthUnit":"px","buttonText":"Search","buttonUseIcon":true,"query":{"post_type":"product"},"style":{"border":{"top":{"width":"0px","style":"none"},"right":{"width":"0px","style":"none"},"bottom":{"width":"0px","style":"none"},"left":{"width":"0px","style":"none"}}},"backgroundColor":"background","textColor":"foreground"} /-->
+				</div>
+				<!-- /wp:group -->
 
 				<!-- wp:group {"style":{"spacing":{"blockGap":"8px"}},"layout":{"type":"flex","orientation":"vertical","flexWrap":"nowrap"}} -->
 				<div class="wp-block-group">
-					<!-- wp:navigation {"overlayMenu":"never","style":{"spacing":{"blockGap":"var:preset|spacing|30"}}} /-->
+					<!-- wp:navigation {"overlayMenu":"never","style":{"spacing":{"blockGap":"var:preset|spacing|60"}}} /-->
 				</div>
 				<!-- /wp:group -->
 			</div>
@@ -39,8 +43,8 @@
 	</div>
 	<!-- /wp:columns -->
 
-	<!-- wp:separator -->
-	<hr class="wp-block-separator has-alpha-channel-opacity" />
+	<!-- wp:separator {"className":"is-style-wide"} -->
+	<hr class="wp-block-separator has-alpha-channel-opacity is-style-wide"/>
 	<!-- /wp:separator -->
 
 	<!-- wp:group {"style":{"spacing":{"blockGap":"5px"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center","orientation":"vertical"}} -->
