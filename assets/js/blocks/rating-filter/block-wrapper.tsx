@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { useColorProps } from '@woocommerce/base-hooks';
+import classnames from 'classnames';
+import { useStyleProps } from '@woocommerce/base-hooks';
 import { isString } from '@woocommerce/types';
 
 /**
@@ -11,12 +12,15 @@ import Block from './block';
 import { parseAttributes } from './utils';
 
 const BlockWrapper = ( props: Record< string, unknown > ) => {
-	const colorProps = useColorProps( props );
+	const styleProps = useStyleProps( props );
 
 	return (
 		<div
-			className={ isString( props.className ) ? props.className : '' }
-			style={ { ...colorProps.style } }
+			className={ classnames(
+				isString( props.className ) ? props.className : '',
+				styleProps.className
+			) }
+			style={ { ...styleProps.style } }
 		>
 			<Block isEditor={ false } attributes={ parseAttributes( props ) } />
 		</div>

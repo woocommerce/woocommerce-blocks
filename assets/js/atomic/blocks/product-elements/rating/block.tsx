@@ -7,11 +7,7 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import {
-	useColorProps,
-	useSpacingProps,
-	useTypographyProps,
-} from '@woocommerce/base-hooks';
+import { useStyleProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import { isNumber, ProductResponseItem } from '@woocommerce/types';
 
@@ -139,14 +135,12 @@ export const Block = ( props: ProductRatingProps ): JSX.Element | null => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const rating = getAverageRating( product );
-	const colorProps = useColorProps( props );
-	const typographyProps = useTypographyProps( props );
-	const spacingProps = useSpacingProps( props );
+	const styleProps = useStyleProps( props );
 	const reviews = getRatingCount( product );
 	const href = getReviewsHref( product );
 
 	const className = classnames(
-		colorProps.className,
+		styleProps.className,
 		'wc-block-components-product-rating',
 		{
 			[ `${ parentClassName }__product-rating` ]: parentClassName,
@@ -168,9 +162,7 @@ export const Block = ( props: ProductRatingProps ): JSX.Element | null => {
 		<div
 			className={ className }
 			style={ {
-				...colorProps.style,
-				...typographyProps.style,
-				...spacingProps.style,
+				...styleProps.style,
 			} }
 		>
 			<div className="wc-block-components-product-rating__container">

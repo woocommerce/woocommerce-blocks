@@ -8,12 +8,7 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import {
-	useBorderProps,
-	useColorProps,
-	useSpacingProps,
-	useTypographyProps,
-} from '@woocommerce/base-hooks';
+import { useStyleProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { HTMLAttributes } from 'react';
 
@@ -29,10 +24,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 	const { className, align } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
-	const borderProps = useBorderProps( props );
-	const colorProps = useColorProps( props );
-	const typographyProps = useTypographyProps( props );
-	const spacingProps = useSpacingProps( props );
+	const styleProps = useStyleProps( props );
 
 	if ( ! product.id || ! product.on_sale ) {
 		return null;
@@ -52,15 +44,10 @@ export const Block = ( props: Props ): JSX.Element | null => {
 				{
 					[ `${ parentClassName }__product-onsale` ]: parentClassName,
 				},
-				colorProps.className,
-				borderProps.className,
-				typographyProps.className
+				styleProps.className
 			) }
 			style={ {
-				...colorProps.style,
-				...borderProps.style,
-				...typographyProps.style,
-				...spacingProps.style,
+				...styleProps.style,
 			} }
 		>
 			<Label

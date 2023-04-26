@@ -9,11 +9,7 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import {
-	useBorderProps,
-	useSpacingProps,
-	useTypographyProps,
-} from '@woocommerce/base-hooks';
+import { useStyleProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import { useStoreEvents } from '@woocommerce/base-context/hooks';
 import type { HTMLAttributes } from 'react';
@@ -90,9 +86,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product, isLoading } = useProductDataContext();
 	const { dispatchStoreEvent } = useStoreEvents();
-	const typographyProps = useTypographyProps( props );
-	const borderProps = useBorderProps( props );
-	const spacingProps = useSpacingProps( props );
+	const styleProps = useStyleProps( props );
 
 	if ( ! product.id ) {
 		return (
@@ -104,12 +98,10 @@ export const Block = ( props: Props ): JSX.Element | null => {
 						[ `${ parentClassName }__product-image` ]:
 							parentClassName,
 					},
-					borderProps.className
+					styleProps.className
 				) }
 				style={ {
-					...typographyProps.style,
-					...borderProps.style,
-					...spacingProps.style,
+					...styleProps.style,
 				} }
 			>
 				<ImagePlaceholder />
@@ -142,12 +134,10 @@ export const Block = ( props: Props ): JSX.Element | null => {
 				{
 					[ `${ parentClassName }__product-image` ]: parentClassName,
 				},
-				borderProps.className
+				styleProps.className
 			) }
 			style={ {
-				...typographyProps.style,
-				...borderProps.style,
-				...spacingProps.style,
+				...styleProps.style,
 			} }
 		>
 			<ParentComponent { ...( showProductLink && anchorProps ) }>

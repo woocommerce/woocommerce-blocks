@@ -5,7 +5,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import {
 	usePrevious,
 	useShallowEqual,
-	useBorderProps,
+	useStyleProps,
 } from '@woocommerce/base-hooks';
 import {
 	useCollection,
@@ -127,7 +127,7 @@ const AttributeFilterBlock = ( {
 			: []
 	);
 
-	const borderProps = useBorderProps( blockAttributes );
+	const styleProps = useStyleProps( blockAttributes );
 
 	const [ queryState ] = useQueryStateByContext();
 	const [ productAttributesQuery, setProductAttributesQuery ] =
@@ -551,12 +551,12 @@ const AttributeFilterBlock = ( {
 					<>
 						<FormTokenField
 							key={ remountKey }
-							className={ classnames( borderProps.className, {
+							className={ classnames( styleProps.className, {
 								'single-selection': ! multiple,
 								'is-loading': isLoading,
 							} ) }
 							style={ {
-								...borderProps.style,
+								...styleProps.style,
 								borderStyle: 'none',
 							} }
 							suggestions={ displayedOptions

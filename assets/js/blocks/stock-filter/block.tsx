@@ -7,7 +7,7 @@ import { Icon, chevronDown } from '@wordpress/icons';
 import {
 	usePrevious,
 	useShallowEqual,
-	useBorderProps,
+	useStyleProps,
 } from '@woocommerce/base-hooks';
 import {
 	useQueryStateByKey,
@@ -145,7 +145,7 @@ const StockStatusFilterBlock = ( {
 	 */
 	const [ remountKey, setRemountKey ] = useState( generateUniqueId() );
 
-	const borderProps = useBorderProps( blockAttributes );
+	const styleProps = useStyleProps( blockAttributes );
 
 	/**
 	 * Compare intersection of all stock statuses and filtered counts to get a list of options to display.
@@ -467,11 +467,11 @@ const StockStatusFilterBlock = ( {
 					<>
 						<FormTokenField
 							key={ remountKey }
-							className={ classnames( borderProps.className, {
+							className={ classnames( styleProps.className, {
 								'single-selection': ! allowsMultipleOptions,
 								'is-loading': isLoading,
 							} ) }
-							style={ { ...borderProps.style } }
+							style={ { ...styleProps.style } }
 							suggestions={ displayedOptions
 								.filter(
 									( option ) =>
