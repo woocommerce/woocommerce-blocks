@@ -1,1 +1,1 @@
-export * from './selectors';
+export * from './block-data';

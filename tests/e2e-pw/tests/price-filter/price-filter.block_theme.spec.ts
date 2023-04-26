@@ -10,7 +10,11 @@ import { BASE_URL, getBlockByName } from '@woocommerce/e2e-utils';
  */
 import { getMinMaxPriceInputs } from './utils';
 
-const blockData: BlockData = {
+const blockData: BlockData< {
+	urlSearchParamWhenFilterIsApplied: string;
+	endpointAPI: string;
+	placeholderUrl: string;
+} > = {
 	name: 'woocommerce/price-filter',
 	mainClass: '.wc-block-price-filter',
 	selectors: {
@@ -18,6 +22,8 @@ const blockData: BlockData = {
 		editor: {},
 	},
 	urlSearchParamWhenFilterIsApplied: '?max_price=10',
+	endpointAPI: 'max_price=1000',
+	placeholderUrl: `${ BASE_URL }/wp-content/plugins/woocommerce/assets/images/placeholder.png`,
 };
 
 test.describe( `${ blockData.name } Block - with All products Block`, () => {
@@ -25,7 +31,7 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 		await admin.createNewPost();
 		await editor.insertBlock( { name: 'woocommerce/all-products' } );
 		await editor.insertBlock( {
-			name: 'woocommerce/filter-wrapper',
+			name: blockData.name,
 			attributes: {
 				filterType: 'price-filter',
 				heading: 'Filter By Price',
@@ -50,7 +56,7 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 
 		await expect( img ).not.toHaveAttribute(
 			'src',
-			`${ BASE_URL }/wp-content/plugins/woocommerce/assets/images/placeholder.png`
+			blockData.placeholderUrl
 		);
 
 		const products = await allProductsBlock.getByRole( 'listitem' ).all();
@@ -71,7 +77,7 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 		await maxPriceInput.type( '10' );
 		await pageUtils.pressKeys( 'Tab' );
 		await page.waitForResponse( ( response ) =>
-			response.url().includes( 'max_price=1000' )
+			response.url().includes( blockData.endpointAPI )
 		);
 
 		await page.waitForLoadState( 'networkidle' );
@@ -85,13 +91,15 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 
 		await expect( img ).not.toHaveAttribute(
 			'src',
-			`${ BASE_URL }/wp-content/plugins/woocommerce/assets/images/placeholder.png`
+			blockData.placeholderUrl
 		);
 
 		const products = await allProductsBlock.getByRole( 'listitem' ).all();
 
 		expect( products ).toHaveLength( 1 );
-		expect( page.url() ).toContain( 'max_price=10' );
+		expect( page.url() ).toContain(
+			blockData.urlSearchParamWhenFilterIsApplied
+		);
 	} );
 } );
 
@@ -152,7 +160,9 @@ test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 			delay: 100,
 		} );
 		await page.waitForURL( ( url ) =>
-			url.toString().includes( 'max_price=10' )
+			url
+				.toString()
+				.includes( blockData.urlSearchParamWhenFilterIsApplied )
 		);
 
 		const legacyTemplate = await getBlockByName( {
