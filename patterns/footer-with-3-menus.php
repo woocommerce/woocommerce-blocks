@@ -46,7 +46,11 @@
 		<div class="wp-block-column is-vertically-aligned-top">
 			<!-- wp:group {"style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"blockGap":"5px"}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"right","verticalAlignment":"space-between"}} -->
 			<div class="wp-block-group" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-				<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search our store","width":240,"widthUnit":"px","buttonText":"Search","buttonPosition":"button-inside","buttonUseIcon":true,"query":{"post_type":"product"},"backgroundColor":"base","textColor":"contrast"} /-->
+				<!-- wp:group {"style":{"border":{"top":{"width":"1px","style":"solid"},"right":{"width":"1px","style":"solid"},"bottom":{"width":"1px","style":"solid"},"left":{"width":"1px","style":"solid"}}},"layout":{"type":"flex","orientation":"vertical"}} -->
+				<div class="wp-block-group" style="border-top-style:solid;border-top-width:1px;border-right-style:solid;border-right-width:1px;border-bottom-style:solid;border-bottom-width:1px;border-left-style:solid;border-left-width:1px">
+					<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search our store","width":280,"widthUnit":"px","buttonText":"Search","buttonUseIcon":true,"query":{"post_type":"product"},"style":{"border":{"top":{"width":"0px","style":"none"},"right":{"width":"0px","style":"none"},"bottom":{"width":"0px","style":"none"},"left":{"width":"0px","style":"none"}}},"backgroundColor":"background","textColor":"foreground"} /-->
+				</div>
+				<!-- /wp:group -->
 
 				<!-- wp:site-title {"level":0,"textAlign":"right","style":{"typography":{"fontStyle":"normal","fontWeight":"700","fontSize":"14px"},"spacing":{"margin":{"top":"var:preset|spacing|50"}}},"anchor":""} /-->
 
