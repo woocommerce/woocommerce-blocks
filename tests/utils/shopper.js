@@ -396,10 +396,10 @@ export const shopper = {
 
 		addCrossSellsProductToCart: async () => {
 			await page.waitForSelector(
-				'.wc-block-components-product-add-to-cart-button'
+				'.wp-block-cart-cross-sells-product__product-add-to-cart .wc-block-components-product-button__button'
 			);
 			expect( page ).toClick(
-				'.wc-block-components-product-add-to-cart-button'
+				'.wp-block-cart-cross-sells-product__product-add-to-cart .wc-block-components-product-button__button'
 			);
 		},
 
@@ -432,7 +432,7 @@ export const shopper = {
 			};
 
 			// We need to wait for the shipping total to update before we assert.
-			// As no dom elements are being added or removed, we cannot use `await page.waitForSelectot()`
+			// As no dom elements are being added or removed, we cannot use `await page.waitForSelector()`
 			// so instead we check when the `via <Shipping Method>` text changes
 			await page.$eval(
 				'.wc-block-components-totals-shipping .wc-block-components-totals-shipping__via',
