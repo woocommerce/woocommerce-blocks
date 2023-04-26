@@ -29,7 +29,7 @@
 
 	<!-- wp:group {"align":"full","layout":{"type":"flex","flexWrap":"nowrap"}} -->
 	<div class="wp-block-group alignfull">
-		<!-- wp:query {"queryId":1,"query":{"perPage":"4","pages":0,"offset":0,"postType":"product","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","onbackorder"]},"displayLayout":{"type":"flex","columns":4},"namespace":"woocommerce/product-query"} -->
+		<!-- wp:query {"query":{"perPage":"4","pages":0,"offset":0,"postType":"product","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","onbackorder"]},"displayLayout":{"type":"flex","columns":4},"namespace":"woocommerce/product-query"} -->
 		<div class="wp-block-query">
 			<!-- wp:post-template {"__woocommerceNamespace":"woocommerce/product-query/product-template"} -->
 
