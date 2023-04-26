@@ -22,7 +22,7 @@ registerBlockSingleProductTemplate( {
 			src: () => (
 				<img
 					src={ `${ WC_BLOCKS_IMAGE_URL }/blocks/product-meta/product-meta-icon.svg` }
-					alt="Product Meta Icon"
+					alt=""
 				/>
 			),
 		},
