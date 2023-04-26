@@ -95,7 +95,7 @@ class Api {
 			);
 
 			if ( file_exists( $asset_path ) ) {
-				// the following require is safe because we are checking if the file exists and it is not a user input.
+				// The following require is safe because we are checking if the file exists and it is not a user input.
 				// nosemgrep audit.php.lang.security.file.inclusion-arg.
 				$asset        = require $asset_path;
 				$dependencies = isset( $asset['dependencies'] ) ? array_merge( $asset['dependencies'], $dependencies ) : $dependencies;
