@@ -1,93 +1,16 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
-import {
-	InnerBlocks,
-	useBlockProps,
-	InspectorControls,
-} from '@wordpress/block-editor';
-import { useSelect, dispatch } from '@wordpress/data';
+import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { dispatch } from '@wordpress/data';
 import { TemplateArray } from '@wordpress/blocks';
-import { useState, useEffect } from '@wordpress/element';
-import { PanelBody, Button } from '@wordpress/components';
-
-const templateField = {
-	name: 'the_default_field_name',
-	label: 'The default field',
-	size: '',
-	required: false,
-};
-
-const storedFields = [ templateField, templateField ];
-
-const FieldControls = (): JSX.Element => {
-	const { 'data-block': clientId } = useBlockProps();
-
-	const coreEditor = useSelect( ( select ) => select( 'core/editor' ) );
-
-	const blockEditor = useSelect( ( select ) =>
-		select( 'core/block-editor' )
-	);
-
-	const post = coreEditor?.getCurrentPost();
-
-	const [ fields, setFields ] = useState(
-		post?.checkout_custom_fields || {}
-	);
-
-	useEffect( () => {
-		dispatch( 'core/editor' ).editPost( {
-			checkout_custom_fields: fields,
-		} );
-	}, [ fields ] );
-
-	const getParsedFields = () => {
-		const parentBlock = blockEditor?.getBlock( clientId );
-		const innerBlocks = parentBlock?.innerBlocks || [];
-
-		const parsedFields = innerBlocks.map( ( block ) => {
-			return block.attributes;
-		} );
-
-		const shippingFields = {
-			...fields,
-			shipping: parsedFields,
-		};
-
-		return shippingFields;
-	};
-
-	const handleChange = () => {
-		const parsedFields = getParsedFields();
-		setFields( parsedFields );
-	};
-
-	return (
-		<InspectorControls>
-			<PanelBody
-				title={ __(
-					'Save custom fields',
-					'woo-gutenberg-products-block'
-				) }
-			>
-				<p className="wc-block-checkout__controls-text">
-					{ __(
-						'Quick POC. This would happen when saving the page, not with this button.',
-						'woo-gutenberg-products-block'
-					) }
-				</p>
-				<Button variant="primary" onClick={ handleChange }>
-					{ __( 'Save', 'woo-gutenberg-products-block' ) }
-				</Button>
-			</PanelBody>
-		</InspectorControls>
-	);
-};
+import { allSettings } from '@woocommerce/settings';
 
 export const Edit = (): JSX.Element | null => {
+	const allStoredFields = allSettings.checkoutCustomFields || {};
 	const allowedBlocks = [ 'woocommerce/checkout-custom-field-block' ];
 	const section = 'shipping';
+	const storedFields = allStoredFields[ section ] || [];
 
 	const template = storedFields.map( ( field ) => [
 		'woocommerce/checkout-custom-field-block',
@@ -100,7 +23,6 @@ export const Edit = (): JSX.Element | null => {
 
 	return (
 		<div>
-			<FieldControls />
 			<div className="wc-block-checkout__custom_fields">
 				{ 'Custom Fields section' }
 
@@ -113,6 +35,28 @@ export const Edit = (): JSX.Element | null => {
 	);
 };
 
-export const Save = (): JSX.Element => {
+export const Save = ( { innerBlocks } ): JSX.Element => {
+	const getParsedFields = () => {
+		// TODO: Update the stored fields with the new values.
+		const storedFields = allSettings.checkoutCustomFields || {};
+
+		const parsedFields = innerBlocks.map( ( block ) => {
+			return block.attributes;
+		} );
+
+		const shippingFields = {
+			...storedFields,
+			shipping: parsedFields,
+		};
+
+		return shippingFields;
+	};
+
+	const parsedFields = getParsedFields();
+
+	dispatch( 'core/editor' ).editPost( {
+		checkout_custom_fields: parsedFields,
+	} );
+
 	return <div { ...useBlockProps.save() }></div>;
 };
