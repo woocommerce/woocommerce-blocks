@@ -318,3 +318,5 @@ function woocommerce_blocks_interactivity_setup() {
 	}
 }
 add_action( 'plugins_loaded', 'woocommerce_blocks_interactivity_setup' );
+
+// this is a test for Github's CodeQL.
