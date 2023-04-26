@@ -21,7 +21,7 @@ registerBlockSingleProductTemplate( {
 					<>
 						<img
 							src={ `${ WC_BLOCKS_IMAGE_URL }/blocks/product-details/product-details-icon.svg` }
-							alt="Product Details Icon"
+							alt=""
 						/>
 					</>
 				);
