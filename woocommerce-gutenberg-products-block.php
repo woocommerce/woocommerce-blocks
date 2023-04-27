@@ -3,14 +3,14 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 10.1.0-dev
+ * Version: 10.2.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
- * Requires at least: 6.1
+ * Requires at least: 6.2
  * Requires PHP: 7.3
- * WC requires at least: 7.4
- * WC tested up to: 7.5
+ * WC requires at least: 7.5
+ * WC tested up to: 7.6
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running as a feature plugin.
@@ -304,7 +304,7 @@ add_filter(
 );
 
 /**
- * Load and setup the Interactivity API if enabled.
+ * Load and set up the Interactivity API if enabled.
  */
 function woocommerce_blocks_interactivity_setup() {
 	// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
