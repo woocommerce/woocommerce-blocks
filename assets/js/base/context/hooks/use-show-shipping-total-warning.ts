@@ -18,18 +18,22 @@ export const useShowShippingTotalWarning = () => {
 	const context = 'woocommerce/checkout-totals-block';
 	const errorNoticeId = 'wc-blocks-totals-shipping-warning';
 
-	const { shippingRates, selectedRates } = useShippingData();
+	const { shippingRates } = useShippingData();
 	const hasRates = hasShippingRate( shippingRates );
-	const { prefersCollection, isRateBeingSelected, shippingNotices } =
-		useSelect( ( select ) => {
-			return {
-				prefersCollection:
-					select( CHECKOUT_STORE_KEY ).prefersCollection(),
-				isRateBeingSelected:
-					select( CART_STORE_KEY ).isShippingRateBeingSelected(),
-				shippingNotices: select( 'core/notices' ).getNotices( context ),
-			};
-		} );
+	const {
+		prefersCollection,
+		isRateBeingSelected,
+		shippingNotices,
+		cartData,
+	} = useSelect( ( select ) => {
+		return {
+			cartData: select( CART_STORE_KEY ).getCartData(),
+			prefersCollection: select( CHECKOUT_STORE_KEY ).prefersCollection(),
+			isRateBeingSelected:
+				select( CART_STORE_KEY ).isShippingRateBeingSelected(),
+			shippingNotices: select( 'core/notices' ).getNotices( context ),
+		};
+	} );
 	const { createInfoNotice, removeNotice } = useDispatch( 'core/notices' );
 
 	useEffect( () => {
@@ -38,10 +42,27 @@ export const useShowShippingTotalWarning = () => {
 			// rate, no need to alter the notice until we know what the actual rate is.
 			return;
 		}
+
+		const selectedRates = cartData?.shippingRates?.reduce(
+			( acc: string[], rate ) => {
+				const selectedRateForPackage = rate.shipping_rates.find(
+					( shippingRate ) => {
+						return shippingRate.selected;
+					}
+				);
+				if (
+					typeof selectedRateForPackage?.method_id !== 'undefined'
+				) {
+					acc.push( selectedRateForPackage?.method_id );
+				}
+				return acc;
+			},
+			[]
+		);
 		const isPickupRateSelected = Object.values( selectedRates ).some(
 			( rate: unknown ) => {
 				if ( isString( rate ) ) {
-					return hasCollectableRate( rate.split( ':' )[ 0 ] );
+					return hasCollectableRate( rate );
 				}
 				return false;
 			}
@@ -77,12 +98,13 @@ export const useShowShippingTotalWarning = () => {
 			removeNotice( errorNoticeId, context );
 		}
 	}, [
+		cartData?.shippingRates,
 		createInfoNotice,
 		hasRates,
-		selectedRates,
 		isRateBeingSelected,
 		prefersCollection,
 		removeNotice,
 		shippingNotices,
+		shippingRates,
 	] );
 };
