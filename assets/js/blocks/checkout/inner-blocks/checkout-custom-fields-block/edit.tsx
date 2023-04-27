@@ -15,8 +15,7 @@ export const Edit = (): JSX.Element | null => {
 	const template = storedFields.map( ( field ) => [
 		'woocommerce/checkout-custom-field-block',
 		{
-			section,
-			field,
+			...field,
 		},
 		[],
 	] ) as TemplateArray;
