@@ -1,6 +1,7 @@
 .wc-block-mini-cart__quantity-badge {
 	align-items: center;
 	display: flex;
+	position: relative;
 }
 
 .wc-block-mini-cart__badge {
@@ -15,9 +16,11 @@
 	font-weight: 600;
 	height: math.div(em(20px), 0.875);
 	justify-content: center;
-	margin-left: math.div(em(-10px), 0.875);
+	left: 100%;
+	margin-left: -44%;
 	min-width: math.div(em(20px), 0.875);
 	padding: 0 em($gap-smallest);
+	position: absolute;
 	transform: translateY(-50%);
 	white-space: nowrap;
 	z-index: 1;
