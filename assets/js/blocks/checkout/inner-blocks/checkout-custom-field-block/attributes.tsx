@@ -6,11 +6,11 @@ import type { BlockAttributes } from '@wordpress/blocks';
 const attributes: BlockAttributes = {
 	name: {
 		type: 'string',
-		default: 'the_custom_field_name',
+		default: 'default_name',
 	},
 	label: {
 		type: 'string',
-		default: 'The custom field',
+		default: 'Default label',
 	},
 	size: {
 		type: 'string',
