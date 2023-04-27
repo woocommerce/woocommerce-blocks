@@ -1,4 +1,4 @@
-# All Products and filters
+# Filter blocks
 
 ## Price slider accent color
 
