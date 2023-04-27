@@ -3,7 +3,8 @@
 	"plugins": [
 		"https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip",
 		"https://github.com/WP-API/Basic-Auth/archive/master.zip",
-		"https://downloads.wordpress.org/plugin/wordpress-importer.0.8.zip"
+		"https://downloads.wordpress.org/plugin/wordpress-importer.0.8.zip",
+		"./tests/mocks/woo-test-helper"
 	],
 	"env": {
 		"tests": {
@@ -17,6 +18,8 @@
 	},
 	"themes": [
 		"https://downloads.wordpress.org/theme/storefront.latest-stable.zip",
+		"https://downloads.wordpress.org/theme/twentytwentyone.latest-stable.zip",
+		"https://downloads.wordpress.org/theme/twentytwentythree.latest-stable.zip",
 		"./tests/mocks/emptytheme",
 		"./tests/mocks/theme-with-woo-templates"
 	],
