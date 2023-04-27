@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Build Assets
-        run: FORCE_REDUCED_MOTION=true npm run build:e2e-test
+        run: FORCE_REDUCED_MOTION=true npm run build
 
       - name: blocks.ini setup
         run: |
