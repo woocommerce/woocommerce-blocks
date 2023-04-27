@@ -36,16 +36,6 @@ fi
 
 
 ###################################################################################################
-# Install and Enable TT1
-###################################################################################################
-
-wp-env run tests-cli "wp theme install twentytwentyone"
-wp-env run tests-cli "wp theme install twentytwentythree"
-wp-env run tests-cli "wp plugin activate woocommerce-blocks"
-
-
-
-###################################################################################################
 # Import sample products and egenerate product lookup tables
 ###################################################################################################
 

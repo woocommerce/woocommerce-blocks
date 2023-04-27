@@ -14,7 +14,6 @@ fi
 
 ## set permalinks for easier wp-json
 wp rewrite structure '/%postname%/' --hard
-wp rewrite flush
 wp core version --extra
 wp plugin list
 wp theme activate storefront
