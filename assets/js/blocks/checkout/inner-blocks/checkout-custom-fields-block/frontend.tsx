@@ -32,9 +32,15 @@ const FrontendBlock = ( {
 	section = 'shipping',
 }: {
 	section: string;
-} ): JSX.Element => {
-	const allCustomFields = allSettings.checkoutCustomFields as CustomFields;
-	const sectionFields = allCustomFields[ section as keyof CustomFields ];
+} ): JSX.Element | null => {
+	const allCustomFields =
+		( allSettings.checkoutCustomFields as CustomFields ) || {};
+	const sectionFields =
+		allCustomFields[ section as keyof CustomFields ] || [];
+
+	if ( ! sectionFields.length ) {
+		return null;
+	}
 
 	return (
 		<div className="wc-block-checkout__custom_fields">
