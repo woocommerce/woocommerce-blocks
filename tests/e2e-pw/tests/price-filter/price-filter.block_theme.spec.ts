@@ -31,7 +31,7 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 		await admin.createNewPost();
 		await editor.insertBlock( { name: 'woocommerce/all-products' } );
 		await editor.insertBlock( {
-			name: blockData.name,
+			name: 'woocommerce/filter-wrapper',
 			attributes: {
 				filterType: 'price-filter',
 				heading: 'Filter By Price',
@@ -87,6 +87,7 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 			name: 'woocommerce/all-products',
 		} );
 
+		await page.waitForLoadState( 'networkidle' );
 		const img = await allProductsBlock.locator( 'img' ).first();
 
 		await expect( img ).not.toHaveAttribute(
