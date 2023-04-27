@@ -16,6 +16,10 @@ const getIssueAuthor = ( payload ) => {
 
 const isCommunityContributor = async ( owner, repo, username ) => {
 	if ( username ) {
+		if ( username === 'dependabot' ) {
+			return false;
+		}
+
 		const {
 			data: { permission },
 		} = await octokit.rest.repos.getCollaboratorPermissionLevel( {
