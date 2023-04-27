@@ -37,7 +37,8 @@ export const Edit = (): JSX.Element | null => {
 
 export const Save = ( { innerBlocks } ): JSX.Element => {
 	const getParsedFields = () => {
-		// TODO: Update the stored fields with the new values.
+		// This will contain the fields stored in the DB when the page was loaded.
+		// Any changes made to the DB entry after page load won't be reflected here.
 		const storedFields = allSettings.checkoutCustomFields || {};
 
 		const parsedFields = innerBlocks.map( ( block ) => {
