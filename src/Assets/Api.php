@@ -19,6 +19,13 @@ class Api {
 	private $inline_scripts = [];
 
 	/**
+	 * Determines if caching is enabled for script data.
+	 *
+	 * @var boolean
+	 */
+	private $disable_cache = false;
+
+	/**
 	 * Stores cached script data from the transient.
 	 *
 	 * @var array|null
@@ -38,8 +45,12 @@ class Api {
 	 * @param Package $package An instance of Package.
 	 */
 	public function __construct( Package $package ) {
-		$this->package = $package;
-		add_action( 'shutdown', array( $this, 'save_cached_script_data' ), 20 );
+		$this->package       = $package;
+		$this->disable_cache = $this->package->feature()->is_development_environment() || ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
+
+		if ( ! $this->disable_cache ) {
+			add_action( 'shutdown', array( $this, 'save_cached_script_data' ), 20 );
+		}
 	}
 
 	/**
@@ -50,7 +61,7 @@ class Api {
 	 * @return string The cache buster value to use for the given file.
 	 */
 	protected function get_file_version( $file ) {
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG && file_exists( $this->package->get_path() . $file ) ) {
+		if ( $this->disable_cache && file_exists( $this->package->get_path() . $file ) ) {
 			return filemtime( $this->package->get_path( trim( $file, '/' ) ) );
 		}
 		return $this->package->get_version();
@@ -120,11 +131,7 @@ class Api {
 	 * Store all cached script data in the transient cache.
 	 */
 	public function save_cached_script_data() {
-		if ( $this->package->feature()->is_development_environment() ) {
-			delete_transient( 'woocommerce_blocks_asset_api_script_data' );
-		} else {
-			set_transient( 'woocommerce_blocks_asset_api_script_data', wp_json_encode( $this->cached_script_data ), DAY_IN_SECONDS * 30 );
-		}
+		set_transient( 'woocommerce_blocks_asset_api_script_data', wp_json_encode( $this->cached_script_data ), DAY_IN_SECONDS * 30 );
 	}
 
 	/**
@@ -144,7 +151,7 @@ class Api {
 			);
 		}
 
-		$script_data = $this->get_cached_script_data( $relative_src );
+		$script_data = $this->disable_cache ? false : $this->get_cached_script_data( $relative_src );
 
 		if ( ! $script_data ) {
 			$src        = $this->get_asset_url( $relative_src );
@@ -168,7 +175,9 @@ class Api {
 				'dependencies' => $dependencies,
 			);
 
-			$this->set_cached_script_data( $relative_src, $script_data );
+			if ( ! $this->disable_cache ) {
+				$this->set_cached_script_data( $relative_src, $script_data );
+			}
 		}
 
 		return $script_data;
