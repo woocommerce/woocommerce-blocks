@@ -8,7 +8,7 @@
 
 <!-- wp:group {"layout":{"type":"constrained"}} -->
 <div class="wp-block-group">
-	<!-- wp:media-text {"align":"full","mediaPosition":"right","mediaId":718,"mediaLink":"http://woo-dev.test/https-unsplash-com-photos-qjqqaq1ctdm/","mediaType":"image","mediaSizeSlug":"full","imageFill":false,"backgroundColor":"contrast","textColor":"base"} -->
+	<!-- wp:media-text {"align":"full","mediaPosition":"right","mediaType":"image","mediaSizeSlug":"full","imageFill":false,"backgroundColor":"contrast","textColor":"base"} -->
 	<div class="wp-block-media-text alignfull has-media-on-the-right is-stacked-on-mobile has-base-color has-contrast-background-color has-text-color has-background">
 		<div class="wp-block-media-text__content"><!-- wp:heading -->
 			<h2 class="wp-block-heading">Get cozy this fall with<br>flannel shirts</h2>
@@ -24,7 +24,7 @@
 		</div>
 
 		<figure class="wp-block-media-text__media">
-			<img src="http://woo-dev.test/wp-content/uploads/2023/04/pattern-product-split-e1682368228386-1024x861.jpg" alt="" class="wp-image-718 size-full"/>
+			<img src="https://images.unsplash.com/photo-1610873397492-e29c42344c00?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1277&q=80" alt="Woman in red, black, and white plaid hoodie." />
 		</figure>
 	</div>
 	<!-- /wp:media-text -->
