@@ -38,7 +38,7 @@
 				<div class="wp-block-buttons">
 					<!-- wp:button {"textAlign":"left","style":{"typography":{"fontSize":"16px"}}} -->
 					<div class="wp-block-button has-custom-font-size" style="font-size:16px">
-						<a class="wp-block-button__link has-text-align-left wp-element-button">Shop now</a>
+						<a class="wp-block-button__link has-text-align-left wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">Shop now</a>
 					</div>
 					<!-- /wp:button -->
 				</div>
