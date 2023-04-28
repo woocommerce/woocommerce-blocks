@@ -12,7 +12,9 @@
 	<!-- wp:column {"verticalAlignment":"center","width":"33.33%","style":{"spacing":{"padding":{"right":"var:preset|spacing|40","left":"var:preset|spacing|40"}}}} -->
 	<div class="wp-block-column is-vertically-aligned-center" style="padding-right:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40);flex-basis:33.33%">
 		<!-- wp:heading {"textAlign":"center","textColor":"background","fontSize":"x-large"} -->
-		<h2 class="wp-block-heading has-text-align-center has-background-color has-text-color has-x-large-font-size">This week’s popular products</h2>
+		<h2 class="wp-block-heading has-text-align-center has-background-color has-text-color has-x-large-font-size">
+			<?php echo __( 'This week\'s popular products', 'woo-gutenberg-products-block' ) ?>
+		</h2>
 		<!-- /wp:heading -->
 	</div>
 	<!-- /wp:column -->
