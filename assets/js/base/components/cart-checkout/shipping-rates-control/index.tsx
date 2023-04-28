@@ -105,8 +105,8 @@ const ShippingRatesControl = ( {
 			) }
 			showSpinner={ true }
 		>
-			<ExperimentalOrderShippingPackages.Slot { ...slotFillProps } />
 			{ hasSelectedLocalPickup &&
+				context === 'woocommerce/cart' &&
 				shippingRates.length > 1 &&
 				! isEditor && (
 					<NoticeBanner
@@ -120,6 +120,7 @@ const ShippingRatesControl = ( {
 						) }
 					</NoticeBanner>
 				) }
+			<ExperimentalOrderShippingPackages.Slot { ...slotFillProps } />
 			<ExperimentalOrderShippingPackages>
 				<Packages
 					packages={ shippingRates }
