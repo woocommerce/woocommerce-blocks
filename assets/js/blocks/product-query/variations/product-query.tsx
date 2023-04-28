@@ -33,36 +33,41 @@ const ARCHIVE_PRODUCT_TEMPLATES = [
 	'woocommerce/woocommerce//product-search-results',
 ];
 
+const productsPath = 'wc/store/v1/products';
+const createProductsPath = ( queryParam: string | undefined ) =>
+	queryParam ? `${ productsPath }?${ queryParam }` : productsPath;
+
 const replacePostRequestWithProductRequest = ( options, next ) => {
 	const blockRequest = /\/wp\/v3\/product\?*/;
-	const productsPath = 'wc/store/v1/products';
 	const { path } = options;
 
 	if ( blockRequest.test( path ) ) {
 		// console.log( 'Redirected: ', path );
 	}
 
-	const finalOptions = blockRequest.test( path )
-		? { path: productsPath }
-		: options;
-
-	return next( finalOptions );
-};
-
-const blockPostProductRequestsMiddleware = ( options, next ) => {
-	const blockRequest = /\/wp\/v2\/product\/\d+/;
-	const { path } = options;
-
 	if ( blockRequest.test( path ) ) {
-		// console.log( 'Blocked: ', path );
+		const [ , queryParams ] = path.split( '?' );
+		const newPath = createProductsPath( queryParams );
+		return next( { path: newPath } );
 	}
 
-	if ( ! blockRequest.test( path ) ) {
-		return next( options );
-	}
+	return next( options );
 };
 
-apiFetch.use( blockPostProductRequestsMiddleware );
+// const blockPostProductRequestsMiddleware = ( options, next ) => {
+// 	const blockRequest = /\/wp\/v2\/product\/\d+/;
+// 	const { path } = options;
+
+// 	if ( blockRequest.test( path ) ) {
+// 		// console.log( 'Blocked: ', path );
+// 	}
+
+// 	if ( ! blockRequest.test( path ) ) {
+// 		return next( options );
+// 	}
+// };
+
+// apiFetch.use( blockPostProductRequestsMiddleware );
 apiFetch.use( replacePostRequestWithProductRequest );
 
 const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
