@@ -15,6 +15,6 @@ export const BLOCK_ICON: JSX.Element = (
 	/>
 );
 export const BLOCK_DESCRIPTION: string = __(
-	'Display the price of a product.',
+	'Display the price of a product, including any discounts.',
 	'woo-gutenberg-products-block'
 );
