@@ -3,8 +3,9 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
+use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
-use WC_Query;
+use WC_Shortcode_Checkout;
 
 /**
  * Classic Single Product class
@@ -62,11 +63,23 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			$frontend_scripts::load_scripts();
 		}
 
-		$archive_templates = array( 'archive-product', 'taxonomy-product_cat', 'taxonomy-product_tag', ProductAttributeTemplate::SLUG, ProductSearchResultsTemplate::SLUG );
+		if ( OrderReceivedTemplate::SLUG === $attributes['template'] ) {
+			return $this->render_order_received();
+		}
 
 		if ( 'single-product' === $attributes['template'] ) {
 			return $this->render_single_product();
-		} elseif ( in_array( $attributes['template'], $archive_templates, true ) ) {
+		}
+
+		$archive_templates = array(
+			'archive-product',
+			'taxonomy-product_cat',
+			'taxonomy-product_tag',
+			ProductAttributeTemplate::SLUG,
+			ProductSearchResultsTemplate::SLUG,
+		);
+
+		if ( in_array( $attributes['template'], $archive_templates, true ) ) {
 			// Set this so that our product filters can detect if it's a PHP template.
 			$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
 
@@ -80,14 +93,39 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			);
 
 			return $this->render_archive_product();
-		} else {
-			ob_start();
-
-			echo "You're using the ClassicTemplate block";
-
-			wp_reset_postdata();
-			return ob_get_clean();
 		}
+
+		ob_start();
+
+		echo "You're using the ClassicTemplate block";
+
+		wp_reset_postdata();
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Render method for rendering the order received template.
+	 *
+	 * @return string Rendered block type output.
+	 */
+	protected function render_order_received() {
+		ob_start();
+
+		echo '<div class="wp-block-group">';
+
+		echo sprintf(
+			'<%1$s %2$s>%3$s</%1$s>',
+			'h1',
+			get_block_wrapper_attributes(), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			esc_html__( 'Order received', 'woo-gutenberg-products-block' )
+		);
+
+		WC_Shortcode_Checkout::output( array() );
+
+		echo '</div>';
+
+		return ob_get_clean();
 	}
 
 	/**

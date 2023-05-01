@@ -3,7 +3,13 @@
  */
 import { type BlockInstance } from '@wordpress/blocks';
 
-export type TemplateDetails = Record< string, Record< string, string > >;
+type TemplateDetail = {
+	type: string;
+	title: string;
+	placeholder: string;
+};
+
+export type TemplateDetails = Record< string, TemplateDetail >;
 
 export type InheritedAttributes = {
 	align?: string;
