@@ -6,6 +6,7 @@ use Automattic\WooCommerce\Blocks\Options;
 use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
 use Automattic\WooCommerce\Blocks\Templates\MiniCartTemplate;
+use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 
@@ -340,6 +341,10 @@ class BlockTemplateUtils {
 			CheckoutTemplate::SLUG             => array(
 				'title'       => _x( 'Checkout', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display the Checkout.', 'woo-gutenberg-products-block' ),
+			),
+			OrderReceivedTemplate::SLUG        => array(
+				'title'       => _x( 'Order Received', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Displays the order confirmation page.', 'woo-gutenberg-products-block' ),
 			),
 		);
 	}
