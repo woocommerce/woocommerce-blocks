@@ -95,7 +95,14 @@ const ShippingRatesControl = ( {
 		context,
 	};
 	const { isEditor } = useEditorContext();
-	const { hasSelectedLocalPickup } = useShippingData();
+	const { hasSelectedLocalPickup, selectedRates } = useShippingData();
+
+	// Check if all rates selected are the same.
+	const selectedRateIds = Object.values( selectedRates ) as string[];
+	const allPackagesHaveSameRate = selectedRateIds.every( ( rate: string ) => {
+		return rate === selectedRateIds[ 0 ];
+	} );
+
 	return (
 		<LoadingMask
 			isLoading={ isLoadingRates }
@@ -108,6 +115,7 @@ const ShippingRatesControl = ( {
 			{ hasSelectedLocalPickup &&
 				context === 'woocommerce/cart' &&
 				shippingRates.length > 1 &&
+				! allPackagesHaveSameRate &&
 				! isEditor && (
 					<NoticeBanner
 						className="wc-block-components-notice"
