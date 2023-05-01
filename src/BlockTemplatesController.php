@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
+use Automattic\WooCommerce\Admin\Overrides\Order;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
@@ -8,6 +9,7 @@ use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
+use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
 
 /**
  * BlockTypesController class.
@@ -582,6 +584,12 @@ class BlockTemplatesController {
 		} elseif (
 			is_checkout() &&
 			! BlockTemplateUtils::theme_has_template( CheckoutTemplate::SLUG ) && $this->block_template_is_available( CheckoutTemplate::SLUG )
+		) {
+			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
+		} elseif (
+			is_wc_endpoint_url( 'order-received' )
+			&& ! BlockTemplateUtils::theme_has_template( OrderReceivedTemplate::SLUG )
+			&& $this->block_template_is_available( OrderReceivedTemplate::SLUG )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} else {

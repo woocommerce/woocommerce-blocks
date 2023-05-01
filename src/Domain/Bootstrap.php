@@ -25,6 +25,7 @@ use Automattic\WooCommerce\Blocks\Registry\Container;
 use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ClassicTemplatesCompatibility;
+use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\StoreApi\RoutesController;
@@ -136,6 +137,7 @@ class Bootstrap {
 		$this->container->get( ProductAttributeTemplate::class );
 		$this->container->get( CartTemplate::class );
 		$this->container->get( CheckoutTemplate::class );
+		$this->container->get( OrderReceivedTemplate::class );
 		$this->container->get( ClassicTemplatesCompatibility::class );
 		$this->container->get( ArchiveProductTemplatesCompatibility::class )->init();
 		$this->container->get( SingleProductTemplateCompatibility::class )->init();
@@ -287,6 +289,12 @@ class Bootstrap {
 			CheckoutTemplate::class,
 			function () {
 				return new CheckoutTemplate();
+			}
+		);
+		$this->container->register(
+			OrderReceivedTemplate::class,
+			function () {
+				return new OrderReceivedTemplate();
 			}
 		);
 		$this->container->register(
