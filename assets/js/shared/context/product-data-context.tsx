@@ -70,7 +70,7 @@ export const useProductDataContext = () => useContext( ProductDataContext );
 
 interface ProductDataContextProviderProps {
 	product: ProductResponseItem | null;
-	children: JSX.Element | JSX.Element[];
+	children: JSX.Element | JSX.Element[] | undefined;
 	isLoading: boolean;
 }
 
