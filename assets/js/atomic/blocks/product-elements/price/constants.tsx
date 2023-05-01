@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { currencyDollar, Icon } from '@wordpress/icons';
 
 export const BLOCK_TITLE: string = __(
-	'Product Price',
+	'Price',
 	'woo-gutenberg-products-block'
 );
 export const BLOCK_ICON: JSX.Element = (
