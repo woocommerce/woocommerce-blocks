@@ -53,11 +53,11 @@ export const FormStepBlock = ( {
 							'woo-gutenberg-products-block'
 						) }
 						checked={ showStepNumber }
-						onChange={ () => {
+						onChange={ () =>
 							setAttributes( {
 								showStepNumber: ! showStepNumber,
-							} );
-						} }
+							} )
+						}
 					/>
 				</PanelBody>
 			</InspectorControls>

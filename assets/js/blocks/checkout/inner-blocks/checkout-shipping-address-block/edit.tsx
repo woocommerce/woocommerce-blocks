@@ -10,15 +10,15 @@ import { innerBlockAreas } from '@woocommerce/blocks-checkout';
  * Internal dependencies
  */
 import {
-	useCheckoutBlockContext,
-	useCheckoutBlockControlsContext,
-} from '../../context';
-import Block from './block';
-import {
 	FormStepBlock,
 	AdditionalFields,
 	AdditionalFieldsContent,
 } from '../../form-step';
+import {
+	useCheckoutBlockContext,
+	useCheckoutBlockControlsContext,
+} from '../../context';
+import Block from './block';
 
 export const Edit = ( {
 	attributes,
