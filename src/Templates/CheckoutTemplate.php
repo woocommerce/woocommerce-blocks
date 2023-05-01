@@ -1,4 +1,5 @@
 <?php
+
 namespace Automattic\WooCommerce\Blocks\Templates;
 
 /**
