@@ -71,6 +71,17 @@ export const TEMPLATES: TemplateDetails = {
 		),
 		placeholder: PLACEHOLDERS.archiveProduct,
 	},
+	cart: {
+		title: __( 'WooCommerce Cart Block', 'woo-gutenberg-products-block' ),
+		placeholder: 'cart',
+	},
+	checkout: {
+		title: __(
+			'WooCommerce Checkout Block',
+			'woo-gutenberg-products-block'
+		),
+		placeholder: 'checkout',
+	},
 	'order-received': {
 		type: TYPES.orderReceived,
 		title: __(
