@@ -15,6 +15,7 @@ import {
 	useShippingData,
 } from '@woocommerce/base-context';
 import NoticeBanner from '@woocommerce/base-components/notice-banner';
+import { isObject } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -98,7 +99,9 @@ const ShippingRatesControl = ( {
 	const { hasSelectedLocalPickup, selectedRates } = useShippingData();
 
 	// Check if all rates selected are the same.
-	const selectedRateIds = Object.values( selectedRates ) as string[];
+	const selectedRateIds = isObject( selectedRates )
+		? ( Object.values( selectedRates ) as string[] )
+		: [];
 	const allPackagesHaveSameRate = selectedRateIds.every( ( rate: string ) => {
 		return rate === selectedRateIds[ 0 ];
 	} );
