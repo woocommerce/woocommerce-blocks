@@ -30,57 +30,59 @@ export const Edit = ( {
 } ): JSX.Element | null => {
 	const { name, label, required } = attributes;
 
-	const FieldControls = (): JSX.Element => (
-		<InspectorControls>
-			<PanelBody
-				title={ __(
-					'Custom Form Field',
-					'woo-gutenberg-products-block'
-				) }
-			>
-				<p className="wc-block-checkout__controls-text">
-					{ __(
-						'Add custom form fields.',
+	return (
+		<div { ...useBlockProps() }>
+			<InspectorControls>
+				<PanelBody
+					title={ __(
+						'Field Settings',
 						'woo-gutenberg-products-block'
 					) }
-				</p>
+				>
+					<p className="wc-block-checkout__controls-text">
+						{ __(
+							'Add custom form fields.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
 
-				<label htmlFor="wc-block-checkout__field-name">
-					{ __( 'Field Name', 'woo-gutenberg-products-block' ) }
-					<PlainText
-						id="wc-block-checkout__field-name"
-						className={ '' }
-						value={ name }
-						onChange={ ( value ) =>
-							setAttributes( { name: value } )
+					<label htmlFor="wc-block-checkout__field-name">
+						{ __( 'Field Name', 'woo-gutenberg-products-block' ) }
+						<PlainText
+							id="wc-block-checkout__field-name"
+							className={ '' }
+							value={ name }
+							onChange={ ( value ) =>
+								setAttributes( { name: value } )
+							}
+						/>
+					</label>
+
+					<label htmlFor="wc-block-checkout__field-label">
+						{ __( 'Field Label', 'woo-gutenberg-products-block' ) }
+						<PlainText
+							id="wc-block-checkout__field-label"
+							className={ '' }
+							value={ label }
+							onChange={ ( value ) =>
+								setAttributes( { label: value } )
+							}
+						/>
+					</label>
+
+					<ToggleControl
+						label={ __(
+							'Required',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ required }
+						onChange={ () =>
+							setAttributes( { required: ! required } )
 						}
 					/>
-				</label>
+				</PanelBody>
+			</InspectorControls>
 
-				<label htmlFor="wc-block-checkout__field-label">
-					{ __( 'Field Label', 'woo-gutenberg-products-block' ) }
-					<PlainText
-						id="wc-block-checkout__field-label"
-						className={ '' }
-						value={ label }
-						onChange={ ( value ) =>
-							setAttributes( { label: value } )
-						}
-					/>
-				</label>
-
-				<ToggleControl
-					label={ __( 'Required', 'woo-gutenberg-products-block' ) }
-					checked={ required }
-					onChange={ () => setAttributes( { required: ! required } ) }
-				/>
-			</PanelBody>
-		</InspectorControls>
-	);
-
-	return (
-		<div>
-			<FieldControls />
 			<Block field={ attributes } section="shipping" />
 		</div>
 	);
