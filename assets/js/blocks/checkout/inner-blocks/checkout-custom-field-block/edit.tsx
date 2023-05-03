@@ -2,13 +2,9 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	PlainText,
-	useBlockProps,
-	InspectorControls,
-} from '@wordpress/block-editor';
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 
-import { PanelBody, ToggleControl } from '@wordpress/components';
+import { PanelBody, TextControl, ToggleControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -39,40 +35,25 @@ export const Edit = ( {
 						'woo-gutenberg-products-block'
 					) }
 				>
-					<p className="wc-block-checkout__controls-text">
-						{ __(
-							'Add custom form fields.',
-							'woo-gutenberg-products-block'
-						) }
-					</p>
+					<TextControl
+						label="Label"
+						value={ label }
+						onChange={ ( value ) =>
+							setAttributes( { label: value } )
+						}
+					/>
 
-					<label htmlFor="wc-block-checkout__field-name">
-						{ __( 'Field Name', 'woo-gutenberg-products-block' ) }
-						<PlainText
-							id="wc-block-checkout__field-name"
-							className={ '' }
-							value={ name }
-							onChange={ ( value ) =>
-								setAttributes( { name: value } )
-							}
-						/>
-					</label>
-
-					<label htmlFor="wc-block-checkout__field-label">
-						{ __( 'Field Label', 'woo-gutenberg-products-block' ) }
-						<PlainText
-							id="wc-block-checkout__field-label"
-							className={ '' }
-							value={ label }
-							onChange={ ( value ) =>
-								setAttributes( { label: value } )
-							}
-						/>
-					</label>
+					<TextControl
+						label="Name"
+						value={ name }
+						onChange={ ( value ) =>
+							setAttributes( { name: value } )
+						}
+					/>
 
 					<ToggleControl
 						label={ __(
-							'Required',
+							'Required?',
 							'woo-gutenberg-products-block'
 						) }
 						checked={ required }
