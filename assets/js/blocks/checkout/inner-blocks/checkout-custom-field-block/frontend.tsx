@@ -28,7 +28,7 @@ const FrontendBlock = ( {
 		<Block
 			field={ field }
 			section={ section }
-			value={ 'Test value for now' }
+			value={ '' }
 			readOnly={ false }
 		/>
 	);
