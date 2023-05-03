@@ -118,7 +118,7 @@ const Block = ( {
 					onChange={ ( values: Partial< ShippingAddress > ) => {
 						setShippingAddress( values );
 						if ( useShippingAsBilling ) {
-							setBillingAddress( values );
+							setBillingAddress( { ...values, email } );
 						}
 						dispatchCheckoutEvent( 'set-shipping-address' );
 					} }
