@@ -1,0 +1,12 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "woocommerce/product-template",
+	"title": "Product Template",
+	"description": "Block for displaying a custom product template.",
+	"category": "woocommerce",
+    "version": "1.0.0",
+    "keywords": [ "WooCommerce" ],
+    "textdomain": "woo-gutenberg-products-block",
+	"parent": [ "woocommerce/products-collection" ]
+  }

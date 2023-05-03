@@ -215,6 +215,7 @@ final class BlockTypesController {
 			'ProductDetails',
 			'StockFilter',
 			'ProductsCollection',
+			'ProductTemplate',
 		];
 
 		$block_types = array_merge(
