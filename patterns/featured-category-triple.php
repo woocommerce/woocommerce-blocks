@@ -23,9 +23,9 @@ if ( ( false === $categories ) || ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ) {
 	set_transient( $transient_name, $categories, DAY_IN_SECONDS * 14 );
 }
 
-$cat1 = $categories[0]['term_id'] ? $categories[0]['term_id'] : 0;
-$cat2 = $categories[1]['term_id'] ? $categories[1]['term_id'] : 0;
-$cat3 = $categories[2]['term_id'] ? $categories[2]['term_id'] : 0;
+$cat1 = isset( $categories[0]['term_id'] ) ? $categories[0]['term_id'] : 0;
+$cat2 = isset( $categories[1]['term_id'] ) ? $categories[1]['term_id'] : 0;
+$cat3 = isset( $categories[2]['term_id'] ) ? $categories[2]['term_id'] : 0;
 
 ?>
 <!-- wp:columns {"align":"full","style":{"spacing":{"blockGap":{"top":"0","left":"0"},"padding":{"top":"0","right":"0","bottom":"0","left":"0"}}}} -->
