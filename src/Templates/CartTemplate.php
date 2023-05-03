@@ -12,8 +12,14 @@ class CartTemplate {
 
 	/**
 	 * Constructor.
+	 *
+	 * Templates require FSE theme support, so this will only init if a FSE theme is active.
 	 */
 	public function __construct() {
+		// Templates require FSE theme support.
+		if ( ! wc_current_theme_is_fse_theme() ) {
+			return;
+		}
 		$this->init();
 	}
 
@@ -22,7 +28,8 @@ class CartTemplate {
 	 */
 	protected function init() {
 		add_filter( 'page_template_hierarchy', array( $this, 'update_page_template_hierarchy' ), 1 );
-		add_filter( 'woocommerce_blocks_template_content', array( $this, 'maybe_migrate_page_content_to_template' ), 10, 3 );
+		add_action( 'current_screen', array( $this, 'template_editor_redirect' ) );
+		add_filter( 'woocommerce_blocks_template_content', array( $this, 'default_template_content' ), 10, 3 );
 	}
 
 	/**
@@ -35,10 +42,25 @@ class CartTemplate {
 	 * @param array $templates Templates that match the pages_template_hierarchy.
 	 */
 	public function update_page_template_hierarchy( $templates ) {
-		if ( is_cart() && wc_current_theme_is_fse_theme() ) {
+		if ( is_cart() ) {
 			array_unshift( $templates, self::SLUG );
 		}
 		return $templates;
+	}
+
+	/**
+	 * Redirect a page to the template editor if it's the checkout page and a block theme is active.
+	 *
+	 * @param \WP_Screen $current_screen Current screen information.
+	 */
+	public function template_editor_redirect( \WP_Screen $current_screen ) {
+		$page_id      = wc_get_page_id( 'cart' ) ?: false;
+		$edit_page_id = 'page' === $current_screen->id && ! empty( $_GET['post'] ) ? absint( $_GET['post'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+		if ( $edit_page_id === $page_id ) {
+			wp_safe_redirect( admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2Fcart' ) );
+			exit;
+		}
 	}
 
 	/**
@@ -49,7 +71,7 @@ class CartTemplate {
 	 * @param string $template_type The type of template.
 	 * @return string
 	 */
-	public function maybe_migrate_page_content_to_template( $template_content, $template_file, $template_type ) {
+	public function default_template_content( $template_content, $template_file, $template_type ) {
 		if ( self::SLUG !== $template_file->slug ) {
 			return $template_content;
 		}
