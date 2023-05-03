@@ -50,7 +50,7 @@ class SingleProduct extends AbstractBlock {
 	 * @return string Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$classname = $attributes['className'] ?? '';
+		$classname          = $attributes['className'] ?? '';
 		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => $classname ) );
 
 		$html = sprintf(
@@ -75,7 +75,7 @@ class SingleProduct extends AbstractBlock {
 	 * @return array Updated block context.
 	 */
 	public function update_context( $context, $block, $parent_block ) {
-		if ( 'woocommerce/single-product' == $block['blockName']
+		if ( 'woocommerce/single-product' === $block['blockName']
 			&& isset( $block['attrs']['productId'] ) ) {
 				$this->product_id = $block['attrs']['productId'];
 
@@ -127,7 +127,7 @@ class SingleProduct extends AbstractBlock {
 
 			if ( $block_name === $block['blockName'] ) {
 				// @todo This is a temporary fix to make the Post Excerpt block work while https://github.com/WordPress/gutenberg/pull/49495 is not merged
-				if ( 'core/post-excerpt' === $block_name ) {
+				if ( 'core/post-excerpt' === $block_name || 'core/post-title' === $block_name ) {
 					global $post;
 					// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 					$post = get_post( $this->product_id );
