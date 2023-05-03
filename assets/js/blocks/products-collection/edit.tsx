@@ -1,16 +1,21 @@
 /**
  * External dependencies
  */
-import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { InnerBlockTemplate } from '@wordpress/blocks';
+import { useInstanceId } from '@wordpress/compose';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
+import { Attributes } from './types';
 
-export interface Attributes {
-	className?: string;
+interface Props {
+	className: string;
+	attributes: Attributes;
+	setAttributes: ( attributes: Attributes ) => void;
 }
 
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
@@ -74,12 +79,27 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 	[ 'core/query-no-results' ],
 ];
 
-const Edit = () => {
+const Edit = ( { attributes, setAttributes }: Props ) => {
+	const { queryId } = attributes;
+
 	const blockProps = useBlockProps();
+	const innerBlocksProps = useInnerBlocksProps( blockProps, {
+		template: INNER_BLOCKS_TEMPLATE,
+	} );
+
+	const instanceId = useInstanceId( Edit );
+
+	// We need this for multi-query block pagination.
+	// Query parameters for each block are scoped to their ID.
+	useEffect( () => {
+		if ( ! Number.isFinite( queryId ) ) {
+			setAttributes( { queryId: instanceId } );
+		}
+	}, [ queryId, instanceId, setAttributes ] );
 
 	return (
 		<div { ...blockProps }>
-			<InnerBlocks template={ INNER_BLOCKS_TEMPLATE } />
+			<div { ...innerBlocksProps } />
 		</div>
 	);
 };

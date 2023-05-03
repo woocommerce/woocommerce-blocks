@@ -8,5 +8,39 @@
     "version": "1.0.0",
     "keywords": [ "WooCommerce" ],
     "textdomain": "woo-gutenberg-products-block",
-	"parent": [ "woocommerce/products-collection" ]
+	"usesContext": [
+		"queryId",
+		"query",
+		"queryContext"
+	],
+	"supports": {
+		"reusable": false,
+		"html": false,
+		"align": [ "wide", "full" ],
+		"anchor": true,
+		"__experimentalLayout": {
+			"allowEditing": false
+		},
+		"color": {
+			"gradients": true,
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		}
+	}
   }
