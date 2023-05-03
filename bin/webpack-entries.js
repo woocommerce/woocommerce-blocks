@@ -68,6 +68,9 @@ const blocks = {
 		isExperimental: true,
 	},
 	'stock-filter': {},
+	'products-collection': {
+		isExperimental: true,
+	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,
