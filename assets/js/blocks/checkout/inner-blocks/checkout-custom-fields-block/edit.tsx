@@ -23,7 +23,7 @@ export const Edit = (): JSX.Element | null => {
 	return (
 		<div>
 			<div className="wc-block-checkout__custom_fields">
-				{ 'Custom Fields section' }
+				<small>Custom fields section</small>
 
 				<InnerBlocks
 					allowedBlocks={ allowedBlocks }

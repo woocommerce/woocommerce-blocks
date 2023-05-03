@@ -44,7 +44,7 @@ const FrontendBlock = ( {
 
 	return (
 		<div className="wc-block-checkout__custom_fields">
-			{ `Custom Fields Block Section` }
+			<small>Custom fields section</small>
 			{ sectionFields?.map( ( field, index ) => (
 				<Frontend key={ index } field={ field } section={ section } />
 			) ) }
