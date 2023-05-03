@@ -110,7 +110,8 @@ class MiniCartContents extends AbstractBlock {
 			),
 		);
 
-		$parsed_style = '';
+		$drawer_width = array_key_exists( 'width', $attributes ) ? $attributes['width'] : '480px';
+		$parsed_style = ':root{--drawer-width: ' . esc_html( $drawer_width ) . '}';
 
 		foreach ( $styles as $style ) {
 			$selector = is_array( $style['selector'] ) ? implode( ',', $style['selector'] ) : $style['selector'];
