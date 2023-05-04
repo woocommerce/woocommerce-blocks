@@ -10,7 +10,7 @@ This folder contains documentation for developers and contributors looking to ge
 | [CSS Build System](css-build-system.md)                  | This doc explains how CSS files are built.                                               |
 | [JavaScript Build System](javascript-build-system.md)    | This doc explains how JavaScript files are built.                                        |
 | [JavaScript Testing](javascript-testing.md)              | This doc explains how to run automated JavaScript tests.                                 |
-| [E2E Testing Guidelines](contributing/e2e-guidelines.md) | This doc covers development best practices about E2E tests.                              |
+| [E2E Testing Guidelines](e2e-guidelines.md) 			   | This doc covers development best practices about E2E tests.                              |
 | [Storybook & Components](storybook-and-components.md)    | This doc outlines where our reusable components live, and how to test them in Storybook. |
 
 

@@ -6,7 +6,7 @@
 -   [Playwright](#playwright)
     -   [Structure](#structure-1)
 
-This living document serves to prescribe coding guidelines specific to the WooCommerce Blocks project E2E tests. For more information on how to run Playwright end-to-end (E2E) tests, please refer to the [dedicated resource](https://github.com/woocommerce/woocommerce-blocks/blob/trunk/tests/e2e-pw/README.md).
+This living document serves to prescribe coding guidelines specific to the WooCommerce Blocks project E2E tests. For more information on how to run Playwright end-to-end (E2E) tests, please refer to the [dedicated resource](../../../tests/e2e-pw/README.md).
 
 ## Structure
 
