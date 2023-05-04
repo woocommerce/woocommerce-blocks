@@ -22,12 +22,7 @@ interface Props {
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'woocommerce/product-template',
-		{
-			/**
-			 * This class is used to add default styles for inner blocks.
-			 */
-			className: 'products-block-post-template',
-		},
+		{},
 		[
 			[
 				'woocommerce/product-image',
