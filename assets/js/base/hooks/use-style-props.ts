@@ -16,46 +16,43 @@ import {
 	WithStyle,
 } from '../utils';
 
+type blockAttributes = {
+	style: Record< string, unknown > | string;
+};
+
 type StyleProps = {
 	className: string;
 	style: Record< string, unknown >;
 };
 
 /**
- * Parse the style object saved with blocks and returns the CSS class names and inline styles.
+ * Returns the CSS class names and inline styles for a block when provided with its props/attributes.
  *
  * This hook (and its utilities) borrow functionality from the Gutenberg Block Editor package--something we don't want
  * to import on the frontend.
  */
-export const useStyleProps = ( attributes: unknown ): StyleProps => {
-	const attributesObject = isObject( attributes ) ? attributes : {};
+export const useStyleProps = ( props: blockAttributes ): StyleProps => {
+	const propsObject = isObject( props )
+		? props
+		: {
+				style: {},
+		  };
 
-	const typographyProps = useTypographyProps( attributesObject );
-	const style = parseStyle( attributesObject.style );
+	const styleObject = parseStyle( propsObject.style );
 
 	const colorProps = getColorClassesAndStyles( {
-		style,
+		style: styleObject,
 	} as WithStyle );
 
 	const borderProps = getBorderClassesAndStyles( {
-		style,
+		style: styleObject,
 	} as WithStyle );
 
 	const spacingProps = getSpacingClassesAndStyles( {
-		style,
+		style: styleObject,
 	} as WithStyle );
 
-	/* TODO
-	const { borderColor } = attributesObject;
-	if ( borderColor ) {
-		const borderColorObject = getMultiOriginColor( {
-			colors,
-			namedColor: borderColor,
-		} );
-
-		borderProps.style.borderColor = borderColorObject.color;
-	}
-	*/
+	const typographyProps = useTypographyProps( propsObject );
 
 	return {
 		className: classnames(
