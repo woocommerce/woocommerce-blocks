@@ -13,6 +13,7 @@ import { parseAttributes } from './utils';
 
 const BlockWrapper = ( props: Record< string, unknown > ) => {
 	const styleProps = useStyleProps( props );
+	const parsedBlockAttributes = parseAttributes( props );
 
 	return (
 		<div
@@ -22,7 +23,7 @@ const BlockWrapper = ( props: Record< string, unknown > ) => {
 			) }
 			style={ { ...styleProps.style } }
 		>
-			<Block isEditor={ false } attributes={ parseAttributes( props ) } />
+			<Block isEditor={ false } attributes={ parsedBlockAttributes } />
 		</div>
 	);
 };

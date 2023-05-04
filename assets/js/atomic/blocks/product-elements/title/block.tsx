@@ -56,12 +56,10 @@ export const Block = ( props: Props ): JSX.Element => {
 		linkTarget,
 		align,
 	} = props;
-
+	const styleProps = useStyleProps( props );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const { dispatchStoreEvent } = useStoreEvents();
-
-	const styleProps = useStyleProps( props );
 
 	if ( ! product.id ) {
 		return (

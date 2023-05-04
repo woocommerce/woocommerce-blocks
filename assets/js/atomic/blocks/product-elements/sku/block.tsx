@@ -43,11 +43,10 @@ const Preview = ( {
 
 const Block = ( props: Props ): JSX.Element | null => {
 	const { className } = props;
+	const styleProps = useStyleProps( props );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const sku = product.sku;
-
-	const styleProps = useStyleProps( props );
 
 	if ( props.isDescendentOfSingleProductTemplate ) {
 		return (

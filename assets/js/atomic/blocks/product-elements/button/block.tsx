@@ -168,9 +168,9 @@ const AddToCartButtonPlaceholder = ( {
  */
 export const Block = ( props: BlockAttributes ): JSX.Element => {
 	const { className, textAlign } = props;
+	const styleProps = useStyleProps( props );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
-	const styleProps = useStyleProps( props );
 
 	return (
 		<div

@@ -37,12 +37,12 @@ interface PriceProps {
 
 export const Block = ( props: Props ): JSX.Element | null => {
 	const { className, textAlign, isDescendentOfSingleProductTemplate } = props;
+	const styleProps = useStyleProps( props );
 	const { parentName, parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 
 	const isDescendentOfAllProductsBlock =
 		parentName === 'woocommerce/all-products';
-	const styleProps = useStyleProps( props );
 
 	const wrapperClassName = classnames(
 		'wc-block-components-product-price',

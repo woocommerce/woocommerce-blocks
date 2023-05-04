@@ -60,9 +60,9 @@ type Props = BlockAttributes & HTMLAttributes< HTMLDivElement >;
 
 export const Block = ( props: Props ): JSX.Element | null => {
 	const { className } = props;
+	const styleProps = useStyleProps( props );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
-	const styleProps = useStyleProps( props );
 
 	if ( ! product.id ) {
 		return null;

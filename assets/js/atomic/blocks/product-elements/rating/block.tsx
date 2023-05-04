@@ -132,10 +132,10 @@ interface ProductRatingProps {
 
 export const Block = ( props: ProductRatingProps ): JSX.Element | null => {
 	const { textAlign, isDescendentOfSingleProductBlock } = props;
+	const styleProps = useStyleProps( props );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const rating = getAverageRating( product );
-	const styleProps = useStyleProps( props );
 	const reviews = getRatingCount( product );
 	const href = getReviewsHref( product );
 

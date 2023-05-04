@@ -83,10 +83,10 @@ export const Block = ( props: Props ): JSX.Element | null => {
 		saleBadgeAlign = 'right',
 		...restProps
 	} = props;
+	const styleProps = useStyleProps( props );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product, isLoading } = useProductDataContext();
 	const { dispatchStoreEvent } = useStoreEvents();
-	const styleProps = useStyleProps( props );
 
 	if ( ! product.id ) {
 		return (
