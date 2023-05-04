@@ -11,13 +11,29 @@ import { CART_API_ERROR } from './constants';
 import type { CartDispatchFromMap, CartResolveSelectFromMap } from './index';
 
 /**
- * Resolver for retrieving all cart data.
+ * Get order endpoint.
+ *
+ * @param {number} orderId
+ * @param {string} orderKey
+ */
+export const getOrderEndpoint = ( orderId: number, orderKey: string ) => {
+	return `/wc/store/v1/order/${ orderId }?key=${ orderKey }`;
+};
+
+/**
+ * Resolver for retrieving all cart or order data.
+ *
+ * @param {number} orderId
+ * @param {string} orderKey
  */
 export const getCartData =
-	() =>
+	( orderId?: number, orderKey?: string ) =>
 	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
 		const cartData = await apiFetch< CartResponse >( {
-			path: '/wc/store/v1/cart',
+			path:
+				orderId && orderKey
+					? getOrderEndpoint( orderId, orderKey )
+					: '/wc/store/v1/cart',
 			method: 'GET',
 			cache: 'no-store',
 		} );
