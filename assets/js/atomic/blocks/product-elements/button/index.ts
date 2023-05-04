@@ -29,6 +29,7 @@ const blockConfig: BlockConfiguration = {
 		'woocommerce/all-products',
 		'woocommerce/single-product',
 		'core/post-template',
+		'woocommerce/product-template',
 	],
 	usesContext: [ 'query', 'queryId', 'postId' ],
 	icon: { src: icon },

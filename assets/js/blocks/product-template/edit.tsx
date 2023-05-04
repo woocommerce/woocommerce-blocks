@@ -1,27 +1,66 @@
 /**
  * External dependencies
  */
+import classnames from 'classnames';
+import { memo, useMemo, useState } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 import {
+	BlockContextProvider,
+	__experimentalUseBlockPreview as useBlockPreview,
 	useBlockProps,
 	useInnerBlocksProps,
-	BlockContextProvider,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
-import { store as coreStore } from '@wordpress/core-data';
 import { Spinner } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
-import classNames from 'classnames';
+import { store as coreStore } from '@wordpress/core-data';
 
-/**
- * Internal dependencies
- */
-import './editor.scss';
-
-export interface Attributes {
-	className?: string;
+function ProductTemplateInnerBlocks() {
+	const innerBlocksProps = useInnerBlocksProps(
+		{ className: 'wc-block-product' },
+		{ __unstableDisableLayoutClassNames: true }
+	);
+	return <li { ...innerBlocksProps } />;
 }
 
-const Edit = ( {
+function ProductTemplateBlockPreview( {
+	blocks,
+	blockContextId,
+	isHidden,
+	setActiveBlockContextId,
+} ) {
+	const blockPreviewProps = useBlockPreview( {
+		blocks,
+		props: {
+			className: 'wc-block-product',
+		},
+	} );
+
+	const handleOnClick = () => {
+		setActiveBlockContextId( blockContextId );
+	};
+
+	const style = {
+		display: isHidden ? 'none' : undefined,
+	};
+
+	return (
+		<li
+			{ ...blockPreviewProps }
+			tabIndex={ 0 }
+			// eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
+			role="button"
+			onClick={ handleOnClick }
+			onKeyPress={ handleOnClick }
+			style={ style }
+		/>
+	);
+}
+
+const MemoizedProductTemplateBlockPreview = memo( ProductTemplateBlockPreview );
+
+export default function ProductTemplateEdit( {
+	clientId,
 	context: {
 		query: {
 			perPage,
@@ -36,33 +75,21 @@ const Edit = ( {
 			taxQuery,
 			parents,
 			pages,
-			// We gather extra query args to pass to the REST API call.
-			// This way extenders of Query Loop can add their own query args,
-			// and have accurate previews in the editor.
-			// Noting though that these args should either be supported by the
-			// REST API or be handled by custom REST filters like `rest_{$this->post_type}_query`.
 			...restQueryArgs
 		} = {},
+		queryContext = [ { page: 1 } ],
+		templateSlug,
+		displayLayout: { type: layoutType = 'flex', columns = 3 } = {},
 	},
-	queryContext = [ { page: 1 } ],
-	templateSlug,
-	displayLayout: { type: layoutType = 'flex', columns = 3 } = {},
-} ) => {
-	const hasLayoutFlex = layoutType === 'flex' && columns > 1;
-	const blockProps = useBlockProps( {
-		className: classNames( 'wc-block-product-template', {
-			// __unstableLayoutClassNames: true,
-			'is-flex-container': hasLayoutFlex,
-			[ `columns-${ columns }` ]: hasLayoutFlex,
-		} ),
-	} );
-	const innerBlocksProps = useInnerBlocksProps();
-
+	__unstableLayoutClassNames,
+} ) {
 	const [ { page } ] = queryContext;
+	const [ activeBlockContextId, setActiveBlockContextId ] = useState();
 	const postType = 'product';
-	const { posts } = useSelect(
+	const { products, blocks } = useSelect(
 		( select ) => {
 			const { getEntityRecords, getTaxonomies } = select( coreStore );
+			const { getBlocks } = select( blockEditorStore );
 			const taxonomies = getTaxonomies( {
 				type: postType,
 				per_page: -1,
@@ -117,9 +144,9 @@ const Edit = ( {
 			if ( parents?.length ) {
 				query.parent = parents;
 			}
-			// If sticky is not set, it will return all posts in the results.
-			// If sticky is set to `only`, it will limit the results to sticky posts only.
-			// If it is anything else, it will exclude sticky posts from results. For the record the value stored is `exclude`.
+			// If sticky is not set, it will return all products in the results.
+			// If sticky is set to `only`, it will limit the results to sticky products only.
+			// If it is anything else, it will exclude sticky products from results. For the record the value stored is `exclude`.
 			if ( sticky ) {
 				query.sticky = sticky === 'only';
 			}
@@ -130,10 +157,11 @@ const Edit = ( {
 				}
 			}
 			return {
-				posts: getEntityRecords( 'postType', postType, {
+				products: getEntityRecords( 'postType', postType, {
 					...query,
 					...restQueryArgs,
 				} ),
+				blocks: getBlocks( clientId ),
 			};
 		},
 		[
@@ -142,6 +170,7 @@ const Edit = ( {
 			offset,
 			order,
 			orderBy,
+			clientId,
 			author,
 			search,
 			postType,
@@ -154,8 +183,27 @@ const Edit = ( {
 			restQueryArgs,
 		]
 	);
+	const blockContexts = useMemo(
+		() =>
+			products?.map( ( product ) => ( {
+				postType: product.type,
+				postId: product.id,
+			} ) ),
+		[ products ]
+	);
+	const hasLayoutFlex = layoutType === 'flex' && columns > 1;
+	const blockProps = useBlockProps( {
+		className: classnames(
+			__unstableLayoutClassNames,
+			'wc-block-product-template',
+			{
+				'is-flex-container': hasLayoutFlex,
+				[ `columns-${ columns }` ]: hasLayoutFlex,
+			}
+		),
+	} );
 
-	if ( ! posts ) {
+	if ( ! products ) {
 		return (
 			<p { ...blockProps }>
 				<Spinner />
@@ -163,7 +211,7 @@ const Edit = ( {
 		);
 	}
 
-	if ( ! posts.length ) {
+	if ( ! products.length ) {
 		return (
 			<p { ...blockProps }>
 				{ ' ' }
@@ -172,22 +220,35 @@ const Edit = ( {
 		);
 	}
 
+	// To avoid flicker when switching active block contexts, a preview is rendered
+	// for each block context, but the preview for the active block context is hidden.
+	// This ensures that when it is displayed again, the cached rendering of the
+	// block preview is used, instead of having to re-render the preview from scratch.
 	return (
 		<ul { ...blockProps }>
-			{ posts.map( ( post ) => (
-				<BlockContextProvider
-					key={ post.id }
-					value={ {
-						postType: post.type,
-						postId: post.id,
-						post,
-					} }
-				>
-					<li { ...innerBlocksProps } />
-				</BlockContextProvider>
-			) ) }
+			{ blockContexts &&
+				blockContexts.map( ( blockContext ) => (
+					<BlockContextProvider
+						key={ blockContext.postId }
+						value={ blockContext }
+					>
+						{ blockContext.postId ===
+						( activeBlockContextId ||
+							blockContexts[ 0 ]?.postId ) ? (
+							<ProductTemplateInnerBlocks />
+						) : null }
+						<MemoizedProductTemplateBlockPreview
+							blocks={ blocks }
+							blockContextId={ blockContext.postId }
+							setActiveBlockContextId={ setActiveBlockContextId }
+							isHidden={
+								blockContext.postId ===
+								( activeBlockContextId ||
+									blockContexts[ 0 ]?.postId )
+							}
+						/>
+					</BlockContextProvider>
+				) ) }
 		</ul>
 	);
-};
-
-export default Edit;
+}

@@ -1,43 +1,5 @@
-$break-small: 600px;
-
-@mixin break-small() {
-	@media (min-width: #{ ($break-small) }) {
-		@content;
-	}
-}
-
-.editor-styles-wrapper {
-	ul.wc-block-product-template {
-		margin-top: 0;
-		margin-bottom: 0;
-		max-width: 100%;
-		list-style: none;
-		padding: 0;
-
-		&.is-flex-container {
-			flex-direction: row;
-			display: flex;
-			flex-wrap: wrap;
-			gap: 1.25em;
-
-			> li {
-				margin: 0;
-				width: 100%;
-			}
-
-			@include break-small {
-				@for $i from 2 through 6 {
-					&.is-flex-container.columns-#{ $i } > li {
-						width: calc((100% / #{ $i }) - 1.25em + (1.25em / #{ $i }));
-					}
-				}
-			}
-		}
-	}
-}
-
-.editor-styles-wrapper {
-	ul.wc-block-product-template {
-		list-style: none;
-	}
+ul.wc-block-product-template {
+	padding-left: 0;
+	margin-left: 0;
+	list-style: none;
 }
