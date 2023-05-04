@@ -2,11 +2,7 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import {
-	usePrevious,
-	useShallowEqual,
-	useStyleProps,
-} from '@woocommerce/base-hooks';
+import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	useCollection,
 	useQueryStateByKey,
@@ -126,8 +122,6 @@ const AttributeFilterBlock = ( {
 			? previewOptions
 			: []
 	);
-
-	const styleProps = useStyleProps( blockAttributes );
 
 	const [ queryState ] = useQueryStateByContext();
 	const [ productAttributesQuery, setProductAttributesQuery ] =
@@ -551,12 +545,11 @@ const AttributeFilterBlock = ( {
 					<>
 						<FormTokenField
 							key={ remountKey }
-							className={ classnames( styleProps.className, {
+							className={ classnames( {
 								'single-selection': ! multiple,
 								'is-loading': isLoading,
 							} ) }
 							style={ {
-								...styleProps.style,
 								borderStyle: 'none',
 							} }
 							suggestions={ displayedOptions
