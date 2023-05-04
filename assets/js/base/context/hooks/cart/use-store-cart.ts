@@ -36,6 +36,7 @@ import { emptyHiddenAddressFields } from '@woocommerce/base-utils';
  */
 import { useEditorContext } from '../../providers/editor-context';
 import { useStoreCartEventListeners } from './use-store-cart-event-listeners';
+import { useStoreOrder } from './use-store-order';
 
 declare module '@wordpress/html-entities' {
 	// eslint-disable-next-line @typescript-eslint/no-shadow
@@ -135,6 +136,7 @@ export const useStoreCart = (
 	options: { shouldSelect: boolean } = { shouldSelect: true }
 ): StoreCart => {
 	const { isEditor, previewData } = useEditorContext();
+	const { orderId, orderKey } = useStoreOrder();
 	const previewCart = previewData?.previewCart;
 	const { shouldSelect } = options;
 	const currentResults = useRef();
@@ -183,7 +185,7 @@ export const useStoreCart = (
 			}
 
 			const store = select( storeKey );
-			const cartData = store.getCartData();
+			const cartData = store.getCartData( orderId, orderKey );
 			const cartErrors = store.getCartErrors();
 			const cartTotals = store.getCartTotals();
 			const cartIsLoading =
@@ -240,7 +242,7 @@ export const useStoreCart = (
 				receiveCartContents,
 			};
 		},
-		[ shouldSelect ]
+		[ shouldSelect, orderId, orderKey ]
 	);
 
 	if (
