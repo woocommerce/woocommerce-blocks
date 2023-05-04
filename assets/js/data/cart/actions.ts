@@ -7,38 +7,53 @@ import type {
 	CartResponseItem,
 	ExtensionCartUpdateArgs,
 	BillingAddressShippingAddress,
+	ApiErrorResponse,
+	CartShippingPackageShippingRate,
+	CartShippingRate,
 } from '@woocommerce/types';
-import { camelCase, mapKeys } from 'lodash';
-import type { AddToCartEventDetail } from '@woocommerce/type-defs/events';
 import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
-import { controls } from '@wordpress/data';
+import {
+	triggerAddedToCartEvent,
+	triggerAddingToCartEvent,
+	camelCaseKeys,
+} from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
 import { ACTION_TYPES as types } from './action-types';
-import { STORE_KEY as CART_STORE_KEY } from './constants';
 import { apiFetchWithHeaders } from '../shared-controls';
-import type { ResponseError } from '../types';
 import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
+import { CartDispatchFromMap, CartSelectFromMap } from './index';
+import type { Thunks } from './thunks';
+
+// Thunks are functions that can be dispatched, similar to actions creators
+// @todo Many of the functions that return promises in this file need to be moved to thunks.ts.
+export * from './thunks';
 
 /**
- * Returns an action object used in updating the store with the provided items
- * retrieved from a request using the given querystring.
+ * An action creator that dispatches the plain action responsible for setting the cart data in the store.
  *
- * This is a generic response action.
- *
- * @param {CartResponse} response
+ * @param  cart the parsed cart object. (Parsed into camelCase).
  */
-export const receiveCart = (
-	response: CartResponse
-): { type: string; response: Cart } => {
-	const cart = mapKeys( response, ( _, key ) =>
-		camelCase( key )
-	) as unknown as Cart;
+export const setCartData = ( cart: Cart ): { type: string; response: Cart } => {
 	return {
-		type: types.RECEIVE_CART,
+		type: types.SET_CART_DATA,
 		response: cart,
+	};
+};
+
+/**
+ * An action creator that dispatches the plain action responsible for setting the cart error data in the store.
+ *
+ * @param  error the parsed error object (Parsed into camelCase).
+ */
+export const setErrorData = (
+	error: ApiErrorResponse | null
+): { type: string; response: ApiErrorResponse | null } => {
+	return {
+		type: types.SET_ERROR_DATA,
+		error,
 	};
 };
 
@@ -55,32 +70,13 @@ export const receiveCart = (
 export const receiveCartContents = (
 	response: CartResponse
 ): { type: string; response: Partial< Cart > } => {
-	const cart = mapKeys( response, ( _, key ) =>
-		camelCase( key )
-	) as unknown as Cart;
+	const cart = camelCaseKeys( response ) as unknown as Cart;
 	const { shippingAddress, billingAddress, ...cartWithoutAddress } = cart;
 	return {
-		type: types.RECEIVE_CART,
+		type: types.SET_CART_DATA,
 		response: cartWithoutAddress,
 	};
 };
-
-/**
- * Returns an action object used for receiving customer facing errors from the API.
- *
- * @param {ResponseError|null} [error=null]   An error object containing the error
- *                                            message and response code.
- * @param {boolean}            [replace=true] Should existing errors be replaced,
- *                                            or should the error be appended.
- */
-export const receiveError = (
-	error: ResponseError | null = null,
-	replace = true
-) =>
-	( {
-		type: replace ? types.REPLACE_ERRORS : types.RECEIVE_ERROR,
-		error,
-	} as const );
 
 /**
  * Returns an action object used to track when a coupon is applying.
@@ -149,6 +145,7 @@ export const itemIsPendingDelete = (
 		cartItemKey,
 		isPendingDelete,
 	} as const );
+
 /**
  * Returns an action object to mark the cart data in the store as stale.
  *
@@ -185,52 +182,27 @@ export const shippingRatesBeingSelected = ( isResolving: boolean ) =>
 	} as const );
 
 /**
- * Triggers an adding to cart event so other blocks can update accordingly.
- */
-export const triggerAddingToCartEvent = () =>
-	( {
-		type: types.TRIGGER_ADDING_TO_CART_EVENT,
-	} as const );
-
-/**
- * Triggers an added to cart event so other blocks can update accordingly.
- */
-export const triggerAddedToCartEvent = ( {
-	preserveCartData,
-}: AddToCartEventDetail ) =>
-	( {
-		type: types.TRIGGER_ADDED_TO_CART_EVENT,
-		preserveCartData,
-	} as const );
-
-/**
  * POSTs to the /cart/extensions endpoint with the data supplied by the extension.
  *
  * @param {Object} args The data to be posted to the endpoint
  */
-export function* applyExtensionCartUpdate(
-	args: ExtensionCartUpdateArgs
-): Generator< unknown, CartResponse, { response: CartResponse } > {
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/v1/cart/extensions',
-			method: 'POST',
-			data: { namespace: args.namespace, data: args.data },
-			cache: 'no-store',
-		} );
-		yield receiveCart( response );
-		return response;
-	} catch ( error ) {
-		yield receiveError( error );
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+export const applyExtensionCartUpdate =
+	( args: ExtensionCartUpdateArgs ) =>
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
+		try {
+			const { response } = await apiFetchWithHeaders( {
+				path: '/wc/store/v1/cart/extensions',
+				method: 'POST',
+				data: { namespace: args.namespace, data: args.data },
+				cache: 'no-store',
+			} );
+			dispatch.receiveCart( response );
+			return response;
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			return Promise.reject( error );
 		}
-
-		// Re-throw the error.
-		throw error;
-	}
-}
+	};
 
 /**
  * Applies a coupon code and either invalidates caches, or receives an error if
@@ -239,38 +211,28 @@ export function* applyExtensionCartUpdate(
  * @param {string} couponCode The coupon code to apply to the cart.
  * @throws            Will throw an error if there is an API problem.
  */
-export function* applyCoupon(
-	couponCode: string
-): Generator< unknown, boolean, { response: CartResponse } > {
-	yield receiveApplyingCoupon( couponCode );
-
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/v1/cart/apply-coupon',
-			method: 'POST',
-			data: {
-				code: couponCode,
-			},
-			cache: 'no-store',
-		} );
-
-		yield receiveCart( response );
-		yield receiveApplyingCoupon( '' );
-	} catch ( error ) {
-		yield receiveError( error );
-		yield receiveApplyingCoupon( '' );
-
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+export const applyCoupon =
+	( couponCode: string ) =>
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
+		try {
+			dispatch.receiveApplyingCoupon( couponCode );
+			const { response } = await apiFetchWithHeaders( {
+				path: '/wc/store/v1/cart/apply-coupon',
+				method: 'POST',
+				data: {
+					code: couponCode,
+				},
+				cache: 'no-store',
+			} );
+			dispatch.receiveCart( response );
+			return response;
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			return Promise.reject( error );
+		} finally {
+			dispatch.receiveApplyingCoupon( '' );
 		}
-
-		// Re-throw the error.
-		throw error;
-	}
-
-	return true;
-}
+	};
 
 /**
  * Removes a coupon code and either invalidates caches, or receives an error if
@@ -279,38 +241,28 @@ export function* applyCoupon(
  * @param {string} couponCode The coupon code to remove from the cart.
  * @throws            Will throw an error if there is an API problem.
  */
-export function* removeCoupon(
-	couponCode: string
-): Generator< unknown, boolean, { response: CartResponse } > {
-	yield receiveRemovingCoupon( couponCode );
-
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/v1/cart/remove-coupon',
-			method: 'POST',
-			data: {
-				code: couponCode,
-			},
-			cache: 'no-store',
-		} );
-
-		yield receiveCart( response );
-		yield receiveRemovingCoupon( '' );
-	} catch ( error ) {
-		yield receiveError( error );
-		yield receiveRemovingCoupon( '' );
-
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+export const removeCoupon =
+	( couponCode: string ) =>
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
+		try {
+			dispatch.receiveRemovingCoupon( couponCode );
+			const { response } = await apiFetchWithHeaders( {
+				path: '/wc/store/v1/cart/remove-coupon',
+				method: 'POST',
+				data: {
+					code: couponCode,
+				},
+				cache: 'no-store',
+			} );
+			dispatch.receiveCart( response );
+			return response;
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			return Promise.reject( error );
+		} finally {
+			dispatch.receiveRemovingCoupon( '' );
 		}
-
-		// Re-throw the error.
-		throw error;
-	}
-
-	return true;
-}
+	};
 
 /**
  * Adds an item to the cart:
@@ -322,36 +274,28 @@ export function* removeCoupon(
  * @param {number} [quantity=1] Number of product ID being added to cart.
  * @throws           Will throw an error if there is an API problem.
  */
-export function* addItemToCart(
-	productId: number,
-	quantity = 1
-): Generator< unknown, void, { response: CartResponse } > {
-	try {
-		yield triggerAddingToCartEvent();
-		const { response } = yield apiFetchWithHeaders( {
-			path: `/wc/store/v1/cart/add-item`,
-			method: 'POST',
-			data: {
-				id: productId,
-				quantity,
-			},
-			cache: 'no-store',
-		} );
-
-		yield receiveCart( response );
-		yield triggerAddedToCartEvent( { preserveCartData: true } );
-	} catch ( error ) {
-		yield receiveError( error );
-
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+export const addItemToCart =
+	( productId: number, quantity = 1 ) =>
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
+		try {
+			triggerAddingToCartEvent();
+			const { response } = await apiFetchWithHeaders( {
+				path: `/wc/store/v1/cart/add-item`,
+				method: 'POST',
+				data: {
+					id: productId,
+					quantity,
+				},
+				cache: 'no-store',
+			} );
+			dispatch.receiveCart( response );
+			triggerAddedToCartEvent( { preserveCartData: true } );
+			return response;
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			return Promise.reject( error );
 		}
-
-		// Re-throw the error.
-		throw error;
-	}
-}
+	};
 
 /**
  * Removes specified item from the cart:
@@ -362,32 +306,28 @@ export function* addItemToCart(
  *
  * @param {string} cartItemKey Cart item being updated.
  */
-export function* removeItemFromCart(
-	cartItemKey: string
-): Generator< unknown, void, { response: CartResponse } > {
-	yield itemIsPendingDelete( cartItemKey );
-
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: `/wc/store/v1/cart/remove-item`,
-			data: {
-				key: cartItemKey,
-			},
-			method: 'POST',
-			cache: 'no-store',
-		} );
-
-		yield receiveCart( response );
-	} catch ( error ) {
-		yield receiveError( error );
-
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+export const removeItemFromCart =
+	( cartItemKey: string ) =>
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
+		try {
+			dispatch.itemIsPendingDelete( cartItemKey );
+			const { response } = await apiFetchWithHeaders( {
+				path: `/wc/store/v1/cart/remove-item`,
+				data: {
+					key: cartItemKey,
+				},
+				method: 'POST',
+				cache: 'no-store',
+			} );
+			dispatch.receiveCart( response );
+			return response;
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			return Promise.reject( error );
+		} finally {
+			dispatch.itemIsPendingDelete( cartItemKey, false );
 		}
-	}
-	yield itemIsPendingDelete( cartItemKey, false );
-}
+	};
 
 /**
  * Persists a quantity change the for specified cart item:
@@ -398,82 +338,99 @@ export function* removeItemFromCart(
  * @param {string} cartItemKey Cart item being updated.
  * @param {number} quantity    Specified (new) quantity.
  */
-export function* changeCartItemQuantity(
-	cartItemKey: string,
-	quantity: number
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- unclear how to represent multiple different yields as type
-): Generator< unknown, void, any > {
-	const cartItem = yield controls.resolveSelect(
-		CART_STORE_KEY,
-		'getCartItem',
-		cartItemKey
-	);
-	if ( cartItem?.quantity === quantity ) {
-		return;
-	}
-	yield itemIsPendingQuantity( cartItemKey );
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/v1/cart/update-item',
-			method: 'POST',
-			data: {
-				key: cartItemKey,
-				quantity,
-			},
-			cache: 'no-store',
-		} );
-
-		yield receiveCart( response );
-	} catch ( error ) {
-		yield receiveError( error );
-
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+export const changeCartItemQuantity =
+	(
+		cartItemKey: string,
+		quantity: number
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- unclear how to represent multiple different yields as type
+	) =>
+	async ( {
+		dispatch,
+		select,
+	}: {
+		dispatch: CartDispatchFromMap;
+		select: CartSelectFromMap;
+	} ) => {
+		const cartItem = select.getCartItem( cartItemKey );
+		if ( cartItem?.quantity === quantity ) {
+			return;
 		}
-	}
-	yield itemIsPendingQuantity( cartItemKey, false );
-}
+		try {
+			dispatch.itemIsPendingQuantity( cartItemKey );
+			const { response } = await apiFetchWithHeaders( {
+				path: '/wc/store/v1/cart/update-item',
+				method: 'POST',
+				data: {
+					key: cartItemKey,
+					quantity,
+				},
+				cache: 'no-store',
+			} );
+			dispatch.receiveCart( response );
+			return response;
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			return Promise.reject( error );
+		} finally {
+			dispatch.itemIsPendingQuantity( cartItemKey, false );
+		}
+	};
 
 /**
  * Selects a shipping rate.
  *
  * @param {string}          rateId      The id of the rate being selected.
- * @param {number | string} [packageId] The key of the packages that we will
- *                                      select within.
+ * @param {number | string} [packageId] The key of the packages that we will select within.
  */
-export function* selectShippingRate(
-	rateId: string,
-	packageId = 0
-): Generator< unknown, boolean, { response: CartResponse } > {
-	try {
-		yield shippingRatesBeingSelected( true );
-		const { response } = yield apiFetchWithHeaders( {
-			path: `/wc/store/v1/cart/select-shipping-rate`,
-			method: 'POST',
-			data: {
-				package_id: packageId,
-				rate_id: rateId,
-			},
-			cache: 'no-store',
-		} );
-
-		yield receiveCart( response );
-	} catch ( error ) {
-		yield receiveError( error );
-		yield shippingRatesBeingSelected( false );
-
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+export const selectShippingRate =
+	( rateId: string, packageId: number | null = null ) =>
+	async ( {
+		dispatch,
+		select,
+	}: {
+		dispatch: CartDispatchFromMap;
+		select: CartSelectFromMap;
+	} ) => {
+		const selectedShippingRate = select
+			.getShippingRates()
+			.find(
+				( shippingPackage: CartShippingRate ) =>
+					shippingPackage.package_id === packageId
+			)
+			?.shipping_rates.find(
+				( rate: CartShippingPackageShippingRate ) =>
+					rate.selected === true
+			);
+		if ( selectedShippingRate?.rate_id === rateId ) {
+			return;
 		}
-
-		// Re-throw the error.
-		throw error;
-	}
-	yield shippingRatesBeingSelected( false );
-	return true;
-}
+		try {
+			dispatch.shippingRatesBeingSelected( true );
+			const { response } = await apiFetchWithHeaders( {
+				path: `/wc/store/v1/cart/select-shipping-rate`,
+				method: 'POST',
+				data: {
+					package_id: packageId,
+					rate_id: rateId,
+				},
+				cache: 'no-store',
+			} );
+			// Remove shipping and billing address from the response, so we don't overwrite what the shopper is
+			// entering in the form if rates suddenly appear mid-edit.
+			const {
+				shipping_address: shippingAddress,
+				billing_address: billingAddress,
+				...rest
+			} = response;
+			dispatch.receiveCart( rest );
+			return response as CartResponse;
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			return Promise.reject( error );
+		} finally {
+			dispatch.shippingRatesBeingSelected( false );
+		}
+	};
 
 /**
  * Sets billing address locally, as opposed to updateCustomerData which sends it to the server.
@@ -490,59 +447,66 @@ export const setShippingAddress = (
 ) => ( { type: types.SET_SHIPPING_ADDRESS, shippingAddress } as const );
 
 /**
- * Updates the shipping and/or billing address for the customer and returns an
- * updated cart.
- *
- * @param {BillingAddressShippingAddress} customerData Address data to be updated; can contain both
- *                                                     billing_address and shipping_address.
+ * Updates the shipping and/or billing address for the customer and returns an updated cart.
  */
-export function* updateCustomerData(
-	customerData: Partial< BillingAddressShippingAddress >
-): Generator< unknown, boolean, { response: CartResponse } > {
-	yield updatingCustomerData( true );
-
-	try {
-		const { response } = yield apiFetchWithHeaders( {
-			path: '/wc/store/v1/cart/update-customer',
-			method: 'POST',
-			data: customerData,
-			cache: 'no-store',
-		} );
-
-		yield receiveCartContents( response );
-	} catch ( error ) {
-		yield receiveError( error );
-		yield updatingCustomerData( false );
-
-		// If updated cart state was returned, also update that.
-		if ( error.data?.cart ) {
-			yield receiveCart( error.data.cart );
+export const updateCustomerData =
+	(
+		// Address data to be updated; can contain both billing_address and shipping_address.
+		customerData: Partial< BillingAddressShippingAddress >,
+		// If the address is being edited, we don't update the customer data in the store from the response.
+		editing = true
+	) =>
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
+		try {
+			dispatch.updatingCustomerData( true );
+			const { response } = await apiFetchWithHeaders( {
+				path: '/wc/store/v1/cart/update-customer',
+				method: 'POST',
+				data: customerData,
+				cache: 'no-store',
+			} );
+			if ( editing ) {
+				dispatch.receiveCartContents( response );
+			} else {
+				dispatch.receiveCart( response );
+			}
+			return response;
+		} catch ( error ) {
+			dispatch.receiveError( error );
+			return Promise.reject( error );
+		} finally {
+			dispatch.updatingCustomerData( false );
 		}
+	};
 
-		// rethrow error.
-		throw error;
-	}
+export const setFullShippingAddressPushed = (
+	fullShippingAddressPushed: boolean
+) => ( {
+	type: types.SET_FULL_SHIPPING_ADDRESS_PUSHED,
+	fullShippingAddressPushed,
+} );
 
-	yield updatingCustomerData( false );
-	return true;
-}
-
-export type CartAction = ReturnOrGeneratorYieldUnion<
-	| typeof receiveCart
-	| typeof receiveCartContents
-	| typeof setBillingAddress
-	| typeof setShippingAddress
-	| typeof receiveError
-	| typeof receiveApplyingCoupon
-	| typeof receiveRemovingCoupon
-	| typeof receiveCartItem
-	| typeof itemIsPendingQuantity
-	| typeof itemIsPendingDelete
-	| typeof updatingCustomerData
-	| typeof shippingRatesBeingSelected
-	| typeof setIsCartDataStale
-	| typeof updateCustomerData
-	| typeof removeItemFromCart
-	| typeof changeCartItemQuantity
+type Actions =
 	| typeof addItemToCart
->;
+	| typeof applyCoupon
+	| typeof changeCartItemQuantity
+	| typeof itemIsPendingDelete
+	| typeof itemIsPendingQuantity
+	| typeof receiveApplyingCoupon
+	| typeof receiveCartContents
+	| typeof receiveCartItem
+	| typeof receiveRemovingCoupon
+	| typeof removeCoupon
+	| typeof removeItemFromCart
+	| typeof selectShippingRate
+	| typeof setBillingAddress
+	| typeof setCartData
+	| typeof setErrorData
+	| typeof setIsCartDataStale
+	| typeof setShippingAddress
+	| typeof shippingRatesBeingSelected
+	| typeof updateCustomerData
+	| typeof setFullShippingAddressPushed
+	| typeof updatingCustomerData;
+
+export type CartAction = ReturnOrGeneratorYieldUnion< Actions | Thunks >;

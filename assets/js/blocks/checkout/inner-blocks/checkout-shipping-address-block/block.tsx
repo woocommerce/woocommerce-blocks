@@ -8,8 +8,12 @@ import {
 	useCheckoutAddress,
 	useStoreEvents,
 	useEditorContext,
+	noticeContexts,
 } from '@woocommerce/base-context';
-import { CheckboxControl } from '@woocommerce/blocks-checkout';
+import {
+	CheckboxControl,
+	StoreNoticesContainer,
+} from '@woocommerce/blocks-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type {
 	BillingAddress,
@@ -41,6 +45,7 @@ const Block = ( {
 		setShippingAddress,
 		setBillingAddress,
 		shippingAddress,
+		billingAddress,
 		setShippingPhone,
 		useShippingAsBilling,
 		setUseShippingAsBilling,
@@ -48,6 +53,7 @@ const Block = ( {
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
 
+	const { email } = billingAddress;
 	// This is used to track whether the "Use shipping as billing" checkbox was checked on first load and if we synced
 	// the shipping address to the billing address if it was. This is not used on further toggles of the checkbox.
 	const [ addressesSynced, setAddressesSynced ] = useState( false );
@@ -61,20 +67,25 @@ const Block = ( {
 
 	// Run this on first render to ensure addresses sync if needed, there is no need to re-run this when toggling the
 	// checkbox.
-	useEffect( () => {
-		if ( addressesSynced ) {
-			return;
-		}
-		if ( useShippingAsBilling ) {
-			setBillingAddress( shippingAddress );
-		}
-		setAddressesSynced( true );
-	}, [
-		addressesSynced,
-		setBillingAddress,
-		shippingAddress,
-		useShippingAsBilling,
-	] );
+	useEffect(
+		() => {
+			if ( addressesSynced ) {
+				return;
+			}
+			if ( useShippingAsBilling ) {
+				setBillingAddress( { ...shippingAddress, email } );
+			}
+			setAddressesSynced( true );
+		},
+		// Skip the `email` dependency since we don't want to re-run if that changes, but we do want to sync it on first render.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[
+			addressesSynced,
+			setBillingAddress,
+			shippingAddress,
+			useShippingAsBilling,
+		]
+	);
 
 	const addressFieldsConfig = useMemo( () => {
 		return {
@@ -93,17 +104,21 @@ const Block = ( {
 	] ) as Record< keyof AddressFields, Partial< AddressField > >;
 
 	const AddressFormWrapperComponent = isEditor ? Noninteractive : Fragment;
+	const noticeContext = useShippingAsBilling
+		? [ noticeContexts.SHIPPING_ADDRESS, noticeContexts.BILLING_ADDRESS ]
+		: [ noticeContexts.SHIPPING_ADDRESS ];
 
 	return (
 		<>
 			<AddressFormWrapperComponent>
+				<StoreNoticesContainer context={ noticeContext } />
 				<AddressForm
 					id="shipping"
 					type="shipping"
 					onChange={ ( values: Partial< ShippingAddress > ) => {
 						setShippingAddress( values );
 						if ( useShippingAsBilling ) {
-							setBillingAddress( values );
+							setBillingAddress( { ...values, email } );
 						}
 						dispatchCheckoutEvent( 'set-shipping-address' );
 					} }
@@ -118,6 +133,7 @@ const Block = ( {
 				{ showPhoneField && (
 					<PhoneNumber
 						id="shipping-phone"
+						errorId={ 'shipping_phone' }
 						isRequired={ requirePhoneField }
 						value={ shippingAddress.phone }
 						onChange={ ( value ) => {

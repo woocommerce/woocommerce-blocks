@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Modal } from '@wordpress/components';
+import { Modal } from 'wordpress-components';
 import { useDebounce } from 'use-debounce';
 import classNames from 'classnames';
 
@@ -54,10 +54,7 @@ const Drawer = ( {
 						slideOut,
 				}
 			) }
-			closeButtonLabel={ __(
-				'Close mini cart',
-				'woo-gutenberg-products-block'
-			) }
+			closeButtonLabel={ __( 'Close', 'woo-gutenberg-products-block' ) }
 		>
 			{ children }
 		</Modal>

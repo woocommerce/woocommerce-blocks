@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
-import { without } from 'lodash';
 import { Icon, sparkles } from '@wordpress/icons';
 
 /**
@@ -37,18 +36,12 @@ registerBlockType( 'woocommerce/product-new', {
 	attributes: {
 		...sharedAttributes,
 	},
-	example: {
-		attributes: {
-			isPreview: true,
-		},
-	},
 	transforms: {
 		from: [
 			{
 				type: 'block',
-				blocks: without(
-					sharedAttributeBlockTypes,
-					'woocommerce/product-new'
+				blocks: sharedAttributeBlockTypes.filter(
+					( value ) => value !== 'woocommerce/product-new'
 				),
 				transform: ( attributes ) =>
 					createBlock( 'woocommerce/product-new', attributes ),

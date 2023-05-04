@@ -1,14 +1,14 @@
 /**
  * External dependencies
  */
-import { groupBy, keyBy } from 'lodash';
 import { Fragment } from '@wordpress/element';
 import { __, _n, sprintf } from '@wordpress/i18n';
+import { keyBy } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
-import type { SearchListItemType, SearchListItemsType } from './types';
+import type { SearchListItem } from './types';
 
 export const defaultMessages = {
 	clear: __( 'Clear all selected items', 'woo-gutenberg-products-block' ),
@@ -39,14 +39,24 @@ export const defaultMessages = {
  * @return {Array} Array of terms in tree format.
  */
 export const buildTermsTree = (
-	filteredList: SearchListItemsType,
+	filteredList: SearchListItem[],
 	list = filteredList
-): SearchListItemType[] | [] => {
-	const termsByParent = groupBy( filteredList, 'parent' );
+): SearchListItem[] | [] => {
+	const termsByParent = filteredList.reduce( ( acc, currentValue ) => {
+		const key = currentValue.parent || 0;
+
+		if ( ! acc[ key ] ) {
+			acc[ key ] = [];
+		}
+
+		acc[ key ].push( currentValue );
+		return acc;
+	}, {} as Record< string, SearchListItem[] > );
+
 	const listById = keyBy( list, 'id' );
 	const builtParents = [ '0' ];
 
-	const getParentsName = ( term = {} as SearchListItemType ): string[] => {
+	const getParentsName = ( term = {} as SearchListItem ): string[] => {
 		if ( ! term.parent ) {
 			return term.name ? [ term.name ] : [];
 		}
@@ -55,11 +65,7 @@ export const buildTermsTree = (
 		return [ ...parentName, term.name ];
 	};
 
-	const fillWithChildren = (
-		terms: SearchListItemType[]
-	): ( SearchListItemType & {
-		breadcrumbs: string[];
-	} )[] => {
+	const fillWithChildren = ( terms: SearchListItem[] ): SearchListItem[] => {
 		return terms.map( ( term ) => {
 			const children = termsByParent[ term.id ];
 			builtParents.push( '' + term.id );
@@ -87,10 +93,10 @@ export const buildTermsTree = (
 };
 
 export const getFilteredList = (
-	list: SearchListItemsType,
+	list: SearchListItem[],
 	search: string,
-	isHierarchical: boolean
-): SearchListItemType[] | [] => {
+	isHierarchical?: boolean | undefined
+) => {
 	if ( ! search ) {
 		return isHierarchical ? buildTermsTree( list ) : list;
 	}
@@ -100,7 +106,7 @@ export const getFilteredList = (
 	);
 	const filteredList = list
 		.map( ( item ) => ( re.test( item.name ) ? item : false ) )
-		.filter( Boolean ) as SearchListItemsType;
+		.filter( Boolean ) as SearchListItem[];
 
 	return isHierarchical ? buildTermsTree( filteredList, list ) : filteredList;
 };

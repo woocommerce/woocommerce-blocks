@@ -6,6 +6,7 @@ import {
 	useCheckoutAddress,
 	useStoreEvents,
 	useEditorContext,
+	noticeContexts,
 } from '@woocommerce/base-context';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
@@ -14,6 +15,7 @@ import type {
 	AddressField,
 	AddressFields,
 } from '@woocommerce/settings';
+import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -40,7 +42,7 @@ const Block = ( {
 		setShippingAddress,
 		setBillingPhone,
 		setShippingPhone,
-		forcedBillingAddress,
+		useBillingAsShipping,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const { isEditor } = useEditorContext();
@@ -58,7 +60,7 @@ const Block = ( {
 		if ( addressesSynced ) {
 			return;
 		}
-		if ( forcedBillingAddress ) {
+		if ( useBillingAsShipping ) {
 			setShippingAddress( billingAddress );
 		}
 		setAddressesSynced( true );
@@ -66,7 +68,7 @@ const Block = ( {
 		addressesSynced,
 		setShippingAddress,
 		billingAddress,
-		forcedBillingAddress,
+		useBillingAsShipping,
 	] );
 
 	const addressFieldsConfig = useMemo( () => {
@@ -86,15 +88,19 @@ const Block = ( {
 	] ) as Record< keyof AddressFields, Partial< AddressField > >;
 
 	const AddressFormWrapperComponent = isEditor ? Noninteractive : Fragment;
+	const noticeContext = useBillingAsShipping
+		? [ noticeContexts.BILLING_ADDRESS, noticeContexts.SHIPPING_ADDRESS ]
+		: [ noticeContexts.BILLING_ADDRESS ];
 
 	return (
 		<AddressFormWrapperComponent>
+			<StoreNoticesContainer context={ noticeContext } />
 			<AddressForm
 				id="billing"
 				type="billing"
 				onChange={ ( values: Partial< BillingAddress > ) => {
 					setBillingAddress( values );
-					if ( forcedBillingAddress ) {
+					if ( useBillingAsShipping ) {
 						setShippingAddress( values );
 						dispatchCheckoutEvent( 'set-shipping-address' );
 					}
@@ -110,6 +116,8 @@ const Block = ( {
 			/>
 			{ showPhoneField && (
 				<PhoneNumber
+					id={ 'billing-phone' }
+					errorId={ 'billing_phone' }
 					isRequired={ requirePhoneField }
 					value={ billingAddress.phone }
 					onChange={ ( value ) => {
@@ -117,7 +125,7 @@ const Block = ( {
 						dispatchCheckoutEvent( 'set-phone-number', {
 							step: 'billing',
 						} );
-						if ( forcedBillingAddress ) {
+						if ( useBillingAsShipping ) {
 							setShippingPhone( value );
 							dispatchCheckoutEvent( 'set-phone-number', {
 								step: 'shipping',

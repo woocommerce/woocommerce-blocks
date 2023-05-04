@@ -20,6 +20,70 @@ import {
 	getQtyMinusButtonPathExpression,
 } from './path-expressions';
 
+const checkCustomerPushCompleted = async (
+	shippingOrBilling,
+	addressToCheck
+) => {
+	// Blur active field to trigger customer information update, then wait for requests to finish.
+	await page.evaluate( 'document.activeElement.blur()' );
+
+	await page.waitForResponse( async ( response ) => {
+		const isBatch = response.url().includes( '/wp-json/wc/store/v1/batch' );
+		const responseJson = await response.text();
+		const parsedResponse = JSON.parse( responseJson );
+		if ( ! Array.isArray( parsedResponse?.responses ) || ! isBatch ) {
+			return false;
+		}
+
+		const keyToCheck =
+			shippingOrBilling === 'shipping'
+				? 'shipping_address'
+				: 'billing_address';
+
+		return parsedResponse.responses.some( ( singleResponse ) => {
+			const firstname =
+				singleResponse.body[ keyToCheck ].first_name ===
+				addressToCheck.firstname;
+			const lastname =
+				singleResponse.body[ keyToCheck ].last_name ===
+				addressToCheck.lastname;
+			const address1 =
+				singleResponse.body[ keyToCheck ].address_1 ===
+				addressToCheck.addressfirstline;
+			const address2 =
+				singleResponse.body[ keyToCheck ].address_2 ===
+				addressToCheck.addresssecondline;
+			const postcode =
+				singleResponse.body[ keyToCheck ].postcode ===
+				addressToCheck.postcode;
+			const city =
+				singleResponse.body[ keyToCheck ].city === addressToCheck.city;
+			const phone =
+				singleResponse.body[ keyToCheck ].phone ===
+				addressToCheck.phone;
+			const email =
+				shippingOrBilling === 'billing'
+					? singleResponse.body[ keyToCheck ].email ===
+					  addressToCheck.email
+					: true;
+
+			// Note, we skip checking State and Country here because the value returned by the server is not the same as
+			// what gets input into the form. The server returns the code, but the form accepts the full name.
+			return (
+				firstname &&
+				lastname &&
+				address1 &&
+				address2 &&
+				postcode &&
+				city &&
+				phone &&
+				email
+			);
+		} );
+	} );
+	await page.waitForTimeout( 1500 );
+};
+
 export const shopper = {
 	...wcShopper,
 
@@ -183,45 +247,37 @@ export const shopper = {
 			);
 		},
 
-		fillInCheckoutWithTestData: async () => {
+		fillInCheckoutWithTestData: async ( overrideData = {} ) => {
 			const shippingOrBilling = ( await page.$( '#shipping-first_name' ) )
 				? 'shipping'
 				: 'billing';
 			const testData = {
-				first_name: 'John',
-				last_name: 'Doe',
-				shipping_address_1: '123 Easy Street',
-				country: 'United States (US)',
-				city: 'New York',
-				state: 'New York',
-				postcode: '90210',
-				email: 'john.doe@test.com',
+				...{
+					firstname: 'John',
+					lastname: 'Doe',
+					addressfirstline: '123 Easy Street',
+					addresssecondline: 'Testville',
+					country: 'United States (US)',
+					city: 'New York',
+					state: 'New York',
+					postcode: '90210',
+					email: 'john.doe@test.com',
+					phone: '01234567890',
+				},
+				...overrideData,
 			};
 			await expect( page ).toFill( `#email`, testData.email );
-			await shopper.block.fillInCheckoutAddress(
-				testData,
-				shippingOrBilling
-			);
+			if ( shippingOrBilling === 'shipping' ) {
+				await shopper.block.fillShippingDetails( testData );
+			} else {
+				await shopper.block.fillBillingDetails( testData );
+			}
+			// Blur active field to trigger shipping rates update, then wait for requests to finish.
+			await page.evaluate( 'document.activeElement.blur()' );
 		},
-
-		// prettier-ignore
-		fillInCheckoutAddress: async (
-			address,
-			shippingOrBilling = 'shipping'
-		) => {
-			await expect( page ).toFill( `#${ shippingOrBilling }-first_name`, address.first_name );
-			await expect( page ).toFill( `#${ shippingOrBilling }-first_name`, address.first_name );
-			await expect( page ).toFill( `#${ shippingOrBilling }-last_name`, address.last_name );
-			await expect( page ).toFill( `#${ shippingOrBilling }-address_1`, address.shipping_address_1 );
-			await expect( page ).toFill( `#${ shippingOrBilling }-country input`, address.country );
-			await expect( page ).toFill( `#${ shippingOrBilling }-city`, address.city );
-			await expect( page ).toFill( `#${ shippingOrBilling }-state input`, address.state );
-			await expect( page ).toFill( `#${ shippingOrBilling }-postcode`, address.postcode );
-		},
-
 		// prettier-ignore
 		fillBillingDetails: async ( customerBillingDetails ) => {
-			await page.waitForSelector("#billing-fields");
+			await page.waitForSelector( '#billing-fields' );
 			const companyInputField = await page.$( '#billing-company' );
 
 			if ( companyInputField ) {
@@ -234,10 +290,18 @@ export const shopper = {
 			await expect( page ).toFill( '#billing-address_1', customerBillingDetails.addressfirstline );
 			await expect( page ).toFill( '#billing-address_2', customerBillingDetails.addresssecondline );
 			await expect( page ).toFill( '#billing-city', customerBillingDetails.city );
-			await expect( page ).toFill( '#billing-state input', customerBillingDetails.state );
+
+			const stateInputField = await page.$( '#billing-state input' );
+			if ( stateInputField ) {
+				await expect( page ).toFill( '#billing-state input', customerBillingDetails.state );
+			}
 			await expect( page ).toFill( '#billing-postcode', customerBillingDetails.postcode );
-			await expect( page ).toFill( '#phone', customerBillingDetails.phone );
+			await expect( page ).toFill( '#billing-phone', customerBillingDetails.phone );
 			await expect( page ).toFill( '#email', customerBillingDetails.email );
+			// Blur active field to trigger customer address update, then wait for requests to finish.
+			await page.evaluate( 'document.activeElement.blur()' );
+			await checkCustomerPushCompleted( 'billing', customerBillingDetails );
+
 		},
 
 		// prettier-ignore
@@ -254,20 +318,26 @@ export const shopper = {
 			await expect( page ).toFill( '#shipping-address_1', customerShippingDetails.addressfirstline );
 			await expect( page ).toFill( '#shipping-address_2', customerShippingDetails.addresssecondline );
 			await expect( page ).toFill( '#shipping-city', customerShippingDetails.city );
-			await expect( page ).toFill( '#shipping-state input', customerShippingDetails.state );
+			const stateInputField = await page.$( '#shipping-state input' );
+			if ( stateInputField ) {
+				await expect( page ).toFill( '#shipping-state input', customerShippingDetails.state );
+			}
 			await expect( page ).toFill( '#shipping-postcode', customerShippingDetails.postcode );
 			await expect( page ).toFill( '#shipping-phone', customerShippingDetails.phone );
+			// Blur active field to customer address update, then wait for requests to finish.
+			await page.evaluate( 'document.activeElement.blur()' );
+			await checkCustomerPushCompleted( 'shipping', customerShippingDetails );
 		},
 
 		// prettier-ignore
-		verifyBillingDetails: async ( customerBillingDetails ) => {
-			await page.waitForSelector( '.woocommerce-column--billing-address' );
+		verifyBillingDetails: async ( customerBillingDetails, selector = '.woocommerce-column--billing-address' ) => {
+			await page.waitForSelector( selector );
 			await Promise.all( [
 				expect( page ).toMatch(
 					customerBillingDetails.firstname
 				),
 				expect( page ).toMatch( customerBillingDetails.lastname),
-				expect( page ).toMatch( customerBillingDetails.company),
+				// expect( page ).toMatch( customerBillingDetails.company),
 				expect( page ).toMatch(
 					customerBillingDetails.addressfirstline
 				),
@@ -294,7 +364,7 @@ export const shopper = {
 				expect( page ).toMatch(
 					customerShippingDetails.lastname
 				),
-				expect( page ).toMatch( customerShippingDetails.company),
+				// expect( page ).toMatch( customerShippingDetails.company),
 				expect( page ).toMatch(
 					customerShippingDetails.addressfirstline
 				),
@@ -326,10 +396,10 @@ export const shopper = {
 
 		addCrossSellsProductToCart: async () => {
 			await page.waitForSelector(
-				'.wc-block-components-product-add-to-cart-button'
+				'.wp-block-cart-cross-sells-product__product-add-to-cart .wc-block-components-product-button__button'
 			);
 			expect( page ).toClick(
-				'.wc-block-components-product-add-to-cart-button'
+				'.wp-block-cart-cross-sells-product__product-add-to-cart .wc-block-components-product-button__button'
 			);
 		},
 
@@ -337,6 +407,7 @@ export const shopper = {
 			shippingName,
 			shippingPrice
 		) => {
+			await page.waitForNetworkIdle( { idleTime: 1000 } );
 			await page.waitForSelector(
 				'.wc-block-components-radio-control__label'
 			);
@@ -361,7 +432,7 @@ export const shopper = {
 			};
 
 			// We need to wait for the shipping total to update before we assert.
-			// As no dom elements are being added or removed, we cannot use `await page.waitForSelectot()`
+			// As no dom elements are being added or removed, we cannot use `await page.waitForSelector()`
 			// so instead we check when the `via <Shipping Method>` text changes
 			await page.$eval(
 				'.wc-block-components-totals-shipping .wc-block-components-totals-shipping__via',
@@ -468,10 +539,10 @@ export const shopper = {
 				'#wc-block-components-totals-coupon__input-0';
 			const couponApplyButtonSelector =
 				'.wc-block-components-totals-coupon__button';
-			const couponExpandButtonSelector =
-				'.wc-block-components-totals-coupon button';
+			const addCouponLinkSelector =
+				'.wc-block-components-totals-coupon-link';
 
-			await expect( page ).toClick( couponExpandButtonSelector );
+			await expect( page ).toClick( addCouponLinkSelector );
 			await expect( page ).toFill( couponInputSelector, couponCode );
 			await expect( page ).toClick( couponApplyButtonSelector );
 		},

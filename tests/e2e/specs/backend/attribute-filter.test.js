@@ -2,8 +2,8 @@
  * External dependencies
  */
 import {
+	switchBlockInspectorTab,
 	switchUserToAdmin,
-	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 
 import {
@@ -11,6 +11,11 @@ import {
 	saveOrPublish,
 	selectBlockByName,
 } from '@woocommerce/blocks-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { openSettingsSidebar } from '../../utils.js';
 
 const block = {
 	name: 'Filter by Attribute',
@@ -62,8 +67,9 @@ describe( `${ block.name } Block`, () => {
 
 	describe( 'Attributes', () => {
 		beforeEach( async () => {
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await selectBlockByName( block.slug );
+			await switchBlockInspectorTab( 'Settings' );
 		} );
 
 		it( "allows changing the block's title", async () => {
@@ -85,14 +91,14 @@ describe( `${ block.name } Block`, () => {
 				'.wc-filter-element-label-list-count'
 			);
 			await expect( page ).toClick( 'label', {
-				text: 'Include product count',
+				text: 'Display product count',
 			} );
 			await expect( page ).not.toMatchElement(
 				'.wc-filter-element-label-list-count'
 			);
 			// reset
 			await expect( page ).toClick( 'label', {
-				text: 'Include product count',
+				text: 'Display product count',
 			} );
 		} );
 

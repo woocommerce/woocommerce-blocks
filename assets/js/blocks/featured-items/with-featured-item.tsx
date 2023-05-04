@@ -4,19 +4,14 @@
  * External dependencies
  */
 import type { BlockAlignment } from '@wordpress/blocks';
-import { ProductResponseItem } from '@woocommerce/types';
+import { ProductResponseItem, isEmpty } from '@woocommerce/types';
 import { __experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles } from '@wordpress/block-editor';
 import { Icon, Placeholder, Spinner } from '@wordpress/components';
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
-import {
-	ComponentType,
-	Dispatch,
-	SetStateAction,
-	useCallback,
-	useState,
-} from 'react';
+import { useCallback, useState } from '@wordpress/element';
 import { WP_REST_API_Category } from 'wp-types';
+import { useBorderProps } from '@woocommerce/base-hooks';
+import type { ComponentType, Dispatch, SetStateAction } from 'react';
 
 /**
  * Internal dependencies
@@ -156,6 +151,8 @@ export const withFeaturedItem =
 			</Placeholder>
 		);
 
+		const borderProps = useBorderProps( attributes );
+
 		const renderItem = () => {
 			const {
 				contentAlign,
@@ -194,6 +191,7 @@ export const withFeaturedItem =
 				color: textColor
 					? `var(--wp--preset--color--${ textColor })`
 					: style?.color?.text,
+				boxSizing: 'border-box',
 			};
 
 			const wrapperStyle = {
@@ -224,7 +222,10 @@ export const withFeaturedItem =
 						showHandle={ isSelected }
 						style={ { minHeight } }
 					/>
-					<div className={ classes } style={ containerStyle }>
+					<div
+						className={ classes }
+						style={ { containerStyle, ...borderProps.style } }
+					>
 						<div
 							className={ `${ className }__wrapper` }
 							style={ wrapperStyle }

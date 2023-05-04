@@ -1,8 +1,10 @@
 name: Nightly builds
+
 on:
   schedule:
     - cron: '0 0 * * *' # Run at 12 AM UTC.
   workflow_dispatch:
+
 jobs:
   build:
     name: Nightly builds
@@ -17,6 +19,11 @@ jobs:
         with:
           ref: ${{ matrix.build }}
 
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
       - name: Install Node Dependencies
         run: npm ci --no-optional
 
@@ -24,7 +31,7 @@ jobs:
         run: bash bin/build-plugin-zip.sh -d
 
       - name: Deploy nightly build
-        uses: WebFreak001/deploy-nightly@v1.2.0
+        uses: WebFreak001/deploy-nightly@v2.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -40,7 +47,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Update nightly tag
-        uses: richardsimko/github-tag-action@v1.0.5
+        uses: richardsimko/github-tag-action@v1.0.7
         with:
           tag_name: nightly
         env:

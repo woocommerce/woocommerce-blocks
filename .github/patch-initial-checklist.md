@@ -11,7 +11,9 @@ The release pull request has been created! This checklist is a guide to follow f
 -   [ ] Ensure you pull your changes from the remote, since GitHub Actions will have added new commits to the branch.
     -   [ ] Check the version and date in the changelog section within `readme.txt`, e.g. `= {{version}} - YYYY-MM-DD =`
     -   [ ] Check the changelog matches the one in the pull request description above.
--   [ ] Update compatibility sections (if applicable). **Note:** Do not change the stable tag or plugin version; this is automated.
+-   [ ] Run `npm run change-versions` to update the version numbers in several files. Write the version number you are releasing: {{version}}.
+-   [ ] Update compatibility sections (if applicable).
+-   [ ] Cherry-pick into the release branch all fixes that need to be included in this release (assuming they were merged into `trunk`).
 -   [ ] Push above changes to the release branch.
 
 ## Create the Testing Notes
@@ -42,11 +44,9 @@ Each porter is responsible for testing the PRs that fall under the focus of thei
     -   If some PRs are not testing as expected but they are not blockers: revert the relevant commits, remove the changes from testing steps and changelog, open an issue (or reopen the original one) and proceed with the release.
     -   If minor issues are discovered during the testing, each team is responsible for logging them in Github.
 
-## Update Pull Request description and get approvals
+## Push the button - Deploy
 
--   [ ] Go through the description of the release pull request and edit it to update all the sections and checklist instructions there.
 -   [ ] Execute `npm run deploy`
-    -   Note: the script automatically updates version numbers (commits on your behalf).
     -   **ALERT**: This script will ask you if this release will be deployed to WordPress.org. You should only answer yes for this release **if it's the latest release and you want to deploy to WordPress.org**. Otherwise, answer no. If you answer yes, you will get asked additional verification by the `npm run deploy` script about deploying a patch release to WordPress.org.
 
 ## If this release is deployed to WordPress.org
@@ -55,46 +55,49 @@ Each porter is responsible for testing the PRs that fall under the focus of thei
 -   [ ] Edit the [GitHub release](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases) and copy changelog into the release notes.
 -   [ ] The `#woo-blocks-repo` slack instance will be notified about the progress with the WordPress.org deploy. Watch for that. If anything goes wrong, an error will be reported and you can followup via the GitHub actions tab and the log for that workflow.
 -   [ ] After the wp.org workflow completes, confirm the following
-    -   [ ] Changelog, Version, and Last Updated on [WP.org plugin page](https://wordpress.org/plugins/woo-gutenberg-products-block/) is correct.
     -   [ ] Confirm svn tag is correct, e.g. [{{version}}](https://plugins.svn.wordpress.org/woo-gutenberg-products-block/tags/{{version}}/)
-    -   [ ] Confirm [WooCommerce.com plugin page](https://woocommerce.com/products/woocommerce-gutenberg-products-block/) is updated.
+    -   [ ] Changelog, Version, and Last Updated on [WP.org plugin page](https://wordpress.org/plugins/woo-gutenberg-products-block/) is correct.
+    -   [ ] Confirm [WooCommerce.com plugin page](https://woocommerce.com/products/woocommerce-gutenberg-products-block/) is updated. Note: this can take several hours, feel free to check it the following day.
     -   [ ] Download zip and smoke test.
     -   [ ] Test updating plugin from previous version.
 
 ## After Deploy
 
--   [ ] Merge this branch back into the base branch.
-    -   If the base branch was `trunk`, and this release was deployed to WordPress.org, then merge the branch into `trunk`.
-    -   If the base branch is the release branch this patch release is for, then merge branch into release branch and then merge the release branch back to `trunk` if the patch release is the latest released version. Otherwise just merge back into the release branch.
--   [ ] If you merged the branch to `trunk`, then update version on the `trunk` branch to be for the next version of the plugin and include the `dev` suffix (e.g. something like [`2.6-dev`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/commit/e27f053e7be0bf7c1d376f5bdb9d9999190ce158)) for the next version.
+-   [ ] Port to `trunk` the changes to the changelog, testing steps and required versions that you did in the previous steps. You can do so copy-and-pasting the changes in a new commit directly to `trunk`, or cherry-picking the commits that introduced those changes.
 -   [ ] Update the schedules p2 with the shipped date for the release (PdToLP-K-p2).
 -   [ ] Edit the GitHub milestone of the release you just shipped and add the current date as the due date (this is used to track ship date as well).
 
 ## Pull request in WooCommerce Core for Package update
 
-This only needs done if the patch release needs to be included in WooCommerce Core.
+This only needs done if the patch release needs to be included in WooCommerce Core. Reviewing and merging the PR is your team's responsibility, except in the case of `Fix Release Request`. In this case, the WooCommerce release manager reviews and merges the PR.
 
 -   [ ] Create a pull request for updating the package in WooCommerce core (based off of the WooCommerce core release branch this is deployed for).
 
+    -   [ ] Set the base branch (the branch that your PR will be merged into) to the correct one. It must be:
+        - `trunk` if the WC Blocks version you are releasing is higher than the one in core (you can find the current WC Blocks version in core in `plugins/woocommerce/composer.json`)
+        - `release/x.y` if the WC Blocks version in core is higher than the one you are releasing (`x.y` must be the version of WC core that will include the version of WC Blocks you are releasing)
     -   The content for the pull release can follow [this example](https://github.com/woocommerce/woocommerce/pull/32627).
 
         -   [ ] Increase the version of `woocommerce/woocommerce-blocks` in the `plugins/woocommerce/composer.json` file
         -   [ ] Run `composer update woocommerce/woocommerce-blocks` and make sure `composer-lock.json` was updated
-        -   [ ] Add a new file similar to this one [plugins/woocommerce/changelog/update-woocommerce-blocks-7.4.1](https://github.com/woocommerce/woocommerce/blob/5040a10d01896bcf40fd0ac538f2b7bc584ffe0a/plugins/woocommerce/changelog/update-woocommerce-blocks-7.4.1) with a similar content as below. For the Significance entry we’ll always use `minor`, or `patch` when including a patch release
+        -   [ ] Run `pnpm --filter=woocommerce changelog add` to create a new changelog file similar to this one [plugins/woocommerce/changelog/update-woocommerce-blocks-7.4.1](https://github.com/woocommerce/woocommerce/blob/5040a10d01896bcf40fd0ac538f2b7bc584ffe0a/plugins/woocommerce/changelog/update-woocommerce-blocks-7.4.1). The file will be auto-generated with your answers. For the _Significance_ entry we’ll always use `patch` for WC Blocks patch releases:
 
             ```md
-            Significance: minor
+            Significance: patch
             Type: update
 
-                Update WooCommerce Blocks to 7.4.1
+            Update WooCommerce Blocks to {{version}}
             ```
 
     -   The PR description can follow [this example](https://github.com/woocommerce/woocommerce/pull/32627).
         -   It lists all the WooCommerce Blocks versions that are being included since the last version that you edited in `plugins/woocommerce/composer.json`. Each version should have a link for the `Release PR`, `Testing instructions` and `Release post` (if available).
         -   The changelog should be aggregated from all the releases included in the package bump and grouped per type: `Enhancements`, `Bug Fixes`, `Various` etc. This changelog will be used in the release notes for the WooCommerce release. That's why it should only list the PRs that have WooCoomerce Core in the WooCommerce Visibility section of their description. Don't include changes available in the feature plugin or development builds.
 
--   Run through the testing checklist to ensure everything works in that branch for that package bump. **Note:** Testing should ensure any features/new blocks that are supposed to be behind feature gating for the core merge of this package update are working as expected.
--   Testing should include completing the [Smoke testing checklist](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/internal-developers/testing/smoke-testing.md). It's up to you to verify that those tests have been done.
+-   [ ] Build WC core from that branch with `pnpm run --filter='woocommerce' build` (you might need to [install the dependencies first](https://github.com/woocommerce/woocommerce#prerequisites)) and:
+
+    -   [ ] Make sure the correct version of WC Blocks is being loaded. This can be done testing at least one of the testing steps from the release.
+    -   [ ] Complete the [Smoke testing checklist](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/internal-developers/testing/smoke-testing.md).
+
 -   [ ] Verify and make any additional edits to the pull request description for things like: Changelog to be included with WooCommerce core, additional communication that might be needed elsewhere, additional marketing communication notes that may be needed, etc.
 
     -   [ ] Assign the corresponding WC version milestone to the PR
@@ -111,3 +114,5 @@ You only need to post public release announcements and update relevant public fa
     -   Ensure the release notes are included in the post verbatim.
     -   Don't forget to use category `WooCommerce Blocks Release Notes` for the post.
 -   [ ] Announce the release internally (`#woo-announcements` slack).
+-   [ ] Go through the description of the release pull request and edit it to update all the sections and checklist instructions there.
+-   [ ] Merge this PR into the base branch: `release/x.y.0`.

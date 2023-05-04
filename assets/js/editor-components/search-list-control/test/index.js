@@ -2,12 +2,13 @@
  * External dependencies
  */
 import { fireEvent, render } from '@testing-library/react';
-import { noop } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import { SearchListControl } from '../';
+
+const noop = () => {};
 
 const SELECTORS = {
 	listItems: '.woocommerce-search-list__list > li',
@@ -206,11 +207,14 @@ describe( 'SearchListControl', () => {
 	test( 'should render a search box and list of hierarchical options', () => {
 		const component = render(
 			<SearchListControl
-				instanceId={ 1 }
-				list={ hierarchicalList }
-				selected={ [] }
-				onChange={ noop }
+				isCompact
 				isHierarchical
+				instanceId={ 1 }
+				isSingle={ false }
+				list={ hierarchicalList }
+				onChange={ noop }
+				selected={ [] }
+				type={ 'text' }
 			/>
 		);
 		expect( component ).toMatchSnapshot();

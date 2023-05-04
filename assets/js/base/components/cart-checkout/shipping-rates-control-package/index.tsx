@@ -4,57 +4,23 @@
 import classNames from 'classnames';
 import { _n, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-import type { ReactElement } from 'react';
-import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
 import { Panel } from '@woocommerce/blocks-checkout';
 import Label from '@woocommerce/base-components/label';
-import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
-import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
+import { useCallback } from '@wordpress/element';
+import {
+	useShippingData,
+	useStoreEvents,
+} from '@woocommerce/base-context/hooks';
 import { sanitizeHTML } from '@woocommerce/utils';
+import { useDebouncedCallback } from 'use-debounce';
+import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
  */
 import PackageRates from './package-rates';
+import type { PackageProps } from './types';
 import './style.scss';
-
-interface PackageItem {
-	name: string;
-	key: string;
-	quantity: number;
-}
-
-interface Destination {
-	address_1: string;
-	address_2: string;
-	city: string;
-	state: string;
-	postcode: string;
-	country: string;
-}
-
-export interface PackageData {
-	destination: Destination;
-	name: string;
-	shipping_rates: CartShippingPackageShippingRate[];
-	items: PackageItem[];
-}
-
-export type PackageRateRenderOption = (
-	option: CartShippingPackageShippingRate
-) => PackageRateOption;
-
-interface PackageProps {
-	/* PackageId can be a string, WooCommerce Subscriptions uses strings for example, but WooCommerce core uses numbers */
-	packageId: string | number;
-	renderOption: PackageRateRenderOption;
-	collapse?: boolean;
-	packageData: PackageData;
-	className?: string;
-	collapsible?: boolean;
-	noResultsMessage: ReactElement;
-	showItems?: boolean;
-}
 
 export const ShippingRatesControlPackage = ( {
 	packageId,
@@ -62,15 +28,27 @@ export const ShippingRatesControlPackage = ( {
 	noResultsMessage,
 	renderOption,
 	packageData,
-	collapsible = false,
-	collapse = false,
-	showItems = false,
+	collapsible,
+	showItems,
 }: PackageProps ): ReactElement => {
-	const { selectShippingRate } = useSelectShippingRate();
+	const { selectShippingRate } = useShippingData();
+	const { dispatchCheckoutEvent } = useStoreEvents();
+	const multiplePackages =
+		document.querySelectorAll(
+			'.wc-block-components-shipping-rates-control__package'
+		).length > 1;
+
+	// If showItems is not set, we check if we have multiple packages.
+	// We sometimes don't want to show items even if we have multiple packages.
+	const shouldShowItems = showItems ?? multiplePackages;
+
+	// If collapsible is not set, we check if we have multiple packages.
+	// We sometimes don't want to collapse even if we have multiple packages.
+	const shouldBeCollapsible = collapsible ?? multiplePackages;
 
 	const header = (
 		<>
-			{ ( showItems || collapsible ) && (
+			{ ( shouldBeCollapsible || shouldShowItems ) && (
 				<div
 					className="wc-block-components-shipping-rates-control__package-title"
 					dangerouslySetInnerHTML={ {
@@ -78,7 +56,7 @@ export const ShippingRatesControlPackage = ( {
 					} }
 				/>
 			) }
-			{ showItems && (
+			{ shouldShowItems && (
 				<ul className="wc-block-components-shipping-rates-control__package-items">
 					{ Object.values( packageData.items ).map( ( v ) => {
 						const name = decodeEntities( v.name );
@@ -113,31 +91,44 @@ export const ShippingRatesControlPackage = ( {
 			) }
 		</>
 	);
-	const body = (
-		<PackageRates
-			className={ className }
-			noResultsMessage={ noResultsMessage }
-			rates={ packageData.shipping_rates }
-			onSelectRate={ ( newShippingRateId ) =>
-				selectShippingRate( newShippingRateId, packageId )
-			}
-			selectedRate={ packageData.shipping_rates.find(
-				( rate ) => rate.selected
-			) }
-			renderOption={ renderOption }
-		/>
+
+	const onSelectRate = useCallback(
+		( newShippingRateId: string ) => {
+			selectShippingRate( newShippingRateId, packageId );
+			dispatchCheckoutEvent( 'set-selected-shipping-rate', {
+				shippingRateId: newShippingRateId,
+			} );
+		},
+		[ dispatchCheckoutEvent, packageId, selectShippingRate ]
 	);
-	if ( collapsible ) {
+	const debouncedOnSelectRate = useDebouncedCallback( onSelectRate, 1000 );
+	const packageRatesProps = {
+		className,
+		noResultsMessage,
+		rates: packageData.shipping_rates,
+		onSelectRate: debouncedOnSelectRate,
+		selectedRate: packageData.shipping_rates.find(
+			( rate ) => rate.selected
+		),
+		renderOption,
+	};
+
+	if ( shouldBeCollapsible ) {
 		return (
 			<Panel
 				className="wc-block-components-shipping-rates-control__package"
-				initialOpen={ ! collapse }
+				// initialOpen remembers only the first value provided to it, so by the
+				// time we know we have several packages, initialOpen would be hardcoded to true.
+				// If we're rendering a panel, we're more likely rendering several
+				// packages and we want to them to be closed initially.
+				initialOpen={ false }
 				title={ header }
 			>
-				{ body }
+				<PackageRates { ...packageRatesProps } />
 			</Panel>
 		);
 	}
+
 	return (
 		<div
 			className={ classNames(
@@ -146,7 +137,7 @@ export const ShippingRatesControlPackage = ( {
 			) }
 		>
 			{ header }
-			{ body }
+			<PackageRates { ...packageRatesProps } />
 		</div>
 	);
 };

@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import type { Cart, CartMeta } from '@woocommerce/types';
+import type { Cart, CartMeta, ApiErrorResponse } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -15,20 +15,20 @@ import {
 	EMPTY_CART_ERRORS,
 	EMPTY_SHIPPING_RATES,
 	EMPTY_TAX_LINES,
+	EMPTY_PAYMENT_METHODS,
 	EMPTY_PAYMENT_REQUIREMENTS,
 	EMPTY_EXTENSIONS,
 } from '../constants';
-import type { ResponseError } from '../types';
 
 const EMPTY_PENDING_QUANTITY: [] = [];
 const EMPTY_PENDING_DELETE: [] = [];
 
 export interface CartState {
-	cartItemsPendingQuantity: Array< string >;
-	cartItemsPendingDelete: Array< string >;
+	cartItemsPendingQuantity: string[];
+	cartItemsPendingDelete: string[];
 	cartData: Cart;
 	metaData: CartMeta;
-	errors: Array< ResponseError >;
+	errors: ApiErrorResponse[];
 }
 export const defaultCartState: CartState = {
 	cartItemsPendingQuantity: EMPTY_PENDING_QUANTITY,
@@ -90,6 +90,7 @@ export const defaultCartState: CartState = {
 			tax_lines: EMPTY_TAX_LINES,
 		},
 		errors: EMPTY_CART_ITEM_ERRORS,
+		paymentMethods: EMPTY_PAYMENT_METHODS,
 		paymentRequirements: EMPTY_PAYMENT_REQUIREMENTS,
 		extensions: EMPTY_EXTENSIONS,
 	},
@@ -99,6 +100,7 @@ export const defaultCartState: CartState = {
 		applyingCoupon: '',
 		removingCoupon: '',
 		isCartDataStale: false,
+		fullShippingAddressPushed: false,
 	},
 	errors: EMPTY_CART_ERRORS,
 };

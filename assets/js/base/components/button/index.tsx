@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { Button as WPButton } from 'wordpress-components';
-import type { ReactNode } from 'react';
+import type { Button as WPButtonType } from '@wordpress/components';
 import classNames from 'classnames';
 import Spinner from '@woocommerce/base-components/spinner';
 
@@ -11,39 +11,29 @@ import Spinner from '@woocommerce/base-components/spinner';
  */
 import './style.scss';
 
-export interface ButtonProps extends WPButton.ButtonProps {
-	/**
-	 * Component wrapper classname
-	 *
-	 * @default 'wc-block-components-button'
-	 */
-	className?: string;
+export interface ButtonProps
+	extends Omit< WPButtonType.ButtonProps, 'variant' | 'href' > {
 	/**
 	 * Show spinner
 	 *
 	 * @default false
 	 */
-	showSpinner?: boolean;
-	/**
-	 * Button content
-	 */
-	children?: ReactNode;
-	/**
-	 * Button state
-	 */
-	disabled?: boolean;
-	/**
-	 * Event handler triggered when the button is clicked
-	 */
-	onClick?: ( e: React.MouseEvent< HTMLButtonElement, MouseEvent > ) => void;
-	/**
-	 * Button type
-	 */
-	type?: 'button' | 'input' | 'submit';
+	showSpinner?: boolean | undefined;
 	/**
 	 * Button variant
 	 */
 	variant?: 'text' | 'contained' | 'outlined';
+	/**
+	 * The URL the button should link to.
+	 */
+	href?: string | undefined;
+}
+
+export interface AnchorProps extends Omit< ButtonProps, 'href' > {
+	/**
+	 * Button href
+	 */
+	href?: string | undefined;
 }
 
 /**
@@ -59,6 +49,7 @@ const Button = ( {
 }: ButtonProps ): JSX.Element => {
 	const buttonClassName = classNames(
 		'wc-block-components-button',
+		'wp-element-button',
 		className,
 		variant,
 		{

@@ -18,13 +18,14 @@ import {
 import { supports } from './support';
 
 const blockConfig: BlockConfiguration = {
+	...sharedConfig,
 	apiVersion: 2,
 	title,
 	description,
 	usesContext: [ 'query', 'queryId', 'postId' ],
 	ancestor: [
-		'@woocommerce/all-products',
-		'@woocommerce/single-product',
+		'woocommerce/all-products',
+		'woocommerce/single-product',
 		'core/post-template',
 	],
 	icon: { src: icon },
@@ -33,7 +34,4 @@ const blockConfig: BlockConfiguration = {
 	edit,
 };
 
-registerBlockType( 'woocommerce/product-rating', {
-	...sharedConfig,
-	...blockConfig,
-} );
+registerBlockType( 'woocommerce/product-rating', { ...blockConfig } );

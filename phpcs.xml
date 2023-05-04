@@ -8,8 +8,8 @@
 	<exclude-pattern>languages/woo-gutenberg-products-block.php</exclude-pattern>
 
 	<!-- Configs -->
-	<config name="minimum_supported_wp_version" value="5.8" />
-	<config name="testVersion" value="7.0-" />
+	<config name="minimum_supported_wp_version" value="6.0" />
+	<config name="testVersion" value="7.2-" />
 
 	<!-- Rules -->
 	<rule ref="WooCommerce-Core" />
@@ -59,11 +59,14 @@
 	</rule>
 
 	<rule ref="Generic.Commenting.Todo">
-    	<exclude name="Generic.Commenting.Todo.TaskFound"/>
+		<exclude name="Generic.Commenting.Todo.TaskFound"/>
 		<exclude name="Generic.Commenting.Todo.CommentFound"/>
 	</rule>
 
 	<rule ref="Generic.Arrays.DisallowShortArraySyntax.Found">
-      <exclude-pattern>src/*</exclude-pattern>
-    </rule>
+		<exclude-pattern>src/*</exclude-pattern>
+	</rule>
+
+	<!-- Exclude Interactivity API-->
+	<exclude-pattern>./src/Interactivity/*</exclude-pattern>
 </ruleset>

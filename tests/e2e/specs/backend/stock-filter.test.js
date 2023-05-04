@@ -2,14 +2,18 @@
  * External dependencies
  */
 import {
+	switchBlockInspectorTab,
 	switchUserToAdmin,
-	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 import { visitBlockPage } from '@woocommerce/blocks-test-utils';
 
 /**
  * Internal dependencies
  */
+/**
+ * Internal dependencies
+ */
+import { openSettingsSidebar } from '../../utils';
 import { findLabelWithText } from '../../../utils';
 
 const block = {
@@ -30,8 +34,9 @@ describe( `${ block.name } Block`, () => {
 
 	describe( 'attributes', () => {
 		beforeEach( async () => {
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await page.click( block.class );
+			await switchBlockInspectorTab( 'Settings' );
 		} );
 
 		it( 'product count can be toggled', async () => {
@@ -47,6 +52,23 @@ describe( `${ block.name } Block`, () => {
 			const toggleLabel = await findLabelWithText( 'Apply filters' );
 			await expect( toggleLabel ).toToggleElement(
 				`${ block.class } .wc-block-filter-submit-button`
+			);
+		} );
+
+		it( 'allows changing the Display Style', async () => {
+			// Turn the display style to Dropdown
+			await expect( page ).toClick( 'button', { text: 'Dropdown' } );
+
+			await expect( page ).toMatchElement(
+				'.wc-block-stock-filter.style-dropdown'
+			);
+			// Turn the display style to List
+			await expect( page ).toClick( 'button', {
+				text: 'List',
+			} );
+
+			await expect( page ).toMatchElement(
+				'.wc-block-stock-filter.style-list'
 			);
 		} );
 	} );

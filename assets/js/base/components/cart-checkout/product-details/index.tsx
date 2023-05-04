@@ -1,9 +1,9 @@
 /**
  * External dependencies
  */
-import { kebabCase } from 'lodash';
+import { paramCase as kebabCase } from 'change-case';
 import { decodeEntities } from '@wordpress/html-entities';
-import type { ProductResponseItemData } from '@woocommerce/type-defs/product-response';
+import type { ProductResponseItemData } from '@woocommerce/types';
 
 /**
  * Internal dependencies

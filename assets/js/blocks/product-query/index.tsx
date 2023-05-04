@@ -3,19 +3,25 @@
  */
 import type { Block } from '@wordpress/blocks';
 import { addFilter } from '@wordpress/hooks';
+import { isWpVersion } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
 import { CORE_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 import { CORE_NAME as PRODUCT_SUMMARY_ID } from './variations/elements/product-summary';
+import { CORE_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';
 import './inspector-controls';
 import './style.scss';
 import './variations/handpicked-products';
 import './variations/product-query';
-import './variations/products-on-sale';
+import './variations/related-products';
 
-const EXTENDED_CORE_ELEMENTS = [ PRODUCT_SUMMARY_ID, PRODUCT_TITLE_ID ];
+const EXTENDED_CORE_ELEMENTS = [
+	PRODUCT_SUMMARY_ID,
+	PRODUCT_TEMPLATE_ID,
+	PRODUCT_TITLE_ID,
+];
 
 function registerProductQueryElementsNamespace(
 	props: Block,
@@ -36,8 +42,10 @@ function registerProductQueryElementsNamespace(
 	return props;
 }
 
-addFilter(
-	'blocks.registerBlockType',
-	'core/custom-class-name/attribute',
-	registerProductQueryElementsNamespace
-);
+if ( isWpVersion( '6.1', '>=' ) ) {
+	addFilter(
+		'blocks.registerBlockType',
+		'core/custom-class-name/attribute',
+		registerProductQueryElementsNamespace
+	);
+}

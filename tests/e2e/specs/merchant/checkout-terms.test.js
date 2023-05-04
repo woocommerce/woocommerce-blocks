@@ -1,12 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	merchant,
-	openDocumentSettingsSidebar,
-	setCheckbox,
-	unsetCheckbox,
-} from '@woocommerce/e2e-utils';
+import { merchant, setCheckbox, unsetCheckbox } from '@woocommerce/e2e-utils';
 import {
 	visitBlockPage,
 	selectBlockByName,
@@ -16,6 +11,7 @@ import {
 /**
  * Internal dependencies
  */
+import { openSettingsSidebar } from '../../utils';
 import {
 	shopper,
 	preventCompatibilityNotice,
@@ -55,6 +51,7 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 		await expect( page ).toMatch(
 			'By proceeding with your purchase you agree to our Terms and Conditions and Privacy Policy'
 		);
+		await shopper.block.fillInCheckoutWithTestData();
 		await shopper.block.placeOrder();
 		await expect( page ).toMatch( 'Order received' );
 	} );
@@ -64,7 +61,7 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 		await preventCompatibilityNotice();
 		await merchant.login();
 		await visitBlockPage( 'Checkout Block' );
-		await openDocumentSettingsSidebar();
+		await openSettingsSidebar();
 		await selectBlockByName( 'woocommerce/checkout-terms-block' );
 		const [ termsCheckboxLabel ] = await page.$x(
 			`//label[contains(text(), "Require checkbox") and contains(@class, "components-toggle-control__label")]`
@@ -79,6 +76,11 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await shopper.block.goToCheckout();
 		await shopper.block.fillBillingDetails( BILLING_DETAILS );
+
+		// Wait for the "Place Order" button to avoid flakey tests.
+		await page.waitForSelector(
+			'.wc-block-components-checkout-place-order-button:not([disabled])'
+		);
 
 		// Placing an order now, must lead to an error.
 		await page.click( '.wc-block-components-checkout-place-order-button' );
@@ -98,7 +100,7 @@ describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options',
 
 		// Deactivate checkboxes for T&S and Privacy Policy links.
 		await visitBlockPage( 'Checkout Block' );
-		await openDocumentSettingsSidebar();
+		await openSettingsSidebar();
 		await selectBlockByName( 'woocommerce/checkout-terms-block' );
 		await unsetCheckbox( termsCheckboxId );
 		await saveOrPublish();

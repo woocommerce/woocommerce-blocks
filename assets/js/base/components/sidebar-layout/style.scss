@@ -4,6 +4,10 @@
 	margin: 0 auto $gap;
 	position: relative;
 
+	.wc-block-must-login-prompt {
+		display: block;
+	}
+
 	.wc-block-components-main {
 		box-sizing: border-box;
 		margin: 0;
@@ -48,6 +52,10 @@
 		.wc-block-components-panel {
 			padding-left: $gap;
 			padding-right: $gap;
+		}
+		.wc-block-components-totals-coupon-link {
+			margin-left: $gap;
+			margin-right: $gap;
 		}
 
 		.wc-block-components-panel {

@@ -4,14 +4,16 @@
 import { useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
+import EditableButton from '@woocommerce/editor-components/editable-button';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import PageSelector from '@woocommerce/editor-components/page-selector';
 import { CART_PAGE_ID } from '@woocommerce/block-settings';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
+
 /**
  * Internal dependencies
  */
-import Block from './block';
+import { defaultButtonLabel } from './constants';
+
 export const Edit = ( {
 	attributes,
 	setAttributes,
@@ -19,12 +21,14 @@ export const Edit = ( {
 	attributes: {
 		checkoutPageId: number;
 		className: string;
+		buttonLabel: string;
 	};
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ): JSX.Element => {
 	const blockProps = useBlockProps();
-	const { checkoutPageId = 0, className } = attributes;
+	const { checkoutPageId = 0, buttonLabel } = attributes;
 	const { current: savedCheckoutPageId } = useRef( checkoutPageId );
+
 	const currentPostId = useSelect(
 		( select ) => {
 			if ( ! savedCheckoutPageId ) {
@@ -44,7 +48,7 @@ export const Edit = ( {
 				) && (
 					<PageSelector
 						pageId={ checkoutPageId }
-						setPageId={ ( id ) =>
+						setPageId={ ( id: number ) =>
 							setAttributes( { checkoutPageId: id } )
 						}
 						labels={ {
@@ -60,12 +64,16 @@ export const Edit = ( {
 					/>
 				) }
 			</InspectorControls>
-			<Noninteractive>
-				<Block
-					checkoutPageId={ checkoutPageId }
-					className={ className }
-				/>
-			</Noninteractive>
+			<EditableButton
+				className="wc-block-cart__submit-button"
+				value={ buttonLabel }
+				placeholder={ defaultButtonLabel }
+				onChange={ ( content ) => {
+					setAttributes( {
+						buttonLabel: content,
+					} );
+				} }
+			/>
 		</div>
 	);
 };

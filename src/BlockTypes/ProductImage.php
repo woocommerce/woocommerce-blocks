@@ -75,7 +75,7 @@ class ProductImage extends AbstractBlock {
 			'showProductLink'         => true,
 			'showSaleBadge'           => true,
 			'saleBadgeAlign'          => 'right',
-			'imageSizing'             => 'full-size',
+			'imageSizing'             => 'single',
 			'productId'               => 'number',
 			'isDescendentOfQueryLoop' => 'false',
 		);
@@ -141,16 +141,18 @@ class ProductImage extends AbstractBlock {
 	 * Render Image.
 	 *
 	 * @param \WC_Product $product Product object.
+	 * @param array       $attributes Parsed attributes.
 	 * @return string
 	 */
-	private function render_image( $product ) {
-		$image_info = wp_get_attachment_image_src( get_post_thumbnail_id( $product->get_id() ), 'woocommerce_thumbnail' );
+	private function render_image( $product, $attributes ) {
+		$image_type = 'single' == $attributes['imageSizing'] ? 'woocommerce_single' : 'woocommerce_thumbnail';
+		$image_info = wp_get_attachment_image_src( get_post_thumbnail_id( $product->get_id() ), $image_type );
 
 		if ( ! isset( $image_info[0] ) ) {
 			// The alt text is left empty on purpose, as it's considered a decorative image.
 			// More can be found here: https://www.w3.org/WAI/tutorials/images/decorative/.
 			// Github discussion for a context: https://github.com/woocommerce/woocommerce-blocks/pull/7651#discussion_r1019560494.
-			return sprintf( '<img src="%s" alt="" />', wc_placeholder_img_src( 'woocommerce_thumbnail' ) );
+			return sprintf( '<img src="%s" alt="" />', wc_placeholder_img_src( $image_type ) );
 		}
 
 		return sprintf(
@@ -168,7 +170,7 @@ class ProductImage extends AbstractBlock {
 	 *                           not in the post content on editor load.
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
-		$this->asset_data_registry->add( 'is_block_theme_enabled', wp_is_block_theme(), false );
+		$this->asset_data_registry->add( 'is_block_theme_enabled', wc_current_theme_is_fse_theme(), false );
 	}
 
 
@@ -188,23 +190,24 @@ class ProductImage extends AbstractBlock {
 		}
 		$parsed_attributes = $this->parse_attributes( $attributes );
 
-		$border_radius = StyleAttributesUtils::get_border_radius_class_and_style( $attributes );
-		$margin        = StyleAttributesUtils::get_margin_class_and_style( $attributes );
+		$border_radius      = StyleAttributesUtils::get_border_radius_class_and_style( $attributes );
+		$margin             = StyleAttributesUtils::get_margin_class_and_style( $attributes );
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
 		$post_id = $block->context['postId'];
 		$product = wc_get_product( $post_id );
 
 		if ( $product ) {
 			return sprintf(
-				'<div class="wc-block-components-product-image wc-block-grid__product-image" style="%1$s %2$s">
+				'<div class="wc-block-components-product-image wc-block-grid__product-image %1$s" style="%2$s">
 					%3$s
 				</div>',
-				isset( $border_radius['style'] ) ? esc_attr( $border_radius['style'] ) : '',
-				isset( $margin['style'] ) ? esc_attr( $margin['style'] ) : '',
+				esc_attr( $classes_and_styles['classes'] ),
+				esc_attr( $classes_and_styles['styles'] ),
 				$this->render_anchor(
 					$product,
 					$this->render_on_sale_badge( $product, $parsed_attributes ),
-					$this->render_image( $product ),
+					$this->render_image( $product, $parsed_attributes ),
 					$parsed_attributes
 				)
 			);

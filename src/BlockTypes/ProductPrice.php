@@ -42,7 +42,7 @@ class ProductPrice extends AbstractBlock {
 				'__experimentalFontWeight' => true,
 				'__experimentalFontStyle'  => true,
 			),
-			'__experimentalSelector' => '.wc-block-components-product-price',
+			'__experimentalSelector' => '.wp-block-woocommerce-product-price .wc-block-components-product-price',
 		);
 	}
 
@@ -82,13 +82,16 @@ class ProductPrice extends AbstractBlock {
 		$product = wc_get_product( $post_id );
 
 		if ( $product ) {
-			$classes_and_styles = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
+			$styles_and_classes            = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
+			$text_align_styles_and_classes = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
 
 			return sprintf(
-				'<div class="wc-block-components-product-price wc-block-grid__product-price %1$s">
-					%2$s
-				</div>',
-				esc_attr( $classes_and_styles['class'] ?? '' ),
+				'<div class="wp-block-woocommerce-product-price"><div class="wc-block-components-product-price wc-block-grid__product-price %1$s %2$s" style="%3$s">
+					%4$s
+				</div></div>',
+				esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
+				esc_attr( $styles_and_classes['classes'] ),
+				esc_attr( $styles_and_classes['styles'] ?? '' ),
 				$product->get_price_html()
 			);
 		}

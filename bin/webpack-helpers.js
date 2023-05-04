@@ -8,10 +8,6 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const CHECK_CIRCULAR_DEPS = process.env.CHECK_CIRCULAR_DEPS || false;
 const ASSET_CHECK = process.env.ASSET_CHECK === 'true';
 
-// If a package is not available, or missing functionality, in an old but __supported__ version of WordPress, it should be listed here.
-// Some packages are not available in legacy versions of WordPress, so we don't want to extract them.
-const requiredPackagesInWPLegacy = [];
-
 const wcDepMap = {
 	'@woocommerce/blocks-registry': [ 'wc', 'wcBlocksRegistry' ],
 	'@woocommerce/settings': [ 'wc', 'wcSettings' ],
@@ -26,7 +22,6 @@ const wcDepMap = {
 const wcHandleMap = {
 	'@woocommerce/blocks-registry': 'wc-blocks-registry',
 	'@woocommerce/settings': 'wc-settings',
-	'@woocommerce/block-settings': 'wc-settings',
 	'@woocommerce/block-data': 'wc-blocks-data-store',
 	'@woocommerce/data': 'wc-store-data',
 	'@woocommerce/shared-context': 'wc-blocks-shared-context',
@@ -63,6 +58,10 @@ const getAlias = ( options = {} ) => {
 			__dirname,
 			`../assets/js/${ pathPart }base/hooks/`
 		),
+		'@woocommerce/interactivity': path.resolve(
+			__dirname,
+			`../assets/js/${ pathPart }interactivity/`
+		),
 		'@woocommerce/base-utils': path.resolve(
 			__dirname,
 			`../assets/js/${ pathPart }base/utils/`
@@ -78,10 +77,6 @@ const getAlias = ( options = {} ) => {
 		'@woocommerce/block-hocs': path.resolve(
 			__dirname,
 			`../assets/js/${ pathPart }hocs`
-		),
-		'@woocommerce/blocks-registry': path.resolve(
-			__dirname,
-			'../assets/js/blocks-registry'
 		),
 		'@woocommerce/block-settings': path.resolve(
 			__dirname,
@@ -107,29 +102,21 @@ function findModuleMatch( module, match ) {
 }
 
 const requestToExternal = ( request ) => {
-	if ( requiredPackagesInWPLegacy.includes( request ) ) {
-		return false;
-	}
 	if ( wcDepMap[ request ] ) {
 		return wcDepMap[ request ];
 	}
 };
 
 const requestToHandle = ( request ) => {
-	if ( requiredPackagesInWPLegacy.includes( request ) ) {
-		return false;
-	}
 	if ( wcHandleMap[ request ] ) {
 		return wcHandleMap[ request ];
 	}
 };
 
-const getProgressBarPluginConfig = ( name, fileSuffix ) => {
-	const isLegacy = fileSuffix && fileSuffix === 'legacy';
-	const progressBarPrefix = isLegacy ? 'Legacy ' : '';
+const getProgressBarPluginConfig = ( name ) => {
 	return {
 		format:
-			chalk.blue( `Building ${ progressBarPrefix }${ name }` ) +
+			chalk.blue( `Building ${ name }` ) +
 			' [:bar] ' +
 			chalk.green( ':percent' ) +
 			' :msg (:elapsed seconds)',
@@ -137,7 +124,7 @@ const getProgressBarPluginConfig = ( name, fileSuffix ) => {
 		customSummary: ( time ) => {
 			console.log(
 				chalk.green.bold(
-					`${ progressBarPrefix }${ name } assets build completed (${ time })`
+					`${ name } assets build completed (${ time })`
 				)
 			);
 		},

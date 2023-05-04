@@ -12,56 +12,62 @@ const glob = require( 'glob' );
 // If a block is experimental, it should be marked with the `isExperimental`
 // property.
 const blocks = {
+	'active-filters': {},
+	'add-to-cart-form': {},
+	'all-products': {
+		customDir: 'products/all-products',
+	},
+	'all-reviews': {
+		customDir: 'reviews/all-reviews',
+	},
+	'attribute-filter': {},
+	breadcrumbs: {},
+	cart: {},
+	'catalog-sorting': {},
+	checkout: {},
+	'customer-account': {},
+	'featured-category': {
+		customDir: 'featured-items/featured-category',
+	},
+	'featured-product': {
+		customDir: 'featured-items/featured-product',
+	},
+	'filter-wrapper': {},
 	'handpicked-products': {},
+	// We need to keep the legacy-template id, so we need to add a custom config to point to the renamed classic-template folder
+	'legacy-template': {
+		customDir: 'classic-template',
+	},
+	'mini-cart': {},
+	'mini-cart-contents': {
+		customDir: 'mini-cart/mini-cart-contents',
+	},
+	'store-notices': {},
+	'price-filter': {},
 	'product-best-sellers': {},
 	'product-category': {},
 	'product-categories': {},
 	'product-new': {},
 	'product-on-sale': {},
+	'product-query': {
+		isExperimental: true,
+	},
+	'product-results-count': {},
+	'product-search': {},
+	'product-tag': {},
 	'product-top-rated': {},
 	'products-by-attribute': {},
-	'featured-product': {
-		customDir: 'featured-items/featured-product',
-	},
-	'all-reviews': {
-		customDir: 'reviews/all-reviews',
+	'rating-filter': {},
+	'reviews-by-category': {
+		customDir: 'reviews/reviews-by-category',
 	},
 	'reviews-by-product': {
 		customDir: 'reviews/reviews-by-product',
 	},
-	'reviews-by-category': {
-		customDir: 'reviews/reviews-by-category',
-	},
-	'product-search': {},
-	'product-tag': {},
-	'featured-category': {
-		customDir: 'featured-items/featured-category',
-	},
-	'all-products': {
-		customDir: 'products/all-products',
-	},
-	'price-filter': {},
-	'attribute-filter': {},
-	'stock-filter': {},
-	'active-filters': {},
-	'rating-filter': {},
-	cart: {},
-	checkout: {},
-	'mini-cart': {},
-	'mini-cart-contents': {
-		customDir: 'mini-cart/mini-cart-contents',
-	},
 	'single-product': {
 		isExperimental: true,
 	},
-	// We need to keep the legacy-template id, so we need to add a custom config to point to the renamed classic-template folder
-	'legacy-template': {
-		customDir: 'classic-template',
-	},
-	'product-query': {
-		isExperimental: true,
-	},
-	'filter-wrapper': {},
+	'stock-filter': {},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,
@@ -141,17 +147,19 @@ const entries = {
 	},
 	payments: {
 		'wc-payment-method-cheque':
-			'./assets/js/payment-method-extensions/payment-methods/cheque/index.js',
+			'./assets/js/extensions/payment-methods/cheque/index.js',
 		'wc-payment-method-paypal':
-			'./assets/js/payment-method-extensions/payment-methods/paypal/index.js',
+			'./assets/js/extensions/payment-methods/paypal/index.js',
 		'wc-payment-method-bacs':
-			'./assets/js/payment-method-extensions/payment-methods/bacs/index.js',
+			'./assets/js/extensions/payment-methods/bacs/index.js',
 		'wc-payment-method-cod':
-			'./assets/js/payment-method-extensions/payment-methods/cod/index.js',
+			'./assets/js/extensions/payment-methods/cod/index.js',
 	},
 	extensions: {
 		'wc-blocks-google-analytics':
 			'./assets/js/extensions/google-analytics/index.ts',
+		'wc-shipping-method-pickup-location':
+			'./assets/js/extensions/shipping-methods/pickup-location/index.js',
 	},
 };
 

@@ -2,50 +2,51 @@
 /**
  * External dependencies
  */
-import type { ReactElement } from 'react';
 import {
 	useBlockProps,
 	InnerBlocks,
-	BlockControls,
+	InspectorControls,
 } from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
-import { filledCart, removeCart } from '@woocommerce/icons';
-import { Icon } from '@wordpress/icons';
 import { EditorProvider } from '@woocommerce/base-context';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import type { TemplateArray } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
+import type { FocusEvent, ReactElement } from 'react';
+import { __ } from '@wordpress/i18n';
+import {
+	PanelBody,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUnitControl as UnitControl,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import { useViewSwitcher, useForcedLayout } from '../../cart-checkout-shared';
+import { useForcedLayout } from '../../cart-checkout-shared';
 import { MiniCartInnerBlocksStyle } from './inner-blocks-style';
 import './editor.scss';
+import { attributes as defaultAttributes } from './attributes';
 
 // Array of allowed block names.
 const ALLOWED_BLOCKS = [
 	'woocommerce/filled-mini-cart-contents-block',
 	'woocommerce/empty-mini-cart-contents-block',
 ];
-
-const views = [
-	{
-		view: 'woocommerce/filled-mini-cart-contents-block',
-		label: __( 'Filled Mini Cart', 'woo-gutenberg-products-block' ),
-		icon: <Icon icon={ filledCart } />,
-	},
-	{
-		view: 'woocommerce/empty-mini-cart-contents-block',
-		label: __( 'Empty Mini Cart', 'woo-gutenberg-products-block' ),
-		icon: <Icon icon={ removeCart } />,
-	},
-];
+const MIN_WIDTH = 300;
 
 interface Props {
 	clientId: string;
+	attributes: Record< string, unknown >;
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
 }
 
-const Edit = ( { clientId }: Props ): ReactElement => {
+const Edit = ( {
+	clientId,
+	attributes,
+	setAttributes,
+}: Props ): ReactElement => {
+	const { currentView, width } = attributes;
+
 	const blockProps = useBlockProps( {
 		/**
 		 * This is a workaround for the Site Editor to calculate the
@@ -55,6 +56,7 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 		 */
 		style: {
 			minHeight: '100vh',
+			width,
 		},
 	} );
 
@@ -62,11 +64,6 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 		[ 'woocommerce/filled-mini-cart-contents-block', {}, [] ],
 		[ 'woocommerce/empty-mini-cart-contents-block', {}, [] ],
 	] as TemplateArray;
-
-	const { currentView, component: ViewSwitcherComponent } = useViewSwitcher(
-		clientId,
-		views
-	);
 
 	useForcedLayout( {
 		clientId,
@@ -128,17 +125,62 @@ const Edit = ( { clientId }: Props ): ReactElement => {
 	}, [] );
 
 	return (
-		<div { ...blockProps }>
-			<EditorProvider currentView={ currentView }>
-				<BlockControls>{ ViewSwitcherComponent }</BlockControls>
-				<InnerBlocks
-					allowedBlocks={ ALLOWED_BLOCKS }
-					template={ defaultTemplate }
-					templateLock={ false }
-				/>
-			</EditorProvider>
-			<MiniCartInnerBlocksStyle style={ blockProps.style } />
-		</div>
+		<>
+			{ isFeaturePluginBuild() && (
+				<InspectorControls key="inspector">
+					<PanelBody
+						title={ __(
+							'Dimensions',
+							'woo-gutenberg-products-block'
+						) }
+						initialOpen
+					>
+						<UnitControl
+							onChange={ ( value ) => {
+								setAttributes( { width: value } );
+							} }
+							onBlur={ ( e: FocusEvent< HTMLInputElement > ) => {
+								if ( e.target.value === '' ) {
+									setAttributes( {
+										width: defaultAttributes.width.default,
+									} );
+								} else if (
+									Number( e.target.value ) < MIN_WIDTH
+								) {
+									setAttributes( {
+										width: MIN_WIDTH + 'px',
+									} );
+								}
+							} }
+							value={ width }
+							units={ [
+								{
+									value: 'px',
+									label: 'px',
+									default: defaultAttributes.width.default,
+								},
+							] }
+						/>
+					</PanelBody>
+				</InspectorControls>
+			) }
+			<div
+				className="wc-block-components-drawer__screen-overlay"
+				aria-hidden="true"
+			></div>
+			<div className="wc-block-editor-mini-cart-contents__wrapper">
+				<div { ...blockProps }>
+					<EditorProvider currentView={ currentView }>
+						<InnerBlocks
+							allowedBlocks={ ALLOWED_BLOCKS }
+							template={ defaultTemplate }
+							templateLock={ false }
+						/>
+					</EditorProvider>
+					<MiniCartInnerBlocksStyle style={ blockProps.style } />
+				</div>
+			</div>
+		</>
 	);
 };
 

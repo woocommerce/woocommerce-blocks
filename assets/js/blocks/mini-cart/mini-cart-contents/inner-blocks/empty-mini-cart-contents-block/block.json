@@ -1,7 +1,7 @@
 {
 	"name": "woocommerce/empty-mini-cart-contents-block",
 	"version": "1.0.0",
-	"title": "Empty Mini Cart view.",
+	"title": "Empty Mini Cart view",
 	"description": "Blocks that are displayed when the Mini Cart is empty.",
 	"category": "woocommerce",
 	"supports": {
@@ -23,5 +23,6 @@
 	},
 	"parent": [ "woocommerce/mini-cart-contents" ],
 	"textdomain": "woo-gutenberg-products-block",
-	"apiVersion": 2
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
 }

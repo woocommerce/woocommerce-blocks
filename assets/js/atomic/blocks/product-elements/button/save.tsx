@@ -4,18 +4,30 @@
 import { useBlockProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
+/**
+ * Internal dependencies
+ */
+import { BlockAttributes } from './types';
+
 type Props = {
-	attributes: Record< string, unknown > & {
-		className?: string;
-	};
+	attributes: BlockAttributes;
 };
 
-export const Save = ( { attributes }: Props ): JSX.Element => {
+const Save = ( { attributes }: Props ): JSX.Element | null => {
+	if ( attributes.isDescendentOfQueryLoop ) {
+		return null;
+	}
+
 	return (
 		<div
 			{ ...useBlockProps.save( {
-				className: classnames( 'is-loading', attributes.className ),
+				className: classnames( 'is-loading', attributes.className, {
+					[ `has-custom-width wp-block-button__width-${ attributes.width }` ]:
+						attributes.width,
+				} ),
 			} ) }
 		/>
 	);
 };
+
+export default Save;

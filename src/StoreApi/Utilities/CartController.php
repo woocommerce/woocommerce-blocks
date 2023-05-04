@@ -108,6 +108,8 @@ class CartController {
 		/**
 		 * Filters the item being added to the cart.
 		 *
+		 * @since 2.5.0
+		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
 		 * @param array $cart_item_data Array of cart item data being added to the cart.
@@ -134,6 +136,8 @@ class CartController {
 		/**
 		 * Filters the entire cart contents when the cart changes.
 		 *
+		 * @since 2.5.0
+		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
 		 * @param array $cart_contents Array of all cart items.
@@ -146,6 +150,8 @@ class CartController {
 		 *
 		 * This hook fires when an item is added to the cart. This is triggered from the Store API in this context, but
 		 * WooCommerce core add to cart events trigger the same hook.
+		 *
+		 * @since 2.5.0
 		 *
 		 * @internal Matches action name in WooCommerce core.
 		 *
@@ -182,7 +188,7 @@ class CartController {
 		$cart_item = $this->get_cart_item( $item_id );
 
 		if ( empty( $cart_item ) ) {
-			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), 404 );
+			throw new RouteException( 'woocommerce_rest_cart_invalid_key', __( 'Cart item does not exist.', 'woo-gutenberg-products-block' ), 409 );
 		}
 
 		$product = $cart_item['data'];
@@ -251,6 +257,8 @@ class CartController {
 		 * This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture
 		 * notices and convert to exceptions instead.
 		 *
+		 * @since 7.2.0
+		 *
 		 * @deprecated
 		 * @param boolean $passed_validation True if the item passed validation.
 		 * @param integer $product_id Product ID being validated.
@@ -299,6 +307,8 @@ class CartController {
 		 *
 		 * Fire action to validate add to cart. Functions hooking into this should throw an \Exception to prevent
 		 * add to cart from happening.
+		 *
+		 * @since 7.1.0
 		 *
 		 * @param \WC_Product $product Product object being added to the cart.
 		 * @param array       $request Add to cart request params including id, quantity, and variation attributes.
@@ -411,6 +421,8 @@ class CartController {
 		 *
 		 * Functions hooking into this should add custom errors using the provided WP_Error instance.
 		 *
+		 * @since 7.2.0
+		 *
 		 * @example See docs/examples/validate-cart.md
 		 *
 		 * @param \WP_Error $errors  WP_Error object.
@@ -436,6 +448,8 @@ class CartController {
 		 * Allow 3rd parties to validate cart items. This is a legacy hook from Woo core.
 		 * This filter will be deprecated because it encourages usage of wc_add_notice. For the API we need to capture
 		 * notices and convert to wp errors instead.
+		 *
+		 * @since 7.2.0
 		 *
 		 * @deprecated
 		 * @internal Matches action name in WooCommerce core.
@@ -639,6 +653,8 @@ class CartController {
 		 * Fire action to validate add to cart. Functions hooking into this should throw an \Exception to prevent
 		 * add to cart from occurring.
 		 *
+		 * @since 7.1.0
+		 *
 		 * @param \WC_Product $product Product object being added to the cart.
 		 * @param array       $cart_item Cart item array.
 		 */
@@ -799,11 +815,6 @@ class CartController {
 			return [];
 		}
 
-		if ( Package::feature()->is_experimental_build() ) {
-			// This is a temporary measure until we can bring such change to WooCommerce core.
-			add_filter( 'woocommerce_get_shipping_methods', [ $this, 'enable_local_pickup_without_address' ] );
-		}
-
 		$packages = $cart->get_shipping_packages();
 
 		// Add extra package data to array.
@@ -822,38 +833,9 @@ class CartController {
 
 		$packages = $calculate_rates ? wc()->shipping()->calculate_shipping( $packages ) : $packages;
 
-		if ( Package::feature()->is_experimental_build() ) {
-			// This is a temporary measure until we can bring such change to WooCommerce core.
-			remove_filter( 'woocommerce_get_shipping_methods', [ $this, 'enable_local_pickup_without_address' ] );
-		}
-
 		return $packages;
 	}
 
-	/**
-	 * We want to make local pickup always avaiable without checking for a shipping zone or address.
-	 *
-	 * @param array $shipping_methods Package we're checking against right now.
-	 * @return array $shipping_methods Shipping methods with local pickup.
-	 */
-	public function enable_local_pickup_without_address( $shipping_methods ) {
-		$shipping_zones = \WC_Shipping_Zones::get_zones( 'admin' );
-		$worldwide_zone = new \WC_Shipping_Zone( 0 );
-		$all_methods    = array_map(
-			function( $_shipping_zone ) {
-				return $_shipping_zone['shipping_methods'];
-			},
-			$shipping_zones
-		);
-		$all_methods    = array_merge_recursive( $worldwide_zone->get_shipping_methods( false, 'admin' ), ...$all_methods );
-		$local_pickups  = array_filter(
-			$all_methods,
-			function( $method ) {
-				return 'local_pickup' === $method->id;
-			}
-		);
-		return array_merge( $shipping_methods, $local_pickups );
-	}
 	/**
 	 * Creates a name for a package.
 	 *
@@ -864,6 +846,8 @@ class CartController {
 	protected function get_package_name( $package, $index ) {
 		/**
 		 * Filters the shipping package name.
+		 *
+		 * @since 4.3.0
 		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
@@ -877,10 +861,10 @@ class CartController {
 			$index > 1 ?
 				sprintf(
 					/* translators: %d: shipping package number */
-					_x( 'Shipping method %d', 'shipping packages', 'woo-gutenberg-products-block' ),
+					_x( 'Shipment %d', 'shipping packages', 'woo-gutenberg-products-block' ),
 					$index
 				) :
-				_x( 'Shipping method', 'shipping packages', 'woo-gutenberg-products-block' ),
+				_x( 'Shipment 1', 'shipping packages', 'woo-gutenberg-products-block' ),
 			$package['package_id'],
 			$package
 		);
@@ -962,6 +946,8 @@ class CartController {
 			/**
 			 * Filters if a coupon can be applied alongside other individual use coupons.
 			 *
+			 * @since 2.6.0
+			 *
 			 * @internal Matches filter name in WooCommerce core.
 			 *
 			 * @param boolean $apply_with_individual_use_coupon Defaults to false.
@@ -987,6 +973,8 @@ class CartController {
 			/**
 			 * Filter coupons to remove when applying an individual use coupon.
 			 *
+			 * @since 2.6.0
+			 *
 			 * @internal Matches filter name in WooCommerce core.
 			 *
 			 * @param array $coupons Array of coupons to remove from the cart.
@@ -1008,6 +996,8 @@ class CartController {
 
 		/**
 		 * Fires after a coupon has been applied to the cart.
+		 *
+		 * @since 2.6.0
 		 *
 		 * @internal Matches action name in WooCommerce core.
 		 *
@@ -1148,6 +1138,8 @@ class CartController {
 		/**
 		 * Filter cart item data for add to cart requests.
 		 *
+		 * @since 2.5.0
+		 *
 		 * @internal Matches filter name in WooCommerce core.
 		 *
 		 * @param array $cart_item_data Array of other cart item data.
@@ -1167,6 +1159,8 @@ class CartController {
 		if ( $product->is_sold_individually() ) {
 			/**
 			 * Filter sold individually quantity for add to cart requests.
+			 *
+			 * @since 2.5.0
 			 *
 			 * @internal Matches filter name in WooCommerce core.
 			 *
@@ -1242,6 +1236,11 @@ class CartController {
 				);
 			}
 
+			// Fills request array with unspecified attributes that have default values. This ensures the variation always has full data.
+			if ( '' !== $expected_value && ! isset( $request['variation'][ wc_variation_attribute_name( $attribute['name'] ) ] ) ) {
+				$request['variation'][ wc_variation_attribute_name( $attribute['name'] ) ] = $expected_value;
+			}
+
 			// If no attribute was posted, only error if the variation has an 'any' attribute which requires a value.
 			if ( '' === $expected_value ) {
 				$missing_attributes[] = $attribute_label;
@@ -1256,6 +1255,8 @@ class CartController {
 				400
 			);
 		}
+
+		ksort( $request['variation'] );
 
 		return $request;
 	}

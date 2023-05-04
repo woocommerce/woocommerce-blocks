@@ -47,15 +47,30 @@ Checkout:
 
 ### Passed parameters
 
--   `collapsible`: `Boolean` If a shipping package panel should be collapsible or not, this is false in Checkout and true in Cart.
--   `collapse`: `Boolean` If a panel should be collapsed by default, this is true if there's more than 1 fill registered (Core Shipping options are registered as a fill and they're counted).
--   `showItems`: `Boolean` If we should show the content of each package, this is true if there's more than 1 fill registered (Core Shipping options are registered as a fill and they're counted).
+-   `collapsible`: `Boolean|undefined` If a shipping package panel should be collapsible or not, this is false in Checkout and undefined in Cart.
+-   `collapse`: `Boolean` If a panel should be collapsed by default, this is true if if panels are collapsible.
+-   `showItems`: `Boolean|undefined` If we should show the content of each package, this is undefined in Cart and Checkout and is left to the actual package logic to decide.
 -   `noResultsMessage`: A React element that you can render if there are no shipping options.
 -   `renderOption`: a render function that takes a rate object and returns a render option.
 -   `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
 -   `extensions`: external data registered by third-party developers using `ExtendSchema`, if you used `ExtendSchema` on `wc/store/cart` you would find your data under your namespace here.
 -   `components`: an object containing components you can use to render your own shipping rates, it contains `ShippingRatesControlPackage`.
 -   `context`, equal to the name of the Block in which the fill is rendered: `woocommerce/cart` or `woocommerce/checkout`
+
+## ExperimentalOrderLocalPickupPackages
+
+This slot renders inside the Checkout Pickup Options block in the Checkout block. It does not render in the Cart block.
+
+Checkout:
+
+![Example of ExperimentalOrderLocalPickupPackages in the Checkout block](https://user-images.githubusercontent.com/5656702/222814945-a449d016-0621-4a70-b0f4-2ae1ce6487f1.png)
+
+### Passed parameters
+
+-   `renderPickupLocation`: a render function that renders the address details of a local pickup option.
+-   `cart`: `wc/store/cart` data but in `camelCase` instead of `snake_case`. [Object breakdown.](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L172-L188)
+-   `extensions`: external data registered by third-party developers using `ExtendSchema`, if you used `ExtendSchema` on `wc/store/cart` you would find your data under your namespace here.
+-   `components`: an object containing components you can use to render your own pickup rates, it contains `ShippingRatesControlPackage` and `RadioControl`.
 
 ## ExperimentalDiscountsMeta
 

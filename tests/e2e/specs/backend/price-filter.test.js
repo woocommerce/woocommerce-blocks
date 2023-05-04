@@ -2,13 +2,18 @@
  * External dependencies
  */
 import {
-	openDocumentSettingsSidebar,
+	switchBlockInspectorTab,
 	switchUserToAdmin,
 } from '@wordpress/e2e-test-utils';
 import {
 	visitBlockPage,
 	selectBlockByName,
 } from '@woocommerce/blocks-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { openSettingsSidebar } from '../../utils.js';
 
 const block = {
 	name: 'Filter by Price',
@@ -29,8 +34,9 @@ describe( `${ block.name } Block`, () => {
 
 		describe( 'Attributes', () => {
 			beforeEach( async () => {
-				await openDocumentSettingsSidebar();
+				await openSettingsSidebar();
 				await selectBlockByName( block.slug );
+				await switchBlockInspectorTab( 'Settings' );
 			} );
 
 			it( "allows changing the block's title", async () => {

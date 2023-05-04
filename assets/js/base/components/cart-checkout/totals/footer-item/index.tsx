@@ -5,14 +5,14 @@ import { __, sprintf } from '@wordpress/i18n';
 import classNames from 'classnames';
 import { createInterpolateElement } from '@wordpress/element';
 import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
-import {
-	__experimentalApplyCheckoutFilter,
-	TotalsItem,
-} from '@woocommerce/blocks-checkout';
+import { applyCheckoutFilter, TotalsItem } from '@woocommerce/blocks-checkout';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { getSetting } from '@woocommerce/settings';
-import { CartResponseTotals, Currency } from '@woocommerce/types';
-import { LooselyMustHave } from '@woocommerce/type-defs/utils';
+import {
+	CartResponseTotals,
+	Currency,
+	LooselyMustHave,
+} from '@woocommerce/types';
 import { formatPrice } from '@woocommerce/price-format';
 
 /**
@@ -57,11 +57,11 @@ const TotalsFooterItem = ( {
 		tax_lines: taxLines,
 	} = values;
 
-	// Prepare props to pass to the __experimentalApplyCheckoutFilter filter.
+	// Prepare props to pass to the applyCheckoutFilter filter.
 	// We need to pluck out receiveCart.
 	// eslint-disable-next-line no-unused-vars
 	const { receiveCart, ...cart } = useStoreCart();
-	const label = __experimentalApplyCheckoutFilter( {
+	const label = applyCheckoutFilter( {
 		filterName: 'totalLabel',
 		defaultValue: __( 'Total', 'woo-gutenberg-products-block' ),
 		extensions: cart.extensions,

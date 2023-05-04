@@ -1,4 +1,9 @@
-export const blockAttributes = {
+/**
+ * External dependencies
+ */
+import type { BlockAttributes } from '@wordpress/blocks';
+
+export const blockAttributes: BlockAttributes = {
 	productId: {
 		type: 'number',
 		default: 0,
@@ -10,6 +15,10 @@ export const blockAttributes = {
 	textAlign: {
 		type: 'string',
 		default: '',
+	},
+	isDescendentOfSingleProductBlock: {
+		type: 'boolean',
+		default: false,
 	},
 };
 

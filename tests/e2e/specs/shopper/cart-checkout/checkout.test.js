@@ -3,7 +3,6 @@
  */
 import {
 	merchant,
-	openDocumentSettingsSidebar,
 	setCheckbox,
 	unsetCheckbox,
 	withRestApi,
@@ -14,6 +13,7 @@ import {
 	saveOrPublish,
 	getToggleIdByLabel,
 } from '@woocommerce/blocks-test-utils';
+import { visitAdminPage } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -26,21 +26,156 @@ import {
 	SHIPPING_DETAILS,
 	SIMPLE_PHYSICAL_PRODUCT_NAME,
 	SIMPLE_VIRTUAL_PRODUCT_NAME,
+	BASE_URL,
 } from '../../../../utils';
-
-import { createCoupon } from '../../../utils';
-
-if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
-	// Skips all the tests if it's a WooCommerce Core process environment.
-	// eslint-disable-next-line jest/no-focused-tests, jest/expect-expect
-	test.only( 'Skipping Cart & Checkout tests', () => {} );
-}
+import { merchant as merchantUtils } from '../../../../utils/merchant';
+import { createCoupon, openSettingsSidebar } from '../../../utils';
 
 let coupon;
 
 describe( 'Shopper → Checkout', () => {
 	beforeAll( async () => {
+		// Check that Woo Collection is enabled.
+		await page.goto(
+			`${ BASE_URL }?check_third_party_local_pickup_method`
+		);
+		// eslint-disable-next-line jest/no-standalone-expect
+		await expect( page ).toMatch( 'Woo Collection' );
+
 		await shopper.block.emptyCart();
+	} );
+
+	describe( 'Local pickup', () => {
+		const NORMAL_SHIPPING_NAME = 'Normal Shipping';
+
+		beforeAll( async () => {
+			// Enable local pickup.
+			await visitAdminPage(
+				'admin.php',
+				'page=wc-settings&tab=shipping&section=pickup_location'
+			);
+
+			const localPickupCheckbox = await page.waitForXPath(
+				'//input[@name="local_pickup_enabled"]'
+			);
+			const isCheckboxChecked = await page.evaluate(
+				( checkbox ) => checkbox.checked,
+				localPickupCheckbox
+			);
+
+			if ( isCheckboxChecked === true ) {
+				return;
+			}
+
+			// eslint-disable-next-line jest/no-standalone-expect
+			await expect( page ).toClick( 'label', {
+				text: 'Enable local pickup',
+			} );
+			// eslint-disable-next-line jest/no-standalone-expect
+			await expect( page ).toClick( 'button', {
+				text: 'Save changes',
+			} );
+		} );
+		afterAll( async () => {
+			// Disable local pickup.
+			await visitAdminPage(
+				'admin.php',
+				'page=wc-settings&tab=shipping&section=pickup_location'
+			);
+
+			const localPickupCheckbox = await page.waitForXPath(
+				'//input[@name="local_pickup_enabled"]'
+			);
+			const isCheckboxChecked = await page.evaluate(
+				( checkbox ) => checkbox.checked,
+				localPickupCheckbox
+			);
+
+			// Skip this if it's already unchecked.
+			if ( isCheckboxChecked === false ) {
+				return;
+			}
+
+			// eslint-disable-next-line jest/no-standalone-expect
+			await expect( page ).toClick( 'label', {
+				text: 'Enable local pickup',
+			} );
+			// eslint-disable-next-line jest/no-standalone-expect
+			await expect( page ).toClick( 'button', {
+				text: 'Save changes',
+			} );
+		} );
+		it( 'The shopper can choose a local pickup option', async () => {
+			await shopper.block.emptyCart();
+			await shopper.block.goToShop();
+			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
+			await shopper.block.goToCheckout();
+			await expect( page ).toClick(
+				'.wc-block-checkout__shipping-method-option-title',
+				{
+					text: 'Local Pickup',
+				}
+			);
+			expect( page ).toMatch( 'Woo Collection' );
+			await shopper.block.fillBillingDetails( BILLING_DETAILS );
+			await shopper.block.placeOrder();
+			await shopper.block.verifyBillingDetails(
+				BILLING_DETAILS,
+				'.woocommerce-customer-details address'
+			);
+		} );
+
+		it( 'Switching between local pickup and shipping does not affect the address', async () => {
+			await shopper.block.emptyCart();
+			await shopper.block.goToShop();
+			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
+			await shopper.block.goToCheckout();
+			await expect( page ).toClick(
+				'.wc-block-checkout__shipping-method-option-title',
+				{
+					text: 'Local Pickup',
+				}
+			);
+			expect( page ).toMatch( 'Woo Collection' );
+			await shopper.block.fillBillingDetails( BILLING_DETAILS );
+
+			await expect( page ).toFill(
+				'input#email',
+				'thisShouldRemainHere@mail.com'
+			);
+
+			await expect( page ).toClick(
+				'.wc-block-checkout__shipping-method-option-title',
+				{
+					text: 'Shipping',
+				}
+			);
+
+			await page.waitForXPath(
+				`//div[contains(@class, "wc-block-components-totals-item__description")][contains(text(), "${ NORMAL_SHIPPING_NAME }")]`
+			);
+
+			const enteredEmail = await page.evaluate( () => {
+				return document.getElementById( 'email' ).value;
+			} );
+
+			expect( enteredEmail ).toEqual( 'thisShouldRemainHere@mail.com' );
+
+			await expect( page ).toFill(
+				'input#email',
+				'thisShouldRemainHereToo@mail.com'
+			);
+
+			await expect( page ).toFill( 'input#shipping-first_name', 'Test' );
+
+			const secondEnteredEmail = await page.evaluate( () => {
+				return document.getElementById( 'email' ).value;
+			} );
+
+			expect( secondEnteredEmail ).toEqual(
+				'thisShouldRemainHereToo@mail.com'
+			);
+		} );
 	} );
 
 	describe( 'Payment Methods', () => {
@@ -65,11 +200,14 @@ describe( 'Shopper → Checkout', () => {
 	} );
 
 	describe( 'Shipping and Billing Addresses', () => {
+		const NORMAL_SHIPPING_NAME = 'Normal Shipping';
+		const NORMAL_SHIPPING_PRICE = '$20.00';
+
 		beforeAll( async () => {
 			await preventCompatibilityNotice();
 			await merchant.login();
 			await visitBlockPage( 'Checkout Block' );
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
@@ -82,7 +220,7 @@ describe( 'Shopper → Checkout', () => {
 		afterAll( async () => {
 			await shopper.block.emptyCart();
 			await visitBlockPage( 'Checkout Block' );
-			await openDocumentSettingsSidebar();
+			await openSettingsSidebar();
 			await selectBlockByName(
 				'woocommerce/checkout-shipping-address-block'
 			);
@@ -97,13 +235,51 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
 			await shopper.block.goToCheckout();
-			await page.waitForSelector( '#checkbox-control-0' );
-			await unsetCheckbox( '#checkbox-control-0' );
+			await page.waitForSelector(
+				'.wc-block-checkout__use-address-for-billing input[type="checkbox"]'
+			);
+			await unsetCheckbox(
+				'.wc-block-checkout__use-address-for-billing input[type="checkbox"]'
+			);
 			await shopper.block.fillShippingDetails( SHIPPING_DETAILS );
 			await shopper.block.fillBillingDetails( BILLING_DETAILS );
+			await shopper.block.selectAndVerifyShippingOption(
+				NORMAL_SHIPPING_NAME,
+				NORMAL_SHIPPING_PRICE
+			);
 			await shopper.block.placeOrder();
 			await shopper.block.verifyShippingDetails( SHIPPING_DETAILS );
 			await shopper.block.verifyBillingDetails( BILLING_DETAILS );
+		} );
+		it( 'User can add postcodes for different countries', async () => {
+			await shopper.block.goToShop();
+			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
+			await shopper.block.goToCheckout();
+			await page.waitForSelector(
+				'.wc-block-checkout__use-address-for-billing input[type="checkbox"]'
+			);
+			await unsetCheckbox(
+				'.wc-block-checkout__use-address-for-billing input[type="checkbox"]'
+			);
+			await shopper.block.fillShippingDetails( {
+				...SHIPPING_DETAILS,
+				country: 'Albania',
+				state: 'Berat',
+				postcode: '1234',
+			} );
+
+			await shopper.block.fillBillingDetails( {
+				...BILLING_DETAILS,
+				country: 'United Kingdom',
+				postcode: 'SW1 1AA',
+			} );
+
+			await expect( page ).not.toMatchElement(
+				'.wc-block-components-validation-error p',
+				{
+					text: 'Please enter a valid postcode',
+				}
+			);
 		} );
 	} );
 
@@ -145,37 +321,37 @@ describe( 'Shopper → Checkout', () => {
 			await expect( page ).toMatchElement(
 				'#email ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please provide a valid email address',
+					text: 'Please enter a valid email address',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-first_name ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill',
+					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-last_name ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill',
+					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-address_1 ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill',
+					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-city ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill',
+					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
 				'#billing-postcode ~ .wc-block-components-validation-error p',
 				{
-					text: 'Please fill',
+					text: 'Please enter',
 				}
 			);
 		} );
@@ -212,6 +388,11 @@ describe( 'Shopper → Checkout', () => {
 		const NORMAL_SHIPPING_NAME = 'Normal Shipping';
 		const NORMAL_SHIPPING_PRICE = '$20.00';
 
+		afterEach( async () => {
+			await merchant.login();
+			await merchantUtils.disableLocalPickup();
+		} );
+
 		it( 'User can choose free shipping', async () => {
 			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
@@ -241,11 +422,80 @@ describe( 'Shopper → Checkout', () => {
 			await expect( page ).toMatch( 'Order received' );
 			await expect( page ).toMatch( NORMAL_SHIPPING_NAME );
 		} );
+
+		it( 'User does not see shipping rates until full address is entered', async () => {
+			await preventCompatibilityNotice();
+			await merchant.login();
+
+			await merchantUtils.disableLocalPickup();
+			await visitAdminPage(
+				'admin.php',
+				'page=wc-settings&tab=shipping&section=options'
+			);
+			const hideShippingLabel = await page.$x(
+				'//label[contains(., "Hide shipping costs until an address is entered")]'
+			);
+			await hideShippingLabel[ 0 ].click();
+
+			const saveButton = await page.$x(
+				'//button[contains(., "Save changes")]'
+			);
+			await saveButton[ 0 ].click();
+
+			await page.waitForXPath(
+				'//strong[contains(., "Your settings have been saved.")]'
+			);
+			await merchant.logout();
+
+			await shopper.block.emptyCart();
+			await shopper.block.goToShop();
+			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
+			await shopper.block.goToCheckout();
+
+			// // Expect no shipping options to be shown, but with a friendly message.
+			const shippingOptionsRequireAddressText = await page.$x(
+				'//p[contains(text(), "Shipping options will be displayed here after entering your full shipping address.")]'
+			);
+
+			await expect( shippingOptionsRequireAddressText ).toHaveLength( 1 );
+
+			// Enter the address but not city and expect shipping options not to be shown.
+			await shopper.block.fillInCheckoutWithTestData( { postcode: '' } );
+
+			await expect( page ).not.toMatchElement(
+				'.wc-block-components-shipping-rates-control'
+			);
+
+			await merchant.login();
+			await merchantUtils.enableLocalPickup();
+			await merchantUtils.addLocalPickupLocation();
+			await merchant.logout();
+
+			// This sequence will reset the checkout form.
+			await shopper.login();
+			await shopper.logout();
+
+			await shopper.block.emptyCart();
+			await shopper.block.goToShop();
+			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
+			await shopper.block.goToCheckout();
+
+			await expect( page ).toClick(
+				'.wc-block-checkout__shipping-method button',
+				{ text: 'Shipping' }
+			);
+
+			// Expect the shipping options to be displayed without entering an address.
+			await expect( page ).toMatchElement(
+				'.wc-block-components-shipping-rates-control'
+			);
+		} );
 	} );
 
 	describe( 'Coupons', () => {
 		beforeAll( async () => {
 			coupon = await createCoupon( { usageLimit: 1 } );
+			await shopper.logout();
 			await shopper.login();
 		} );
 
@@ -301,7 +551,7 @@ describe( 'Shopper → Checkout', () => {
 			await shopper.block.goToCheckout();
 			await shopper.block.applyCouponFromCheckout( coupon.code );
 			await page.waitForSelector(
-				'.wc-block-components-validation-error'
+				'.wc-block-components-totals-coupon__content .wc-block-components-validation-error'
 			);
 			await expect( page ).toMatch(
 				'Coupon usage limit has been reached.'
