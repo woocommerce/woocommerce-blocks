@@ -7,11 +7,7 @@ import { Icon, chevronDown } from '@wordpress/icons';
 import Rating, {
 	RatingValues,
 } from '@woocommerce/base-components/product-rating';
-import {
-	usePrevious,
-	useShallowEqual,
-	useStyleProps,
-} from '@woocommerce/base-hooks';
+import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,
@@ -122,8 +118,6 @@ const RatingFilterBlock = ( {
 		More info: https://github.com/woocommerce/woocommerce-blocks/pull/6920#issuecomment-1222402482
 	 */
 	const [ remountKey, setRemountKey ] = useState( generateUniqueId() );
-
-	const styleProps = useStyleProps( blockAttributes );
 	const [ displayNoProductRatingsNotice, setDisplayNoProductRatingsNotice ] =
 		useState( false );
 
@@ -346,12 +340,11 @@ const RatingFilterBlock = ( {
 					<>
 						<FormTokenField
 							key={ remountKey }
-							className={ classnames( styleProps.className, {
+							className={ classnames( {
 								'single-selection': ! multiple,
 								'is-loading': isLoading,
 							} ) }
 							style={ {
-								...styleProps.style,
 								borderStyle: 'none',
 							} }
 							suggestions={ displayedOptions
