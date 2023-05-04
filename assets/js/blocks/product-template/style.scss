@@ -38,3 +38,12 @@ $break-small: 600px;
 		}
 	}
 }
+
+/**
+ * Default spacing between product elements
+ */
+:where(.wc-block-product-template .wc-block-product) > * {
+	margin-bottom: 0.75rem;
+	margin-top: 0;
+}
+

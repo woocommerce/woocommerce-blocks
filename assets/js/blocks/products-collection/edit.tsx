@@ -11,6 +11,7 @@ import { useEffect } from '@wordpress/element';
  */
 import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
 import { Attributes } from './types';
+import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 
 interface Props {
 	className: string;
@@ -49,6 +50,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 						},
 					},
 					isLink: true,
+					__woocommerceNamespace: PRODUCT_TITLE_ID,
 				},
 			],
 			[
