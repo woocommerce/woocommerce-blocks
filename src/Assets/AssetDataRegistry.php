@@ -66,8 +66,7 @@ class AssetDataRegistry {
 	 * Hook into WP asset registration for enqueueing asset data.
 	 */
 	protected function init() {
-		add_action( 'enqueue_block_assets', array( $this, 'register_data_script' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_data_script' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'register_data_script' ), 1 );
 		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 2 );
 		add_action( 'admin_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 2 );
 	}
@@ -348,6 +347,10 @@ class AssetDataRegistry {
 	 * @return void
 	 */
 	public function register_data_script() {
+		if ( ! wp_script_is( 'wc-settings', 'enqueued' ) ) {
+			wp_enqueue_script( 'wc-settings' );
+		}
+
 		$this->api->register_script(
 			$this->handle,
 			'build/wc-settings.js',
