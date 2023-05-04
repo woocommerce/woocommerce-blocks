@@ -172,7 +172,7 @@ class Checkout extends AbstractBlock {
 	 * @return boolean
 	 */
 	protected function is_checkout_endpoint() {
-		return is_wc_endpoint_url( 'order-pay' ) || is_wc_endpoint_url( 'order-received' );
+		return is_wc_endpoint_url( 'order-received' );
 	}
 
 	/**
