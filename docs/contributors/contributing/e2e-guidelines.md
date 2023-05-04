@@ -27,7 +27,7 @@ The blockTheme project runs the tests with the suffix *block_theme*. In this cas
 
 The classicTheme project runs the tests with the suffix *classic_theme*. In this case, the theme is a Twenty Twenty One. You should use this configuration if you want test the block with a classic theme.
 
-Each block should be have a dedicated folder with a scoped util file if you want share some logic related to the block.
+Each block should have a dedicated folder with a scoped util file if you want share some logic related to the block.
 
 #### Code Guidelines
 
