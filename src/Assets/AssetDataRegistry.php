@@ -361,10 +361,6 @@ class AssetDataRegistry {
 	 * @return void
 	 */
 	public function register_data_script() {
-		if ( ! wp_script_is( 'wc-settings', 'enqueued' ) ) {
-			wp_enqueue_script( 'wc-settings' );
-		}
-
 		$this->api->register_script(
 			$this->handle,
 			'build/wc-settings.js',
