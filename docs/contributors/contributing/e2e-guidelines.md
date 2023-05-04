@@ -23,9 +23,9 @@ There are two Playwright projects configuration:
 - blockTheme
 - classicTheme
 
-The blockTheme project runs the tests with the suffix *block_theme*. In this case, the theme is a block theme. The block theme is the default WordPress theme. Currently, it is Twenty Twenty Three. You should use this configuration if you want test the block with the Site Editor.
+The blockTheme project runs the tests with the suffix *block_theme*. In this case, the theme is a block theme. The block theme is the default WordPress theme. Currently, it is Twenty-Twenty Three. You should use this configuration if you want test the block with the Site Editor.
 
-The classicTheme project runs the tests with the suffix *classic_theme*. In this case, the theme is a Twenty Twenty One. You should use this configuration if you want test the block with a classic theme.
+The classicTheme project runs the tests with the suffix *classic_theme*. In this case, the theme is a Twenty Twenty-One. You should use this configuration if you want test the block with a classic theme.
 
 Each block should have a dedicated folder with a scoped util file if you want share some logic related to the block.
 
