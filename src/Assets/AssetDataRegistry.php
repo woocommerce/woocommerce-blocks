@@ -66,15 +66,28 @@ class AssetDataRegistry {
 	 * Hook into WP asset registration for enqueueing asset data.
 	 */
 	protected function init() {
-		// is_login() was introduced in 6.1 so lets check it exists before executing.
-		if ( ! is_admin() && function_exists( 'is_login' ) && ! is_login() ) {
-			add_action( 'init', array( $this, 'register_data_script' ) );
-		} else {
+		if ( $this->is_site_editor() ) {
 			add_action( 'enqueue_block_editor_assets', array( $this, 'register_data_script' ) );
+		} else {
+			add_action( 'init', array( $this, 'register_data_script' ) );
 		}
 
 		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 2 );
 		add_action( 'admin_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 2 );
+	}
+
+	/**
+	 * Checks if the current URL is the Site Editor.
+	 *
+	 * @return boolean
+	 */
+	protected function is_site_editor() {
+		// phpcs:ignore WordPress.Security.NonceVerification
+		if ( isset( $_GET['page'] ) && 'gutenberg-edit-site' === $_GET['page'] ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
