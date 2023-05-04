@@ -71,7 +71,6 @@ class AssetDataRegistry {
 		} else {
 			add_action( 'init', array( $this, 'register_data_script' ) );
 		}
-
 		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 2 );
 		add_action( 'admin_print_footer_scripts', array( $this, 'enqueue_asset_data' ), 2 );
 	}
