@@ -45,7 +45,7 @@ In order to write end to end tests we need to first find elements on the webpage
 
 ##### Avoid Using Relative Imports
 
-In order to make the codebase cleaner, you should use import the function from the packages:
+In order to make the codebase cleaner, you should import the function from the packages:
 
 - "@woocommerce/e2e-utils": Contains generic utils for interactive with the page.
 - "@woocommerce/e2e-types": Contains generic types.
