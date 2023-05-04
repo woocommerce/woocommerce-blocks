@@ -81,12 +81,8 @@ class AssetDataRegistry {
 	 * @return boolean
 	 */
 	protected function is_site_editor() {
-		$url_path = isset( $_SERVER['REQUEST_URI'] ) ?? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
-		if ( str_contains( $url_path, 'site-editor.php' ) !== false ) {
-			return true;
-		}
-
-		return false;
+		$url_path = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+		return str_contains( $url_path, 'site-editor.php' );
 	}
 
 	/**
