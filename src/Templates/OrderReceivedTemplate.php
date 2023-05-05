@@ -1,5 +1,4 @@
 <?php
-
 namespace Automattic\WooCommerce\Blocks\Templates;
 
 /**
@@ -13,8 +12,14 @@ class OrderReceivedTemplate {
 
 	/**
 	 * Constructor.
+	 *
+	 * Templates require FSE theme support, so this will only init if a FSE theme is active.
 	 */
 	public function __construct() {
+		// Templates require FSE theme support.
+		if ( ! wc_current_theme_is_fse_theme() ) {
+			return;
+		}
 		$this->init();
 	}
 
@@ -35,11 +40,9 @@ class OrderReceivedTemplate {
 	 * @param array $templates Templates that match the pages_template_hierarchy.
 	 */
 	public function update_page_template_hierarchy( $templates ) {
-		if ( is_wc_endpoint_url( 'order-received' ) && wc_current_theme_is_fse_theme() ) {
+		if ( is_wc_endpoint_url( 'order-received' ) ) {
 			array_unshift( $templates, self::SLUG );
 		}
-
 		return $templates;
 	}
-
 }
