@@ -265,11 +265,13 @@ const AddressForm = ( {
 							} )
 						}
 						customValidation={ ( inputObject: HTMLInputElement ) =>
-							customValidationHandler(
-								inputObject,
-								field.key,
-								values
-							)
+							field.required || inputObject.value
+								? customValidationHandler(
+										inputObject,
+										field.key,
+										values
+								  )
+								: true
 						}
 						errorMessage={ field.errorMessage }
 						required={ field.required }
