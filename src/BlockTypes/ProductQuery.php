@@ -312,6 +312,14 @@ class ProductQuery extends AbstractBlock {
 		);
 	}
 
+	/**
+	 * Apply the query only to a subset of products
+	 *
+	 * @param array $query  The query.
+	 * @param array $ids  Array of selected product ids.
+	 *
+	 * @return array
+	 */
 	private function filter_query_to_only_include_ids( $query, $ids ) {
 		if ( ! empty( $ids ) ) {
 			$query['post__in'] = empty( $query['post__in'] ) ?
