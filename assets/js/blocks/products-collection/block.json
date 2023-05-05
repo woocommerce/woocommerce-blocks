@@ -18,6 +18,7 @@
 				"perPage": null,
 				"pages": 0,
 				"offset": 0,
+				"postType": "product",
 				"order": "desc",
 				"orderBy": "date",
 				"author": "",

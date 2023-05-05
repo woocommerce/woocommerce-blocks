@@ -36,9 +36,9 @@ class ProductTemplate extends AbstractBlock {
 			global $wp_query;
 			$query = clone $wp_query;
 		} else {
-			$query_args              = build_query_vars_from_query_block( $block, $page );
-			$query_args['post_type'] = 'product';
-			$query                   = new WP_Query( $query_args );
+			$query_args          = build_query_vars_from_query_block( $block, $page );
+			$query_args['paged'] = $page;
+			$query               = new WP_Query( $query_args );
 		}
 
 		if ( ! $query->have_posts() ) {
