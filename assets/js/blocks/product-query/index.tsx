@@ -13,7 +13,6 @@ import { CORE_NAME as PRODUCT_SUMMARY_ID } from './variations/elements/product-s
 import { CORE_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';
 import './inspector-controls';
 import './style.scss';
-import './variations/handpicked-products';
 import './variations/product-query';
 import './variations/related-products';
 
