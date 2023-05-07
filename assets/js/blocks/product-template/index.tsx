@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
+import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -11,11 +11,11 @@ import edit from './edit';
 import save from './save';
 import icon from './icon';
 
-registerBlockType( metadata, {
+const blockConfig: BlockConfiguration = {
+	...metadata,
 	icon,
 	edit,
 	save,
-	attributes: {
-		...metadata.attributes,
-	},
-} );
+};
+
+registerBlockType( metadata.name, blockConfig );

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /**
  * External dependencies
  */
@@ -14,21 +15,28 @@ import {
 } from '@wordpress/block-editor';
 import { Spinner } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
+import type { BlockEditProps } from '@wordpress/blocks';
+import { ProductsCollectionContext } from '@woocommerce/blocks/products-collection/types';
 
-function ProductTemplateInnerBlocks() {
+const ProductTemplateInnerBlocks = () => {
 	const innerBlocksProps = useInnerBlocksProps(
 		{ className: 'wc-block-product' },
 		{ __unstableDisableLayoutClassNames: true }
 	);
 	return <li { ...innerBlocksProps } />;
-}
+};
 
-function ProductTemplateBlockPreview( {
+const ProductTemplateBlockPreview = ( {
 	blocks,
 	blockContextId,
 	isHidden,
 	setActiveBlockContextId,
-} ) {
+}: {
+	blocks: object[];
+	blockContextId: string;
+	isHidden: boolean;
+	setActiveBlockContextId: ( blockContextId: string ) => void;
+} ) => {
 	const blockPreviewProps = useBlockPreview( {
 		blocks,
 		props: {
@@ -55,11 +63,11 @@ function ProductTemplateBlockPreview( {
 			style={ style }
 		/>
 	);
-}
+};
 
 const MemoizedProductTemplateBlockPreview = memo( ProductTemplateBlockPreview );
 
-export default function ProductTemplateEdit( {
+const ProductTemplateEdit = ( {
 	clientId,
 	context: {
 		query: {
@@ -76,13 +84,21 @@ export default function ProductTemplateEdit( {
 			parents,
 			pages,
 			...restQueryArgs
-		} = {},
+		},
 		queryContext = [ { page: 1 } ],
 		templateSlug,
-		displayLayout: { type: layoutType = 'flex', columns = 3 } = {},
+		displayLayout: { type: layoutType, columns } = {
+			type: 'flex',
+			columns: 3,
+		},
 	},
 	__unstableLayoutClassNames,
-} ) {
+}: BlockEditProps< {
+	clientId: string;
+} > & {
+	context: ProductsCollectionContext;
+	__unstableLayoutClassNames: string;
+} ) => {
 	const [ { page } ] = queryContext;
 	const [ activeBlockContextId, setActiveBlockContextId ] = useState();
 	const postType = 'product';
@@ -104,7 +120,7 @@ export default function ProductTemplateEdit( {
 					_fields: [ 'id' ],
 					slug: templateSlug.replace( 'category-', '' ),
 				} );
-			const query = {
+			const query: Record< string, unknown > = {
 				offset: perPage ? perPage * ( page - 1 ) + offset : 0,
 				order,
 				orderby: orderBy,
@@ -251,4 +267,6 @@ export default function ProductTemplateEdit( {
 				) ) }
 		</ul>
 	);
-}
+};
+
+export default ProductTemplateEdit;
