@@ -6,8 +6,8 @@
  */
 ?>
 
-<!-- wp:woocommerce/single-product {"productId":32,"align":"center"} -->
-<div class="wp-block-woocommerce-single-product aligncenter">
+<!-- wp:woocommerce/single-product {"productId":32} -->
+<div class="wp-block-woocommerce-single-product">
 	<!-- wp:column {"style":{"max-width":"50%"}} -->
 	<div class="wp-block-column">
 		<!-- wp:woocommerce/product-image {"showProductLink":false,"showSaleBadge":false,"isDescendentOfSingleProductBlock":true} /-->
