@@ -202,12 +202,15 @@ const Edit = ( {
 										<Popover
 											resize={ false }
 											placement="right-end"
-											shift={ true }
 										>
 											<div
 												style={ {
-													width: '600px',
-													height: 'fit-content',
+													minWidth: '250px',
+													width: '250px',
+													maxWidth: '250px',
+													minHeight: '300px',
+													height: '300px',
+													maxHeight: '300px',
 													cursor: 'pointer',
 												} }
 											>
@@ -218,7 +221,7 @@ const Edit = ( {
 													viewportWidth={ 1200 }
 													additionalStyles={ [
 														{
-															css: 'body { padding: 20px !important}',
+															css: 'body { padding: 20px !important; height: fit-content !important; overflow:hidden}',
 														},
 													] }
 												/>
