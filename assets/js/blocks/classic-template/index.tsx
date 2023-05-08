@@ -142,11 +142,16 @@ const Edit = ( {
 									text={ getButtonLabel() }
 								>
 									{ isPopoverOpen && (
-										<Popover placement="right-center">
+										<Popover
+											resize={ false }
+											placement="right-end"
+											shift={ true }
+										>
 											<div
 												style={ {
 													width: '600px',
-													overflow: 'hidden',
+													height: 'fit-content',
+													cursor: 'pointer',
 												} }
 											>
 												<BlockPreview
@@ -156,7 +161,7 @@ const Edit = ( {
 													viewportWidth={ 1200 }
 													additionalStyles={ [
 														{
-															css: 'body { padding: 50px !important}',
+															css: 'body { padding: 20px !important}',
 														},
 													] }
 												/>
