@@ -53,8 +53,8 @@ const PackageRates = ( {
 			( ! selectedOption && rates[ 0 ] ) ||
 			! isRateSelectedInDataStore
 		) {
-			setSelectedOption( rates[ 0 ].rate_id );
-			onSelectRate( rates[ 0 ].rate_id );
+			setSelectedOption( rates[ 0 ]?.rate_id );
+			onSelectRate( rates[ 0 ]?.rate_id );
 		}
 	}, [ onSelectRate, rates, selectedOption ] );
 
