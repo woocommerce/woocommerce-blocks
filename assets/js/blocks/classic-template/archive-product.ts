@@ -19,7 +19,7 @@ import {
 } from '../product-query/constants';
 import { VARIATION_NAME as productsVariationName } from '../product-query/variations/product-query';
 import { createArchiveTitleBlock, createRowBlock } from './utils';
-import { type InheritedAttributes } from './types';
+import { OnClickCallbackParameter, type InheritedAttributes } from './types';
 
 const createProductsBlock = ( inheritedAttributes: InheritedAttributes ) =>
 	createBlock(
@@ -98,15 +98,71 @@ const getDescription = ( templateTitle: string, canConvert: boolean ) => {
 const getButtonLabel = () =>
 	__( 'Upgrade to Products block', 'woo-gutenberg-products-block' );
 
+const onClickCallback = ( {
+	clientId,
+	attributes,
+	getBlocks,
+	replaceBlock,
+	selectBlock,
+}: {
+	clientId: string;
+	attributes: Record< string, unknown >;
+	getBlocks: () => BlockInstance[];
+	replaceBlock: ( clientId: string, blocks: BlockInstance[] ) => void;
+	selectBlock: ( clientId: string ) => void;
+} ) => {
+	replaceBlock( clientId, getBlockifiedTemplate( attributes ) );
+	const blocks = getBlocks();
+
+	const groupBlock = blocks.find(
+		( block ) =>
+			block.name === 'core/group' &&
+			block.innerBlocks.some(
+				( innerBlock ) =>
+					innerBlock.name === 'woocommerce/store-notices'
+			)
+	);
+
+	if ( groupBlock ) {
+		selectBlock( groupBlock.clientId );
+	}
+};
+
+const onClickCallbackWithTermDescription = ( {
+	clientId,
+	attributes,
+	getBlocks,
+	replaceBlock,
+	selectBlock,
+}: OnClickCallbackParameter ) => {
+	replaceBlock( clientId, getBlockifiedTemplate( attributes, true ) );
+	const blocks = getBlocks();
+
+	const groupBlock = blocks.find(
+		( block ) =>
+			block.name === 'core/group' &&
+			block.innerBlocks.some(
+				( innerBlock ) =>
+					innerBlock.name === 'woocommerce/store-notices'
+			)
+	);
+
+	if ( groupBlock ) {
+		selectBlock( groupBlock.clientId );
+	}
+};
+
 export const blockifiedProductCatalogConfig = {
 	getBlockifiedTemplate,
 	isConversionPossible,
 	getDescription,
 	getButtonLabel,
+	onClickCallback,
 };
 
 export const blockifiedProductTaxonomyConfig = {
 	getBlockifiedTemplate: getBlockifiedTemplateWithTermDescription,
+	onClickCallback: onClickCallbackWithTermDescription,
 	isConversionPossible,
 	getDescription,
 	getButtonLabel,

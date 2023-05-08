@@ -11,12 +11,16 @@ import {
 	isExperimentalBuild,
 	WC_BLOCKS_IMAGE_URL,
 } from '@woocommerce/block-settings';
-import { useBlockProps } from '@wordpress/block-editor';
-import { Button, Placeholder } from '@wordpress/components';
+import {
+	useBlockProps,
+	BlockPreview,
+	store as blockEditorStore,
+} from '@wordpress/block-editor';
+import { Button, Placeholder, Popover } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
-import { select, useDispatch, subscribe } from '@wordpress/data';
-import { useEffect } from '@wordpress/element';
+import { useDispatch, subscribe, useSelect, select } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -47,6 +51,7 @@ const blockifiedFallbackConfig = {
 	getBlockifiedTemplate: () => [],
 	getDescription: () => '',
 	getButtonLabel: () => '',
+	onClickCallback: () => void 0,
 };
 
 const conversionConfig: { [ key: string ]: BlockifiedTemplateConfig } = {
@@ -62,7 +67,13 @@ const Edit = ( {
 	attributes,
 	setAttributes,
 }: BlockEditProps< Attributes > ) => {
-	const { replaceBlock } = useDispatch( 'core/block-editor' );
+	const { replaceBlock, selectBlock } = useDispatch( blockEditorStore );
+
+	const { getBlocks } = useSelect( ( sel ) => {
+		return {
+			getBlocks: sel( blockEditorStore ).getBlocks,
+		};
+	}, [] );
 
 	const blockProps = useBlockProps();
 	const templateDetails = getTemplateDetailsBySlug(
@@ -83,40 +94,79 @@ const Edit = ( {
 	);
 
 	const {
-		getBlockifiedTemplate,
 		isConversionPossible,
 		getDescription,
 		getButtonLabel,
+		onClickCallback,
+		getBlockifiedTemplate,
 	} = conversionConfig[ templateType ];
 
 	const canConvert = isConversionPossible();
 	const placeholderDescription = getDescription( templateTitle, canConvert );
+	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false );
 
 	return (
 		<div { ...blockProps }>
-			<Placeholder
-				icon={ box }
-				label={ templateTitle }
-				className="wp-block-woocommerce-classic-template__placeholder"
-			>
-				<div className="wp-block-woocommerce-classic-template__placeholder-copy">
-					<p>{ placeholderDescription }</p>
-				</div>
+			<Placeholder className="wp-block-woocommerce-classic-template__placeholder">
 				<div className="wp-block-woocommerce-classic-template__placeholder-wireframe">
-					{ canConvert && (
-						<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
-							<Button
-								isPrimary
-								onClick={ () => {
-									replaceBlock(
-										clientId,
-										getBlockifiedTemplate( attributes )
-									);
-								} }
-								text={ getButtonLabel() }
-							/>
+					<div className="wp-block-woocommerce-classic-template__placeholder-copy">
+						<div className="wp-block-woocommerce-classic-template__placeholder-copy__icon-container">
+							<Icon icon={ box } />
+							<span>
+								{ __(
+									'Classic Product Template',
+									'woo-gutenberg-products-block'
+								) }
+							</span>
 						</div>
-					) }
+						<p>{ placeholderDescription }</p>
+						{ canConvert && (
+							<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
+								<Button
+									isPrimary
+									onClick={ () =>
+										onClickCallback( {
+											clientId,
+											getBlocks,
+											attributes,
+											replaceBlock,
+											selectBlock,
+										} )
+									}
+									onMouseEnter={ () =>
+										setIsPopoverOpen( true )
+									}
+									onMouseLeave={ () =>
+										setIsPopoverOpen( false )
+									}
+									text={ getButtonLabel() }
+								>
+									{ isPopoverOpen && (
+										<Popover placement="right-center">
+											<div
+												style={ {
+													width: '600px',
+													overflow: 'hidden',
+												} }
+											>
+												<BlockPreview
+													blocks={ getBlockifiedTemplate(
+														attributes
+													) }
+													viewportWidth={ 1200 }
+													additionalStyles={ [
+														{
+															css: 'body { padding: 50px !important}',
+														},
+													] }
+												/>
+											</div>
+										</Popover>
+									) }
+								</Button>
+							</div>
+						) }
+					</div>
 					<img
 						className="wp-block-woocommerce-classic-template__placeholder-image"
 						src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/${ templatePlaceholder }.svg` }

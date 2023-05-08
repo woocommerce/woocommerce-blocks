@@ -54,14 +54,10 @@ const isConversionPossible = () => {
 	return isWpVersion( '6.1', '>=' );
 };
 
-const getDescriptionAllowingConversion = ( templateTitle: string ) =>
-	sprintf(
-		/* translators: %s is the template title */
-		__(
-			"This block serves as a placeholder for your %s. We recommend upgrading to the Single Products block for more features to edit your products visually. Don't worry, you can always revert back.",
-			'woo-gutenberg-products-block'
-		),
-		templateTitle
+const getDescriptionAllowingConversion = () =>
+	__(
+		'Transform this template into multiple blocks so you can add, remove, reorder, and customize your single product template.',
+		'woo-gutenberg-products-block'
 	);
 
 const getDescriptionDisallowingConversion = ( templateTitle: string ) =>
@@ -76,21 +72,46 @@ const getDescriptionDisallowingConversion = ( templateTitle: string ) =>
 
 const getDescription = ( templateTitle: string, canConvert: boolean ) => {
 	if ( canConvert ) {
-		return getDescriptionAllowingConversion( templateTitle );
+		return getDescriptionAllowingConversion();
 	}
 
 	return getDescriptionDisallowingConversion( templateTitle );
 };
 
 const getButtonLabel = () =>
-	__(
-		'Upgrade to Blockified Single Product template',
-		'woo-gutenberg-products-block'
+	__( 'Transform into blocks', 'woo-gutenberg-products-block' );
+
+const onClickCallback = ( {
+	clientId,
+	getBlocks,
+	replaceBlock,
+	selectBlock,
+}: {
+	clientId: string;
+	getBlocks: () => BlockInstance[];
+	replaceBlock: ( clientId: string, blocks: BlockInstance[] ) => void;
+	selectBlock: ( clientId: string ) => void;
+} ) => {
+	replaceBlock( clientId, getBlockifiedTemplate() );
+	const blocks = getBlocks();
+
+	const groupBlock = blocks.find(
+		( block ) =>
+			block.name === 'core/group' &&
+			block.innerBlocks.some(
+				( innerBlock ) => innerBlock.name === 'woocommerce/breadcrumbs'
+			)
 	);
+
+	if ( groupBlock ) {
+		selectBlock( groupBlock.clientId );
+	}
+};
 
 export {
 	getBlockifiedTemplate,
 	isConversionPossible,
 	getDescription,
 	getButtonLabel,
+	onClickCallback,
 };

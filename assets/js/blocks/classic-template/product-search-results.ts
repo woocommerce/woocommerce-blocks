@@ -20,7 +20,7 @@ import {
 } from '../product-query/constants';
 import { VARIATION_NAME as productsVariationName } from '../product-query/variations/product-query';
 import { createArchiveTitleBlock, createRowBlock } from './utils';
-import { type InheritedAttributes } from './types';
+import { OnClickCallbackParameter, type InheritedAttributes } from './types';
 
 const createNoResultsParagraph = () =>
 	createBlock( 'core/paragraph', {
@@ -142,6 +142,30 @@ const getDescription = ( templateTitle: string, canConvert: boolean ) => {
 	return getDescriptionDisallowingConversion( templateTitle );
 };
 
+const onClickCallback = ( {
+	clientId,
+	attributes,
+	getBlocks,
+	replaceBlock,
+	selectBlock,
+}: OnClickCallbackParameter ) => {
+	replaceBlock( clientId, getBlockifiedTemplate( attributes ) );
+	const blocks = getBlocks();
+
+	const groupBlock = blocks.find(
+		( block ) =>
+			block.name === 'core/group' &&
+			block.innerBlocks.some(
+				( innerBlock ) =>
+					innerBlock.name === 'woocommerce/store-notices'
+			)
+	);
+
+	if ( groupBlock ) {
+		selectBlock( groupBlock.clientId );
+	}
+};
+
 const getButtonLabel = () =>
 	__( 'Upgrade to Products block', 'woo-gutenberg-products-block' );
 
@@ -150,4 +174,5 @@ export {
 	isConversionPossible,
 	getDescription,
 	getButtonLabel,
+	onClickCallback,
 };
