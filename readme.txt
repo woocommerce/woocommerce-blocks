@@ -101,6 +101,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - [Patterns]: Add new `Header Centered Search` pattern. ([9081](https://github.com/woocommerce/woocommerce-blocks/pull/9081))
 - Add the new `WooCommerce Featured Products 5-item grid` pattern. ([9006](https://github.com/woocommerce/woocommerce-blocks/pull/9006))
 - Products block: Using nested selectors to add consistent spacing between Product elements. ([8993](https://github.com/woocommerce/woocommerce-blocks/pull/8993))
+- Products (Beta): Add a filter to allow merchants to hand-pick a subset of products. ([7925](https://github.com/woocommerce/woocommerce-blocks/pull/7925))
 
 #### Bug Fixes
 
