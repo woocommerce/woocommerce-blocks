@@ -29,7 +29,7 @@ const hasLegacyTemplateBlock = ( blocks: Array< BlockInstance > ): boolean => {
 };
 
 const pickBlockClientIds = ( blocks: Array< BlockInstance > ) =>
-	blocks.reduce( ( acc, block ) => {
+	blocks.reduce< Array< string > >( ( acc, block ) => {
 		if ( block.name === 'core/template-part' ) {
 			return acc;
 		}
@@ -47,11 +47,13 @@ const RevertClassicTemplateButton = () => {
 
 	const { replaceBlocks } = useDispatch( blockEditorStore );
 
-	const template = useEntityRecord(
-		'postType',
-		'wp_template',
-		getEditedPostId
-	);
+	const template = useEntityRecord< {
+		slug: string;
+		title: {
+			rendered?: string;
+			row: string;
+		};
+	} >( 'postType', 'wp_template', getEditedPostId );
 
 	const isLegacyTemplateBlockAdded = useMemo(
 		() => hasLegacyTemplateBlock( blocks ),
@@ -99,7 +101,10 @@ const RevertClassicTemplateButton = () => {
 						<span>
 							The{ ' ' }
 							{ template?.record?.title?.rendered ??
-								'Classic Template' }{ ' ' }
+								__(
+									'Classic Template',
+									'woo-gutenberg-products-block'
+								) }{ ' ' }
 							doesn’t allow for reordering or customizing blocks,
 							but might work better with your extensions.
 						</span>
