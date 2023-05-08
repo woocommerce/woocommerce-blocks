@@ -13,7 +13,7 @@
 		"lock": false,
 		"color": {
 			"text": true,
-			"background": true
+			"background": false
 		},
 		"typography": {
 			"fontSize": true
