@@ -18,13 +18,13 @@
 		<div class="wp-block-group">
 			<!-- wp:image {"width":80,"height":107,"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full is-resized">
-				<img src="<?php echo esc_url( plugins_url() ); ?>/woocommerce-blocks/images/pattern-placeholders/product-electronics-4.png" alt="" width="80" height="107" />
+				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-electronics-4.png', dirname( __FILE__ ) ) ); ?>" alt="" width="80" height="107" />
 			</figure>
 			<!-- /wp:image -->
 
 			<!-- wp:image {"width":80,"height":108,"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full is-resized">
-				<img src="<?php echo esc_url( plugins_url() ); ?>/woocommerce-blocks/images/pattern-placeholders/product-apparel-7.png" alt="" width="80" height="108" />
+				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-apparel-7.png', dirname( __FILE__ ) ) ); ?>" alt="" width="80" height="108" />
 			</figure>
 			<!-- /wp:image -->
 		</div>
@@ -42,13 +42,13 @@
 		<div class="wp-block-group">
 			<!-- wp:image {"width":100,"height":60,"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full is-resized">
-				<img src="<?php echo esc_url( plugins_url() ); ?>/woocommerce-blocks/images/pattern-placeholders/product-electronics-3.png" alt="" width="100" height="60" />
+				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-electronics-3.png', dirname( __FILE__ ) ) ); ?>" alt="" width="100" height="60" />
 			</figure>
 			<!-- /wp:image -->
 
 			<!-- wp:image {"width":100,"height":100,"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full is-resized">
-				<img src="<?php echo esc_url( plugins_url() ); ?>/woocommerce-blocks/images/pattern-placeholders/product-electronics-2.png" alt="" width="100" height="100" />
+				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-electronics-2.png', dirname( __FILE__ ) ) ); ?>" alt="" width="100" height="100" />
 			</figure>
 			<!-- /wp:image -->
 		</div>
