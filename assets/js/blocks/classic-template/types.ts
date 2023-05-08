@@ -12,7 +12,7 @@ export type InheritedAttributes = {
 export type OnClickCallbackParameter = {
 	clientId: string;
 	attributes: Record< string, unknown >;
-	getBlocks: () => BlockInstance[];
+	blocks: BlockInstance[];
 	replaceBlock: ( clientId: string, blocks: BlockInstance[] ) => void;
 	selectBlock: ( clientId: string ) => void;
 };

@@ -7,6 +7,11 @@ import { BlockInstance, createBlock } from '@wordpress/blocks';
 import { VARIATION_NAME as PRODUCT_TITLE_VARIATION_NAME } from '@woocommerce/blocks/product-query/variations/elements/product-title';
 import { VARIATION_NAME as PRODUCT_SUMMARY_VARIATION_NAME } from '@woocommerce/blocks/product-query/variations/elements/product-summary';
 
+/**
+ * Internal dependencies
+ */
+import { OnClickCallbackParameter } from './types';
+
 const getBlockifiedTemplate = () =>
 	[
 		createBlock( 'woocommerce/breadcrumbs' ),
@@ -83,17 +88,11 @@ const getButtonLabel = () =>
 
 const onClickCallback = ( {
 	clientId,
-	getBlocks,
+	blocks,
 	replaceBlock,
 	selectBlock,
-}: {
-	clientId: string;
-	getBlocks: () => BlockInstance[];
-	replaceBlock: ( clientId: string, blocks: BlockInstance[] ) => void;
-	selectBlock: ( clientId: string ) => void;
-} ) => {
+}: OnClickCallbackParameter ) => {
 	replaceBlock( clientId, getBlockifiedTemplate() );
-	const blocks = getBlocks();
 
 	const groupBlock = blocks.find(
 		( block ) =>

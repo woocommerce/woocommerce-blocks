@@ -2,6 +2,7 @@
  * External dependencies
  */
 import {
+	createBlock,
 	getBlockType,
 	registerBlockType,
 	unregisterBlockType,
@@ -20,7 +21,8 @@ import { Button, Placeholder, Popover } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
 import { useDispatch, subscribe, useSelect, select } from '@wordpress/data';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useMemo, useState } from '@wordpress/element';
+import { store as noticesStore } from '@wordpress/notices';
 
 /**
  * Internal dependencies
@@ -62,18 +64,32 @@ const conversionConfig: { [ key: string ]: BlockifiedTemplateConfig } = {
 	fallback: blockifiedFallbackConfig,
 };
 
+const pickBlockClientIds = ( blocks: Array< BlockInstance > ) =>
+	blocks.reduce< Array< string > >( ( acc, block ) => {
+		if ( block.name === 'core/template-part' ) {
+			return acc;
+		}
+
+		return [ ...acc, block.clientId ];
+	}, [] );
+
 const Edit = ( {
 	clientId,
 	attributes,
 	setAttributes,
 }: BlockEditProps< Attributes > ) => {
-	const { replaceBlock, selectBlock } = useDispatch( blockEditorStore );
+	const { replaceBlock, selectBlock, replaceBlocks } =
+		useDispatch( blockEditorStore );
 
-	const { getBlocks } = useSelect( ( sel ) => {
+	const { blocks } = useSelect( ( sel ) => {
 		return {
-			getBlocks: sel( blockEditorStore ).getBlocks,
+			blocks: sel( blockEditorStore ).getBlocks(),
 		};
 	}, [] );
+
+	const { createInfoNotice } = useDispatch( noticesStore );
+
+	const clientIds = useMemo( () => pickBlockClientIds( blocks ), [ blocks ] );
 
 	const blockProps = useBlockProps();
 	const templateDetails = getTemplateDetailsBySlug(
@@ -124,15 +140,56 @@ const Edit = ( {
 							<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
 								<Button
 									isPrimary
-									onClick={ () =>
+									onClick={ () => {
 										onClickCallback( {
 											clientId,
-											getBlocks,
+											blocks,
 											attributes,
 											replaceBlock,
 											selectBlock,
-										} )
-									}
+										} );
+										createInfoNotice(
+											__(
+												'Template transformed into blocks!',
+												'woo-gutenberg-products-block'
+											),
+											{
+												actions: [
+													{
+														label: __(
+															'Undo',
+															'woo-gutenberg-products-block'
+														),
+														onClick: () => {
+															replaceBlocks(
+																clientIds,
+																createBlock(
+																	'core/group',
+																	{
+																		layout: {
+																			inherit:
+																				true,
+																			type: 'constrained',
+																		},
+																	},
+																	[
+																		createBlock(
+																			'woocommerce/legacy-template',
+																			{
+																				template:
+																					attributes.template,
+																			}
+																		),
+																	]
+																)
+															);
+														},
+													},
+												],
+												type: 'snackbar',
+											}
+										);
+									} }
 									onMouseEnter={ () =>
 										setIsPopoverOpen( true )
 									}
