@@ -6,7 +6,7 @@ import { subscribe, select, useSelect, useDispatch } from '@wordpress/data';
 import { BlockInstance, createBlock } from '@wordpress/blocks';
 import { Button, PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useMemo } from '@wordpress/element';
+import { createInterpolateElement, useMemo } from '@wordpress/element';
 import { useEntityRecord } from '@wordpress/core-data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
@@ -99,14 +99,20 @@ const RevertClassicTemplateButton = () => {
 							) }
 						</Button>
 						<span>
-							The{ ' ' }
-							{ template?.record?.title?.rendered ??
+							{ createInterpolateElement(
 								__(
-									'Classic Template',
+									`The <strongText /> template doesn’t allow for reordering or customizing blocks, but might work better with your extensions`,
 									'woo-gutenberg-products-block'
-								) }{ ' ' }
-							doesn’t allow for reordering or customizing blocks,
-							but might work better with your extensions.
+								),
+								{
+									strongText: (
+										<strong>
+											{ template?.record?.title
+												?.rendered ?? '' }
+										</strong>
+									),
+								}
+							) }
 						</span>
 					</PanelBody>
 				</PluginTemplateSettingPanel>
