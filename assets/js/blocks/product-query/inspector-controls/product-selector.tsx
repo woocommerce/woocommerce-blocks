@@ -18,9 +18,7 @@ import {
 import { ProductQueryBlock } from '../types';
 import { setQueryAttribute } from '../utils';
 
-export const ProductSelector = ( props: ProductQueryBlock ) => {
-	const { query } = props.attributes;
-
+function useProductsList() {
 	const [ productsList, setProductsList ] = useState< ProductResponseItem[] >(
 		[]
 	);
@@ -30,6 +28,47 @@ export const ProductSelector = ( props: ProductQueryBlock ) => {
 			setProductsList( results as ProductResponseItem[] );
 		} );
 	}, [] );
+
+	return productsList;
+}
+
+export const ProductSelector = ( props: ProductQueryBlock ) => {
+	const { query } = props.attributes;
+
+	const productsList = useProductsList();
+
+	const onTokenChange = ( values: FormTokenField.Value[] ) => {
+		const ids = values
+			.map(
+				( nameOrId ) =>
+					productsList.find(
+						( product ) =>
+							product.name === nameOrId ||
+							product.id === Number( nameOrId )
+					)?.id
+			)
+			.filter( Boolean )
+			.map( String );
+
+		if ( ! ids.length && props.attributes.query.include ) {
+			const prunedQuery = objectOmit( props.attributes.query, 'include' );
+
+			setQueryAttribute(
+				{
+					...props,
+					attributes: {
+						...props.attributes,
+						query: prunedQuery,
+					},
+				},
+				{}
+			);
+		} else {
+			setQueryAttribute( props, {
+				include: ids,
+			} );
+		}
+	};
 
 	return (
 		<ToolsPanelItem
@@ -52,41 +91,7 @@ export const ProductSelector = ( props: ProductQueryBlock ) => {
 					'Pick some products',
 					'woo-gutenberg-products-block'
 				) }
-				onChange={ ( values ) => {
-					const ids = values
-						.map(
-							( nameOrId ) =>
-								productsList.find(
-									( product ) =>
-										product.name === nameOrId ||
-										product.id === Number( nameOrId )
-								)?.id
-						)
-						.filter( Boolean )
-						.map( String );
-
-					if ( ! ids.length && props.attributes.query.include ) {
-						const prunedQuery = objectOmit(
-							props.attributes.query,
-							'include'
-						);
-
-						setQueryAttribute(
-							{
-								...props,
-								attributes: {
-									...props.attributes,
-									query: prunedQuery,
-								},
-							},
-							{}
-						);
-					} else {
-						setQueryAttribute( props, {
-							include: ids,
-						} );
-					}
-				} }
+				onChange={ onTokenChange }
 				suggestions={ productsList.map( ( product ) => product.name ) }
 				validateInput={ ( value: string ) =>
 					productsList.find( ( product ) => product.name === value )
