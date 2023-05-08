@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
+import { isExperimentalBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -12,11 +13,13 @@ import save from './save';
 import icon from './icon';
 import './variations';
 
-registerBlockType( metadata, {
-	icon,
-	attributes: {
-		...metadata.attributes,
-	},
-	edit,
-	save,
-} );
+if ( isExperimentalBuild() ) {
+	registerBlockType( metadata, {
+		icon,
+		attributes: {
+			...metadata.attributes,
+		},
+		edit,
+		save,
+	} );
+}
