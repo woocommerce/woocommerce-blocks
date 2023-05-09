@@ -59,10 +59,14 @@ const isConversionPossible = () => {
 	return isWpVersion( '6.1', '>=' );
 };
 
-const getDescriptionAllowingConversion = () =>
-	__(
-		'Transform this template into multiple blocks so you can add, remove, reorder, and customize your single product template.',
-		'woo-gutenberg-products-block'
+const getDescriptionAllowingConversion = ( templateTitle: string ) =>
+	sprintf(
+		/* translators: %s is the template title */
+		__(
+			'Transform this template into multiple blocks so you can add, remove, reorder, and customize your %s.',
+			'woo-gutenberg-products-block'
+		),
+		templateTitle
 	);
 
 const getDescriptionDisallowingConversion = ( templateTitle: string ) =>
@@ -77,7 +81,7 @@ const getDescriptionDisallowingConversion = ( templateTitle: string ) =>
 
 const getDescription = ( templateTitle: string, canConvert: boolean ) => {
 	if ( canConvert ) {
-		return getDescriptionAllowingConversion();
+		return getDescriptionAllowingConversion( templateTitle );
 	}
 
 	return getDescriptionDisallowingConversion( templateTitle );

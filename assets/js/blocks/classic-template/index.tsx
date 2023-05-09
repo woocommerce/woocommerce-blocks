@@ -2,6 +2,7 @@
  * External dependencies
  */
 import {
+	BlockInstance,
 	createBlock,
 	getBlockType,
 	registerBlockType,
@@ -23,6 +24,7 @@ import { box, Icon } from '@wordpress/icons';
 import { useDispatch, subscribe, useSelect, select } from '@wordpress/data';
 import { useEffect, useMemo, useState } from '@wordpress/element';
 import { store as noticesStore } from '@wordpress/notices';
+import { useEntityRecord } from '@wordpress/core-data';
 
 /**
  * Internal dependencies
@@ -81,11 +83,20 @@ const Edit = ( {
 	const { replaceBlock, selectBlock, replaceBlocks } =
 		useDispatch( blockEditorStore );
 
-	const { blocks } = useSelect( ( sel ) => {
+	const { blocks, editedPostId } = useSelect( ( sel ) => {
 		return {
 			blocks: sel( blockEditorStore ).getBlocks(),
+			editedPostId: sel( 'core/edit-site' ).getEditedPostId(),
 		};
 	}, [] );
+
+	const template = useEntityRecord< {
+		slug: string;
+		title: {
+			rendered?: string;
+			row: string;
+		};
+	} >( 'postType', 'wp_template', editedPostId );
 
 	const { createInfoNotice } = useDispatch( noticesStore );
 
@@ -96,7 +107,8 @@ const Edit = ( {
 		attributes.template,
 		TEMPLATES
 	);
-	const templateTitle = templateDetails?.title ?? attributes.template;
+	const templateTitle =
+		template.record?.title.rendered?.toLowerCase() ?? attributes.template;
 	const templatePlaceholder = templateDetails?.placeholder ?? 'fallback';
 	const templateType = templateDetails?.type ?? 'fallback';
 

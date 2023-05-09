@@ -71,7 +71,7 @@ const getDescriptionAllowingConversion = ( templateTitle: string ) =>
 	sprintf(
 		/* translators: %s is the template title */
 		__(
-			"This block serves as a placeholder for your %s. We recommend upgrading to the Products block for more features to edit your products visually. Don't worry, you can always revert back.",
+			'Transform this template into multiple blocks so you can add, remove, reorder, and customize your %s template.',
 			'woo-gutenberg-products-block'
 		),
 		templateTitle
@@ -96,7 +96,7 @@ const getDescription = ( templateTitle: string, canConvert: boolean ) => {
 };
 
 const getButtonLabel = () =>
-	__( 'Upgrade to Products block', 'woo-gutenberg-products-block' );
+	__( 'Transform into blocks', 'woo-gutenberg-products-block' );
 
 const onClickCallback = ( {
 	clientId,
