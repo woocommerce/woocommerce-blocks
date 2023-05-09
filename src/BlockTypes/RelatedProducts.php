@@ -115,10 +115,10 @@ class RelatedProducts extends AbstractBlock {
 
 		// If there are no related products, render nothing.
 		$related_products_ids = $this->get_related_products_ids();
-
 		if ( count( $related_products_ids ) < 1 ) {
 			return '';
 		}
+
 		return $content;
 	}
 
