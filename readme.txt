@@ -116,6 +116,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix Mini Cart block not respecting Add-to-Cart behaviour attribute when adding the first product. ([9257](https://github.com/woocommerce/woocommerce-blocks/pull/9257))
 - Make it so wide widths are correctly applied to the Mini Cart Contents block in the editor. ([9201](https://github.com/woocommerce/woocommerce-blocks/pull/9201))
 - Performance: Removed lodash dependency on the frontend. ([9161](https://github.com/woocommerce/woocommerce-blocks/pull/9161))
+- Fix bug in which optional postcodes were still validated. ([9377](https://github.com/woocommerce/woocommerce-blocks/pull/9377))
 
 #### Various
 
