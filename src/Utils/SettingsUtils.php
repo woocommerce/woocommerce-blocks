@@ -23,7 +23,7 @@ class SettingsUtils {
 				<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
 			</th>
 			<td class="forminp forminp-text">
-				<span class="code" style="width: 400px; display:flex; align-items:center; gap:10px;">
+				<span class="code" style="width: 400px; display:flex; align-items:center; gap:5px;">
 					<code class="permalink-custom" style="vertical-align: middle;">
 						<?php echo esc_html( get_site_url( null, '/' ) ); ?>
 					</code>
@@ -36,8 +36,9 @@ class SettingsUtils {
 						value="<?php echo esc_attr( $value['value'] ); ?>"
 						class="<?php echo esc_attr( $value['class'] ); ?>"
 						placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-						/><?php echo esc_html( $value['suffix'] ); ?> <?php echo wp_kses_post( $description ); ?>
-					</span>
+						/><?php echo esc_html( $value['suffix'] ); ?>
+				</span>
+				<?php echo wp_kses_post( $description ); ?>
 			</td>
 		</tr>
 		<?php

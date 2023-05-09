@@ -61,6 +61,15 @@ class CheckoutTemplate {
 	}
 
 	/**
+	 * URL to edit the template.
+	 *
+	 * @return string
+	 */
+	protected function get_edit_template_url() {
+		return admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2Fcheckout' );
+	}
+
+	/**
 	 * Add a query var for the checkout. This will allow to to detect when the user is viewing the checkout.
 	 *
 	 * @todo setting to control `checkout`
@@ -123,11 +132,16 @@ class CheckoutTemplate {
 			if ( 'woocommerce_checkout_page_id' === $setting['id'] ) {
 				$settings[ $key ] = [
 					'title'    => __( 'Checkout page', 'woo-gutenberg-products-block' ),
-					'desc'     => __( 'This is the URL for the checkout page template.', 'woo-gutenberg-products-block' ),
+					'desc'     => sprintf(
+						// translators: %1$s: opening anchor tag, %2$s: closing anchor tag.
+						__( 'The checkout page template can be %1$s edited here%2$s.', 'woo-gutenberg-products-block' ),
+						'<a href="' . esc_url( $this->get_edit_template_url() ) . '" target="_blank">',
+						'</a>'
+					),
+					'desc_tip' => __( 'This is the URL to the checkout page.', 'woo-gutenberg-products-block' ),
 					'id'       => 'woocommerce_checkout_page_endpoint',
 					'type'     => 'permalink',
 					'default'  => $default_endpoint,
-					'desc_tip' => true,
 					'autoload' => false,
 				];
 
@@ -163,7 +177,7 @@ class CheckoutTemplate {
 		$edit_page_id = 'page' === $current_screen->id && ! empty( $_GET['post'] ) ? absint( $_GET['post'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		if ( $edit_page_id === $page_id ) {
-			wp_safe_redirect( admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2Fcheckout' ) );
+			wp_safe_redirect( $this->get_edit_template_url() );
 			exit;
 		}
 	}
