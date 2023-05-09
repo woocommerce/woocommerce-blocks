@@ -22,7 +22,9 @@
 	transition: all 0.15s;
 	white-space: nowrap;
 	z-index: 1;
+}
 
+:where(.wc-block-mini-cart__badge) {
 	// These values will be overridden in JS.
 	background-color: transparent;
 	color: transparent;

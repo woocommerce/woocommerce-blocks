@@ -180,8 +180,7 @@ window.addEventListener( 'load', () => {
 
 	/**
 	 * Get the background color of the body then set it as the background color
-	 * of the Mini Cart Contents block. We use :where here to make customized
-	 * background color alway have higher priority.
+	 * of the Mini Cart Contents block.
 	 *
 	 * We only set the background color, instead of the whole background. As
 	 * we only provide the option to customize the background color.
@@ -199,12 +198,14 @@ window.addEventListener( 'load', () => {
 		? getClosestColor( firstMiniCartButton, 'color' )
 		: 'inherit';
 
+	// We use :where here to reduce specificity so customized colors and theme
+	// CSS take priority.
 	style.appendChild(
 		document.createTextNode(
 			`:where(.wp-block-woocommerce-mini-cart-contents) {
 				background-color: ${ backgroundColor };
 			}
-			.wc-block-mini-cart__badge {
+			:where(.wc-block-mini-cart__badge) {
 				background-color: ${ badgeBackgroundColor };
 				color: ${ badgeTextColor };
 			}`
