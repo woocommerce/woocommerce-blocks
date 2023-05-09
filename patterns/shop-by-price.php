@@ -7,13 +7,13 @@
 ?>
 <!-- wp:columns {"align":"wide"} -->
 <div class="wp-block-columns alignwide"><!-- wp:column {"width":"25%","layout":{"type":"default"}} -->
-<div class="wp-block-column" style="flex-basis:25%"><!-- wp:cover {"customOverlayColor":"#e09300","minHeight":130,"minHeightUnit":"px","contentPosition":"top left","isDark":false,"style":{"spacing":{"blockGap":"0.8em","padding":{"right":"1em","bottom":"1em","left":"1em","top":"0.8em"}}},"textColor":"background","layout":{"type":"default"}} -->
-<div class="wp-block-cover is-light has-custom-content-position is-position-top-left has-background-color has-text-color" style="padding-top:0.8em;padding-right:1em;padding-bottom:1em;padding-left:1em;min-height:130px"><span aria-hidden="true" class="wp-block-cover__background has-background-dim-100 has-background-dim" style="background-color:#e09300"></span><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"left","placeholder":"Write title…","style":{"typography":{"fontSize":"0.7em","lineHeight":"1"},"spacing":{"margin":{"top":"0px","bottom":"0px"}}},"textColor":"background"} -->
-<p class="has-text-align-left has-background-color has-text-color" style="margin-top:0px;margin-bottom:0px;font-size:0.7em;line-height:1">Up to</p>
+<div class="wp-block-column" style="flex-basis:25%"><!-- wp:cover {"customOverlayColor":"#e09300","minHeight":130,"minHeightUnit":"px","contentPosition":"top left","isDark":false,"style":{"spacing":{"blockGap":"0.8em","padding":{"top":"0.8em"}}},"textColor":"background","layout":{"type":"default"}} -->
+<div class="wp-block-cover is-light has-custom-content-position is-position-top-left has-background-color has-text-color" style="padding-top:0.8em;min-height:130px"><span aria-hidden="true" class="wp-block-cover__background has-background-dim-100 has-background-dim" style="background-color:#e09300"></span><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"left","placeholder":"Write title…","style":{"typography":{"fontSize":"0.7em","lineHeight":"1"},"spacing":{"margin":{"top":"0px"}}},"textColor":"background"} -->
+<p class="has-text-align-left has-background-color has-text-color" style="margin-top:0px;font-size:0.7em;line-height:1">Up to</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1"},"spacing":{"margin":{"top":"2px","right":"0px","bottom":"0px","left":"0px"}}},"textColor":"background","fontSize":"large"} -->
-<p class="has-background-color has-text-color has-large-font-size" style="margin-top:2px;margin-right:0px;margin-bottom:0px;margin-left:0px;line-height:1"><strong>30% Off</strong></p>
+<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1"},"spacing":{"margin":{"top":"4px","right":"0px","bottom":"0px","left":"0px"}}},"textColor":"background","fontSize":"large"} -->
+<p class="has-background-color has-text-color has-large-font-size" style="margin-top:4px;margin-right:0px;margin-bottom:0px;margin-left:0px;line-height:1"><strong>30% Off</strong></p>
 <!-- /wp:paragraph --></div></div>
 <!-- /wp:cover -->
 
@@ -28,8 +28,8 @@
 <p class="has-text-align-left has-background-color has-text-color" style="margin-top:0px;font-size:0.7em;line-height:1">Under</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1"},"spacing":{"margin":{"top":"2px"}}},"textColor":"background","fontSize":"large"} -->
-<p class="has-background-color has-text-color has-large-font-size" style="margin-top:2px;line-height:1"><strong>$15</strong></p>
+<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1"},"spacing":{"margin":{"top":"4px","right":"0px","bottom":"0px","left":"0px"}}},"textColor":"background","fontSize":"large"} -->
+<p class="has-background-color has-text-color has-large-font-size" style="margin-top:4px;margin-right:0px;margin-bottom:0px;margin-left:0px;line-height:1"><strong>$15</strong></p>
 <!-- /wp:paragraph --></div></div>
 <!-- /wp:cover -->
 
@@ -44,8 +44,8 @@
 <p class="has-text-align-left has-background-color has-text-color" style="margin-top:0px;font-size:0.7em;line-height:1">Under</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1"},"spacing":{"margin":{"top":"2px"}}},"textColor":"background","fontSize":"large"} -->
-<p class="has-background-color has-text-color has-large-font-size" style="margin-top:2px;line-height:1"><strong>$25</strong></p>
+<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1"},"spacing":{"margin":{"top":"4px","right":"0px","bottom":"0px","left":"0px"}}},"textColor":"background","fontSize":"large"} -->
+<p class="has-background-color has-text-color has-large-font-size" style="margin-top:4px;margin-right:0px;margin-bottom:0px;margin-left:0px;line-height:1"><strong>$25</strong></p>
 <!-- /wp:paragraph --></div></div>
 <!-- /wp:cover -->
 
@@ -60,8 +60,8 @@
 <p class="has-text-align-left has-background-color has-text-color" style="margin-top:0px;font-size:0.7em;line-height:1">Under</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1"},"spacing":{"margin":{"top":"2px"}}},"textColor":"background","fontSize":"large"} -->
-<p class="has-background-color has-text-color has-large-font-size" style="margin-top:2px;line-height:1"><strong>$20</strong></p>
+<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1"},"spacing":{"margin":{"top":"4px","right":"0px","bottom":"0px","left":"0px"}}},"textColor":"background","fontSize":"large"} -->
+<p class="has-background-color has-text-color has-large-font-size" style="margin-top:4px;margin-right:0px;margin-bottom:0px;margin-left:0px;line-height:1"><strong>$20</strong></p>
 <!-- /wp:paragraph --></div></div>
 <!-- /wp:cover -->
 
