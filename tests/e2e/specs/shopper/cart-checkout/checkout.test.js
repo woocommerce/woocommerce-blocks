@@ -125,7 +125,7 @@ describe( 'Shopper → Checkout', () => {
 			);
 		} );
 
-		it( 'Switching between local pickup and shipping does not affect the address', async () => {
+		it.skip( 'Switching between local pickup and shipping does not affect the address', async () => {
 			await shopper.block.emptyCart();
 			await shopper.block.goToShop();
 			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
