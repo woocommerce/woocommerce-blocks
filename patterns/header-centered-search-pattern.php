@@ -36,7 +36,7 @@
 	<hr class="wp-block-separator alignfull has-alpha-channel-opacity is-style-wide" />
 	<!-- /wp:separator -->
 
-	<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
+	<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center"}} -->
 	<div class="wp-block-group">
 		<!-- wp:navigation {"style":{"typography":{"fontStyle":"normal","fontWeight":"400"}}} /-->
 	</div>
