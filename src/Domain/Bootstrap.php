@@ -11,6 +11,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
 use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Domain\Services\GoogleAnalytics;
+use Automattic\WooCommerce\Blocks\Domain\Services\PayForOrder;
 use Automattic\WooCommerce\Blocks\InboxNotifications;
 use Automattic\WooCommerce\Blocks\Installer;
 use Automattic\WooCommerce\Blocks\Migration;
@@ -126,6 +127,7 @@ class Bootstrap {
 		$this->container->get( CreateAccount::class )->init();
 		$this->container->get( StoreApi::class )->init();
 		$this->container->get( GoogleAnalytics::class );
+		$this->container->get( PayForOrder::class )->init();
 		$this->container->get( BlockTypesController::class );
 		$this->container->get( BlockTemplatesController::class );
 		$this->container->get( ProductSearchResultsTemplate::class );
@@ -312,6 +314,12 @@ class Bootstrap {
 				}
 				$asset_api = $container->get( AssetApi::class );
 				return new GoogleAnalytics( $asset_api );
+			}
+		);
+		$this->container->register(
+			PayForOrder::class,
+			function () {
+				return new PayForOrder();
 			}
 		);
 		$this->container->register(
