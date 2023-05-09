@@ -45,15 +45,18 @@
 
 		<!-- wp:group {"style":{"spacing":{"padding":{"top":"0px","right":"0px","bottom":"0px","left":"0px"},"blockGap":"0px","margin":{"top":"10px","bottom":"0px"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
 		<div class="wp-block-group" style="margin-top:10px;margin-bottom:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
-			<!-- wp:image {"id":1,"width":90,"height":20,"sizeSlug":"full","linkDestination":"none","style":{"layout":{"selfStretch":"fixed","flexSize":"90px"}}} -->
-			<figure class="wp-block-image size-full is-resized">
-				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/rating-stars.png', dirname( __FILE__ ) ) ); ?>" alt="" class="wp-image-1" width="90" height="20"/>
-			</figure>
-			<!-- /wp:image -->
+			<!-- wp:paragraph {"textColor":"luminous-vivid-amber"} -->
+			<p class="has-luminous-vivid-amber-color has-text-color">★★★★</p>
+			<!-- /wp:paragraph -->
+
+			<!-- wp:paragraph {"style":{"color":{"text":"#ffe8a4"},"spacing":{"margin":{"right":"5px"}}}} -->
+			<p class="has-text-color" style="color:#ffe8a4;margin-right:5px">★</p>
+			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph {"style":{"typography":{"fontSize":"0.7em"}},"textColor":"foreground"} -->
-			<p class="has-foreground-color has-text-color" style="font-size:0.7em">4.2(1,079 reviews)</p>
-			<!-- /wp:paragraph --></div>
+			<p class="has-foreground-color has-text-color" style="font-size:0.7em">  <strong>4.2</strong>(1,079 reviews)</p>
+			<!-- /wp:paragraph -->
+		</div>
 		<!-- /wp:group -->
 
 		<!-- wp:group {"style":{"spacing":{"blockGap":"8px","padding":{"top":"0px","right":"0px","bottom":"0px","left":"0px"},"margin":{"top":"2px","bottom":"0px"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
