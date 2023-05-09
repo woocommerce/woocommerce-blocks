@@ -1,12 +1,14 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
+use Automattic\WooCommerce\StoreApi\Utilities\ProductItemTrait;
 use Automattic\WooCommerce\StoreApi\Utilities\QuantityLimits;
 
 /**
  * OrderItemSchema class.
  */
 class OrderItemSchema extends ProductSchema {
+	use ProductItemTrait;
 
 	/**
 	 * The schema item name.
@@ -331,7 +333,9 @@ class OrderItemSchema extends ProductSchema {
 	 * @return array
 	 */
 	public function get_item_response( $item ) {
-		$order = $item->get_order();
+		$order   = $item->get_order();
+		$product = $item->get_product();
+
 		return [
 			'id'                   => $item->get_id(),
 			'quantity'             => $item->get_quantity(),
@@ -339,19 +343,24 @@ class OrderItemSchema extends ProductSchema {
 			'item_data'            => $item->get_all_formatted_meta_data(),
 			'totals'               => $this->get_totals( $item ),
 			'key'                  => $order->get_order_key(),
-			'quantity_limits'      => $item->get_quantity(),
-			'short_description'    => $this->prepare_html_response( wc_format_content( wp_kses_post( $item->get_product()->get_short_description() ) ) ),
-			'description'          => $this->prepare_html_response( wc_format_content( wp_kses_post( $item->get_product()->get_description() ) ) ),
-			'sku'                  => $this->prepare_html_response( $item->get_product()->get_sku() ),
+			'quantity_limits'      => array(
+				'minimum'     => $item->get_quantity(),
+				'maximum'     => $item->get_quantity(),
+				'multiple_of' => 1,
+				'editable'    => false,
+			),
+			'short_description'    => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_short_description() ) ) ),
+			'description'          => $this->prepare_html_response( wc_format_content( wp_kses_post( $product->get_description() ) ) ),
+			'sku'                  => $this->prepare_html_response( $product->get_sku() ),
 			'low_stock_remaining'  => null,
 			'backorders_allowed'   => false,
 			'show_backorder_badge' => false,
 			'sold_individually'    => false,
-			'permalink'            => $item->get_product()->get_permalink(),
-			'images'               => $this->get_images( $item->get_product() ),
-			// 'variation'            => $this->format_variation_data( $item->get_variation(), $item->get_product() ),
-			'prices'               => (object) $this->prepare_product_price_response( $item->get_product(), get_option( 'woocommerce_tax_display_cart' ) ),
-			'catalog_visibility'   => $item->get_product()->get_catalog_visibility(),
+			'permalink'            => $product->get_permalink(),
+			'images'               => $this->get_images( $product ),
+			'variation'            => $this->format_variation_data( $product->get_attributes(), $product ),
+			'prices'               => (object) $this->prepare_product_price_response( $product, get_option( 'woocommerce_tax_display_cart' ) ),
+			'catalog_visibility'   => $product->get_catalog_visibility(),
 		];
 	}
 
