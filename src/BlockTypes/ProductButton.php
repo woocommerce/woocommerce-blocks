@@ -16,6 +16,20 @@ class ProductButton extends AbstractBlock {
 	protected $block_name = 'product-button';
 
 	/**
+	 * It is necessary to register and enqueue assets during the render phase because we want to load assets only if the block has the content.
+	 */
+	protected function register_block_type_assets() {
+		return null;
+	}
+
+	/**
+	 * Register the context.
+	 */
+	protected function get_block_type_uses_context() {
+		return [ 'query', 'queryId', 'postId' ];
+	}
+
+	/**
 	 * Include and render the block.
 	 *
 	 * @param array    $attributes Block attributes. Default empty array.
