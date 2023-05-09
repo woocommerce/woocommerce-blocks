@@ -214,8 +214,6 @@ final class BlockTypesController {
 			'RelatedProducts',
 			'ProductDetails',
 			'StockFilter',
-			'ProductsCollection',
-			'ProductTemplate',
 		];
 
 		$block_types = array_merge(
@@ -227,6 +225,8 @@ final class BlockTypesController {
 
 		if ( Package::feature()->is_experimental_build() ) {
 			$block_types[] = 'SingleProduct';
+			$block_types[] = 'ProductsCollection';
+			$block_types[] = 'ProductTemplate';
 		}
 
 		/**
