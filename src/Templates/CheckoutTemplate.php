@@ -71,8 +71,6 @@ class CheckoutTemplate {
 
 	/**
 	 * Add a query var for the checkout. This will allow to to detect when the user is viewing the checkout.
-	 *
-	 * @todo setting to control `checkout`
 	 */
 	public function add_endpoint() {
 		$endpoint   = get_option( 'woocommerce_checkout_page_endpoint', $this->get_default_endpoint() );
