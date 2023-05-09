@@ -14,6 +14,20 @@ interface dependencyData {
 	translations?: string;
 }
 
+function getClosestColor(
+	element: Element | null,
+	colorType: 'color' | 'backgroundColor'
+): string | null {
+	if ( ! element ) {
+		return null;
+	}
+	const color = window.getComputedStyle( element )[ colorType ];
+	if ( color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent' ) {
+		return color;
+	}
+	return getClosestColor( element.parentElement, colorType );
+}
+
 window.addEventListener( 'load', () => {
 	const miniCartBlocks = document.querySelectorAll( '.wc-block-mini-cart' );
 	let wasLoadScriptsCalled = false;
@@ -174,11 +188,25 @@ window.addEventListener( 'load', () => {
 	 */
 	const style = document.createElement( 'style' );
 	const backgroundColor = getComputedStyle( document.body ).backgroundColor;
+	// For simplicity, we only consider the background color of the first Mini Cart button.
+	const firstMiniCartButton = document.querySelector(
+		'.wc-block-mini-cart__button'
+	);
+	const badgeTextColor = firstMiniCartButton
+		? getClosestColor( firstMiniCartButton, 'backgroundColor' )
+		: 'inherit';
+	const badgeBackgroundColor = firstMiniCartButton
+		? getClosestColor( firstMiniCartButton, 'color' )
+		: 'inherit';
 
 	style.appendChild(
 		document.createTextNode(
 			`:where(.wp-block-woocommerce-mini-cart-contents) {
 				background-color: ${ backgroundColor };
+			}
+			.wc-block-mini-cart__badge {
+				background-color: ${ badgeBackgroundColor };
+				color: ${ badgeTextColor };
 			}`
 		)
 	);

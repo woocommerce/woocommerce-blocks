@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { miniCart, miniCartWithBadge } from '@woocommerce/icons';
+import { miniCart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 
 /**
@@ -17,22 +17,14 @@ interface Props {
 const QuantityBadge = ( { count }: Props ): JSX.Element => {
 	return (
 		<span className="wc-block-mini-cart__quantity-badge">
-			{ count > 0 ? (
-				<>
-					<Icon
-						className="wc-block-mini-cart__icon"
-						size={ 20 }
-						icon={ miniCartWithBadge }
-					/>
-					<span className="wc-block-mini-cart__badge">{ count }</span>
-				</>
-			) : (
-				<Icon
-					className="wc-block-mini-cart__icon"
-					size={ 20 }
-					icon={ miniCart }
-				/>
-			) }
+			<Icon
+				className="wc-block-mini-cart__icon"
+				size={ 20 }
+				icon={ miniCart }
+			/>
+			<span className="wc-block-mini-cart__badge">
+				{ count > 0 ? count : '' }
+			</span>
 		</span>
 	);
 };
