@@ -12,7 +12,11 @@ import { store as blockEditorStore } from '@wordpress/block-editor';
 
 // @ts-expect-error: @wordpress/plugin is typed in the newer versions
 // eslint-disable-next-line @woocommerce/dependency-group
-import { registerPlugin, unregisterPlugin } from '@wordpress/plugins';
+import {
+	registerPlugin,
+	unregisterPlugin,
+	getPlugin,
+} from '@wordpress/plugins';
 
 /**
  * Internal dependencies
@@ -150,10 +154,18 @@ subscribe( () => {
 		PluginTemplateSettingPanel !== undefined;
 
 	if ( isWooTemplate && hasSupportForPluginTemplateSettingPanel ) {
-		registerPlugin( REVERT_BUTTON_PLUGIN_NAME, {
+		if ( getPlugin( REVERT_BUTTON_PLUGIN_NAME ) ) {
+			return;
+		}
+
+		return registerPlugin( REVERT_BUTTON_PLUGIN_NAME, {
 			render: RevertClassicTemplateButton,
 		} );
-	} else {
-		unregisterPlugin( REVERT_BUTTON_PLUGIN_NAME );
 	}
+
+	if ( getPlugin( REVERT_BUTTON_PLUGIN_NAME ) === undefined ) {
+		return;
+	}
+
+	unregisterPlugin( REVERT_BUTTON_PLUGIN_NAME );
 }, 'core/edit-site' );
