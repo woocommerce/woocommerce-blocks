@@ -12,6 +12,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\Notices;
 use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Domain\Services\GoogleAnalytics;
+use Automattic\WooCommerce\Blocks\Domain\Services\PayForOrder;
 use Automattic\WooCommerce\Blocks\InboxNotifications;
 use Automattic\WooCommerce\Blocks\Installer;
 use Automattic\WooCommerce\Blocks\Migration;
@@ -131,6 +132,7 @@ class Bootstrap {
 		$this->container->get( Notices::class )->init();
 		$this->container->get( StoreApi::class )->init();
 		$this->container->get( GoogleAnalytics::class );
+		$this->container->get( PayForOrder::class )->init();
 		$this->container->get( BlockTypesController::class );
 		$this->container->get( BlockTemplatesController::class );
 		$this->container->get( ProductSearchResultsTemplate::class );
@@ -351,6 +353,12 @@ class Bootstrap {
 			Notices::class,
 			function( Container $container ) {
 				return new Notices( $container->get( Package::class ) );
+			}
+		);
+		$this->container->register(
+			PayForOrder::class,
+			function () {
+				return new PayForOrder();
 			}
 		);
 		$this->container->register(
