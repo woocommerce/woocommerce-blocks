@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Templates;
 
+use Automattic\WooCommerce\Blocks\Utils\SettingsUtils;
+
 /**
  * CheckoutTemplate class.
  *
@@ -26,20 +28,36 @@ class CheckoutTemplate {
 	 * Initialization method.
 	 */
 	protected function init() {
+		// Register the endpoint in the rewrite rules.
 		add_action( 'init', array( $this, 'add_endpoint' ) );
-		add_filter( 'pre_get_document_title', array( $this, 'endpoint_title' ) );
 		add_filter( 'woocommerce_is_checkout', array( $this, 'is_checkout' ) );
-		add_filter( 'woocommerce_settings_pages', array( $this, 'update_settings_page' ) );
-		add_action( 'woocommerce_admin_field_endpoint', array( $this, 'input_field' ) );
+		add_filter( 'pre_get_document_title', array( $this, 'endpoint_page_title' ) );
 
-		// Todo flushes for the rewrite endpoint. Need to happen when settings change and when the theme changes.
+		// Handle settings for endpoints.
+		add_filter( 'woocommerce_settings_pages', array( $this, 'add_endpoint_field_to_settings_page' ) );
 		add_action( 'after_switch_theme', 'flush_rewrite_rules' );
 		add_action( 'update_option_woocommerce_checkout_pay_endpoint', 'flush_rewrite_rules' );
 
 		add_filter( 'page_template_hierarchy', array( $this, 'update_page_template_hierarchy' ), 1 );
 		add_filter( 'frontpage_template_hierarchy', array( $this, 'update_page_template_hierarchy' ), 1 );
-		add_action( 'current_screen', array( $this, 'template_editor_redirect' ) );
 		add_filter( 'woocommerce_blocks_template_content', array( $this, 'default_template_content' ), 10, 3 );
+		add_action( 'current_screen', array( $this, 'template_editor_redirect' ) );
+	}
+
+	/**
+	 * Get the default endpoint for the template. This defaults to checkout unless a page already exists.
+	 *
+	 * @return string
+	 */
+	protected function get_default_endpoint() {
+		$default = __( 'checkout', 'woo-gutenberg-products-block' );
+
+		if ( wc_get_page_id( 'checkout' ) ) {
+			$page_data = get_post( wc_get_page_id( 'checkout' ) );
+			return $page_data->post_name ?: $default;
+		}
+
+		return $default;
 	}
 
 	/**
@@ -48,12 +66,7 @@ class CheckoutTemplate {
 	 * @todo setting to control `checkout`
 	 */
 	public function add_endpoint() {
-		if ( wc_get_page_id( 'checkout' ) ) {
-			$default_endpoint = get_post( wc_get_page_id( 'checkout' ) )->post_name ?: __( 'checkout', 'woo-gutenberg-products-block' );
-		} else {
-			$default_endpoint = __( 'checkout', 'woo-gutenberg-products-block' );
-		}
-		$endpoint   = get_option( 'woocommerce_checkout_page_endpoint', $default_endpoint );
+		$endpoint   = get_option( 'woocommerce_checkout_page_endpoint', $this->get_default_endpoint() );
 		$query_vars = WC()->query->get_query_vars();
 
 		add_rewrite_endpoint( $endpoint . '/' . $query_vars['order-received'], \EP_ROOT, $query_vars['order-received'] );
@@ -72,19 +85,6 @@ class CheckoutTemplate {
 	}
 
 	/**
-	 * Filters the page title when the endpoint is active.
-	 *
-	 * @param string $title Page title.
-	 * @return string
-	 */
-	public function endpoint_title( $title ) {
-		if ( $this->is_endpoint() ) {
-			return __( 'Checkout', 'woo-gutenberg-products-block' );
-		}
-		return $title;
-	}
-
-	/**
 	 * Filters the `is_checkout` function so we can return true when the endpoint is active.
 	 *
 	 * @param boolean $return True when on the checkout page.
@@ -97,55 +97,44 @@ class CheckoutTemplate {
 		return $return;
 	}
 
-	public function update_settings_page( $settings ) {
+	/**
+	 * Filter the page title when the endpoint is active.
+	 *
+	 * @param string $title Page title.
+	 * @return string
+	 */
+	public function endpoint_page_title( $title ) {
+		if ( $this->is_endpoint() ) {
+			return __( 'Checkout', 'woo-gutenberg-products-block' );
+		}
+		return $title;
+	}
+
+	/**
+	 * Update Woo Settings page to include the checkout endpoint instead of the checkout page dropdown.
+	 *
+	 * @param array $settings Settings pages.
+	 * @return array
+	 */
+	public function add_endpoint_field_to_settings_page( $settings ) {
+		$default_endpoint = $this->get_default_endpoint();
+
 		foreach ( $settings as $key => $setting ) {
 			if ( 'woocommerce_checkout_page_id' === $setting['id'] ) {
-				if ( wc_get_page_id( 'checkout' ) ) {
-					$default = get_post( wc_get_page_id( 'checkout' ) )->post_name ?: __( 'checkout', 'woo-gutenberg-products-block' );
-				} else {
-					$default = __( 'checkout', 'woo-gutenberg-products-block' );
-				}
 				$settings[ $key ] = [
 					'title'    => __( 'Checkout page', 'woo-gutenberg-products-block' ),
-					'desc'     => __( 'Endpoint for the checkout page.', 'woo-gutenberg-products-block' ),
+					'desc'     => __( 'This is the URL for the checkout page template.', 'woo-gutenberg-products-block' ),
 					'id'       => 'woocommerce_checkout_page_endpoint',
-					'type'     => 'endpoint',
-					'default'  => $default,
+					'type'     => 'permalink',
+					'default'  => $default_endpoint,
 					'desc_tip' => true,
 					'autoload' => false,
 				];
+
+				add_action( 'woocommerce_admin_field_permalink', array( SettingsUtils::class, 'permalink_input_field' ) );
 			}
 		}
 		return $settings;
-	}
-
-	public function input_field( $value ) {
-		$field_description = \WC_Admin_Settings::get_field_description( $value );
-		$description       = $field_description['description'];
-		$tooltip_html      = $field_description['tooltip_html'];
-		?>
-		<tr valign="top">
-			<th scope="row" class="titledesc">
-				<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo $tooltip_html; // WPCS: XSS ok. ?></label>
-			</th>
-			<td class="forminp forminp-text">
-				<span class="code" style="width: 400px; display:flex; align-items:center; gap:10px;">
-					<code class="permalink-custom" style="vertical-align: middle;">
-						<?php echo esc_html( get_site_url( null, '/' ) ); ?>
-					</code>
-					<input
-						name="<?php echo esc_attr( $value['field_name'] ); ?>"
-						id="<?php echo esc_attr( $value['id'] ); ?>"
-						type="text"
-						style="vertical-align: middle;"
-						value="<?php echo esc_attr( $value['value'] ); ?>"
-						class="<?php echo esc_attr( $value['class'] ); ?>"
-						placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
-						/><?php echo esc_html( $value['suffix'] ); ?> <?php echo $description; // WPCS: XSS ok. ?>
-					</span>
-			</td>
-		</tr>
-		<?php
 	}
 
 	/**
