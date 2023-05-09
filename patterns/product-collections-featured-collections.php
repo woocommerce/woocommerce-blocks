@@ -10,9 +10,19 @@
 <div class="wp-block-columns alignwide" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
 	<!-- wp:column {"width":"50%","style":{"spacing":{"padding":{"top":"30px","right":"30px","bottom":"30px","left":"30px"}},"color":{"background":"#f3edd8"}},"layout":{"type":"constrained"}} -->
 	<div class="wp-block-column has-background" style="background-color:#f3edd8;padding-top:30px;padding-right:30px;padding-bottom:30px;padding-left:30px;flex-basis:50%">
-		<!-- wp:heading {"fontSize":"x-large"} -->
-		<h2 class="wp-block-heading has-x-large-font-size">Tech gifts under $100</h2>
+		<!-- wp:heading {"style":{"typography":{"fontStyle":"normal","fontWeight":"700"}},"fontSize":"x-large"} -->
+		<h2 class="wp-block-heading has-x-large-font-size" style="font-style:normal;font-weight:700">Tech gifts under $100</h2>
 		<!-- /wp:heading -->
+
+		<!-- wp:buttons -->
+		<div class="wp-block-buttons">
+			<!-- wp:button {"backgroundColor":"contrast","textColor":"base","style":{"spacing":{"padding":{"left":"18px","right":"18px","top":"9px","bottom":"9px"}},"typography":{"fontSize":"16px"}}} -->
+			<div class="wp-block-button has-custom-font-size" style="font-size:16px">
+				<a class="wp-block-button__link has-base-color has-contrast-background-color has-text-color has-background wp-element-button" style="padding-top:9px;padding-right:18px;padding-bottom:9px;padding-left:18px">Shop tech</a>
+			</div>
+			<!-- /wp:button -->
+		</div>
+		<!-- /wp:buttons -->
 
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
 		<div class="wp-block-group">
@@ -34,9 +44,19 @@
 
 	<!-- wp:column {"width":"50%","style":{"spacing":{"padding":{"top":"30px","right":"30px","bottom":"30px","left":"30px"}},"color":{"background":"#d8f2f3"}}} -->
 	<div class="wp-block-column has-background" style="background-color:#d8f2f3;padding-top:30px;padding-right:30px;padding-bottom:30px;padding-left:30px;flex-basis:50%">
-		<!-- wp:heading {"fontSize":"x-large"} -->
-		<h2 class="wp-block-heading has-x-large-font-size">For the gamers</h2>
+		<!-- wp:heading {"style":{"typography":{"fontStyle":"normal","fontWeight":"700"}},"fontSize":"x-large"} -->
+		<h2 class="wp-block-heading has-x-large-font-size" style="font-style:normal;font-weight:700">For the gamers</h2>
 		<!-- /wp:heading -->
+
+		<!-- wp:buttons -->
+		<div class="wp-block-buttons">
+			<!-- wp:button {"backgroundColor":"contrast","textColor":"base","style":{"spacing":{"padding":{"left":"18px","right":"18px","top":"9px","bottom":"9px"}},"typography":{"fontSize":"16px"}}} -->
+			<div class="wp-block-button has-custom-font-size" style="font-size:16px">
+				<a class="wp-block-button__link has-base-color has-contrast-background-color has-text-color has-background wp-element-button" style="padding-top:9px;padding-right:18px;padding-bottom:9px;padding-left:18px">Shop games</a>
+			</div>
+			<!-- /wp:button -->
+		</div>
+		<!-- /wp:buttons -->
 
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
 		<div class="wp-block-group">
