@@ -16,10 +16,10 @@
 		<!-- /wp:image -->
 		<!-- wp:group {"style":{"spacing":{"padding":"0px","blockGap":"0px","margin":{"top":"30px","bottom":"20px","left":"32%"}}},"layout":{"type":"flex","flexWrap":"nowrap","verticalAlignment":"center"}} -->
 		<div class="wp-block-group is-content-justification-center" style="margin-top:30px;margin-bottom:20px;margin-left:32%;padding:0">
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px"},"textColor":"luminous-vivid-amber"} -->
+			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px","textColor":"luminous-vivid-amber"}} -->
 			<p class="has-luminous-vivid-amber-color has-text-color" style="font-size:24px">★★★★</p>
 			<!-- /wp:paragraph -->
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px"},"color":{"text":"#ffe8a4"},"spacing":{"margin":{"right":"8px"}}} -->
+			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px"},"textColor":"#ffe8a4","spacing":{"margin":{"right":"8px"}}} -->
 			<p class="has-text-color" style="color:#ffe8a4;margin-right:8px;font-size:24px">★</p>
 			<!-- /wp:paragraph -->
 			<!-- wp:paragraph {"style":{"typography":{"fontSize":"16px"},"textColor":"foreground"} -->
@@ -30,15 +30,15 @@
 		<!-- wp:heading {"style":{"spacing":{"margin":{"bottom":"20px"}},"typography":{"fontSize":"48px","fontStyle":"normal","fontWeight":"700","lineHeight":"120%"}},"textColor":"black","fontSize":"x-large"} -->
 		<h2 class="wp-block-heading has-black-color has-text-color has-text-align-center has-x-large-font-size" style="font-size:48px;font-style:normal;font-weight:700;line-height:120%;margin-bottom:20px;">Bella Pro Series - 1.6-qt. Deep Fryer - Stainless Steel</h2>
 		<!-- /wp:heading -->
-		<!-- wp:paragraph {"style":{"spacing":{"margin":{"bottom":"20px"}},"padding":"0px","blockGap":"0px","margin":{"bottom":"20px"}},"typography":{"fontSize":"32px","fontWeight":"700"}},"textColor":"foreground"} -->
-		<p class="has-foreground-color has-text-color has-text-align-center" style="font-size:32px;margin-bottom:20px;">
+		<!-- wp:paragraph {"style":{"spacing":{"margin":{"bottom":"40px"}},"padding":"0px","blockGap":"0px","margin":{"bottom":"20px"}},"typography":{"fontSize":"30px","fontWeight":"700"}},"textColor":"foreground"} -->
+		<p class="has-foreground-color has-text-color has-text-align-center" style="font-size:30px;margin-bottom:40px;">
 			<strong><sup><sub>$</sub></sup>37.49 </strong><s style="color:lightgrey;font-weight:400;">$47.49</s>
 		</p>
 		<!-- /wp:paragraph -->
 		<!-- wp:buttons {"style":{"spacing":{"blockGap":"0px"}}} -->
 		<div class="wp-block-buttons is-content-justification-center">
-			<!-- wp:button {"backgroundColor":"black","textColor":"white","className":"is-style-fill","fontSize":"small","style":{"spacing":{"padding":{"left":"94px","right":"94px"}}}} -->
-			<div class="wp-block-button has-custom-font-size is-style-fill has-small-font-size"><a class="wp-block-button__link has-white-color has-black-background-color has-text-color has-background wp-element-button" style="padding-right:94px;padding-left:94px">Add to cart</a></div>
+			<!-- wp:button {"backgroundColor":"black","textColor":"white","className":"is-style-fill","fontSize":"small","style":{"spacing":{"padding":{"left":"94px","right":"94px","top":"20px","bottom":"20px"}}}} -->
+			<div class="wp-block-button has-custom-font-size is-style-fill has-small-font-size"><a class="wp-block-button__link has-white-color has-black-background-color has-text-color has-background wp-element-button" style="padding-right:94px;padding-left:94px;padding-top:20px;padding-bottom:20px;"><strong>Add to cart</strong></a></div>
 			<!-- /wp:button -->
 		</div>
 		<!-- /wp:buttons -->
