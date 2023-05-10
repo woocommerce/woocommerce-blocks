@@ -19,15 +19,11 @@
 			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px"},"textColor":"luminous-vivid-amber"} -->
 			<p class="has-luminous-vivid-amber-color has-text-color" style="font-size:24px">★★★★</p>
 			<!-- /wp:paragraph -->
-
 			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px"},"color":{"text":"#ffe8a4"},"spacing":{"margin":{"right":"8px"}}} -->
 			<p class="has-text-color" style="color:#ffe8a4;margin-right:8px;font-size:24px">★</p>
 			<!-- /wp:paragraph -->
-
 			<!-- wp:paragraph {"style":{"typography":{"fontSize":"16px"},"textColor":"foreground"} -->
-			<p class="has-foreground-color has-text-color" style="font-size:16px">
-				<strong>4.2</strong>(1,079 reviews)
-			</p>
+			<p class="has-foreground-color has-text-color" style="font-size:16px"><strong>4.2 </strong>(1,079 reviews)</p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:group -->
@@ -39,10 +35,10 @@
 			<strong><sup><sub>$</sub></sup>37.49 </strong><s style="color:lightgrey;font-weight:400;">$47.49</s>
 		</p>
 		<!-- /wp:paragraph -->
-		<!-- wp:buttons -->
+		<!-- wp:buttons {"style":{"spacing":{"blockGap":"0px"}}} -->
 		<div class="wp-block-buttons is-content-justification-center">
-			<!-- wp:button {"backgroundColor":"foreground","textColor":"background","style":{"spacing":{"padding":{"left":"80px","right":"80px"}}}} -->
-			<div class="wp-block-button"><a class="wp-block-button__link has-background-color has-foreground-background-color has-text-color has-background wp-element-button" style="padding-right:80px;padding-left:80px">Add to cart</a></div>
+			<!-- wp:button {"backgroundColor":"black","textColor":"white","className":"is-style-fill","fontSize":"small","style":{"spacing":{"padding":{"left":"94px","right":"94px"}}}} -->
+			<div class="wp-block-button has-custom-font-size is-style-fill has-small-font-size"><a class="wp-block-button__link has-white-color has-black-background-color has-text-color has-background wp-element-button" style="padding-right:94px;padding-left:94px">Add to cart</a></div>
 			<!-- /wp:button -->
 		</div>
 		<!-- /wp:buttons -->
