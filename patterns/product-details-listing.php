@@ -5,17 +5,17 @@
  * Categories: WooCommerce
  */
 ?>
-<!-- wp:columns {"style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"blockGap":{"top":"0","left":"0"}}}} -->
-<div class="wp-block-columns" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-	<!-- wp:column {"style":{"spacing":{"blockGap":"0","padding":{"right":"0","bottom":"0","left":"0","top":"20px"}}}} -->
-	<div class="wp-block-column" style="padding-top:20px;padding-right:0;padding-bottom:0;padding-left:0">
+<!-- wp:columns {"style":{"spacing":{"padding":"0px","blockGap":{"top":"0","left":"0"}}}} -->
+<div class="wp-block-columns" style="padding:0">
+	<!-- wp:column {"style":{"spacing":{"blockGap":"0","padding":"0px"}}} -->
+	<div class="wp-block-column" style="padding:0">
 		<!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
 		<figure class="wp-block-image size-full is-resized">
 			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-details-product-listing.jpg', dirname( __FILE__ ) ) ); ?>" alt="" />
 		</figure>
 		<!-- /wp:image -->
-		<!-- wp:group {"style":{"spacing":{"padding":{"top":"0px","right":"0px","bottom":"0px","left":"0px"},"blockGap":"0px","margin":{"top":"40px","bottom":"40px","left":"32%"}}},"layout":{"type":"flex","flexWrap":"nowrap","verticalAlignment":"center"}} -->
-		<div class="wp-block-group is-content-justification-center" style="margin-top:40px;margin-bottom:40px;margin-left:32%;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
+		<!-- wp:group {"style":{"spacing":{"padding":"0px","blockGap":"0px","margin":{"top":"40px","bottom":"40px","left":"32%"}}},"layout":{"type":"flex","flexWrap":"nowrap","verticalAlignment":"center"}} -->
+		<div class="wp-block-group is-content-justification-center" style="margin-top:40px;margin-bottom:40px;margin-left:32%;padding:0">
 			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px"},"textColor":"luminous-vivid-amber"} -->
 			<p class="has-luminous-vivid-amber-color has-text-color" style="font-size:24px">★★★★</p>
 			<!-- /wp:paragraph -->
