@@ -115,6 +115,9 @@ class Api {
 	 * Store all cached script data in the transient cache.
 	 */
 	public function update_script_data_cache() {
+		if ( is_null( $this->script_data ) || $this->disable_cache ) {
+			return;
+		}
 		set_transient(
 			'woocommerce_blocks_asset_api_script_data',
 			wp_json_encode(
