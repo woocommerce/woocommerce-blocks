@@ -15,7 +15,7 @@ import edit from './edit';
 
 const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Mini Cart', 'woo-gutenberg-products-block' ),
+	title: __( 'Mini-Cart', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: (
 			<Icon
