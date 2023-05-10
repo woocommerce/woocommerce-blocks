@@ -27,7 +27,7 @@ const settings: BlockConfiguration = {
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Display a mini cart widget.',
+		'Display a button for shoppers to quickly view their cart.',
 		'woo-gutenberg-products-block'
 	),
 	supports: {
