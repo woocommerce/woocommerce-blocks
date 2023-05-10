@@ -16,8 +16,8 @@
 	<!-- /wp:paragraph -->
 
 	<!-- wp:buttons -->
-	<div class="wp-block-buttons"><!-- wp:button -->
-		<div class="wp-block-button"><a class="wp-block-button__link wp-element-button">Shop shoes</a></div>
+	<div class="wp-block-buttons"><!-- wp:button {"backgroundColor":"contrast","textColor":"base"} -->
+		<div class="wp-block-button"><a class="wp-block-button__link has-base-color has-contrast-background-color has-text-color has-background wp-element-button">Shop shoes</a></div>
 		<!-- /wp:button --></div>
 	<!-- /wp:buttons --></div>
 <!-- /wp:group -->
