@@ -46,7 +46,7 @@ class Api {
 	 */
 	public function __construct( Package $package ) {
 		$this->package       = $package;
-		$this->disable_cache = $this->package->feature()->is_development_environment() || ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
+		$this->disable_cache = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) || $this->package->feature()->is_development_environment() || $this->package->feature()->is_test_environment();
 
 		if ( ! $this->disable_cache ) {
 			add_action( 'shutdown', array( $this, 'save_cached_script_data' ), 20 );
