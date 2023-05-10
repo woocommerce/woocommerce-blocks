@@ -20,11 +20,11 @@
 			<p class="has-luminous-vivid-amber-color has-text-color" style="font-size:24px">★★★★</p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px"}},"color":{"text":"#ffe8a4"},"spacing":{"margin":{"right":"5px"}}}} -->
+			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px"},"color":{"text":"#ffe8a4"},"spacing":{"margin":{"right":"5px"}}} -->
 			<p class="has-text-color" style="color:#ffe8a4;margin-right:5px;font-size:24px">★</p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"16px"}},"textColor":"foreground"} -->
+			<!-- wp:paragraph {"style":{"typography":{"fontSize":"16px"},"textColor":"foreground"} -->
 			<p class="has-foreground-color has-text-color" style="font-size:16px">
 				<strong>4.2</strong>(1,079 reviews)
 			</p>
