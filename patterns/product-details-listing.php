@@ -14,8 +14,8 @@
 			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-details-product-listing.jpg', dirname( __FILE__ ) ) ); ?>" alt="" />
 		</figure>
 		<!-- /wp:image -->
-		<!-- wp:group -->
-		<div class="wp-block-group">
+		<!-- wp:group {"style":{"spacing":{"padding":{"top":"0px","right":"0px","bottom":"0px","left":"0px"},"blockGap":"0px","margin":{"top":"40px","bottom":"40px"}}},"layout":{"type":"flex","flexWrap":"nowrap","verticalAlignment":"center"}} -->
+		<div class="wp-block-group" style="margin-top:40px;margin-bottom:40px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
 			<!-- wp:paragraph {"textColor":"luminous-vivid-amber"} -->
 			<p class="has-luminous-vivid-amber-color has-text-color">★★★★</p>
 			<!-- /wp:paragraph -->
