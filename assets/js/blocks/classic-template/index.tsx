@@ -83,9 +83,9 @@ const Edit = ( {
 	const { replaceBlock, selectBlock, replaceBlocks } =
 		useDispatch( blockEditorStore );
 
-	const { blocks, editedPostId } = useSelect( ( sel ) => {
+	const { getBlocks, editedPostId } = useSelect( ( sel ) => {
 		return {
-			blocks: sel( blockEditorStore ).getBlocks(),
+			getBlocks: sel( blockEditorStore ).getBlocks,
 			editedPostId: sel( 'core/edit-site' ).getEditedPostId(),
 		};
 	}, [] );
@@ -100,7 +100,11 @@ const Edit = ( {
 
 	const { createInfoNotice } = useDispatch( noticesStore );
 
-	const clientIds = useMemo( () => pickBlockClientIds( blocks ), [ blocks ] );
+	const blocks = getBlocks();
+
+	const clientIds = useMemo( () => {
+		pickBlockClientIds( blocks );
+	}, [ blocks ] );
 
 	const blockProps = useBlockProps();
 	const templateDetails = getTemplateDetailsBySlug(
@@ -155,7 +159,7 @@ const Edit = ( {
 									onClick={ () => {
 										onClickCallback( {
 											clientId,
-											blocks,
+											getBlocks,
 											attributes,
 											replaceBlock,
 											selectBlock,

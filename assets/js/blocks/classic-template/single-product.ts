@@ -92,12 +92,13 @@ const getButtonLabel = () =>
 
 const onClickCallback = ( {
 	clientId,
-	blocks,
+	getBlocks,
 	replaceBlock,
 	selectBlock,
 }: OnClickCallbackParameter ) => {
 	replaceBlock( clientId, getBlockifiedTemplate() );
 
+	const blocks = getBlocks();
 	const groupBlock = blocks.find(
 		( block ) =>
 			block.name === 'core/group' &&

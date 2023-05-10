@@ -101,11 +101,13 @@ const getButtonLabel = () =>
 const onClickCallback = ( {
 	clientId,
 	attributes,
-	blocks,
+	getBlocks,
 	replaceBlock,
 	selectBlock,
 }: OnClickCallbackParameter ) => {
 	replaceBlock( clientId, getBlockifiedTemplate( attributes ) );
+
+	const blocks = getBlocks();
 
 	const groupBlock = blocks.find(
 		( block ) =>
@@ -124,11 +126,13 @@ const onClickCallback = ( {
 const onClickCallbackWithTermDescription = ( {
 	clientId,
 	attributes,
-	blocks,
+	getBlocks,
 	replaceBlock,
 	selectBlock,
 }: OnClickCallbackParameter ) => {
 	replaceBlock( clientId, getBlockifiedTemplate( attributes, true ) );
+
+	const blocks = getBlocks();
 
 	const groupBlock = blocks.find(
 		( block ) =>

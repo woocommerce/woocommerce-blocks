@@ -145,11 +145,13 @@ const getDescription = ( templateTitle: string, canConvert: boolean ) => {
 const onClickCallback = ( {
 	clientId,
 	attributes,
-	blocks,
+	getBlocks,
 	replaceBlock,
 	selectBlock,
 }: OnClickCallbackParameter ) => {
 	replaceBlock( clientId, getBlockifiedTemplate( attributes ) );
+
+	const blocks = getBlocks();
 
 	const groupBlock = blocks.find(
 		( block ) =>
