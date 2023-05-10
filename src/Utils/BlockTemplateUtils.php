@@ -350,15 +350,15 @@ class BlockTemplateUtils {
 				'title'       => _x( 'Mini Cart', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display the Mini Cart drawer.', 'woo-gutenberg-products-block' ),
 			),
-			CartTemplate::SLUG                 => array(
+			CartTemplate::get_slug()           => array(
 				'title'       => _x( 'Cart', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display the Cart.', 'woo-gutenberg-products-block' ),
 			),
-			CheckoutTemplate::SLUG             => array(
+			CheckoutTemplate::get_slug()       => array(
 				'title'       => _x( 'Checkout', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display the Checkout.', 'woo-gutenberg-products-block' ),
 			),
-			OrderReceivedTemplate::SLUG        => array(
+			OrderReceivedTemplate::get_slug()  => array(
 				'title'       => _x( 'Order Received', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Displays the order confirmation page.', 'woo-gutenberg-products-block' ),
 			),

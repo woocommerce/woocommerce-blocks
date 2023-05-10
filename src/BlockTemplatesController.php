@@ -1,7 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
-use Automattic\WooCommerce\Admin\Overrides\Order;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
@@ -9,6 +8,7 @@ use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
+use Automattic\WooCommerce\Blocks\Utils\SettingsUtils;
 
 /**
  * BlockTypesController class.
@@ -73,6 +73,19 @@ class BlockTemplatesController {
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
 		add_filter( 'taxonomy_template_hierarchy', array( $this, 'add_archive_product_to_eligible_for_fallback_templates' ), 10, 1 );
 		add_filter( 'post_type_archive_title', array( $this, 'update_product_archive_title' ), 10, 2 );
+
+		if ( wc_current_theme_is_fse_theme() ) {
+			add_action( 'init', array( $this, 'register_template_endpoints' ) );
+			add_filter( 'woocommerce_is_checkout', array( $this, 'is_checkout_endpoint' ) );
+			add_filter( 'woocommerce_is_cart', array( $this, 'is_cart_endpoint' ) );
+			add_filter( 'woocommerce_get_cart_url', array( $this, 'get_cart_url' ) );
+			add_filter( 'woocommerce_get_checkout_url', array( $this, 'get_checkout_url' ) );
+			add_filter( 'woocommerce_settings_pages', array( $this, 'template_permalink_settings' ) );
+			add_action( 'woocommerce_admin_field_permalink', array( SettingsUtils::class, 'permalink_input_field' ) );
+			add_action( 'after_switch_theme', 'flush_rewrite_rules' );
+			add_action( 'update_option_woocommerce_checkout_page_endpoint', 'flush_rewrite_rules' );
+			add_action( 'update_option_woocommerce_cart_page_endpoint', 'flush_rewrite_rules' );
+		}
 
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
@@ -566,18 +579,18 @@ class BlockTemplatesController {
 			}
 		} elseif (
 			is_cart() &&
-			! BlockTemplateUtils::theme_has_template( CartTemplate::SLUG ) && $this->block_template_is_available( CartTemplate::SLUG )
+			! BlockTemplateUtils::theme_has_template( CartTemplate::get_slug() ) && $this->block_template_is_available( CartTemplate::get_slug() )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			is_checkout() &&
-			! BlockTemplateUtils::theme_has_template( CheckoutTemplate::SLUG ) && $this->block_template_is_available( CheckoutTemplate::SLUG )
+			! BlockTemplateUtils::theme_has_template( CheckoutTemplate::get_slug() ) && $this->block_template_is_available( CheckoutTemplate::get_slug() )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			is_wc_endpoint_url( 'order-received' )
-			&& ! BlockTemplateUtils::theme_has_template( OrderReceivedTemplate::SLUG )
-			&& $this->block_template_is_available( OrderReceivedTemplate::SLUG )
+			&& ! BlockTemplateUtils::theme_has_template( OrderReceivedTemplate::get_slug() )
+			&& $this->block_template_is_available( OrderReceivedTemplate::get_slug() )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} else {
@@ -645,5 +658,118 @@ class BlockTemplatesController {
 		}
 
 		return $post_type_name;
+	}
+
+	/**
+	 * Registers rewrite endpoints for templates during init.
+	 */
+	public function register_template_endpoints() {
+		$query_vars        = WC()->query->get_query_vars();
+		$cart_page         = CartTemplate::get_legacy_page();
+		$cart_endpoint     = get_option( 'woocommerce_cart_page_endpoint', $cart_page ? $cart_page->post_name : CartTemplate::get_slug() );
+		$checkout_page     = CheckoutTemplate::get_legacy_page();
+		$checkout_endpoint = get_option( 'woocommerce_checkout_page_endpoint', $checkout_page ? $checkout_page->post_name : CheckoutTemplate::get_slug() );
+
+		add_rewrite_endpoint( $checkout_endpoint . '/' . $query_vars['order-received'], \EP_ROOT, $query_vars['order-received'] );
+		add_rewrite_endpoint( $checkout_endpoint . '/' . $query_vars['order-pay'], \EP_ROOT, $query_vars['order-pay'] );
+		add_rewrite_endpoint( $checkout_endpoint, \EP_ROOT, CheckoutTemplate::get_slug() );
+		add_rewrite_endpoint( $cart_endpoint, \EP_ROOT, CartTemplate::get_slug() );
+	}
+
+	/**
+	 * Filters the `is_checkout` function so we can return true when the endpoint is active, or if one of its other endpoints are in use (e.g. order received).
+	 *
+	 * @param boolean $return True when on the checkout page.
+	 * @return boolean
+	 */
+	public function is_checkout_endpoint( $return ) {
+		global $wp;
+
+		if ( isset( $wp->query_vars[ CheckoutTemplate::get_slug() ] ) || isset( $wp->query_vars[ OrderReceivedTemplate::get_slug() ] ) ) {
+			return true;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Filters the `is_cart` function so we can return true when the endpoint is active.
+	 *
+	 * @param boolean $return True when on the checkout page.
+	 * @return boolean
+	 */
+	public function is_cart_endpoint( $return ) {
+		global $wp;
+
+		if ( isset( $wp->query_vars[ CartTemplate::get_slug() ] ) ) {
+			return true;
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Replace the cart PAGE URL with the template endpoint URL.
+	 *
+	 * @return string
+	 */
+	public function get_cart_url() {
+		return site_url( '/' . CartTemplate::get_slug() );
+	}
+
+	/**
+	 * Replace the checkout PAGE URL with the template endpoint URL.
+	 *
+	 * @return string
+	 */
+	public function get_checkout_url() {
+		return site_url( '/' . CheckoutTemplate::get_slug() );
+	}
+
+	/**
+	 * Replaces page settings in WooCommerce with text based permalinks which point to a template.
+	 *
+	 * @param array $settings Settings pages.
+	 * @return array
+	 */
+	public function template_permalink_settings( $settings ) {
+		foreach ( $settings as $key => $setting ) {
+			if ( 'woocommerce_checkout_page_id' === $setting['id'] ) {
+				$checkout_page    = CheckoutTemplate::get_legacy_page();
+				$settings[ $key ] = [
+					'title'    => __( 'Checkout page', 'woo-gutenberg-products-block' ),
+					'desc'     => sprintf(
+						// translators: %1$s: opening anchor tag, %2$s: closing anchor tag.
+						__( 'The checkout page template can be %1$s edited here%2$s.', 'woo-gutenberg-products-block' ),
+						'<a href="' . esc_url( admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2F' . CheckoutTemplate::get_slug() ) ) . '" target="_blank">',
+						'</a>'
+					),
+					'desc_tip' => __( 'This is the URL to the checkout page.', 'woo-gutenberg-products-block' ),
+					'id'       => 'woocommerce_checkout_page_endpoint',
+					'type'     => 'permalink',
+					'default'  => $checkout_page ? $checkout_page->post_name : CheckoutTemplate::get_slug(),
+					'autoload' => false,
+				];
+			}
+			if ( 'woocommerce_cart_page_id' === $setting['id'] ) {
+				$cart_page        = CartTemplate::get_legacy_page();
+				$settings[ $key ] = [
+					'title'    => __( 'Cart page', 'woo-gutenberg-products-block' ),
+					'desc'     => sprintf(
+						// translators: %1$s: opening anchor tag, %2$s: closing anchor tag.
+						__( 'The cart page template can be %1$s edited here%2$s.', 'woo-gutenberg-products-block' ),
+						'<a href="' . esc_url( admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2F' . CartTemplate::get_slug() ) ) . '" target="_blank">',
+						'</a>'
+					),
+					'desc_tip' => __( 'This is the URL to the cart page.', 'woo-gutenberg-products-block' ),
+					'id'       => 'woocommerce_cart_page_endpoint',
+					'type'     => 'permalink',
+					'default'  => $cart_page ? $cart_page->post_name : CartTemplate::get_slug(),
+					'autoload' => false,
+				];
+			}
+		}
+
+		return $settings;
 	}
 }
