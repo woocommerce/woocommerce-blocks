@@ -14,8 +14,8 @@
 			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-details-product-listing.jpg', dirname( __FILE__ ) ) ); ?>" alt="" />
 		</figure>
 		<!-- /wp:image -->
-		<!-- wp:group {"style":{"spacing":{"padding":"0px","blockGap":"0px","margin":{"top":"40px","bottom":"40px","left":"32%"}}},"layout":{"type":"flex","flexWrap":"nowrap","verticalAlignment":"center"}} -->
-		<div class="wp-block-group is-content-justification-center" style="margin-top:40px;margin-bottom:40px;margin-left:32%;padding:0">
+		<!-- wp:group {"style":{"spacing":{"padding":"0px","blockGap":"0px","margin":{"top":"30px","bottom":"20px","left":"32%"}}},"layout":{"type":"flex","flexWrap":"nowrap","verticalAlignment":"center"}} -->
+		<div class="wp-block-group is-content-justification-center" style="margin-top:30px;margin-bottom:20px;margin-left:32%;padding:0">
 			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px"},"textColor":"luminous-vivid-amber"} -->
 			<p class="has-luminous-vivid-amber-color has-text-color" style="font-size:24px">★★★★</p>
 			<!-- /wp:paragraph -->
@@ -31,12 +31,12 @@
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:group -->
-		<!-- wp:heading {"style":{"spacing":{"margin":{"bottom":"20px"}},"typography":{"fontSize":"48px","fontStyle":"normal","fontWeight":"700"}},"textColor":"black","fontSize":"x-large"} -->
-		<h2 class="wp-block-heading has-black-color has-text-color has-text-align-center has-x-large-font-size" style="font-size:48px;font-style:normal;font-weight:700;margin-bottom:20px;">Bella Pro Series - 1.6-qt. Deep Fryer - Stainless Steel</h2>
+		<!-- wp:heading {"style":{"spacing":{"margin":{"bottom":"20px"}},"typography":{"fontSize":"48px","fontStyle":"normal","fontWeight":"700","lineHeight":"120%"}},"textColor":"black","fontSize":"x-large"} -->
+		<h2 class="wp-block-heading has-black-color has-text-color has-text-align-center has-x-large-font-size" style="font-size:48px;font-style:normal;font-weight:700;line-height:120%;margin-bottom:20px;">Bella Pro Series - 1.6-qt. Deep Fryer - Stainless Steel</h2>
 		<!-- /wp:heading -->
-		<!-- wp:paragraph {"style":{"typography":{"fontSize":"1.2em"}},"textColor":"foreground"} -->
-		<p class="has-foreground-color has-text-color has-text-align-center" style="font-size:1.2em">
-			<strong><sup><sub>$</sub></sup>37.49</strong>
+		<!-- wp:paragraph {"style":{"spacing":{"margin":{"bottom":"20px"}},"padding":"0px","blockGap":"0px","margin":{"bottom":"20px"}},"typography":{"fontSize":"32px","fontWeight":"700"}},"textColor":"foreground"} -->
+		<p class="has-foreground-color has-text-color has-text-align-center" style="font-size:32px;margin-bottom:20px;">
+			<strong><sup><sub>$</sub></sup>37.49 </strong><s style="color:lightgrey;font-weight:400;">$47.49</s>
 		</p>
 		<!-- /wp:paragraph -->
 		<!-- wp:buttons -->
