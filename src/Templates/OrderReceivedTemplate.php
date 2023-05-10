@@ -17,11 +17,11 @@ class OrderReceivedTemplate extends AbstractPageTemplate {
 	}
 
 	/**
-	 * Returns the page object assigned to this template/page used for legacy purposes. Pages are no longer required.
+	 * Returns the page object assigned to this template/page.
 	 *
 	 * @return \WP_Post|null Post object or null.
 	 */
-	public static function get_legacy_page() {
+	public static function get_placeholder_page() {
 		return null;
 	}
 
@@ -39,7 +39,7 @@ class OrderReceivedTemplate extends AbstractPageTemplate {
 	 *
 	 * @return string
 	 */
-	protected function get_template_title() {
+	public static function get_template_title() {
 		return __( 'Order Received', 'woo-gutenberg-products-block' );
 	}
 }

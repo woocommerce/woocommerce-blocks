@@ -17,13 +17,22 @@ class CheckoutTemplate extends AbstractPageTemplate {
 	}
 
 	/**
-	 * Returns the page object assigned to this template/page used for legacy purposes. Pages are no longer required.
+	 * Returns the page object assigned to this template/page.
 	 *
 	 * @return \WP_Post|null Post object or null.
 	 */
-	public static function get_legacy_page() {
+	public static function get_placeholder_page() {
 		$page_id = wc_get_page_id( 'checkout' );
 		return $page_id ? get_post( $page_id ) : null;
+	}
+
+	/**
+	 * Should return the title of the page.
+	 *
+	 * @return string
+	 */
+	public static function get_template_title() {
+		return __( 'Checkout', 'woo-gutenberg-products-block' );
 	}
 
 	/**
@@ -36,22 +45,13 @@ class CheckoutTemplate extends AbstractPageTemplate {
 	}
 
 	/**
-	 * Should return the title of the page.
-	 *
-	 * @return string
-	 */
-	protected function get_template_title() {
-		return __( 'Checkout', 'woo-gutenberg-products-block' );
-	}
-
-	/**
 	 * Migrates an existing page using blocks to the block templates.
 	 *
 	 * @param string $template_content The content of the template.
 	 * @return string
 	 */
 	public function get_default_template_content( $template_content ) {
-		$page = $this->get_legacy_page();
+		$page = $this->get_placeholder_page();
 
 		if ( $page && ! empty( $page->post_content ) ) {
 			$template_content = '
