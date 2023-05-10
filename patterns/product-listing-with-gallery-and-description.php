@@ -10,39 +10,39 @@
 <div class="wp-block-columns alignwide" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
 	<!-- wp:column -->
 	<div class="wp-block-column">
-		<!-- wp:columns {"style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","bottom":"0"},"blockGap":{"top":"0","left":"0"}}}} -->
+		<!-- wp:columns {"style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","bottom":"0"},"blockGap":{"top":"1.5rem","left":"1.5rem"}}}} -->
 		<div class="wp-block-columns" style="margin-top:0;margin-bottom:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
 			<!-- wp:column {"width":"33.33%","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"blockGap":"0"}}} -->
 			<div class="wp-block-column" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;flex-basis:33.33%">
-				<!-- wp:gallery {"columns":1,"linkTo":"none","sizeSlug":"thumbnail","style":{"spacing":{"padding":{"left":"40px","top":"0","right":"40px"},"margin":{"top":"0","right":"0","bottom":"0","left":"0"},"blockGap":{"top":"10px","left":"10px"}}}} -->
-				<figure class="wp-block-gallery has-nested-images columns-1 is-cropped" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:40px;padding-left:40px">
-					<!-- wp:image {"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"radius":"5px","color":"#dddddd","width":"1px"}},"className":"is-style-default"} -->
-					<figure class="wp-block-image size-thumbnail has-custom-border is-style-default">
-						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-1.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px"/>
+				<!-- wp:group {"style":{"spacing":{"blockGap":"1rem"}},"layout":{"type":"flex","orientation":"vertical","verticalAlignment":"center","justifyContent":"center"}} -->
+				<div class="wp-block-group">
+					<!-- wp:image {"id":3866,"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}}} -->
+					<figure class="wp-block-image size-thumbnail is-resized has-custom-border">
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-1.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color wp-image-3866" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
 					</figure>
 					<!-- /wp:image -->
 
-					<!-- wp:image {"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"radius":"5px","color":"#dddddd","width":"1px"}}} -->
-					<figure class="wp-block-image size-thumbnail has-custom-border">
-						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-2.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px" />
+					<!-- wp:image {"id":3867,"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}}} -->
+					<figure class="wp-block-image size-thumbnail is-resized has-custom-border">
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-2.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color wp-image-3867" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
 					</figure>
 					<!-- /wp:image -->
 
-					<!-- wp:image {"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"radius":"5px","color":"#dddddd","width":"1px"}}} -->
-					<figure class="wp-block-image size-thumbnail has-custom-border">
-						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-3.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px" />
+					<!-- wp:image {"id":3868,"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"radius":"5px","color":"#dddddd","width":"1px"}}} -->
+					<figure class="wp-block-image size-thumbnail is-resized has-custom-border">
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-4.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color wp-image-3868" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
 					</figure>
 					<!-- /wp:image -->
-				</figure>
-				<!-- /wp:gallery -->
+				</div>
+				<!-- /wp:group -->
 			</div>
 			<!-- /wp:column -->
 
 			<!-- wp:column {"width":"66.66%","style":{"spacing":{"blockGap":"0","padding":{"right":"0","bottom":"0","left":"0","top":"20px"}}}} -->
 			<div class="wp-block-column" style="padding-top:20px;padding-right:0;padding-bottom:0;padding-left:0;flex-basis:66.66%">
-				<!-- wp:image {"width":380,"height":571,"sizeSlug":"full","linkDestination":"none"} -->
-				<figure class="wp-block-image size-full is-resized">
-					<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-4.png', dirname( __FILE__ ) ) ); ?>" alt="" width="380" height="571"/>
+				<!-- wp:image {"id":3869,"sizeSlug":"full","linkDestination":"none"} -->
+				<figure class="wp-block-image size-full">
+					<img src="http://store.local/wp-content/uploads/2023/05/product-furniture-4.png" alt="" class="wp-image-3869" />
 				</figure>
 				<!-- /wp:image -->
 			</div>
@@ -108,8 +108,10 @@
 		<div class="wp-block-group">
 			<!-- wp:buttons -->
 			<div class="wp-block-buttons">
-				<!-- wp:button {"backgroundColor":"foreground","textColor":"background","style":{"spacing":{"padding":{"left":"80px","right":"80px"}}}} -->
-				<div class="wp-block-button"><a class="wp-block-button__link has-background-color has-foreground-background-color has-text-color has-background wp-element-button" style="padding-right:80px;padding-left:80px">Add to cart</a></div>
+				<!-- wp:button {"style":{"spacing":{"padding":{"left":"80px","right":"80px"}},"color":{"text":"#ffffff","background":"#000000"}}} -->
+				<div class="wp-block-button">
+					<a class="wp-block-button__link has-text-color has-background wp-element-button" style="color:#ffffff;background-color:#000000;padding-right:80px;padding-left:80px">Add to cart</a>
+				</div>
 				<!-- /wp:button -->
 			</div>
 			<!-- /wp:buttons -->
