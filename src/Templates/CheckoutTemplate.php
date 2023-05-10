@@ -81,6 +81,7 @@ class CheckoutTemplate {
 
 		if ( $page && ! empty( $page->post_content ) ) {
 			$template_content = '
+				<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 				<!-- wp:group {"layout":{"inherit":true}} -->
 				<div class="wp-block-group">
 					<!-- wp:heading {"level":1} -->
@@ -89,6 +90,7 @@ class CheckoutTemplate {
 					' . wp_kses_post( $page->post_content ) . '
 				</div>
 				<!-- /wp:group -->
+				<!-- wp:template-part {"slug":"footer"} /-->
 			';
 		}
 
