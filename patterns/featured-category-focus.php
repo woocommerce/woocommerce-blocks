@@ -12,7 +12,7 @@
 	<!-- /wp:image -->
 
 	<!-- wp:paragraph {"align":"center","fontSize":"large"} -->
-	<p class="has-text-align-center has-large-font-size">adidas x Gucci women's Gazelle sneaker</p>
+	<p class="has-text-align-center has-large-font-size">Nike x Gucci women's Gazelle sneaker</p>
 	<!-- /wp:paragraph -->
 
 	<!-- wp:buttons -->
