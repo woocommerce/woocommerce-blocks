@@ -20,8 +20,8 @@
 			<p class="has-luminous-vivid-amber-color has-text-color" style="font-size:24px">★★★★</p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px"},"color":{"text":"#ffe8a4"},"spacing":{"margin":{"right":"5px"}}} -->
-			<p class="has-text-color" style="color:#ffe8a4;margin-right:5px;font-size:24px">★</p>
+			<!-- wp:paragraph {"style":{"typography":{"fontSize":"24px"},"color":{"text":"#ffe8a4"},"spacing":{"margin":{"right":"8px"}}} -->
+			<p class="has-text-color" style="color:#ffe8a4;margin-right:8px;font-size:24px">★</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph {"style":{"typography":{"fontSize":"16px"},"textColor":"foreground"} -->
