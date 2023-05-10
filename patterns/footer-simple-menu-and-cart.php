@@ -49,7 +49,10 @@
 
 		<!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"12px"}}} -->
 		<p class="has-text-align-center" style="font-size:12px">
-			Powered by <a href="https://wordpress.com/">WordPress</a> with <a href="https://woocommerce.com/">WooCommerce</a>
+			<?php
+				/* translators: 1: WordPress link, 2: WooCommerce link */
+				echo wp_kses( sprintf( __( 'Powered by %1$s with %2$s', 'woo-gutenberg-products-block' ), '<a href="https://wordpress.org">WordPress</a>', '<a href="https://woocommerce.com">WooCommerce</a>' ), array() );
+			?>
 		</p>
 		<!-- /wp:paragraph -->
 	</div>
