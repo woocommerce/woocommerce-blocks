@@ -16,21 +16,21 @@
 			<div class="wp-block-column" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;flex-basis:33.33%">
 				<!-- wp:group {"style":{"spacing":{"blockGap":"1rem"}},"layout":{"type":"flex","orientation":"vertical","verticalAlignment":"center","justifyContent":"center"}} -->
 				<div class="wp-block-group">
-					<!-- wp:image {"id":3866,"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}}} -->
+					<!-- wp:image {"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}}} -->
 					<figure class="wp-block-image size-thumbnail is-resized has-custom-border">
-						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-1.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color wp-image-3866" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-1.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
 					</figure>
 					<!-- /wp:image -->
 
-					<!-- wp:image {"id":3867,"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}}} -->
+					<!-- wp:image {"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}}} -->
 					<figure class="wp-block-image size-thumbnail is-resized has-custom-border">
-						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-2.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color wp-image-3867" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-2.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
 					</figure>
 					<!-- /wp:image -->
 
-					<!-- wp:image {"id":3868,"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"radius":"5px","color":"#dddddd","width":"1px"}}} -->
+					<!-- wp:image {"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"radius":"5px","color":"#dddddd","width":"1px"}}} -->
 					<figure class="wp-block-image size-thumbnail is-resized has-custom-border">
-						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-4.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color wp-image-3868" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-4.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
 					</figure>
 					<!-- /wp:image -->
 				</div>
@@ -40,9 +40,9 @@
 
 			<!-- wp:column {"width":"66.66%","style":{"spacing":{"blockGap":"0","padding":{"right":"0","bottom":"0","left":"0","top":"20px"}}}} -->
 			<div class="wp-block-column" style="padding-top:20px;padding-right:0;padding-bottom:0;padding-left:0;flex-basis:66.66%">
-				<!-- wp:image {"id":3869,"sizeSlug":"full","linkDestination":"none"} -->
+				<!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
 				<figure class="wp-block-image size-full">
-					<img src="http://store.local/wp-content/uploads/2023/05/product-furniture-4.png" alt="" class="wp-image-3869" />
+					<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-4.png', dirname( __FILE__ ) ) ); ?>" alt="" />
 				</figure>
 				<!-- /wp:image -->
 			</div>
