@@ -123,7 +123,7 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 							/>
 							<p>
 								{ __(
-									'When opened, the mini-cart drawer gives shoppers quick access to view their selected products and checkout.',
+									'When opened, the Mini-Cart drawer gives shoppers quick access to view their selected products and checkout.',
 									'woo-gutenberg-products-block'
 								) }
 							</p>
