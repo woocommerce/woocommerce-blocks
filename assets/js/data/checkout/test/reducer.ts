@@ -26,7 +26,6 @@ describe.only( 'Checkout Store Reducer', () => {
 		const expectedState = {
 			...defaultState,
 			redirectUrl: 'https://example.com',
-			status: STATUS.IDLE,
 		};
 
 		expect(
@@ -97,12 +96,15 @@ describe.only( 'Checkout Store Reducer', () => {
 	} );
 
 	it( 'should handle SET_HAS_ERROR when status is anything else', () => {
-		const initialState = { ...defaultState, status: STATUS.PRISTINE };
+		const initialState = {
+			...defaultState,
+			status: STATUS.AFTER_PROCESSING,
+		};
 
 		const expectedState = {
 			...defaultState,
 			hasError: false,
-			status: STATUS.IDLE,
+			status: STATUS.AFTER_PROCESSING,
 		};
 
 		expect(
@@ -135,7 +137,6 @@ describe.only( 'Checkout Store Reducer', () => {
 	it( 'should handle INCREMENT_CALCULATING', () => {
 		const expectedState = {
 			...defaultState,
-			status: STATUS.IDLE,
 			calculatingCount: 1,
 		};
 
@@ -152,7 +153,6 @@ describe.only( 'Checkout Store Reducer', () => {
 
 		const expectedState = {
 			...defaultState,
-			status: STATUS.IDLE,
 			calculatingCount: 0,
 		};
 
@@ -164,7 +164,6 @@ describe.only( 'Checkout Store Reducer', () => {
 	it( 'should handle SET_CUSTOMER_ID', () => {
 		const expectedState = {
 			...defaultState,
-			status: STATUS.IDLE,
 			customerId: 1,
 		};
 
@@ -176,7 +175,6 @@ describe.only( 'Checkout Store Reducer', () => {
 	it( 'should handle SET_USE_SHIPPING_AS_BILLING', () => {
 		const expectedState = {
 			...defaultState,
-			status: STATUS.IDLE,
 			useShippingAsBilling: false,
 		};
 
@@ -191,7 +189,6 @@ describe.only( 'Checkout Store Reducer', () => {
 	it( 'should handle SET_SHOULD_CREATE_ACCOUNT', () => {
 		const expectedState = {
 			...defaultState,
-			status: STATUS.IDLE,
 			shouldCreateAccount: true,
 		};
 
@@ -206,7 +203,6 @@ describe.only( 'Checkout Store Reducer', () => {
 	it( 'should handle SET_ORDER_NOTES', () => {
 		const expectedState = {
 			...defaultState,
-			status: STATUS.IDLE,
 			orderNotes: 'test',
 		};
 
@@ -215,21 +211,78 @@ describe.only( 'Checkout Store Reducer', () => {
 		).toEqual( expectedState );
 	} );
 
-	it( 'should handle SET_EXTENSION_DATA', () => {
-		const mockExtensionData = {
-			testExtension: { key: 'test', value: 'test2' },
-		};
-		const expectedState = {
-			...defaultState,
-			status: STATUS.IDLE,
-			extensionData: mockExtensionData,
-		};
-
-		expect(
-			reducer(
+	describe( 'should handle SET_EXTENSION_DATA', () => {
+		it( 'should set data under a namespace', () => {
+			const mockExtensionData = {
+				extensionNamespace: {
+					testKey: 'test-value',
+					testKey2: 'test-value-2',
+				},
+			};
+			const expectedState = {
+				...defaultState,
+				extensionData: mockExtensionData,
+			};
+			expect(
+				reducer(
+					defaultState,
+					actions.__internalSetExtensionData(
+						'extensionNamespace',
+						mockExtensionData.extensionNamespace
+					)
+				)
+			).toEqual( expectedState );
+		} );
+		it( 'should append data under a namespace', () => {
+			const mockExtensionData = {
+				extensionNamespace: {
+					testKey: 'test-value',
+					testKey2: 'test-value-2',
+				},
+			};
+			const expectedState = {
+				...defaultState,
+				extensionData: mockExtensionData,
+			};
+			const firstState = reducer(
 				defaultState,
-				actions.__internalSetExtensionData( mockExtensionData )
-			)
-		).toEqual( expectedState );
+				actions.__internalSetExtensionData( 'extensionNamespace', {
+					testKey: 'test-value',
+				} )
+			);
+			const secondState = reducer(
+				firstState,
+				actions.__internalSetExtensionData( 'extensionNamespace', {
+					testKey2: 'test-value-2',
+				} )
+			);
+			expect( secondState ).toEqual( expectedState );
+		} );
+		it( 'support replacing data under a namespace', () => {
+			const mockExtensionData = {
+				extensionNamespace: {
+					testKey: 'test-value',
+				},
+			};
+			const expectedState = {
+				...defaultState,
+				extensionData: mockExtensionData,
+			};
+			const firstState = reducer(
+				defaultState,
+				actions.__internalSetExtensionData( 'extensionNamespace', {
+					testKeyOld: 'test-value',
+				} )
+			);
+			const secondState = reducer(
+				firstState,
+				actions.__internalSetExtensionData(
+					'extensionNamespace',
+					{ testKey: 'test-value' },
+					true
+				)
+			);
+			expect( secondState ).toEqual( expectedState );
+		} );
 	} );
 } );

@@ -59,6 +59,11 @@ class ProductSchema extends AbstractSchema {
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 			],
+			'slug'                => [
+				'description' => __( 'Product slug.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+			],
 			'parent'              => [
 				'description' => __( 'ID of the parent product, if applicable.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
@@ -449,6 +454,7 @@ class ProductSchema extends AbstractSchema {
 		return [
 			'id'                  => $product->get_id(),
 			'name'                => $this->prepare_html_response( $product->get_title() ),
+			'slug'                => $product->get_slug(),
 			'parent'              => $product->get_parent_id(),
 			'type'                => $product->get_type(),
 			'variation'           => $this->prepare_html_response( $product->is_type( 'variation' ) ? wc_get_formatted_variation( $product, true, true, false ) : '' ),
@@ -494,7 +500,7 @@ class ProductSchema extends AbstractSchema {
 	protected function get_images( \WC_Product $product ) {
 		$attachment_ids = array_merge( [ $product->get_image_id() ], $product->get_gallery_image_ids() );
 
-		return array_filter( array_map( [ $this->image_attachment_schema, 'get_item_response' ], $attachment_ids ) );
+		return array_values( array_filter( array_map( [ $this->image_attachment_schema, 'get_item_response' ], $attachment_ids ) ) );
 	}
 
 	/**

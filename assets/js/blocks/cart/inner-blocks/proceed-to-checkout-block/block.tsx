@@ -2,13 +2,14 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useMemo } from '@wordpress/element';
 import Button from '@woocommerce/base-components/button';
 import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
 import { getSetting } from '@woocommerce/settings';
 import { useSelect } from '@wordpress/data';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -28,10 +29,11 @@ const Block = ( {
 	className: string;
 	buttonLabel: string;
 } ): JSX.Element => {
-	const link = getSetting( 'page-' + checkoutPageId, false );
+	const link = getSetting< string >( 'page-' + checkoutPageId, false );
 	const isCalculating = useSelect( ( select ) =>
 		select( CHECKOUT_STORE_KEY ).isCalculating()
 	);
+
 	const [ positionReferenceElement, positionRelativeToViewport ] =
 		usePositionRelativeToViewport();
 	const [ showSpinner, setShowSpinner ] = useState( false );
@@ -57,17 +59,37 @@ const Block = ( {
 			global.removeEventListener( 'pageshow', hideSpinner );
 		};
 	}, [] );
+	const cart = useSelect( ( select ) => {
+		return select( CART_STORE_KEY ).getCartData();
+	} );
+	const label = applyCheckoutFilter< string >( {
+		filterName: 'proceedToCheckoutButtonLabel',
+		defaultValue: buttonLabel || defaultButtonLabel,
+		arg: { cart },
+	} );
+
+	const filteredLink = applyCheckoutFilter< string >( {
+		filterName: 'proceedToCheckoutButtonLink',
+		defaultValue: link || CHECKOUT_URL,
+		arg: { cart },
+	} );
 
 	const submitContainerContents = (
 		<Button
 			className="wc-block-cart__submit-button"
-			href={ link || CHECKOUT_URL }
+			href={ filteredLink }
 			disabled={ isCalculating }
 			onClick={ () => setShowSpinner( true ) }
 			showSpinner={ showSpinner }
 		>
-			{ buttonLabel || defaultButtonLabel }
+			{ label }
 		</Button>
+	);
+
+	// Get the body background color to use as the sticky container background color.
+	const backgroundColor = useMemo(
+		() => getComputedStyle( document.body ).backgroundColor,
+		[]
 	);
 
 	return (
@@ -79,7 +101,10 @@ const Block = ( {
 			</div>
 			{ /* If the positionReferenceElement is below the viewport, display the sticky container. */ }
 			{ positionRelativeToViewport === 'below' && (
-				<div className="wc-block-cart__submit-container wc-block-cart__submit-container--sticky">
+				<div
+					className="wc-block-cart__submit-container wc-block-cart__submit-container--sticky"
+					style={ { backgroundColor } }
+				>
 					{ submitContainerContents }
 				</div>
 			) }

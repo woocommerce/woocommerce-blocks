@@ -1,7 +1,10 @@
 /**
  * External dependencies
  */
-import { deleteAllTemplates } from '@wordpress/e2e-test-utils';
+import {
+	deleteAllTemplates,
+	ensureSidebarOpened,
+} from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -9,36 +12,35 @@ import { deleteAllTemplates } from '@wordpress/e2e-test-utils';
 import {
 	BASE_URL,
 	goToTemplateEditor,
-	openBlockEditorSettings,
 	saveTemplate,
 	useTheme,
 } from '../../../utils';
 import {
 	addProductQueryBlock,
 	block,
-	configurateProductQueryBlock,
 	getProductsNameFromClassicTemplate,
 	getProductsNameFromProductQuery,
+	toggleInheritQueryFromTemplateSetting,
 } from './utils';
 
-// Re-enable this test once wordpress/e2e-test-utils is updated.
-// https://github.com/woocommerce/woocommerce-blocks/issues/7744
-describe.skip( `${ block.name } Block`, () => {
+describe( `${ block.name } Block`, () => {
 	useTheme( 'emptytheme' );
 
 	describe( 'with All Templates', () => {
-		beforeAll( async () => {
+		beforeEach( async () => {
 			const productCatalogTemplateId =
 				'woocommerce/woocommerce//archive-product';
 
 			await goToTemplateEditor( {
 				postId: productCatalogTemplateId,
 			} );
-			await openBlockEditorSettings();
+			await ensureSidebarOpened();
 			await addProductQueryBlock();
 		} );
 
-		it( 'when Inherit Query from template is disabled all the settings that customize the query should be hide', async () => {
+		it( 'when Inherit Query from template is disabled all the settings that customize the query should be hidden', async () => {
+			await toggleInheritQueryFromTemplateSetting();
+
 			await expect( page ).toMatchElement(
 				block.selectors.editor.popularFilter
 			);
@@ -48,8 +50,8 @@ describe.skip( `${ block.name } Block`, () => {
 			);
 		} );
 
-		it( 'when Inherit Query from template is enabled all the settings that customize the query should be hide', async () => {
-			await configurateProductQueryBlock();
+		it( 'when Inherit Query from template is enabled all the settings that customize the query should be hidden', async () => {
+			await ensureSidebarOpened();
 
 			const popularFilterEl = await page.$(
 				block.selectors.editor.popularFilter
@@ -72,7 +74,7 @@ describe.skip( `${ block.name } Block`, () => {
 				postId: productCatalogTemplateId,
 			} );
 			await addProductQueryBlock();
-			await configurateProductQueryBlock();
+			await ensureSidebarOpened();
 			await page.waitForNetworkIdle();
 			await saveTemplate();
 			await page.waitForNetworkIdle();
@@ -101,7 +103,7 @@ describe.skip( `${ block.name } Block`, () => {
 				postId: taxonomyProductCategory,
 			} );
 			await addProductQueryBlock();
-			await configurateProductQueryBlock();
+			await ensureSidebarOpened();
 			await page.waitForNetworkIdle();
 			await saveTemplate();
 			await page.waitForNetworkIdle();
@@ -133,7 +135,7 @@ describe.skip( `${ block.name } Block`, () => {
 				postId: tagProductCategory,
 			} );
 			await addProductQueryBlock();
-			await configurateProductQueryBlock();
+			await ensureSidebarOpened();
 			await page.waitForNetworkIdle();
 			await saveTemplate();
 			await page.waitForNetworkIdle();
@@ -165,7 +167,7 @@ describe.skip( `${ block.name } Block`, () => {
 				postId: productSearchResults,
 			} );
 			await addProductQueryBlock();
-			await configurateProductQueryBlock();
+			await ensureSidebarOpened();
 			await page.waitForNetworkIdle();
 			await saveTemplate();
 			await page.waitForNetworkIdle();

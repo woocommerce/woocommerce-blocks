@@ -6,7 +6,7 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { CART_STORE_KEY, VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { StoreCartCoupon } from '@woocommerce/types';
-import { __experimentalApplyCheckoutFilter } from '@woocommerce/blocks-checkout';
+import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
@@ -40,15 +40,13 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 			[ createErrorNotice, createNotice ]
 		);
 
-	const { applyCoupon, removeCoupon, receiveApplyingCoupon } =
-		useDispatch( CART_STORE_KEY );
+	const { applyCoupon, removeCoupon } = useDispatch( CART_STORE_KEY );
 
 	const applyCouponWithNotices = ( couponCode: string ) => {
-		applyCoupon( couponCode )
-			.then( ( result ) => {
+		return applyCoupon( couponCode )
+			.then( () => {
 				if (
-					result === true &&
-					__experimentalApplyCheckoutFilter( {
+					applyCheckoutFilter( {
 						filterName: 'showApplyCouponNotice',
 						defaultValue: true,
 						arg: { couponCode, context },
@@ -71,6 +69,7 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 						}
 					);
 				}
+				return Promise.resolve( true );
 			} )
 			.catch( ( error ) => {
 				setValidationErrors( {
@@ -79,17 +78,15 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 						hidden: false,
 					},
 				} );
-				// Finished handling the coupon.
-				receiveApplyingCoupon( '' );
+				return Promise.resolve( false );
 			} );
 	};
 
 	const removeCouponWithNotices = ( couponCode: string ) => {
-		removeCoupon( couponCode )
-			.then( ( result ) => {
+		return removeCoupon( couponCode )
+			.then( () => {
 				if (
-					result === true &&
-					__experimentalApplyCheckoutFilter( {
+					applyCheckoutFilter( {
 						filterName: 'showRemoveCouponNotice',
 						defaultValue: true,
 						arg: { couponCode, context },
@@ -112,14 +109,14 @@ export const useStoreCartCoupons = ( context = '' ): StoreCartCoupon => {
 						}
 					);
 				}
+				return Promise.resolve( true );
 			} )
 			.catch( ( error ) => {
 				createErrorNotice( error.message, {
 					id: 'coupon-form',
 					context,
 				} );
-				// Finished handling the coupon.
-				receiveApplyingCoupon( '' );
+				return Promise.resolve( false );
 			} );
 	};
 

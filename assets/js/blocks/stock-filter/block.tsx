@@ -32,8 +32,11 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { isBoolean, objectHasProp } from '@woocommerce/types';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { changeUrl, PREFIX_QUERY_ARG_FILTER_TYPE } from '@woocommerce/utils';
-import { difference } from 'lodash';
+import {
+	changeUrl,
+	PREFIX_QUERY_ARG_FILTER_TYPE,
+	normalizeQueryParams,
+} from '@woocommerce/utils';
 import classnames from 'classnames';
 
 /**
@@ -52,7 +55,7 @@ export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
  *
  * @param {Object}  props            Incoming props for the component.
  * @param {Object}  props.attributes Incoming block attributes.
- * @param {boolean} props.isEditor
+ * @param {boolean} props.isEditor   Whether the component is being rendered in the editor.
  */
 const StockStatusFilterBlock = ( {
 	attributes: blockAttributes,
@@ -113,6 +116,7 @@ const StockStatusFilterBlock = ( {
 			queryStock: true,
 			queryState,
 			productIds,
+			isEditor,
 		} );
 
 	/**
@@ -223,7 +227,7 @@ const StockStatusFilterBlock = ( {
 				QUERY_PARAM_KEY
 			);
 
-			if ( url !== window.location.href ) {
+			if ( url !== normalizeQueryParams( window.location.href ) ) {
 				changeUrl( url );
 			}
 
@@ -234,7 +238,7 @@ const StockStatusFilterBlock = ( {
 			[ QUERY_PARAM_KEY ]: checkedOptions.join( ',' ),
 		} );
 
-		if ( newUrl === window.location.href ) {
+		if ( newUrl === normalizeQueryParams( window.location.href ) ) {
 			return;
 		}
 
@@ -390,13 +394,17 @@ const StockStatusFilterBlock = ( {
 			return displayOption ? displayOption.value : token;
 		} );
 
-		const added = difference( tokens, checked );
+		const added = [ tokens, checked ].reduce( ( a, b ) =>
+			a.filter( ( c ) => ! b.includes( c ) )
+		);
 
 		if ( added.length === 1 ) {
 			return onChange( added[ 0 ] );
 		}
 
-		const removed = difference( checked, tokens );
+		const removed = [ checked, tokens ].reduce( ( a, b ) =>
+			a.filter( ( c ) => ! b.includes( c ) )
+		);
 		if ( removed.length === 1 ) {
 			onChange( removed[ 0 ] );
 		}
@@ -424,6 +432,10 @@ const StockStatusFilterBlock = ( {
 		setWrapperVisibility( false );
 		return null;
 	}
+
+	const showChevron = allowsMultipleOptions
+		? ! isLoading && checked.length < displayedOptions.length
+		: ! isLoading && checked.length === 0;
 
 	const heading = (
 		<TagName className="wc-block-stock-filter__title">
@@ -499,7 +511,7 @@ const StockStatusFilterBlock = ( {
 								),
 							} }
 						/>
-						{ allowsMultipleOptions && (
+						{ showChevron && (
 							<Icon icon={ chevronDown } size={ 30 } />
 						) }
 					</>
@@ -516,7 +528,7 @@ const StockStatusFilterBlock = ( {
 			</div>
 			{
 				<div className="wc-block-stock-filter__actions">
-					{ checked.length > 0 && ! isLoading && (
+					{ ( checked.length > 0 || isEditor ) && ! isLoading && (
 						<FilterResetButton
 							onClick={ () => {
 								setChecked( [] );

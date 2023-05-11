@@ -198,6 +198,11 @@ class BlockTemplateUtils {
 		$template->id      = $template_is_from_theme ? $theme_name . '//' . $template_file->slug : self::PLUGIN_SLUG . '//' . $template_file->slug;
 		$template->theme   = $template_is_from_theme ? $theme_name : self::PLUGIN_SLUG;
 		$template->content = self::inject_theme_attribute_in_content( $template_content );
+		// Remove the term description block from the archive-product template
+		// as the Product Catalog/Shop page doesn't have a description.
+		if ( 'archive-product' === $template_file->slug ) {
+			$template->content = str_replace( '<!-- wp:term-description {"align":"wide"} /-->', '', $template->content );
+		}
 		// Plugin was agreed as a valid source value despite existing inline docs at the time of creating: https://github.com/WordPress/gutenberg/issues/36597#issuecomment-976232909.
 		$template->source         = $template_file->source ? $template_file->source : 'plugin';
 		$template->slug           = $template_file->slug;
@@ -630,11 +635,18 @@ class BlockTemplateUtils {
 
 	/**
 	 * Returns whether the blockified templates should be used or not.
-	 * If the option is not stored on the db, we need to check if the current theme is a block one or not.
+	 * First, we need to make sure WordPress version is higher than 6.1 (lowest that supports Products block).
+	 * Then, if the option is not stored on the db, we need to check if the current theme is a block one or not.
 	 *
 	 * @return boolean
 	 */
 	public static function should_use_blockified_product_grid_templates() {
+		$minimum_wp_version = '6.1';
+
+		if ( version_compare( $GLOBALS['wp_version'], $minimum_wp_version, '<' ) ) {
+			return false;
+		}
+
 		$use_blockified_templates = get_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE );
 
 		if ( false === $use_blockified_templates ) {
@@ -652,5 +664,52 @@ class BlockTemplateUtils {
 	 */
 	public static function template_has_title( $template ) {
 		return ! empty( $template->title ) && $template->title !== $template->slug;
+	}
+
+	/**
+	 * Returns whether the passed `$template` has the legacy template block.
+	 *
+	 * @param object $template The template object.
+	 * @return boolean
+	 */
+	public static function template_has_legacy_template_block( $template ) {
+		return has_block( 'woocommerce/legacy-template', $template->content );
+	}
+
+	/**
+	 * Gets the templates saved in the database.
+	 *
+	 * @param array  $slugs An array of slugs to retrieve templates for.
+	 * @param string $template_type wp_template or wp_template_part.
+	 *
+	 * @return int[]|\WP_Post[] An array of found templates.
+	 */
+	public static function get_block_templates_from_db( $slugs = array(), $template_type = 'wp_template' ) {
+		$check_query_args = array(
+			'post_type'      => $template_type,
+			'posts_per_page' => -1,
+			'no_found_rows'  => true,
+			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				array(
+					'taxonomy' => 'wp_theme',
+					'field'    => 'name',
+					'terms'    => array( self::DEPRECATED_PLUGIN_SLUG, self::PLUGIN_SLUG, get_stylesheet() ),
+				),
+			),
+		);
+
+		if ( is_array( $slugs ) && count( $slugs ) > 0 ) {
+			$check_query_args['post_name__in'] = $slugs;
+		}
+
+		$check_query         = new \WP_Query( $check_query_args );
+		$saved_woo_templates = $check_query->posts;
+
+		return array_map(
+			function( $saved_woo_template ) {
+				return self::build_template_result_from_post( $saved_woo_template );
+			},
+			$saved_woo_templates
+		);
 	}
 }

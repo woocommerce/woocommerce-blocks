@@ -15,28 +15,17 @@ export const DEFAULT_ERROR_MESSAGE = __(
 	'woo-gutenberg-products-block'
 );
 
-export const hasStoreNoticesContainer = ( container: string ): boolean => {
-	const containers = select( 'wc/store/store-notices' ).getContainers();
-	return containers.includes( container );
-};
-
-const findParentContainer = ( container: string ): string => {
-	if ( container.includes( noticeContexts.CHECKOUT + '/' ) ) {
-		return noticeContexts.CHECKOUT;
-	}
-	if ( container.includes( noticeContexts.CART + '/' ) ) {
-		return hasStoreNoticesContainer( noticeContexts.CART )
-			? noticeContexts.CART
-			: noticeContexts.CHECKOUT;
-	}
-	return container;
+/**
+ * Returns a list of all notice contexts defined by Blocks.
+ *
+ * Contexts are defined in enum format, but this returns an array of strings instead.
+ */
+export const getNoticeContexts = () => {
+	return Object.values( noticeContexts );
 };
 
 /**
  * Wrapper for @wordpress/notices createNotice.
- *
- * This is used to create the correct type of notice based on the provided context, and to ensure the notice container
- * exists first, otherwise it uses the default context instead.
  */
 export const createNotice = (
 	status: 'error' | 'warning' | 'info' | 'success',
@@ -51,28 +40,11 @@ export const createNotice = (
 		return;
 	}
 
-	const { createNotice: dispatchCreateNotice } = dispatch( 'core/notices' );
-
-	dispatchCreateNotice( status, message, {
+	dispatch( 'core/notices' ).createNotice( status, message, {
 		isDismissible: true,
 		...options,
-		context: hasStoreNoticesContainer( noticeContext )
-			? noticeContext
-			: findParentContainer( noticeContext ),
+		context: noticeContext,
 	} );
-};
-
-/**
- * Creates a notice only if the Store Notice Container is visible.
- */
-export const createNoticeIfVisible = (
-	status: 'error' | 'warning' | 'info' | 'success',
-	message: string,
-	options: Partial< NoticeOptions >
-) => {
-	if ( options?.context && hasStoreNoticesContainer( options.context ) ) {
-		createNotice( status, message, options );
-	}
 };
 
 /**
@@ -82,7 +54,9 @@ export const createNoticeIfVisible = (
  * @see https://github.com/WordPress/gutenberg/pull/44059
  */
 export const removeAllNotices = () => {
-	const containers = select( 'wc/store/store-notices' ).getContainers();
+	const containers = select(
+		'wc/store/store-notices'
+	).getRegisteredContainers();
 	const { removeNotice } = dispatch( 'core/notices' );
 	const { getNotices } = select( 'core/notices' );
 
@@ -90,5 +64,14 @@ export const removeAllNotices = () => {
 		getNotices( container ).forEach( ( notice ) => {
 			removeNotice( notice.id, container );
 		} );
+	} );
+};
+
+export const removeNoticesWithContext = ( context: string ) => {
+	const { removeNotice } = dispatch( 'core/notices' );
+	const { getNotices } = select( 'core/notices' );
+
+	getNotices( context ).forEach( ( notice ) => {
+		removeNotice( notice.id, context );
 	} );
 };

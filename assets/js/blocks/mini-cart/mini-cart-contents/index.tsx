@@ -6,12 +6,13 @@ import { cart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
 import edit, { Save as save } from './edit';
-import { blockName } from './attributes';
+import { blockName, attributes } from './attributes';
 import './inner-blocks';
 
 const settings: BlockConfiguration = {
@@ -41,21 +42,14 @@ const settings: BlockConfiguration = {
 			link: true,
 		},
 		lock: false,
-	},
-	attributes: {
-		isPreview: {
-			type: 'boolean',
-			default: false,
-			save: false,
-		},
-		lock: {
-			type: 'object',
-			default: {
-				remove: true,
-				move: true,
+		...( isFeaturePluginBuild() && {
+			__experimentalBorder: {
+				color: true,
+				width: true,
 			},
-		},
+		} ),
 	},
+	attributes,
 	example: {
 		attributes: {
 			isPreview: true,

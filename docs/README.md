@@ -41,12 +41,13 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
     -   [Checkout API interface](internal-developers/block-client-apis/checkout/checkout-api.md)
     -   [Checkout Flow and Events](internal-developers/block-client-apis/checkout/checkout-flow-and-events.md)
     -   [Notices](internal-developers/block-client-apis/notices.md)
+-   [Data store](internal-developers/data-store/README.md)
+    -   [Validation](internal-developers/data-store/validation.md)
 -   [Editor Components](../assets/js/editor-components/README.md)
     -   [SearchListControl](../assets/js/editor-components/search-list-control/README.md)
     -   [Tag](../assets/js/editor-components/tag/README.md)
     -   [TextToolbarButton](../assets/js/editor-components/text-toolbar-button/README.md)
 -   [Icons](../assets/js/icons/README.md)
--   [Legacy Build](../assets/js/legacy/README.md)
 -   [Store API (REST API)](../src/StoreApi/README.md)
 -   [Storybook](../storybook/README.md)
 -   [Templates](internal-developers/templates/README.md)
@@ -110,7 +111,7 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 > Are you a designer? The following documents explain how to apply design-changes to the WooCommerce Blocks plugin.
 
 -   [Theming](designers/theming/README.md)
-    -   [All Products & filters](designers/theming/all-products-and-filters.md)
+    -   [Filter blocks](designers/theming/filter-blocks.md)
     -   [Cart and Checkout](designers/theming/cart-and-checkout.md)
     -   [Class names update in 4.6.0](designers/theming/class-names-update-460.md)
     -   [Class names update in 3.4.0](designers/theming/class-names-update-340.md)
@@ -122,8 +123,7 @@ The WooCommerce Blocks Handbook provides documentation for designers and develop
 
 ### Tools
 
--   [@woocommerce/extend-cart-checkout-block](https://www.npmjs.com/package/@woocommerce/extend-cart-checkout-block) This is a template to be used with @wordpress/create-block to create a WooCommerce Blocks extension starting point.
--   [How to integrate with inner blocks in the WooCommerce Blocks Checkout](https://github.com/woocommerce/newsletter-test) A repository with some example code showing how an extension can register an inner block for use in the Checkout Block.
+-   [@woocommerce/extend-cart-checkout-block](https://www.npmjs.com/package/@woocommerce/extend-cart-checkout-block) This is a template to be used with @wordpress/create-block to create a WooCommerce Blocks extension starting point. It also showcases how to use some extensibility points, e.g. registering an inner block in the Checkout Block, applying filters to certain texts such as the place order button, using Slot/Fill and how to change the behaviour of the Store API.
 
 ### Articles
 
@@ -151,3 +151,4 @@ The following tutorials from [developer.woocommerce.com](https://developer.wooco
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/README.md)
 
 <!-- /FEEDBACK -->
+

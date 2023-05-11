@@ -191,7 +191,7 @@ describe( 'Shopper → Mini Cart', () => {
 			);
 
 			const shopLink = await page.$eval(
-				'.wc-block-mini-cart__shopping-button a',
+				'a.wc-block-mini-cart__shopping-button',
 				( el ) => el.href
 			);
 
@@ -303,8 +303,6 @@ describe( 'Shopper → Mini Cart', () => {
 			await page.waitForSelector(
 				'.wc-block-components-quantity-selector__button--plus'
 			);
-
-			await page.waitForTimeout( 500 );
 
 			await page.click(
 				'.wc-block-components-quantity-selector__button--plus'

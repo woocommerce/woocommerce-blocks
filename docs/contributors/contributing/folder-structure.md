@@ -122,9 +122,6 @@ The following snippet explains how the WooCommerce Blocks repository is structur
 ├── assets/js/icons
 │ The WooCommerce Blocks Icon library.
 │
-├── assets/js/legacy
-│ The legacy code of the WooCommerce Blocks plugin.
-│
 ├── assets/js/middleware
 │ The middleware code to handle Store API calls.
 │

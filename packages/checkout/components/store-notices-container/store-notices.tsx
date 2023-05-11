@@ -1,35 +1,30 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { useRef, useEffect } from '@wordpress/element';
-import { Notice } from 'wordpress-components';
+import { useRef, useEffect, RawHTML } from '@wordpress/element';
 import { sanitizeHTML } from '@woocommerce/utils';
 import { useDispatch } from '@wordpress/data';
 import { usePrevious } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
-import { STORE_NOTICES_STORE_KEY } from '@woocommerce/block-data';
+import type { NoticeType } from '@woocommerce/types';
+import type { NoticeBannerProps } from '@woocommerce/base-components/notice-banner';
 
 /**
  * Internal dependencies
  */
-import { getClassNameFromStatus } from './utils';
-import type { StoreNotice } from './types';
+import StoreNotice from '../store-notice';
 
 const StoreNotices = ( {
-	context,
 	className,
 	notices,
 }: {
-	context: string;
 	className: string;
-	notices: StoreNotice[];
+	notices: NoticeType[];
 } ): JSX.Element => {
 	const ref = useRef< HTMLDivElement >( null );
 	const { removeNotice } = useDispatch( 'core/notices' );
-	const { registerContainer, unregisterContainer } = useDispatch(
-		STORE_NOTICES_STORE_KEY
-	);
 	const noticeIds = notices.map( ( notice ) => notice.id );
 	const previousNoticeIds = usePrevious( noticeIds );
 
@@ -47,7 +42,8 @@ const StoreNotices = ( {
 
 		if (
 			activeElement &&
-			inputs.indexOf( activeElement.tagName.toLowerCase() ) !== -1
+			inputs.indexOf( activeElement.tagName.toLowerCase() ) !== -1 &&
+			activeElement.getAttribute( 'type' ) !== 'radio'
 		) {
 			return;
 		}
@@ -64,20 +60,29 @@ const StoreNotices = ( {
 		}
 	}, [ noticeIds, previousNoticeIds, ref ] );
 
-	// Register the container context with the parent.
-	useEffect( () => {
-		registerContainer( context );
-		return () => {
-			unregisterContainer( context );
-		};
-	}, [ context, registerContainer, unregisterContainer ] );
+	// Group notices by whether or not they are dismissible. Dismissible notices can be grouped.
+	const dismissibleNotices = notices.filter(
+		( { isDismissible } ) => !! isDismissible
+	);
+	const nonDismissibleNotices = notices.filter(
+		( { isDismissible } ) => ! isDismissible
+	);
 
-	// Group notices by status. Do not group notices that are not dismissable.
-	const noticesByStatus = {
-		error: notices.filter( ( { status } ) => status === 'error' ),
-		success: notices.filter( ( { status } ) => status === 'success' ),
-		warning: notices.filter( ( { status } ) => status === 'warning' ),
-		info: notices.filter( ( { status } ) => status === 'info' ),
+	// Group dismissibleNotices by status. They will be combined into a single notice.
+	const dismissibleNoticeGroups = {
+		error: dismissibleNotices.filter(
+			( { status } ) => status === 'error'
+		),
+		success: dismissibleNotices.filter(
+			( { status } ) => status === 'success'
+		),
+		warning: dismissibleNotices.filter(
+			( { status } ) => status === 'warning'
+		),
+		info: dismissibleNotices.filter( ( { status } ) => status === 'info' ),
+		default: dismissibleNotices.filter(
+			( { status } ) => status === 'default'
+		),
 	};
 
 	return (
@@ -85,44 +90,76 @@ const StoreNotices = ( {
 			ref={ ref }
 			className={ classnames( className, 'wc-block-components-notices' ) }
 		>
-			{ Object.entries( noticesByStatus ).map(
+			{ nonDismissibleNotices.map( ( notice ) => (
+				<StoreNotice
+					key={ notice.id + '-' + notice.context }
+					{ ...notice }
+				>
+					<RawHTML>
+						{ sanitizeHTML( decodeEntities( notice.content ) ) }
+					</RawHTML>
+				</StoreNotice>
+			) ) }
+			{ Object.entries( dismissibleNoticeGroups ).map(
 				( [ status, noticeGroup ] ) => {
 					if ( ! noticeGroup.length ) {
 						return null;
 					}
-					return (
-						<Notice
-							key={ `store-notice-${ status }` }
-							className={ classnames(
-								'wc-block-components-notices__notice',
-								getClassNameFromStatus( status )
-							) }
-							onRemove={ () => {
-								noticeGroup.forEach( ( notice ) => {
-									removeNotice( notice.id, notice.context );
-								} );
-							} }
+					const uniqueNotices = noticeGroup
+						.filter(
+							(
+								notice: NoticeType,
+								noticeIndex: number,
+								noticesArray: NoticeType[]
+							) =>
+								noticesArray.findIndex(
+									( _notice: NoticeType ) =>
+										_notice.content === notice.content
+								) === noticeIndex
+						)
+						.map( ( notice ) => ( {
+							...notice,
+							content: sanitizeHTML(
+								decodeEntities( notice.content )
+							),
+						} ) );
+					const noticeProps: Omit< NoticeBannerProps, 'children' > & {
+						key: string;
+					} = {
+						key: `store-notice-${ status }`,
+						status: 'error',
+						onRemove: () => {
+							noticeGroup.forEach( ( notice ) => {
+								removeNotice( notice.id, notice.context );
+							} );
+						},
+					};
+					return uniqueNotices.length === 1 ? (
+						<StoreNotice { ...noticeProps }>
+							<RawHTML>{ noticeGroup[ 0 ].content }</RawHTML>
+						</StoreNotice>
+					) : (
+						<StoreNotice
+							{ ...noticeProps }
+							summary={
+								status === 'error'
+									? __(
+											'Please fix the following errors before continuing',
+											'woo-gutenberg-products-block'
+									  )
+									: ''
+							}
 						>
-							{ noticeGroup.length === 1 ? (
-								<>
-									{ sanitizeHTML(
-										decodeEntities(
-											noticeGroup[ 0 ].content
-										)
-									) }
-								</>
-							) : (
-								<ul>
-									{ noticeGroup.map( ( notice ) => (
-										<li key={ notice.id }>
-											{ sanitizeHTML(
-												decodeEntities( notice.content )
-											) }
-										</li>
-									) ) }
-								</ul>
-							) }
-						</Notice>
+							<ul>
+								{ uniqueNotices.map( ( notice ) => (
+									<li
+										key={ notice.id + '-' + notice.context }
+									>
+										<RawHTML>{ notice.content }</RawHTML>
+									</li>
+								) ) }
+							</ul>
+						</StoreNotice>
 					);
 				}
 			) }

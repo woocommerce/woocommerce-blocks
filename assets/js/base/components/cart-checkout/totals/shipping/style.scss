@@ -7,8 +7,9 @@
 		border: 0;
 	}
 
-	.wc-block-components-totals-shipping__via {
-		margin-bottom: $gap;
+	.wc-block-components-shipping-address {
+		margin-top: $gap;
+		display: block;
 	}
 
 	.wc-block-components-totals-shipping__options {
@@ -19,12 +20,16 @@
 			flex-basis: 100%;
 			text-align: left;
 		}
+		margin-top: ($gap-small);
 	}
 
 	.wc-block-components-shipping-rates-control__no-results-notice {
 		margin: 0 0 em($gap-small);
 	}
 
+	.wc-block-components-totals-shipping__change-address__link {
+		font-weight: normal;
+	}
 	.wc-block-components-totals-shipping__change-address-button {
 		@include link-button();
 

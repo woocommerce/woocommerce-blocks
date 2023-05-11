@@ -48,15 +48,16 @@ const reducer: Reducer< CartState > = (
 	action: Partial< CartAction >
 ) => {
 	switch ( action.type ) {
-		case types.RECEIVE_ERROR:
-			if ( action.error ) {
-				state = {
-					...state,
-					errors: state.errors.concat( action.error ),
-				};
-			}
+		case types.SET_FULL_SHIPPING_ADDRESS_PUSHED:
+			state = {
+				...state,
+				metaData: {
+					...state.metaData,
+					fullShippingAddressPushed: action.fullShippingAddressPushed,
+				},
+			};
 			break;
-		case types.REPLACE_ERRORS:
+		case types.SET_ERROR_DATA:
 			if ( action.error ) {
 				state = {
 					...state,

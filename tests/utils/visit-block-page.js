@@ -4,17 +4,17 @@
 import {
 	createNewPost,
 	visitAdminPage,
-	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 import { outputFile } from 'fs-extra';
 import { dirname } from 'path';
-import kebabCase from 'lodash/kebabCase';
+import { paramCase as kebabCase } from 'change-case';
 
 /**
  * Internal dependencies
  */
 import { clickLink } from '.';
+import { insertBlockDontWaitForInsertClose } from '../e2e/utils.js';
 
 /**
  * This will visit a GB page or post, and will hide the welcome guide.
@@ -76,7 +76,9 @@ export async function visitBlockPage( title ) {
 			title,
 			showWelcomeGuide: false,
 		} );
-		await insertBlock( title.replace( /block/i, '' ).trim() );
+		await insertBlockDontWaitForInsertClose(
+			title.replace( /block/i, '' ).trim()
+		);
 		const pageContent = await getEditedPostContent();
 		await outputFile(
 			`${ dirname(

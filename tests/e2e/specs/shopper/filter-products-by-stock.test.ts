@@ -5,12 +5,13 @@ import {
 	createNewPost,
 	deleteAllTemplates,
 	insertBlock,
+	switchBlockInspectorTab,
 	switchUserToAdmin,
 	publishPost,
+	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
 import {
 	selectBlockByName,
-	insertBlockUsingSlash,
 	getToggleIdByLabel,
 	saveOrPublish,
 } from '@woocommerce/blocks-test-utils';
@@ -21,8 +22,9 @@ import { setCheckbox } from '@woocommerce/e2e-utils';
  */
 import {
 	BASE_URL,
+	enableApplyFiltersButton,
 	goToTemplateEditor,
-	openBlockEditorSettings,
+	insertAllProductsBlock,
 	saveTemplate,
 	useTheme,
 	waitForAllProductsBlockLoaded,
@@ -34,10 +36,6 @@ const block = {
 	slug: 'woocommerce/stock-filter',
 	class: '.wc-block-stock-filter',
 	selectors: {
-		editor: {
-			filterButtonToggle:
-				'//label[text()="Show \'Apply filters\' button"]',
-		},
 		frontend: {
 			productsList: '.wc-block-grid__products > li',
 			classicProductsList: '.products.columns-3 > li',
@@ -68,7 +66,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			await insertBlock( block.name );
-			await insertBlockUsingSlash( 'All Products' );
+			await insertAllProductsBlock();
 			await publishPost();
 
 			link = await page.evaluate( () =>
@@ -96,9 +94,7 @@ describe( `${ block.name } Block`, () => {
 		} );
 	} );
 
-	// Re-enable this test once wordpress/e2e-test-utils is updated.
-	// https://github.com/woocommerce/woocommerce-blocks/issues/7744
-	describe.skip( 'with PHP classic template', () => {
+	describe( 'with PHP classic template', () => {
 		const productCatalogTemplateId =
 			'woocommerce/woocommerce//archive-product';
 
@@ -169,15 +165,7 @@ describe( `${ block.name } Block`, () => {
 
 			await waitForCanvas();
 			await selectBlockByName( block.slug );
-			await openBlockEditorSettings();
-			await page.waitForXPath(
-				block.selectors.editor.filterButtonToggle
-			);
-
-			const [ filterButtonToggle ] = await page.$x(
-				selectors.editor.filterButtonToggle
-			);
-			await filterButtonToggle.click();
+			await enableApplyFiltersButton();
 			await saveTemplate();
 			await goToShopPage();
 
@@ -273,8 +261,10 @@ describe( `${ block.name } Block`, () => {
 
 		it( 'should refresh the page only if the user clicks on button', async () => {
 			await page.goto( editorPageUrl );
-			await openBlockEditorSettings();
+			await waitForCanvas();
+			await ensureSidebarOpened();
 			await selectBlockByName( block.slug );
+			await switchBlockInspectorTab( 'Settings' );
 			await setCheckbox(
 				await getToggleIdByLabel( "Show 'Apply filters' button" )
 			);

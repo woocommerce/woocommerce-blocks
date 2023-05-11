@@ -5,7 +5,7 @@ import EditProductLink from '@woocommerce/editor-components/edit-product-link';
 import { useBlockProps } from '@wordpress/block-editor';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { ProductQueryContext as Context } from '@woocommerce/blocks/product-query/types';
-import { useEffect } from 'react';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -24,7 +24,9 @@ const Edit = ( {
 	setAttributes,
 	context,
 }: BlockEditProps< BlockAttributes > & { context: Context } ): JSX.Element => {
-	const blockProps = useBlockProps();
+	const { style, ...blockProps } = useBlockProps( {
+		className: 'wc-block-components-product-stock-indicator',
+	} );
 
 	const blockAttrs = {
 		...attributes,
@@ -38,7 +40,15 @@ const Edit = ( {
 	);
 
 	return (
-		<div { ...blockProps }>
+		<div
+			{ ...blockProps }
+			/**
+			 * If block is decendant of the All Products block, we don't want to
+			 * apply style here because it will be applied inside Block using
+			 * useColors, useTypography, and useSpacing hooks.
+			 */
+			style={ attributes.isDescendantOfAllProducts ? undefined : style }
+		>
 			<EditProductLink />
 			<Block { ...blockAttrs } />
 		</div>

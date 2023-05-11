@@ -10,7 +10,14 @@
 		"multiple": false,
 		"reusable": false,
 		"inserter": false,
-		"lock": false
+		"lock": false,
+		"color": {
+			"text": true,
+			"background": false
+		},
+		"typography": {
+			"fontSize": true
+		}
 	},
 	"attributes": {
 		"lock": {
@@ -23,5 +30,6 @@
 	},
 	"parent": [ "woocommerce/filled-mini-cart-contents-block" ],
 	"textdomain": "woo-gutenberg-products-block",
-	"apiVersion": 2
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
 }

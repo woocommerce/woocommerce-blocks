@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { CurrencyResponse } from './currency';
+import type { CurrencyResponse } from './currency';
 import type { CartItem } from './cart';
 import type { ProductResponseItem } from './product-response';
 
@@ -178,6 +178,7 @@ export interface CartResponse {
 	fees: Array< CartResponseFeeItem >;
 	totals: CartResponseTotals;
 	errors: Array< CartResponseErrorItem >;
+	payment_methods: string[];
 	payment_requirements: Array< unknown >;
 	extensions: ExtensionsData;
 }
