@@ -10,27 +10,27 @@
 <div class="wp-block-columns alignwide" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
 	<!-- wp:column -->
 	<div class="wp-block-column">
-		<!-- wp:columns {"style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","bottom":"0"},"blockGap":{"top":"1.5rem","left":"1.5rem"}}}} -->
-		<div class="wp-block-columns" style="margin-top:0;margin-bottom:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-			<!-- wp:column {"width":"33.33%","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"blockGap":"0"}}} -->
-			<div class="wp-block-column" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;flex-basis:33.33%">
+		<!-- wp:columns {"isStackedOnMobile":false,"style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","bottom":"0"},"blockGap":{"top":"1.5rem","left":"1.5rem"}}}} -->
+		<div class="wp-block-columns is-not-stacked-on-mobile" style="margin-top:0;margin-bottom:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
+			<!-- wp:column {"width":"33.33%","style":{"spacing":{"padding":{"top":"0","right":"var:preset|spacing|20","bottom":"0","left":"0"},"blockGap":"0"}},"layout":{"type":"constrained","wideSize":"80px"}} -->
+			<div class="wp-block-column" style="padding-top:0;padding-right:var(--wp--preset--spacing--20);padding-bottom:0;padding-left:0;flex-basis:33.33%">
 				<!-- wp:group {"style":{"spacing":{"blockGap":"1rem"}},"layout":{"type":"flex","orientation":"vertical","verticalAlignment":"center","justifyContent":"center"}} -->
 				<div class="wp-block-group">
-					<!-- wp:image {"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}}} -->
+					<!-- wp:image {"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}}} -->
 					<figure class="wp-block-image size-thumbnail is-resized has-custom-border">
-						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-1.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-1.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px"/>
 					</figure>
 					<!-- /wp:image -->
 
-					<!-- wp:image {"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}}} -->
+					<!-- wp:image {"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}}} -->
 					<figure class="wp-block-image size-thumbnail is-resized has-custom-border">
-						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-2.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-2.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px"/>
 					</figure>
 					<!-- /wp:image -->
 
-					<!-- wp:image {"width":120,"height":120,"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"radius":"5px","color":"#dddddd","width":"1px"}}} -->
+					<!-- wp:image {"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}}} -->
 					<figure class="wp-block-image size-thumbnail is-resized has-custom-border">
-						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-4.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px" width="120" height="120" />
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-furniture-4.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px"/>
 					</figure>
 					<!-- /wp:image -->
 				</div>
@@ -90,7 +90,7 @@
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:group {"layout":{"type":"constrained"}} -->
+		<!-- wp:group {"layout":{"type":"constrained","justifyContent":"left"}} -->
 		<div class="wp-block-group">
 			<!-- wp:paragraph {"style":{"typography":{"fontSize":"18px"}},"textColor":"foreground"} -->
 			<p class="has-foreground-color has-text-color" style="font-size:18px">Crafted from solid wood with a rich
@@ -104,7 +104,7 @@
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:group {"layout":{"type":"constrained"}} -->
+		<!-- wp:group {"layout":{"type":"constrained","justifyContent":"left"}} -->
 		<div class="wp-block-group">
 			<!-- wp:buttons -->
 			<div class="wp-block-buttons">
