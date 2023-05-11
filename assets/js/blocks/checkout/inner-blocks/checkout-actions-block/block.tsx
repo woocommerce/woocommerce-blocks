@@ -18,7 +18,11 @@ import {
  * Internal dependencies
  */
 import './style.scss';
-import { defaultPlaceOrderButtonLabel } from './constants';
+import {
+	defaultPlaceOrderButtonLabel,
+	defaultPayForOrderButtonLabel,
+} from './constants';
+import { useStoreOrder } from '../../../../base/context/hooks/cart/use-store-order';
 
 const Block = ( {
 	cartPageId,
@@ -32,12 +36,17 @@ const Block = ( {
 	placeOrderButtonLabel: string;
 } ): JSX.Element => {
 	const { paymentMethodButtonLabel } = useCheckoutSubmit();
+	const { orderId, orderKey } = useStoreOrder();
+	const defaultButtonLabel =
+		orderId && orderKey
+			? defaultPayForOrderButtonLabel
+			: defaultPlaceOrderButtonLabel;
 	const label = applyCheckoutFilter( {
 		filterName: 'placeOrderButtonLabel',
 		defaultValue:
 			paymentMethodButtonLabel ||
 			placeOrderButtonLabel ||
-			defaultPlaceOrderButtonLabel,
+			defaultButtonLabel,
 	} );
 
 	return (
