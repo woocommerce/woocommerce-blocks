@@ -4,58 +4,41 @@
  * Slug: woocommerce-blocks/featured-category-triple
  * Categories: WooCommerce
  */
-
-// Below query is temporary work around to get patterns previews to work.
-$transient_name = 'wc_blocks_pattern_featured_category_triple';
-$categories     = get_transient( $transient_name );
-
-if ( ( false === $categories ) || ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ) {
-	global $wpdb;
-
-	$categories = $wpdb->get_results(
-		"SELECT tt.term_id FROM {$wpdb->prefix}term_taxonomy AS tt
-		LEFT JOIN {$wpdb->prefix}terms AS t ON tt.term_id = t.term_id
-		WHERE tt.taxonomy = 'product_cat' AND tt.count > 0 AND tt.parent = 0 AND t.slug != 'uncategorized'
-		LIMIT 3",
-		ARRAY_A
-	);
-
-	set_transient( $transient_name, $categories, DAY_IN_SECONDS * 14 );
-}
-
-$cat1 = $categories[0]['term_id'] ? $categories[0]['term_id'] : 0;
-$cat2 = $categories[1]['term_id'] ? $categories[1]['term_id'] : 0;
-$cat3 = $categories[2]['term_id'] ? $categories[2]['term_id'] : 0;
-
 ?>
-<!-- wp:columns {"align":"full","style":{"spacing":{"blockGap":{"top":"0","left":"0"},"padding":{"top":"0","right":"0","bottom":"0","left":"0"}}}} -->
-<div class="wp-block-columns alignfull" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><!-- wp:column -->
-	<div class="wp-block-column"><?php echo '<!-- wp:woocommerce/featured-category {"dimRatio":0,"editMode":false,"imageFit":"cover","categoryId":' . esc_attr( $cat1 ) . ',"overlayColor":"#F6F6F6","showDesc":false,"textColor":"foreground"} -->'; ?>
-			<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
-			<div class="wp-block-buttons"><!-- wp:button {"lock":{"move":true,"remove":true}} -->
-				<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( get_category_link( $cat1 ) ); ?>"><?php esc_html_e( 'Shop now', 'woo-gutenberg-products-block' ); ?></a></div>
-				<!-- /wp:button --></div>
-			<!-- /wp:buttons -->
-			<!-- /wp:woocommerce/featured-category --></div>
-		<!-- /wp:column -->
+<!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"top":"0px","left":"0px"}}}} -->
+<div class="wp-block-columns alignwide"><!-- wp:column {"style":{"spacing":{"blockGap":"0px","padding":{"top":"0px","right":"0px","bottom":"0px","left":"0px"}}},"textColor":"base"} -->
+<div class="wp-block-column has-base-color has-text-color" style="padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px"><!-- wp:cover {"url":"<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-beauty-3.png', dirname( __FILE__ ) ) ); ?>","id":1,"dimRatio":0,"contentPosition":"bottom center","className":"has-base-color has-text-color","style":{"spacing":{"blockGap":"0","padding":{"bottom":"1.8em","top":"0px","right":"0px","left":"0px"}}}} -->
+<div class="wp-block-cover has-custom-content-position is-position-bottom-center has-base-color has-text-color" style="padding-top:0px;padding-right:0px;padding-bottom:1.8em;padding-left:0px"><span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span><img class="wp-block-cover__image-background wp-image-1" alt="" src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-beauty-3.png', dirname( __FILE__ ) ) ); ?>" data-object-fit="cover"/><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"center","placeholder":"Write title…","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"textColor":"base","fontSize":"large"} -->
+<p class="has-text-align-center has-base-color has-text-color has-large-font-size" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><strong>Aztec clay masks</strong></p>
+<!-- /wp:paragraph -->
 
-		<!-- wp:column -->
-		<div class="wp-block-column"><?php echo '<!-- wp:woocommerce/featured-category {"dimRatio":0,"editMode":false,"imageFit":"cover","categoryId":' . esc_attr( $cat2 ) . ',"overlayColor":"#F6F6F6","showDesc":false,"textColor":"foreground"} -->'; ?>
-			<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
-			<div class="wp-block-buttons"><!-- wp:button -->
-				<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( get_category_link( $cat2 ) ); ?>"><?php esc_html_e( 'Shop now', 'woo-gutenberg-products-block' ); ?></a></div>
-				<!-- /wp:button --></div>
-			<!-- /wp:buttons -->
-			<!-- /wp:woocommerce/featured-category --></div>
-		<!-- /wp:column -->
+<!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"textColor":"base","fontSize":"small"} -->
+<p class="has-text-align-center has-base-color has-text-color has-small-font-size" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"><strong><span style="text-decoration: underline;">Shop Now</span></strong></p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:cover --></div>
+<!-- /wp:column -->
 
-		<!-- wp:column -->
-		<div class="wp-block-column"><?php echo '<!-- wp:woocommerce/featured-category {"dimRatio":0,"editMode":false,"imageFit":"cover","categoryId":' . esc_attr( $cat3 ) . ',"overlayColor":"#F6F6F6","showDesc":false,"textColor":"foreground"} -->'; ?>
-			<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
-			<div class="wp-block-buttons"><!-- wp:button -->
-				<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( get_category_link( $cat3 ) ); ?>"><?php esc_html_e( 'Shop now', 'woo-gutenberg-products-block' ); ?></a></div>
-				<!-- /wp:button --></div>
-			<!-- /wp:buttons -->
-		<!-- /wp:woocommerce/featured-category --></div>
-	<!-- /wp:column --></div>
+<!-- wp:column {"style":{"spacing":{"padding":{"top":"0px","right":"0px","bottom":"0px","left":"0px"},"blockGap":"0px"}}} -->
+<div class="wp-block-column" style="padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px"><!-- wp:cover {"url":"<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-beauty-2.png', dirname( __FILE__ ) ) ); ?>","id":1,"dimRatio":0,"focalPoint":{"x":0.5,"y":0.5},"contentPosition":"bottom center","isDark":false,"className":"has-contrast-color has-text-color","style":{"spacing":{"padding":{"bottom":"1.8em","top":"0px","right":"0px","left":"0px"},"blockGap":"0"}}} -->
+<div class="wp-block-cover is-light has-custom-content-position is-position-bottom-center has-contrast-color has-text-color" style="padding-top:0px;padding-right:0px;padding-bottom:1.8em;padding-left:0px"><span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span><img class="wp-block-cover__image-background wp-image-1" alt="" src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-beauty-2.png', dirname( __FILE__ ) ) ); ?>" style="object-position:50% 50%" data-object-fit="cover" data-object-position="50% 50%"/><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"center","placeholder":"Write title…","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"textColor":"contrast","fontSize":"large"} -->
+<p class="has-text-align-center has-contrast-color has-text-color has-large-font-size" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><strong>Moisturizing toners</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"textColor":"contrast","fontSize":"small"} -->
+<p class="has-text-align-center has-contrast-color has-text-color has-small-font-size" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"><strong><span style="text-decoration: underline;">Shop Now</span></strong></p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:cover --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"style":{"spacing":{"padding":{"top":"0px","right":"0px","bottom":"0px","left":"0px"},"blockGap":"0px"}}} -->
+<div class="wp-block-column" style="padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px"><!-- wp:cover {"url":"<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-beauty-1.png', dirname( __FILE__ ) ) ); ?>","id":1,"dimRatio":0,"contentPosition":"bottom center","className":"has-base-color has-text-color","style":{"spacing":{"padding":{"bottom":"1.8em","top":"0px","right":"0px","left":"0px"},"blockGap":"0"}}} -->
+<div class="wp-block-cover has-custom-content-position is-position-bottom-center has-base-color has-text-color" style="padding-top:0px;padding-right:0px;padding-bottom:1.8em;padding-left:0px"><span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span><img class="wp-block-cover__image-background wp-image-1" alt="" src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-beauty-1.png', dirname( __FILE__ ) ) ); ?>" data-object-fit="cover"/><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"center","placeholder":"Write title…","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"textColor":"base","fontSize":"large"} -->
+<p class="has-text-align-center has-base-color has-text-color has-large-font-size" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><strong>Natural body lotions</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"textColor":"base","fontSize":"small"} -->
+<p class="has-text-align-center has-base-color has-text-color has-small-font-size" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"><strong><span style="text-decoration: underline;">Shop Now</span></strong></p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:cover --></div>
+<!-- /wp:column --></div>
 <!-- /wp:columns -->
