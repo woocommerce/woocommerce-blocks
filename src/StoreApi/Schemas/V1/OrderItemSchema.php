@@ -355,7 +355,7 @@ class OrderItemSchema extends ProductSchema {
 			'low_stock_remaining'  => null,
 			'backorders_allowed'   => false,
 			'show_backorder_badge' => false,
-			'sold_individually'    => false,
+			'sold_individually'    => $product->is_sold_individually(),
 			'permalink'            => $product->get_permalink(),
 			'images'               => $this->get_images( $product ),
 			'variation'            => $this->format_variation_data( $product->get_attributes(), $product ),
