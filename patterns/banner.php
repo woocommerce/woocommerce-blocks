@@ -22,8 +22,8 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:buttons {"style":{"spacing":{"blockGap":"0","margin":{"top":"20px","bottom":"0"}}}} -->
-<div class="wp-block-buttons" style="margin-top:20px;margin-bottom:0"><!-- wp:button {"backgroundColor":"background","textColor":"foreground","style":{"typography":{"fontSize":"16px"},"border":{"width":"0px","style":"none"}},"className":"is-style-fill"} -->
-<div class="wp-block-button has-custom-font-size is-style-fill" style="font-size:16px"><a class="wp-block-button__link has-foreground-color has-background-background-color has-text-color has-background wp-element-button" style="border-style:none;border-width:0px">Shop Holiday Sales</a></div>
+<div class="wp-block-buttons" style="margin-top:20px;margin-bottom:0"><!-- wp:button {"style":{"typography":{"fontSize":"16px"},"color":{"text":"#000000","background":"#ffffff"},"border":{"width":"0px","style":"none"}},"className":"is-style-fill"} -->
+<div class="wp-block-button has-custom-font-size is-style-fill" style="font-size:16px"><a class="wp-block-button__link has-text-color has-background wp-element-button" style="border-style:none;border-width:0px;color:#000000;background-color:#ffffff">Shop Holiday Sales</a></div>
 <!-- /wp:button --></div>
 <!-- /wp:buttons --></div>
 <!-- /wp:group --></div>
