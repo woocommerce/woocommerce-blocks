@@ -14,7 +14,7 @@ import { heading } from '@wordpress/icons';
 import { registerElementVariation } from './utils';
 
 export const CORE_NAME = 'core/post-title';
-export const VARIATION_NAME = 'woocommerce/product-query/product-title';
+export const VARIATION_NAME = 'woocommerce/products-collection/product-title';
 
 registerElementVariation( CORE_NAME, {
 	blockDescription: BLOCK_DESCRIPTION,

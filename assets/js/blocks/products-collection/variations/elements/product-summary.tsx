@@ -14,7 +14,7 @@ import { page } from '@wordpress/icons';
 import { registerElementVariation } from './utils';
 
 export const CORE_NAME = 'core/post-excerpt';
-export const VARIATION_NAME = 'woocommerce/product-query/product-summary';
+export const VARIATION_NAME = 'woocommerce/products-collection/product-summary';
 
 registerElementVariation( CORE_NAME, {
 	blockDescription: BLOCK_DESCRIPTION,
