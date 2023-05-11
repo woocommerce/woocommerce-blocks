@@ -40,6 +40,7 @@ import { preparePaymentData, processCheckoutResponseHeaders } from './utils';
 import { useCheckoutEventsContext } from './checkout-events';
 import { useShippingDataContext } from './shipping';
 import { useStoreCart } from '../../hooks/cart/use-store-cart';
+import { useStoreOrder } from '../../hooks/cart/use-store-order';
 
 /**
  * CheckoutProcessor component.
@@ -211,6 +212,8 @@ const CheckoutProcessor = () => {
 		}
 	}, [ checkoutIsComplete ] );
 
+	const { orderId, orderKey } = useStoreOrder();
+
 	// POST to the Store API and process and display any errors, or set order complete
 	const processOrder = useCallback( async () => {
 		if ( isProcessingOrder ) {
@@ -241,10 +244,14 @@ const CheckoutProcessor = () => {
 			create_account: shouldCreateAccount,
 			...paymentData,
 			extensions: { ...extensionData },
+			key: orderKey,
 		};
 
 		triggerFetch( {
-			path: '/wc/store/v1/checkout',
+			path:
+				orderKey && orderId
+					? `/wc/store/v1/checkout/${ orderId }`
+					: '/wc/store/v1/checkout',
 			method: 'POST',
 			data,
 			cache: 'no-store',
