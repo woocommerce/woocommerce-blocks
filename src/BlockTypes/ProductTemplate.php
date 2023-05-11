@@ -18,6 +18,15 @@ class ProductTemplate extends AbstractBlock {
 	protected $block_name = 'product-template';
 
 	/**
+	 * Get the frontend script handle for this block type.
+	 *
+	 * @param string $key Data to get, or default to everything.
+	 */
+	protected function get_block_type_script( $key = null ) {
+		return null;
+	}
+
+	/**
 	 * Render the block.
 	 *
 	 * @param array    $attributes Block attributes.

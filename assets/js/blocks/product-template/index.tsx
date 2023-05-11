@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
-import { isExperimentalBuild } from '@woocommerce/block-settings';
+import { registerExperimentalBlockType } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -19,6 +19,4 @@ const blockConfig: BlockConfiguration = {
 	save,
 };
 
-if ( isExperimentalBuild() ) {
-	registerBlockType( metadata.name, blockConfig );
-}
+registerExperimentalBlockType( metadata.name, blockConfig );
