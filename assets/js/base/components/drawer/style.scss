@@ -131,6 +131,15 @@ $drawer-animation-duration: 0.3s;
 		opacity: 1;
 	}
 
+	// Don't show focus styles if the close button hasn't been focused by the
+	// user directly. This is done to prevent focus styles to appear when
+	// opening the drawer with the mouse, as the focus is moved inside
+	// programmatically.
+	&:focus:not(:focus-visible) {
+		box-shadow: none;
+		outline: none;
+	}
+
 	> span {
 		@include visually-hidden();
 	}
