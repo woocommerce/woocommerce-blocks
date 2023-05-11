@@ -194,8 +194,11 @@ const QuantitySelector = ( {
 					),
 					itemName
 				) }
-				className="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus"
-				disabled={ disabled || ! canDecrease }
+				className={ classNames(
+					'wc-block-components-quantity-selector__button',
+					'wc-block-components-quantity-selector__button--minus',
+					{ 'is-disabled': disabled || ! canDecrease }
+				) }
 				onClick={ () => {
 					const newQuantity = quantity - step;
 					onChange( newQuantity );
@@ -211,6 +214,8 @@ const QuantitySelector = ( {
 					);
 					normalizeQuantity( newQuantity );
 				} }
+				aria-disabled={ disabled || ! canDecrease }
+				tabIndex={ disabled || ! canDecrease ? -1 : undefined }
 			>
 				&#65293;
 			</button>
@@ -223,8 +228,11 @@ const QuantitySelector = ( {
 					),
 					itemName
 				) }
-				disabled={ disabled || ! canIncrease }
-				className="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus"
+				className={ classNames(
+					'wc-block-components-quantity-selector__button',
+					'wc-block-components-quantity-selector__button--plus',
+					{ 'is-disabled': disabled || ! canIncrease }
+				) }
 				onClick={ () => {
 					const newQuantity = quantity + step;
 					onChange( newQuantity );
@@ -240,6 +248,8 @@ const QuantitySelector = ( {
 					);
 					normalizeQuantity( newQuantity );
 				} }
+				aria-disabled={ disabled || ! canIncrease }
+				tabIndex={ disabled || ! canIncrease ? -1 : undefined }
 			>
 				&#65291;
 			</button>

@@ -81,7 +81,7 @@
 		&:focus {
 			opacity: 1;
 		}
-		&:disabled {
+		&.is-disabled {
 			box-shadow: none;
 			cursor: default;
 			opacity: 0.6;
