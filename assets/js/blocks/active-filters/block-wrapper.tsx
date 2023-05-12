@@ -21,7 +21,7 @@ const BlockWrapper = ( props: Record< string, unknown > ) => {
 				isString( props.className ) ? props.className : '',
 				styleProps.className
 			) }
-			style={ { ...styleProps.style } }
+			style={ styleProps.style }
 		>
 			<Block isEditor={ false } attributes={ parsedBlockAttributes } />
 		</div>
