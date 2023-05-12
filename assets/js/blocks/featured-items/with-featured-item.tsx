@@ -169,7 +169,7 @@ export const withFeaturedItem =
 				textColor,
 			} = attributes;
 
-			const classes = classnames(
+			const containerClass = classnames(
 				className,
 				{
 					'is-selected':
@@ -192,11 +192,8 @@ export const withFeaturedItem =
 					? `var(--wp--preset--color--${ textColor })`
 					: style?.color?.text,
 				boxSizing: 'border-box',
-			};
-
-			const wrapperStyle = {
-				...styleProps.style,
 				minHeight,
+				...styleProps.style,
 			};
 
 			const isImgElement = ! isRepeated && ! hasParallax;
@@ -222,14 +219,8 @@ export const withFeaturedItem =
 						showHandle={ isSelected }
 						style={ { minHeight } }
 					/>
-					<div
-						className={ classes }
-						style={ { containerStyle, ...styleProps.style } }
-					>
-						<div
-							className={ `${ className }__wrapper` }
-							style={ wrapperStyle }
-						>
+					<div className={ containerClass } style={ containerStyle }>
+						<div className={ `${ className }__wrapper` }>
 							<div
 								className="background-dim__overlay"
 								style={ overlayStyle }
