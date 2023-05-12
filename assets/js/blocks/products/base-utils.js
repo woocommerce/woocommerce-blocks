@@ -6,13 +6,14 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { BLOCK_NAME as PRODUCT_BUTTON_BLOCK_NAME } from '../../atomic/blocks/product-elements/button/constants';
+import addToCartButtonMetadata from '../../atomic/blocks/product-elements/button/block.json';
+import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
 
 /**
  * The default layout built from the default template.
  */
 export const DEFAULT_PRODUCT_LIST_LAYOUT = [
-	[ 'woocommerce/product-image', { imageSizing: 'cropped' } ],
+	[ 'woocommerce/product-image', { imageSizing: ImageSizing.THUMBNAIL } ],
 	[ 'woocommerce/product-title' ],
 	[ 'woocommerce/product-price' ],
 	[ 'woocommerce/product-rating' ],
@@ -44,7 +45,7 @@ export const getProductLayoutConfig = ( innerBlocks ) => {
 				 * This is needed to support "Width Setting" controls available in
 				 * "woocommerce/product-button" block.
 				 */
-				...( block.name === PRODUCT_BUTTON_BLOCK_NAME && {
+				...( block.name === addToCartButtonMetadata.name && {
 					className: classnames( block.attributes.className, {
 						[ `has-custom-width wp-block-button__width-${ block.attributes?.width }` ]:
 							block.attributes?.width,

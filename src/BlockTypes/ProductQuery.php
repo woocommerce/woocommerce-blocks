@@ -135,16 +135,19 @@ class ProductQuery extends AbstractBlock {
 	 * @param array           $args    Query args.
 	 * @param WP_REST_Request $request Request.
 	 */
-	public function update_rest_query( $args, $request ) {
-		$orderby          = $request->get_param( 'orderby' );
-		$woo_attributes   = $request->get_param( '__woocommerceAttributes' );
-		$woo_stock_status = $request->get_param( '__woocommerceStockStatus' );
-		$on_sale_query    = $request->get_param( '__woocommerceOnSale' ) === 'true' ? $this->get_on_sale_products_query() : array();
-		$orderby_query    = isset( $orderby ) ? $this->get_custom_orderby_query( $orderby ) : array();
-		$attributes_query = is_array( $woo_attributes ) ? $this->get_product_attributes_query( $woo_attributes ) : array();
-		$stock_query      = is_array( $woo_stock_status ) ? $this->get_stock_status_query( $woo_stock_status ) : array();
-		$visibility_query = $this->get_product_visibility_query( $stock_query );
-		$tax_query        = $this->merge_tax_queries( $attributes_query, $visibility_query );
+	public function update_rest_query( $args, $request ): array {
+		$woo_attributes      = $request->get_param( '__woocommerceAttributes' );
+		$is_valid_attributes = is_array( $woo_attributes );
+		$orderby             = $request->get_param( 'orderby' );
+		$woo_stock_status    = $request->get_param( '__woocommerceStockStatus' );
+		$on_sale             = $request->get_param( '__woocommerceOnSale' ) === 'true';
+
+		$on_sale_query    = $on_sale ? $this->get_on_sale_products_query() : [];
+		$orderby_query    = $orderby ? $this->get_custom_orderby_query( $orderby ) : [];
+		$attributes_query = $is_valid_attributes ? $this->get_product_attributes_query( $woo_attributes ) : [];
+		$stock_query      = is_array( $woo_stock_status ) ? $this->get_stock_status_query( $woo_stock_status ) : [];
+		$visibility_query = is_array( $woo_stock_status ) ? $this->get_product_visibility_query( $stock_query ) : [];
+		$tax_query        = $is_valid_attributes ? $this->merge_tax_queries( $attributes_query, $visibility_query ) : [];
 
 		return array_merge( $args, $on_sale_query, $orderby_query, $stock_query, $tax_query );
 	}
@@ -162,18 +165,21 @@ class ProductQuery extends AbstractBlock {
 		}
 
 		$common_query_values = array(
-			'post_type'      => 'product',
-			'post__in'       => array(),
-			'post_status'    => 'publish',
+			'meta_query'     => array(),
 			'posts_per_page' => $query['posts_per_page'],
 			'orderby'        => $query['orderby'],
 			'order'          => $query['order'],
 			'offset'         => $query['offset'],
-			'meta_query'     => array(),
+			'post__in'       => array(),
+			'post_status'    => 'publish',
+			'post_type'      => 'product',
 			'tax_query'      => array(),
 		);
 
-		return $this->merge_queries(
+		$handpicked_products = isset( $parsed_block['attrs']['query']['include'] ) ?
+			$parsed_block['attrs']['query']['include'] : $common_query_values['post__in'];
+
+		$merged_query = $this->merge_queries(
 			$common_query_values,
 			$this->get_global_query( $parsed_block ),
 			$this->get_custom_orderby_query( $query['orderby'] ),
@@ -182,6 +188,8 @@ class ProductQuery extends AbstractBlock {
 			$this->get_filter_by_taxonomies_query( $query ),
 			$this->get_filter_by_keyword_query( $query )
 		);
+
+		return $this->filter_query_to_only_include_ids( $merged_query, $handpicked_products );
 	}
 
 	/**
@@ -302,6 +310,23 @@ class ProductQuery extends AbstractBlock {
 			'meta_key' => $meta_keys[ $orderby ],
 			'orderby'  => 'meta_value_num',
 		);
+	}
+
+	/**
+	 * Apply the query only to a subset of products
+	 *
+	 * @param array $query  The query.
+	 * @param array $ids  Array of selected product ids.
+	 *
+	 * @return array
+	 */
+	private function filter_query_to_only_include_ids( $query, $ids ) {
+		if ( ! empty( $ids ) ) {
+			$query['post__in'] = empty( $query['post__in'] ) ?
+				$ids : array_intersect( $ids, $query['post__in'] );
+		}
+
+		return $query;
 	}
 
 	/**
