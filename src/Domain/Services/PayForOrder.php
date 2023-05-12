@@ -31,10 +31,9 @@ class PayForOrder {
 		$order_id = ! empty( $wp->query_vars['order-pay'] ) ? $wp->query_vars['order-pay'] : null;
 
 		if ( isset( $_GET['pay_for_order'], $_GET['key'] ) && $order_id ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$order = wc_get_order( $order_id );
-
-			// Logged out customer does not have permission to pay for this order.
 			if ( ! current_user_can( 'pay_for_order', $order_id ) && ! is_user_logged_in() ) {
+				$order = wc_get_order( $order_id );
+
 				ob_start();
 				wc_print_notice( esc_html__( 'Please log in to your account below to continue to the payment form.', 'woo-gutenberg-products-block' ), 'notice' );
 				woocommerce_login_form(
