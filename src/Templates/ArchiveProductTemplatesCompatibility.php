@@ -13,9 +13,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 	/**
 	 * The custom ID of the loop item block as the replacement of the core/null block.
 	 */
-	const LOOP_ITEM_ID                        = 'product-loop-item';
-	const IS_LAST_BLOCK_BEFORE_PRODUCTS_BLOCK = '__wooCommerce_is_last_block_before_products_block';
-	const IS_FIRST_BLOCK_AFTER_PRODUCTS_BLOCK = '__wooCommerce_is_first_block_after_products_block';
+	const LOOP_ITEM_ID = 'product-loop-item';
 
 	/**
 	 * The data of supported hooks, containing the hook name, the block name,
@@ -75,7 +73,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 
 		$block_name = $block['blockName'];
 
-		if ( 'core/query' === $block_name && isset( $block['attrs']['namespace'] ) && 'woocommerce/product-query' === $block['attrs']['namespace'] ) {
+		if ( $this->is_products_block_with_inherit_query( $block ) ) {
 			$before_shop_loop_hooks = array(
 				'before' => array(
 					'woocommerce_before_shop_loop' => $this->hook_data['woocommerce_before_shop_loop'],
@@ -315,11 +313,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 	 */
 	private function inner_blocks_walker( &$block ) {
 		if (
-			'core/query' === $block['blockName'] &&
-			isset( $block['attrs']['namespace'] ) &&
-			'woocommerce/product-query' === $block['attrs']['namespace'] &&
-			isset( $block['attrs']['query']['inherit'] ) &&
-			$block['attrs']['query']['inherit']
+			$this->is_products_block_with_inherit_query( $block )
 		) {
 			$this->inject_attribute( $block );
 			$this->remove_default_hooks();
@@ -346,6 +340,19 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 		}
 	}
 
+
+	/**
+	 * Check if the block is a Products block that inherits query from template.
+	 *
+	 * @param array $block Parsed block data.
+	 */
+	private function is_products_block_with_inherit_query( $block ) {
+		return 'core/query' === $block['blockName'] &&
+		isset( $block['attrs']['namespace'] ) &&
+		'woocommerce/product-query' === $block['attrs']['namespace'] &&
+		isset( $block['attrs']['query']['inherit'] ) &&
+		$block['attrs']['query']['inherit'];
+	}
 
 	/**
 	 * Recursively inject the custom attribute to all nested blocks.
