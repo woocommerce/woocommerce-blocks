@@ -9,6 +9,7 @@ import {
 } from '@wordpress/block-editor';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
+import { Disabled } from '@wordpress/components';
 import { ProductQueryContext as Context } from '@woocommerce/blocks/product-query/types';
 
 /**
@@ -49,7 +50,9 @@ const Edit = ( {
 				/>
 			</BlockControls>
 			<div { ...blockProps }>
-				<Block { ...blockAttrs } />
+				<Disabled>
+					<Block { ...blockAttrs } />
+				</Disabled>
 			</div>
 		</>
 	);
