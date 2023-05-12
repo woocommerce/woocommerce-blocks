@@ -37,7 +37,7 @@ const Block = ( {
 				'wc-block-mini-cart__footer-checkout'
 			) }
 			variant={ getVariant( className, 'contained' ) }
-			style={ { ...styleProps.style } }
+			style={ styleProps.style }
 			href={ CHECKOUT_URL }
 		>
 			{ checkoutButtonLabel || defaultCheckoutButtonLabel }
