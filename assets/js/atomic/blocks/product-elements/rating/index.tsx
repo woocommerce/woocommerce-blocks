@@ -1,3 +1,4 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * External dependencies
  */
@@ -46,12 +47,6 @@ const featurePluginSupport = {
 		},
 		__experimentalSelector: '.wc-block-components-product-rating',
 	} ),
-	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' &&
-		! isFeaturePluginBuild() && {
-			spacing: {
-				margin: true,
-			},
-		} ),
 };
 // @ts-expect-error: `metadata` currently does not have a type definition in WordPress core
 registerBlockType( metadata, {
