@@ -67,9 +67,6 @@ export const Block = ( props: Props ): JSX.Element | null => {
 		return productPriceComponent;
 	}
 
-	const style = {
-		...styleProps.style,
-	};
 	const prices: PriceProps = product.prices;
 	const currency = isDescendentOfSingleProductTemplate
 		? getCurrencyFromPriceResponse()
@@ -87,8 +84,8 @@ export const Block = ( props: Props ): JSX.Element | null => {
 			align={ textAlign }
 			className={ wrapperClassName }
 			style={ styleProps.style }
-			regularPriceStyle={ style }
-			priceStyle={ style }
+			regularPriceStyle={ styleProps.style }
+			priceStyle={ styleProps.style }
 			priceClassName={ priceClassName }
 			currency={ currency }
 			price={

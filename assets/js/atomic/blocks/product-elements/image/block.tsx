@@ -100,9 +100,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 					},
 					styleProps.className
 				) }
-				style={ {
-					...styleProps.style,
-				} }
+				style={ styleProps.style }
 			>
 				<ImagePlaceholder />
 			</div>
@@ -136,9 +134,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 				},
 				styleProps.className
 			) }
-			style={ {
-				...styleProps.style,
-			} }
+			style={ styleProps.style }
 		>
 			<ParentComponent { ...( showProductLink && anchorProps ) }>
 				{ !! showSaleBadge && (

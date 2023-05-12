@@ -159,12 +159,7 @@ export const Block = ( props: ProductRatingProps ): JSX.Element | null => {
 	);
 
 	return (
-		<div
-			className={ className }
-			style={ {
-				...styleProps.style,
-			} }
-		>
+		<div className={ className } style={ styleProps.style }>
 			<div className="wc-block-components-product-rating__container">
 				{ content }
 				{ reviews && isDescendentOfSingleProductBlock ? (

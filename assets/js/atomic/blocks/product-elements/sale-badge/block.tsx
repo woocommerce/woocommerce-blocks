@@ -46,9 +46,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 				},
 				styleProps.className
 			) }
-			style={ {
-				...styleProps.style,
-			} }
+			style={ styleProps.style }
 		>
 			<Label
 				label={ __( 'Sale', 'woo-gutenberg-products-block' ) }

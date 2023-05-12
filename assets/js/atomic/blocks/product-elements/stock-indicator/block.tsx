@@ -93,9 +93,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 			} ) }
 			// When inside All products block
 			{ ...( props.isDescendantOfAllProducts && {
-				style: {
-					...styleProps.style,
-				},
+				style: styleProps.style,
 			} ) }
 		>
 			{ getTextBasedOnStock( {

@@ -17,9 +17,7 @@ const Block = ( props: Props ): JSX.Element => {
 	return (
 		<span
 			className={ classNames( props.className, styleProps.className ) }
-			style={ {
-				...styleProps.style,
-			} }
+			style={ styleProps.style }
 		>
 			{ sprintf(
 				/* translators: %d is the count of items in the cart. */

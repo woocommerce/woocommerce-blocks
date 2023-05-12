@@ -64,9 +64,7 @@ const Block = ( props: Props ): JSX.Element | null => {
 			source={ source }
 			maxLength={ 150 }
 			countType={ blocksConfig.wordCountType || 'words' }
-			style={ {
-				...styleProps.style,
-			} }
+			style={ styleProps.style }
 		/>
 	);
 };
