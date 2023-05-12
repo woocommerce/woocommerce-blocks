@@ -16,9 +16,8 @@ import { ProductQueryContext as Context } from '@woocommerce/blocks/product-quer
  */
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
-import { BLOCK_TITLE, BLOCK_ICON } from './constants';
+import blockMeta from './block.json';
 import { BlockAttributes } from './types';
-import './editor.scss';
 
 const Edit = ( {
 	attributes,
@@ -56,8 +55,8 @@ const Edit = ( {
 	);
 };
 export default withProductSelector( {
-	icon: BLOCK_ICON,
-	label: BLOCK_TITLE,
+	icon: blockMeta.icon,
+	label: blockMeta.name,
 	description: __(
 		'Choose a product to display its rating.',
 		'woo-gutenberg-products-block'

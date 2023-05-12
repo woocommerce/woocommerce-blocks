@@ -1,0 +1,64 @@
+{
+	"name": "woocommerce/product-rating",
+	"version": "1.0.0",
+	"title": "Product Rating",
+	"description": "Display the average rating of a product.",
+	"icon": "starEmpty",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"usesContext": [ "query", "queryId", "postId" ],
+	"textdomain": "woo-gutenberg-products-block",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "wide"
+		},
+		"contentJustification": {
+			"type": "string"
+		},
+		"fontSize": {
+			"type": "string",
+			"default": "small"
+		},
+		"productId": {
+			"type": "number",
+			"default": 0
+		},
+		"textAlign": {
+			"type": "string",
+			"default": ""
+		},
+		"isDescendentOfQueryLoop": {
+			"type": "boolean",
+			"default": false
+		},
+		"isDescendentOfSingleProductBlock": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"color": {
+			"text": true,
+			"background": false,
+			"link": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"html": false,
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
+	},
+	"ancestor": [
+		"woocommerce/all-products",
+		"woocommerce/single-product",
+		"core/post-template"
+	],
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}
