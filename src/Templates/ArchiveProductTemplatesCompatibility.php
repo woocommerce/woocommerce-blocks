@@ -230,26 +230,26 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 				),
 			),
 			'woocommerce_before_shop_loop'            => array(
-				'block_name' => '',
-				'position'   => 'before',
-				'hooked'     => array(
+				'block_name'            => '',
+				'position'              => 'before',
+				'hooked'                => array(
 					'woocommerce_output_all_notices' => 10,
 					'woocommerce_result_count'       => 20,
 					'woocommerce_catalog_ordering'   => 30,
 				),
-				'no_readd'   => array(
+				'not_re_addble_actions' => array(
 					'woocommerce_output_all_notices',
 					'woocommerce_result_count',
 					'woocommerce_catalog_ordering',
 				),
 			),
 			'woocommerce_after_shop_loop'             => array(
-				'block_name' => '',
-				'position'   => 'after',
-				'hooked'     => array(
+				'block_name'            => '',
+				'position'              => 'after',
+				'hooked'                => array(
 					'woocommerce_pagination' => 10,
 				),
-				'no_readd'   => array(
+				'not_re_addble_actions' => array(
 					'woocommerce_pagination',
 				),
 			),
@@ -310,7 +310,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 				continue;
 			}
 			foreach ( $data['hooked'] as $callback => $priority ) {
-				if ( ! in_array( $callback, $data['no_readd'] ?? [], true ) ) {
+				if ( ! in_array( $callback, $data['not_re_addble_actions'] ?? [], true ) ) {
 					add_action( $hook, $callback, $priority );
 				}
 			}
