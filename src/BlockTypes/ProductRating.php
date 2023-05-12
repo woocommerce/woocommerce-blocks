@@ -6,50 +6,12 @@ use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
  * ProductRating class.
  */
 class ProductRating extends AbstractBlock {
-
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
 	protected $block_name = 'product-rating';
-
-	/**
-	 * API version name.
-	 *
-	 * @var string
-	 */
-	protected $api_version = '2';
-
-	/**
-	 * Get block supports. Shared with the frontend.
-	 * IMPORTANT: If you change anything here, make sure to update the JS file too.
-	 *
-	 * @return array
-	 */
-	protected function get_block_type_supports() {
-		return array(
-			'color'                  =>
-			array(
-				'text'                            => true,
-				'background'                      => false,
-				'link'                            => false,
-				'__experimentalSkipSerialization' => true,
-			),
-			'typography'             =>
-			array(
-				'fontSize'                        => true,
-				'__experimentalSkipSerialization' => true,
-			),
-			'spacing'                =>
-			array(
-				'margin'                          => true,
-				'padding'                         => true,
-				'__experimentalSkipSerialization' => true,
-			),
-			'__experimentalSelector' => '.wc-block-components-product-rating',
-		);
-	}
 
 	/**
 	 * Get the block's attributes.
@@ -101,19 +63,15 @@ class ProductRating extends AbstractBlock {
 			return $content;
 		}
 
-		global $product;
-
 		$post_id = $block->context['postId'];
 
 		if ( ! isset( $post_id ) ) {
 			return '';
 		}
 
+		$product = wc_get_product( $post_id );
 		if ( ! $product instanceof \WC_Product ) {
-			$product = wc_get_product( $post_id );
-			if ( ! $product instanceof \WC_Product ) {
-				return '';
-			}
+			return '';
 		}
 
 		if ( ! wc_review_ratings_enabled() ) {
