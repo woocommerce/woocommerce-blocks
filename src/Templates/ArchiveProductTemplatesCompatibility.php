@@ -13,9 +13,9 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 	/**
 	 * The custom ID of the loop item block as the replacement of the core/null block.
 	 */
-	const LOOP_ITEM_ID = 'product-loop-item';
-
-
+	const LOOP_ITEM_ID                        = 'product-loop-item';
+	const IS_LAST_BLOCK_BEFORE_PRODUCTS_BLOCK = '__wooCommerce_is_last_block_before_products_block';
+	const IS_FIRST_BLOCK_AFTER_PRODUCTS_BLOCK = '__wooCommerce_is_first_block_after_products_block';
 
 	/**
 	 * The data of supported hooks, containing the hook name, the block name,
@@ -62,7 +62,6 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 	 * @return string
 	 */
 	public function inject_hooks( $block_content, $block ) {
-
 		if ( ! $this->is_archive_template() ) {
 			return $block_content;
 		}
@@ -70,43 +69,36 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 		/**
 		 * If the block is not inherited, we don't need to inject hooks.
 		 */
-		if ( empty( $block['attrs']['isInherited'] ) && empty( $block['attrs']['isLast'] ) ) {
+		if ( empty( $block['attrs']['isInherited'] ) ) {
 			return $block_content;
 		}
 
 		$block_name = $block['blockName'];
 
-		if ( isset( $block['attrs']['isLast'] ) && $block['attrs']['isLast'] === true ) {
-			$first_block_hook = array(
-				'before' => array(),
-				'after'  => array(
+		if ( 'core/query' === $block_name ) {
+			$before_shop_loop_hooks = array(
+				'before' => array(
 					'woocommerce_before_shop_loop' => $this->hook_data['woocommerce_before_shop_loop'],
 				),
+				'after'  => array(),
+			);
+			$after_shop_loop_hooks  = array(
+				'after'  => array(
+					'woocommerce_after_shop_loop' => $this->hook_data['woocommerce_after_shop_loop'],
+				),
+				'before' => array(),
 			);
 
-			foreach ( $first_block_hook['after'] as $hook => $data ) {
-				if ( ! isset( $data['hooked'] ) ) {
-					continue;
-				}
-				foreach ( $data['hooked'] as $callback => $priority ) {
-					remove_action( $hook, $callback, $priority );
-				}
-			}
-
-			$test = $this->get_hooks_buffer( $first_block_hook['after'], 'after' );
-
-			$test = sprintf(
-				'%1$s%2$s',
+			$this->restore_default_hooks();
+			$content = sprintf(
+				'%1$s%2$s%3$s',
+				$this->get_hooks_buffer( $before_shop_loop_hooks['before'], 'before' ),
 				$block_content,
-				$this->get_hooks_buffer( $first_block_hook['after'], 'after' )
+				$this->get_hooks_buffer( $after_shop_loop_hooks['after'], 'after' )
 			);
-
 			$this->remove_default_hooks();
-
-			return $test;
+			return $content;
 		}
-
-		$block_name = $block['blockName'];
 
 		/**
 		 * The core/post-template has two different block names:
@@ -157,43 +149,6 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 			$block_content,
 			$this->get_hooks_buffer( $block_hooks, 'after' )
 		);
-	}
-
-	public static function add_compatibility_layer( $template_content ) {
-		$blocks = parse_blocks( $template_content );
-
-		self::inject_custom_attributes_to_last_block_before_products_block( $blocks );
-
-		$html = serialize_blocks( $blocks );
-
-		return $html;
-
-	}
-
-	private static function inject_custom_attributes_to_last_block_before_products_block( &$wrapped_blocks ) {
-		$index = 0;
-		$found = false;
-
-		foreach ( $wrapped_blocks as &$block ) {
-			if ( $found ) {
-				break;
-			}
-			if ( self::is_products_block_with_inherit_query( $block ) ) {
-
-				$wrapped_blocks[ $index - 1 ]['attrs']['isLast'] = true;
-				$found = true;
-				break;
-			};
-
-			if ( ! empty( $block['innerBlocks'] ) ) {
-				self::inject_custom_attributes_to_last_block_before_products_block( $block['innerBlocks'] );
-			}
-
-			$index++;
-		}
-
-		return $wrapped_blocks;
-
 	}
 
 	/**
@@ -276,18 +231,26 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 			),
 			'woocommerce_before_shop_loop'            => array(
 				'block_name' => '',
-				'position'   => 'after',
+				'position'   => 'before',
 				'hooked'     => array(
 					'woocommerce_output_all_notices' => 10,
 					'woocommerce_result_count'       => 20,
 					'woocommerce_catalog_ordering'   => 30,
 				),
+				'no_readd'   => array(
+					'woocommerce_output_all_notices',
+					'woocommerce_result_count',
+					'woocommerce_catalog_ordering',
+				),
 			),
 			'woocommerce_after_shop_loop'             => array(
-				'block_name' => 'core/post-template',
+				'block_name' => '',
 				'position'   => 'after',
 				'hooked'     => array(
 					'woocommerce_pagination' => 10,
+				),
+				'no_readd'   => array(
+					'woocommerce_pagination',
 				),
 			),
 			'woocommerce_no_products_found'           => array(
@@ -323,14 +286,14 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 	 */
 	private function inner_blocks_walker( &$block ) {
 		if (
-		'core/query' === $block['blockName'] &&
-		isset( $block['attrs']['namespace'] ) &&
-		'woocommerce/product-query' === $block['attrs']['namespace'] &&
-		isset( $block['attrs']['query']['inherit'] ) &&
-		$block['attrs']['query']['inherit']
+			'core/query' === $block['blockName'] &&
+			isset( $block['attrs']['namespace'] ) &&
+			'woocommerce/product-query' === $block['attrs']['namespace'] &&
+			isset( $block['attrs']['query']['inherit'] ) &&
+			$block['attrs']['query']['inherit']
 		) {
 			$this->inject_attribute( $block );
-			// $this->remove_default_hooks();
+			$this->remove_default_hooks();
 		}
 
 		if ( ! empty( $block['innerBlocks'] ) ) {
@@ -338,13 +301,22 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 		}
 	}
 
-	static function is_products_block_with_inherit_query( $block ) {
-		return 'core/query' === $block['blockName'] &&
-		isset( $block['attrs']['namespace'] ) &&
-		'woocommerce/product-query' === $block['attrs']['namespace'] &&
-		isset( $block['attrs']['query']['inherit'] ) &&
-		$block['attrs']['query']['inherit'];
+	/**
+	 * Restore default hooks except the ones that are not supposed to be re-added.
+	 */
+	private function restore_default_hooks() {
+		foreach ( $this->hook_data as $hook => $data ) {
+			if ( ! isset( $data['hooked'] ) ) {
+				continue;
+			}
+			foreach ( $data['hooked'] as $callback => $priority ) {
+				if ( ! in_array( $callback, $data['no_readd'] ?? [], true ) ) {
+					add_action( $hook, $callback, $priority );
+				}
+			}
+		}
 	}
+
 
 	/**
 	 * Recursively inject the custom attribute to all nested blocks.

@@ -2,7 +2,6 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
-use Automattic\WooCommerce\Blocks\Templates\ArchiveProductTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
@@ -330,15 +329,6 @@ class BlockTemplatesController {
 					if ( ! is_admin() && ! BlockTemplateUtils::template_has_legacy_template_block( $template ) ) {
 
 						$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
-						$template->content = $new_content;
-					}
-					return $template;
-				}
-
-				if ( 'archive-product' === $template->slug ) {
-					if ( ! is_admin() && ! BlockTemplateUtils::template_has_legacy_template_block( $template ) ) {
-
-						$new_content       = ArchiveProductTemplatesCompatibility::add_compatibility_layer( $template->content );
 						$template->content = $new_content;
 					}
 					return $template;
