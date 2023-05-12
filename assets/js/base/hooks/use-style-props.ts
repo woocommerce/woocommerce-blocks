@@ -38,18 +38,21 @@ export const useStyleProps = ( props: blockAttributes ): StyleProps => {
 				style: {},
 		  };
 
-	const styleObject = parseStyle( propsObject.style );
+	const style = parseStyle( propsObject.style );
 
 	const colorProps = getColorClassesAndStyles( {
-		style: styleObject,
+		...propsObject,
+		style,
 	} as WithStyle );
 
 	const borderProps = getBorderClassesAndStyles( {
-		style: styleObject,
+		...propsObject,
+		style,
 	} as WithStyle );
 
 	const spacingProps = getSpacingClassesAndStyles( {
-		style: styleObject,
+		...propsObject,
+		style,
 	} as WithStyle );
 
 	const typographyProps = useTypographyProps( propsObject );
