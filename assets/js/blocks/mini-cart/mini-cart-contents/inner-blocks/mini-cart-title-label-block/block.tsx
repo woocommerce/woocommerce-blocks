@@ -20,7 +20,7 @@ const Block = ( props: Props ): JSX.Element => {
 	return (
 		<span
 			className={ classnames( props.className, styleProps.className ) }
-			style={ { ...styleProps.style } }
+			style={ styleProps.style }
 		>
 			{ props.label || defaultYourCartLabel }
 		</span>
