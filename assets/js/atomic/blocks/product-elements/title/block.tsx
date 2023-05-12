@@ -76,13 +76,7 @@ export const Block = ( props: Props ): JSX.Element => {
 							align && isFeaturePluginBuild(),
 					}
 				) }
-				style={
-					isFeaturePluginBuild()
-						? {
-								...styleProps.style,
-						  }
-						: {}
-				}
+				style={ isFeaturePluginBuild() ? styleProps.style : {} }
 			/>
 		);
 	}
