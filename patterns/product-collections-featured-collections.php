@@ -26,9 +26,9 @@
 
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
 		<div class="wp-block-group">
-			<!-- wp:image {"width":80,"height":107,"sizeSlug":"full","linkDestination":"none"} -->
+			<!-- wp:image {"width":94,"height":108,"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full is-resized">
-				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-electronics-4.png', dirname( __FILE__ ) ) ); ?>" alt="" width="80" height="107" />
+				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/product-electronics-1.png', dirname( __FILE__ ) ) ); ?>" alt="" width="94" height="108" />
 			</figure>
 			<!-- /wp:image -->
 
