@@ -36,7 +36,7 @@ const Block = ( {
 				styleProps.className,
 				'wc-block-mini-cart__footer-cart'
 			) }
-			style={ { ...styleProps.style } }
+			style={ styleProps.style }
 			href={ CART_URL }
 			variant={ getVariant( className, 'outlined' ) }
 		>
