@@ -43,7 +43,7 @@ class ProductImageGallery extends AbstractBlock {
 			return '';
 		}
 
-		$single_post = get_post( $post_id );
+		$single_post    = get_post( $post_id );
 		$single_product = wc_get_product( $post_id );
 		if ( ! $single_product instanceof \WC_Product ) {
 			return '';
@@ -56,6 +56,9 @@ class ProductImageGallery extends AbstractBlock {
 
 		$classname = $attributes['className'] ?? '';
 		ob_start();
+		/**
+		 * Based on the single-product/sale-flash.php template from the core of WooCommerce.
+		 */
 		if ( $single_product->is_on_sale() ) {
 			echo apply_filters( 'woocommerce_sale_flash', '<span class="onsale">' . esc_html__( 'Sale!', 'woocommerce' ) . '</span>', $single_post, $single_product );
 		}
@@ -63,6 +66,9 @@ class ProductImageGallery extends AbstractBlock {
 		$sale_badge_html = ob_get_clean();
 
 		ob_start();
+		/**
+		 * Based on the single-product/product-image.php template from the core of WooCommerce.
+		 */
 		$columns           = apply_filters( 'woocommerce_product_thumbnails_columns', 4 );
 		$post_thumbnail_id = $single_product->get_image_id();
 		$wrapper_classes   = apply_filters(
