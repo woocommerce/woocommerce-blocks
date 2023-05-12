@@ -68,7 +68,7 @@ const blocks = {
 		isExperimental: true,
 	},
 	'stock-filter': {},
-	'products-collection': {
+	'product-collection': {
 		isExperimental: true,
 	},
 	'product-template': {

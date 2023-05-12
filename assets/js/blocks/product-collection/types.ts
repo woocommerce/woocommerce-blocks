@@ -1,9 +1,9 @@
 export interface Attributes {
 	queryId: number;
-	query: ProductsCollectionQuery;
+	query: ProductCollectionQuery;
 }
 
-export interface ProductsCollectionQuery {
+export interface ProductCollectionQuery {
 	author: string;
 	exclude: string[];
 	inherit: boolean;
@@ -19,8 +19,8 @@ export interface ProductsCollectionQuery {
 	taxQuery: string;
 }
 
-export interface ProductsCollectionContext {
-	query: ProductsCollectionQuery;
+export interface ProductCollectionContext {
+	query: ProductCollectionQuery;
 	queryId: number;
 	queryContext: [
 		{

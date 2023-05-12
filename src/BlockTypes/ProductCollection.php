@@ -3,16 +3,16 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 /**
- * ProductsCollection class.
+ * ProductCollection class.
  */
-class ProductsCollection extends AbstractBlock {
+class ProductCollection extends AbstractBlock {
 
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'products-collection';
+	protected $block_name = 'product-collection';
 
 	/**
 	 * Get the frontend script handle for this block type.
