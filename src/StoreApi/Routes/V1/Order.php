@@ -83,10 +83,6 @@ class Order extends AbstractRoute {
 		$user_id   = get_current_user_id();
 		$order     = wc_get_order( $order_id );
 
-		if ( $user_id !== $order->get_user_id() ) {
-			return false;
-		}
-
 		try {
 			$this->order_controller->validate_order_key( $order_id, $order_key );
 		} catch ( RouteException $error ) {
