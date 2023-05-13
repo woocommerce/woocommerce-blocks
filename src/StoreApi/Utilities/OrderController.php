@@ -489,7 +489,7 @@ class OrderController {
 
 		// Logged out customer does not have permission to pay for this order.
 		if ( ! current_user_can( 'pay_for_order', $order_id ) && ! is_user_logged_in() ) {
-			throw new RouteException( 'woocommerce_rest_invalid_user', __( 'Please log in to your account below to continue to the payment form.', 'woo-gutenberg-products-block' ), 403 );
+			throw new RouteException( 'woocommerce_rest_invalid_user', __( 'Please log in to your account to pay for this order.', 'woo-gutenberg-products-block' ), 403 );
 		}
 
 		// Logged in customer trying to pay for someone else's order.
