@@ -175,7 +175,7 @@ final class BlockTypesController {
 		/**
 		 * This disables specific blocks in Widget Areas.
 		 */
-		if ( 'core/edit-widgets' === $block_editor_context->name ) {
+		if ( 'core/edit-widgets' === $block_editor_context->name && is_array( $registered_blocks ) && ! empty( $registered_blocks ) ) {
 			unset( $registered_blocks['woocommerce/cart'] );
 			unset( $registered_blocks['woocommerce/all-products'] );
 			unset( $registered_blocks['woocommerce/checkout'] );
@@ -186,7 +186,7 @@ final class BlockTypesController {
 		/**
 		 * This disables specific blocks in Post and Page editor.
 		 */
-		if ( 'core/edit-post' === $block_editor_context->name ) {
+		if ( 'core/edit-post' === $block_editor_context->name && is_array( $registered_blocks ) && ! empty( $registered_blocks ) ) {
 			unset( $registered_blocks['woocommerce/add-to-cart-form'] );
 			unset( $registered_blocks['woocommerce/breadcrumbs'] );
 			unset( $registered_blocks['woocommerce/catalog-sorting'] );
@@ -207,8 +207,6 @@ final class BlockTypesController {
 	 * @return array
 	 */
 	protected function get_block_types() {
-		global $pagenow;
-
 		$block_types = [
 			'ActiveFilters',
 			'AddToCartForm',
