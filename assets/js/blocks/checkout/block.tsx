@@ -29,6 +29,7 @@ import CheckoutOrderError from './checkout-order-error';
 import { LOGIN_TO_CHECKOUT_URL, isLoginRequired, reloadPage } from './utils';
 import type { Attributes } from './types';
 import { CheckoutBlockContext } from './context';
+import { useStoreOrder } from '../../base/context/hooks/cart/use-store-order';
 
 const MustLoginPrompt = () => {
 	return (
@@ -62,7 +63,7 @@ const Checkout = ( {
 		};
 	} );
 	const { cartItems, cartIsLoading } = useStoreCart();
-
+	const { orderId, orderKey } = useStoreOrder();
 	const {
 		showCompanyField,
 		requireCompanyField,
@@ -75,7 +76,8 @@ const Checkout = ( {
 		return <EmptyCart />;
 	}
 
-	if ( ! hasOrder ) {
+	const isPayForOrder = orderId && orderKey;
+	if ( ! hasOrder && ! isPayForOrder ) {
 		return <CheckoutOrderError />;
 	}
 
