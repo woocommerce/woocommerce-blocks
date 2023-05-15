@@ -73,7 +73,9 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 
 		$block_name = $block['blockName'];
 
-		if ( $this->is_products_block_with_inherit_query( $block ) ) {
+		// We want to inject hooks to the core/post-template block only when the products exist:
+		// https://github.com/woocommerce/woocommerce-blocks/issues/9463.
+		if ( 'core/post-template' === $block_name && ! empty( $block_content ) ) {
 			$before_shop_loop_hooks = array(
 				'before' => array(
 					'woocommerce_before_shop_loop' => $this->hook_data['woocommerce_before_shop_loop'],
