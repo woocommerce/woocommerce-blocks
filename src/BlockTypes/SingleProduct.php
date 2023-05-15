@@ -123,7 +123,8 @@ class SingleProduct extends AbstractBlock {
 	 */
 	protected function replace_post_for_single_product_inner_block( $block, &$context ) {
 		if ( $this->single_product_inner_blocks_names ) {
-			$block_name = array_pop( $this->single_product_inner_blocks_names );
+			$block_name                   = array_pop( $this->single_product_inner_blocks_names );
+			$global_post_variable_changed = false;
 
 			if ( $block_name === $block['blockName'] ) {
 				/**
@@ -138,11 +139,12 @@ class SingleProduct extends AbstractBlock {
 					// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 					$post = get_post( $this->product_id );
 					setup_postdata( $post );
+					$global_post_variable_changed = true;
 				}
 				$context['postId'] = $this->product_id;
 			}
 
-			if ( ! $this->single_product_inner_blocks_names ) {
+			if ( ! $this->single_product_inner_blocks_names && $global_post_variable_changed ) {
 				wp_reset_postdata();
 			}
 		}
