@@ -84,17 +84,19 @@ const QuantitySelector = ( {
 		) {
 			return;
 		}
+
+		const currentDocument = inputRef.current.ownerDocument;
 		if (
 			! canDecrease &&
-			decreaseButtonRef.current ===
-				decreaseButtonRef.current.ownerDocument.activeElement
+			( currentDocument.activeElement === decreaseButtonRef.current ||
+				currentDocument.activeElement === currentDocument.body )
 		) {
 			inputRef.current.focus();
 		}
 		if (
 			! canIncrease &&
-			increaseButtonRef.current ===
-				decreaseButtonRef.current.ownerDocument.activeElement
+			( currentDocument.activeElement === increaseButtonRef.current ||
+				currentDocument.activeElement === currentDocument.body )
 		) {
 			inputRef.current.focus();
 		}
