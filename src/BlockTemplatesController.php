@@ -1,7 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
-use Automattic\WooCommerce\Admin\Overrides\Order;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
@@ -9,6 +8,8 @@ use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
+use Automattic\WooCommerce\Blocks\Utils\SettingsUtils;
+use \WP_Post;
 
 /**
  * BlockTypesController class.
@@ -73,6 +74,12 @@ class BlockTemplatesController {
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
 		add_filter( 'taxonomy_template_hierarchy', array( $this, 'add_archive_product_to_eligible_for_fallback_templates' ), 10, 1 );
 		add_filter( 'post_type_archive_title', array( $this, 'update_product_archive_title' ), 10, 2 );
+
+		if ( wc_current_theme_is_fse_theme() ) {
+			add_filter( 'woocommerce_settings_pages', array( $this, 'template_permalink_settings' ) );
+			add_filter( 'pre_update_option', array( $this, 'update_template_permalink' ), 10, 2 );
+			add_action( 'woocommerce_admin_field_permalink', array( SettingsUtils::class, 'permalink_input_field' ) );
+		}
 
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
@@ -566,18 +573,18 @@ class BlockTemplatesController {
 			}
 		} elseif (
 			is_cart() &&
-			! BlockTemplateUtils::theme_has_template( CartTemplate::SLUG ) && $this->block_template_is_available( CartTemplate::SLUG )
+			! BlockTemplateUtils::theme_has_template( CartTemplate::get_slug() ) && $this->block_template_is_available( CartTemplate::get_slug() )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			is_checkout() &&
-			! BlockTemplateUtils::theme_has_template( CheckoutTemplate::SLUG ) && $this->block_template_is_available( CheckoutTemplate::SLUG )
+			! BlockTemplateUtils::theme_has_template( CheckoutTemplate::get_slug() ) && $this->block_template_is_available( CheckoutTemplate::get_slug() )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			is_wc_endpoint_url( 'order-received' )
-			&& ! BlockTemplateUtils::theme_has_template( OrderReceivedTemplate::SLUG )
-			&& $this->block_template_is_available( OrderReceivedTemplate::SLUG )
+			&& ! BlockTemplateUtils::theme_has_template( OrderReceivedTemplate::get_slug() )
+			&& $this->block_template_is_available( OrderReceivedTemplate::get_slug() )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} else {
@@ -645,5 +652,103 @@ class BlockTemplatesController {
 		}
 
 		return $post_type_name;
+	}
+
+	/**
+	 * Replaces page settings in WooCommerce with text based permalinks which point to a template.
+	 *
+	 * @param array $settings Settings pages.
+	 * @return array
+	 */
+	public function template_permalink_settings( $settings ) {
+		foreach ( $settings as $key => $setting ) {
+			if ( 'woocommerce_checkout_page_id' === $setting['id'] ) {
+				$checkout_page    = CheckoutTemplate::get_placeholder_page();
+				$settings[ $key ] = [
+					'title'    => __( 'Checkout page', 'woo-gutenberg-products-block' ),
+					'desc'     => sprintf(
+						// translators: %1$s: opening anchor tag, %2$s: closing anchor tag.
+						__( 'The checkout template can be %1$s edited here%2$s.', 'woo-gutenberg-products-block' ),
+						'<a href="' . esc_url( admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2F' . CheckoutTemplate::get_slug() ) ) . '" target="_blank">',
+						'</a>'
+					),
+					'desc_tip' => __( 'This is the URL to the checkout page.', 'woo-gutenberg-products-block' ),
+					'id'       => 'woocommerce_checkout_page_endpoint',
+					'type'     => 'permalink',
+					'default'  => $checkout_page ? $checkout_page->post_name : CheckoutTemplate::get_slug(),
+					'autoload' => false,
+				];
+			}
+			if ( 'woocommerce_cart_page_id' === $setting['id'] ) {
+				$cart_page        = CartTemplate::get_placeholder_page();
+				$settings[ $key ] = [
+					'title'    => __( 'Cart page', 'woo-gutenberg-products-block' ),
+					'desc'     => sprintf(
+						// translators: %1$s: opening anchor tag, %2$s: closing anchor tag.
+						__( 'The cart template can be %1$s edited here%2$s.', 'woo-gutenberg-products-block' ),
+						'<a href="' . esc_url( admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2F' . CartTemplate::get_slug() ) ) . '" target="_blank">',
+						'</a>'
+					),
+					'desc_tip' => __( 'This is the URL to the cart page.', 'woo-gutenberg-products-block' ),
+					'id'       => 'woocommerce_cart_page_endpoint',
+					'type'     => 'permalink',
+					'default'  => $cart_page ? $cart_page->post_name : CartTemplate::get_slug(),
+					'autoload' => false,
+				];
+			}
+		}
+
+		return $settings;
+	}
+
+	/**
+	 * Syncs entered permalink with the pages and returns the correct value.
+	 *
+	 * @param string $value     Value of the option.
+	 * @param string $option    Name of the option.
+	 * @return string
+	 */
+	public function update_template_permalink( $value, $option ) {
+		if ( 'woocommerce_checkout_page_endpoint' === $option ) {
+			return $this->sync_endpoint_with_page( CheckoutTemplate::get_placeholder_page(), 'checkout', $value );
+		}
+		if ( 'woocommerce_cart_page_endpoint' === $option ) {
+			return $this->sync_endpoint_with_page( CartTemplate::get_placeholder_page(), 'cart', $value );
+		}
+		return $value;
+	}
+
+	/**
+	 * Syncs the provided permalink with the actual WP page.
+	 *
+	 * @param WP_Post|null $page The page object, or null if it does not exist.
+	 * @param string       $page_slug The identifier for the page e.g. cart, checkout.
+	 * @param string       $permalink The new permalink to use.
+	 * @return string THe actual permalink assigned to the page. May differ from $permalink if it was already taken.
+	 */
+	protected function sync_endpoint_with_page( $page, $page_slug, $permalink ) {
+		if ( ! $page ) {
+			$updated_page_id = wc_create_page(
+				esc_sql( $permalink ),
+				'woocommerce_' . $page_slug . '_page_id',
+				$page_slug,
+				'',
+				'',
+				'publish'
+			);
+		} else {
+			$updated_page_id = wp_update_post(
+				[
+					'ID'        => $page->ID,
+					'post_name' => esc_sql( $permalink ),
+				]
+			);
+		}
+
+		// Get post again in case slug was updated with a suffix.
+		if ( $updated_page_id && ! is_wp_error( $updated_page_id ) ) {
+			return get_post( $updated_page_id )->post_name;
+		}
+		return $permalink;
 	}
 }
