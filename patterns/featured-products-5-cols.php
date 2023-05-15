@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Featured Products 5-item grid
+ * Title: Featured Products 5-item grid
  * Slug: woocommerce-blocks/featured-products-5-item-grid
  * Categories: WooCommerce
  * Block Types: core/query/woocommerce/product-query
