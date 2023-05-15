@@ -138,9 +138,8 @@ class SingleProduct extends AbstractBlock {
 				if ( 'core/post-excerpt' === $block_name || 'core/post-title' === $block_name ) {
 					global $post;
 					// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-					$post = get_post( $this->product_id );
-					setup_postdata( $post );
-					$global_post_variable_changed = true;
+					$post                         = get_post( $this->product_id );
+					$global_post_variable_changed = setup_postdata( $post );
 				}
 				$context['postId'] = $this->product_id;
 			}
