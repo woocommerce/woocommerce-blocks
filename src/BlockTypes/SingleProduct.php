@@ -125,7 +125,7 @@ class SingleProduct extends AbstractBlock {
 		if ( $this->single_product_inner_blocks_names ) {
 			$block_name = array_pop( $this->single_product_inner_blocks_names );
 
-			$global_post_variable_changed = false;
+			static $global_post_variable_changed;
 
 			if ( $block_name === $block['blockName'] ) {
 				/**
