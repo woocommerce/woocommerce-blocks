@@ -4,4 +4,9 @@
 		font-size: var(--wp--preset--font-size--large);
 	}
 	width: unset;
+
+	.input-text {
+		font-size: var(--wp--preset--font-size--small);
+		padding: 0.9rem 1.1rem;
+	}
 }
