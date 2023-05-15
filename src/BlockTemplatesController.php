@@ -668,7 +668,7 @@ class BlockTemplatesController {
 					'title'    => __( 'Checkout page', 'woo-gutenberg-products-block' ),
 					'desc'     => sprintf(
 						// translators: %1$s: opening anchor tag, %2$s: closing anchor tag.
-						__( 'The checkout page template can be %1$s edited here%2$s.', 'woo-gutenberg-products-block' ),
+						__( 'The checkout template can be %1$s edited here%2$s.', 'woo-gutenberg-products-block' ),
 						'<a href="' . esc_url( admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2F' . CheckoutTemplate::get_slug() ) ) . '" target="_blank">',
 						'</a>'
 					),
@@ -685,7 +685,7 @@ class BlockTemplatesController {
 					'title'    => __( 'Cart page', 'woo-gutenberg-products-block' ),
 					'desc'     => sprintf(
 						// translators: %1$s: opening anchor tag, %2$s: closing anchor tag.
-						__( 'The cart page template can be %1$s edited here%2$s.', 'woo-gutenberg-products-block' ),
+						__( 'The cart template can be %1$s edited here%2$s.', 'woo-gutenberg-products-block' ),
 						'<a href="' . esc_url( admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2F' . CartTemplate::get_slug() ) ) . '" target="_blank">',
 						'</a>'
 					),
