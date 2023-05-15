@@ -123,8 +123,9 @@ class SingleProduct extends AbstractBlock {
 	 */
 	protected function replace_post_for_single_product_inner_block( $block, &$context ) {
 		if ( $this->single_product_inner_blocks_names ) {
-			$block_name                   = array_pop( $this->single_product_inner_blocks_names );
-			$global_post_variable_changed = false;
+			$block_name = array_pop( $this->single_product_inner_blocks_names );
+
+			static $global_post_variable_changed;
 
 			if ( $block_name === $block['blockName'] ) {
 				/**
