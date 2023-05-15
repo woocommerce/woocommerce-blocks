@@ -37,11 +37,18 @@ abstract class AbstractPageTemplate {
 	abstract public static function get_slug();
 
 	/**
-	 * Returns the page object assigned to this template/page used for legacy purposes. Pages are no longer required.
+	 * Returns the page object assigned to this template/page.
 	 *
 	 * @return \WP_Post|null Post object or null.
 	 */
-	abstract public static function get_legacy_page();
+	abstract public static function get_placeholder_page();
+
+	/**
+	 * Should return the title of the page.
+	 *
+	 * @return string
+	 */
+	abstract public static function get_template_title();
 
 	/**
 	 * Should return true on pages/endpoints/routes where the template should be shown.
@@ -49,13 +56,6 @@ abstract class AbstractPageTemplate {
 	 * @return boolean
 	 */
 	abstract protected function is_active_template();
-
-	/**
-	 * Should return the title of the page.
-	 *
-	 * @return string
-	 */
-	abstract protected function get_template_title();
 
 	/**
 	 * Returns the URL to edit the template.
@@ -114,7 +114,7 @@ abstract class AbstractPageTemplate {
 	 * @param \WP_Screen $current_screen Current screen information.
 	 */
 	public function page_template_editor_redirect( \WP_Screen $current_screen ) {
-		$page         = $this->get_legacy_page();
+		$page         = $this->get_placeholder_page();
 		$edit_page_id = 'page' === $current_screen->id && ! empty( $_GET['post'] ) ? absint( $_GET['post'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		if ( $page && $edit_page_id === $page->id ) {
