@@ -29,7 +29,7 @@
 		<!-- /wp:cover -->
 
 		<!-- wp:post-title {"level":3,"isLink":true,"style":{"spacing":{"margin":{"top":"0","right":"0","bottom":"0rem"}},"typography":{"fontStyle":"normal","fontWeight":"700"}},"fontSize":"small","__woocommerceNamespace":"woocommerce/product-query/product-title"} /-->
-	
+
 		<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"textAlign":"left","fontSize":"small","style":{"spacing":{"margin":{"bottom":"0","top":"var:preset|spacing|20"}}}} /-->
 
 	<!-- /wp:post-template -->
@@ -42,9 +42,9 @@
 
 <!-- wp:buttons {"align":"wide","layout":{"type":"flex","verticalAlignment":"center","justifyContent":"center"}} -->
 <div class="wp-block-buttons alignwide">
-	<!-- wp:button {"textAlign":"center"} -->
+	<!-- wp:button {"textAlign":"center","style":{"color":{"background":"#000000","text":"#ffffff"}}} -->
 	<div class="wp-block-button">
-		<a class="wp-block-button__link has-text-align-center wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">
+		<a class="wp-block-button__link has-text-color has-background has-text-align-center wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" style="color:#ffffff;background-color:#000000">
 			Shop All
 		</a>
 	</div>
