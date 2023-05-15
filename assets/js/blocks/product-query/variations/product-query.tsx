@@ -11,6 +11,7 @@ import { stacks } from '@woocommerce/icons';
 import { isWpVersion } from '@woocommerce/settings';
 import { select, subscribe } from '@wordpress/data';
 import { QueryBlockAttributes } from '@woocommerce/blocks/product-query/types';
+import { isSiteEditorPage } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -66,7 +67,7 @@ const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
 if ( isWpVersion( '6.1', '>=' ) ) {
 	const store = select( 'core/edit-site' );
 
-	if ( store ) {
+	if ( isSiteEditorPage( store ) ) {
 		let currentTemplateId: string | undefined;
 
 		subscribe( () => {
