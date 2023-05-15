@@ -3,7 +3,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { memo, useMemo, useState } from '@wordpress/element';
+import { memo, useState } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import {
@@ -17,6 +17,7 @@ import { Spinner } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { ProductCollectionContext } from '@woocommerce/blocks/product-collection/types';
+import { useStoreProducts } from '@woocommerce/base-context/hooks';
 
 const ProductTemplateInnerBlocks = () => {
 	const innerBlocksProps = useInnerBlocksProps(
@@ -102,16 +103,17 @@ const ProductTemplateEdit = ( {
 	const [ { page } ] = queryContext;
 	const [ activeBlockContextId, setActiveBlockContextId ] = useState();
 	const postType = 'product';
-	const { products, blocks } = useSelect(
-		( select ) => {
-			const { getEntityRecords, getTaxonomies } = select( coreStore );
-			const { getBlocks } = select( blockEditorStore );
-			const taxonomies = getTaxonomies( {
+	const { blocks, taxonomies, templateCategory } = useSelect( ( select ) => {
+		const { getBlocks } = select( blockEditorStore );
+		const { getTaxonomies, getEntityRecords } = select( coreStore );
+		return {
+			blocks: getBlocks( clientId ),
+			taxonomies: getTaxonomies( {
 				type: postType,
 				per_page: -1,
 				context: 'view',
-			} );
-			const templateCategory =
+			} ),
+			templateCategory:
 				inherit &&
 				templateSlug?.startsWith( 'category-' ) &&
 				getEntityRecords( 'taxonomy', 'category', {
@@ -119,94 +121,68 @@ const ProductTemplateEdit = ( {
 					per_page: 1,
 					_fields: [ 'id' ],
 					slug: templateSlug.replace( 'category-', '' ),
-				} );
-			const query: Record< string, unknown > = {
-				offset: perPage ? perPage * ( page - 1 ) + offset : 0,
-				order,
-				orderby: orderBy,
-			};
-			// There is no need to build the taxQuery if we inherit.
-			if ( taxQuery && ! inherit ) {
-				// We have to build the tax query for the REST API and use as
-				// keys the taxonomies `rest_base` with the `term ids` as values.
-				const builtTaxQuery = Object.entries( taxQuery ).reduce(
-					( accumulator, [ taxonomySlug, terms ] ) => {
-						const taxonomy = taxonomies?.find(
-							( { slug } ) => slug === taxonomySlug
-						);
-						if ( taxonomy?.rest_base ) {
-							accumulator[ taxonomy?.rest_base ] = terms;
-						}
-						return accumulator;
-					},
-					{}
-				);
-				if ( !! Object.keys( builtTaxQuery ).length ) {
-					Object.assign( query, builtTaxQuery );
-				}
-			}
-			if ( perPage ) {
-				query.per_page = perPage;
-			}
-			if ( author ) {
-				query.author = author;
-			}
-			if ( search ) {
-				query.search = search;
-			}
-			if ( exclude?.length ) {
-				query.exclude = exclude;
-			}
-			if ( parents?.length ) {
-				query.parent = parents;
-			}
-			// If sticky is not set, it will return all products in the results.
-			// If sticky is set to `only`, it will limit the results to sticky products only.
-			// If it is anything else, it will exclude sticky products from results. For the record the value stored is `exclude`.
-			if ( sticky ) {
-				query.sticky = sticky === 'only';
-			}
-			// If `inherit` is truthy, adjust conditionally the query to create a better preview.
-			if ( inherit ) {
-				if ( templateCategory ) {
-					query.categories = templateCategory[ 0 ]?.id;
-				}
-			}
-			return {
-				products: getEntityRecords( 'postType', postType, {
-					...query,
-					...restQueryArgs,
 				} ),
-				blocks: getBlocks( clientId ),
-			};
-		},
-		[
-			perPage,
-			page,
-			offset,
-			order,
-			orderBy,
-			clientId,
-			author,
-			search,
-			postType,
-			exclude,
-			sticky,
-			inherit,
-			templateSlug,
-			taxQuery,
-			parents,
-			restQueryArgs,
-		]
-	);
-	const blockContexts = useMemo(
-		() =>
-			products?.map( ( product ) => ( {
-				postType: product.type,
-				postId: product.id,
-			} ) ),
-		[ products ]
-	);
+		};
+	} );
+
+	const query: Record< string, unknown > = {
+		offset: perPage ? perPage * ( page - 1 ) + offset : 0,
+		order,
+		orderby: orderBy,
+	};
+
+	// There is no need to build the taxQuery if we inherit.
+	if ( taxQuery && ! inherit ) {
+		// We have to build the tax query for the REST API and use as
+		// keys the taxonomies `rest_base` with the `term ids` as values.
+		const builtTaxQuery = Object.entries( taxQuery ).reduce(
+			( accumulator, [ taxonomySlug, terms ] ) => {
+				const taxonomy = taxonomies?.find(
+					( { slug } ) => slug === taxonomySlug
+				);
+				if ( taxonomy?.rest_base ) {
+					accumulator[ taxonomy?.rest_base ] = terms;
+				}
+				return accumulator;
+			},
+			{}
+		);
+		if ( !! Object.keys( builtTaxQuery ).length ) {
+			Object.assign( query, builtTaxQuery );
+		}
+	}
+	if ( perPage ) {
+		query.per_page = perPage;
+	}
+	if ( author ) {
+		query.author = author;
+	}
+	if ( search ) {
+		query.search = search;
+	}
+	if ( exclude?.length ) {
+		query.exclude = exclude;
+	}
+	if ( parents?.length ) {
+		query.parent = parents;
+	}
+	// If sticky is not set, it will return all products in the results.
+	// If sticky is set to `only`, it will limit the results to sticky products only.
+	// If it is anything else, it will exclude sticky products from results. For the record the value stored is `exclude`.
+	if ( sticky ) {
+		query.sticky = sticky === 'only';
+	}
+	// If `inherit` is truthy, adjust conditionally the query to create a better preview.
+	if ( inherit ) {
+		if ( templateCategory ) {
+			query.categories = templateCategory[ 0 ]?.id;
+		}
+	}
+
+	const { products, productsLoading } = useStoreProducts( {
+		...query,
+		...restQueryArgs,
+	} );
 	const hasLayoutFlex = layoutType === 'flex' && columns > 1;
 	const blockProps = useBlockProps( {
 		className: classnames(
@@ -219,7 +195,7 @@ const ProductTemplateEdit = ( {
 		),
 	} );
 
-	if ( ! products ) {
+	if ( productsLoading ) {
 		return (
 			<p { ...blockProps }>
 				<Spinner />
@@ -242,25 +218,23 @@ const ProductTemplateEdit = ( {
 	// block preview is used, instead of having to re-render the preview from scratch.
 	return (
 		<ul { ...blockProps }>
-			{ blockContexts &&
-				blockContexts.map( ( blockContext ) => (
+			{ products.length &&
+				products.map( ( product ) => (
 					<BlockContextProvider
-						key={ blockContext.postId }
-						value={ blockContext }
+						key={ product.id }
+						value={ { product } }
 					>
-						{ blockContext.postId ===
-						( activeBlockContextId ||
-							blockContexts[ 0 ]?.postId ) ? (
+						{ product.id ===
+						( activeBlockContextId || products[ 0 ]?.id ) ? (
 							<ProductTemplateInnerBlocks />
 						) : null }
 						<MemoizedProductTemplateBlockPreview
 							blocks={ blocks }
-							blockContextId={ blockContext.postId }
+							blockContextId={ product.id }
 							setActiveBlockContextId={ setActiveBlockContextId }
 							isHidden={
-								blockContext.postId ===
-								( activeBlockContextId ||
-									blockContexts[ 0 ]?.postId )
+								product.id ===
+								( activeBlockContextId || products[ 0 ]?.id )
 							}
 						/>
 					</BlockContextProvider>
