@@ -63,7 +63,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			$frontend_scripts::load_scripts();
 		}
 
-		if ( OrderReceivedTemplate::SLUG === $attributes['template'] ) {
+		if ( OrderReceivedTemplate::get_slug() === $attributes['template'] ) {
 			return $this->render_order_received();
 		}
 
