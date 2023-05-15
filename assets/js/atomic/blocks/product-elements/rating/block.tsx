@@ -126,17 +126,26 @@ interface ProductRatingProps {
 	textAlign?: string;
 	isDescendentOfSingleProductBlock: boolean;
 	isDescendentOfQueryLoop: boolean;
+	isDescendentOfSingleProductTemplate: boolean;
 	postId: number;
 	productId: number;
 }
 
 export const Block = ( props: ProductRatingProps ): JSX.Element | null => {
-	const { textAlign, isDescendentOfSingleProductBlock } = props;
+	const {
+		textAlign,
+		isDescendentOfSingleProductBlock,
+		isDescendentOfSingleProductTemplate,
+	} = props;
 	const styleProps = useStyleProps( props );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
-	const rating = getAverageRating( product );
-	const reviews = getRatingCount( product );
+	const rating = isDescendentOfSingleProductTemplate
+		? 5
+		: getAverageRating( product );
+	const reviews = isDescendentOfSingleProductTemplate
+		? 2
+		: getRatingCount( product );
 	const href = getReviewsHref( product );
 
 	const className = classnames(
@@ -162,7 +171,9 @@ export const Block = ( props: ProductRatingProps ): JSX.Element | null => {
 		<div className={ className } style={ styleProps.style }>
 			<div className="wc-block-components-product-rating__container">
 				{ content }
-				{ reviews && isDescendentOfSingleProductBlock ? (
+				{ reviews &&
+				( isDescendentOfSingleProductBlock ||
+					isDescendentOfSingleProductTemplate ) ? (
 					<ReviewsCount reviews={ reviews } />
 				) : null }
 			</div>

@@ -14,6 +14,7 @@ import { useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import Block from './block';
+import { useIsDescendentOfSingleProductTemplate } from '../shared/use-is-descendent-of-single-product-template';
 
 type UnsupportedAligments = 'wide' | 'full';
 type AllowedAlignments = Exclude< BlockAlignment, UnsupportedAligments >;
@@ -53,18 +54,8 @@ const PriceEdit = ( {
 	};
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
 
-	const isDescendentOfSingleProductTemplate = useSelect(
-		( select ) => {
-			const store = select( 'core/edit-site' );
-			const postId = store?.getEditedPostId< string | undefined >();
-
-			return (
-				postId?.includes( '//single-product' ) &&
-				! isDescendentOfQueryLoop
-			);
-		},
-		[ isDescendentOfQueryLoop ]
-	);
+	const isDescendentOfSingleProductTemplate =
+		useIsDescendentOfSingleProductTemplate( { isDescendentOfQueryLoop } );
 
 	useEffect(
 		() =>

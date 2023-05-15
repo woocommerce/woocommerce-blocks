@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
+import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
 
 /**
  * Internal dependencies
@@ -35,4 +35,10 @@ const blockConfig: BlockConfiguration = {
 	edit,
 };
 
-registerBlockType( 'woocommerce/product-rating', { ...blockConfig } );
+registerBlockSingleProductTemplate( {
+	blockName: 'woocommerce/product-rating',
+	blockMetadata: 'woocommerce/product-rating',
+	blockSettings: {
+		...blockConfig,
+	},
+} );

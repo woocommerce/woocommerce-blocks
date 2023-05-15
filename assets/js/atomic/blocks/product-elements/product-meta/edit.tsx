@@ -3,20 +3,18 @@
  */
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 import { InnerBlockTemplate } from '@wordpress/blocks';
-import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
+import { useIsDescendentOfSingleProductTemplate } from '../shared/use-is-descendent-of-single-product-template';
 
 const Edit = () => {
-	const isDescendentOfSingleProductTemplate = useSelect( ( select ) => {
-		const store = select( 'core/edit-site' );
-		const postId = store?.getEditedPostId< string | undefined >();
-
-		return postId?.includes( '//single-product' );
-	}, [] );
+	const isDescendentOfSingleProductTemplate =
+		useIsDescendentOfSingleProductTemplate( {
+			isDescendentOfQueryLoop: false,
+		} );
 
 	const TEMPLATE: InnerBlockTemplate[] = [
 		[

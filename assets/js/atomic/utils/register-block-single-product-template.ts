@@ -28,7 +28,7 @@ export const registerBlockSingleProductTemplate = ( {
 	variationName,
 }: {
 	blockName: string;
-	blockMetadata: Partial< BlockConfiguration >;
+	blockMetadata: Partial< BlockConfiguration > | string;
 	blockSettings: Partial< BlockConfiguration >;
 	isVariationBlock?: boolean;
 	variationName?: string;
