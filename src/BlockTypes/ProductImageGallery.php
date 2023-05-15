@@ -43,9 +43,8 @@ class ProductImageGallery extends AbstractBlock {
 			return '';
 		}
 
-		$single_post = get_post( $post_id );
-		$single_product = wc_get_product( $post_id );
-		if ( ! $single_product instanceof \WC_Product ) {
+		$product = wc_get_product( $post_id );
+		if ( ! $product instanceof \WC_Product ) {
 			return '';
 		}
 
@@ -54,26 +53,17 @@ class ProductImageGallery extends AbstractBlock {
 			$frontend_scripts::load_scripts();
 		}
 
-		$classname = $attributes['className'] ?? '';
-		ob_start();
-		if ( $single_product->is_on_sale() ) {
-			echo apply_filters( 'woocommerce_sale_flash', '<span class="onsale">' . esc_html__( 'Sale!', 'woocommerce' ) . '</span>', $single_post, $single_product );
-		}
-
-		$sale_badge_html = ob_get_clean();
-
-		ob_start();
-		$columns           = apply_filters( 'woocommerce_product_thumbnails_columns', 4 );
-		$post_thumbnail_id = $single_product->get_image_id();
-		$wrapper_classes   = apply_filters(
-			'woocommerce_single_product_image_gallery_classes',
-			array(
-				'woocommerce-product-gallery',
-				'woocommerce-product-gallery--' . ( $post_thumbnail_id ? 'with-images' : 'without-images' ),
-				'woocommerce-product-gallery--columns-' . absint( $columns ),
-				'images',
-			)
+		$classname         = $attributes['className'] ?? '';
+		$sale_badge_html   = $product->is_on_sale() ? '<span class="onsale">' . esc_html__( 'Sale!', 'woo-gutenberg-products-block' ) . '</span>' : '';
+		$columns           = 4;
+		$post_thumbnail_id = $product->get_image_id();
+		$wrapper_classes   = array(
+			'woocommerce-product-gallery',
+			'woocommerce-product-gallery--' . ( $post_thumbnail_id ? 'with-images' : 'without-images' ),
+			'woocommerce-product-gallery--columns-' . absint( $columns ),
+			'images',
 		);
+		ob_start();
 		?>
 		<div class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $wrapper_classes ) ) ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>" style="opacity: 0; transition: opacity .25s ease-in-out;">
 			<div class="woocommerce-product-gallery__wrapper">
@@ -82,17 +72,15 @@ class ProductImageGallery extends AbstractBlock {
 					$html = wc_get_gallery_image_html( $post_thumbnail_id, true );
 				} else {
 					$html  = '<div class="woocommerce-product-gallery__image--placeholder">';
-					$html .= sprintf( '<img src="%s" alt="%s" class="wp-post-image" />', esc_url( wc_placeholder_img_src( 'woocommerce_single' ) ), esc_html__( 'Awaiting product image', 'woocommerce' ) );
+					$html .= sprintf( '<img src="%s" alt="%s" class="wp-post-image" />', esc_url( wc_placeholder_img_src( 'woo-gutenberg-products-block' ) ), esc_html__( 'Awaiting product image', 'woo-gutenberg-products-block' ) );
 					$html .= '</div>';
 				}
 
-				echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', $html, $post_thumbnail_id );
-
-				$attachment_ids = $single_product->get_gallery_image_ids();
-
-				if ( $attachment_ids && $single_product->get_image_id() ) {
+				echo wp_kses_post( $html );
+				$attachment_ids = $product->get_gallery_image_ids();
+				if ( $attachment_ids && $product->get_image_id() ) {
 					foreach ( $attachment_ids as $attachment_id ) {
-						echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', wc_get_gallery_image_html( $attachment_id ), $attachment_id );
+						echo wc_get_gallery_image_html( $attachment_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					}
 				}
 				?>
