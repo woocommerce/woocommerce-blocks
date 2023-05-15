@@ -31,8 +31,8 @@ class AddToCartForm extends AbstractBlock {
 			return '';
 		}
 
-		$single_product = wc_get_product( $post_id );
-		if ( ! $single_product instanceof \WC_Product ) {
+		$product = wc_get_product( $post_id );
+		if ( ! $product instanceof \WC_Product ) {
 			return '';
 		}
 
@@ -42,11 +42,11 @@ class AddToCartForm extends AbstractBlock {
 		*
 		* @since 9.7.0
 		*/
-		do_action( 'woocommerce_' . $single_product->get_type() . '_add_to_cart' );
+		do_action( 'woocommerce_' . $product->get_type() . '_add_to_cart' );
 
-		$single_product = ob_get_clean();
+		$product = ob_get_clean();
 
-		if ( ! $single_product ) {
+		if ( ! $product ) {
 			return '';
 		}
 
@@ -58,7 +58,7 @@ class AddToCartForm extends AbstractBlock {
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			esc_attr( $classes_and_styles['styles'] ),
-			$single_product
+			$product
 		);
 	}
 
