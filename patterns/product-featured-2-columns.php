@@ -52,9 +52,9 @@
 
 		<!-- wp:buttons -->
 		<div class="wp-block-buttons">
-			<!-- wp:button {"width":50} -->
+			<!-- wp:button {"width":50,"style":{"color":{"background":"#000000","text":"#ffffff"}}} -->
 			<div class="wp-block-button has-custom-width wp-block-button__width-50">
-				<a href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" class="wp-block-button__link wp-element-button">Shop All</a>
+				<a href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" class="wp-block-button__link has-text-color has-background wp-element-button" style="color:#ffffff;background-color:#000000">Shop All</a>
 			</div>
 			<!-- /wp:button -->
 		</div>
