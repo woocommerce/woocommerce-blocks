@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { BlockConfiguration, registerBlockType } from '@wordpress/blocks';
+import { BlockConfiguration } from '@wordpress/blocks';
 import { registerExperimentalBlockType } from '@woocommerce/block-settings';
 
 /**

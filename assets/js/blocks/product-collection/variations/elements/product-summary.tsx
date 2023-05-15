@@ -2,16 +2,16 @@
  * External dependencies
  */
 import { Icon } from '@wordpress/components';
-import {
-	BLOCK_DESCRIPTION,
-	BLOCK_TITLE,
-} from '@woocommerce/atomic-blocks/product-elements/summary/constants';
 import { page } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
 import { registerElementVariation } from './utils';
+import {
+	BLOCK_DESCRIPTION,
+	BLOCK_TITLE,
+} from '../../../../atomic/blocks/product-elements/summary/constants';
 
 export const CORE_NAME = 'core/post-excerpt';
 export const VARIATION_NAME = 'woocommerce/product-collection/product-summary';
