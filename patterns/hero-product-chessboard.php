@@ -36,9 +36,9 @@
 
 				<!-- wp:buttons -->
 				<div class="wp-block-buttons">
-					<!-- wp:button {"textAlign":"left","style":{"typography":{"fontSize":"16px"}}} -->
+					<!-- wp:button {"textAlign":"left","style":{"typography":{"fontSize":"16px"},"color":{"background":"#000000","text":"#ffffff"}}} -->
 					<div class="wp-block-button has-custom-font-size" style="font-size:16px">
-						<a class="wp-block-button__link has-text-align-left wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">Shop now</a>
+						<a class="wp-block-button__link has-text-color has-background has-text-align-left wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" style="color:#ffffff;background-color:#000000">Shop now</a>
 					</div>
 					<!-- /wp:button -->
 				</div>
