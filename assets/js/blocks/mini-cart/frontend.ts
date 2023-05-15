@@ -5,6 +5,11 @@ import preloadScript from '@woocommerce/base-utils/preload-script';
 import lazyLoadScript from '@woocommerce/base-utils/lazy-load-script';
 import getNavigationType from '@woocommerce/base-utils/get-navigation-type';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils/legacy-events';
+import {
+	getCurrencyFromPriceResponse,
+	formatPrice,
+} from '@woocommerce/price-format';
+import { CartResponse } from '@woocommerce/types';
 
 interface dependencyData {
 	src: string;
@@ -13,6 +18,30 @@ interface dependencyData {
 	before?: string;
 	translations?: string;
 }
+
+const getMiniCartTotals = async (): Promise< [ string, number ] | void > => {
+	return fetch( '/wp-json/wc/store/v1/cart/' )
+		.then( ( response ) => {
+			// Check if the response was successful.
+			if ( ! response.ok ) {
+				throw new Error();
+			}
+
+			return response.json();
+		} )
+		.then( ( data: CartResponse ) => {
+			const currency = getCurrencyFromPriceResponse( data.totals );
+			const formattedPrice = formatPrice(
+				data.totals.total_price,
+				currency
+			);
+			return [ formattedPrice, data.items_count ] as [ string, number ];
+		} )
+		.catch( ( error ) => {
+			// eslint-disable-next-line no-console
+			console.error( error );
+		} );
+};
 
 function getClosestColor(
 	element: Element | null,
@@ -35,6 +64,37 @@ window.addEventListener( 'load', () => {
 	if ( miniCartBlocks.length === 0 ) {
 		return;
 	}
+
+	// Fill data.
+	getMiniCartTotals().then( ( totals: [ string, number ] | void ) => {
+		if ( ! totals ) {
+			return;
+		}
+		const [ amount, quantity ] = totals;
+		const miniCartQuantities = document.querySelectorAll(
+			'.wc-block-mini-cart__badge'
+		);
+		const miniCartAmounts = document.querySelectorAll(
+			'.wc-block-mini-cart__amount'
+		);
+
+		miniCartQuantities.forEach( ( miniCartQuantity ) => {
+			miniCartQuantity.textContent = quantity.toString();
+		} );
+		miniCartAmounts.forEach( ( miniCartAmount ) => {
+			miniCartAmount.textContent = amount;
+		} );
+
+		// Show the tax label only if there are products in the cart.
+		if ( quantity > 0 ) {
+			const miniCartTaxLabels = document.querySelectorAll(
+				'.wc-block-mini-cart__tax-label'
+			);
+			miniCartTaxLabels.forEach( ( miniCartTaxLabel ) => {
+				miniCartTaxLabel.removeAttribute( 'hidden' );
+			} );
+		}
+	} );
 
 	const dependencies = window.wcBlocksMiniCartFrontendDependencies as Record<
 		string,
