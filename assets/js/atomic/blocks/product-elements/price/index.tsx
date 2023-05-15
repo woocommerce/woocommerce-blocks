@@ -23,7 +23,7 @@ const blockConfig = {
 	apiVersion: 2,
 	title,
 	description,
-	usesContext: [ 'query', 'queryId', 'postId' ],
+	usesContext: [ 'query', 'queryId', 'postId', 'product' ],
 	icon: { src: icon },
 	attributes,
 	supports,

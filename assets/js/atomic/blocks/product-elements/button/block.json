@@ -5,7 +5,7 @@
 	"description": "Display a call to action button which either adds the product to the cart, or links to the product page.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
-	"usesContext": [ "query", "queryId", "postId" ],
+	"usesContext": [ "query", "queryId", "postId", "product" ],
 	"textdomain": "woo-gutenberg-products-block",
 	"attributes": {
 		"productId": {

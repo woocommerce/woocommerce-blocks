@@ -25,7 +25,7 @@ const blockConfig: BlockConfiguration = {
 	title,
 	description,
 	icon: { src: icon },
-	usesContext: [ 'query', 'queryId', 'postId' ],
+	usesContext: [ 'query', 'queryId', 'postId', 'product' ],
 	attributes,
 	ancestor: [
 		'woocommerce/all-products',

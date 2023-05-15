@@ -27,7 +27,7 @@ const blockConfig: BlockConfiguration = {
 	attributes,
 	supports,
 	edit,
-	usesContext: [ 'query', 'queryId', 'postId' ],
+	usesContext: [ 'query', 'queryId', 'postId', 'product' ],
 	ancestor: [
 		'woocommerce/all-products',
 		'woocommerce/single-product',
