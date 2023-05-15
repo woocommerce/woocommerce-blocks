@@ -75,6 +75,14 @@ const QuantitySelector = ( {
 	const canIncrease =
 		! disabled && ( ! hasMaximum || quantity + step <= maximum );
 
+	// When the increase or decrease buttons get disabled, the focus
+	// gets moved to the `<body>` element. This was causing weird
+	// issues in the Mini-Cart block, as the drawer expects focus to be
+	// inside.
+	// To fix this, we move the focus to the text input after the
+	// increase or decrease buttons get disabled. We only do that if
+	// the focus is on the button or the body element.
+	// See https://github.com/woocommerce/woocommerce-blocks/pull/9345
 	useLayoutEffect( () => {
 		// Refs are not available yet, so abort.
 		if (
