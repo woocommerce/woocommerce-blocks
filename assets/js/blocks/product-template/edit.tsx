@@ -88,7 +88,6 @@ const buildQuery = ( { query, taxonomies, templateCategory, page } ) => {
 	const {
 		perPage,
 		offset = 0,
-		order,
 		orderBy,
 		author,
 		search,
@@ -106,7 +105,6 @@ const buildQuery = ( { query, taxonomies, templateCategory, page } ) => {
 		taxQuery && ! inherit ? buildTaxQuery( taxQuery, taxonomies ) : {};
 	return {
 		offset: perPage ? perPage * ( page - 1 ) + offset : 0,
-		order,
 		orderby: orderBy,
 		perPage: perPage || undefined,
 		author: author || undefined,
