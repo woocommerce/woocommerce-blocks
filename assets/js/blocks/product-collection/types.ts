@@ -4,19 +4,19 @@ export interface Attributes {
 }
 
 export interface ProductCollectionQuery {
-	author: string;
-	exclude: string[];
-	inherit: boolean;
+	author?: string;
+	exclude?: string[];
+	inherit?: boolean;
 	offset: number;
 	order: 'asc' | 'desc';
 	orderBy: 'date' | 'relevance' | 'title';
 	pages: number;
-	parents: number[];
+	parents?: number[];
 	perPage: number;
-	postType: string;
-	search: string;
-	sticky: string;
-	taxQuery: string;
+	postType?: string;
+	search?: string;
+	sticky?: string;
+	taxQuery?: string;
 }
 
 export interface ProductCollectionContext {

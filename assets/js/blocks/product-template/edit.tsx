@@ -16,8 +16,16 @@ import {
 import { Spinner } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
 import type { BlockEditProps } from '@wordpress/blocks';
-import { ProductCollectionContext } from '@woocommerce/blocks/product-collection/types';
+import {
+	ProductCollectionContext,
+	ProductCollectionQuery,
+} from '@woocommerce/blocks/product-collection/types';
 import { useStoreProducts } from '@woocommerce/base-context/hooks';
+
+/**
+ * Internal dependencies
+ */
+import { Taxonomy, ProductTemplateQuery } from './types';
 
 const ProductTemplateInnerBlocks = () => {
 	const innerBlocksProps = useInnerBlocksProps(
@@ -34,9 +42,9 @@ const ProductTemplateBlockPreview = ( {
 	setActiveBlockContextId,
 }: {
 	blocks: object[];
-	blockContextId: string;
+	blockContextId: number;
 	isHidden: boolean;
-	setActiveBlockContextId: ( blockContextId: string ) => void;
+	setActiveBlockContextId: ( blockContextId: number ) => void;
 } ) => {
 	const blockPreviewProps = useBlockPreview( {
 		blocks,
@@ -70,7 +78,7 @@ const MemoizedProductTemplateBlockPreview = memo( ProductTemplateBlockPreview );
 
 // We have to build the tax query for the REST API and use as
 // keys the taxonomies `rest_base` with the `term ids` as values.
-const buildTaxQuery = ( taxQuery, taxonomies ) =>
+const buildTaxQuery = ( taxQuery: string, taxonomies?: Taxonomy[] ) =>
 	Object.entries( taxQuery ).reduce(
 		( accumulator, [ taxonomySlug, terms ] ) => {
 			const taxonomy = taxonomies?.find(
@@ -84,7 +92,17 @@ const buildTaxQuery = ( taxQuery, taxonomies ) =>
 		{}
 	);
 
-const buildQuery = ( { query, taxonomies, templateCategory, page } ) => {
+const buildQuery = ( {
+	query,
+	taxonomies,
+	templateCategory,
+	page,
+}: {
+	query: ProductCollectionQuery;
+	taxonomies?: Taxonomy[];
+	templateCategory?: object[];
+	page: number;
+} ): ProductTemplateQuery => {
 	const {
 		perPage,
 		offset = 0,
@@ -104,9 +122,10 @@ const buildQuery = ( { query, taxonomies, templateCategory, page } ) => {
 	const builtTaxQuery =
 		taxQuery && ! inherit ? buildTaxQuery( taxQuery, taxonomies ) : {};
 	return {
+		page,
 		offset: perPage ? perPage * ( page - 1 ) + offset : 0,
 		orderby: orderBy,
-		perPage: perPage || undefined,
+		per_page: perPage,
 		author: author || undefined,
 		search: search || undefined,
 		exclude: exclude?.length ? exclude : undefined,
