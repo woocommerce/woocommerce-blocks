@@ -65,20 +65,16 @@ const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
 };
 
 if ( isWpVersion( '6.1', '>=' ) ) {
-	const store = select( 'core/edit-site' );
+	let currentTemplateId: string | undefined;
+	subscribe( () => {
+		const previousTemplateId = currentTemplateId;
+		const store = select( 'core/edit-site' );
+		currentTemplateId = store?.getEditedPostId();
+		if ( previousTemplateId === currentTemplateId ) {
+			return;
+		}
 
-	if ( isSiteEditorPage( store ) ) {
-		let currentTemplateId: string | undefined;
-
-		subscribe( () => {
-			const previousTemplateId = currentTemplateId;
-
-			currentTemplateId = store?.getEditedPostId();
-
-			if ( previousTemplateId === currentTemplateId ) {
-				return;
-			}
-
+		if ( isSiteEditorPage( store ) ) {
 			const queryAttributes = {
 				...QUERY_DEFAULT_ATTRIBUTES,
 				query: {
@@ -91,8 +87,14 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 			unregisterBlockVariation( QUERY_LOOP_ID, VARIATION_NAME );
 
 			registerProductsBlock( queryAttributes );
-		} );
-	} else {
-		registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
-	}
+		}
+	}, 'core/edit-site' );
+
+	let isBlockRegistered = false;
+	subscribe( () => {
+		if ( ! isBlockRegistered ) {
+			isBlockRegistered = true;
+			registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
+		}
+	}, 'core/edit-post' );
 }
