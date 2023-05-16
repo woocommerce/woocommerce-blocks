@@ -84,69 +84,27 @@ const buildTaxQuery = ( taxQuery, taxonomies ) =>
 		{}
 	);
 
-const ProductTemplateEdit = ( {
-	clientId,
-	context: {
-		query: {
-			perPage,
-			offset = 0,
-			order,
-			orderBy,
-			author,
-			search,
-			exclude,
-			sticky,
-			inherit,
-			taxQuery,
-			parents,
-			pages,
-			...restQueryArgs
-		},
-		queryContext = [ { page: 1 } ],
-		templateSlug,
-		displayLayout: { type: layoutType, columns } = {
-			type: 'flex',
-			columns: 3,
-		},
-	},
-	__unstableLayoutClassNames,
-}: BlockEditProps< {
-	clientId: string;
-} > & {
-	context: ProductCollectionContext;
-	__unstableLayoutClassNames: string;
-} ) => {
-	const [ { page } ] = queryContext;
-	const [ activeBlockContextId, setActiveBlockContextId ] = useState();
-	const postType = 'product';
-	const { blocks, taxonomies, templateCategory } = useSelect( ( select ) => {
-		const { getBlocks } = select( blockEditorStore );
-		const { getTaxonomies, getEntityRecords } = select( coreStore );
-		return {
-			blocks: getBlocks( clientId ),
-			taxonomies: taxQuery
-				? getTaxonomies( {
-						type: postType,
-						per_page: -1,
-						context: 'view',
-				  } )
-				: [],
-			templateCategory:
-				inherit &&
-				templateSlug?.startsWith( 'category-' ) &&
-				getEntityRecords( 'taxonomy', 'category', {
-					context: 'view',
-					per_page: 1,
-					_fields: [ 'id' ],
-					slug: templateSlug.replace( 'category-', '' ),
-				} ),
-		};
-	} );
+const buildQuery = ( { query, taxonomies, templateCategory, page } ) => {
+	const {
+		perPage,
+		offset = 0,
+		order,
+		orderBy,
+		author,
+		search,
+		exclude,
+		sticky,
+		inherit,
+		taxQuery,
+		parents,
+		pages,
+		...restQueryArgs
+	} = query;
 
 	// There is no need to build the taxQuery if we inherit.
 	const builtTaxQuery =
 		taxQuery && ! inherit ? buildTaxQuery( taxQuery, taxonomies ) : {};
-	const query: Record< string, unknown > = {
+	return {
 		offset: perPage ? perPage * ( page - 1 ) + offset : 0,
 		order,
 		orderby: orderBy,
@@ -163,12 +121,63 @@ const ProductTemplateEdit = ( {
 		categories:
 			inherit && templateCategory ? templateCategory[ 0 ]?.id : undefined,
 		...builtTaxQuery,
-	};
-
-	const { products, productsLoading } = useStoreProducts( {
-		...query,
 		...restQueryArgs,
+	};
+};
+
+const ProductTemplateEdit = ( {
+	clientId,
+	context: {
+		query,
+		queryContext = [ { page: 1 } ],
+		templateSlug,
+		displayLayout: { type: layoutType, columns } = {
+			type: 'flex',
+			columns: 3,
+		},
+	},
+	__unstableLayoutClassNames,
+}: BlockEditProps< {
+	clientId: string;
+} > & {
+	context: ProductCollectionContext;
+	__unstableLayoutClassNames: string;
+} ) => {
+	const [ { page } ] = queryContext;
+	const { taxQuery, inherit } = query;
+	const [ activeBlockContextId, setActiveBlockContextId ] = useState();
+	const { blocks, taxonomies, templateCategory } = useSelect( ( select ) => {
+		const { getBlocks } = select( blockEditorStore );
+		const { getTaxonomies, getEntityRecords } = select( coreStore );
+		return {
+			blocks: getBlocks( clientId ),
+			taxonomies: taxQuery
+				? getTaxonomies( {
+						type: 'product',
+						per_page: -1,
+						context: 'view',
+				  } )
+				: [],
+			templateCategory:
+				inherit &&
+				templateSlug?.startsWith( 'category-' ) &&
+				getEntityRecords( 'taxonomy', 'category', {
+					context: 'view',
+					per_page: 1,
+					_fields: [ 'id' ],
+					slug: templateSlug.replace( 'category-', '' ),
+				} ),
+		};
 	} );
+
+	const finalQuery = buildQuery( {
+		query,
+		page,
+		taxonomies,
+		templateCategory,
+	} );
+
+	const { products, productsLoading } = useStoreProducts( finalQuery );
 
 	const hasLayoutFlex = layoutType === 'flex' && columns > 1;
 	const blockProps = useBlockProps( {
