@@ -689,7 +689,7 @@ class BlockTemplatesController {
 		$request->set_body_params(
 			[
 				'id'      => 'woocommerce/woocommerce//' . $page_id,
-				'content' => \block_header_area() . '
+				'content' => '<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 					<!-- wp:group {"layout":{"inherit":true}} -->
 					<div class="wp-block-group">
 						<!-- wp:heading {"level":1} -->
@@ -697,7 +697,8 @@ class BlockTemplatesController {
 						<!-- /wp:heading -->
 						' . wp_kses_post( $page->post_content ) . '
 					</div>
-					<!-- /wp:group -->' . \block_footer_area(),
+					<!-- /wp:group -->
+					<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->',
 			]
 		);
 		rest_get_server()->dispatch( $request );
