@@ -58,6 +58,56 @@ function getClosestColor(
 	return getClosestColor( element.parentElement, colorType );
 }
 
+// Fill data.
+getMiniCartTotals().then( ( totals: [ string, number ] | void ) => {
+	if ( ! totals ) {
+		return;
+	}
+	const [ amount, quantity ] = totals;
+	const miniCartButtons = document.querySelectorAll(
+		'.wc-block-mini-cart__button'
+	);
+	const miniCartQuantities = document.querySelectorAll(
+		'.wc-block-mini-cart__badge'
+	);
+	const miniCartAmounts = document.querySelectorAll(
+		'.wc-block-mini-cart__amount'
+	);
+
+	miniCartButtons.forEach( ( miniCartButton ) => {
+		miniCartButton.setAttribute(
+			'aria-label',
+			sprintf(
+				/* translators: %s number of products in cart. */
+				_n(
+					'%1$d item in cart, total price of %2$s',
+					'%1$d items in cart, total price of %2$s',
+					quantity,
+					'woo-gutenberg-products-block'
+				),
+				quantity,
+				amount
+			)
+		);
+	} );
+	miniCartQuantities.forEach( ( miniCartQuantity ) => {
+		miniCartQuantity.textContent = quantity.toString();
+	} );
+	miniCartAmounts.forEach( ( miniCartAmount ) => {
+		miniCartAmount.textContent = amount;
+	} );
+
+	// Show the tax label only if there are products in the cart.
+	if ( quantity > 0 ) {
+		const miniCartTaxLabels = document.querySelectorAll(
+			'.wc-block-mini-cart__tax-label'
+		);
+		miniCartTaxLabels.forEach( ( miniCartTaxLabel ) => {
+			miniCartTaxLabel.removeAttribute( 'hidden' );
+		} );
+	}
+} );
+
 window.addEventListener( 'load', () => {
 	const miniCartBlocks = document.querySelectorAll( '.wc-block-mini-cart' );
 	let wasLoadScriptsCalled = false;
@@ -65,56 +115,6 @@ window.addEventListener( 'load', () => {
 	if ( miniCartBlocks.length === 0 ) {
 		return;
 	}
-
-	// Fill data.
-	getMiniCartTotals().then( ( totals: [ string, number ] | void ) => {
-		if ( ! totals ) {
-			return;
-		}
-		const [ amount, quantity ] = totals;
-		const miniCartButtons = document.querySelectorAll(
-			'.wc-block-mini-cart__button'
-		);
-		const miniCartQuantities = document.querySelectorAll(
-			'.wc-block-mini-cart__badge'
-		);
-		const miniCartAmounts = document.querySelectorAll(
-			'.wc-block-mini-cart__amount'
-		);
-
-		miniCartButtons.forEach( ( miniCartButton ) => {
-			miniCartButton.setAttribute(
-				'aria-label',
-				sprintf(
-					/* translators: %s number of products in cart. */
-					_n(
-						'%1$d item in cart, total price of %2$s',
-						'%1$d items in cart, total price of %2$s',
-						quantity,
-						'woo-gutenberg-products-block'
-					),
-					quantity,
-					amount
-				)
-			);
-		} );
-		miniCartQuantities.forEach( ( miniCartQuantity ) => {
-			miniCartQuantity.textContent = quantity.toString();
-		} );
-		miniCartAmounts.forEach( ( miniCartAmount ) => {
-			miniCartAmount.textContent = amount;
-		} );
-
-		// Show the tax label only if there are products in the cart.
-		if ( quantity > 0 ) {
-			const miniCartTaxLabels = document.querySelectorAll(
-				'.wc-block-mini-cart__tax-label'
-			);
-			miniCartTaxLabels.forEach( ( miniCartTaxLabel ) => {
-				miniCartTaxLabel.removeAttribute( 'hidden' );
-			} );
-		}
-	} );
 
 	const dependencies = window.wcBlocksMiniCartFrontendDependencies as Record<
 		string,
