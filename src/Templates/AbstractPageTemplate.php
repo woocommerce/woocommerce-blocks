@@ -90,7 +90,7 @@ abstract class AbstractPageTemplate {
 		$page         = $this->get_placeholder_page();
 		$edit_page_id = 'page' === $current_screen->id && ! empty( $_GET['post'] ) ? absint( $_GET['post'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-		if ( $page && $edit_page_id === $page->id ) {
+		if ( $page && $edit_page_id === $page->ID ) {
 			wp_safe_redirect( $this->get_edit_template_url() );
 			exit;
 		}
