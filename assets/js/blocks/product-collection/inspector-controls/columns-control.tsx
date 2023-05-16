@@ -31,9 +31,7 @@ const ColumnsControl = (
 			min={ 2 }
 			max={ Math.max( 6, columns ) }
 		/>
-	) : (
-		<></>
-	);
+	) : null;
 };
 
 export default ColumnsControl;
