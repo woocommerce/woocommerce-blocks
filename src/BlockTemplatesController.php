@@ -681,6 +681,7 @@ class BlockTemplatesController {
 	 */
 	protected function migrate_page( $page_id, $page ) {
 		if ( ! $page || empty( $page->post_content ) ) {
+			update_option( 'has_migrated_' . $page_id, '1' );
 			return;
 		}
 
