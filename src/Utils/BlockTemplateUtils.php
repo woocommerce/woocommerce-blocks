@@ -195,24 +195,8 @@ class BlockTemplateUtils {
 		$template_is_from_theme = 'theme' === $template_file->source;
 		$theme_name             = wp_get_theme()->get( 'TextDomain' );
 
-		/**
-		 * Hook that allows the content to be filtered before it is returned.
-		 *
-		 * @since TBD
-		 *
-		 * @param string $content The content of the template.
-		 * @param object $template_file The template file.
-		 * @param string $template_type The type of template.
-		 * @return string
-		 */
-		$template_content = apply_filters(
-			'woocommerce_blocks_template_content',
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-			file_get_contents( $template_file->path ),
-			$template_file,
-			$template_type
-		);
-
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$template_content  = file_get_contents( $template_file->path );
 		$template          = new \WP_Block_Template();
 		$template->id      = $template_is_from_theme ? $theme_name . '//' . $template_file->slug : self::PLUGIN_SLUG . '//' . $template_file->slug;
 		$template->theme   = $template_is_from_theme ? $theme_name : self::PLUGIN_SLUG;
