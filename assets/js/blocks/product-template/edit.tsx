@@ -129,6 +129,15 @@ const ProductTemplateEdit = ( {
 		offset: perPage ? perPage * ( page - 1 ) + offset : 0,
 		order,
 		orderby: orderBy,
+		perPage: perPage || undefined,
+		author: author || undefined,
+		search: search || undefined,
+		exclude: exclude?.length ? exclude : undefined,
+		parent: parents?.length ? parents : undefined,
+		// If sticky is not set, it will return all products in the results.
+		// If sticky is set to `only`, it will limit the results to sticky products only.
+		// If it is anything else, it will exclude sticky products from results. For the record the value stored is `exclude`.
+		sticky: sticky === 'only' || undefined,
 	};
 
 	// There is no need to build the taxQuery if we inherit.
@@ -150,27 +159,6 @@ const ProductTemplateEdit = ( {
 		if ( !! Object.keys( builtTaxQuery ).length ) {
 			Object.assign( query, builtTaxQuery );
 		}
-	}
-	if ( perPage ) {
-		query.per_page = perPage;
-	}
-	if ( author ) {
-		query.author = author;
-	}
-	if ( search ) {
-		query.search = search;
-	}
-	if ( exclude?.length ) {
-		query.exclude = exclude;
-	}
-	if ( parents?.length ) {
-		query.parent = parents;
-	}
-	// If sticky is not set, it will return all products in the results.
-	// If sticky is set to `only`, it will limit the results to sticky products only.
-	// If it is anything else, it will exclude sticky products from results. For the record the value stored is `exclude`.
-	if ( sticky ) {
-		query.sticky = sticky === 'only';
 	}
 	// If `inherit` is truthy, adjust conditionally the query to create a better preview.
 	if ( inherit ) {
