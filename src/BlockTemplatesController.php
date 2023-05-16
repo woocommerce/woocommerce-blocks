@@ -689,20 +689,35 @@ class BlockTemplatesController {
 		$request->set_body_params(
 			[
 				'id'      => 'woocommerce/woocommerce//' . $page_id,
-				'content' => '<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-					<!-- wp:group {"layout":{"inherit":true}} -->
+				'content' => $this->get_block_template_part( 'header' ) .
+					'<!-- wp:group {"layout":{"inherit":true}} -->
 					<div class="wp-block-group">
 						<!-- wp:heading {"level":1} -->
 						<h1 class="wp-block-heading">' . wp_kses_post( $page->post_title ) . '</h1>
 						<!-- /wp:heading -->
 						' . wp_kses_post( $page->post_content ) . '
 					</div>
-					<!-- /wp:group -->
-					<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->',
+					<!-- /wp:group -->' .
+					$this->get_block_template_part( 'footer' ),
 			]
 		);
 		rest_get_server()->dispatch( $request );
 		update_option( 'has_migrated_' . $page_id, '1' );
+	}
+
+	/**
+	 * Returns the requested template part.
+	 *
+	 * @param string $part The part to return.
+	 *
+	 * @return string
+	 */
+	protected function get_block_template_part( $part ) {
+		$template_part = get_block_template( get_stylesheet() . '//' . $part, 'wp_template_part' );
+		if ( ! $template_part || empty( $template_part->content ) ) {
+			return '';
+		}
+		return $template_part->content;
 	}
 
 	/**
