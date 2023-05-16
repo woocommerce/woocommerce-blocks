@@ -18,8 +18,8 @@ export interface ProductCollectionQuery {
 	exclude: string[];
 	inherit: boolean;
 	offset: number;
-	order: 'asc' | 'desc';
-	orderBy: 'date' | 'relevance' | 'title';
+	order: TProductCollectionOrder;
+	orderBy: TProductCollectionOrderBy;
 	pages: number;
 	parents: number[];
 	perPage: number;
@@ -28,3 +28,6 @@ export interface ProductCollectionQuery {
 	sticky: string;
 	taxQuery: string;
 }
+
+export type TProductCollectionOrder = 'asc' | 'desc';
+export type TProductCollectionOrderBy = 'date' | 'relevance' | 'title';
