@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { _n, sprintf } from '@wordpress/i18n';
 import preloadScript from '@woocommerce/base-utils/preload-script';
 import lazyLoadScript from '@woocommerce/base-utils/lazy-load-script';
 import getNavigationType from '@woocommerce/base-utils/get-navigation-type';
@@ -71,6 +72,9 @@ window.addEventListener( 'load', () => {
 			return;
 		}
 		const [ amount, quantity ] = totals;
+		const miniCartButtons = document.querySelectorAll(
+			'.wc-block-mini-cart__button'
+		);
 		const miniCartQuantities = document.querySelectorAll(
 			'.wc-block-mini-cart__badge'
 		);
@@ -78,6 +82,22 @@ window.addEventListener( 'load', () => {
 			'.wc-block-mini-cart__amount'
 		);
 
+		miniCartButtons.forEach( ( miniCartButton ) => {
+			miniCartButton.setAttribute(
+				'aria-label',
+				sprintf(
+					/* translators: %s number of products in cart. */
+					_n(
+						'%1$d item in cart, total price of %2$s',
+						'%1$d items in cart, total price of %2$s',
+						quantity,
+						'woo-gutenberg-products-block'
+					),
+					quantity,
+					amount
+				)
+			);
+		} );
 		miniCartQuantities.forEach( ( miniCartQuantity ) => {
 			miniCartQuantity.textContent = quantity.toString();
 		} );
