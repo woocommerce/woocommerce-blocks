@@ -30,4 +30,8 @@ export interface ProductCollectionQuery {
 }
 
 export type TProductCollectionOrder = 'asc' | 'desc';
-export type TProductCollectionOrderBy = 'date' | 'relevance' | 'title';
+export type TProductCollectionOrderBy =
+	| 'date'
+	| 'title'
+	| 'popularity'
+	| 'rating';
