@@ -11,16 +11,23 @@ import { __ } from '@wordpress/i18n';
  */
 import { ProductCollectionAttributes } from '../types';
 import ColumnsControl from './columns-control';
+import InheritQueryControl from './inherit-query-control';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
 ) => {
+	const { inherit: displayQueryControls } = props.attributes.query;
+
 	return (
 		<InspectorControls>
 			<PanelBody
 				title={ __( 'Settings', 'woo-gutenberg-products-block' ) }
 			>
 				<ColumnsControl { ...props } />
+				<InheritQueryControl { ...props } />
+				{ displayQueryControls ? (
+					<>{ /** Placeholder for controls modyfing the query. */ }</>
+				) : null }
 			</PanelBody>
 		</InspectorControls>
 	);
