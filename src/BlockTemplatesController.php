@@ -76,6 +76,7 @@ class BlockTemplatesController {
 		add_filter( 'post_type_archive_title', array( $this, 'update_product_archive_title' ), 10, 2 );
 
 		if ( wc_current_theme_is_fse_theme() ) {
+			add_action( 'init', array( $this, 'maybe_migrate_content' ) );
 			add_filter( 'woocommerce_settings_pages', array( $this, 'template_permalink_settings' ) );
 			add_filter( 'pre_update_option', array( $this, 'update_template_permalink' ), 10, 2 );
 			add_action( 'woocommerce_admin_field_permalink', array( SettingsUtils::class, 'permalink_input_field' ) );
@@ -335,16 +336,11 @@ class BlockTemplatesController {
 				if ( ! $template->description ) {
 					$template->description = BlockTemplateUtils::get_block_template_description( $template->slug );
 				}
-
 				if ( str_contains( $template->slug, 'single-product' ) ) {
 					if ( ! is_admin() && ! BlockTemplateUtils::template_has_legacy_template_block( $template ) ) {
-
-						$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
-						$template->content = $new_content;
+						$template->content = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
 					}
-					return $template;
 				}
-
 				return $template;
 			},
 			$query_result
@@ -652,6 +648,75 @@ class BlockTemplatesController {
 		}
 
 		return $post_type_name;
+	}
+
+	/**
+	 * Migrates page content to templates if needed.
+	 */
+	public function maybe_migrate_content() {
+		if ( ! $this->has_migrated_page( 'cart' ) ) {
+			$this->migrate_page( 'cart', CartTemplate::get_placeholder_page() );
+		}
+		if ( ! $this->has_migrated_page( 'checkout' ) ) {
+			$this->migrate_page( 'checkout', CheckoutTemplate::get_placeholder_page() );
+		}
+	}
+
+	/**
+	 * Check if a page has been migrated to a template.
+	 *
+	 * @param string $page_id Page ID.
+	 * @return boolean
+	 */
+	protected function has_migrated_page( $page_id ) {
+		return (bool) get_option( 'has_migrated_' . $page_id, false );
+	}
+
+	/**
+	 * Migrates a page to a template if needed.
+	 *
+	 * @param string   $page_id Page ID.
+	 * @param \WP_Post $page Page object.
+	 */
+	protected function migrate_page( $page_id, $page ) {
+		if ( ! $page || empty( $page->post_content ) ) {
+			update_option( 'has_migrated_' . $page_id, '1' );
+			return;
+		}
+
+		$request = new \WP_REST_Request( 'POST', '/wp/v2/templates/woocommerce/woocommerce//' . $page_id );
+		$request->set_body_params(
+			[
+				'id'      => 'woocommerce/woocommerce//' . $page_id,
+				'content' => $this->get_block_template_part( 'header' ) .
+					'<!-- wp:group {"layout":{"inherit":true}} -->
+					<div class="wp-block-group">
+						<!-- wp:heading {"level":1} -->
+						<h1 class="wp-block-heading">' . wp_kses_post( $page->post_title ) . '</h1>
+						<!-- /wp:heading -->
+						' . wp_kses_post( $page->post_content ) . '
+					</div>
+					<!-- /wp:group -->' .
+					$this->get_block_template_part( 'footer' ),
+			]
+		);
+		rest_get_server()->dispatch( $request );
+		update_option( 'has_migrated_' . $page_id, '1' );
+	}
+
+	/**
+	 * Returns the requested template part.
+	 *
+	 * @param string $part The part to return.
+	 *
+	 * @return string
+	 */
+	protected function get_block_template_part( $part ) {
+		$template_part = get_block_template( get_stylesheet() . '//' . $part, 'wp_template_part' );
+		if ( ! $template_part || empty( $template_part->content ) ) {
+			return '';
+		}
+		return $template_part->content;
 	}
 
 	/**
