@@ -8,10 +8,7 @@ import {
 } from '@woocommerce/price-format';
 import { CartResponse } from '@woocommerce/types';
 
-export const updateTotals = (
-	totals: [ string, number ] | void,
-	overrideTotals = true
-) => {
+export const updateTotals = ( totals: [ string, number ] | void ) => {
 	if ( ! totals ) {
 		return;
 	}
@@ -27,32 +24,26 @@ export const updateTotals = (
 	);
 
 	miniCartButtons.forEach( ( miniCartButton ) => {
-		if ( overrideTotals || ! miniCartButton.hasAttribute( 'aria-label' ) ) {
-			miniCartButton.setAttribute(
-				'aria-label',
-				sprintf(
-					/* translators: %s number of products in cart. */
-					_n(
-						'%1$d item in cart, total price of %2$s',
-						'%1$d items in cart, total price of %2$s',
-						quantity,
-						'woo-gutenberg-products-block'
-					),
+		miniCartButton.setAttribute(
+			'aria-label',
+			sprintf(
+				/* translators: %s number of products in cart. */
+				_n(
+					'%1$d item in cart, total price of %2$s',
+					'%1$d items in cart, total price of %2$s',
 					quantity,
-					amount
-				)
-			);
-		}
+					'woo-gutenberg-products-block'
+				),
+				quantity,
+				amount
+			)
+		);
 	} );
 	miniCartQuantities.forEach( ( miniCartQuantity ) => {
-		if ( overrideTotals || miniCartQuantity.textContent === '' ) {
-			miniCartQuantity.textContent = quantity.toString();
-		}
+		miniCartQuantity.textContent = quantity.toString();
 	} );
 	miniCartAmounts.forEach( ( miniCartAmount ) => {
-		if ( overrideTotals || miniCartAmount.textContent === '' ) {
-			miniCartAmount.textContent = amount;
-		}
+		miniCartAmount.textContent = amount;
 	} );
 
 	// Show the tax label only if there are products in the cart.

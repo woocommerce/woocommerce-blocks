@@ -24,7 +24,7 @@ interface dependencyData {
 	translations?: string;
 }
 
-updateTotals( getMiniCartTotalsFromLocalStorage(), false );
+updateTotals( getMiniCartTotalsFromLocalStorage() );
 getMiniCartTotalsFromServer().then( updateTotals );
 setStyles();
 
