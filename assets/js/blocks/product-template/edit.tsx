@@ -68,6 +68,22 @@ const ProductTemplateBlockPreview = ( {
 
 const MemoizedProductTemplateBlockPreview = memo( ProductTemplateBlockPreview );
 
+// We have to build the tax query for the REST API and use as
+// keys the taxonomies `rest_base` with the `term ids` as values.
+const buildTaxQuery = ( taxQuery, taxonomies ) =>
+	Object.entries( taxQuery ).reduce(
+		( accumulator, [ taxonomySlug, terms ] ) => {
+			const taxonomy = taxonomies?.find(
+				( { slug } ) => slug === taxonomySlug
+			);
+			if ( taxonomy?.rest_base ) {
+				accumulator[ taxonomy?.rest_base ] = terms;
+			}
+			return accumulator;
+		},
+		{}
+	);
+
 const ProductTemplateEdit = ( {
 	clientId,
 	context: {
@@ -108,11 +124,13 @@ const ProductTemplateEdit = ( {
 		const { getTaxonomies, getEntityRecords } = select( coreStore );
 		return {
 			blocks: getBlocks( clientId ),
-			taxonomies: getTaxonomies( {
-				type: postType,
-				per_page: -1,
-				context: 'view',
-			} ),
+			taxonomies: taxQuery
+				? getTaxonomies( {
+						type: postType,
+						per_page: -1,
+						context: 'view',
+				  } )
+				: [],
 			templateCategory:
 				inherit &&
 				templateSlug?.startsWith( 'category-' ) &&
@@ -125,6 +143,9 @@ const ProductTemplateEdit = ( {
 		};
 	} );
 
+	// There is no need to build the taxQuery if we inherit.
+	const builtTaxQuery =
+		taxQuery && ! inherit ? buildTaxQuery( taxQuery, taxonomies ) : {};
 	const query: Record< string, unknown > = {
 		offset: perPage ? perPage * ( page - 1 ) + offset : 0,
 		order,
@@ -138,39 +159,17 @@ const ProductTemplateEdit = ( {
 		// If sticky is set to `only`, it will limit the results to sticky products only.
 		// If it is anything else, it will exclude sticky products from results. For the record the value stored is `exclude`.
 		sticky: sticky === 'only' || undefined,
+		// If `inherit` is truthy, adjust conditionally the query to create a better preview.
+		categories:
+			inherit && templateCategory ? templateCategory[ 0 ]?.id : undefined,
+		...builtTaxQuery,
 	};
-
-	// There is no need to build the taxQuery if we inherit.
-	if ( taxQuery && ! inherit ) {
-		// We have to build the tax query for the REST API and use as
-		// keys the taxonomies `rest_base` with the `term ids` as values.
-		const builtTaxQuery = Object.entries( taxQuery ).reduce(
-			( accumulator, [ taxonomySlug, terms ] ) => {
-				const taxonomy = taxonomies?.find(
-					( { slug } ) => slug === taxonomySlug
-				);
-				if ( taxonomy?.rest_base ) {
-					accumulator[ taxonomy?.rest_base ] = terms;
-				}
-				return accumulator;
-			},
-			{}
-		);
-		if ( !! Object.keys( builtTaxQuery ).length ) {
-			Object.assign( query, builtTaxQuery );
-		}
-	}
-	// If `inherit` is truthy, adjust conditionally the query to create a better preview.
-	if ( inherit ) {
-		if ( templateCategory ) {
-			query.categories = templateCategory[ 0 ]?.id;
-		}
-	}
 
 	const { products, productsLoading } = useStoreProducts( {
 		...query,
 		...restQueryArgs,
 	} );
+
 	const hasLayoutFlex = layoutType === 'flex' && columns > 1;
 	const blockProps = useBlockProps( {
 		className: classnames(
