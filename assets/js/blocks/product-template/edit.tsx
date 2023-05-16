@@ -17,7 +17,7 @@ import { Spinner } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
 import type { BlockEditProps } from '@wordpress/blocks';
 import {
-	ProductCollectionContext,
+	ProductCollectionAttributes,
 	ProductCollectionQuery,
 } from '@woocommerce/blocks/product-collection/types';
 import { useStoreProducts } from '@woocommerce/base-context/hooks';
@@ -157,7 +157,7 @@ const ProductTemplateEdit = ( {
 }: BlockEditProps< {
 	clientId: string;
 } > & {
-	context: ProductCollectionContext;
+	context: ProductCollectionAttributes;
 	__unstableLayoutClassNames: string;
 } ) => {
 	const [ { page } ] = queryContext;
