@@ -27,7 +27,8 @@
 		"./assets/js/blocks/filter-wrapper/register-components.ts",
 		"./assets/js/blocks/product-query/variations/**.tsx",
 		"./assets/js/blocks/product-query/index.tsx",
-		"./assets/js/blocks/product-query/inspector-controls.tsx"
+		"./assets/js/blocks/product-query/inspector-controls.tsx",
+		"./assets/js/templates/revert-button/index.tsx"
 	],
 	"repository": {
 		"type": "git",
@@ -252,6 +253,7 @@
 		"@wordpress/plugins": "4.10.0",
 		"@wordpress/primitives": "3.0.4",
 		"@wordpress/server-side-render": "3.10.0",
+		"@wordpress/style-engine": "^1.15.0",
 		"@wordpress/url": "3.13.0",
 		"@wordpress/wordcount": "3.13.0",
 		"change-case": "^4.1.2",
