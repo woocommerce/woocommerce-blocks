@@ -24,7 +24,6 @@ abstract class AbstractPageTemplate {
 	protected function init() {
 		add_filter( 'page_template_hierarchy', array( $this, 'page_template_hierarchy' ), 1 );
 		add_filter( 'frontpage_template_hierarchy', array( $this, 'page_template_hierarchy' ), 1 );
-		add_filter( 'woocommerce_blocks_template_content', array( $this, 'page_template_content' ), 10, 2 );
 		add_action( 'current_screen', array( $this, 'page_template_editor_redirect' ) );
 		add_filter( 'pre_get_document_title', array( $this, 'page_template_title' ) );
 	}
@@ -67,18 +66,6 @@ abstract class AbstractPageTemplate {
 	}
 
 	/**
-	 * Get the default content for a template.
-	 *
-	 * Overridden by child class to include their own logic.
-	 *
-	 * @param string $template_content The original content of the template.
-	 * @return string
-	 */
-	protected function get_default_template_content( $template_content ) {
-		return $template_content;
-	}
-
-	/**
 	 * When the page should be displaying the template, add it to the hierarchy.
 	 *
 	 * This places the template name e.g. `cart`, at the beginning of the template hierarchy array. The hook priority
@@ -95,20 +82,6 @@ abstract class AbstractPageTemplate {
 	}
 
 	/**
-	 * Returns the default template content.
-	 *
-	 * @param string $template_content The content of the template.
-	 * @param object $template_file The template file object.
-	 * @return string
-	 */
-	public function page_template_content( $template_content, $template_file ) {
-		if ( $this->get_slug() !== $template_file->slug ) {
-			return $template_content;
-		}
-		return $this->get_default_template_content( $template_content );
-	}
-
-	/**
 	 * Redirect the edit page screen to the template editor.
 	 *
 	 * @param \WP_Screen $current_screen Current screen information.
@@ -117,7 +90,7 @@ abstract class AbstractPageTemplate {
 		$page         = $this->get_placeholder_page();
 		$edit_page_id = 'page' === $current_screen->id && ! empty( $_GET['post'] ) ? absint( $_GET['post'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-		if ( $page && $edit_page_id === $page->id ) {
+		if ( $page && $edit_page_id === $page->ID ) {
 			wp_safe_redirect( $this->get_edit_template_url() );
 			exit;
 		}
