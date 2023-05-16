@@ -338,8 +338,7 @@ class BlockTemplatesController {
 				}
 				if ( str_contains( $template->slug, 'single-product' ) ) {
 					if ( ! is_admin() && ! BlockTemplateUtils::template_has_legacy_template_block( $template ) ) {
-						$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
-						$template->content = $new_content;
+						$template->content = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
 					}
 				}
 				return $template;
