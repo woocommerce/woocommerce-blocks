@@ -4,6 +4,7 @@
 import classnames from 'classnames';
 import { isObject } from '@woocommerce/types';
 import { parseStyle } from '@woocommerce/base-utils';
+import type { CSSProperties } from 'react';
 
 /**
  * Internal dependencies
@@ -17,12 +18,12 @@ import {
 } from '../utils';
 
 type blockAttributes = {
-	style: Record< string, unknown > | string;
+	style?: CSSProperties | string | undefined;
 };
 
 type StyleProps = {
 	className: string;
-	style: Record< string, unknown >;
+	style: CSSProperties;
 };
 
 /**
