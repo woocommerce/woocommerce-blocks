@@ -1,16 +1,20 @@
 /**
  * External dependencies
  */
-import { _n, sprintf } from '@wordpress/i18n';
 import preloadScript from '@woocommerce/base-utils/preload-script';
 import lazyLoadScript from '@woocommerce/base-utils/lazy-load-script';
 import getNavigationType from '@woocommerce/base-utils/get-navigation-type';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils/legacy-events';
+
+/**
+ * Internal dependencies
+ */
 import {
-	getCurrencyFromPriceResponse,
-	formatPrice,
-} from '@woocommerce/price-format';
-import { CartResponse } from '@woocommerce/types';
+	getMiniCartTotalsFromLocalStorage,
+	getMiniCartTotalsFromServer,
+	updateTotals,
+} from './utils/data';
+import setStyles from './utils/set-styles';
 
 interface dependencyData {
 	src: string;
@@ -20,167 +24,6 @@ interface dependencyData {
 	translations?: string;
 }
 
-const updateTotals = (
-	totals: [ string, number ] | void,
-	overrideTotals = true
-) => {
-	if ( ! totals ) {
-		return;
-	}
-	const [ amount, quantity ] = totals;
-	const miniCartButtons = document.querySelectorAll(
-		'.wc-block-mini-cart__button'
-	);
-	const miniCartQuantities = document.querySelectorAll(
-		'.wc-block-mini-cart__badge'
-	);
-	const miniCartAmounts = document.querySelectorAll(
-		'.wc-block-mini-cart__amount'
-	);
-
-	miniCartButtons.forEach( ( miniCartButton ) => {
-		if ( overrideTotals || ! miniCartButton.hasAttribute( 'aria-label' ) ) {
-			miniCartButton.setAttribute(
-				'aria-label',
-				sprintf(
-					/* translators: %s number of products in cart. */
-					_n(
-						'%1$d item in cart, total price of %2$s',
-						'%1$d items in cart, total price of %2$s',
-						quantity,
-						'woo-gutenberg-products-block'
-					),
-					quantity,
-					amount
-				)
-			);
-		}
-	} );
-	miniCartQuantities.forEach( ( miniCartQuantity ) => {
-		if ( overrideTotals || miniCartQuantity.textContent === '' ) {
-			miniCartQuantity.textContent = quantity.toString();
-		}
-	} );
-	miniCartAmounts.forEach( ( miniCartAmount ) => {
-		if ( overrideTotals || miniCartAmount.textContent === '' ) {
-			miniCartAmount.textContent = amount;
-		}
-	} );
-
-	// Show the tax label only if there are products in the cart.
-	if ( quantity > 0 ) {
-		const miniCartTaxLabels = document.querySelectorAll(
-			'.wc-block-mini-cart__tax-label'
-		);
-		miniCartTaxLabels.forEach( ( miniCartTaxLabel ) => {
-			miniCartTaxLabel.removeAttribute( 'hidden' );
-		} );
-	}
-};
-const getMiniCartTotalsFromLocalStorage = (): [ string, number ] | void => {
-	const rawMiniCartTotals = localStorage.getItem(
-		'wc-blocks_mini_cart_totals'
-	);
-	if ( ! rawMiniCartTotals ) {
-		return;
-	}
-	const miniCartTotals = JSON.parse( rawMiniCartTotals );
-	const currency = getCurrencyFromPriceResponse( miniCartTotals.totals );
-	const formattedPrice = formatPrice(
-		miniCartTotals.totals.total_price,
-		currency
-	);
-	return [ formattedPrice, miniCartTotals.itemsCount ] as [ string, number ];
-};
-
-const getMiniCartTotalsFromServer = async (): Promise<
-	[ string, number ] | void
-> => {
-	return fetch( '/wp-json/wc/store/v1/cart/' )
-		.then( ( response ) => {
-			// Check if the response was successful.
-			if ( ! response.ok ) {
-				throw new Error();
-			}
-
-			return response.json();
-		} )
-		.then( ( data: CartResponse ) => {
-			const currency = getCurrencyFromPriceResponse( data.totals );
-			const formattedPrice = formatPrice(
-				data.totals.total_price,
-				currency
-			);
-			// Save server data to local storage, so we can re-fetch it faster
-			// on the next page load.
-			localStorage.setItem(
-				'wc-blocks_mini_cart_totals',
-				JSON.stringify( {
-					totals: data.totals,
-					itemsCount: data.items_count,
-				} )
-			);
-			return [ formattedPrice, data.items_count ] as [ string, number ];
-		} )
-		.catch( ( error ) => {
-			// eslint-disable-next-line no-console
-			console.error( error );
-		} );
-};
-
-function setStyles() {
-	function getClosestColor(
-		element: Element | null,
-		colorType: 'color' | 'backgroundColor'
-	): string | null {
-		if ( ! element ) {
-			return null;
-		}
-		const color = window.getComputedStyle( element )[ colorType ];
-		if ( color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent' ) {
-			return color;
-		}
-		return getClosestColor( element.parentElement, colorType );
-	}
-
-	/**
-	 * Get the background color of the body then set it as the background color
-	 * of the Mini-Cart Contents block.
-	 *
-	 * We only set the background color, instead of the whole background. As
-	 * we only provide the option to customize the background color.
-	 */
-	const style = document.createElement( 'style' );
-	const backgroundColor = getComputedStyle( document.body ).backgroundColor;
-	// For simplicity, we only consider the background color of the first Mini-Cart button.
-	const firstMiniCartButton = document.querySelector(
-		'.wc-block-mini-cart__button'
-	);
-	const badgeTextColor = firstMiniCartButton
-		? getClosestColor( firstMiniCartButton, 'backgroundColor' )
-		: 'inherit';
-	const badgeBackgroundColor = firstMiniCartButton
-		? getClosestColor( firstMiniCartButton, 'color' )
-		: 'inherit';
-
-	// We use :where here to reduce specificity so customized colors and theme
-	// CSS take priority.
-	style.appendChild(
-		document.createTextNode(
-			`:where(.wp-block-woocommerce-mini-cart-contents) {
-				background-color: ${ backgroundColor };
-			}
-			:where(.wc-block-mini-cart__badge) {
-				background-color: ${ badgeBackgroundColor };
-				color: ${ badgeTextColor };
-			}`
-		)
-	);
-
-	document.head.appendChild( style );
-}
-
-// Fill data.
 updateTotals( getMiniCartTotalsFromLocalStorage(), false );
 getMiniCartTotalsFromServer().then( updateTotals );
 setStyles();
