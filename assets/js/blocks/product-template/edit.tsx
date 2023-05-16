@@ -205,27 +205,23 @@ const ProductTemplateEdit = ( {
 	// block preview is used, instead of having to re-render the preview from scratch.
 	return (
 		<ul { ...blockProps }>
-			{ products.length &&
-				products.map( ( product ) => (
-					<BlockContextProvider
-						key={ product.id }
-						value={ { product } }
-					>
-						{ product.id ===
-						( activeBlockContextId || products[ 0 ]?.id ) ? (
-							<ProductTemplateInnerBlocks />
-						) : null }
-						<MemoizedProductTemplateBlockPreview
-							blocks={ blocks }
-							blockContextId={ product.id }
-							setActiveBlockContextId={ setActiveBlockContextId }
-							isHidden={
-								product.id ===
-								( activeBlockContextId || products[ 0 ]?.id )
-							}
-						/>
-					</BlockContextProvider>
-				) ) }
+			{ products.map( ( product ) => (
+				<BlockContextProvider key={ product.id } value={ { product } }>
+					{ product.id ===
+					( activeBlockContextId || products[ 0 ]?.id ) ? (
+						<ProductTemplateInnerBlocks />
+					) : null }
+					<MemoizedProductTemplateBlockPreview
+						blocks={ blocks }
+						blockContextId={ product.id }
+						setActiveBlockContextId={ setActiveBlockContextId }
+						isHidden={
+							product.id ===
+							( activeBlockContextId || products[ 0 ]?.id )
+						}
+					/>
+				</BlockContextProvider>
+			) ) }
 		</ul>
 	);
 };
