@@ -350,7 +350,6 @@ class AddToCartForm extends AbstractBlock {
 				$render_product = $this->add_simple_product_to_cart( $product );
 				break;
 			case 'variable':
-			case 'variation':
 				$render_product = $this->add_variable_product_to_cart( $product );
 				break;
 			case 'grouped':
