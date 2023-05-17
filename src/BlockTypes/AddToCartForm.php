@@ -46,11 +46,15 @@ class AddToCartForm extends AbstractBlock {
 	}
 
 	/**
-	 * Output the add to cart form for a variable product.
+	 * The add to cart form for a variable product.
 	 *
 	 * @param \WC_Product $product Product object.
 	 */
 	protected function add_variable_product_to_cart( $product ) {
+		// Enqueue variation scripts.
+		wp_enqueue_script( 'wc-add-to-cart-variation' );
+
+		// Get Available variations?
 		$attributes           = $product->get_variation_attributes();
 		$attribute_keys       = array_keys( $attributes );
 		$available_variations = $product->get_available_variations();
@@ -140,6 +144,11 @@ class AddToCartForm extends AbstractBlock {
 		return ob_get_clean();
 	}
 
+	/**
+	 * The add to cart form for a simple product.
+	 *
+	 * @param \WC_Product $product Product object.
+	 */
 	protected function add_simple_product_to_cart( $product ) {
 		if ( ! $product->is_purchasable() || ! $product->is_in_stock() ) {
 			return '';
@@ -158,6 +167,35 @@ class AddToCartForm extends AbstractBlock {
 		);
 
 		do_action( 'woocommerce_after_add_to_cart_form' );
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * The add to cart form for an external product.
+	 *
+	 * @param \WC_Product $product Product object.
+	 */
+	protected function add_external_product_to_cart( $product ) {
+		$add_to_cart_url = $product->add_to_cart_url();
+		$button_text     = $product->single_add_to_cart_text();
+
+		if ( ! $button_text || ! $add_to_cart_url ) {
+			return;
+		}
+
+		do_action( 'woocommerce_before_add_to_cart_form' );
+		ob_start(); ?>
+		<form class="cart" action="<?php echo esc_url( $product ); ?>" method="get">
+			<?php do_action( 'woocommerce_before_add_to_cart_button' ); ?>
+
+			<button type="submit" class="single_add_to_cart_button button alt<?php echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); ?>"><?php echo esc_html( $button_text ); ?></button>
+
+			<?php wc_query_string_form_fields( $add_to_cart_url ); ?>
+
+			<?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
+		</form>
+		<?php do_action( 'woocommerce_after_add_to_cart_form' );
 
 		return ob_get_clean();
 	}
@@ -191,7 +229,14 @@ class AddToCartForm extends AbstractBlock {
 				$render_product = $this->add_simple_product_to_cart( $product );
 				break;
 			case 'variable':
+			case 'variation':
 				$render_product = $this->add_variable_product_to_cart( $product );
+				break;
+			case 'grouped':
+				$render_product = $this->add_grouped_product_to_cart( $product );
+				break;
+			case 'external':
+				$render_product = $this->add_external_product_to_cart( $product );
 				break;
 		}
 
