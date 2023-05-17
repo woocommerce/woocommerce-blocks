@@ -23,8 +23,8 @@ class AddToCartForm extends AbstractBlock {
 	protected function get_quantity_input( $product ) {
 		return woocommerce_quantity_input(
 			array(
-				'min_value'   => apply_filters( 'woocommerce_quantity_input_min', $product->get_min_purchase_quantity(), $product ),
-				'max_value'   => apply_filters( 'woocommerce_quantity_input_max', $product->get_max_purchase_quantity(), $product ),
+				'min_value'   => $product->get_min_purchase_quantity(),
+				'max_value'   => $product->get_max_purchase_quantity(),
 				'input_value' => isset( $_POST['quantity'] ) ? wc_stock_amount( wp_unslash( $_POST['quantity'] ) ) : $product->get_min_purchase_quantity(),
 			),
 			$product
@@ -83,11 +83,11 @@ class AddToCartForm extends AbstractBlock {
 
 		do_action( 'woocommerce_before_add_to_cart_form' );
 		?>
-		<form class="variations_form cart" action="<?php echo esc_url( apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() ) ); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product_id ); ?>" data-product_variations="<?php echo $variations_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
+		<form class="variations_form cart" action="<?php echo esc_url( $product->get_permalink() ); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product_id ); ?>" data-product_variations="<?php echo $variations_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
 		<?php do_action( 'woocommerce_before_variations_form' ); ?>
 
 		<?php if ( empty( $available_variations ) && false !== $available_variations ) : ?>
-			<p class="stock out-of-stock"><?php echo esc_html( apply_filters( 'woocommerce_out_of_stock_message', __( 'This product is currently out of stock and unavailable.', 'woo-gutenberg-products-block' ) ) ); ?></p>
+			<p class="stock out-of-stock"><?php echo esc_html__( 'This product is currently out of stock and unavailable.', 'woo-gutenberg-products-block' ); ?></p>
 		<?php else : ?>
 			<table class="variations" role="presentation">
 				<tbody>
@@ -103,7 +103,7 @@ class AddToCartForm extends AbstractBlock {
 									'product'   => $product,
 								)
 							);
-							echo end( $attribute_keys ) === $attribute_name ? wp_kses_post( apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations" href="#">' . esc_html__( 'Clear', 'woo-gutenberg-products-block' ) . '</a>' ) ) : '';
+							echo end( $attribute_keys ) === $attribute_name ? wp_kses_post( '<a class="reset_variations" href="#">' . esc_html__( 'Clear', 'woo-gutenberg-products-block' ) . '</a>' ) : '';
 							?>
 						</td>
 					</tr>
@@ -161,7 +161,7 @@ class AddToCartForm extends AbstractBlock {
 		echo wc_get_stock_html( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		do_action( 'woocommerce_before_add_to_cart_form' );
-		$add_to_cart_form_action = esc_url( apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() ) );
+		$add_to_cart_form_action = esc_url( $product->get_permalink() );
 
 		echo sprintf(
 			'<form class="cart" action="%1$s" method="post" enctype="multipart/form-data">%2$s %3$s</form>',
@@ -228,21 +228,18 @@ class AddToCartForm extends AbstractBlock {
 		ob_start();
 		do_action( 'woocommerce_before_add_to_cart_form' );
 		?>
-		<form class="cart grouped_form" action="<?php echo esc_url( apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() ) ); ?>" method="post" enctype='multipart/form-data'>
+		<form class="cart grouped_form" action="<?php echo esc_url( $product->get_permalink() ); ?>" method="post" enctype='multipart/form-data'>
 			<table class="woocommerce-grouped-product-list group_table">
 				<tbody>
 				<?php
 				$quantites_required      = false;
 				$previous_post           = $post;
-				$grouped_product_columns = apply_filters(
-					'woocommerce_grouped_product_columns',
-					array(
+				$grouped_product_columns = array(
 						'quantity',
 						'label',
 						'price',
-					),
-					$product
 				);
+
 				$show_add_to_cart_button = false;
 
 				do_action( 'woocommerce_grouped_product_list_before', $grouped_product_columns, $quantites_required, $product );
@@ -279,8 +276,8 @@ class AddToCartForm extends AbstractBlock {
 										array(
 											'input_name'  => 'quantity[' . $grouped_product_child->get_id() . ']',
 											'input_value' => isset( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ? wc_stock_amount( wc_clean( wp_unslash( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
-											'min_value'   => apply_filters( 'woocommerce_quantity_input_min', 0, $grouped_product_child ),
-											'max_value'   => apply_filters( 'woocommerce_quantity_input_max', $grouped_product_child->get_max_purchase_quantity(), $grouped_product_child ),
+											'min_value'   => 0,
+											'max_value'   => $grouped_product_child->get_max_purchase_quantity(),
 											'placeholder' => '0',
 										)
 									);
@@ -292,7 +289,7 @@ class AddToCartForm extends AbstractBlock {
 								break;
 							case 'label':
 								$value  = '<label for="product-' . esc_attr( $grouped_product_child->get_id() ) . '">';
-								$value .= $grouped_product_child->is_visible() ? '<a href="' . esc_url( apply_filters( 'woocommerce_grouped_product_list_link', $grouped_product_child->get_permalink(), $grouped_product_child->get_id() ) ) . '">' . $grouped_product_child->get_name() . '</a>' : $grouped_product_child->get_name();
+								$value .= $grouped_product_child->is_visible() ? '<a href="' . esc_url( $grouped_product_child->get_permalink(), $grouped_product_child->get_id() ) . '">' . $grouped_product_child->get_name() . '</a>' : $grouped_product_child->get_name();
 								$value .= '</label>';
 								break;
 							case 'price':
@@ -303,7 +300,7 @@ class AddToCartForm extends AbstractBlock {
 								break;
 						}
 
-						echo '<td class="woocommerce-grouped-product-list-item__' . esc_attr( $column_id ) . '">' . apply_filters( 'woocommerce_grouped_product_list_column_' . $column_id, $value, $grouped_product_child ) . '</td>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo '<td class="woocommerce-grouped-product-list-item__' . esc_attr( $column_id ) . '">' . $value . '</td>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 						do_action( 'woocommerce_grouped_product_list_after_' . $column_id, $grouped_product_child );
 					}
