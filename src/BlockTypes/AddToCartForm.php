@@ -16,6 +16,176 @@ class AddToCartForm extends AbstractBlock {
 	protected $block_name = 'add-to-cart-form';
 
 	/**
+	 * Render the block.
+	 *
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content Block content.
+	 * @param WP_Block $block Block instance.
+	 *
+	 * @return string | void Rendered block output.
+	 */
+	protected function render( $attributes, $content, $block ) {
+		$post_id = $block->context['postId'];
+
+		if ( ! isset( $post_id ) ) {
+			return '';
+		}
+
+		$product = wc_get_product( $post_id );
+		if ( ! $product instanceof \WC_Product ) {
+			return '';
+		}
+
+		$add_to_cart_form = $this->add_to_cart_form( $product );
+
+		if ( ! $add_to_cart_form ) {
+			return '';
+		}
+
+		$classname          = $attributes['className'] ?? '';
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
+
+		return sprintf(
+			'<div class="wp-block-add-to-cart-form %1$s %2$s" style="%3$s">%4$s</div>',
+			esc_attr( $classes_and_styles['classes'] ),
+			esc_attr( $classname ),
+			esc_attr( $classes_and_styles['styles'] ),
+			$add_to_cart_form
+		);
+	}
+
+	/**
+	 * Return the Add to Cart Form for a given product.
+	 *
+	 * @param \WC_Product $product Product object.
+	 *
+	 * @return string
+	 */
+	protected function add_to_cart_form( $product ) {
+		$product_type = $product->get_type();
+
+		switch ( $product_type ) {
+			case 'simple':
+				$render_product = $this->add_simple_product_to_cart( $product );
+				break;
+			case 'variable':
+				$render_product = $this->add_variable_product_to_cart( $product );
+				break;
+			case 'grouped':
+				$render_product = $this->add_grouped_product_to_cart( $product );
+				break;
+			case 'external':
+				$render_product = $this->add_external_product_to_cart( $product );
+				break;
+			default:
+				$render_product = '';
+				break;
+		}
+
+		ob_start();
+
+		/**
+		 * Hook: woocommerce_before_add_to_cart_form.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_before_add_to_cart_form' );
+
+		echo $render_product;
+
+		/**
+		 * Hook: woocommerce_after_add_to_cart_form.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_after_add_to_cart_form' );
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * The add to cart form for a simple product.
+	 *
+	 * @param \WC_Product $product Product object.
+	 */
+	protected function add_simple_product_to_cart( $product ) {
+		if ( ! $product->is_purchasable() || ! $product->is_in_stock() ) {
+			return '';
+		}
+
+		echo wc_get_stock_html( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$add_to_cart_form_action = esc_url( $product->get_permalink() );
+
+		echo sprintf(
+			'<form class="cart" action="%1$s" method="post" enctype="multipart/form-data">%2$s %3$s</form>',
+			$add_to_cart_form_action,
+			$this->get_quantity_input( $product ),
+			$this->add_to_cart_button( $product, 'add-to-cart' )
+		);
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * The add to cart form for a variable product.
+	 *
+	 * @param \WC_Product $product Product object.
+	 *
+	 * @return string
+	 */
+	protected function add_variable_product_to_cart( $product ) {
+		wp_enqueue_script( 'wc-add-to-cart-variation' );
+		$attributes           = $product->get_variation_attributes();
+		$attribute_keys       = array_keys( $attributes );
+		$available_variations = $product->get_available_variations();
+		$variations_json      = wp_json_encode( $available_variations );
+		$variations_attr      = wc_esc_json( $variations_json );
+
+		return $this->variable_product_form( $product, $attributes, $attribute_keys, $available_variations, $variations_json, $variations_attr );
+	}
+
+	/**
+	 * The add to cart form for a grouped product.
+	 *
+	 * @param \WC_Product $product Product object.
+	 *
+	 * @return string
+	 */
+	protected function add_grouped_product_to_cart( $product ) {
+		$post             = get_post( $product->get_id() );
+		$grouped_products = array_filter( array_map( 'wc_get_product', $product->get_children() ), 'wc_products_array_filter_visible_grouped' );
+
+		return $this->grouped_product_form( $product, $post, $grouped_products );
+	}
+
+	/**
+	 * The add to cart form for an external product.
+	 *
+	 * @param \WC_Product $product Product object.
+	 *
+	 * return string
+	 */
+	protected function add_external_product_to_cart( $product ) {
+		$add_to_cart_url = $product->add_to_cart_url();
+		$button_text     = $product->single_add_to_cart_text();
+
+		if ( ! $button_text || ! $add_to_cart_url ) {
+			return '';
+		}
+
+		ob_start();
+		?>
+		<form class="cart" action="<?php echo esc_url( $product ); ?>" method="get">
+			<?php
+			echo $this->add_to_cart_button( $product );
+			wc_query_string_form_fields( $add_to_cart_url );
+			?>
+		</form>
+		<?php
+		return ob_get_clean();
+	}
+
+	/**
 	 * Output the quantity input for add to cart form block.
 	 *
 	 * @param \WC_Product $product Product object.
@@ -79,55 +249,6 @@ class AddToCartForm extends AbstractBlock {
 			<input type="hidden" name="variation_id" class="variation_id" value="0" />',
 			absint( $product_id )
 		);
-	}
-
-	/**
-	 * Return the Add to Cart Form for a given product.
-	 *
-	 * @param \WC_Product $product Product object.
-	 *
-	 * @return string
-	 */
-	protected function add_to_cart_form( $product ) {
-		$product_type = $product->get_type();
-
-		switch ( $product_type ) {
-			case 'simple':
-				$render_product = $this->add_simple_product_to_cart( $product );
-				break;
-			case 'variable':
-				$render_product = $this->add_variable_product_to_cart( $product );
-				break;
-			case 'grouped':
-				$render_product = $this->add_grouped_product_to_cart( $product );
-				break;
-			case 'external':
-				$render_product = $this->add_external_product_to_cart( $product );
-				break;
-			default:
-				$render_product = '';
-				break;
-		}
-
-		ob_start();
-
-		/**
-		 * Hook: woocommerce_before_add_to_cart_form.
-		 *
-		 * @since TBD
-		 */
-		do_action( 'woocommerce_before_add_to_cart_form' );
-
-		echo $render_product;
-
-		/**
-		 * Hook: woocommerce_after_add_to_cart_form.
-		 *
-		 * @since TBD
-		 */
-		do_action( 'woocommerce_after_add_to_cart_form' );
-
-		return ob_get_clean();
 	}
 
 	/**
@@ -238,74 +359,6 @@ class AddToCartForm extends AbstractBlock {
 		</form>
 		<?php
 
-		return ob_get_clean();
-	}
-
-	/**
-	 * The add to cart form for a simple product.
-	 *
-	 * @param \WC_Product $product Product object.
-	 */
-	protected function add_simple_product_to_cart( $product ) {
-		if ( ! $product->is_purchasable() || ! $product->is_in_stock() ) {
-			return '';
-		}
-
-		echo wc_get_stock_html( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		$add_to_cart_form_action = esc_url( $product->get_permalink() );
-
-		echo sprintf(
-			'<form class="cart" action="%1$s" method="post" enctype="multipart/form-data">%2$s %3$s</form>',
-			$add_to_cart_form_action,
-			$this->get_quantity_input( $product ),
-			$this->add_to_cart_button( $product, 'add-to-cart' )
-		);
-
-		return ob_get_clean();
-	}
-
-	/**
-	 * The add to cart form for a variable product.
-	 *
-	 * @param \WC_Product $product Product object.
-	 *
-	 * @return string
-	 */
-	protected function add_variable_product_to_cart( $product ) {
-		wp_enqueue_script( 'wc-add-to-cart-variation' );
-		$attributes           = $product->get_variation_attributes();
-		$attribute_keys       = array_keys( $attributes );
-		$available_variations = $product->get_available_variations();
-		$variations_json      = wp_json_encode( $available_variations );
-		$variations_attr      = wc_esc_json( $variations_json );
-
-		return $this->variable_product_form( $product, $attributes, $attribute_keys, $available_variations, $variations_json, $variations_attr );
-	}
-
-	/**
-	 * The add to cart form for an external product.
-	 *
-	 * @param \WC_Product $product Product object.
-	 *
-	 * return string
-	 */
-	protected function add_external_product_to_cart( $product ) {
-		$add_to_cart_url = $product->add_to_cart_url();
-		$button_text     = $product->single_add_to_cart_text();
-
-		if ( ! $button_text || ! $add_to_cart_url ) {
-			return '';
-		}
-
-		ob_start();
-		?>
-		<form class="cart" action="<?php echo esc_url( $product ); ?>" method="get">
-			<?php
-			echo $this->add_to_cart_button( $product );
-			wc_query_string_form_fields( $add_to_cart_url );
-			?>
-		</form>
-		<?php
 		return ob_get_clean();
 	}
 
@@ -447,57 +500,6 @@ class AddToCartForm extends AbstractBlock {
 		</form>
 		<?php
 		return ob_get_clean();
-	}
-
-	/**
-	 * The add to cart form for a grouped product.
-	 *
-	 * @param \WC_Product $product Product object.
-	 */
-	protected function add_grouped_product_to_cart( $product ) {
-		$post             = get_post( $product->get_id() );
-		$grouped_products = array_filter( array_map( 'wc_get_product', $product->get_children() ), 'wc_products_array_filter_visible_grouped' );
-
-		return $this->grouped_product_form( $product, $post, $grouped_products );
-	}
-
-	/**
-	 * Render the block.
-	 *
-	 * @param array    $attributes Block attributes.
-	 * @param string   $content Block content.
-	 * @param WP_Block $block Block instance.
-	 *
-	 * @return string | void Rendered block output.
-	 */
-	protected function render( $attributes, $content, $block ) {
-		$post_id = $block->context['postId'];
-
-		if ( ! isset( $post_id ) ) {
-			return '';
-		}
-
-		$product = wc_get_product( $post_id );
-		if ( ! $product instanceof \WC_Product ) {
-			return '';
-		}
-
-		$add_to_cart_form = $this->add_to_cart_form( $product );
-
-		if ( ! $add_to_cart_form ) {
-			return '';
-		}
-
-		$classname          = $attributes['className'] ?? '';
-		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
-
-		return sprintf(
-			'<div class="wp-block-add-to-cart-form %1$s %2$s" style="%3$s">%4$s</div>',
-			esc_attr( $classes_and_styles['classes'] ),
-			esc_attr( $classname ),
-			esc_attr( $classes_and_styles['styles'] ),
-			$add_to_cart_form
-		);
 	}
 
 	/**
