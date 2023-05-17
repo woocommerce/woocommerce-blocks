@@ -176,7 +176,7 @@ class AddToCartForm extends AbstractBlock {
 		?>
 		<form class="cart" action="<?php echo esc_url( $product ); ?>" method="get">
 			<?php
-			echo $this->add_to_cart_button( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$this->add_to_cart_button( $product );
 			wc_query_string_form_fields( $add_to_cart_url );
 			?>
 		</form>
@@ -188,9 +188,11 @@ class AddToCartForm extends AbstractBlock {
 	 * Output the quantity input for add to cart form block.
 	 *
 	 * @param \WC_Product $product Product object.
+	 *
+	 * @return void
 	 */
 	protected function get_quantity_input( $product ) {
-		return woocommerce_quantity_input(
+		echo woocommerce_quantity_input( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			array(
 				'min_value'   => $product->get_min_purchase_quantity(),
 				'max_value'   => $product->get_max_purchase_quantity(),
@@ -206,10 +208,9 @@ class AddToCartForm extends AbstractBlock {
 	 * @param \WC_Product $product Product object.
 	 * @param string      $name Name of the button.
 	 *
-	 * @return string
+	 * @return void
 	 */
 	protected function add_to_cart_button( $product, $name = '' ) {
-		ob_start();
 		/**
 		 * Hook: woocommerce_before_add_to_cart_button.
 		 *
@@ -231,7 +232,6 @@ class AddToCartForm extends AbstractBlock {
 		 * @since TBD
 		 */
 		do_action( 'woocommerce_after_add_to_cart_button' );
-		return ob_get_clean();
 	}
 
 	/**
@@ -239,10 +239,10 @@ class AddToCartForm extends AbstractBlock {
 	 *
 	 * @param int $product_id Product ID.
 	 *
-	 * @return string
+	 * @return void
 	 */
 	protected function variable_inputs( $product_id ) {
-		return sprintf(
+		echo sprintf(
 			'<input type="hidden" name="add-to-cart" value="%1$s" />
 			<input type="hidden" name="product_id" value="%1$s" />
 			<input type="hidden" name="variation_id" class="variation_id" value="0" />',
@@ -333,8 +333,8 @@ class AddToCartForm extends AbstractBlock {
 					 * @since TBD
 					 */
 					do_action( 'woocommerce_after_add_to_cart_quantity' );
-					echo $this->add_to_cart_button( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo $this->variable_inputs( $product_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					$this->add_to_cart_button( $product );
+					$this->variable_inputs( $product_id );
 					?>
 				</div>
 				<?php
@@ -493,7 +493,7 @@ class AddToCartForm extends AbstractBlock {
 
 			<?php
 			if ( $quantites_required && $show_add_to_cart_button ) :
-				echo $this->add_to_cart_button( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				$this->add_to_cart_button( $product );
 			endif;
 			?>
 		</form>
