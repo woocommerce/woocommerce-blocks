@@ -188,7 +188,7 @@ describe( 'Test Min and Max rates', () => {
 			},
 		} );
 	} );
-	it( 'correctly returns Min and Max rates for shipping', () => {
+	it( 'returns the lowest and highest rates when flat rate shipping method is used', () => {
 		expect( getShippingPrices( testPackage.shipping_rates ) ).toEqual( {
 			min: {
 				rate_id: 'flat_rate:1',
