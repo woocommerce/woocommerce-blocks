@@ -142,13 +142,6 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 				return $block_content;
 			}
 
-			$block_hooks = array_filter(
-				$this->hook_data,
-				function( $hook ) use ( $block_name ) {
-					return $hook['block_name'] === $block_name;
-				}
-			);
-
 			$this->restore_default_hooks();
 
 			$content = sprintf(
