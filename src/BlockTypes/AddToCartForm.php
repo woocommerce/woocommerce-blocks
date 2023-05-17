@@ -340,7 +340,7 @@ class AddToCartForm extends AbstractBlock {
 		$post             = get_post( $product->get_id() );
 		$grouped_products = array_filter( array_map( 'wc_get_product', $product->get_children() ), 'wc_products_array_filter_visible_grouped' );
 
-		$this->grouped_product_form( $product, $post, $grouped_products );
+		return $this->grouped_product_form( $product, $post, $grouped_products );
 	}
 
 	/**
