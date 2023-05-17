@@ -5,7 +5,10 @@ import {
 	hasCollectableRate,
 	isPackageRateCollectable,
 } from '@woocommerce/base-utils';
-import { CartShippingRate } from '@woocommerce/type-defs/cart';
+import {
+	CartShippingRate,
+	CartShippingPackageShippingRate,
+} from '@woocommerce/type-defs/cart';
 import * as blockSettings from '@woocommerce/block-settings';
 
 /**
@@ -146,6 +149,17 @@ describe( 'Test Min and Max rates', () => {
 				5,
 				'flat_rate'
 			),
+		} );
+	} );
+	it( 'returns undefined as lowest and highest rates when shipping rates are not available', () => {
+		const testEmptyShippingRates: CartShippingPackageShippingRate[] = [];
+		expect( getLocalPickupPrices( testEmptyShippingRates ) ).toEqual( {
+			min: undefined,
+			max: undefined,
+		} );
+		expect( getShippingPrices( testEmptyShippingRates ) ).toEqual( {
+			min: undefined,
+			max: undefined,
 		} );
 	} );
 } );
