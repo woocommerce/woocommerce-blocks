@@ -5,7 +5,6 @@
 import { Icon, starEmpty } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
-import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
@@ -16,25 +15,19 @@ const featurePluginSupport = {
 	...metadata.supports,
 	...( isFeaturePluginBuild() && {
 		color: {
-			text: true,
-			background: false,
-			link: true,
+			...metadata.supports.color,
 			__experimentalSkipSerialization: true,
 		},
 		__experimentalBorder: {
 			radius: true,
 			__experimentalSkipSerialization: true,
 		},
-		...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
-			spacing: {
-				margin: true,
-				padding: true,
-				__experimentalSkipSerialization: true,
-			},
-		} ),
+		spacing: {
+			...metadata.supports.spacing,
+			__experimentalSkipSerialization: true,
+		},
 		typography: {
-			fontSize: true,
-			lineHeight: true,
+			...metadata.supports.typography,
 			__experimentalFontWeight: true,
 			__experimentalFontFamily: true,
 			__experimentalFontStyle: true,
