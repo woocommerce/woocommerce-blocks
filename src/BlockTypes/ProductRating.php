@@ -83,7 +83,12 @@ class ProductRating extends AbstractBlock {
 		$average      = $product->get_average_rating();
 
 		if ( ! $rating_count > 0 ) {
-			return '';
+			$product_permalink = $product->get_permalink();
+			if ( $product_permalink ) {
+				$product_review_url = esc_url( $product_permalink ) . '#reviews';
+				/* translators: %s: rating */
+				return '<a class="wc-block-components-product-rating__link" href="' . $product_review_url . '">' . __( 'Add review', 'woo-gutenberg-products-block' ) . '</a>';
+			}
 		}
 
 		$classname                             = $attributes['className'] ?? '';
@@ -91,19 +96,20 @@ class ProductRating extends AbstractBlock {
 		$parsed_attributes                     = $this->parse_attributes( $attributes );
 		$is_descendent_of_single_product_block = $parsed_attributes['isDescendentOfSingleProductBlock'] ?? false;
 		$is_single_product                     = is_singular( 'product' ) || $is_descendent_of_single_product_block;
-
-		ob_start();
 		// translators: %s: is referring to the total of reviews for a product.
-		echo $is_single_product && comments_open() ? wp_kses_post( sprintf( _n( '(%s customer review)', '(%s customer reviews)', $review_count, 'woo-gutenberg-products-block' ), '<span class="count">' . esc_html( $review_count ) . '</span>' ) ) : '';
-		$customer_reviews   = ob_get_clean();
+		$customer_reviews   = $is_single_product && comments_open() ? wp_kses_post( sprintf( _n( '(%s customer review)', '(%s customer reviews)', $review_count, 'woo-gutenberg-products-block' ), '<span class="count">' . esc_html( $review_count ) . '</span>' ) ) : '';
 		$product_review_url = get_permalink( $post_id ) . '#reviews';
+
+		/* translators: %s: rating */
+		$label = sprintf( __( 'Rated %s out of 5', 'woo-gutenberg-products-block' ), $average );
+		$html  = '<div class="star-rating" role="img" aria-label="' . esc_attr( $label ) . '">' . wc_get_star_rating_html( $average, $rating_count ) . '</div>';
 
 		return sprintf(
 			'<div class="wc-block-components-product-rating wc-block-grid__product-rating %1$s %2$s" style="%3$s">%4$s<a href="%5$s" class="woocommerce-review-link" rel="nofollow">%6$s<span class="count"></a></div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			esc_attr( $classes_and_styles['styles'] ),
-			wc_get_rating_html( $average, $rating_count ),
+			$html,
 			esc_url( $product_review_url ),
 			$customer_reviews
 		);
