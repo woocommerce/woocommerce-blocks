@@ -35,7 +35,7 @@ if [ -z "$attributes" ] || [ "$attributes" == "[]" ]; then
 fi
 
 ###################################################################################################
-# Import sample products and egenerate product lookup tables
+# Import sample products and regenerate product lookup tables
 ###################################################################################################
 
 wp-env run tests-cli "wp import wp-content/plugins/woocommerce/sample-data/sample_products.xml --authors=skip"
@@ -124,6 +124,16 @@ if [ "$pa_color" ] && [ "$pa_size" ]; then
 		--post_status=publish \
 		--post_author=1 \
 		--post_title='Active Filters block' \
+		--post_content=\"$post_content\"
+	"
+fi
+
+if [ "$pa_color" ]; then
+	post_content=$(cat "${script_dir}/filter-by-attributes.txt" | sed 's/"/\\"/g')
+	wp-env run tests-cli "wp post create \
+		--post_status=publish \
+		--post_author=1 \
+		--post_title='Filter by Attributes block' \
 		--post_content=\"$post_content\"
 	"
 fi
