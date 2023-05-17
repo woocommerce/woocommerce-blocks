@@ -5,6 +5,7 @@ use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
+use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
@@ -553,6 +554,16 @@ class BlockTemplatesController {
 			}
 
 			if ( ! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) ) {
+				add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
+			}
+		} elseif ( is_post_type_archive( 'product' ) && is_search() ) {
+			$templates = get_block_templates( array( 'slug__in' => array( ProductSearchResultsTemplate::SLUG ) ) );
+
+			if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
+				add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
+			}
+
+			if ( ! BlockTemplateUtils::theme_has_template( ProductSearchResultsTemplate::SLUG ) ) {
 				add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 			}
 		} elseif (
