@@ -28,7 +28,11 @@ const sharedConfig: Omit< BlockConfiguration, 'attributes' | 'title' > = {
 	supports: {
 		html: false,
 	},
-	ancestor: [ 'woocommerce/all-products', 'woocommerce/single-product' ],
+	ancestor: [
+		'woocommerce/all-products',
+		'woocommerce/single-product',
+		'woocommerce/product-collection',
+	],
 	save,
 	deprecated: [
 		{

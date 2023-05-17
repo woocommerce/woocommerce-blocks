@@ -10,8 +10,8 @@ import { useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
-import { ProductCollectionAttributes } from './types';
 import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
+import { ProductCollectionAttributes } from './types';
 import InspectorControls from './inspector-controls';
 
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
