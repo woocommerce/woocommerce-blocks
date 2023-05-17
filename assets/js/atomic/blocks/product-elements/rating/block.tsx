@@ -114,11 +114,7 @@ const ReviewsCount = ( props: { reviews: number } ): JSX.Element => {
 		reviews
 	);
 
-	return (
-		<span className="wc-block-components-product-rating__reviews_count">
-			{ reviewsCount }
-		</span>
-	);
+	return <a href="/">{ reviewsCount }</a>;
 };
 
 interface ProductRatingProps {
