@@ -56,6 +56,7 @@ export const updateTotals = ( totals: [ string, number ] | void ) => {
 		} );
 	}
 };
+
 export const getMiniCartTotalsFromLocalStorage = ():
 	| [ string, number ]
 	| void => {
