@@ -91,7 +91,7 @@ class AddToCartForm extends AbstractBlock {
 		 */
 		do_action( 'woocommerce_before_add_to_cart_form' );
 
-		echo $render_product;
+		echo $render_product; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		/**
 		 * Hook: woocommerce_after_add_to_cart_form.
@@ -114,13 +114,12 @@ class AddToCartForm extends AbstractBlock {
 		}
 
 		echo wc_get_stock_html( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		$add_to_cart_form_action = esc_url( $product->get_permalink() );
 
 		echo sprintf(
 			'<form class="cart" action="%1$s" method="post" enctype="multipart/form-data">%2$s %3$s</form>',
-			$add_to_cart_form_action,
-			$this->get_quantity_input( $product ),
-			$this->add_to_cart_button( $product, 'add-to-cart' )
+			esc_url( $product->get_permalink() ),
+			$this->get_quantity_input( $product ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$this->add_to_cart_button( $product, 'add-to-cart' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		);
 
 		return ob_get_clean();
@@ -163,7 +162,7 @@ class AddToCartForm extends AbstractBlock {
 	 *
 	 * @param \WC_Product $product Product object.
 	 *
-	 * return string
+	 * @return string
 	 */
 	protected function add_external_product_to_cart( $product ) {
 		$add_to_cart_url = $product->add_to_cart_url();
@@ -177,7 +176,7 @@ class AddToCartForm extends AbstractBlock {
 		?>
 		<form class="cart" action="<?php echo esc_url( $product ); ?>" method="get">
 			<?php
-			echo $this->add_to_cart_button( $product );
+			echo $this->add_to_cart_button( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			wc_query_string_form_fields( $add_to_cart_url );
 			?>
 		</form>
@@ -334,8 +333,8 @@ class AddToCartForm extends AbstractBlock {
 					 * @since TBD
 					 */
 					do_action( 'woocommerce_after_add_to_cart_quantity' );
-					echo $this->add_to_cart_button( $product );
-					echo $this->variable_inputs( $product_id );
+					echo $this->add_to_cart_button( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo $this->variable_inputs( $product_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					?>
 				</div>
 				<?php
@@ -369,7 +368,7 @@ class AddToCartForm extends AbstractBlock {
 	 * @param \WP_Post    $post Post object.
 	 * @param array       $grouped_products Array of grouped products.
 	 *
-	 * return string
+	 * @return string
 	 */
 	protected function grouped_product_form( $product, $post, $grouped_products ) {
 		ob_start();
@@ -494,7 +493,7 @@ class AddToCartForm extends AbstractBlock {
 
 			<?php
 			if ( $quantites_required && $show_add_to_cart_button ) :
-				echo $this->add_to_cart_button( $product );
+				echo $this->add_to_cart_button( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			endif;
 			?>
 		</form>
