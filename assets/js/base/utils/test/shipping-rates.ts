@@ -146,7 +146,7 @@ const testPackage: CartShippingRate = {
 	],
 };
 describe( 'Test Min and Max rates', () => {
-	it( 'correctly returns Min and Max rates for local pickup', () => {
+	it( 'returns the lowest and highest rates when local pickup method is used', () => {
 		expect( getLocalPickupPrices( testPackage.shipping_rates ) ).toEqual( {
 			min: {
 				rate_id: 'local_pickup:2',
