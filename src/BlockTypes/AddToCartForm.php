@@ -66,19 +66,19 @@ class AddToCartForm extends AbstractBlock {
 
 		switch ( $product_type ) {
 			case 'simple':
-				$render_product = $this->add_simple_product_to_cart( $product );
+				$add_to_cart_form = $this->add_simple_product_to_cart( $product );
 				break;
 			case 'variable':
-				$render_product = $this->add_variable_product_to_cart( $product );
+				$add_to_cart_form = $this->add_variable_product_to_cart( $product );
 				break;
 			case 'grouped':
-				$render_product = $this->add_grouped_product_to_cart( $product );
+				$add_to_cart_form = $this->add_grouped_product_to_cart( $product );
 				break;
 			case 'external':
-				$render_product = $this->add_external_product_to_cart( $product );
+				$add_to_cart_form = $this->add_external_product_to_cart( $product );
 				break;
 			default:
-				$render_product = '';
+				$add_to_cart_form = '';
 				break;
 		}
 
@@ -91,7 +91,7 @@ class AddToCartForm extends AbstractBlock {
 		 */
 		do_action( 'woocommerce_before_add_to_cart_form' );
 
-		echo $render_product; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $add_to_cart_form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		/**
 		 * Hook: woocommerce_after_add_to_cart_form.
@@ -187,19 +187,48 @@ class AddToCartForm extends AbstractBlock {
 	/**
 	 * Output the quantity input for add to cart form block.
 	 *
-	 * @param \WC_Product $product Product object.
+	 * @param \WC_Product      $product Product object.
+	 * @param string           $product_type Product type.
+	 * @param \WC_Product|null $grouped_product_child Child product object.
 	 *
 	 * @return void
 	 */
-	protected function get_quantity_input( $product ) {
-		echo woocommerce_quantity_input( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			array(
+	protected function get_quantity_input( $product, $product_type = 'simple', $grouped_product_child = null ) {
+		if ( 'simple' === $product_type || 'variable' === $product_type ) {
+			$args = [
 				'min_value'   => $product->get_min_purchase_quantity(),
 				'max_value'   => $product->get_max_purchase_quantity(),
 				'input_value' => isset( $_POST['quantity'] ) ? wc_stock_amount( wp_unslash( $_POST['quantity'] ) ) : $product->get_min_purchase_quantity(),
-			),
-			$product
-		);
+			];
+		} elseif ( 'grouped' === $product_type ) {
+			if ( ! $grouped_product_child ) {
+				return;
+			}
+
+			$args = [
+				'input_name'  => 'quantity[' . $grouped_product_child->get_id() . ']',
+				'input_value' => isset( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ? wc_stock_amount( wc_clean( wp_unslash( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				'min_value'   => 0,
+				'max_value'   => $grouped_product_child->get_max_purchase_quantity(),
+				'placeholder' => '0',
+			];
+		}
+
+		/**
+		 * Hook: woocommerce_before_add_to_cart_quantity.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_before_add_to_cart_quantity' );
+
+		echo woocommerce_quantity_input( $args, $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+		/**
+		 * Hook: woocommerce_after_add_to_cart_quantity.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_after_add_to_cart_quantity' );
 	}
 
 	/**
@@ -320,19 +349,7 @@ class AddToCartForm extends AbstractBlock {
 				<div class="woocommerce-variation single_variation"></div>
 				<div class="woocommerce-variation-add-to-cart variations_button">
 					<?php
-					/**
-					 * Hook: woocommerce_before_add_to_cart_quantity.
-					 *
-					 * @since TBD
-					 */
-					do_action( 'woocommerce_before_add_to_cart_quantity' );
 					$this->get_quantity_input( $product );
-					/**
-					 * Hook: woocommerce_after_add_to_cart_quantity.
-					 *
-					 * @since TBD
-					 */
-					do_action( 'woocommerce_after_add_to_cart_quantity' );
 					$this->add_to_cart_button( $product );
 					$this->variable_inputs( $product_id );
 					?>
@@ -425,29 +442,7 @@ class AddToCartForm extends AbstractBlock {
 									echo '<input type="checkbox" name="' . esc_attr( 'quantity[' . $grouped_product_child->get_id() . ']' ) . '" value="1" class="wc-grouped-product-add-to-cart-checkbox" id="' . esc_attr( 'quantity-' . $grouped_product_child->get_id() ) . '" />';
 									echo '<label for="' . esc_attr( 'quantity-' . $grouped_product_child->get_id() ) . '" class="screen-reader-text">' . esc_html__( 'Buy one of this item', 'woo-gutenberg-products-block' ) . '</label>';
 								} else {
-									/**
-									 * Hook: woocommerce_before_add_to_cart_quantity.
-									 *
-									 * @since TBD
-									 */
-									do_action( 'woocommerce_before_add_to_cart_quantity' );
-
-									woocommerce_quantity_input(
-										array(
-											'input_name'  => 'quantity[' . $grouped_product_child->get_id() . ']',
-											'input_value' => isset( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ? wc_stock_amount( wc_clean( wp_unslash( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
-											'min_value'   => 0,
-											'max_value'   => $grouped_product_child->get_max_purchase_quantity(),
-											'placeholder' => '0',
-										)
-									);
-
-									/**
-									 * Hook: woocommerce_after_add_to_cart_quantity.
-									 *
-									 * @since TBD
-									 */
-									do_action( 'woocommerce_after_add_to_cart_quantity' );
+									$this->get_quantity_input( $product, 'grouped', $grouped_product_child );
 								}
 
 								$value = ob_get_clean();
