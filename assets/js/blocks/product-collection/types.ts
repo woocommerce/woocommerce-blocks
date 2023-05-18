@@ -1,12 +1,12 @@
 export interface ProductCollectionAttributes {
 	query: ProductCollectionQuery;
 	queryId: number;
-	queryContext: [
+	queryContext?: [
 		{
 			page: number;
 		}
 	];
-	templateSlug: string;
+	templateSlug?: string;
 	displayLayout: {
 		type: string;
 		columns: number;
@@ -14,19 +14,19 @@ export interface ProductCollectionAttributes {
 }
 
 export interface ProductCollectionQuery {
-	author: string;
-	exclude: string[];
+	author?: string;
+	exclude?: string[];
 	inherit: boolean;
-	offset: number;
+	offset?: number;
 	order: TProductCollectionOrder;
 	orderBy: TProductCollectionOrderBy;
 	pages: number;
-	parents: number[];
-	perPage: number;
-	postType: string;
-	search: string;
-	sticky: string;
-	taxQuery: string;
+	parents?: number[];
+	perPage?: number;
+	postType?: string;
+	search?: string;
+	sticky?: string;
+	taxQuery?: string;
 }
 
 export type TProductCollectionOrder = 'asc' | 'desc';

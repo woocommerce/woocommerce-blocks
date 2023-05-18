@@ -28,9 +28,10 @@ const ProductCollectionInspectorControls = (
 				<ColumnsControl { ...props } />
 				<InheritQueryControl { ...props } />
 				{ displayQueryControls ? (
-					<>{ /** Placeholder for controls modyfing the query. */ }</>
+					<>
+						<OrderByControl { ...props } />
+					</>
 				) : null }
-				<OrderByControl { ...props } />
 			</PanelBody>
 		</InspectorControls>
 	);
