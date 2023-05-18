@@ -73,28 +73,22 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 
 		$block_name = $block['blockName'];
 
+		$block_hooks = array_filter(
+			$this->hook_data,
+			function( $hook ) use ( $block_name ) {
+				return $hook['block_name'] === $block_name;
+			}
+		);
+
 		// We want to inject hooks to the core/post-template block only when the products exist:
 		// https://github.com/woocommerce/woocommerce-blocks/issues/9463.
 		if ( 'core/post-template' === $block_name && ! empty( $block_content ) ) {
-			$before_shop_loop_hooks = array(
-				'before' => array(
-					'woocommerce_before_shop_loop' => $this->hook_data['woocommerce_before_shop_loop'],
-				),
-				'after'  => array(),
-			);
-			$after_shop_loop_hooks  = array(
-				'after'  => array(
-					'woocommerce_after_shop_loop' => $this->hook_data['woocommerce_after_shop_loop'],
-				),
-				'before' => array(),
-			);
-
 			$this->restore_default_hooks();
 			$content = sprintf(
 				'%1$s%2$s%3$s',
-				$this->get_hooks_buffer( $before_shop_loop_hooks['before'], 'before' ),
+				$this->get_hooks_buffer( $block_hooks, 'before' ),
 				$block_content,
-				$this->get_hooks_buffer( $after_shop_loop_hooks['after'], 'after' )
+				$this->get_hooks_buffer( $block_hooks, 'after' )
 			);
 			$this->remove_default_hooks();
 			return $content;
@@ -124,12 +118,32 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 			return $block_content;
 		}
 
-		$block_hooks = array_filter(
-			$this->hook_data,
-			function( $hook ) use ( $block_name ) {
-				return $hook['block_name'] === $block_name;
+		if (
+			'core/query-no-results' === $block_name
+		) {
+
+			/**
+			 * `core/query-no-result` is a special case because it can return two
+			 * different content depending on the context. We need to check if the
+			 * block content is empty to determine if we need to inject hooks.
+			 */
+			if ( empty( trim( $block_content ) ) ) {
+				return $block_content;
 			}
-		);
+
+			$this->restore_default_hooks();
+
+			$content = sprintf(
+				'%1$s%2$s%3$s',
+				$this->get_hooks_buffer( $block_hooks, 'before' ),
+				$block_content,
+				$this->get_hooks_buffer( $block_hooks, 'after' )
+			);
+
+			$this->remove_default_hooks();
+
+			return $content;
+		}
 
 		if (
 			'core/query-no-results' === $block_name
@@ -256,7 +270,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 				),
 			),
 			'woocommerce_before_shop_loop'            => array(
-				'block_name'                  => '',
+				'block_name'                  => 'core/post-template',
 				'position'                    => 'before',
 				'hooked'                      => array(
 					'woocommerce_output_all_notices' => 10,
@@ -270,7 +284,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 				),
 			),
 			'woocommerce_after_shop_loop'             => array(
-				'block_name'                  => '',
+				'block_name'                  => 'core/post-template',
 				'position'                    => 'after',
 				'hooked'                      => array(
 					'woocommerce_pagination' => 10,
