@@ -146,6 +146,7 @@ class SingleProduct extends AbstractBlock {
 
 			if ( ! $this->single_product_inner_blocks_names && $global_post_variable_changed ) {
 				wp_reset_postdata();
+				$global_post_variable_changed = false;
 			}
 		}
 	}
