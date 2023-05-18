@@ -16,7 +16,8 @@ import InheritQueryControl from './inherit-query-control';
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
 ) => {
-	const { inherit: displayQueryControls } = props.attributes.query;
+	const { inherit } = props.attributes.query;
+	const displayQueryControls = ! inherit;
 
 	return (
 		<InspectorControls>
