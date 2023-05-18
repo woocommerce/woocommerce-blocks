@@ -225,6 +225,12 @@ const ProductTemplateEdit = ( {
 		);
 	}
 
+	const buildContext = ( product ) => ( {
+		postType: 'product',
+		postId: product.id,
+		product,
+	} );
+
 	// To avoid flicker when switching active block contexts, a preview is rendered
 	// for each block context, but the preview for the active block context is hidden.
 	// This ensures that when it is displayed again, the cached rendering of the
@@ -232,7 +238,10 @@ const ProductTemplateEdit = ( {
 	return (
 		<ul { ...blockProps }>
 			{ products.map( ( product ) => (
-				<BlockContextProvider key={ product.id } value={ { product } }>
+				<BlockContextProvider
+					key={ product.id }
+					value={ { ...buildContext( product ) } }
+				>
 					{ product.id ===
 					( activeBlockContextId || products[ 0 ]?.id ) ? (
 						<ProductTemplateInnerBlocks />
