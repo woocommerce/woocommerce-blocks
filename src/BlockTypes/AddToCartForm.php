@@ -195,19 +195,25 @@ class AddToCartForm extends AbstractBlock {
 	 */
 	protected function get_quantity_input( $product, $product_type = 'simple', $grouped_product_child = null ) {
 		if ( 'simple' === $product_type || 'variable' === $product_type ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$input_value = isset( $_POST['quantity'] ) ? wc_stock_amount( wp_unslash( $_POST['quantity'] ) ) : $product->get_min_purchase_quantity();
+
 			$args = [
 				'min_value'   => $product->get_min_purchase_quantity(),
 				'max_value'   => $product->get_max_purchase_quantity(),
-				'input_value' => isset( $_POST['quantity'] ) ? wc_stock_amount( wp_unslash( $_POST['quantity'] ) ) : $product->get_min_purchase_quantity(),
+				'input_value' => $input_value,
 			];
 		} elseif ( 'grouped' === $product_type ) {
 			if ( ! $grouped_product_child ) {
 				return;
 			}
 
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$input_value = isset( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ? wc_stock_amount( wc_clean( wp_unslash( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ) ) : '';
+
 			$args = [
 				'input_name'  => 'quantity[' . $grouped_product_child->get_id() . ']',
-				'input_value' => isset( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ? wc_stock_amount( wc_clean( wp_unslash( $_POST['quantity'][ $grouped_product_child->get_id() ] ) ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				'input_value' => $input_value,
 				'min_value'   => 0,
 				'max_value'   => $grouped_product_child->get_max_purchase_quantity(),
 				'placeholder' => '0',
