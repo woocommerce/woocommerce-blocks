@@ -145,40 +145,6 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 			return $content;
 		}
 
-		if (
-			'core/query-no-results' === $block_name
-		) {
-
-			/**
-			 * `core/query-no-result` is a special case because it can return two
-			 * different content depending on the context. We need to check if the
-			 * block content is empty to determine if we need to inject hooks.
-			 */
-			if ( empty( trim( $block_content ) ) ) {
-				return $block_content;
-			}
-
-			$block_hooks = array_filter(
-				$this->hook_data,
-				function( $hook ) use ( $block_name ) {
-					return $hook['block_name'] === $block_name;
-				}
-			);
-
-			$this->restore_default_hooks();
-
-			$content = sprintf(
-				'%1$s%2$s%3$s',
-				$this->get_hooks_buffer( $block_hooks, 'before' ),
-				$block_content,
-				$this->get_hooks_buffer( $block_hooks, 'after' )
-			);
-
-			$this->remove_default_hooks();
-
-			return $content;
-		}
-
 		return sprintf(
 			'%1$s%2$s%3$s',
 			$this->get_hooks_buffer( $block_hooks, 'before' ),
