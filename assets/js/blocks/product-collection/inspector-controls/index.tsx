@@ -12,6 +12,7 @@ import { __ } from '@wordpress/i18n';
 import { ProductCollectionAttributes } from '../types';
 import ColumnsControl from './columns-control';
 import InheritQueryControl from './inherit-query-control';
+import OrderByControl from './order-by-control';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -29,6 +30,7 @@ const ProductCollectionInspectorControls = (
 				{ displayQueryControls ? (
 					<>{ /** Placeholder for controls modyfing the query. */ }</>
 				) : null }
+				<OrderByControl { ...props } />
 			</PanelBody>
 		</InspectorControls>
 	);
