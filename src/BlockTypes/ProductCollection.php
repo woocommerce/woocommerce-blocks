@@ -109,7 +109,8 @@ class ProductCollection extends AbstractBlock {
 	 */
 	public function build_query( $query, $block ) {
 		// If not in context of product collection block, return the query as is.
-		if ( ! $block->context['query']['isProductCollectionBlock'] ) {
+		$is_product_collection_block = $block->context['query']['isProductCollectionBlock'] ?? false;
+		if ( ! $is_product_collection_block ) {
 			return $query;
 		}
 
