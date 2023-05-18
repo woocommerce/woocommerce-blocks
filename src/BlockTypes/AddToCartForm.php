@@ -113,14 +113,16 @@ class AddToCartForm extends AbstractBlock {
 			return '';
 		}
 
+		ob_start();
 		echo wc_get_stock_html( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
-		echo sprintf(
-			'<form class="cart" action="%1$s" method="post" enctype="multipart/form-data">%2$s %3$s</form>',
-			esc_url( $product->get_permalink() ),
-			$this->get_quantity_input( $product ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			$this->add_to_cart_button( $product, 'add-to-cart' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		);
+		?>
+		<form class="cart" action="<?php esc_url( $product->get_permalink() ); ?>" method="post" enctype="multipart/form-data">
+			<?php
+			$this->get_quantity_input( $product );
+			$this->add_to_cart_button( $product, 'add-to-cart' );
+			?>
+		</form>
+		<?php
 
 		return ob_get_clean();
 	}
