@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { getSetting, STORE_PAGES } from '@woocommerce/settings';
+import {
+	getSetting,
+	STORE_PAGES,
+	CountryAddressFields,
+} from '@woocommerce/settings';
 
 export type WordCountType =
 	| 'words'
@@ -41,22 +45,63 @@ export const CART_URL = STORE_PAGES.cart.permalink;
 export const LOGIN_URL = STORE_PAGES.myaccount.permalink
 	? STORE_PAGES.myaccount.permalink
 	: getSetting( 'wpLoginUrl', '/wp-login.php' );
-export const SHIPPING_COUNTRIES = getSetting< Record< string, string > >(
-	'shippingCountries',
-	{}
-);
-export const ALLOWED_COUNTRIES = getSetting< Record< string, string > >(
-	'allowedCountries',
-	{}
-);
-export const SHIPPING_STATES = getSetting<
-	Record< string, Record< string, string > >
->( 'shippingStates', {} );
-export const ALLOWED_STATES = getSetting< Record< string, string > >(
-	'allowedStates',
-	{}
-);
 export const LOCAL_PICKUP_ENABLED = getSetting< boolean >(
 	'localPickupEnabled',
 	false
+);
+
+type CountryData = {
+	code: string;
+	name: string;
+	allowBilling: boolean;
+	allowShipping: boolean;
+	states: Record< string, string >;
+	locale: CountryAddressFields;
+};
+const countryData = getSetting< CountryData[] >( 'countryData', {} );
+
+export const ALLOWED_COUNTRIES = Object.fromEntries(
+	Object.values( countryData )
+		.filter( ( data ) => {
+			return data.allowBilling === true;
+		} )
+		.map( ( data ) => {
+			return [ data.code, data.name ];
+		} )
+);
+
+export const ALLOWED_STATES = Object.fromEntries(
+	Object.values( countryData )
+		.filter( ( data ) => {
+			return data.allowBilling === true;
+		} )
+		.map( ( data ) => {
+			return [ data.code, data.states ];
+		} )
+);
+
+export const SHIPPING_COUNTRIES = Object.fromEntries(
+	Object.values( countryData )
+		.filter( ( data ) => {
+			return data.allowShipping === true;
+		} )
+		.map( ( data ) => {
+			return [ data.code, data.name ];
+		} )
+);
+
+export const SHIPPING_STATES = Object.fromEntries(
+	Object.values( countryData )
+		.filter( ( data ) => {
+			return data.allowShipping === true;
+		} )
+		.map( ( data ) => {
+			return [ data.code, data.states ];
+		} )
+);
+
+export const COUNTRY_LOCALE = Object.fromEntries(
+	Object.values( countryData ).map( ( data ) => {
+		return [ data.code, data.locale ];
+	} )
 );
