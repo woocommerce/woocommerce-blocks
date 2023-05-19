@@ -46,7 +46,6 @@ const EmptyPlaceholder = () => (
 const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 	const editSiteStore = useSelect( 'core/edit-site' );
 	const isSiteEditor = isSiteEditorPage( editSiteStore );
-
 	const getInspectorControls = () => {
 		const {
 			hasCount,
@@ -160,7 +159,7 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 								'woo-gutenberg-products-block'
 							) }
 							help={ __(
-								'When enabled this will only apply to product category pages',
+								'This will effect product category pages',
 								'woo-gutenberg-products-block'
 							) }
 							checked={ showChildrenOnly }
