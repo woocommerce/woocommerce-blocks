@@ -19,6 +19,7 @@ import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 import { BlockAttributes } from './types';
 import './editor.scss';
+import { useIsDescendentOfSingleProductBlock } from '../shared/use-is-descendent-of-single-product-block';
 
 const Edit = ( {
 	attributes,
@@ -33,11 +34,19 @@ const Edit = ( {
 		...context,
 	};
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
+	const { isDescendentOfSingleProductBlock } =
+		useIsDescendentOfSingleProductBlock( {
+			blockClientId: blockProps?.id,
+		} );
 
-	useEffect(
-		() => setAttributes( { isDescendentOfQueryLoop } ),
-		[ setAttributes, isDescendentOfQueryLoop ]
-	);
+	useEffect( () => {
+		setAttributes( { isDescendentOfQueryLoop } );
+		setAttributes( { isDescendentOfSingleProductBlock } );
+	}, [
+		setAttributes,
+		isDescendentOfQueryLoop,
+		isDescendentOfSingleProductBlock,
+	] );
 
 	return (
 		<>

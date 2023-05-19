@@ -2,7 +2,7 @@
 	"name": "@woocommerce/block-library",
 	"title": "WooCommerce Blocks",
 	"author": "Automattic",
-	"version": "10.2.0-dev",
+	"version": "10.3.0-dev",
 	"description": "WooCommerce blocks for the Gutenberg editor.",
 	"homepage": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/",
 	"keywords": [
@@ -27,7 +27,8 @@
 		"./assets/js/blocks/filter-wrapper/register-components.ts",
 		"./assets/js/blocks/product-query/variations/**.tsx",
 		"./assets/js/blocks/product-query/index.tsx",
-		"./assets/js/blocks/product-query/inspector-controls.tsx"
+		"./assets/js/blocks/product-query/inspector-controls.tsx",
+		"./assets/js/templates/revert-button/index.tsx"
 	],
 	"repository": {
 		"type": "git",
@@ -39,7 +40,6 @@
 		"build": "rimraf build/* && cross-env BABEL_ENV=default NODE_ENV=production webpack",
 		"build:check-assets": "rimraf build/* && cross-env ASSET_CHECK=true BABEL_ENV=default NODE_ENV=production webpack",
 		"build:deploy": "rimraf vendor/* && cross-env WOOCOMMERCE_BLOCKS_PHASE=2 composer install --no-dev && cross-env WOOCOMMERCE_BLOCKS_PHASE=2 npm run build --loglevel error",
-		"build:e2e-test": "npm run build",
 		"prebuild:docs": "rimraf docs/extensibility/actions.md & rimraf docs/extensibility/filters.md",
 		"build:docs": "./vendor/bin/wp-hooks-generator --input=src --output=bin/hook-docs/data && node ./bin/hook-docs",
 		"postbuild:docs": "./bin/add-doc-footer.sh",
@@ -149,7 +149,7 @@
 		"@woocommerce/eslint-plugin": "2.2.0",
 		"@woocommerce/woocommerce-rest-api": "1.0.1",
 		"@wordpress/api-fetch": "6.21.0",
-		"@wordpress/babel-preset-default": "7.8.0",
+		"@wordpress/babel-preset-default": "7.16.0",
 		"@wordpress/base-styles": "4.14.0",
 		"@wordpress/block-editor": "8.2.0",
 		"@wordpress/blocks": "11.1.5",
@@ -159,7 +159,8 @@
 		"@wordpress/dependency-extraction-webpack-plugin": "3.2.1",
 		"@wordpress/dom": "3.27.0",
 		"@wordpress/e2e-test-utils": "10.1.0",
-		"@wordpress/e2e-tests": "4.6.0",
+		"@wordpress/e2e-test-utils-playwright": "https://github.com/woocommerce/woocommerce-blocks/files/11286971/wordpress-e2e-test-utils-playwright-0.0.0.tgz",
+		"@wordpress/e2e-tests": "^4.6.0",
 		"@wordpress/element": "4.20.0",
 		"@wordpress/env": "5.16.0",
 		"@wordpress/html-entities": "3.24.0",
@@ -252,6 +253,7 @@
 		"@wordpress/plugins": "4.10.0",
 		"@wordpress/primitives": "3.0.4",
 		"@wordpress/server-side-render": "3.10.0",
+		"@wordpress/style-engine": "^1.15.0",
 		"@wordpress/url": "3.13.0",
 		"@wordpress/wordcount": "3.13.0",
 		"change-case": "^4.1.2",
