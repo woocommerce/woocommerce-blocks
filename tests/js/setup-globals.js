@@ -32,16 +32,43 @@ global.wcSettings = {
 		userLocale: 'en_US',
 		weekdaysShort: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
 	},
-	shippingCountries: {
-		AT: 'Austria',
-		CA: 'Canada',
-		GB: 'United Kingdom (UK)',
-	},
-	shippingStates: {
-		CA: {
-			ON: 'Ontario',
+	countryData: [
+		{
+			code: 'AT',
+			name: 'Austria',
+			states: {},
+			allowBilling: true,
+			allowShipping: true,
+			locale: {
+				postcode: { priority: 65 },
+				state: { required: false, hidden: true },
+			},
 		},
-	},
+		{
+			code: 'CA',
+			name: 'Canada',
+			states: {
+				ON: 'Ontario',
+			},
+			allowBilling: true,
+			allowShipping: true,
+			locale: {
+				postcode: { label: 'Postal code' },
+				state: { label: 'Province' },
+			},
+		},
+		{
+			code: 'GB',
+			name: 'United Kingdom (UK)',
+			states: {},
+			allowBilling: true,
+			allowShipping: true,
+			locale: {
+				postcode: { label: 'Postcode' },
+				state: { label: 'County', required: false },
+			},
+		},
+	],
 	storePages: {
 		myaccount: {
 			id: 0,
@@ -72,20 +99,6 @@ global.wcSettings = {
 			id: 0,
 			title: '',
 			permalink: '',
-		},
-	},
-	countryLocale: {
-		GB: {
-			postcode: { label: 'Postcode' },
-			state: { label: 'County', required: false },
-		},
-		AT: {
-			postcode: { priority: 65 },
-			state: { required: false, hidden: true },
-		},
-		CA: {
-			postcode: { label: 'Postal code' },
-			state: { label: 'Province' },
 		},
 	},
 	attributes: [

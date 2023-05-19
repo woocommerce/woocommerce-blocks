@@ -25,4 +25,51 @@ class CartCheckoutUtils {
 		$checkout_page_id = wc_get_page_id( 'checkout' );
 		return $checkout_page_id && has_block( 'woocommerce/checkout', $checkout_page_id );
 	}
+
+	/**
+	 * Gets country codes, names, states, and locale information.
+	 *
+	 * @return array
+	 */
+	public static function get_country_data() {
+		$billing_countries  = WC()->countries->get_allowed_countries();
+		$shipping_countries = WC()->countries->get_shipping_countries();
+		$country_locales    = wc()->countries->get_country_locale();
+		$country_states     = wc()->countries->get_states();
+		$all_countries      = self::deep_sort_with_accents( array_unique( array_merge( $billing_countries, $shipping_countries ) ) );
+
+		return array_map(
+			function( $country_code ) use ( $country_states, $country_locales, $all_countries, $billing_countries, $shipping_countries ) {
+				return [
+					'code'          => $country_code,
+					'name'          => $all_countries [ $country_code ] ?? '',
+					'allowBilling'  => isset( $billing_countries[ $country_code ] ),
+					'allowShipping' => isset( $shipping_countries[ $country_code ] ),
+					'states'        => self::deep_sort_with_accents( $country_states[ $country_code ] ?? [] ),
+					'locale'        => $country_locales[ $country_code ] ?? [],
+				];
+			},
+			array_keys( $all_countries )
+		);
+	}
+
+	/**
+	 * Removes accents from an array of values, sorts by the values, then returns the original array values sorted.
+	 *
+	 * @param array $array Array of values to sort.
+	 * @return array Sorted array.
+	 */
+	protected static function deep_sort_with_accents( $array ) {
+		if ( ! is_array( $array ) || empty( $array ) ) {
+			return $array;
+		}
+
+		if ( is_array( reset( $array ) ) ) {
+			return array_map( [ __CLASS__, 'deep_sort_with_accents' ], $array );
+		}
+
+		$array_without_accents = array_map( 'remove_accents', array_map( 'wc_strtolower', array_map( 'html_entity_decode', $array ) ) );
+		asort( $array_without_accents );
+		return array_replace( $array_without_accents, $array );
+	}
 }
