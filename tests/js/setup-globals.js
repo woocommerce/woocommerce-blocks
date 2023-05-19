@@ -5,7 +5,6 @@ require( '@wordpress/data' );
 global.wcSettings = {
 	adminUrl: 'https://vagrant.local/wp/wp-admin/',
 	shippingMethodsExist: true,
-	countries: [],
 	currency: {
 		code: 'USD',
 		precision: 2,
@@ -32,10 +31,13 @@ global.wcSettings = {
 		userLocale: 'en_US',
 		weekdaysShort: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
 	},
-	countryData: [
-		{
-			code: 'AT',
-			name: 'Austria',
+	countries: {
+		AT: 'Austria',
+		CA: 'Canada',
+		GB: 'United Kingdom (UK)',
+	},
+	countryData: {
+		AT: {
 			states: {},
 			allowBilling: true,
 			allowShipping: true,
@@ -44,9 +46,7 @@ global.wcSettings = {
 				state: { required: false, hidden: true },
 			},
 		},
-		{
-			code: 'CA',
-			name: 'Canada',
+		CA: {
 			states: {
 				ON: 'Ontario',
 			},
@@ -57,9 +57,7 @@ global.wcSettings = {
 				state: { label: 'Province' },
 			},
 		},
-		{
-			code: 'GB',
-			name: 'United Kingdom (UK)',
+		GB: {
 			states: {},
 			allowBilling: true,
 			allowShipping: true,
@@ -68,7 +66,7 @@ global.wcSettings = {
 				state: { label: 'County', required: false },
 			},
 		},
-	],
+	},
 	storePages: {
 		myaccount: {
 			id: 0,

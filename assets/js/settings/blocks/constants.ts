@@ -51,57 +51,63 @@ export const LOCAL_PICKUP_ENABLED = getSetting< boolean >(
 );
 
 type CountryData = {
-	code: string;
-	name: string;
 	allowBilling: boolean;
 	allowShipping: boolean;
 	states: Record< string, string >;
 	locale: CountryAddressFields;
 };
-const countryData = getSetting< CountryData[] >( 'countryData', {} );
+
+// Contains country names.
+const countries = getSetting< Record< string, string > >( 'countries', {} );
+
+// Contains country settings.
+const countryData = getSetting< Record< string, CountryData > >(
+	'countryData',
+	{}
+);
 
 export const ALLOWED_COUNTRIES = Object.fromEntries(
-	Object.values( countryData )
-		.filter( ( data ) => {
-			return data.allowBilling === true;
+	Object.keys( countryData )
+		.filter( ( countryCode ) => {
+			return countryData[ countryCode ].allowBilling === true;
 		} )
-		.map( ( data ) => {
-			return [ data.code, data.name ];
+		.map( ( countryCode ) => {
+			return [ countryCode, countries[ countryCode ] || '' ];
 		} )
 );
 
 export const ALLOWED_STATES = Object.fromEntries(
-	Object.values( countryData )
-		.filter( ( data ) => {
-			return data.allowBilling === true;
+	Object.keys( countryData )
+		.filter( ( countryCode ) => {
+			return countryData[ countryCode ].allowBilling === true;
 		} )
-		.map( ( data ) => {
-			return [ data.code, data.states ];
+		.map( ( countryCode ) => {
+			return [ countryCode, countryData[ countryCode ].states || [] ];
 		} )
 );
 
 export const SHIPPING_COUNTRIES = Object.fromEntries(
-	Object.values( countryData )
-		.filter( ( data ) => {
-			return data.allowShipping === true;
+	Object.keys( countryData )
+		.filter( ( countryCode ) => {
+			return countryData[ countryCode ].allowShipping === true;
 		} )
-		.map( ( data ) => {
-			return [ data.code, data.name ];
+		.map( ( countryCode ) => {
+			return [ countryCode, countries[ countryCode ] || '' ];
 		} )
 );
 
 export const SHIPPING_STATES = Object.fromEntries(
-	Object.values( countryData )
-		.filter( ( data ) => {
-			return data.allowShipping === true;
+	Object.keys( countryData )
+		.filter( ( countryCode ) => {
+			return countryData[ countryCode ].allowShipping === true;
 		} )
-		.map( ( data ) => {
-			return [ data.code, data.states ];
+		.map( ( countryCode ) => {
+			return [ countryCode, countryData[ countryCode ].states || [] ];
 		} )
 );
 
 export const COUNTRY_LOCALE = Object.fromEntries(
-	Object.values( countryData ).map( ( data ) => {
-		return [ data.code, data.locale ];
+	Object.keys( countryData ).map( ( countryCode ) => {
+		return [ countryCode, countryData[ countryCode ].locale || [] ];
 	} )
 );

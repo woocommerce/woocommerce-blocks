@@ -38,19 +38,18 @@ class CartCheckoutUtils {
 		$country_states     = wc()->countries->get_states();
 		$all_countries      = self::deep_sort_with_accents( array_unique( array_merge( $billing_countries, $shipping_countries ) ) );
 
-		return array_map(
-			function( $country_code ) use ( $country_states, $country_locales, $all_countries, $billing_countries, $shipping_countries ) {
-				return [
-					'code'          => $country_code,
-					'name'          => $all_countries [ $country_code ] ?? '',
-					'allowBilling'  => isset( $billing_countries[ $country_code ] ),
-					'allowShipping' => isset( $shipping_countries[ $country_code ] ),
-					'states'        => self::deep_sort_with_accents( $country_states[ $country_code ] ?? [] ),
-					'locale'        => $country_locales[ $country_code ] ?? [],
-				];
-			},
-			array_keys( $all_countries )
-		);
+		$country_data = [];
+
+		foreach ( array_keys( $all_countries ) as $country_code ) {
+			$country_data[ $country_code ] = [
+				'allowBilling'  => isset( $billing_countries[ $country_code ] ),
+				'allowShipping' => isset( $shipping_countries[ $country_code ] ),
+				'states'        => self::deep_sort_with_accents( $country_states[ $country_code ] ?? [] ),
+				'locale'        => $country_locales[ $country_code ] ?? [],
+			];
+		}
+
+		return $country_data;
 	}
 
 	/**
