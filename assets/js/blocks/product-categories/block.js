@@ -43,8 +43,14 @@ const EmptyPlaceholder = () => (
  */
 const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 	const getInspectorControls = () => {
-		const { hasCount, hasImage, hasEmpty, isDropdown, isHierarchical } =
-			attributes;
+		const {
+			hasCount,
+			hasImage,
+			hasEmpty,
+			isDropdown,
+			isHierarchical,
+			showChildrenOnly,
+		} = attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -140,6 +146,22 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 						checked={ hasEmpty }
 						onChange={ () =>
 							setAttributes( { hasEmpty: ! hasEmpty } )
+						}
+					/>
+					<ToggleControl
+						label={ __(
+							'Only show children of current category',
+							'woo-gutenberg-products-block'
+						) }
+						help={ __(
+							'When enabled this will only apply to product category pages',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ showChildrenOnly }
+						onChange={ () =>
+							setAttributes( {
+								showChildrenOnly: ! showChildrenOnly,
+							} )
 						}
 					/>
 				</PanelBody>
