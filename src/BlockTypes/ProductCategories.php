@@ -161,6 +161,13 @@ class ProductCategories extends AbstractDynamicBlock {
 			);
 		}
 
+		// If they have $children_only enabled, and the current category is the last child in the hierarchy
+		// we need to show the current category instead of rendering nothing at all.
+		if ( $children_only && ( ! is_array( $categories ) || empty( $categories ) ) ) {
+			$current_category = get_term( $term_id, 'product_cat' );
+			return [ $current_category ];
+		}
+
 		if ( ! is_array( $categories ) || empty( $categories ) ) {
 			return [];
 		}
