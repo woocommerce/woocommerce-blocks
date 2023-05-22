@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import { InspectorControls, PlainText } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl, TextControl } from '@wordpress/components';
 import { withInstanceId } from '@wordpress/compose';
@@ -29,11 +28,30 @@ import './style.scss';
  * @param {string}            props.instanceId
  * @param {function(any):any} props.setAttributes          Setter for block attributes.
  */
+interface EditProps {
+	attributes: {
+		label: string;
+		placeholder: string;
+		formId: string;
+		className: string;
+		hasLabel: boolean;
+		align: string;
+	};
+	instanceId: number;
+	setAttributes: ( attributes: {
+		label?: string;
+		placeholder?: string;
+		formId?: string;
+		className?: string;
+		hasLabel?: boolean;
+		align?: string;
+	} ) => void;
+}
 const Edit = ( {
 	attributes: { label, placeholder, formId, className, hasLabel, align },
 	instanceId,
 	setAttributes,
-} ) => {
+}: EditProps ) => {
 	const classes = classnames(
 		'wc-block-product-search',
 		align ? 'align' + align : '',
@@ -126,25 +144,6 @@ const Edit = ( {
 			</div>
 		</>
 	);
-};
-
-Edit.propTypes = {
-	/**
-	 * The attributes for this block.
-	 */
-	attributes: PropTypes.object.isRequired,
-	/**
-	 * A unique ID for identifying the label for the select dropdown.
-	 */
-	instanceId: PropTypes.number,
-	/**
-	 * Whether it's in the editor or frontend display.
-	 */
-	isEditor: PropTypes.bool,
-	/**
-	 * A callback to update attributes.
-	 */
-	setAttributes: PropTypes.func,
 };
 
 export default withInstanceId( Edit );
