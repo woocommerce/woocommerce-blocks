@@ -99,9 +99,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - New Mini Cart count badge which is only visible if there is at least one item in the cart. ([9259](https://github.com/woocommerce/woocommerce-blocks/pull/9259))
 - [Pattern] Add new `Hero product chessboard` pattern. ([9180](https://github.com/woocommerce/woocommerce-blocks/pull/9180))
 - Trigger the set-billing-address from the shipping step. ([8841](https://github.com/woocommerce/woocommerce-blocks/pull/8841))
-- Products (Beta): Add a filter to allow merchants to hand-pick a subset of products. ([7925](https://github.com/woocommerce/woocommerce-blocks/pull/7925))
 - Product Collection: Add columns control to product collection block editor settings. ([9466](https://github.com/woocommerce/woocommerce-blocks/pull/9466))
-- Foundation of New `Product Collection` Block. ([9352](https://github.com/woocommerce/woocommerce-blocks/pull/9352))
 
 #### Bug Fixes
 
