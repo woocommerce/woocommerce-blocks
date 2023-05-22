@@ -36,12 +36,12 @@
 
 		<!-- wp:group {"align":"full","style":{"spacing":{"padding":"0px","blockGap":"0px","margin":{"top":"0px","bottom":"40px","left":"0px"}}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"center","verticalAlignment":"center"}} -->
 		<div class="wp-block-group alignfull" style="margin-top:0px;margin-bottom:40px;margin-left:0px;padding:0">
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"28px"},"color":{"text":"#000000"},"spacing":{"margin":{"right":"8px"}}}} -->
-			<p class="has-text-color" style="color:#000000;margin-right:8px;font-size:28px;"><strong><sup><sub>$</sub></sup>37.49</strong></p>
+			<!-- wp:paragraph {"style":{"spacing":{"padding":{"right":"5px"}},"typography":{"fontSize":"28px"},"color":{"text":"#000000"}}} -->
+			<p class="has-text-color" style="color:#000000;font-size:28px;padding-right:5px"><strong><sup><sub>$</sub></sup>37.49</strong></p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"28px"},"layout":{"selfStretch":"fit","flexSize":null},"color":{"text":"#d3d3d3ff"}}} -->
-			<p class="has-text-color" style="color:#d3d3d3ff;font-size:28px;"><s>$47.49</s></p>
+			<!-- wp:paragraph {"style":{"typography":{"fontSize":"28px","fontWeight":"400"},"layout":{"selfStretch":"fit","flexSize":null},"color":{"text":"#d3d3d3ff"}}} -->
+			<p class="has-text-color" style="color:#d3d3d3ff;font-size:28px;font-weight:400;"><s>$47.49</s></p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:group -->
