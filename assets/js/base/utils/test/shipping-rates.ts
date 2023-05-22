@@ -45,7 +45,6 @@ const generateRate = (
 	name: string,
 	price: string,
 	instanceID: number,
-	methodId: string,
 	selected = false
 ): typeof testPackage.shipping_rates[ 0 ] => {
 	return {
@@ -56,7 +55,7 @@ const generateRate = (
 		price,
 		taxes: '0',
 		instance_id: instanceID,
-		method_id: methodId,
+		method_id: name.toLowerCase().split( ' ' ).join( '_' ),
 		meta_data: [],
 		selected,
 		currency_code: 'USD',
@@ -83,72 +82,25 @@ const testPackage: CartShippingRate = {
 	},
 	items: [],
 	shipping_rates: [
-		generateRate( 'flat_rate:1', 'Flat rate', '10', 1, 'flat_rate', false ),
-		generateRate(
-			'local_pickup:1',
-			'Local pickup',
-			'0',
-			2,
-			'local_pickup',
-			false
-		),
-		generateRate(
-			'local_pickup:2',
-			'Local pickup',
-			'10',
-			3,
-			'local_pickup',
-			false
-		),
-		generateRate(
-			'local_pickup:3',
-			'Local pickup',
-			'50',
-			4,
-			'local_pickup',
-			false
-		),
-		generateRate( 'flat_rate:2', 'Flat rate', '50', 5, 'flat_rate', false ),
+		generateRate( 'flat_rate:1', 'Flat rate', '10', 1 ),
+		generateRate( 'local_pickup:1', 'Local pickup', '0', 2 ),
+		generateRate( 'local_pickup:2', 'Local pickup', '10', 3 ),
+		generateRate( 'local_pickup:3', 'Local pickup', '50', 4 ),
+		generateRate( 'flat_rate:2', 'Flat rate', '50', 5 ),
 	],
 };
 describe( 'Test Min and Max rates', () => {
 	it( 'returns the lowest and highest rates when local pickup method is used', () => {
 		expect( getLocalPickupPrices( testPackage.shipping_rates ) ).toEqual( {
-			min: generateRate(
-				'local_pickup:1',
-				'Local pickup',
-				'0',
-				2,
-				'local_pickup',
-				false
-			),
+			min: generateRate( 'local_pickup:1', 'Local pickup', '0', 2 ),
 
-			max: generateRate(
-				'local_pickup:3',
-				'Local pickup',
-				'50',
-				4,
-				'local_pickup',
-				false
-			),
+			max: generateRate( 'local_pickup:3', 'Local pickup', '50', 4 ),
 		} );
 	} );
 	it( 'returns the lowest and highest rates when flat rate shipping method is used', () => {
 		expect( getShippingPrices( testPackage.shipping_rates ) ).toEqual( {
-			min: generateRate(
-				'flat_rate:1',
-				'Flat rate',
-				'10',
-				1,
-				'flat_rate'
-			),
-			max: generateRate(
-				'flat_rate:2',
-				'Flat rate',
-				'50',
-				5,
-				'flat_rate'
-			),
+			min: generateRate( 'flat_rate:1', 'Flat rate', '10', 1 ),
+			max: generateRate( 'flat_rate:2', 'Flat rate', '50', 5 ),
 		} );
 	} );
 	it( 'returns undefined as lowest and highest rates when shipping rates are not available', () => {
