@@ -8,7 +8,7 @@ import {
 } from '@woocommerce/price-format';
 import { CartResponse } from '@woocommerce/types';
 
-export const updateTotals = ( totals: [ string, number ] | void ) => {
+export const updateTotals = ( totals: [ string, number ] | undefined ) => {
 	if ( ! totals ) {
 		return;
 	}
@@ -59,12 +59,12 @@ export const updateTotals = ( totals: [ string, number ] | void ) => {
 
 export const getMiniCartTotalsFromLocalStorage = ():
 	| [ string, number ]
-	| void => {
+	| undefined => {
 	const rawMiniCartTotals = localStorage.getItem(
 		'wc-blocks_mini_cart_totals'
 	);
 	if ( ! rawMiniCartTotals ) {
-		return;
+		return undefined;
 	}
 	const miniCartTotals = JSON.parse( rawMiniCartTotals );
 	const currency = getCurrencyFromPriceResponse( miniCartTotals.totals );
@@ -76,7 +76,7 @@ export const getMiniCartTotalsFromLocalStorage = ():
 };
 
 export const getMiniCartTotalsFromServer = async (): Promise<
-	[ string, number ] | void
+	[ string, number ] | undefined
 > => {
 	return fetch( '/wp-json/wc/store/v1/cart/' )
 		.then( ( response ) => {
@@ -107,5 +107,6 @@ export const getMiniCartTotalsFromServer = async (): Promise<
 		.catch( ( error ) => {
 			// eslint-disable-next-line no-console
 			console.error( error );
+			return undefined;
 		} );
 };
