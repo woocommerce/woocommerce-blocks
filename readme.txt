@@ -85,7 +85,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 #### Enhancements
 
-- Product Collection: Add 'Order By' Control to Product Collection Inspector. ([9480](https://github.com/woocommerce/woocommerce-blocks/pull/9480))
 - Add Banner pattern. ([9434](https://github.com/woocommerce/woocommerce-blocks/pull/9434))
 - Update Mini-Cart block editor sidebar with a clearer design and texts. ([9420](https://github.com/woocommerce/woocommerce-blocks/pull/9420))
 - Add product details pattern. ([9408](https://github.com/woocommerce/woocommerce-blocks/pull/9408))
@@ -99,7 +98,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - New Mini Cart count badge which is only visible if there is at least one item in the cart. ([9259](https://github.com/woocommerce/woocommerce-blocks/pull/9259))
 - [Pattern] Add new `Hero product chessboard` pattern. ([9180](https://github.com/woocommerce/woocommerce-blocks/pull/9180))
 - Trigger the set-billing-address from the shipping step. ([8841](https://github.com/woocommerce/woocommerce-blocks/pull/8841))
-- Product Collection: Add columns control to product collection block editor settings. ([9466](https://github.com/woocommerce/woocommerce-blocks/pull/9466))
 
 #### Bug Fixes
 
