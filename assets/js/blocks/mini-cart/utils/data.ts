@@ -40,7 +40,9 @@ export const updateTotals = ( totals: [ string, number ] | undefined ) => {
 		);
 	} );
 	miniCartQuantities.forEach( ( miniCartQuantity ) => {
-		miniCartQuantity.textContent = quantity.toString();
+		if ( quantity > 0 || miniCartQuantity.textContent !== '' ) {
+			miniCartQuantity.textContent = quantity.toString();
+		}
 	} );
 	miniCartAmounts.forEach( ( miniCartAmount ) => {
 		miniCartAmount.textContent = amount;
