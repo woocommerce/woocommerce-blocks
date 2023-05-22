@@ -117,7 +117,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Product Archive Template: Fix compatibility Layer with Product Recommendations extension. ([9452](https://github.com/woocommerce/woocommerce-blocks/pull/9452))
 - Fixed appearance of checkout form step headings in the editor. ([9437](https://github.com/woocommerce/woocommerce-blocks/pull/9437))
 - Global Styles: Fix radio control overlap when font-size is small. ([9436](https://github.com/woocommerce/woocommerce-blocks/pull/9436))
-- Fix bug in which optional postcodes were still validated. ([9377](https://github.com/woocommerce/woocommerce-blocks/pull/9377))
 - Fix COD availability on checkout. ([9375](https://github.com/woocommerce/woocommerce-blocks/pull/9375))
 - Addressed an issue where a fatal error could sometimes be thrown if a plugin modified a shipping package's rates incorrectly. ([9351](https://github.com/woocommerce/woocommerce-blocks/pull/9351))
 - Mini Cart block no longer uses the Modal component from `@wordpress/components`. ([9345](https://github.com/woocommerce/woocommerce-blocks/pull/9345))
