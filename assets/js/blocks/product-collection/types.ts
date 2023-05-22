@@ -1,25 +1,4 @@
-export interface Attributes {
-	queryId: number;
-	query: ProductCollectionQuery;
-}
-
-export interface ProductCollectionQuery {
-	author: string;
-	exclude: string[];
-	inherit: boolean;
-	offset: number;
-	order: 'asc' | 'desc';
-	orderBy: 'date' | 'relevance' | 'title';
-	pages: number;
-	parents: number[];
-	perPage: number;
-	postType: string;
-	search: string;
-	sticky: string;
-	taxQuery: string;
-}
-
-export interface ProductCollectionContext {
+export interface ProductCollectionAttributes {
 	query: ProductCollectionQuery;
 	queryId: number;
 	queryContext: [
@@ -33,3 +12,26 @@ export interface ProductCollectionContext {
 		columns: number;
 	};
 }
+
+export interface ProductCollectionQuery {
+	author: string;
+	exclude: string[];
+	inherit: boolean;
+	offset: number;
+	order: TProductCollectionOrder;
+	orderBy: TProductCollectionOrderBy;
+	pages: number;
+	parents: number[];
+	perPage: number;
+	postType: string;
+	search: string;
+	sticky: string;
+	taxQuery: string;
+}
+
+export type TProductCollectionOrder = 'asc' | 'desc';
+export type TProductCollectionOrderBy =
+	| 'date'
+	| 'title'
+	| 'popularity'
+	| 'rating';
