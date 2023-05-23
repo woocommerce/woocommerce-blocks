@@ -179,7 +179,7 @@ export const checkPaymentMethodsCanPay = async ( express = false ) => {
 					...Object.keys( paymentMethods ),
 				] )
 		  );
-	const canPayArgument = await getCanMakePaymentArg();
+	const canPayArgument = getCanMakePaymentArg();
 	const cartPaymentMethods = canPayArgument.paymentMethods as string[];
 	const isEditor = !! select( 'core/editor' );
 
