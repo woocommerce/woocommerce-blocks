@@ -199,6 +199,7 @@ class Cart extends AbstractBlock {
 		$this->asset_data_registry->add( 'shippingEnabled', wc_shipping_enabled(), true );
 		$this->asset_data_registry->add( 'hasDarkEditorStyleSupport', current_theme_supports( 'dark-editor-style' ), true );
 		$this->asset_data_registry->register_page_id( isset( $attributes['checkoutPageId'] ) ? $attributes['checkoutPageId'] : 0 );
+		$this->asset_data_registry->add( 'isBlockTheme', wc_current_theme_is_fse_theme(), true );
 
 		$pickup_location_settings = get_option( 'woocommerce_pickup_location_settings', [] );
 		$this->asset_data_registry->add( 'localPickupEnabled', wc_string_to_bool( $pickup_location_settings['enabled'] ?? 'no' ), true );
