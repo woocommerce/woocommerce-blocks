@@ -118,7 +118,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix COD availability on checkout. ([9375](https://github.com/woocommerce/woocommerce-blocks/pull/9375))
 - Addressed an issue where a fatal error could sometimes be thrown if a plugin modified a shipping package's rates incorrectly. ([9351](https://github.com/woocommerce/woocommerce-blocks/pull/9351))
 - Mini Cart block no longer uses the Modal component from `@wordpress/components`. ([9345](https://github.com/woocommerce/woocommerce-blocks/pull/9345))
-- Update the logic behind disabling some blocks in the widget areas and post editor using the `allowed_block_types_all` filter introduced in WP 5.8.0. ([9462](https://github.com/woocommerce/woocommerce-blocks/pull/9462))
 
 #### Performance
 
