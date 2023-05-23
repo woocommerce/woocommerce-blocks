@@ -82,25 +82,7 @@ class AddToCartForm extends AbstractBlock {
 				break;
 		}
 
-		ob_start();
-
-		/**
-		 * Hook: woocommerce_before_add_to_cart_form.
-		 *
-		 * @since TBD
-		 */
-		do_action( 'woocommerce_before_add_to_cart_form' );
-
-		echo $add_to_cart_form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
-		/**
-		 * Hook: woocommerce_after_add_to_cart_form.
-		 *
-		 * @since TBD
-		 */
-		do_action( 'woocommerce_after_add_to_cart_form' );
-
-		return ob_get_clean();
+		return $add_to_cart_form;
 	}
 
 	/**
@@ -114,7 +96,14 @@ class AddToCartForm extends AbstractBlock {
 		}
 
 		ob_start();
-		echo wc_get_stock_html( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		/**
+		 * Hook: woocommerce_before_add_to_cart_form.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_before_add_to_cart_form' );
+
+		echo wp_kses_post( wc_get_stock_html( $product ) );
 		?>
 		<form class="cart" action="<?php esc_url( $product->get_permalink() ); ?>" method="post" enctype="multipart/form-data">
 			<?php
@@ -123,6 +112,12 @@ class AddToCartForm extends AbstractBlock {
 			?>
 		</form>
 		<?php
+		/**
+		 * Hook: woocommerce_after_add_to_cart_form.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_after_add_to_cart_form' );
 
 		return ob_get_clean();
 	}
@@ -139,10 +134,9 @@ class AddToCartForm extends AbstractBlock {
 		$attributes           = $product->get_variation_attributes();
 		$attribute_keys       = array_keys( $attributes );
 		$available_variations = $product->get_available_variations();
-		$variations_json      = wp_json_encode( $available_variations );
-		$variations_attr      = wc_esc_json( $variations_json );
+		$variations_attr      = wp_json_encode( $available_variations );
 
-		return $this->variable_product_form( $product, $attributes, $attribute_keys, $available_variations, $variations_json, $variations_attr );
+		return $this->variable_product_form( $product, $attributes, $attribute_keys, $available_variations, $variations_attr );
 	}
 
 	/**
@@ -175,6 +169,12 @@ class AddToCartForm extends AbstractBlock {
 		}
 
 		ob_start();
+		/**
+		 * Hook: woocommerce_before_add_to_cart_form.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_before_add_to_cart_form' );
 		?>
 		<form class="cart" action="<?php echo esc_url( $product ); ?>" method="get">
 			<?php
@@ -183,6 +183,12 @@ class AddToCartForm extends AbstractBlock {
 			?>
 		</form>
 		<?php
+		/**
+		 * Hook: woocommerce_after_add_to_cart_form.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_after_add_to_cart_form' );
 		return ob_get_clean();
 	}
 
@@ -229,7 +235,7 @@ class AddToCartForm extends AbstractBlock {
 		 */
 		do_action( 'woocommerce_before_add_to_cart_quantity' );
 
-		echo woocommerce_quantity_input( $args, $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses_post( woocommerce_quantity_input( $args, $product ) );
 
 		/**
 		 * Hook: woocommerce_after_add_to_cart_quantity.
@@ -294,16 +300,22 @@ class AddToCartForm extends AbstractBlock {
 	 * @param array       $attributes Array of attributes.
 	 * @param array       $attribute_keys Array of attribute keys.
 	 * @param array       $available_variations Array of available variations.
-	 * @param string      $variations_json JSON encoded string of variations.
 	 * @param string      $variations_attr HTML encoded string of variations.
 	 *
 	 * @return string
 	 */
-	protected function variable_product_form( $product, $attributes, $attribute_keys, $available_variations, $variations_json, $variations_attr ) {
+	protected function variable_product_form( $product, $attributes, $attribute_keys, $available_variations, $variations_attr ) {
 		ob_start();
+		/**
+		 * Hook: woocommerce_before_add_to_cart_form.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_before_add_to_cart_form' );
+
 		$product_id = $product->get_id();
 		?>
-		<form class="variations_form cart" action="<?php echo esc_url( $product->get_permalink() ); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product_id ); ?>" data-product_variations="<?php echo $variations_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
+		<form class="variations_form cart" action="<?php echo esc_url( $product->get_permalink() ); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product_id ); ?>" data-product_variations="<?php echo wc_esc_json( $variations_attr ); ?>">
 		<?php
 		/**
 		 * Hook: woocommerce_before_variations_form.
@@ -320,7 +332,7 @@ class AddToCartForm extends AbstractBlock {
 				<tbody>
 				<?php foreach ( $attributes as $attribute_name => $options ) : ?>
 					<tr>
-						<th class="label"><label for="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>"><?php echo wc_attribute_label( $attribute_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label></th>
+						<th class="label"><label for="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>"><?php echo esc_html( wc_attribute_label( $attribute_name ) ); ?></label></th>
 						<td class="value">
 							<?php
 							wc_dropdown_variation_attribute_options(
@@ -382,6 +394,12 @@ class AddToCartForm extends AbstractBlock {
 		?>
 		</form>
 		<?php
+		/**
+		 * Hook: woocommerce_after_add_to_cart_form.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_after_add_to_cart_form' );
 
 		return ob_get_clean();
 	}
@@ -397,12 +415,18 @@ class AddToCartForm extends AbstractBlock {
 	 */
 	protected function grouped_product_form( $product, $post, $grouped_products ) {
 		ob_start();
+		/**
+		 * Hook: woocommerce_before_add_to_cart_form.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_before_add_to_cart_form' );
 		?>
 		<form class="cart grouped_form" action="<?php echo esc_url( $product->get_permalink() ); ?>" method="post" enctype='multipart/form-data'>
 			<table class="woocommerce-grouped-product-list group_table">
 				<tbody>
 				<?php
-				$quantites_required      = false;
+				$quantities_required     = false;
 				$previous_post           = $post;
 				$grouped_product_columns = array(
 					'quantity',
@@ -417,12 +441,12 @@ class AddToCartForm extends AbstractBlock {
 				 *
 				 * @since TBD
 				 */
-				do_action( 'woocommerce_grouped_product_list_before', $grouped_product_columns, $quantites_required, $product );
+				do_action( 'woocommerce_grouped_product_list_before', $grouped_product_columns, $quantities_required, $product );
 
 				foreach ( $grouped_products as $grouped_product_child ) {
-					$post_object        = get_post( $grouped_product_child->get_id() );
-					$quantites_required = $quantites_required || ( $grouped_product_child->is_purchasable() && ! $grouped_product_child->has_options() );
-					$post               = $post_object; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+					$post_object         = get_post( $grouped_product_child->get_id() );
+					$quantities_required = $quantities_required || ( $grouped_product_child->is_purchasable() && ! $grouped_product_child->has_options() );
+					$post                = $post_object; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 					setup_postdata( $post );
 
 					if ( $grouped_product_child->is_in_stock() ) {
@@ -487,7 +511,7 @@ class AddToCartForm extends AbstractBlock {
 				 *
 				 * @since TBD
 				 */
-				do_action( 'woocommerce_grouped_product_list_after', $grouped_product_columns, $quantites_required, $product );
+				do_action( 'woocommerce_grouped_product_list_after', $grouped_product_columns, $quantities_required, $product );
 				?>
 				</tbody>
 			</table>
@@ -495,12 +519,18 @@ class AddToCartForm extends AbstractBlock {
 			<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" />
 
 			<?php
-			if ( $quantites_required && $show_add_to_cart_button ) :
+			if ( $quantities_required && $show_add_to_cart_button ) :
 				$this->add_to_cart_button( $product );
 			endif;
 			?>
 		</form>
 		<?php
+		/**
+		 * Hook: woocommerce_after_add_to_cart_form.
+		 *
+		 * @since TBD
+		 */
+		do_action( 'woocommerce_after_add_to_cart_form' );
 		return ob_get_clean();
 	}
 
