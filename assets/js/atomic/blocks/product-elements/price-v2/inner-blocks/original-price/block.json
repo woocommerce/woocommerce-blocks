@@ -1,0 +1,12 @@
+{
+	"name": "woocommerce/original-price",
+	"version": "1.0.0",
+	"icon": "info",
+	"title": "Original Price",
+	"description": "Display the original price for the product",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}

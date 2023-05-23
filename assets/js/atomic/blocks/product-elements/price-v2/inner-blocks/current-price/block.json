@@ -1,0 +1,12 @@
+{
+	"name": "woocommerce/current-price",
+	"version": "1.0.0",
+	"icon": "info",
+	"title": "Current Price",
+	"description": "Display the current price for the product",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}

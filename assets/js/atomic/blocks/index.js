@@ -3,6 +3,7 @@
  */
 import './product-elements/title';
 import './product-elements/price';
+import './product-elements/price-v2';
 import './product-elements/image';
 import './product-elements/rating';
 import './product-elements/button';
