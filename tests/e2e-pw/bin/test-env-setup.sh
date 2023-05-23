@@ -226,14 +226,6 @@ wp-env run tests-cli "wp post create \
 	--post_content=\"$post_content\"
 "
 
-post_content=$(cat "${script_dir}/product-category.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Products by Category block' \
-	--post_content=\"$post_content\"
-"
-
 post_content=$(cat "${script_dir}/product-categories.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \

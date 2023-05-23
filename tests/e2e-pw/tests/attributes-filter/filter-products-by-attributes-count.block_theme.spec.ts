@@ -47,7 +47,7 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		await prepareAttributes( page );
 	} );
 
-	test( 'should show the correct count number of products based on the filter (color=blue|type=or)', async ( {
+	test( 'should show the correct count number of products based on the filter (color=blue|query_type_color=or)', async ( {
 		page,
 	} ) => {
 		await page.goto(
@@ -71,7 +71,7 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		}
 	} );
 
-	test( 'should show the correct count number of products based on the filter (color=blue,gray|type=or)', async ( {
+	test( 'should show the correct count number of products based on the filter (color=blue,gray|query_type_color=or)', async ( {
 		page,
 	} ) => {
 		await page.goto(
@@ -80,6 +80,30 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		await page.waitForLoadState( 'networkidle' );
 
 		const expectedValues = [ '4', '3', '2', '2', '0' ];
+
+		const lists = await page.$$(
+			'ul.wc-block-attribute-filter-list > li:not([class^="is-loading"]) .wc-filter-element-label-list-count > span:not([class^="screen-reader"])'
+		);
+
+		let index = 0;
+
+		for ( const list of lists ) {
+			const count = await list.innerText();
+
+			expect( count.includes( expectedValues[ index ] ) ).toBe( true );
+			index++;
+		}
+	} );
+
+	test( 'should show the correct count number of products based on the filter (color=blue|query_type_color=or|min_price=15|max_price=40)', async ( {
+		page,
+	} ) => {
+		await page.goto(
+			'/filter-by-attributes-block/?filter_color=blue&query_type_color=or&min_price=15&max_price=40'
+		);
+		await page.waitForLoadState( 'networkidle' );
+
+		const expectedValues = [ '2', '0', '1', '1', '0' ];
 
 		const lists = await page.$$(
 			'ul.wc-block-attribute-filter-list > li:not([class^="is-loading"]) .wc-filter-element-label-list-count > span:not([class^="screen-reader"])'
