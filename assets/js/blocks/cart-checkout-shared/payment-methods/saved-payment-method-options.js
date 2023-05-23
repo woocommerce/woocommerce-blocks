@@ -14,6 +14,11 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
 
 /**
+ * Internal dependencies
+ */
+import { getCanMakePaymentArg } from '../../../data/payment/utils/check-payment-methods';
+
+/**
  * @typedef {import('@woocommerce/type-defs/contexts').CustomerPaymentMethod} CustomerPaymentMethod
  * @typedef {import('@woocommerce/type-defs/contexts').PaymentStatusDispatch} PaymentStatusDispatch
  */
@@ -81,10 +86,34 @@ const SavedPaymentMethodOptions = () => {
 
 	const options = useMemo( () => {
 		const types = Object.keys( savedPaymentMethods );
+
+		// Get individual payment methods from saved payment methods and put them into a unique array.
+		const individualPaymentMethods = new Set(
+			types.flatMap( ( type ) =>
+				savedPaymentMethods[ type ].map(
+					( paymentMethod ) => paymentMethod.method.gateway
+				)
+			)
+		);
+
+		const methodsThatCanMakePayment = Array.from(
+			individualPaymentMethods
+		).filter( ( method ) => {
+			return paymentMethods[ method ]?.canMakePayment(
+				getCanMakePaymentArg()
+			);
+		} );
+
 		return types
 			.flatMap( ( type ) => {
 				const typeMethods = savedPaymentMethods[ type ];
 				return typeMethods.map( ( paymentMethod ) => {
+					const canMakePayment = methodsThatCanMakePayment.includes(
+						paymentMethod.method.gateway
+					);
+					if ( ! canMakePayment ) {
+						return null;
+					}
 					const isCC = type === 'cc' || type === 'echeck';
 					const paymentMethodSlug = paymentMethod.method.gateway;
 					return {
@@ -121,6 +150,7 @@ const SavedPaymentMethodOptions = () => {
 			.filter( Boolean );
 	}, [
 		savedPaymentMethods,
+		paymentMethods,
 		__internalSetActivePaymentMethod,
 		removeNotice,
 		dispatchCheckoutEvent,
