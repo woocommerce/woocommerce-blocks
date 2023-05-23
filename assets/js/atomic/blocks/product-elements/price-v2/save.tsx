@@ -1,17 +1,8 @@
 /**
  * External dependencies
  */
-import classnames from 'classnames';
+import { useInnerBlocksProps, useBlockProps } from '@wordpress/block-editor';
 
-export const save = ( { attributes } ) => {
-	if (
-		attributes.isDescendentOfSingleProductBlock ||
-		attributes.isDescendentOfSingleProductTemplate
-	) {
-		return null;
-	}
-
-	return (
-		<div className={ classnames( 'is-loading', attributes.className ) } />
-	);
-};
+export default function save() {
+	return <div { ...useInnerBlocksProps.save( useBlockProps.save() ) } />;
+}
