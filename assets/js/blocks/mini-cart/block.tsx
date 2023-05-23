@@ -47,6 +47,7 @@ interface Props {
 	colorClassNames?: string;
 	style?: Record< string, Record< string, string > >;
 	contents: string;
+	miniCartIcon?: 'cart' | 'bag' | 'bag-alt';
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
 }
@@ -57,6 +58,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 		colorClassNames,
 		style,
 		contents = '',
+		miniCartIcon,
 		addToCartBehaviour = 'none',
 		hasHiddenPrice = false,
 	} = attributes;
@@ -247,7 +249,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 						{ taxLabel }
 					</small>
 				) }
-				<QuantityBadge count={ cartItemsCount } />
+				<QuantityBadge count={ cartItemsCount } icon={ miniCartIcon } />
 			</button>
 			<Drawer
 				className={ classnames(
