@@ -43,31 +43,4 @@ class CheckoutTemplate extends AbstractPageTemplate {
 	public function is_active_template() {
 		return is_checkout();
 	}
-
-	/**
-	 * Migrates an existing page using blocks to the block templates.
-	 *
-	 * @param string $template_content The content of the template.
-	 * @return string
-	 */
-	public function get_default_template_content( $template_content ) {
-		$page = $this->get_placeholder_page();
-
-		if ( $page && ! empty( $page->post_content ) ) {
-			$template_content = '
-				<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
-				<!-- wp:group {"layout":{"inherit":true}} -->
-				<div class="wp-block-group">
-					<!-- wp:heading {"level":1} -->
-					<h1 class="wp-block-heading">' . wp_kses_post( $page->post_title ) . '</h1>
-					<!-- /wp:heading -->
-					' . wp_kses_post( $page->post_content ) . '
-				</div>
-				<!-- /wp:group -->
-				<!-- wp:template-part {"slug":"footer"} /-->
-			';
-		}
-
-		return $template_content;
-	}
 }
