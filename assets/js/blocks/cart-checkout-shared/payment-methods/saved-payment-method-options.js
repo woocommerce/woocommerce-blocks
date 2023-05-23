@@ -79,6 +79,7 @@ const SavedPaymentMethodOptions = () => {
 		} );
 	const { __internalSetActivePaymentMethod } =
 		useDispatch( PAYMENT_STORE_KEY );
+	const canMakePaymentArg = getCanMakePaymentArg();
 	const paymentMethods = getPaymentMethods();
 	const paymentMethodInterface = usePaymentMethodInterface();
 	const { removeNotice } = useDispatch( 'core/notices' );
@@ -100,7 +101,7 @@ const SavedPaymentMethodOptions = () => {
 			individualPaymentMethods
 		).filter( ( method ) => {
 			return paymentMethods[ method ]?.canMakePayment(
-				getCanMakePaymentArg()
+				canMakePaymentArg
 			);
 		} );
 
@@ -154,6 +155,7 @@ const SavedPaymentMethodOptions = () => {
 		__internalSetActivePaymentMethod,
 		removeNotice,
 		dispatchCheckoutEvent,
+		canMakePaymentArg,
 	] );
 	const savedPaymentMethodHandler =
 		!! activeSavedToken &&
