@@ -27,7 +27,8 @@
 		"./assets/js/blocks/filter-wrapper/register-components.ts",
 		"./assets/js/blocks/product-query/variations/**.tsx",
 		"./assets/js/blocks/product-query/index.tsx",
-		"./assets/js/blocks/product-query/inspector-controls.tsx"
+		"./assets/js/blocks/product-query/inspector-controls.tsx",
+		"./assets/js/templates/revert-button/index.tsx"
 	],
 	"repository": {
 		"type": "git",
@@ -116,6 +117,7 @@
 		"@storybook/addons": "6.5.9",
 		"@storybook/client-api": "6.5.14",
 		"@storybook/react": "6.5.15",
+		"@testing-library/dom": "9.3.0",
 		"@testing-library/jest-dom": "5.16.5",
 		"@testing-library/react": "12.1.5",
 		"@testing-library/react-hooks": "7.0.2",
@@ -161,7 +163,7 @@
 		"@wordpress/e2e-test-utils-playwright": "0.1.0",
 		"@wordpress/e2e-tests": "^4.6.0",
 		"@wordpress/element": "4.20.0",
-		"@wordpress/env": "5.16.0",
+		"@wordpress/env": "7.0.0",
 		"@wordpress/html-entities": "3.24.0",
 		"@wordpress/i18n": "4.24.0",
 		"@wordpress/is-shallow-equal": "4.24.0",
