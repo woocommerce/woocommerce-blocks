@@ -45,7 +45,11 @@ const ProductSearchBlock = ( {
 
 	return (
 		<div className={ classes }>
-			<form role="search" method="get" action={ HOME_URL }>
+			<form
+				role="search"
+				method="get"
+				action={ HOME_URL as string | undefined }
+			>
 				<label
 					htmlFor={ formId }
 					className={
@@ -68,7 +72,10 @@ const ProductSearchBlock = ( {
 					<button
 						type="submit"
 						className="wc-block-product-search__button"
-						label={ __( 'Search', 'woo-gutenberg-products-block' ) }
+						aria-label={ __(
+							'Search',
+							'woo-gutenberg-products-block'
+						) }
 					>
 						<svg
 							aria-hidden="true"
