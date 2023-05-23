@@ -427,7 +427,6 @@ class AddToCartForm extends AbstractBlock {
 				<tbody>
 				<?php
 				$quantities_required     = false;
-				$previous_post           = $post;
 				$grouped_product_columns = array(
 					'quantity',
 					'label',
@@ -444,10 +443,7 @@ class AddToCartForm extends AbstractBlock {
 				do_action( 'woocommerce_grouped_product_list_before', $grouped_product_columns, $quantities_required, $product );
 
 				foreach ( $grouped_products as $grouped_product_child ) {
-					$post_object         = get_post( $grouped_product_child->get_id() );
 					$quantities_required = $quantities_required || ( $grouped_product_child->is_purchasable() && ! $grouped_product_child->has_options() );
-					$post                = $post_object; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-					setup_postdata( $post );
 
 					if ( $grouped_product_child->is_in_stock() ) {
 						$show_add_to_cart_button = true;
@@ -504,8 +500,6 @@ class AddToCartForm extends AbstractBlock {
 
 					echo '</tr>';
 				}
-				$post = $previous_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-				setup_postdata( $post );
 				/**
 				 * Hook: woocommerce_grouped_product_list_after.
 				 *
