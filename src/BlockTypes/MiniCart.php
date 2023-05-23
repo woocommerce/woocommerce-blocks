@@ -372,15 +372,7 @@ class MiniCart extends AbstractBlock {
 			return;
 		}
 
-		$cart                = $this->get_cart_instance();
-		$cart_contents_total = $cart->get_subtotal();
-
-		if ( $cart->display_prices_including_tax() ) {
-			$cart_contents_total += $cart->get_subtotal_tax();
-		}
-
-		return '<span class="wc-block-mini-cart__amount">' . esc_html( wp_strip_all_tags( wc_price( $cart_contents_total ) ) ) . '</span>
-		' . $this->get_include_tax_label_markup();
+		return '<span class="wc-block-mini-cart__amount"></span>' . $this->get_include_tax_label_markup();
 	}
 
 	/**
@@ -389,10 +381,11 @@ class MiniCart extends AbstractBlock {
 	 * @return string
 	 */
 	protected function get_include_tax_label_markup() {
-		$cart                = $this->get_cart_instance();
-		$cart_contents_total = $cart->get_subtotal();
+		if ( empty( $this->tax_label ) ) {
+			return '';
+		}
 
-		return ( ! empty( $this->tax_label ) && 0 !== $cart_contents_total ) ? ( "<small class='wc-block-mini-cart__tax-label'>" . esc_html( $this->tax_label ) . '</small>' ) : '';
+		return "<small class='wc-block-mini-cart__tax-label' hidden>" . esc_html( $this->tax_label ) . '</small>';
 	}
 
 	/**
@@ -421,32 +414,12 @@ class MiniCart extends AbstractBlock {
 			return '';
 		}
 
-		$cart                = $this->get_cart_instance();
-		$cart_contents_count = $cart->get_cart_contents_count();
-		$cart_contents_total = $cart->get_subtotal();
-
-		if ( $cart->display_prices_including_tax() ) {
-			$cart_contents_total += $cart->get_subtotal_tax();
-		}
-
 		$classes_styles  = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, array( 'text_color', 'background_color', 'font_size', 'font_weight', 'font_family' ) );
 		$wrapper_classes = sprintf( 'wc-block-mini-cart wp-block-woocommerce-mini-cart %s', $classes_styles['classes'] );
 		if ( ! empty( $attributes['className'] ) ) {
 			$wrapper_classes .= ' ' . $attributes['className'];
 		}
 		$wrapper_styles = $classes_styles['styles'];
-
-		$aria_label = sprintf(
-			/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
-			_n(
-				'%1$d item in cart, total price of %2$s',
-				'%1$d items in cart, total price of %2$s',
-				$cart_contents_count,
-				'woo-gutenberg-products-block'
-			),
-			$cart_contents_count,
-			wp_strip_all_tags( wc_price( $cart_contents_total ) )
-		);
 
 		// Default "Cart" icon.
 		$icon = '<svg class="wc-block-mini-cart__icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -471,11 +444,10 @@ class MiniCart extends AbstractBlock {
 			}
 		}
 
-		$cart_contents_count = $cart_contents_count > 0 ? $cart_contents_count : '';
-		$button_html         = $this->get_cart_price_markup( $attributes ) . '
+		$button_html = $this->get_cart_price_markup( $attributes ) . '
 		<span class="wc-block-mini-cart__quantity-badge">
 			' . $icon . '
-			<span class="wc-block-mini-cart__badge">' . $cart_contents_count . '</span>
+			<span class="wc-block-mini-cart__badge"></span>
 		</span>';
 
 		if ( is_cart() || is_checkout() ) {
@@ -485,7 +457,7 @@ class MiniCart extends AbstractBlock {
 
 			// It is not necessary to load the Mini-Cart Block on Cart and Checkout page.
 			return '<div class="' . $wrapper_classes . '" style="visibility:hidden" aria-hidden="true">
-				<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '" disabled>' . $button_html . '</button>
+				<button class="wc-block-mini-cart__button" disabled>' . $button_html . '</button>
 			</div>';
 		}
 
@@ -513,7 +485,7 @@ class MiniCart extends AbstractBlock {
 		}
 
 		return '<div class="' . esc_attr( $wrapper_classes ) . '" style="' . esc_attr( $wrapper_styles ) . '">
-			<button class="wc-block-mini-cart__button" aria-label="' . esc_attr( $aria_label ) . '">' . $button_html . '</button>
+			<button class="wc-block-mini-cart__button">' . $button_html . '</button>
 			<div class="is-loading wc-block-components-drawer__screen-overlay wc-block-components-drawer__screen-overlay--is-hidden" aria-hidden="true">
 				<div class="wc-block-mini-cart__drawer wc-block-components-drawer">
 					<div class="wc-block-components-drawer__content">
