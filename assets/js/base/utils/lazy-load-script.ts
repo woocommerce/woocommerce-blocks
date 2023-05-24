@@ -45,6 +45,28 @@ const isScriptTagInDOM = ( scriptId: string, src = '' ): boolean => {
 		}
 	}
 
+	// PageOptimize concatenates several scripts into one. They can be
+	// identified with the `data-handles` attribute.
+	const pageOptimizeScriptTags = Array.from(
+		document.querySelectorAll( 'script[data-handles]' )
+	);
+	const pageOptimizeScriptInDom = pageOptimizeScriptTags.some(
+		( pageOptimizeScriptTag ) => {
+			if ( pageOptimizeScriptTag instanceof HTMLScriptElement ) {
+				const { handles } = pageOptimizeScriptTag.dataset;
+				const handlesArray = handles?.split( ',' );
+				const scriptSlug = scriptId.replace( '-js', '' );
+				if ( handlesArray?.includes( scriptSlug ) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+	);
+	if ( pageOptimizeScriptInDom ) {
+		return true;
+	}
+
 	const srcParts = src.split( '?' );
 	if ( srcParts?.length > 1 ) {
 		src = srcParts[ 0 ];
