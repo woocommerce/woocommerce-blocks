@@ -1,0 +1,1 @@
+<?php return array('dependencies' => array('wp-block-editor', 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-polyfill', 'wp-primitives'), 'version' => '83f6c6d2a94a63181c9c01b8682aa75e');
