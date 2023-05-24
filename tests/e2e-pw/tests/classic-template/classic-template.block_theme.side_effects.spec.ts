@@ -35,11 +35,11 @@ const templates = {
 		slug: 'taxonomy-product_cat',
 		frontendPage: '/product-category/music/',
 	},
-	'taxonomy-product_tag': {
-		templateTitle: 'Product Tag',
-		slug: 'taxonomy-product_tag',
-		frontendPage: '/product-tag/hoodie/',
-	},
+	// 'taxonomy-product_tag': {
+	// 	templateTitle: 'Product Tag',
+	// 	slug: 'taxonomy-product_tag',
+	// 	frontendPage: '/product-tag/hoodie/',
+	// },
 	'archive-product': {
 		templateTitle: 'Product Catalog',
 		slug: 'archive-product',
@@ -83,11 +83,6 @@ test.describe( `${ blockData.name } Block `, () => {
 			editor,
 			page,
 		} ) => {
-			if ( slug === 'taxonomy-product_tag' ) {
-				// Skip this test for now, currently the products don't have any tag.
-				test.skip();
-			}
-
 			await admin.visitSiteEditor( {
 				postId: `woocommerce/woocommerce//${ slug }`,
 				postType: 'wp_template',
