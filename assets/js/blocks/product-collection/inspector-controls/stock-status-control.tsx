@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { BlockEditProps } from '@wordpress/blocks';
+import fastDeepEqual from 'fast-deep-equal/es6';
 import {
 	FormTokenField,
 	// @ts-expect-error Using experimental features
@@ -14,7 +15,8 @@ import {
  * Internal dependencies
  */
 import { ProductCollectionAttributes } from '../types';
-import { STOCK_STATUS_OPTIONS, setQueryAttribute } from './utils';
+import { setQueryAttribute } from './utils';
+import { STOCK_STATUS_OPTIONS, getDefaultStockStatuses } from './constants';
 
 /**
  * Gets the id of a specific stock status from its text label
@@ -40,7 +42,18 @@ const StockStatusControl = (
 	return (
 		<ToolsPanelItem
 			label={ __( 'Stock status', 'woo-gutenberg-products-block' ) }
-			hasValue={ () => query.woocommerceStockStatus }
+			hasValue={ () =>
+				! fastDeepEqual(
+					query.woocommerceStockStatus,
+					getDefaultStockStatuses()
+				)
+			}
+			onDeselect={ () => {
+				setQueryAttribute( props, {
+					woocommerceStockStatus: getDefaultStockStatuses(),
+				} );
+			} }
+			isShownByDefault
 		>
 			<FormTokenField
 				label={ __( 'Stock status', 'woo-gutenberg-products-block' ) }
