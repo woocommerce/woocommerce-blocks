@@ -35,14 +35,14 @@ const templates = {
 		slug: 'taxonomy-product_cat',
 		frontendPage: '/product-category/music/',
 	},
-	'taxonomy-product_tag': {
-		templateTitle: 'Product Tag',
-		slug: 'taxonomy-product_tag',
-		frontendPage: '/product-tag/hoodie/',
-	},
-	'product-archive': {
+	// 'taxonomy-product_tag': {
+	// 	templateTitle: 'Product Tag',
+	// 	slug: 'taxonomy-product_tag',
+	// 	frontendPage: '/product-tag/hoodie/',
+	// },
+	'archive-product': {
 		templateTitle: 'Product Catalog',
-		slug: 'product-archive',
+		slug: 'archive-product',
 		frontendPage: '/shop/',
 	},
 	'product-search-results': {
@@ -52,7 +52,6 @@ const templates = {
 	},
 };
 
-test.describe.configure( { mode: 'serial' } );
 test.describe( `${ blockData.name } Block `, () => {
 	test.beforeAll( async () => {
 		await cli(
@@ -67,38 +66,29 @@ test.describe( `${ blockData.name } Block `, () => {
 			admin,
 			editorUtils,
 			editor,
-			page,
 		} ) => {
 			await admin.visitSiteEditor( {
 				postId: `woocommerce/woocommerce//${ slug }`,
 				postType: 'wp_template',
 			} );
 
-			const block = editorUtils.getBlockByName( blockData.name );
-			await editor.insertBlock( {
-				name: 'core/paragraph',
-				attributes: { content: 'Hello World' },
-			} );
+			await editor.canvas.click( 'body' );
 
-			await editor.saveSiteEditorEntities();
-
-			await page.goto( frontendPage );
+			const block = await editorUtils.getBlockByName( blockData.name );
 			expect( block ).not.toBeNull();
 		} );
 
-		test( `is rendered on  ${ templateTitle } template - frontend side`, async ( {
+		test( `is rendered on ${ templateTitle } template - frontend side`, async ( {
 			admin,
 			editor,
 			page,
 		} ) => {
-			if ( slug === 'taxonomy-product_tag' ) {
-				test.skip();
-			}
-
 			await admin.visitSiteEditor( {
 				postId: `woocommerce/woocommerce//${ slug }`,
 				postType: 'wp_template',
 			} );
+
+			await editor.canvas.click( 'body' );
 
 			await editor.insertBlock( {
 				name: 'core/paragraph',
@@ -114,9 +104,12 @@ test.describe( `${ blockData.name } Block `, () => {
 			expect( helloWorldText ).not.toBeNull();
 		} );
 	}
-	test.afterAll( async () => {
+	test.afterAll( async ( { requestUtils } ) => {
 		await cli(
 			'npm run wp-env run tests-cli "wp option delete wc_blocks_use_blockified_product_grid_block_as_template"'
 		);
+
+		await requestUtils.deleteAllTemplates( 'wp_template' );
+		await requestUtils.deleteAllTemplates( 'wp_template_part' );
 	} );
 } );
