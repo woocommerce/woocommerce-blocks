@@ -45,11 +45,7 @@ const ProductSearchBlock = ( {
 
 	return (
 		<div className={ classes }>
-			<form
-				role="search"
-				method="get"
-				action={ HOME_URL as string | undefined }
-			>
+			<form role="search" method="get" action={ HOME_URL }>
 				<label
 					htmlFor={ formId }
 					className={
