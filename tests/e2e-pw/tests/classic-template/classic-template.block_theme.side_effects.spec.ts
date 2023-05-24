@@ -52,7 +52,6 @@ const templates = {
 	},
 };
 
-test.describe.configure( { mode: 'serial' } );
 test.describe( `${ blockData.name } Block `, () => {
 	test.beforeAll( async () => {
 		await cli(
@@ -75,11 +74,11 @@ test.describe( `${ blockData.name } Block `, () => {
 
 			await editor.canvas.click( 'body' );
 
-			const block = editorUtils.getBlockByName( blockData.name );
+			const block = await editorUtils.getBlockByName( blockData.name );
 			expect( block ).not.toBeNull();
 		} );
 
-		test( `is rendered on  ${ templateTitle } template - frontend side`, async ( {
+		test( `is rendered on ${ templateTitle } template - frontend side`, async ( {
 			admin,
 			editor,
 			page,
