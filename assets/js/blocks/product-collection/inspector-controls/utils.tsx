@@ -2,11 +2,23 @@
  * External dependencies
  */
 import { BlockEditProps } from '@wordpress/blocks';
+import { getSetting } from '@woocommerce/settings';
+import { objectOmit } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
 import { ProductCollectionAttributes, ProductCollectionQuery } from '../types';
+
+export const STOCK_STATUS_OPTIONS = getSetting< Record< string, string > >(
+	'stockStatusOptions',
+	[]
+);
+
+const GLOBAL_HIDE_OUT_OF_STOCK = getSetting< boolean >(
+	'hideOutOfStockItems',
+	false
+);
 
 /**
  * Sets the new query arguments of a Product Query block
@@ -26,3 +38,9 @@ export function setQueryAttribute(
 		},
 	} );
 }
+
+export const getDefaultStockStatuses = () => {
+	return GLOBAL_HIDE_OUT_OF_STOCK
+		? Object.keys( objectOmit( STOCK_STATUS_OPTIONS, 'outofstock' ) )
+		: Object.keys( STOCK_STATUS_OPTIONS );
+};

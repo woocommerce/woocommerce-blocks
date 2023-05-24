@@ -30,6 +30,20 @@ export interface ProductCollectionQuery {
 	sticky: string;
 	taxQuery: string;
 	woocommerceOnSale: boolean;
+	/**
+	 * Filter products by their stock status.
+	 *
+	 * Will generate the following `meta_query`:
+	 *
+	 * ```
+	 * array(
+	 *   'key'     => '_stock_status',
+	 *   'value'   => (array) $stock_statii,
+	 *   'compare' => 'IN',
+	 * ),
+	 * ```
+	 */
+	woocommerceStockStatus?: string[];
 }
 
 export type TProductCollectionOrder = 'asc' | 'desc';
