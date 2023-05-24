@@ -10,6 +10,7 @@ import { objectOmit } from '@woocommerce/utils';
 import blockJson from '../block.json';
 import {
 	ProductCollectionAttributes,
+	ProductCollectionQuery,
 	TProductCollectionOrder,
 	TProductCollectionOrderBy,
 } from '../types';
@@ -32,9 +33,10 @@ export const getDefaultStockStatuses = () => {
 		: Object.keys( STOCK_STATUS_OPTIONS );
 };
 
-export const DEFAULT_FILTERS = {
+export const DEFAULT_FILTERS: Partial< ProductCollectionQuery > = {
 	woocommerceOnSale: defaultQuery.woocommerceOnSale,
 	woocommerceStockStatus: getDefaultStockStatuses(),
+	search: '',
 };
 
 export const getDefaultSettings = (
