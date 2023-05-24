@@ -116,6 +116,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix COD availability on checkout. ([9375](https://github.com/woocommerce/woocommerce-blocks/pull/9375))
 - Addressed an issue where a fatal error could sometimes be thrown if a plugin modified a shipping package's rates incorrectly. ([9351](https://github.com/woocommerce/woocommerce-blocks/pull/9351))
 - Mini Cart block no longer uses the Modal component from `@wordpress/components`. ([9345](https://github.com/woocommerce/woocommerce-blocks/pull/9345))
+- Fix: ensure the global product variable is restored to its original value after being overridden within the Add to Cart with Options block. ([9581](https://github.com/woocommerce/woocommerce-blocks/pull/9581))
 
 #### Performance
 
