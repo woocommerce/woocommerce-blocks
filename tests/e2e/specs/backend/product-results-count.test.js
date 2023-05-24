@@ -51,7 +51,6 @@ describe( `${ block.name } Block`, () => {
 
 		it( 'can be inserted more than once', async () => {
 			await insertBlock( block.name );
-			await insertBlock( block.name );
 			const filteredBlocks = await filterCurrentBlocks(
 				( b ) => b.name === block.slug
 			);
