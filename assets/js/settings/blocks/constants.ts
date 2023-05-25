@@ -54,7 +54,7 @@ type CountryData = {
 	allowBilling: boolean;
 	allowShipping: boolean;
 	states: Record< string, string >;
-	locale: CountryAddressFields;
+	locale: Record< string, LocaleSpecificAddressField >;
 };
 
 // Contains country names.
