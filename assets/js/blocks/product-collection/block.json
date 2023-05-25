@@ -29,7 +29,8 @@
 				"taxQuery": null,
 				"parents": [],
 				"isProductCollectionBlock": true,
-				"woocommerceOnSale": false
+				"woocommerceOnSale": false,
+				"woocommerceAttributes": []
 			}
 		},
 		"tagName": {

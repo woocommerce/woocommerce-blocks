@@ -37,6 +37,7 @@ export const DEFAULT_FILTERS: Partial< ProductCollectionQuery > = {
 	woocommerceOnSale: defaultQuery.woocommerceOnSale,
 	woocommerceStockStatus: getDefaultStockStatuses(),
 	search: '',
+	woocommerceAttributes: defaultQuery.woocommerceAttributes,
 };
 
 export const getDefaultSettings = (
