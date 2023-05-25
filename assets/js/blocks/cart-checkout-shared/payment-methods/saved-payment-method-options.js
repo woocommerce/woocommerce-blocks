@@ -89,7 +89,7 @@ const SavedPaymentMethodOptions = () => {
 		const types = Object.keys( savedPaymentMethods );
 
 		// Get individual payment methods from saved payment methods and put them into a unique array.
-		const individualPaymentMethods = new Set(
+		const individualPaymentGateways = new Set(
 			types.flatMap( ( type ) =>
 				savedPaymentMethods[ type ].map(
 					( paymentMethod ) => paymentMethod.method.gateway
@@ -97,8 +97,8 @@ const SavedPaymentMethodOptions = () => {
 			)
 		);
 
-		const methodsThatCanMakePayment = Array.from(
-			individualPaymentMethods
+		const gatewaysThatCanMakePayment = Array.from(
+			individualPaymentGateways
 		).filter( ( method ) => {
 			return paymentMethods[ method ]?.canMakePayment(
 				canMakePaymentArg
@@ -109,7 +109,7 @@ const SavedPaymentMethodOptions = () => {
 			.flatMap( ( type ) => {
 				const typeMethods = savedPaymentMethods[ type ];
 				return typeMethods.map( ( paymentMethod ) => {
-					const canMakePayment = methodsThatCanMakePayment.includes(
+					const canMakePayment = gatewaysThatCanMakePayment.includes(
 						paymentMethod.method.gateway
 					);
 					if ( ! canMakePayment ) {
