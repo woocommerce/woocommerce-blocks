@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Component } from '@wordpress/element';
 import { Disabled, PanelBody } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
@@ -17,24 +16,26 @@ import { getSetting } from '@woocommerce/settings';
  * Internal dependencies
  */
 import { Props } from './types';
-
 /**
  * Component to handle edit mode of "Top Rated Products".
  */
+export const ProductTopRatedBlock = ( {
+	attributes,
+	name,
+	setAttributes,
+}: Props ) => {
+	const {
+		categories,
+		catOperator,
+		columns,
+		contentVisibility,
+		rows,
+		alignButtons,
+		stockStatus,
+		isPreview,
+	} = attributes;
 
-class ProductTopRatedBlock extends Component< Props > {
-	getInspectorControls() {
-		const { attributes, setAttributes } = this.props;
-		const {
-			categories,
-			catOperator,
-			columns,
-			contentVisibility,
-			rows,
-			alignButtons,
-			stockStatus,
-		} = attributes;
-
+	const getInspectorControls = () => {
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody
@@ -96,27 +97,20 @@ class ProductTopRatedBlock extends Component< Props > {
 				</PanelBody>
 			</InspectorControls>
 		);
+	};
+
+	if ( isPreview ) {
+		return gridBlockPreview;
 	}
 
-	render() {
-		const { name, attributes } = this.props;
-
-		if ( attributes.isPreview ) {
-			return gridBlockPreview;
-		}
-
-		return (
-			<>
-				{ this.getInspectorControls() }
-				<Disabled>
-					<ServerSideRender
-						block={ name }
-						attributes={ attributes }
-					/>
-				</Disabled>
-			</>
-		);
-	}
-}
+	return (
+		<>
+			{ getInspectorControls() }
+			<Disabled>
+				<ServerSideRender block={ name } attributes={ attributes } />
+			</Disabled>
+		</>
+	);
+};
 
 export default ProductTopRatedBlock;
