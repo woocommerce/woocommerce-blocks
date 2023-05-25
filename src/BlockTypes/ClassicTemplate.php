@@ -36,7 +36,23 @@ class ClassicTemplate extends AbstractDynamicBlock {
 		parent::initialize();
 		add_filter( 'render_block', array( $this, 'add_alignment_class_to_wrapper' ), 10, 2 );
 		add_filter( 'woocommerce_product_query_meta_query', array( $this, 'filter_products_by_stock' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
+	}
 
+	/**
+	 * Enqueue assets used for rendering the block in editor context.
+	 *
+	 * This is needed if a block is not yet within the post content--`render` and `enqueue_assets` may not have ran.
+	 */
+	public function enqueue_block_assets() {
+		// Ensures frontend styles for blocks exist in the site editor iframe.
+		if ( class_exists( 'WC_Frontend_Scripts' ) && is_admin() ) {
+			$frontend_scripts = new \WC_Frontend_Scripts();
+			$styles           = $frontend_scripts::get_styles();
+			foreach ( $styles as $handle => $style ) {
+				wp_enqueue_style( $handle, $style['src'], $style['deps'], $style['version'], $style['media'] );
+			}
+		}
 	}
 
 	/**
