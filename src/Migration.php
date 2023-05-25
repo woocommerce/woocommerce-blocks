@@ -17,7 +17,7 @@ class Migration {
 	 */
 	private $db_upgrades = array(
 		'10.3.0' => array(
-			'wc_blocks_update_1020_blockified_product_grid_block',
+			'wc_blocks_update_1030_blockified_product_grid_block',
 		),
 	);
 
