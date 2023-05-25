@@ -11,6 +11,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ###################################################################################################
 
 wp-env run tests-cli "wp site empty --yes"
+wp-env run tests-cli "wp plugin activate woocommerce-blocks"
 
 ###################################################################################################
 # If no attributes exist, otherwiese create them
