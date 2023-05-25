@@ -23,7 +23,7 @@ export const ProductTopRatedBlock = ( {
 	attributes,
 	name,
 	setAttributes,
-}: Props ) => {
+}: Props ): JSX.Element => {
 	const {
 		categories,
 		catOperator,
