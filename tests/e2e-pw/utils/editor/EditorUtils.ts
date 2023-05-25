@@ -13,6 +13,6 @@ export class EditorUtils {
 	}
 
 	async getBlockByName( name: string ) {
-		return this.editor.canvas.locator( `[data-type="${ name }}"]` );
+		return this.editor.canvas.locator( `[data-type="${ name }"]` );
 	}
 }
