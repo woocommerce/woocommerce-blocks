@@ -12,7 +12,7 @@ import './style.scss';
 interface Props {
 	count: number;
 	colorClassNames?: string;
-	icon?: '' | 'cart' | 'bag' | 'bag-alt';
+	icon?: 'cart' | 'bag' | 'bag-alt';
 }
 
 const QuantityBadge = ( { count, icon }: Props ): JSX.Element => {

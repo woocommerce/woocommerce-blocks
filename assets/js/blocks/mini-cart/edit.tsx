@@ -27,7 +27,7 @@ import QuantityBadge from './quantity-badge';
 import './editor.scss';
 
 interface Attributes {
-	miniCartIcon: '' | 'cart' | 'bag' | 'bag-alt';
+	miniCartIcon: 'cart' | 'bag' | 'bag-alt';
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
 	cartAndCheckoutRenderStyle: boolean;
