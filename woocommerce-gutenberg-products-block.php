@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 10.3.0-dev
+ * Version: 20.0.0
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
@@ -66,7 +66,7 @@ if ( version_compare( $GLOBALS['wp_version'], $minimum_wp_version, '<' ) ) {
 		if ( should_display_compatibility_notices() ) {
 			?>
 			<div class="notice notice-error">
-				<p><?php esc_html_e( 'The WooCommerce Blocks feature plugin requires a more recent version of WordPress and has been paused. Please update WordPress to continue enjoying WooCommerce Blocks.', 'woo-gutenberg-products-block' ); ?></p>
+				<p><?php esc_html_e( 'The WooCommerce Blocks feature plugin requires a more recent version of WordPress and has been paused. Please update WordPress to continue enjoying WooCommerce Blocks.', 'woocommerce' ); ?></p>
 			</div>
 			<?php
 		}
@@ -103,7 +103,7 @@ if ( woocommerce_blocks_is_development_version() && ( ! defined( 'JETPACK_AUTOLO
 			echo '<div class="error"><p>';
 			printf(
 				/* translators: %1$s is referring to a php constant name, %2$s is referring to the wp-config.php file. */
-				esc_html__( 'WooCommerce Blocks development mode requires the %1$s constant to be defined and true in your %2$s file. Otherwise you are loading the blocks package from WooCommerce core.', 'woo-gutenberg-products-block' ),
+				esc_html__( 'WooCommerce Blocks development mode requires the %1$s constant to be defined and true in your %2$s file. Otherwise you are loading the blocks package from WooCommerce core.', 'woocommerce' ),
 				'JETPACK_AUTOLOAD_DEV',
 				'wp-config.php'
 			);
@@ -130,7 +130,7 @@ if ( is_readable( $autoloader ) ) {
 		error_log(  // phpcs:ignore
 			sprintf(
 				/* translators: 1: composer command. 2: plugin directory */
-				esc_html__( 'Your installation of the WooCommerce Blocks feature plugin is incomplete. Please run %1$s within the %2$s directory.', 'woo-gutenberg-products-block' ),
+				esc_html__( 'Your installation of the WooCommerce Blocks feature plugin is incomplete. Please run %1$s within the %2$s directory.', 'woocommerce' ),
 				'`composer install`',
 				'`' . esc_html( str_replace( ABSPATH, '', __DIR__ ) ) . '`'
 			)
@@ -148,7 +148,7 @@ if ( is_readable( $autoloader ) ) {
 				<?php
 				printf(
 					/* translators: 1: composer command. 2: plugin directory */
-					esc_html__( 'Your installation of the WooCommerce Blocks feature plugin is incomplete. Please run %1$s within the %2$s directory.', 'woo-gutenberg-products-block' ),
+					esc_html__( 'Your installation of the WooCommerce Blocks feature plugin is incomplete. Please run %1$s within the %2$s directory.', 'woocommerce' ),
 					'<code>composer install</code>',
 					'<code>' . esc_html( str_replace( ABSPATH, '', __DIR__ ) ) . '</code>'
 				);
@@ -279,7 +279,7 @@ function woocommerce_blocks_plugin_outdated_notice() {
 	if ( should_display_compatibility_notices() ) {
 		?>
 		<div class="notice notice-warning">
-			<p><?php esc_html_e( 'You have WooCommerce Blocks installed, but the WooCommerce bundled version is running because it is more up-to-date. This may cause unexpected compatibility issues. Please update the WooCommerce Blocks plugin.', 'woo-gutenberg-products-block' ); ?></p>
+			<p><?php esc_html_e( 'You have WooCommerce Blocks installed, but the WooCommerce bundled version is running because it is more up-to-date. This may cause unexpected compatibility issues. Please update the WooCommerce Blocks plugin.', 'woocommerce' ); ?></p>
 		</div>
 		<?php
 	}
