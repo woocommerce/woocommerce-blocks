@@ -103,7 +103,7 @@ class ProductCollection extends AbstractBlock {
 		$visibility_query = is_array( $query['stock_status'] ) ? $this->get_product_visibility_query( $stock_query ) : [];
 		$tax_query        = $this->merge_tax_queries( $visibility_query );
 
-		return array_merge( $common_query_values, $orderby_query, $on_sale_query, $stock_query, $tax_query );
+		return $this->merge_queries( $common_query_values, $orderby_query, $on_sale_query, $stock_query, $tax_query );
 	}
 
 	/**
