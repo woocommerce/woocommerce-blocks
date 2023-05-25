@@ -25,6 +25,7 @@ import { useDispatch, subscribe, useSelect, select } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 import { store as noticesStore } from '@wordpress/notices';
 import { useEntityRecord } from '@wordpress/core-data';
+import { woo } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
@@ -128,7 +129,18 @@ const Edit = ( {
 		getButtonLabel,
 		onClickCallback,
 		getBlockifiedTemplate,
+		getSkeleton,
 	} = conversionConfig[ templateType ];
+
+	const skeleton = getSkeleton ? (
+		getSkeleton()
+	) : (
+		<img
+			className="wp-block-woocommerce-classic-template__placeholder-image"
+			src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/${ templatePlaceholder }.svg` }
+			alt={ templateTitle }
+		/>
+	);
 
 	const canConvert = isConversionPossible();
 	const placeholderDescription = getDescription( templateTitle, canConvert );
@@ -138,123 +150,127 @@ const Edit = ( {
 		<div { ...blockProps }>
 			<Placeholder className="wp-block-woocommerce-classic-template__placeholder">
 				<div className="wp-block-woocommerce-classic-template__placeholder-wireframe">
-					<div className="wp-block-woocommerce-classic-template__placeholder-copy">
-						<div className="wp-block-woocommerce-classic-template__placeholder-copy__icon-container">
-							<Icon icon={ box } />
-							<span>
-								{ __(
-									'Classic Product Template',
-									'woo-gutenberg-products-block'
-								) }
-							</span>
-						</div>
-						<p>{ placeholderDescription }</p>
-						{ canConvert && (
-							<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
-								<Button
-									isPrimary
-									onClick={ () => {
-										onClickCallback( {
-											clientId,
-											getBlocks,
-											attributes,
-											replaceBlock,
-											selectBlock,
-										} );
-										createInfoNotice(
-											__(
-												'Template transformed into blocks!',
-												'woo-gutenberg-products-block'
-											),
-											{
-												actions: [
-													{
-														label: __(
-															'Undo',
-															'woo-gutenberg-products-block'
-														),
-														onClick: () => {
-															const clientIds =
-																pickBlockClientIds(
-																	getBlocks()
-																);
-
-															replaceBlocks(
-																clientIds,
-																createBlock(
-																	'core/group',
-																	{
-																		layout: {
-																			inherit:
-																				true,
-																			type: 'constrained',
-																		},
-																	},
-																	[
-																		createBlock(
-																			'woocommerce/legacy-template',
-																			{
-																				template:
-																					attributes.template,
-																			}
-																		),
-																	]
-																)
-															);
-														},
-													},
-												],
-												type: 'snackbar',
-											}
-										);
-									} }
-									onMouseEnter={ () =>
-										setIsPopoverOpen( true )
-									}
-									onMouseLeave={ () =>
-										setIsPopoverOpen( false )
-									}
-									text={ getButtonLabel() }
-								>
-									{ isPopoverOpen && (
-										<Popover
-											resize={ false }
-											placement="right-end"
-										>
-											<div
-												style={ {
-													minWidth: '250px',
-													width: '250px',
-													maxWidth: '250px',
-													minHeight: '300px',
-													height: '300px',
-													maxHeight: '300px',
-													cursor: 'pointer',
-												} }
-											>
-												<BlockPreview
-													blocks={ getBlockifiedTemplate(
-														attributes
-													) }
-													viewportWidth={ 1200 }
-													additionalStyles={ [
-														{
-															css: 'body { padding: 20px !important; height: fit-content !important; overflow:hidden}',
-														},
-													] }
-												/>
-											</div>
-										</Popover>
-									) }
-								</Button>
-							</div>
-						) }
+					{ skeleton }
+				</div>
+				<div className="wp-block-woocommerce-classic-template__placeholder-copy">
+					<div className="wp-block-woocommerce-classic-template__placeholder-copy__icon-container">
+						<span className="woo-icon">
+							<Icon icon={ woo } /> WooCommerce
+						</span>
+						<span>
+							{ __(
+								'Classic Template Placeholder',
+								'woo-gutenberg-products-block'
+							) }
+						</span>
 					</div>
-					<img
-						className="wp-block-woocommerce-classic-template__placeholder-image"
-						src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/${ templatePlaceholder }.svg` }
-						alt={ templateTitle }
+					<p
+						dangerouslySetInnerHTML={ {
+							__html: placeholderDescription,
+						} }
 					/>
+					<p>
+						{ __(
+							'You cannot edit the content of this block. However, you can move it and place other blocks around it.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+					{ canConvert && (
+						<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
+							<Button
+								isPrimary
+								onClick={ () => {
+									onClickCallback( {
+										clientId,
+										getBlocks,
+										attributes,
+										replaceBlock,
+										selectBlock,
+									} );
+									createInfoNotice(
+										__(
+											'Template transformed into blocks!',
+											'woo-gutenberg-products-block'
+										),
+										{
+											actions: [
+												{
+													label: __(
+														'Undo',
+														'woo-gutenberg-products-block'
+													),
+													onClick: () => {
+														const clientIds =
+															pickBlockClientIds(
+																getBlocks()
+															);
+
+														replaceBlocks(
+															clientIds,
+															createBlock(
+																'core/group',
+																{
+																	layout: {
+																		inherit:
+																			true,
+																		type: 'constrained',
+																	},
+																},
+																[
+																	createBlock(
+																		'woocommerce/legacy-template',
+																		{
+																			template:
+																				attributes.template,
+																		}
+																	),
+																]
+															)
+														);
+													},
+												},
+											],
+											type: 'snackbar',
+										}
+									);
+								} }
+								onMouseEnter={ () => setIsPopoverOpen( true ) }
+								onMouseLeave={ () => setIsPopoverOpen( false ) }
+								text={ getButtonLabel() }
+							>
+								{ isPopoverOpen && (
+									<Popover
+										resize={ false }
+										placement="right-end"
+									>
+										<div
+											style={ {
+												minWidth: '250px',
+												width: '250px',
+												maxWidth: '250px',
+												minHeight: '300px',
+												height: '300px',
+												maxHeight: '300px',
+												cursor: 'pointer',
+											} }
+										>
+											<BlockPreview
+												blocks={ getBlockifiedTemplate(
+													attributes
+												) }
+												viewportWidth={ 1200 }
+												additionalStyles={ [
+													{
+														css: 'body { padding: 20px !important; height: fit-content !important; overflow:hidden}',
+													},
+												] }
+											/>
+										</div>
+									</Popover>
+								) }
+							</Button>
+						</div>
+					) }
 				</div>
 			</Placeholder>
 		</div>

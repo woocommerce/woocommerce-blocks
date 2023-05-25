@@ -31,4 +31,5 @@ export type BlockifiedTemplateConfig = {
 	getDescription: ( templateTitle: string, canConvert: boolean ) => string;
 	getButtonLabel: () => string;
 	onClickCallback: ( params: OnClickCallbackParameter ) => void;
+	getSkeleton?: ( () => JSX.Element ) | undefined;
 };
