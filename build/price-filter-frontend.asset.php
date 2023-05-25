@@ -1,0 +1,1 @@
+<?php return array('dependencies' => array('react', 'wc-blocks-data-store', 'wc-price-format', 'wc-settings', 'wp-data', 'wp-element', 'wp-i18n', 'wp-is-shallow-equal', 'wp-polyfill', 'wp-url'), 'version' => '0ad08b93d69856e25d62b9c43aed4a94');
