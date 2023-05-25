@@ -4,7 +4,7 @@
 import {
 	getSetting,
 	STORE_PAGES,
-	CountryAddressFields,
+	LocaleSpecificAddressField,
 } from '@woocommerce/settings';
 
 export type WordCountType =
