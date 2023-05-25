@@ -4,7 +4,7 @@
 
 -   [Cart Line Items](#cart-line-items)
 -   [Order Summary Items](#order-summary-items)
--   [Totals footer item (in Mini Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
+-   [Totals footer item (in Mini-Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
 -   [Coupons](#coupons)
 -   [Proceed to Checkout Button Label](#proceed-to-checkout-button-label)
 -   [Proceed to Checkout Button Link](#proceed-to-checkout-button-link)
@@ -13,7 +13,7 @@
 -   [Examples](#examples)
     -   [Changing the wording and the link on the "Proceed to Checkout" button when a specific item is in the Cart](#changing-the-wording-and-the-link-on-the-proceed-to-checkout-button-when-a-specific-item-is-in-the-cart)
     -   [Allowing blocks in specific areas in the Cart and Checkout blocks](#allowing-blocks-in-specific-areas-in-the-cart-and-checkout-blocks)
-    -   [Changing the wording of the Totals label in the Mini Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
+    -   [Changing the wording of the Totals label in the Mini-Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
     -   [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
     -   [Change the name of a coupon](#change-the-name-of-a-coupon)
     -   [Prevent a snackbar notice from appearing for coupons](#prevent-a-snackbar-notice-from-appearing-for-coupons)
@@ -57,7 +57,7 @@ In the Checkout block, there is a sidebar that contains a summary of what the cu
 
 Each of these filters has the following additional arguments passed to it: `{ context: 'summary', cartItem: CartItem }` ([CartItem](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L113))
 
-## Totals footer item (in Mini Cart, Cart and Checkout)
+## Totals footer item (in Mini-Cart, Cart and Checkout)
 
 The word 'Total' that precedes the amount due, present in both the Cart _and_ Checkout blocks, is also passed through filters.
 
@@ -128,11 +128,9 @@ By using the `additionalCartCheckoutInnerBlockTypes` filter it is possible to ad
 
 This filter is called once for each inner block area, so it is possible to be very granular when determining what blocks can be added where. See the [Allowing blocks in specific areas in the Cart and Checkout blocks.](#allowing-blocks-in-specific-areas-in-the-cart-and-checkout-blocks) example for more information.
 
-| Filter name                             | Description                              | Return type   |
-| --------------------------------------- | ---------------------------------------- | ------------- |
-| `allowedBlockTypes`                     | The new array of allowwed block types.   | `string[]`    |
-| -------------------                     | ---------------------------------------- | ------------- |
-| `additionalCartCheckoutInnerBlockTypes` | The new array of allowwed block types.   | `string[]`    |
+| Filter name                             | Description                             | Return type   |
+| -------------------                     | --------------------------------------- | ------------- |
+| `additionalCartCheckoutInnerBlockTypes` | The new array of allowed block types.   | `string[]`    |
 
 ## Examples
 
@@ -186,7 +184,7 @@ In our extension we could register a filter satisfy both of these conditions lik
 
 ```tsx
 registerCheckoutFilters( 'newsletter-plugin', {
-	allowedBlockTypes: ( value, extensions, { block } ) => {
+	additionalCartCheckoutInnerBlockTypes: ( value, extensions, { block } ) => {
 		// Remove the ability to add `core/separator`
 		value = value.filter( ( blockName ) => blockName !== 'core/separator' );
 
@@ -203,7 +201,7 @@ registerCheckoutFilters( 'newsletter-plugin', {
 } );
 ```
 
-### Changing the wording of the Totals label in the Mini Cart, Cart and Checkout
+### Changing the wording of the Totals label in the Mini-Cart, Cart and Checkout
 
 For this example, let's suppose we are building an extension that lets customers pay a deposit, and defer the full amount until a later date. To make it easier to understand what the customer is paying and why, let's change the value of `Total` to `Deposit due today`.
 
@@ -228,9 +226,9 @@ registerCheckoutFilters( 'my-hypothetical-deposit-plugin', {
 
 ### Changing the format of the item's single price
 
-Let's say we want to add a little bit of text after an item's single price **in the Mini Cart and Cart blocks only**, just to make sure our customers know that's the price per item.
+Let's say we want to add a little bit of text after an item's single price **in the Mini-Cart and Cart blocks only**, just to make sure our customers know that's the price per item.
 
-1. We will need to register a function to be executed when the `subtotalPriceFormat` is applied. Since we only want this to happen in the Cart context, our function will have to check the additional arguments passed to it to ensure the `context` value is `cart`. We can see from the table above, that our function needs to return a string that contains a substring of `<price/>`. This is a placeholder for the numeric value. The Mini Cart and Cart blocks will interpolate the value into the string we return.
+1. We will need to register a function to be executed when the `subtotalPriceFormat` is applied. Since we only want this to happen in the Cart context, our function will have to check the additional arguments passed to it to ensure the `context` value is `cart`. We can see from the table above, that our function needs to return a string that contains a substring of `<price/>`. This is a placeholder for the numeric value. The Mini-Cart and Cart blocks will interpolate the value into the string we return.
 
 ```ts
 const appendTextToPriceInCart = ( value, extensions, args ) => {
@@ -315,7 +313,7 @@ If you want to stop customers from being able to remove a specific item from the
 this by using the `showRemoveItemLink` filter. If it returns `false` for that line item the link will not show.
 
 An important caveat to note is this does _not_ prevent the item from being removed from the cart using StoreAPI or by
-removing it in the Mini Cart, or traditional shortcode cart.
+removing it in the Mini-Cart, or traditional shortcode cart.
 
 ```ts
 import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';

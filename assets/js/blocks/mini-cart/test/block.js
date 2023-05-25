@@ -51,7 +51,7 @@ const mockFullCart = () => {
 	} );
 };
 
-describe( 'Testing Mini Cart', () => {
+describe( 'Testing Mini-Cart', () => {
 	beforeEach( () => {
 		act( () => {
 			mockFullCart();
@@ -65,7 +65,25 @@ describe( 'Testing Mini Cart', () => {
 		fetchMock.resetMocks();
 	} );
 
-	it( 'opens Mini Cart drawer when clicking on button', async () => {
+	it( 'shows Mini-Cart count badge when there are items in the cart', async () => {
+		render( <MiniCartBlock /> );
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
+
+		await waitFor( () =>
+			expect( screen.getByText( '3' ) ).toBeInTheDocument()
+		);
+	} );
+
+	it( "doesn't show Mini-Cart count badge when cart is empty", async () => {
+		mockEmptyCart();
+		render( <MiniCartBlock /> );
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
+		const badgeWith0Count = screen.queryByText( '0' );
+
+		expect( badgeWith0Count ).toBeNull();
+	} );
+
+	it( 'opens Mini-Cart drawer when clicking on button', async () => {
 		render( <MiniCartBlock /> );
 		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
 		userEvent.click( screen.getByLabelText( /items/i ) );

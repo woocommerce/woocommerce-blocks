@@ -33,15 +33,15 @@ class AddToCartForm extends AbstractBlock {
 			return '';
 		}
 
+		$previous_product = $product;
+		$product          = wc_get_product( $post_id );
 		if ( ! $product instanceof \WC_Product ) {
-			$product = wc_get_product( $post_id );
-			if ( ! $product instanceof \WC_Product ) {
-				return '';
-			}
+			$product = $previous_product;
+
+			return '';
 		}
 
 		ob_start();
-
 		/**
 		 * Trigger the single product add to cart action for each product type.
 		*
@@ -52,19 +52,25 @@ class AddToCartForm extends AbstractBlock {
 		$product = ob_get_clean();
 
 		if ( ! $product ) {
+			$product = $previous_product;
+
 			return '';
 		}
 
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-		return sprintf(
-			'<div class="wp-block-add-to-cart-form %1$s %2$s" style="%3$s">%4$s</div>',
+		$form = sprintf(
+			'<div class="wp-block-add-to-cart-form product %1$s %2$s" style="%3$s">%4$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			esc_attr( $classes_and_styles['styles'] ),
 			$product
 		);
+
+		$product = $previous_product;
+
+		return $form;
 	}
 
 	/**
