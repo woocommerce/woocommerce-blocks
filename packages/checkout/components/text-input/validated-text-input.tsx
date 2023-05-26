@@ -121,7 +121,6 @@ const ValidatedTextInput = ( {
 			} );
 		},
 		[
-			previousValue,
 			clearValidationError,
 			customValidation,
 			errorIdString,
