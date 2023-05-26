@@ -91,7 +91,7 @@ const ValidatedTextInput = ( {
 	} );
 
 	const validateInput = useCallback(
-		( { errorsHidden = true, forceRevalidation = false } = {} ) => {
+		( errorsHidden = true ) => {
 			const inputObject = inputRef.current || null;
 
 			if ( inputObject === null ) {
@@ -138,10 +138,7 @@ const ValidatedTextInput = ( {
 		if ( isPristine ) {
 			return;
 		}
-		validateInput( {
-			errorsHidden: value === '',
-			forceRevalidation: true,
-		} );
+		validateInput( value === '' );
 		// Purposely skip running this unless any of the revalidateDependencies change. Also don't run it on mount (isPristine).
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ ...revalidateDependencies ] );
@@ -162,7 +159,7 @@ const ValidatedTextInput = ( {
 			inputRef.current !== null &&
 			inputRef.current?.ownerDocument?.activeElement !== inputRef.current
 		) {
-			validateInput( { errorsHidden: false } );
+			validateInput( false );
 		}
 		// We need to track value even if it is not directly used so we know when it changes.
 	}, [ value, previousValue, validateInput ] );
