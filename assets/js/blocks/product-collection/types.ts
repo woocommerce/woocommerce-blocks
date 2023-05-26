@@ -8,6 +8,7 @@ export interface ProductCollectionAttributes {
 	];
 	templateSlug: string;
 	displayLayout: ProductCollectionDisplayLayout;
+	tagName: string;
 }
 
 export interface ProductCollectionDisplayLayout {
@@ -44,6 +45,7 @@ export interface ProductCollectionQuery {
 	 * ```
 	 */
 	woocommerceStockStatus?: string[];
+	isProductCollectionBlock?: boolean;
 }
 
 export type TProductCollectionOrder = 'asc' | 'desc';

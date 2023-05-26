@@ -76,7 +76,7 @@ class ProductCollection extends AbstractBlock {
 			return $args;
 		}
 
-		$orderby      = $request->get_param( 'orderby' );
+		$orderby      = $request->get_param( 'orderBy' );
 		$on_sale      = $request->get_param( 'woocommerceOnSale' ) === 'true';
 		$stock_status = $request->get_param( 'woocommerceStockStatus' );
 
@@ -126,10 +126,9 @@ class ProductCollection extends AbstractBlock {
 
 		$common_query_values = array(
 			'meta_query'     => array(),
-			'posts_per_page' => $query['posts_per_page'],
-			'orderby'        => $query['orderby'],
-			'order'          => $query['order'],
-			'offset'         => $query['offset'],
+			'posts_per_page' => $block_context_query['perPage'],
+			'order'          => $block_context_query['order'],
+			'offset'         => $block_context_query['offset'],
 			'post__in'       => array(),
 			'post_status'    => 'publish',
 			'post_type'      => 'product',
@@ -144,6 +143,7 @@ class ProductCollection extends AbstractBlock {
 			array(
 				'on_sale'      => $is_on_sale,
 				'stock_status' => $block_context_query['woocommerceStockStatus'],
+				'orderby'      => $block_context_query['orderBy'],
 			)
 		);
 	}
