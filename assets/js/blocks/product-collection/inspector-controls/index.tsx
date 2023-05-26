@@ -20,7 +20,7 @@ import ColumnsControl from './columns-control';
 import OrderByControl from './order-by-control';
 import OnSaleControl from './on-sale-control';
 import { setQueryAttribute } from './utils';
-import { DEFAULT_FILTERS, getDefaultSettings } from './constants';
+import { DEFAULT_FILTERS, getDefaultSettings } from '../constants';
 import StockStatusControl from './stock-status-control';
 import KeywordControl from './keyword-control';
 import AttributesControl from './attributes-control';
@@ -32,6 +32,8 @@ const ProductCollectionInspectorControls = (
 		() => setQueryAttribute.bind( null, props ),
 		[ props ]
 	);
+
+	console.log( 'props.attributes?.query', props.attributes?.query );
 
 	return (
 		<InspectorControls>
@@ -60,8 +62,9 @@ const ProductCollectionInspectorControls = (
 				<KeywordControl { ...props } />
 				<AttributesControl
 					woocommerceAttributes={
-						props.attributes.query
-							.woocommerceAttributes as AttributeMetadata[]
+						props.attributes.query &&
+						( props.attributes.query
+							.woocommerceAttributes as AttributeMetadata[] )
 					}
 					setQueryAttribute={ setQueryAttributeBind }
 				/>

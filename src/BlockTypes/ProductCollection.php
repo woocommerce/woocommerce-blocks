@@ -76,7 +76,7 @@ class ProductCollection extends AbstractBlock {
 			return $args;
 		}
 
-		$orderby            = $request->get_param( 'orderby' );
+		$orderby            = $request->get_param( 'orderBy' );
 		$on_sale            = $request->get_param( 'woocommerceOnSale' ) === 'true';
 		$stock_status       = $request->get_param( 'woocommerceStockStatus' );
 		$product_attributes = $request->get_param( 'woocommerceAttributes' );
@@ -129,10 +129,9 @@ class ProductCollection extends AbstractBlock {
 
 		$common_query_values = array(
 			'meta_query'     => array(),
-			'posts_per_page' => $query['posts_per_page'],
-			'orderby'        => $query['orderby'],
-			'order'          => $query['order'],
-			'offset'         => $query['offset'],
+			'posts_per_page' => $block_context_query['perPage'],
+			'order'          => $block_context_query['order'],
+			'offset'         => $block_context_query['offset'],
 			'post__in'       => array(),
 			'post_status'    => 'publish',
 			'post_type'      => 'product',
@@ -148,6 +147,7 @@ class ProductCollection extends AbstractBlock {
 			array(
 				'on_sale'            => $is_on_sale,
 				'stock_status'       => $block_context_query['woocommerceStockStatus'],
+				'orderby'            => $block_context_query['orderBy'],
 				'product_attributes' => $block_context_query['woocommerceAttributes'],
 			)
 		);
@@ -360,11 +360,11 @@ class ProductCollection extends AbstractBlock {
 	/**
 	 * Return a query for products depending on their stock status.
 	 *
-	 * @param array $stock_statii An array of acceptable stock statii.
+	 * @param array $stock_statuses An array of acceptable stock statuses.
 	 * @return array
 	 */
-	private function get_stock_status_query( $stock_statii ) {
-		if ( ! is_array( $stock_statii ) ) {
+	private function get_stock_status_query( $stock_statuses ) {
+		if ( ! is_array( $stock_statuses ) ) {
 			return array();
 		}
 
@@ -375,8 +375,8 @@ class ProductCollection extends AbstractBlock {
 		 * meta query for stock status.
 		 */
 		if (
-			count( $stock_statii ) === count( $stock_status_options ) &&
-			array_diff( $stock_statii, $stock_status_options ) === array_diff( $stock_status_options, $stock_statii )
+			count( $stock_statuses ) === count( $stock_status_options ) &&
+			array_diff( $stock_statuses, $stock_status_options ) === array_diff( $stock_status_options, $stock_statuses )
 		) {
 			return array();
 		}
@@ -387,7 +387,7 @@ class ProductCollection extends AbstractBlock {
 		 *
 		 * @see get_product_visibility_query()
 		 */
-		$diff = array_diff( $stock_status_options, $stock_statii );
+		$diff = array_diff( $stock_status_options, $stock_statuses );
 		if ( count( $diff ) === 1 && in_array( 'outofstock', $diff, true ) ) {
 			return array();
 		}
@@ -396,7 +396,7 @@ class ProductCollection extends AbstractBlock {
 			'meta_query' => array(
 				array(
 					'key'     => '_stock_status',
-					'value'   => (array) $stock_statii,
+					'value'   => (array) $stock_statuses,
 					'compare' => 'IN',
 				),
 			),
