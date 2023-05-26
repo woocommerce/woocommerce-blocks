@@ -51,6 +51,8 @@ interface ValidatedTextInputProps
 		| undefined;
 	// Whether validation should run when focused - only has an effect when focusOnMount is also true.
 	validateOnMount?: boolean | undefined;
+	// A set of dependencies to watch, and revalidate if they change.
+	revalidateDependencies?: unknown[] | undefined;
 }
 
 const ValidatedTextInput = ( {
@@ -67,6 +69,7 @@ const ValidatedTextInput = ( {
 	customValidation,
 	label,
 	validateOnMount = true,
+	revalidateDependencies = [],
 	...rest
 }: ValidatedTextInputProps ): JSX.Element => {
 	const [ isPristine, setIsPristine ] = useState( true );
