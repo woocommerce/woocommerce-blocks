@@ -22,7 +22,7 @@ import {
 	ShippingAddress,
 } from '@woocommerce/settings';
 import { useSelect, useDispatch, dispatch } from '@wordpress/data';
-import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
+import { CART_STORE_KEY, VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import { FieldValidationStatus } from '@woocommerce/types';
 
 /**
@@ -96,10 +96,25 @@ const AddressForm = ( {
 	const { setValidationErrors, clearValidationError } =
 		useDispatch( VALIDATION_STORE_KEY );
 
-	const countryValidationError = useSelect( ( select ) => {
-		const store = select( VALIDATION_STORE_KEY );
-		return store.getValidationError( validationErrorId );
+	const { country, countryValidationError } = useSelect( ( select ) => {
+		const validationStore = select( VALIDATION_STORE_KEY );
+		const cartStore = select( CART_STORE_KEY );
+		return {
+			countryValidationError:
+				validationStore.getValidationError( validationErrorId ),
+			country:
+				cartStore.getCartData()?.[
+					type === 'shipping' ? 'shippingAddress' : 'billingAddress'
+				]?.country,
+		};
 	} );
+
+	// This object is used to revalidate the specified fields when any dependency changes.
+	const revalidateDependencies: {
+		[ K in keyof AddressFields ]?: unknown[];
+	} = {
+		postcode: [ country ],
+	};
 
 	const currentFields = useShallowEqual( fields );
 
@@ -268,6 +283,9 @@ const AddressForm = ( {
 						className={ `wc-block-components-address-form__${ field.key }` }
 						label={
 							field.required ? field.label : field.optionalLabel
+						}
+						revalidateDependencies={
+							revalidateDependencies[ field.key ]
 						}
 						value={ values[ field.key ] }
 						autoCapitalize={ field.autocapitalize }
