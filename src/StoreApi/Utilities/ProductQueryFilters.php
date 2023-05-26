@@ -5,6 +5,8 @@ use Automattic\WooCommerce\StoreApi\Utilities\ProductQuery;
 use Exception;
 use WP_REST_Request;
 
+// phpcs:disable WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder
+
 /**
  * Product Query filters class.
  */

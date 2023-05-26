@@ -4,6 +4,10 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use WP_Query;
 
+// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+
 /**
  * ProductCollection class.
  */
