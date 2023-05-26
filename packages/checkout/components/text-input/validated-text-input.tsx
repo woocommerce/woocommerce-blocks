@@ -134,6 +134,15 @@ const ValidatedTextInput = ( {
 		]
 	);
 
+	useEffect( () => {
+		if ( isPristine ) {
+			return;
+		}
+		validateInput( { errorsHidden: false, forceRevalidation: true } );
+		// Purposely skip running this unless any of the revalidateDependencies change. Also don't run it on mount (isPristine).
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ ...revalidateDependencies ] );
+
 	/**
 	 * Handle browser autofill / changes via data store.
 	 *
