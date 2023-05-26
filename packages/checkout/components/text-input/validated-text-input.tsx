@@ -236,10 +236,12 @@ const ValidatedTextInput = ( {
 			onBlur={ () => {
 				// Don't validate on blur if the value is unchanged and the field is not required.
 				const inputObject = inputRef.current || null;
+
 				if (
 					inputObject &&
 					inputObject.value === previousValue &&
-					! inputObject.required
+					! inputObject.required &&
+					inputObject.value !== ''
 				) {
 					return;
 				}
