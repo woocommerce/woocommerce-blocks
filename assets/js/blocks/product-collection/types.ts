@@ -39,7 +39,7 @@ export interface ProductCollectionQuery {
 	 * ```
 	 * array(
 	 *   'key'     => '_stock_status',
-	 *   'value'   => (array) $stock_statii,
+	 *   'value'   => (array) $stock_statuses,
 	 *   'compare' => 'IN',
 	 * ),
 	 * ```

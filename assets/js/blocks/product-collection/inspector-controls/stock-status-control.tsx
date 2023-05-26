@@ -23,7 +23,7 @@ import { STOCK_STATUS_OPTIONS, getDefaultStockStatuses } from '../constants';
  *
  * In theory, we could use a `saveTransform` function on the
  * `FormFieldToken` component to do the conversion. However, plugins
- * can add custom stock statii which don't conform to our naming
+ * can add custom stock statuses which don't conform to our naming
  * conventions.
  */
 function getStockStatusIdByLabel( statusLabel: FormTokenField.Value ) {
