@@ -33,11 +33,12 @@ const templates = {
 		slug: 'taxonomy-product_cat',
 		frontendPage: '/product-category/music/',
 	},
-	'taxonomy-product_tag': {
-		templateTitle: 'Product Tag',
-		slug: 'taxonomy-product_tag',
-		frontendPage: '/product-tag/hoodie/',
-	},
+	// We don't have products with tags in the test site. Uncomment this when we have products with tags.
+	// 'taxonomy-product_tag': {
+	// 	templateTitle: 'Product Tag',
+	// 	slug: 'taxonomy-product_tag',
+	// 	frontendPage: '/product-tag/hoodie/',
+	// },
 	'archive-product': {
 		templateTitle: 'Product Catalog',
 		slug: 'archive-product',
@@ -93,9 +94,7 @@ test.describe( `${ blockData.name } Block `, () => {
 		await editor.canvas.click( 'body' );
 
 		const block = await editorUtils.getBlockByName( blockData.name );
-		editor.selectBlocks( block );
-
-		await editor.canvas.click;
+		await editor.selectBlocks( block );
 
 		await editor.openDocumentSettingsSidebar();
 
@@ -120,9 +119,6 @@ test.describe( `${ blockData.name } Block `, () => {
 			editor,
 			page,
 		} ) => {
-			if ( slug === 'taxonomy-product_tag' ) {
-				test.skip();
-			}
 			await admin.visitSiteEditor( {
 				postId: `woocommerce/woocommerce//${ slug }`,
 				postType: 'wp_template',
