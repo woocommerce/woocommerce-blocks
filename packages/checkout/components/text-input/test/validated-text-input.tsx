@@ -303,5 +303,61 @@ describe( 'ValidatedTextInput', () => {
 			await expect( textInputElement ).toHaveFocus();
 			await expect( setValidationErrors ).not.toHaveBeenCalled();
 		} );
+
+		it( 'revalidates when revalidateDependencies value changes', async () => {
+			const setValidationErrors = jest.fn();
+			wpData.useDispatch.mockImplementation( ( storeName: string ) => {
+				if ( storeName === VALIDATION_STORE_KEY ) {
+					return {
+						...jest
+							.requireActual( '@wordpress/data' )
+							.useDispatch( storeName ),
+						setValidationErrors,
+					};
+				}
+				return jest
+					.requireActual( '@wordpress/data' )
+					.useDispatch( storeName );
+			} );
+
+			const TestComponent = ( {
+				dependencies,
+			}: {
+				dependencies: unknown[];
+			} ) => {
+				const [ inputValue, setInputValue ] = useState( '' );
+				return (
+					<ValidatedTextInput
+						instanceId={ '6' }
+						id={ 'test-input' }
+						onChange={ ( value ) => setInputValue( value ) }
+						value={ inputValue }
+						label={ 'Test Input' }
+						required={ true }
+						customValidation={ ( inputObject ) => {
+							return inputObject.value === 'Valid Value';
+						} }
+						focusOnMount={ true }
+						revalidateDependencies={ dependencies }
+						validateOnMount={ false }
+					/>
+				);
+			};
+			let dependencyToTrack = 'Test';
+			const { rerender } = await render(
+				<TestComponent dependencies={ [ dependencyToTrack ] } />
+			);
+			await expect( setValidationErrors ).not.toHaveBeenCalled();
+			dependencyToTrack = 'Changed';
+			await rerender(
+				<TestComponent dependencies={ [ dependencyToTrack ] } />
+			);
+			await expect( setValidationErrors ).toHaveBeenCalled();
+			dependencyToTrack = 'Changed again';
+			await rerender(
+				<TestComponent dependencies={ [ dependencyToTrack ] } />
+			);
+			await expect( setValidationErrors ).toHaveBeenCalledTimes( 2 );
+		} );
 	} );
 } );
