@@ -26,11 +26,6 @@
 			"default": true
 		}
 	},
-	"example": {
-		"attributes": {
-		  "isPreview": true
-		}
-	},
 	"usesContext": [ "query", "queryId", "postId" ],
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
