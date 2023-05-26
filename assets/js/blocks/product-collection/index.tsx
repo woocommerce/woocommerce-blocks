@@ -17,16 +17,6 @@ import { getDefaultStockStatuses } from './inspector-controls/constants';
 if ( isExperimentalBuild() ) {
 	registerBlockType( metadata, {
 		icon,
-		attributes: {
-			...metadata.attributes,
-			query: {
-				...metadata.attributes.query,
-				default: {
-					...metadata.attributes.query.default,
-					woocommerceStockStatus: getDefaultStockStatuses(),
-				},
-			},
-		},
 		edit,
 		save,
 	} );

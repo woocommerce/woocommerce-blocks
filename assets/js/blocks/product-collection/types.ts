@@ -8,6 +8,7 @@ export interface ProductCollectionAttributes {
 	];
 	templateSlug: string;
 	displayLayout: ProductCollectionDisplayLayout;
+	tagName: string;
 }
 
 export interface ProductCollectionDisplayLayout {
@@ -38,12 +39,13 @@ export interface ProductCollectionQuery {
 	 * ```
 	 * array(
 	 *   'key'     => '_stock_status',
-	 *   'value'   => (array) $stock_statii,
+	 *   'value'   => (array) $stock_statuses,
 	 *   'compare' => 'IN',
 	 * ),
 	 * ```
 	 */
 	woocommerceStockStatus?: string[];
+	isProductCollectionBlock?: boolean;
 }
 
 export type TProductCollectionOrder = 'asc' | 'desc';

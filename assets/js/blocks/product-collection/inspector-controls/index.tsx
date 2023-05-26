@@ -18,7 +18,7 @@ import ColumnsControl from './columns-control';
 import OrderByControl from './order-by-control';
 import OnSaleControl from './on-sale-control';
 import { setQueryAttribute } from './utils';
-import { DEFAULT_FILTERS, getDefaultSettings } from './constants';
+import { DEFAULT_FILTERS, getDefaultSettings } from '../constants';
 import StockStatusControl from './stock-status-control';
 import KeywordControl from './keyword-control';
 

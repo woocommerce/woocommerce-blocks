@@ -16,14 +16,14 @@ import {
  */
 import { ProductCollectionAttributes } from '../types';
 import { setQueryAttribute } from './utils';
-import { STOCK_STATUS_OPTIONS, getDefaultStockStatuses } from './constants';
+import { STOCK_STATUS_OPTIONS, getDefaultStockStatuses } from '../constants';
 
 /**
  * Gets the id of a specific stock status from its text label
  *
  * In theory, we could use a `saveTransform` function on the
  * `FormFieldToken` component to do the conversion. However, plugins
- * can add custom stock statii which don't conform to our naming
+ * can add custom stock statuses which don't conform to our naming
  * conventions.
  */
 function getStockStatusIdByLabel( statusLabel: FormTokenField.Value ) {
