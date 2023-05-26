@@ -55,6 +55,12 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		);
 		await page.waitForLoadState( 'networkidle' );
 
+		// Check if the page has loaded successfully.
+		const pageTitle = await page.$( 'h1.wp-block-post-title' );
+		expect( await pageTitle?.innerText() ).toBe(
+			'Filter by Attributes Block'
+		);
+
 		const expectedValues = [ '4', '0', '2', '2', '0' ];
 
 		const lists = await page.$$(
@@ -79,6 +85,12 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		);
 		await page.waitForLoadState( 'networkidle' );
 
+		// Check if the page has loaded successfully.
+		const pageTitle = await page.$( '.wp-block-post-title' );
+		expect( await pageTitle?.innerText() ).toBe(
+			'Filter by Attributes Block'
+		);
+
 		const expectedValues = [ '4', '3', '2', '2', '0' ];
 
 		const lists = await page.$$(
@@ -102,6 +114,12 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 			'/filter-by-attributes-block/?filter_color=blue&query_type_color=or&min_price=15&max_price=40'
 		);
 		await page.waitForLoadState( 'networkidle' );
+
+		// Check if the page has loaded successfully.
+		const pageTitle = await page.$( '.wp-block-post-title' );
+		expect( await pageTitle?.innerText() ).toBe(
+			'Filter by Attributes Block'
+		);
 
 		const expectedValues = [ '2', '0', '1', '1', '0' ];
 
