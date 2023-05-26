@@ -102,10 +102,6 @@ const ValidatedTextInput = ( {
 			inputObject.value = inputObject.value.trim();
 			inputObject.setCustomValidity( '' );
 
-			if ( previousValue === inputObject.value && ! forceRevalidation ) {
-				return;
-			}
-
 			const inputIsValid = customValidation
 				? inputObject.checkValidity() && customValidation( inputObject )
 				: inputObject.checkValidity();
@@ -238,7 +234,16 @@ const ValidatedTextInput = ( {
 				onChange( val );
 			} }
 			onBlur={ () => {
-				validateInput( { errorsHidden: false } );
+				// Don't validate on blur if the value is unchanged and the field is not required.
+				const inputObject = inputRef.current || null;
+				if (
+					inputObject &&
+					inputObject.value === previousValue &&
+					! inputObject.required
+				) {
+					return;
+				}
+				validateInput( false );
 			} }
 			ariaDescribedBy={ describedBy }
 			value={ value }
