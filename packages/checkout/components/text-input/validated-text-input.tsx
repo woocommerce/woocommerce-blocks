@@ -88,7 +88,7 @@ const ValidatedTextInput = ( {
 	} );
 
 	const validateInput = useCallback(
-		( errorsHidden = true ) => {
+		( { errorsHidden = true, forceRevalidation = false } = {} ) => {
 			const inputObject = inputRef.current || null;
 
 			if ( inputObject === null ) {
@@ -99,7 +99,7 @@ const ValidatedTextInput = ( {
 			inputObject.value = inputObject.value.trim();
 			inputObject.setCustomValidity( '' );
 
-			if ( previousValue === inputObject.value ) {
+			if ( previousValue === inputObject.value && ! forceRevalidation ) {
 				return;
 			}
 
@@ -147,7 +147,7 @@ const ValidatedTextInput = ( {
 			inputRef.current !== null &&
 			inputRef.current?.ownerDocument?.activeElement !== inputRef.current
 		) {
-			validateInput( false );
+			validateInput( { errorsHidden: false } );
 		}
 		// We need to track value even if it is not directly used so we know when it changes.
 	}, [ value, previousValue, validateInput ] );
@@ -170,7 +170,7 @@ const ValidatedTextInput = ( {
 
 		// if validateOnMount is false, only validate input if focusOnMount is also false
 		if ( validateOnMount || ! focusOnMount ) {
-			validateInput( true );
+			validateInput();
 		}
 
 		setIsPristine( false );
@@ -220,13 +220,13 @@ const ValidatedTextInput = ( {
 				hideValidationError( errorIdString );
 
 				// Revalidate on user input so we know if the value is valid.
-				validateInput( true );
+				validateInput();
 
 				// Push the changes up to the parent component if the value is valid.
 				onChange( val );
 			} }
 			onBlur={ () => {
-				validateInput( false );
+				validateInput( { errorsHidden: false } );
 			} }
 			ariaDescribedBy={ describedBy }
 			value={ value }
