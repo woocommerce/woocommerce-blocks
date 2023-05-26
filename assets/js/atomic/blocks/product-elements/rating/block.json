@@ -23,7 +23,7 @@
 		},
 		"isDescendentOfSingleProductTemplate": {
 			"type": "boolean",
-			"default": true
+			"default": false
 		}
 	},
 	"usesContext": [ "query", "queryId", "postId" ],
