@@ -12,7 +12,6 @@ import edit from './edit';
 import save from './save';
 import icon from './icon';
 import './variations';
-import { getDefaultStockStatuses } from './inspector-controls/constants';
 
 if ( isExperimentalBuild() ) {
 	registerBlockType( metadata, {
