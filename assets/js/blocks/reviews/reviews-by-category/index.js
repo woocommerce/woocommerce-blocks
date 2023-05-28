@@ -8,15 +8,16 @@ import { Icon, commentContent } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import Editor from './edit';
+import { Edit } from './edit';
 import sharedAttributes from '../attributes';
 import save from '../save.js';
 import { example } from '../example';
+import metadata from './block.json';
 
 /**
  * Register and run the "Reviews by category" block.
  */
-registerBlockType( 'woocommerce/reviews-by-category', {
+registerBlockType( metadata, {
 	apiVersion: 2,
 	title: __( 'Reviews by Category', 'woo-gutenberg-products-block' ),
 	icon: {
@@ -73,9 +74,7 @@ registerBlockType( 'woocommerce/reviews-by-category', {
 	 *
 	 * @param {Object} props Props to pass to block.
 	 */
-	edit( props ) {
-		return <Editor { ...props } />;
-	},
+	edit: Edit,
 
 	/**
 	 * Save the props to post content.
