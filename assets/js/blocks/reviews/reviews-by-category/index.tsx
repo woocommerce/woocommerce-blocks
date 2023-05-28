@@ -9,9 +9,9 @@ import { Icon, commentContent } from '@wordpress/icons';
  * Internal dependencies
  */
 import { Edit } from './edit';
-import sharedAttributes from '../attributes';
+import sharedAttributes from '../attributes.js';
 import save from '../save.js';
-import { example } from '../example';
+import { example } from '../example.js';
 import metadata from './block.json';
 
 /**
