@@ -6,7 +6,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import Editor from './block';
+import Block from './block';
 import { ReviewsByCategoryEditorProps } from './types';
 
 export const Edit = (
@@ -16,7 +16,7 @@ export const Edit = (
 
 	return (
 		<div { ...blockProps }>
-			<Editor { ...props } />
+			<Block { ...props } />
 		</div>
 	);
 };
