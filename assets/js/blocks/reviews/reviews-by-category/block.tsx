@@ -23,7 +23,7 @@ import {
 	getSharedReviewContentControls,
 	getSharedReviewListControls,
 } from '../edit-utils.js';
-import { ReviewsByCategoryEditorProps } from './types.js';
+import { ReviewsByCategoryEditorProps } from './types';
 
 /**
  * Component to handle edit mode of "Reviews by Category".
