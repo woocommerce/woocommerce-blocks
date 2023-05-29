@@ -148,6 +148,6 @@ test.describe( `${ blockData.name } Block `, () => {
 	}
 
 	test.afterAll( async ( { requestUtils } ) => {
-		requestUtils.deleteAllTemplates( 'wp_template' );
+		await requestUtils.deleteAllTemplates( 'wp_template' );
 	} );
 } );
