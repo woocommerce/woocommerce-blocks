@@ -9,6 +9,11 @@ import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-edito
  */
 import sharedConfig from '../shared/config';
 
+/**
+ * todo: can use __experimentalDefaultControls to influence which controls are
+ * displayed by default
+ */
+
 export const supports = {
 	...sharedConfig.supports,
 	...( isFeaturePluginBuild() && {
