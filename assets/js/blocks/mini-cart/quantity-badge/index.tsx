@@ -17,11 +17,17 @@ interface Props {
 }
 
 const QuantityBadge = ( { count, icon }: Props ): JSX.Element => {
-	let miniCartIcon = cartOutline;
-	if ( icon === 'bag' ) {
-		miniCartIcon = bag;
-	} else if ( icon === 'bag-alt' ) {
-		miniCartIcon = bagAlt;
+	function getIcon( iconName?: 'cart' | 'bag' | 'bag-alt' ) {
+		switch ( iconName ) {
+			case 'cart':
+				return cartOutline;
+			case 'bag':
+				return bag;
+			case 'bag-alt':
+				return bagAlt;
+			default:
+				return cartOutline;
+		}
 	}
 
 	return (
@@ -29,7 +35,7 @@ const QuantityBadge = ( { count, icon }: Props ): JSX.Element => {
 			<Icon
 				className="wc-block-mini-cart__icon"
 				size={ 20 }
-				icon={ miniCartIcon }
+				icon={ getIcon( icon ) }
 			/>
 			<span className="wc-block-mini-cart__badge">
 				{ count > 0 ? count : '' }
