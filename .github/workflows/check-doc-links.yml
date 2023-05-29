@@ -22,4 +22,3 @@ jobs:
                   folder-path: './docs'
                   file-path: './README.md'
                   base-branch: 'trunk'
-                  exclude: './docs/internal-developers/testing/releases/*.md'
