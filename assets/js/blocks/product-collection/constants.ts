@@ -44,7 +44,7 @@ export const DEFAULT_ATTRIBUTES: Partial< ProductCollectionAttributes > = {
 		exclude: [],
 		sticky: '',
 		inherit: false,
-		taxQuery: '',
+		taxQuery: {},
 		parents: [],
 		isProductCollectionBlock: true,
 		woocommerceOnSale: false,

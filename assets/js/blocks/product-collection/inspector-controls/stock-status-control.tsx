@@ -15,7 +15,7 @@ import {
  * Internal dependencies
  */
 import { ProductCollectionAttributes } from '../types';
-import { setQueryAttribute } from './utils';
+import { setQueryAttribute } from '../utils';
 import { STOCK_STATUS_OPTIONS, getDefaultStockStatuses } from '../constants';
 
 /**

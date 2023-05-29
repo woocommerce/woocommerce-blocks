@@ -19,11 +19,12 @@ import { ProductCollectionAttributes } from '../types';
 import ColumnsControl from './columns-control';
 import OrderByControl from './order-by-control';
 import OnSaleControl from './on-sale-control';
-import { setQueryAttribute } from './utils';
+import { setQueryAttribute } from '../utils';
 import { DEFAULT_FILTERS, getDefaultSettings } from '../constants';
 import StockStatusControl from './stock-status-control';
 import KeywordControl from './keyword-control';
 import AttributesControl from './attributes-control';
+import TaxonomyControls from './taxonomy-controls';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -65,6 +66,10 @@ const ProductCollectionInspectorControls = (
 							.woocommerceAttributes as AttributeMetadata[] )
 					}
 					setQueryAttribute={ setQueryAttributeBind }
+				/>
+				<TaxonomyControls
+					setQueryAttribute={ setQueryAttributeBind }
+					query={ props.attributes.query }
 				/>
 			</ToolsPanel>
 		</InspectorControls>
