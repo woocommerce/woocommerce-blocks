@@ -6,36 +6,18 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import sharedConfig from '../shared/config';
 import edit from './edit';
 import save from './save';
-import attributes from './attributes';
 import { supports } from './supports';
-import {
-	BLOCK_TITLE as title,
-	BLOCK_ICON as icon,
-	BLOCK_DESCRIPTION as description,
-} from './constants';
-
-const { ancestor, ...configuration } = sharedConfig;
+import metadata from './block.json';
+import { BLOCK_ICON as icon } from './constants';
 
 const blockConfig = {
-	...configuration,
-	apiVersion: 2,
-	title,
-	description,
-	usesContext: [ 'postId', 'queryId' ],
-	providesContext: {
-		'woocommerce/isDescendentOfSingleProductTemplate':
-			'isDescendentOfSingleProductTemplate',
-		'woocommerce/isDescendentOfSingleProductBlock':
-			'isDescendentOfSingleProductBlock',
-	},
+	...metadata,
 	icon: { src: icon },
-	attributes,
-	supports,
+	supports: { ...supports, ...metadata.supports },
 	edit,
 	save,
 };
 
-registerBlockType( 'woocommerce/product-price-v2', blockConfig );
+registerBlockType( metadata.name, blockConfig );
