@@ -7,10 +7,13 @@ export interface ProductCollectionAttributes {
 		}
 	];
 	templateSlug: string;
-	displayLayout: {
-		type: string;
-		columns: number;
-	};
+	displayLayout: ProductCollectionDisplayLayout;
+	tagName: string;
+}
+
+export interface ProductCollectionDisplayLayout {
+	type: string;
+	columns: number;
 }
 
 export interface ProductCollectionQuery {
@@ -18,8 +21,8 @@ export interface ProductCollectionQuery {
 	exclude: string[];
 	inherit: boolean;
 	offset: number;
-	order: 'asc' | 'desc';
-	orderBy: 'date' | 'relevance' | 'title';
+	order: TProductCollectionOrder;
+	orderBy: TProductCollectionOrderBy;
 	pages: number;
 	parents: number[];
 	perPage: number;
@@ -27,4 +30,27 @@ export interface ProductCollectionQuery {
 	search: string;
 	sticky: string;
 	taxQuery: string;
+	woocommerceOnSale: boolean;
+	/**
+	 * Filter products by their stock status.
+	 *
+	 * Will generate the following `meta_query`:
+	 *
+	 * ```
+	 * array(
+	 *   'key'     => '_stock_status',
+	 *   'value'   => (array) $stock_statuses,
+	 *   'compare' => 'IN',
+	 * ),
+	 * ```
+	 */
+	woocommerceStockStatus?: string[];
+	isProductCollectionBlock?: boolean;
 }
+
+export type TProductCollectionOrder = 'asc' | 'desc';
+export type TProductCollectionOrderBy =
+	| 'date'
+	| 'title'
+	| 'popularity'
+	| 'rating';
