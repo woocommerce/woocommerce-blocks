@@ -1,4 +1,4 @@
-interface Attributes {
+export interface Attributes {
 	showFilterButton: boolean;
 	showInputFields: boolean;
 	inlineInput: boolean;
