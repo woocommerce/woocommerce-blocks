@@ -53,17 +53,17 @@ const templates = {
 	},
 };
 
-test.describe( `${ blockData.name } Block `, () => {
-	test.beforeAll( async () => {
-		await cli(
-			'npm run wp-env run tests-cli "wp option update wc_blocks_use_blockified_product_grid_block_as_template false"'
-		);
-	} );
+for ( const { templateTitle, slug, frontendPage } of Object.values(
+	templates
+) ) {
+	test.describe( `${ blockData.name } Block `, () => {
+		test.beforeAll( async () => {
+			await cli(
+				'npm run wp-env run tests-cli "wp option update wc_blocks_use_blockified_product_grid_block_as_template false"'
+			);
+		} );
 
-	for ( const { templateTitle, slug, frontendPage } of Object.values(
-		templates
-	) ) {
-		test( `is rendered on  ${ templateTitle } template`, async ( {
+		test( `is rendered on ${ templateTitle } template`, async ( {
 			admin,
 			editorUtils,
 			editor,
@@ -104,13 +104,14 @@ test.describe( `${ blockData.name } Block `, () => {
 
 			expect( helloWorldText ).not.toBeNull();
 		} );
-	}
-	test.afterAll( async ( { requestUtils } ) => {
-		await cli(
-			'npm run wp-env run tests-cli "wp option delete wc_blocks_use_blockified_product_grid_block_as_template"'
-		);
 
-		await requestUtils.deleteAllTemplates( 'wp_template' );
-		await requestUtils.deleteAllTemplates( 'wp_template_part' );
+		test.afterAll( async ( { requestUtils } ) => {
+			await cli(
+				'npm run wp-env run tests-cli "wp option delete wc_blocks_use_blockified_product_grid_block_as_template"'
+			);
+
+			await requestUtils.deleteAllTemplates( 'wp_template' );
+			await requestUtils.deleteAllTemplates( 'wp_template_part' );
+		} );
 	} );
-} );
+}
