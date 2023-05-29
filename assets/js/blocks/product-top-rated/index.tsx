@@ -3,48 +3,46 @@
  */
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
-import { Icon, sparkles } from '@wordpress/icons';
+import { thumbUp } from '@woocommerce/icons';
+import { Icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
-import Block from './block';
+import metadata from './block.json';
 import sharedAttributes, {
 	sharedAttributeBlockTypes,
 } from '../../utils/shared-attributes';
+import { Edit } from './edit';
 
-registerBlockType( 'woocommerce/product-new', {
-	title: __( 'Newest Products', 'woo-gutenberg-products-block' ),
+registerBlockType( metadata, {
 	icon: {
 		src: (
 			<Icon
-				icon={ sparkles }
-				className="wc-block-editor-components-block-icon wc-block-editor-components-block-icon--sparkles"
+				icon={ thumbUp }
+				className="wc-block-editor-components-block-icon"
 			/>
 		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Display a grid of your newest products.',
+		'Display a grid of your top rated products.',
 		'woo-gutenberg-products-block'
 	),
-	supports: {
-		align: [ 'wide', 'full' ],
-		html: false,
-	},
 	attributes: {
 		...sharedAttributes,
+		...metadata.attributes,
 	},
 	transforms: {
 		from: [
 			{
 				type: 'block',
 				blocks: sharedAttributeBlockTypes.filter(
-					( value ) => value !== 'woocommerce/product-new'
+					( value ) => value !== 'woocommerce/product-top-rated'
 				),
 				transform: ( attributes ) =>
-					createBlock( 'woocommerce/product-new', attributes ),
+					createBlock( 'woocommerce/product-top-rated', attributes ),
 			},
 		],
 	},
@@ -54,9 +52,7 @@ registerBlockType( 'woocommerce/product-new', {
 	 *
 	 * @param {Object} props Props to pass to block.
 	 */
-	edit( props ) {
-		return <Block { ...props } />;
-	},
+	edit: Edit,
 
 	save() {
 		return null;
