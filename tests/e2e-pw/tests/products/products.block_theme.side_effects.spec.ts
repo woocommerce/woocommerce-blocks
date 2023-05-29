@@ -118,6 +118,7 @@ test.describe( `${ blockData.name } Block `, () => {
 			admin,
 			editor,
 			page,
+			editorUtils,
 		} ) => {
 			await admin.visitSiteEditor( {
 				postId: `woocommerce/woocommerce//${ slug }`,
@@ -125,6 +126,8 @@ test.describe( `${ blockData.name } Block `, () => {
 			} );
 
 			await editor.canvas.click( 'body' );
+			const block = await editorUtils.getBlockByName( blockData.name );
+			await editor.selectBlocks( block );
 			await editor.insertBlock( {
 				name: 'woocommerce/legacy-template',
 				attributes: {
