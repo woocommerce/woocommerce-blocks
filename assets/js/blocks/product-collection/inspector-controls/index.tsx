@@ -33,8 +33,6 @@ const ProductCollectionInspectorControls = (
 		[ props ]
 	);
 
-	console.log( 'props.attributes?.query', props.attributes?.query );
-
 	return (
 		<InspectorControls>
 			<ToolsPanel
