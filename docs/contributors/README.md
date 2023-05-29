@@ -24,11 +24,11 @@ The [E2E Testing Guidelines](e2e-guidelines.md) document offers a detailed under
 
 For insight into our reusable components, their usage, and how to test them in Storybook, refer to the [Developing Components (& Storybook)](components.md) guide.
 
-## [Block Script Assets](block-assets.md)
+### [Block Script Assets](block-assets.md)
 
 The [Block Script Assets](block-assets.md) document elucidates how Block Script Assets are loaded and used in the development process. This guide is vital to understanding the role of script assets in block development.
 
-## [JavaScript Build System](javascript-build-system.md)
+### [JavaScript Build System](javascript-build-system.md)
 
 Our [JavaScript Build System](javascript-build-system.md) guide offers a detailed explanation of how JavaScript files are built. This is a crucial read for understanding the behind-the-scenes operations of your code.
 
