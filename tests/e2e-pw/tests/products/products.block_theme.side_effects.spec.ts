@@ -27,7 +27,6 @@ const templates = {
 		slug: 'taxonomy-product_attribute',
 		frontendPage: '/product-attribute/color/',
 	},
-
 	'taxonomy-product_cat': {
 		templateTitle: 'Product Category',
 		slug: 'taxonomy-product_cat',
@@ -47,7 +46,7 @@ const templates = {
 	'product-search-results': {
 		templateTitle: 'Product Search Results',
 		slug: 'product-search-results',
-		frontendPage: '/?s=single&post_type=product',
+		frontendPage: '/?s=shirt&post_type=product',
 	},
 };
 
@@ -110,11 +109,16 @@ test.describe( `${ blockData.name } Block `, () => {
 		await expect( advancedFilterOption ).toBeVisible();
 		await expect( inheritQueryFromTemplateOption ).toBeVisible();
 	} );
-
-	for ( const { templateTitle, slug, frontendPage } of Object.values(
-		templates
-	) ) {
-		test( `Products block matches with classic template block on ${ templateTitle } template`, async ( {
+} );
+for ( const { templateTitle, slug, frontendPage } of Object.values(
+	templates
+) ) {
+	test.afterAll( async ( { requestUtils } ) => {
+		await requestUtils.deleteAllTemplates( 'wp_template' );
+		await requestUtils.deleteAllTemplates( 'wp_template_part' );
+	} );
+	test.describe( `${ templateTitle } template`, () =>
+		test( 'Products block matches with classic template block', async ( {
 			admin,
 			editor,
 			page,
@@ -126,6 +130,7 @@ test.describe( `${ blockData.name } Block `, () => {
 			} );
 
 			await editor.canvas.click( 'body' );
+			await editor.canvas.waitForLoadState( 'networkidle' );
 			const block = await editorUtils.getBlockByName( blockData.name );
 			await editor.selectBlocks( block );
 			await editor.insertBlock( {
@@ -147,10 +152,6 @@ test.describe( `${ blockData.name } Block `, () => {
 			);
 
 			expect( classicProducts ).toEqual( productQueryProducts );
-		} );
-	}
-
-	test.afterAll( async ( { requestUtils } ) => {
-		await requestUtils.deleteAllTemplates( 'wp_template' );
-	} );
-} );
+		} )
+	);
+}
