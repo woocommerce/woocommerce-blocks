@@ -8,11 +8,12 @@ import { Icon } from '@wordpress/icons';
  * Internal dependencies
  */
 import './style.scss';
+import { IconType } from '.././types';
 
 interface Props {
 	count: number;
 	colorClassNames?: string;
-	icon?: 'cart' | 'bag' | 'bag-alt';
+	icon?: IconType;
 }
 
 const QuantityBadge = ( { count, icon }: Props ): JSX.Element => {

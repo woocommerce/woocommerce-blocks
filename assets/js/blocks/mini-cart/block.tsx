@@ -34,6 +34,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import type { BlockAttributes } from './types';
 import QuantityBadge from './quantity-badge';
 import { MiniCartContentsBlock } from './mini-cart-contents/block';
 import './style.scss';
@@ -42,15 +43,7 @@ import {
 	attributes as miniCartContentsAttributes,
 } from './mini-cart-contents/attributes';
 
-interface Props {
-	isInitiallyOpen?: boolean;
-	colorClassNames?: string;
-	style?: Record< string, Record< string, string > >;
-	contents: string;
-	miniCartIcon?: 'cart' | 'bag' | 'bag-alt';
-	addToCartBehaviour: string;
-	hasHiddenPrice: boolean;
-}
+type Props = BlockAttributes;
 
 const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 	const {
