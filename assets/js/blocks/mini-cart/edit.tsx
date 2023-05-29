@@ -1,7 +1,13 @@
 /**
  * External dependencies
  */
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	useBlockProps,
+	withColors,
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
+} from '@wordpress/block-editor';
 import { formatPrice } from '@woocommerce/price-format';
 import {
 	PanelBody,
@@ -17,6 +23,7 @@ import Noninteractive from '@woocommerce/base-components/noninteractive';
 import { isSiteEditorPage } from '@woocommerce/utils';
 import type { ReactElement } from 'react';
 import { select } from '@wordpress/data';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -25,9 +32,19 @@ import QuantityBadge from './quantity-badge';
 import './editor.scss';
 
 interface Attributes {
+	clientId: number;
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
 	cartAndCheckoutRenderStyle: boolean;
+	priceColor: object;
+	iconColor: object;
+	productCountColor: object;
+	setPriceColor: string;
+	setIconColor: string;
+	setProductCountColor: string;
+	priceColorValue: string;
+	iconColorValue: string;
+	productCountColorValue: string;
 }
 
 interface Props {
@@ -36,11 +53,31 @@ interface Props {
 }
 
 const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
-	const { addToCartBehaviour, hasHiddenPrice, cartAndCheckoutRenderStyle } =
-		attributes;
-	const blockProps = useBlockProps( {
-		className: `wc-block-mini-cart`,
+	const {
+		clientId,
+		addToCartBehaviour,
+		hasHiddenPrice,
+		setPriceColor,
+		setIconColor,
+		setProductCountColor,
+		priceColorValue,
+		iconColorValue,
+		productCountColorValue,
+	} = attributes;
+
+	// Fallback color values are used maintain selections in case switching
+	// themes and named colors in palette do not match.
+	const className = classNames( {
+		'wc-block-mini-cart': true,
+		// 'has-price-color': priceColor.color || priceColorValue,
+		'has-price-color': priceColorValue,
+		// 'has-icon-color': iconColor.color || iconColorValue,
+		'has-icon-color': iconColorValue,
+		// 'has-product-count-color': productCountColor.color || productCountColorValue,
+		'has-product-count-color': productCountColorValue,
 	} );
+
+	const blockProps = useBlockProps( { className } );
 
 	const isSiteEditor = isSiteEditorPage( select( 'core/edit-site' ) );
 
@@ -51,6 +88,47 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 
 	const productCount = 0;
 	const productTotal = 0;
+
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+	const colorSettings = [
+		{
+			value: priceColorValue,
+			onChange: ( colorValue ) => {
+				setPriceColor( colorValue );
+				setAttributes( { priceColorValue: colorValue } );
+			},
+			label: __( 'Price color', 'woo-gutenberg-products-block' ),
+			resetAllFilter: () => {
+				setPriceColor( undefined );
+				setAttributes( { priceColorValue: undefined } );
+			},
+		},
+		{
+			value: iconColorValue,
+			onChange: ( colorValue ) => {
+				setIconColor( colorValue );
+				setAttributes( { iconColorValue: colorValue } );
+			},
+			label: __( 'Icon color', 'woo-gutenberg-products-block' ),
+			resetAllFilter: () => {
+				setIconColor( undefined );
+				setAttributes( { iconColorValue: undefined } );
+			},
+		},
+		{
+			value: productCountColorValue,
+			onChange: ( colorValue ) => {
+				setProductCountColor( colorValue );
+				setAttributes( { productCountColorValue: colorValue } );
+			},
+			label: __( 'Product count color', 'woo-gutenberg-products-block' ),
+			resetAllFilter: () => {
+				setProductCountColor( undefined );
+				setAttributes( { productCountColorValue: undefined } );
+			},
+		},
+	];
 
 	return (
 		<div { ...blockProps }>
@@ -166,6 +244,31 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 					</BaseControl>
 				</PanelBody>
 			</InspectorControls>
+			{ colorGradientSettings.hasColorsOrGradients && (
+				<InspectorControls group="color">
+					{ console.log( colorSettings ) }
+					{ colorSettings.map(
+						( { onChange, label, value, resetAllFilter } ) => (
+							<ColorGradientSettingsDropdown
+								key={ `mini-cart-color-${ label }` }
+								__experimentalIsRenderedInSidebar
+								settings={ [
+									{
+										colorValue: value,
+										label,
+										onColorChange: onChange,
+										isShownByDefault: true,
+										resetAllFilter,
+										enableAlpha: true,
+									},
+								] }
+								panelId={ clientId }
+								{ ...colorGradientSettings }
+							/>
+						)
+					) }
+				</InspectorControls>
+			) }
 			<Noninteractive>
 				<button className="wc-block-mini-cart__button">
 					{ ! hasHiddenPrice && (
@@ -180,4 +283,10 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 	);
 };
 
-export default Edit;
+const miniCartColorAttributes = {
+	priceColor: 'price-color',
+	iconColor: 'icon-color',
+	productCountColor: 'product-count-color',
+};
+
+export default withColors( miniCartColorAttributes )( Edit );
