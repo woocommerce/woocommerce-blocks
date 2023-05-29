@@ -32,16 +32,12 @@ import QuantityBadge from './quantity-badge';
 import './editor.scss';
 
 interface Attributes {
-	clientId: number;
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
 	cartAndCheckoutRenderStyle: boolean;
 	priceColor: object;
 	iconColor: object;
 	productCountColor: object;
-	setPriceColor: string;
-	setIconColor: string;
-	setProductCountColor: string;
 	priceColorValue: string;
 	iconColorValue: string;
 	productCountColorValue: string;
@@ -50,16 +46,24 @@ interface Attributes {
 interface Props {
 	attributes: Attributes;
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
+	clientId: number;
+	setPriceColor: ( colorValue: string ) => void;
+	setIconColor: ( colorValue: string ) => void;
+	setProductCountColor: ( colorValue: string ) => void;
 }
 
-const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
+const Edit = ( {
+	attributes,
+	setAttributes,
+	clientId,
+	setPriceColor,
+	setIconColor,
+	setProductCountColor,
+}: Props ): ReactElement => {
 	const {
-		clientId,
+		cartAndCheckoutRenderStyle,
 		addToCartBehaviour,
 		hasHiddenPrice,
-		setPriceColor,
-		setIconColor,
-		setProductCountColor,
 		priceColorValue,
 		iconColorValue,
 		productCountColorValue,
@@ -246,7 +250,6 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 			</InspectorControls>
 			{ colorGradientSettings.hasColorsOrGradients && (
 				<InspectorControls group="color">
-					{ console.log( colorSettings ) }
 					{ colorSettings.map(
 						( { onChange, label, value, resetAllFilter } ) => (
 							<ColorGradientSettingsDropdown
@@ -272,11 +275,17 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 			<Noninteractive>
 				<button className="wc-block-mini-cart__button">
 					{ ! hasHiddenPrice && (
-						<span className="wc-block-mini-cart__amount">
+						<span
+							className="wc-block-mini-cart__amount"
+							style={ { color: priceColorValue } }
+						>
 							{ formatPrice( productTotal ) }
 						</span>
 					) }
-					<QuantityBadge count={ productCount } />
+					<QuantityBadge
+						iconColor={ iconColorValue }
+						count={ productCount }
+					/>
 				</button>
 			</Noninteractive>
 		</div>
