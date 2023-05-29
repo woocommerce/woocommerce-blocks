@@ -49,6 +49,7 @@ const Block = ( {
 			priceStyle={ style }
 			priceClassName={ priceClassName }
 			currency={ currency }
+			withSuperScript={ true }
 			price={
 				isDescendentOfSingleProductTemplate ? pricePreview : rawPrice
 			}

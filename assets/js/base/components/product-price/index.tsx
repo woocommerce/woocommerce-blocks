@@ -17,7 +17,7 @@ interface PriceRangeProps {
 	/**
 	 * Currency configuration object
 	 */
-	currency: Currency | Record< string, never > | undefined;
+	currency: Currency | Record< string, never >;
 	/**
 	 * The maximum price for the range
 	 */
@@ -38,6 +38,11 @@ interface PriceRangeProps {
 	 * **Note:** this excludes the dash in between the elements
 	 */
 	priceStyle?: React.CSSProperties | undefined;
+	/**
+	 * If true, the decimal separator will be excluded and the amount after it
+	 * will be wrapped in a superscript element.
+	 */
+	withSuperScript: boolean | undefined;
 }
 
 const PriceRange = ( {
@@ -46,6 +51,7 @@ const PriceRange = ( {
 	minPrice,
 	priceClassName,
 	priceStyle = {},
+	withSuperScript = false,
 }: PriceRangeProps ) => {
 	return (
 		<>
@@ -69,6 +75,7 @@ const PriceRange = ( {
 					currency={ currency }
 					value={ minPrice }
 					style={ priceStyle }
+					withSuperScript={ withSuperScript }
 				/>
 				&nbsp;&mdash;&nbsp;
 				<FormattedMonetaryAmount
@@ -79,6 +86,7 @@ const PriceRange = ( {
 					currency={ currency }
 					value={ maxPrice }
 					style={ priceStyle }
+					withSuperScript={ withSuperScript }
 				/>
 			</span>
 		</>
@@ -89,7 +97,7 @@ interface SalePriceProps {
 	/**
 	 * Currency configuration object
 	 */
-	currency: Currency | Record< string, never > | undefined;
+	currency: Currency | Record< string, never >;
 	/**
 	 * CSS class to be applied to the regular price container
 	 *
@@ -121,7 +129,7 @@ interface SalePriceProps {
 	/**
 	 * The new price during the sale
 	 */
-	price: number | string | undefined;
+	price: number | string;
 }
 
 const SalePrice = ( {
@@ -248,6 +256,11 @@ export interface ProductPriceProps {
 				'marginTop' | 'marginRight' | 'marginBottom' | 'marginLeft'
 		  >
 		| undefined;
+	/**
+	 * If true, the decimal separator will be excluded and the amount after it
+	 * will be wrapped in a superscript element.
+	 */
+	withSuperScript: boolean | undefined;
 }
 
 const ProductPrice = ( {
@@ -264,6 +277,7 @@ const ProductPrice = ( {
 	regularPriceClassName,
 	regularPriceStyle,
 	style,
+	withSuperScript = false,
 }: ProductPriceProps ): JSX.Element => {
 	const wrapperClassName = classNames(
 		className,
@@ -310,6 +324,7 @@ const ProductPrice = ( {
 				minPrice={ minPrice }
 				priceClassName={ priceClassName }
 				priceStyle={ priceStyle }
+				withSuperScript={ withSuperScript }
 			/>
 		);
 	} else if ( price ) {
@@ -322,6 +337,7 @@ const ProductPrice = ( {
 				currency={ currency }
 				value={ price }
 				style={ priceStyle }
+				withSuperScript={ withSuperScript }
 			/>
 		);
 	}
