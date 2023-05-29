@@ -28,7 +28,6 @@ const config: ExtendedPlaywrightTestConfig = {
 	testDir: 'tests',
 	retries: CI ? 2 : 0,
 	workers: 4,
-	fullyParallel: true,
 	reporter: process.env.CI
 		? [ [ 'github' ], [ 'list' ], [ 'html' ] ]
 		: 'list',
