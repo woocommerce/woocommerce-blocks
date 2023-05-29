@@ -27,7 +27,7 @@ const config: ExtendedPlaywrightTestConfig = {
 	globalTeardown: require.resolve( './global-teardown' ),
 	testDir: 'tests',
 	retries: CI ? 2 : 0,
-	workers: 4,
+	workers: 1,
 	fullyParallel: true,
 	reporter: process.env.CI ? [ [ 'github' ], [ 'list' ] ] : 'list',
 	maxFailures: E2E_MAX_FAILURES ? Number( E2E_MAX_FAILURES ) : 0,
