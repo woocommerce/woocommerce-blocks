@@ -19,20 +19,6 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v3
 
-            - name: Get changed Markdown files
-              id: files
-              run: |
-                  echo "::set-output name=md::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep .md)"
-              shell: bash
-
-            - name: Check for Markdown changes
-              run: |
-                  if [[ -z "${{ steps.files.outputs.md }}" ]]; then
-                    echo "No Markdown files changed, skipping the link check."
-                    exit 0
-                  fi
-              shell: bash
-
             - name: Run Markdown link check
               uses: gaurav-nelson/github-action-markdown-link-check@v1
               with:
