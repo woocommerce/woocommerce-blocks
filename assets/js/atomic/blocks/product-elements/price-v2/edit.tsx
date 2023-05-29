@@ -122,11 +122,7 @@ const EditBlock = ( {
 		>
 			<div className={ parentClassName }>
 				<InnerBlocks
-					allowedBlocks={ [
-						originalPriceName,
-						currentPriceName,
-						'core/group',
-					] }
+					allowedBlocks={ [ originalPriceName, currentPriceName ] }
 					// todo add template for initial price layout
 					template={ TEMPLATE }
 				/>
