@@ -1,17 +1,20 @@
 /**
  * External dependencies
  */
-import { ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { BlockEditProps } from '@wordpress/blocks';
-import { usePrevious } from '@woocommerce/base-hooks';
 import { select } from '@wordpress/data';
 import { isSiteEditorPage } from '@woocommerce/utils';
+import {
+	ToggleControl,
+	// @ts-expect-error Using experimental features
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToolsPanelItem as ToolsPanelItem,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import { ProductCollectionAttributes } from '../types';
+import { ProductCollectionQuery } from '../types';
 
 const ARCHIVE_PRODUCT_TEMPLATES = [
 	'woocommerce/woocommerce//archive-product',
@@ -21,19 +24,15 @@ const ARCHIVE_PRODUCT_TEMPLATES = [
 	'woocommerce/woocommerce//product-search-results',
 ];
 
-const InheritQueryControl = (
-	props: BlockEditProps< ProductCollectionAttributes >
-) => {
-	const { attributes, setAttributes } = props;
-	const { inherit } = attributes.query;
+interface InheritQueryControlProps {
+	setQueryAttribute: ( value: Partial< ProductCollectionQuery > ) => void;
+	inherit: boolean | null;
+}
 
-	const queryObjectBeforeInheritEnabled = usePrevious(
-		props.attributes.query,
-		( value ) => {
-			return value.inherit === false;
-		}
-	);
-
+const InheritQueryControl = ( {
+	setQueryAttribute,
+	inherit,
+}: InheritQueryControlProps ) => {
 	const editSiteStore = select( 'core/edit-site' );
 	const isSiteEditor = isSiteEditorPage( editSiteStore );
 	const currentTemplateId = editSiteStore?.getEditedPostId() as string;
@@ -43,14 +42,11 @@ const InheritQueryControl = (
 	 * We want inherit value to be true when block is added to Product templates
 	 * and false when added to somewhere else.
 	 */
-	if ( attributes.query.inherit === undefined ) {
-		setAttributes( {
-			query: {
-				...props.attributes.query,
-				inherit: currentTemplateId
-					? ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId )
-					: false,
-			},
+	if ( inherit === null ) {
+		setQueryAttribute( {
+			inherit: currentTemplateId
+				? ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId )
+				: false,
 		} );
 	}
 
@@ -60,29 +56,36 @@ const InheritQueryControl = (
 	}
 
 	return (
-		<ToggleControl
+		<ToolsPanelItem
 			label={ __(
 				'Inherit query from template',
 				'woo-gutenberg-products-block'
 			) }
-			help={ __(
-				'Toggle to use the global query context that is set with the current template, such as an archive or search. Disable to customize the settings independently.',
-				'woo-gutenberg-products-block'
-			) }
-			checked={ !! inherit }
-			onChange={ ( newInherit ) =>
-				setAttributes( {
-					query: {
-						...props.attributes.query,
-						// Restore the query object value
-						...( inherit === false && {
-							...queryObjectBeforeInheritEnabled,
-						} ),
+			hasValue={ () => inherit !== null }
+			isShownByDefault
+			onDeselect={ () => {
+				setQueryAttribute( {
+					inherit: null,
+				} );
+			} }
+		>
+			<ToggleControl
+				label={ __(
+					'Inherit query from template',
+					'woo-gutenberg-products-block'
+				) }
+				help={ __(
+					'Toggle to use the global query context that is set with the current template, such as an archive or search. Disable to customize the settings independently.',
+					'woo-gutenberg-products-block'
+				) }
+				checked={ !! inherit }
+				onChange={ ( newInherit ) =>
+					setQueryAttribute( {
 						inherit: newInherit,
-					},
-				} )
-			}
-		/>
+					} )
+				}
+			/>
+		</ToolsPanelItem>
 	);
 };
 

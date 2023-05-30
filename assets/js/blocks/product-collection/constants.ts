@@ -43,7 +43,7 @@ export const DEFAULT_ATTRIBUTES: Partial< ProductCollectionAttributes > = {
 		search: '',
 		exclude: [],
 		sticky: '',
-		inherit: false,
+		inherit: null,
 		taxQuery: '',
 		parents: [],
 		isProductCollectionBlock: true,

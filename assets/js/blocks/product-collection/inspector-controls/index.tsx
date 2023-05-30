@@ -29,7 +29,8 @@ import AttributesControl from './attributes-control';
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
 ) => {
-	const { inherit } = props.attributes.query;
+	const query = props.attributes.query;
+	const inherit = query?.inherit;
 	const displayQueryControls = ! inherit;
 
 	const setQueryAttributeBind = useMemo(
@@ -49,7 +50,10 @@ const ProductCollectionInspectorControls = (
 				} }
 			>
 				<ColumnsControl { ...props } />
-				<InheritQueryControl { ...props } />
+				<InheritQueryControl
+					setQueryAttribute={ setQueryAttributeBind }
+					inherit={ inherit }
+				/>
 				{ displayQueryControls ? (
 					<>
 						{ /** Placeholder for controls modifying the query. */ }
@@ -70,9 +74,7 @@ const ProductCollectionInspectorControls = (
 				<KeywordControl { ...props } />
 				<AttributesControl
 					woocommerceAttributes={
-						props.attributes.query &&
-						( props.attributes.query
-							.woocommerceAttributes as AttributeMetadata[] )
+						query?.woocommerceAttributes as AttributeMetadata[]
 					}
 					setQueryAttribute={ setQueryAttributeBind }
 				/>
