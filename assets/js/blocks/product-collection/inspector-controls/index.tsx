@@ -15,7 +15,7 @@ import {
 /**
  * Internal dependencies
  */
-import { ProductCollectionAttributes } from '../types';
+import { ProductCollectionAttributes, ProductCollectionQuery } from '../types';
 import ColumnsControl from './columns-control';
 import InheritQueryControl from './inherit-query-control';
 import OrderByControl from './order-by-control';
@@ -53,38 +53,41 @@ const ProductCollectionInspectorControls = (
 				<ColumnsControl { ...props } />
 				<InheritQueryControl
 					setQueryAttribute={ setQueryAttributeBind }
-					inherit={ inherit }
+					query={ query }
 				/>
 				{ displayQueryControls ? (
-					<>
-						{ /** Placeholder for controls modifying the query. */ }
-					</>
+					<OrderByControl { ...props } />
 				) : null }
-				<OrderByControl { ...props } />
 			</ToolsPanel>
 
-			<ToolsPanel
-				label={ __( 'Filters', 'woo-gutenberg-products-block' ) }
-				resetAll={ ( resetAllFilters: ( () => void )[] ) => {
-					setQueryAttribute( props, DEFAULT_FILTERS );
-					resetAllFilters.forEach( ( resetFilter ) => resetFilter() );
-				} }
-				className="product-collection-inspector-toolspanel__filters"
-			>
-				<OnSaleControl { ...props } />
-				<StockStatusControl { ...props } />
-				<KeywordControl { ...props } />
-				<AttributesControl
-					woocommerceAttributes={
-						query?.woocommerceAttributes as AttributeMetadata[]
-					}
-					setQueryAttribute={ setQueryAttributeBind }
-				/>
-				<TaxonomyControls
-					setQueryAttribute={ setQueryAttributeBind }
-					query={ props.attributes.query }
-				/>
-			</ToolsPanel>
+			{ displayQueryControls ? (
+				<ToolsPanel
+					label={ __( 'Filters', 'woo-gutenberg-products-block' ) }
+					resetAll={ ( resetAllFilters: ( () => void )[] ) => {
+						setQueryAttribute( props, DEFAULT_FILTERS );
+						resetAllFilters.forEach( ( resetFilter ) =>
+							resetFilter()
+						);
+					} }
+					className="product-collection-inspector-toolspanel__filters"
+				>
+					<OnSaleControl { ...props } />
+					<StockStatusControl { ...props } />
+					<KeywordControl { ...props } />
+					<AttributesControl
+						woocommerceAttributes={
+							query?.woocommerceAttributes as AttributeMetadata[]
+						}
+						setQueryAttribute={ setQueryAttributeBind }
+					/>
+					<TaxonomyControls
+						setQueryAttribute={ setQueryAttributeBind }
+						query={
+							props.attributes.query as ProductCollectionQuery
+						}
+					/>
+				</ToolsPanel>
+			) : null }
 		</InspectorControls>
 	);
 };
