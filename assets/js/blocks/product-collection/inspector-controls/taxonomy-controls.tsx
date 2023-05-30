@@ -204,7 +204,7 @@ function TaxonomyItem( {
 	};
 
 	return (
-		<div className="product-collection-inspector__taxonomy-control">
+		<div className="wc-block-editor-product-collection-inspector__taxonomy-control">
 			<FormTokenField
 				label={ taxonomy.name }
 				value={ value }
