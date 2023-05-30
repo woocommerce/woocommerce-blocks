@@ -76,4 +76,5 @@ export const DEFAULT_FILTERS = {
 	woocommerceOnSale: ( DEFAULT_ATTRIBUTES.query as ProductCollectionQuery )
 		.woocommerceOnSale,
 	woocommerceStockStatus: getDefaultStockStatuses(),
+	woocommerceAttributes: [],
 };
