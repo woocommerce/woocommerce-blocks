@@ -15,11 +15,15 @@ export const TYPES = {
 	productTaxonomy: 'product-taxonomy',
 	productSearchResults: 'product-search-results',
 	orderReceived: 'order-received',
+	cart: 'cart',
+	checkout: 'checkout',
+	checkoutHeader: 'checkout-header',
 };
 export const PLACEHOLDERS = {
 	singleProduct: 'single-product',
 	archiveProduct: 'archive-product',
 	orderReceived: 'fallback',
+	checkoutHeader: 'checkout-header',
 };
 
 export const TEMPLATES: TemplateDetails = {
@@ -72,15 +76,25 @@ export const TEMPLATES: TemplateDetails = {
 		placeholder: PLACEHOLDERS.archiveProduct,
 	},
 	cart: {
+		type: TYPES.cart,
 		title: __( 'WooCommerce Cart Block', 'woo-gutenberg-products-block' ),
 		placeholder: 'cart',
 	},
 	checkout: {
+		type: TYPES.checkout,
 		title: __(
 			'WooCommerce Checkout Block',
 			'woo-gutenberg-products-block'
 		),
 		placeholder: 'checkout',
+	},
+	'checkout-header': {
+		type: TYPES.checkoutHeader,
+		title: __(
+			'WooCommerce Checkout Header',
+			'woo-gutenberg-products-block'
+		),
+		placeholder: 'checkout-header',
 	},
 	'order-received': {
 		type: TYPES.orderReceived,
