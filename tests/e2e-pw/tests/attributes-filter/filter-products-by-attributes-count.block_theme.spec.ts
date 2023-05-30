@@ -37,17 +37,11 @@ const prepareAttributes = async ( page ) => {
 };
 
 test.describe( 'Filter by Attributes Block - with All products Block', () => {
-	test.beforeAll( async () => {
-		await cli(
-			`npm run wp-env run tests-cli wp plugin activate woocommerce-blocks`
-		);
-	} );
-
 	test.beforeEach( async ( { page } ) => {
 		await prepareAttributes( page );
 	} );
 
-	test( 'should show the correct count number of products based on the filter (color=blue|query_type_color=or)', async ( {
+	test( 'should show correct attrs count (color=blue|query_type_color=or)', async ( {
 		page,
 	} ) => {
 		await page.goto(
@@ -56,28 +50,20 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		await page.waitForLoadState( 'networkidle' );
 
 		// Check if the page has loaded successfully.
-		const pageTitle = await page.$( 'h1.wp-block-post-title' );
-		expect( await pageTitle?.innerText() ).toBe(
-			'Filter by Attributes Block'
-		);
+		await expect(
+			page.getByText( 'Filter by Attributes Block' )
+		).toBeVisible();
 
 		const expectedValues = [ '4', '0', '2', '2', '0' ];
 
-		const lists = await page.$$(
-			'ul.wc-block-attribute-filter-list > li:not([class^="is-loading"]) .wc-filter-element-label-list-count > span:not([class^="screen-reader"])'
-		);
-
-		let index = 0;
-
-		for ( const list of lists ) {
-			const count = await list.innerText();
-
-			expect( count.includes( expectedValues[ index ] ) ).toBe( true );
-			index++;
-		}
+		await expect(
+			page.locator(
+				'ul.wc-block-attribute-filter-list > li:not([class^="is-loading"]) .wc-filter-element-label-list-count > span:not([class^="screen-reader"])'
+			)
+		).toHaveText( expectedValues );
 	} );
 
-	test( 'should show the correct count number of products based on the filter (color=blue,gray|query_type_color=or)', async ( {
+	test( 'should show correct attrs count (color=blue,gray|query_type_color=or)', async ( {
 		page,
 	} ) => {
 		await page.goto(
@@ -86,28 +72,20 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		await page.waitForLoadState( 'networkidle' );
 
 		// Check if the page has loaded successfully.
-		const pageTitle = await page.$( '.wp-block-post-title' );
-		expect( await pageTitle?.innerText() ).toBe(
-			'Filter by Attributes Block'
-		);
+		await expect(
+			page.getByText( 'Filter by Attributes Block' )
+		).toBeVisible();
 
 		const expectedValues = [ '4', '3', '2', '2', '0' ];
 
-		const lists = await page.$$(
-			'ul.wc-block-attribute-filter-list > li:not([class^="is-loading"]) .wc-filter-element-label-list-count > span:not([class^="screen-reader"])'
-		);
-
-		let index = 0;
-
-		for ( const list of lists ) {
-			const count = await list.innerText();
-
-			expect( count.includes( expectedValues[ index ] ) ).toBe( true );
-			index++;
-		}
+		await expect(
+			page.locator(
+				'ul.wc-block-attribute-filter-list > li:not([class^="is-loading"]) .wc-filter-element-label-list-count > span:not([class^="screen-reader"])'
+			)
+		).toHaveText( expectedValues );
 	} );
 
-	test( 'should show the correct count number of products based on the filter (color=blue|query_type_color=or|min_price=15|max_price=40)', async ( {
+	test( 'should show correct attrs count (color=blue|query_type_color=or|min_price=15|max_price=40)', async ( {
 		page,
 	} ) => {
 		await page.goto(
@@ -116,24 +94,16 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		await page.waitForLoadState( 'networkidle' );
 
 		// Check if the page has loaded successfully.
-		const pageTitle = await page.$( '.wp-block-post-title' );
-		expect( await pageTitle?.innerText() ).toBe(
-			'Filter by Attributes Block'
-		);
+		await expect(
+			page.getByText( 'Filter by Attributes Block' )
+		).toBeVisible();
 
 		const expectedValues = [ '2', '0', '1', '1', '0' ];
 
-		const lists = await page.$$(
-			'ul.wc-block-attribute-filter-list > li:not([class^="is-loading"]) .wc-filter-element-label-list-count > span:not([class^="screen-reader"])'
-		);
-
-		let index = 0;
-
-		for ( const list of lists ) {
-			const count = await list.innerText();
-
-			expect( count.includes( expectedValues[ index ] ) ).toBe( true );
-			index++;
-		}
+		await expect(
+			page.locator(
+				'ul.wc-block-attribute-filter-list > li:not([class^="is-loading"]) .wc-filter-element-label-list-count > span:not([class^="screen-reader"])'
+			)
+		).toHaveText( expectedValues );
 	} );
 } );
