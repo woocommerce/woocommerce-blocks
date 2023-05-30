@@ -1,3 +1,8 @@
+/**
+ * External dependencies
+ */
+import { AttributeMetadata } from '@woocommerce/types';
+
 export interface ProductCollectionAttributes {
 	query: ProductCollectionQuery;
 	queryId: number;
@@ -7,10 +12,13 @@ export interface ProductCollectionAttributes {
 		}
 	];
 	templateSlug: string;
-	displayLayout: {
-		type: string;
-		columns: number;
-	};
+	displayLayout: ProductCollectionDisplayLayout;
+	tagName: string;
+}
+
+export interface ProductCollectionDisplayLayout {
+	type: string;
+	columns: number;
 }
 
 export interface ProductCollectionQuery {
@@ -27,6 +35,23 @@ export interface ProductCollectionQuery {
 	search: string;
 	sticky: string;
 	taxQuery: string;
+	woocommerceOnSale: boolean;
+	/**
+	 * Filter products by their stock status.
+	 *
+	 * Will generate the following `meta_query`:
+	 *
+	 * ```
+	 * array(
+	 *   'key'     => '_stock_status',
+	 *   'value'   => (array) $stock_statuses,
+	 *   'compare' => 'IN',
+	 * ),
+	 * ```
+	 */
+	woocommerceStockStatus?: string[];
+	woocommerceAttributes?: AttributeMetadata[];
+	isProductCollectionBlock?: boolean;
 }
 
 export type TProductCollectionOrder = 'asc' | 'desc';
