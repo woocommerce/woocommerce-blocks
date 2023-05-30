@@ -79,7 +79,7 @@ class ProductCategories extends AbstractDynamicBlock {
 			if ( strstr( $content, 'data-is-dropdown="true"' ) ) {
 				$attributes['isDropdown'] = true;
 			}
-			if ( strstr( $content, 'data-i\s-hierarchical="false"' ) ) {
+			if ( strstr( $content, 'data-is-hierarchical="false"' ) ) {
 				$attributes['isHierarchical'] = false;
 			}
 			if ( strstr( $content, 'data-has-empty="true"' ) ) {
