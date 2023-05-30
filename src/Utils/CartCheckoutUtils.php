@@ -63,7 +63,15 @@ class CartCheckoutUtils {
 			return $array;
 		}
 
-		$array_without_accents = array_map( 'remove_accents', array_map( 'wc_strtolower', array_map( 'html_entity_decode', $array ) ) );
+		$array_without_accents = array_map(
+			function( $value ) {
+				return is_array( $value )
+					? self::deep_sort_with_accents( $value )
+					: remove_accents( wc_strtolower( html_entity_decode( $value ) ) );
+			},
+			$array
+		);
+
 		asort( $array_without_accents );
 		return array_replace( $array_without_accents, $array );
 	}
