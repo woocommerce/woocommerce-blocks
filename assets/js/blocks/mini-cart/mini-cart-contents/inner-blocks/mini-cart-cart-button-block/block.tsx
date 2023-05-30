@@ -4,13 +4,13 @@
 import { CART_URL } from '@woocommerce/block-settings';
 import Button from '@woocommerce/base-components/button';
 import classNames from 'classnames';
-import { useColorProps } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
 import { defaultCartButtonLabel } from './constants';
 import { getVariant } from '../utils';
+import { useColorProps } from '../color-utils';
 
 type MiniCartCartButtonBlockProps = {
 	cartButtonLabel?: string;
