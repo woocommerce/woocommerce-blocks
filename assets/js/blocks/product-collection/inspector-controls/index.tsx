@@ -32,7 +32,7 @@ const ProductCollectionInspectorControls = (
 ) => {
 	const query = props.attributes.query;
 	const inherit = query?.inherit;
-	const displayQueryControls = ! inherit;
+	const displayQueryControls = inherit === false;
 
 	const setQueryAttributeBind = useMemo(
 		() => setQueryAttribute.bind( null, props ),

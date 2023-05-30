@@ -22,6 +22,8 @@ import { getDefaultSettings } from '../constants';
 const ColumnsControl = (
 	props: BlockEditProps< ProductCollectionAttributes >
 ) => {
+	if ( ! props.attributes.displayLayout ) return null;
+
 	const { type, columns } = props.attributes.displayLayout;
 	const showColumnsControl = type === 'flex';
 
