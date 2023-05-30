@@ -38,15 +38,6 @@ const settings: BlockConfiguration = {
 	supports: {
 		html: false,
 		multiple: false,
-		color: {
-			enableContrastChecker: false,
-			background: true,
-			gradients: true,
-			text: false,
-			__experimentalDefaultControls: {
-				background: false,
-			},
-		},
 		typography: {
 			fontSize: true,
 			...( isFeaturePluginBuild() && {
