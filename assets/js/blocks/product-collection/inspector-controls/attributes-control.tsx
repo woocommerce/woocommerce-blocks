@@ -62,7 +62,7 @@ const AttributesControl = ( {
 				type={ 'token' }
 			/>
 			<ExternalLink
-				className="wc-product-collection-panel__external-link"
+				className="wc-block-editor-product-collection-panel__manage-attributes-link"
 				href={ EDIT_ATTRIBUTES_URL }
 			>
 				{ __( 'Manage attributes', 'woo-gutenberg-products-block' ) }
