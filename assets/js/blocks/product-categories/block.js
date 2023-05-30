@@ -159,7 +159,7 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 								'woo-gutenberg-products-block'
 							) }
 							help={ __(
-								'This will effect product category pages',
+								'This will affect product category pages',
 								'woo-gutenberg-products-block'
 							) }
 							checked={ showChildrenOnly }
