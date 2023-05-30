@@ -49,16 +49,21 @@ interface Props {
 	contents: string;
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
+	priceColorValue: string;
+	iconColorValue: string;
+	productCountColorValue: string;
 }
 
 const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 	const {
 		isInitiallyOpen = false,
 		colorClassNames,
-		style,
 		contents = '',
 		addToCartBehaviour = 'none',
 		hasHiddenPrice = false,
+		priceColorValue,
+		iconColorValue,
+		productCountColorValue,
 	} = attributes;
 
 	const {
@@ -216,16 +221,10 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 		formatPrice( subTotal, getCurrencyFromPriceResponse( cartTotals ) )
 	);
 
-	const colorStyle = {
-		backgroundColor: style?.color?.background,
-		color: style?.color?.text,
-	};
-
 	return (
 		<>
 			<button
 				className={ `wc-block-mini-cart__button ${ colorClassNames }` }
-				style={ colorStyle }
 				onClick={ () => {
 					if ( ! isOpen ) {
 						setIsOpen( true );
@@ -235,7 +234,10 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				aria-label={ ariaLabel }
 			>
 				{ ! hasHiddenPrice && (
-					<span className="wc-block-mini-cart__amount">
+					<span
+						className="wc-block-mini-cart__amount"
+						style={ { color: priceColorValue } }
+					>
 						{ formatPrice(
 							subTotal,
 							getCurrencyFromPriceResponse( cartTotals )
@@ -247,7 +249,11 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 						{ taxLabel }
 					</small>
 				) }
-				<QuantityBadge count={ cartItemsCount } />
+				<QuantityBadge
+					count={ cartItemsCount }
+					iconColor={ iconColorValue }
+					productCountColor={ productCountColorValue }
+				/>
 			</button>
 			<Drawer
 				className={ classnames(

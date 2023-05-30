@@ -21,7 +21,6 @@ const QuantityBadge = ( {
 	iconColor,
 	productCountColor,
 }: Props ): JSX.Element => {
-	console.log( productCountColor );
 	return (
 		<span className="wc-block-mini-cart__quantity-badge">
 			<Icon
@@ -32,7 +31,7 @@ const QuantityBadge = ( {
 			/>
 			<span
 				className="wc-block-mini-cart__badge"
-				color={ productCountColor }
+				style={ { background: productCountColor } }
 			>
 				{ count > 0 ? count : '' }
 			</span>

@@ -33,7 +33,7 @@ const settings: BlockConfiguration = {
 	providesContext: {
 		priceColorValue: 'priceColorValue',
 		iconColorValue: 'iconColorValue',
-		productCountColor: 'productCountColor',
+		productCountColorValue: 'productCountColorValue',
 	},
 	supports: {
 		html: false,

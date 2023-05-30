@@ -283,8 +283,9 @@ const Edit = ( {
 						</span>
 					) }
 					<QuantityBadge
-						iconColor={ iconColorValue }
 						count={ productCount }
+						iconColor={ iconColorValue }
+						productCountColor={ productCountColorValue }
 					/>
 				</button>
 			</Noninteractive>
