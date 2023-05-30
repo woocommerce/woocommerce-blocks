@@ -204,13 +204,15 @@ function TaxonomyItem( {
 	};
 
 	return (
-		<div className="block-library-query-inspector__taxonomy-control">
+		<div className="product-collection-inspector__taxonomy-control">
 			<FormTokenField
 				label={ taxonomy.name }
 				value={ value }
 				onInputChange={ debouncedSearch }
 				suggestions={ suggestions }
 				onChange={ onTermsChange }
+				// @ts-expect-error Using experimental features
+				__experimentalShowHowTo={ false }
 			/>
 		</div>
 	);

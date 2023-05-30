@@ -145,7 +145,7 @@ class ProductCollection extends AbstractBlock {
 		);
 
 		$is_on_sale       = $block_context_query['woocommerceOnSale'] ?? false;
-		$taxonomies_query = $this->get_filter_by_taxonomies_query( $query['tax_query'] );
+		$taxonomies_query = $this->get_filter_by_taxonomies_query( $query['tax_query'] ?? [] );
 
 		return $this->get_final_query_args(
 			$common_query_values,
@@ -501,7 +501,7 @@ class ProductCollection extends AbstractBlock {
 	 *
 	 * For example:
 	 * User could provide "Product Categories" using "Filters" ToolsPanel available in Inspector Controls.
-	 * We use this function to extract it's query from $tax_query.
+	 * We use this function to extract its query from $tax_query.
 	 *
 	 * For example, this is how the query for product categories will look like in $tax_query array:
 	 * Array
@@ -513,7 +513,7 @@ class ProductCollection extends AbstractBlock {
 	 *            )
 	 *    )
 	 *
-	 * For product categories, taxonomy would be "product_tag"
+	 * For product tags, taxonomy would be "product_tag"
 	 *
 	 * @param array $tax_query Query to filter products by taxonomies.
 	 * @return array Query to filter products by taxonomies.

@@ -76,6 +76,7 @@ const StockStatusControl = (
 					) || []
 				}
 				__experimentalExpandOnFocus={ true }
+				__experimentalShowHowTo={ false }
 			/>
 		</ToolsPanelItem>
 	);

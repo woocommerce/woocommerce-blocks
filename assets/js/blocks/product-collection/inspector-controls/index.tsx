@@ -55,6 +55,7 @@ const ProductCollectionInspectorControls = (
 					setQueryAttribute( props, DEFAULT_FILTERS );
 					resetAllFilters.forEach( ( resetFilter ) => resetFilter() );
 				} }
+				className="product-collection-inspector-toolspanel__filters"
 			>
 				<OnSaleControl { ...props } />
 				<StockStatusControl { ...props } />
