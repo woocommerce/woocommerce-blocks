@@ -2,10 +2,10 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
 import ProductAttributeTermControl from '@woocommerce/editor-components/product-attribute-term-control';
 import { AttributeMetadata } from '@woocommerce/types';
 import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
+import { ADMIN_URL } from '@woocommerce/settings';
 import {
 	ExternalLink,
 	// @ts-expect-error Using experimental features
@@ -18,10 +18,9 @@ import {
  */
 import { ProductCollectionQuery } from '../types';
 
-const EDIT_ATTRIBUTES_URL =
-	'/wp-admin/edit.php?post_type=product&page=product_attributes';
+const EDIT_ATTRIBUTES_URL = `${ ADMIN_URL }edit.php?post_type=product&page=product_attributes`;
 
-interface Props {
+interface AttributesControlProps {
 	woocommerceAttributes?: AttributeMetadata[];
 	setQueryAttribute: ( value: Partial< ProductCollectionQuery > ) => void;
 }
@@ -29,29 +28,23 @@ interface Props {
 const AttributesControl = ( {
 	woocommerceAttributes,
 	setQueryAttribute,
-}: Props ) => {
-	const [ selected, setSelected ] = useState< { id: number }[] >( [] );
-
-	useEffect( () => {
-		if ( woocommerceAttributes ) {
-			setSelected(
-				woocommerceAttributes.map( ( { termId: id } ) => ( {
-					id,
-				} ) )
-			);
-		}
-	}, [ woocommerceAttributes ] );
+}: AttributesControlProps ) => {
+	const selectedAttributes = woocommerceAttributes?.map(
+		( { termId: id } ) => ( {
+			id,
+		} )
+	);
 
 	return (
 		<ToolsPanelItem
 			label={ __( 'Product Attributes', 'woo-gutenberg-products-block' ) }
-			hasValue={ () => woocommerceAttributes?.length }
+			hasValue={ () => !! woocommerceAttributes?.length }
 		>
 			<ProductAttributeTermControl
 				messages={ {
 					search: __( 'Attributes', 'woo-gutenberg-products-block' ),
 				} }
-				selected={ selected }
+				selected={ selectedAttributes || [] }
 				onChange={ ( searchListItems: SearchListItem[] ) => {
 					const newValue = searchListItems.map(
 						( { id, value } ) => ( {
@@ -69,7 +62,7 @@ const AttributesControl = ( {
 				type={ 'token' }
 			/>
 			<ExternalLink
-				className="woocommerce-product-query-panel__external-link"
+				className="wc-product-collection-panel__external-link"
 				href={ EDIT_ATTRIBUTES_URL }
 			>
 				{ __( 'Manage attributes', 'woo-gutenberg-products-block' ) }
