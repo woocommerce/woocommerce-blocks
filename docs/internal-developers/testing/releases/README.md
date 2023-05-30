@@ -142,6 +142,7 @@ Every release includes specific testing instructions for new features and bug fi
     -   [10.0.3](./1003.md)
     -   [10.0.4](./1004.md)
     -   [10.0.5](./1005.md)
+    -   [10.0.6](./1006.md)
 
 
 <!-- FEEDBACK -->
