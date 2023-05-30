@@ -97,7 +97,7 @@ const Edit = ( {
 				setPriceColor( colorValue );
 				setAttributes( { priceColorValue: colorValue } );
 			},
-			label: __( 'Price color', 'woo-gutenberg-products-block' ),
+			label: __( 'Price', 'woo-gutenberg-products-block' ),
 			resetAllFilter: () => {
 				setPriceColor( undefined );
 				setAttributes( { priceColorValue: undefined } );
@@ -109,7 +109,7 @@ const Edit = ( {
 				setIconColor( colorValue );
 				setAttributes( { iconColorValue: colorValue } );
 			},
-			label: __( 'Icon color', 'woo-gutenberg-products-block' ),
+			label: __( 'Icon', 'woo-gutenberg-products-block' ),
 			resetAllFilter: () => {
 				setIconColor( undefined );
 				setAttributes( { iconColorValue: undefined } );
@@ -121,7 +121,7 @@ const Edit = ( {
 				setProductCountColor( colorValue );
 				setAttributes( { productCountColorValue: colorValue } );
 			},
-			label: __( 'Product count color', 'woo-gutenberg-products-block' ),
+			label: __( 'Product count', 'woo-gutenberg-products-block' ),
 			resetAllFilter: () => {
 				setProductCountColor( undefined );
 				setAttributes( { productCountColorValue: undefined } );
