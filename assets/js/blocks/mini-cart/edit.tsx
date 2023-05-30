@@ -69,15 +69,10 @@ const Edit = ( {
 		productCountColorValue,
 	} = attributes;
 
-	// Fallback color values are used maintain selections in case switching
-	// themes and named colors in palette do not match.
 	const className = classNames( {
 		'wc-block-mini-cart': true,
-		// 'has-price-color': priceColor.color || priceColorValue,
 		'has-price-color': priceColorValue,
-		// 'has-icon-color': iconColor.color || iconColorValue,
 		'has-icon-color': iconColorValue,
-		// 'has-product-count-color': productCountColor.color || productCountColorValue,
 		'has-product-count-color': productCountColorValue,
 	} );
 
