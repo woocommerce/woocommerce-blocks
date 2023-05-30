@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\Blocks\Utils;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Options;
 use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
+use Automattic\WooCommerce\Blocks\Templates\CheckoutHeaderTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
 use Automattic\WooCommerce\Blocks\Templates\MiniCartTemplate;
 use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
@@ -341,6 +342,10 @@ class BlockTemplateUtils {
 			CheckoutTemplate::get_slug()       => array(
 				'title'       => _x( 'Checkout', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display the Checkout.', 'woo-gutenberg-products-block' ),
+			),
+			CheckoutHeaderTemplate::SLUG       => array(
+				'title'       => _x( 'Checkout Header', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Template used to display the simplified Checkout header.', 'woo-gutenberg-products-block' ),
 			),
 			OrderReceivedTemplate::get_slug()  => array(
 				'title'       => _x( 'Order Received', 'Template name', 'woo-gutenberg-products-block' ),
