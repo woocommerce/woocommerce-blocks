@@ -16,17 +16,17 @@ import {
 	getSpacingClassesAndStyles,
 } from '../utils';
 
+export type StyleProps = {
+	className: string;
+	style: CSSProperties;
+};
+
 type BlockAttributes = {
 	style?: StyleEngineProperties | string | undefined;
 };
 
 type StyleAttributes = Record< string, unknown > & {
 	style: StyleEngineProperties;
-};
-
-type StyleProps = {
-	className: string;
-	style: CSSProperties;
 };
 
 /**

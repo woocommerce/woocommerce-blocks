@@ -2,8 +2,12 @@
  * External dependencies
  */
 import { isObject, isString } from '@woocommerce/types';
-import type { CSSProperties } from 'react';
 import type { Style as StyleEngineProperties } from '@wordpress/style-engine/src/types';
+
+/**
+ * Internal dependencies
+ */
+import type { StyleProps } from './use-style-props';
 
 type blockAttributes = {
 	style: StyleEngineProperties;
@@ -11,11 +15,6 @@ type blockAttributes = {
 	fontSize?: string | undefined;
 	// String identifier for the font family preset, not the actual font family.
 	fontFamily?: string | undefined;
-};
-
-type StyleProps = {
-	className: string;
-	style: CSSProperties;
 };
 
 export const useTypographyProps = ( props: blockAttributes ): StyleProps => {

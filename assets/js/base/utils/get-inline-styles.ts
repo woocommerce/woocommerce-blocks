@@ -6,12 +6,6 @@ import { paramCase as kebabCase } from 'change-case';
 import { getCSSRules } from '@wordpress/style-engine';
 import { isObject } from '@woocommerce/types';
 import type { Style as StyleEngineProperties } from '@wordpress/style-engine/src/types';
-import type { CSSProperties } from 'react';
-
-export type StyleProps = {
-	className: string;
-	style: CSSProperties;
-};
 
 /**
  * Returns the inline styles to add depending on the style object
