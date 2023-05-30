@@ -80,7 +80,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 10.0.5 - 2023-05-04 =
+= 10.0.6 - 2023-05-30 =
+
+#### Bug Fixes
+
+- - Fix some scripts needed by the Mini-Cart block not loading. ([9649](https://github.com/woocommerce/woocommerce-blocks/pull/9649))
+
+= 10.0.5 - 2023-05-24 =
 
 #### Bug Fixes
 
