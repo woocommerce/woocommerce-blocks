@@ -6,7 +6,7 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import PropTypes from 'prop-types';
 import { Icon, listView } from '@wordpress/icons';
-import { isSiteEditorPage } from '@woocommerce/utils';
+import { isSiteEditorPage, isWidgetEditorPage } from '@woocommerce/utils';
 import { useSelect } from '@wordpress/data';
 import {
 	Disabled,
@@ -45,7 +45,9 @@ const EmptyPlaceholder = () => (
  */
 const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 	const editSiteStore = useSelect( 'core/edit-site' );
+	const editWidgetStore = useSelect( 'core/edit-widgets' );
 	const isSiteEditor = isSiteEditorPage( editSiteStore );
+	const isWidgetEditor = isWidgetEditorPage( editWidgetStore );
 	const getInspectorControls = () => {
 		const {
 			hasCount,
@@ -152,7 +154,7 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 							setAttributes( { hasEmpty: ! hasEmpty } )
 						}
 					/>
-					{ isSiteEditor && (
+					{ ( isSiteEditor || isWidgetEditor ) && (
 						<ToggleControl
 							label={ __(
 								'Only show children of current category',
