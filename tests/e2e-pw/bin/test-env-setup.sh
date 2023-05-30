@@ -127,16 +127,6 @@ if [ "$pa_color" ] && [ "$pa_size" ]; then
 	"
 fi
 
-if [ "$pa_color" ]; then
-	post_content=$(cat "${script_dir}/filter-by-attributes.txt" | sed 's/"/\\"/g')
-	wp-env run tests-cli "wp post create \
-		--post_status=publish \
-		--post_author=1 \
-		--post_title='Filter by Attributes Block' \
-		--post_content=\"$post_content\"
-	"
-fi
-
 post_content=$(cat "${script_dir}/mini-cart.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
