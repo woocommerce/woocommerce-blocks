@@ -518,7 +518,7 @@ class ProductCollection extends AbstractBlock {
 	 * @return array Query to filter products by taxonomies.
 	 */
 	private function get_filter_by_taxonomies_query( $tax_query ): array {
-		if ( ! isset( $tax_query ) || ! is_array( $tax_query ) ) {
+		if ( ! is_array( $tax_query ) ) {
 			return [];
 		}
 
