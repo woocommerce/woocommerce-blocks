@@ -16,6 +16,32 @@ class AddToCartForm extends AbstractBlock {
 	protected $block_name = 'add-to-cart-form';
 
 	/**
+	 * Initialize the block and Hook into the `render_block_context` filter
+	 * to update the context with the correct data.
+	 *
+	 * @var string
+	 */
+	protected function initialize() {
+		parent::initialize();
+		add_filter ( 'wc_add_to_cart_message_html', array( $this, 'wc_add_to_cart_message_html_filter' ), 10, 2 );
+	}
+
+	/**
+	 * Get the block's attributes.
+	 *
+	 * @param array $attributes Block attributes. Default empty array.
+	 * @return array  Block attributes merged with defaults.
+	 */
+	private function parse_attributes( $attributes ) {
+		// These should match what's set in JS `registerBlockType`.
+		$defaults = array(
+			'isDescendentOfSingleProductBlock' => false,
+		);
+
+		return wp_parse_args( $attributes, $defaults );
+	}
+
+	/**
 	 * Render the block.
 	 *
 	 * @param array    $attributes Block attributes.
@@ -42,6 +68,7 @@ class AddToCartForm extends AbstractBlock {
 		}
 
 		ob_start();
+
 		/**
 		 * Trigger the single product add to cart action for each product type.
 		*
@@ -57,6 +84,10 @@ class AddToCartForm extends AbstractBlock {
 			return '';
 		}
 
+		$parsed_attributes = $this->parse_attributes( $attributes );
+		$is_descendent_of_single_product_block = $parsed_attributes['isDescendentOfSingleProductBlock'];
+		$product = $this->add_is_descendent_of_single_product_block_hidden_input_to_product_form( $product, $is_descendent_of_single_product_block );
+
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
@@ -71,6 +102,38 @@ class AddToCartForm extends AbstractBlock {
 		$product = $previous_product;
 
 		return $form;
+	}
+
+	/**
+	 * Add a hidden input to the Add to Cart form to indicate that it is a descendent of a Single Product block.
+	 *
+	 * @param string $product The Add to Cart Form HTML.
+	 *
+	 * @return string The Add to Cart Form HTML with the hidden input.
+	 */
+	protected function add_is_descendent_of_single_product_block_hidden_input_to_product_form( $product, $is_descendent_of_single_product_block ) {
+
+		$hidden_is_descendent_of_single_product_block_input = sprintf(
+			'<input type="hidden" name="is-descendent-of-single-product-block" value="%1$s">',
+			$is_descendent_of_single_product_block ? 'true' : 'false'
+		);
+		$regex_pattern = '/<button\s+type="submit"[^>]*>.*?<\/button>/i';
+
+		preg_match($regex_pattern, $product, $input_matches);
+
+		if ( ! empty( $input_matches ) ) {
+			$product = preg_replace( $regex_pattern, $hidden_is_descendent_of_single_product_block_input . $input_matches[0], $product );
+		}
+
+		return $product;
+
+	}
+ 
+	function wc_add_to_cart_message_html_filter( $message, $products ) {
+		if( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' == $_POST['is-descendent-of-single-product-block'] ){
+			return false;
+		}
+		return $message;
 	}
 
 	/**
