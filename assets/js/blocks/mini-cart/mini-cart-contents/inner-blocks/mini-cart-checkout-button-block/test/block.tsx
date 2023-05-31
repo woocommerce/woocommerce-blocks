@@ -13,16 +13,12 @@ import { render, screen, waitFor } from '@testing-library/react';
  */
 import Block from '../block';
 
-const assignMock = jest.fn();
-
-delete window.location;
-window.location = { assign: assignMock };
-
-afterEach( () => {
-	assignMock.mockClear();
-} );
 describe( 'Mini Cart Checkout Button Block', () => {
 	it( 'dispatches the onProceedToCheckout event when the button is clicked', async () => {
+		Object.defineProperty( window, 'location', {
+			writable: true,
+			value: { assign: jest.fn() },
+		} );
 		const mockObserver = jest.fn().mockReturnValue( { type: 'error' } );
 		const MockObserverComponent = () => {
 			const { onProceedToCheckout } = useCartEventsContext();
