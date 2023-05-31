@@ -52,34 +52,34 @@ describe( 'Proceed to checkout block', () => {
 		);
 		//@todo When https://github.com/WordPress/gutenberg/issues/22850 is complete use that new matcher here for more specific error message assertion.
 		expect( console ).toHaveErrored();
-		it( 'dispatches the onProceedToCheckout event when the button is clicked', async () => {
-			const mockObserver = jest.fn();
-			const MockObserverComponent = () => {
-				const { onProceedToCheckout } = useCartEventsContext();
-				useEffect( () => {
-					return onProceedToCheckout( mockObserver );
-				}, [ onProceedToCheckout ] );
-				return <div>Mock observer</div>;
-			};
+	} );
+	it( 'dispatches the onProceedToCheckout event when the button is clicked', async () => {
+		const mockObserver = jest.fn();
+		const MockObserverComponent = () => {
+			const { onProceedToCheckout } = useCartEventsContext();
+			useEffect( () => {
+				return onProceedToCheckout( mockObserver );
+			}, [ onProceedToCheckout ] );
+			return <div>Mock observer</div>;
+		};
 
-			render(
-				<CartEventsProvider>
-					<div>
-						<MockObserverComponent />
-						<Block
-							buttonLabel={ 'Proceed to checkout' }
-							checkoutPageId={ 0 }
-							className="test-block"
-						/>
-					</div>
-				</CartEventsProvider>
-			);
-			expect( screen.getByText( 'Mock observer' ) ).toBeInTheDocument();
-			const button = screen.getByText( 'Proceed to Checkout' );
-			button.click();
-			await waitFor( () => {
-				expect( mockObserver ).toHaveBeenCalled();
-			} );
+		render(
+			<CartEventsProvider>
+				<div>
+					<MockObserverComponent />
+					<Block
+						buttonLabel={ 'Proceed to Checkout' }
+						checkoutPageId={ 0 }
+						className="test-block"
+					/>
+				</div>
+			</CartEventsProvider>
+		);
+		expect( screen.getByText( 'Mock observer' ) ).toBeInTheDocument();
+		const button = screen.getByText( 'Proceed to Checkout' );
+		button.click();
+		await waitFor( () => {
+			expect( mockObserver ).toHaveBeenCalled();
 		} );
 	} );
 } );
