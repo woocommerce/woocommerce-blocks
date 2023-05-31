@@ -23,13 +23,14 @@ import { ProductCollectionQuery } from '../types';
 const EMPTY_ARRAY: [] = [];
 const BASE_QUERY = {
 	order: 'asc',
-	_fields: 'id,name',
+	_fields: 'id,name,slug',
 	context: 'view',
 };
 
 type Term = {
 	id: number;
 	name: string;
+	slug: string;
 };
 
 type SearchResultsState = {
@@ -185,7 +186,16 @@ function TaxonomyItem( {
 	// Update suggestions only when the query has resolved.
 	useEffect( () => {
 		if ( ! searchHasResolved ) return;
-		setSuggestions( searchResults.map( ( result ) => result.name ) );
+		const suggestionsSet = new Set();
+		setSuggestions(
+			searchResults.map( ( searchResult ) => {
+				const result = suggestionsSet.has( searchResult.name )
+					? `${ searchResult.name } - ${ searchResult.slug }`
+					: searchResult.name;
+				suggestionsSet.add( searchResult.name );
+				return result;
+			} )
+		);
 	}, [ searchResults, searchHasResolved ] );
 
 	const onTermsChange = ( newTermValues: FormTokenField.Value[] ) => {
