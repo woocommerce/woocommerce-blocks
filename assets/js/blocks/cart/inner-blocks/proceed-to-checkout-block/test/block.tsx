@@ -54,7 +54,7 @@ describe( 'Proceed to checkout block', () => {
 		expect( console ).toHaveErrored();
 	} );
 	it( 'dispatches the onProceedToCheckout event when the button is clicked', async () => {
-		const mockObserver = jest.fn();
+		const mockObserver = jest.fn().mockReturnValue( { type: 'error' } );
 		const MockObserverComponent = () => {
 			const { onProceedToCheckout } = useCartEventsContext();
 			useEffect( () => {
@@ -77,6 +77,10 @@ describe( 'Proceed to checkout block', () => {
 		);
 		expect( screen.getByText( 'Mock observer' ) ).toBeInTheDocument();
 		const button = screen.getByText( 'Proceed to Checkout' );
+
+		// Forcibly set the button URL to # to prevent JSDOM error: `["Error: Not implemented: navigation (except hash changes)`
+		button.parentElement?.removeAttribute( 'href' );
+
 		button.click();
 		await waitFor( () => {
 			expect( mockObserver ).toHaveBeenCalled();
