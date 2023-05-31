@@ -13,8 +13,8 @@ export const updateTotals = ( totals: [ string, number ] | undefined ) => {
 		return;
 	}
 	const [ amount, quantity ] = totals;
-	const miniCartButtons = document.querySelectorAll(
-		'.wc-block-mini-cart__button'
+	const miniCarts = document.querySelectorAll(
+		'.wc-block-mini-cart.wp-block-woocommerce-mini-cart'
 	);
 	const miniCartQuantities = document.querySelectorAll(
 		'.wc-block-mini-cart__badge'
@@ -23,21 +23,40 @@ export const updateTotals = ( totals: [ string, number ] | undefined ) => {
 		'.wc-block-mini-cart__amount'
 	);
 
-	miniCartButtons.forEach( ( miniCartButton ) => {
-		miniCartButton.setAttribute(
-			'aria-label',
-			sprintf(
-				/* translators: %s number of products in cart. */
-				_n(
-					'%1$d item in cart, total price of %2$s',
-					'%1$d items in cart, total price of %2$s',
+	miniCarts.forEach( ( miniCart ) => {
+		const hasHiddenPrice = miniCart.getAttribute( 'data-has-hidden-price' );
+		const button = miniCart.querySelector( '.wc-block-mini-cart__button' );
+
+		if ( hasHiddenPrice ) {
+			button?.setAttribute(
+				'aria-label',
+				sprintf(
+					/* translators: %s number of products in cart. */
+					_n(
+						'%1$d item in cart',
+						'%1$d items in cart',
+						quantity,
+						'woo-gutenberg-products-block'
+					),
+					quantity
+				)
+			);
+		} else {
+			button?.setAttribute(
+				'aria-label',
+				sprintf(
+					/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
+					_n(
+						'%1$d item in cart, total price of %2$s',
+						'%1$d items in cart, total price of %2$s',
+						quantity,
+						'woo-gutenberg-products-block'
+					),
 					quantity,
-					'woo-gutenberg-products-block'
-				),
-				quantity,
-				amount
-			)
-		);
+					amount
+				)
+			);
+		}
 	} );
 	miniCartQuantities.forEach( ( miniCartQuantity ) => {
 		if ( quantity > 0 || miniCartQuantity.textContent !== '' ) {
