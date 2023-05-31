@@ -13,7 +13,7 @@ import Block from '../../../../../../blocks/cart/inner-blocks/proceed-to-checkou
 
 describe( 'CartEventsProvider', () => {
 	it( 'allows observers to unsubscribe', async () => {
-		const mockObserver = jest.fn();
+		const mockObserver = jest.fn().mockReturnValue( { type: 'error' } );
 		const MockObserverComponent = () => {
 			const { onProceedToCheckout } = useCartEventsContext();
 			useEffect( () => {
