@@ -14,7 +14,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import Block from '../block';
 describe( 'Mini Cart Checkout Button Block', () => {
 	it( 'dispatches the onProceedToCheckout event when the button is clicked', async () => {
-		const mockObserver = jest.fn();
+		const mockObserver = jest.fn().mockReturnValue( { type: 'error' } );
 		const MockObserverComponent = () => {
 			const { onProceedToCheckout } = useCartEventsContext();
 			useEffect( () => {
