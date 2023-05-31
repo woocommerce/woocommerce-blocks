@@ -4,7 +4,7 @@
 import { useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 import { Taxonomy } from '@wordpress/core-data/src/entity-types';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useMemo } from '@wordpress/element';
 import { useDebounce } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 import {
@@ -46,13 +46,16 @@ interface TaxonomyControlProps {
 // Helper function to get the term id based on user input in terms `FormTokenField`.
 const getTermIdByTermValue = (
 	terms: Term[],
-	searchTerm: Term | string
+	searchTerm: Term | string,
+	termIdToNameMap: Map< number, string >
 ): number | undefined => {
 	// First we check for exact match by `term.id` or case sensitive `term.name` match.
 	const termId =
 		typeof searchTerm === 'object'
 			? searchTerm.id
-			: terms?.find( ( term ) => term.name === searchTerm )?.id;
+			: terms?.find(
+					( term ) => termIdToNameMap.get( term.id ) === searchTerm
+			  )?.id;
 	if ( termId ) {
 		return termId;
 	}
@@ -70,10 +73,15 @@ const getTermIdByTermValue = (
 		typeof searchTerm === 'object' ? searchTerm.name : searchTerm
 	 ).toLocaleLowerCase();
 	return terms?.find(
-		( term ) => term.name.toLocaleLowerCase() === termValueLower
+		( term ) =>
+			( termIdToNameMap.get( term.id ) as string ).toLocaleLowerCase() ===
+			termValueLower
 	)?.id;
 };
 
+/**
+ * Returns an array with the existing terms for the given taxonomy.
+ */
 const useExistingTerms = ( termIds: number[], taxonomy: Taxonomy ): Term[] => {
 	return useSelect(
 		( select ) => {
@@ -85,8 +93,75 @@ const useExistingTerms = ( termIds: number[], taxonomy: Taxonomy ): Term[] => {
 				per_page: termIds.length,
 			} );
 		},
-		[ termIds ]
+		[ taxonomy, termIds ]
 	);
+};
+
+/**
+ * Returns a map with term ids as keys and term names as values.
+ * If there are duplicate term names, the term slug is appended to the name.
+ * This makes sure that the term names are unique when displayed in the `FormTokenField`.
+ *
+ * For example, it will return a map like this:
+ * {
+ *    "19": "Accessories",
+ *    "37": "category1 - category1",
+ *    "38": "category1 - category1-clothing",
+ *    "39": "category1 - category1-clothing-2",
+ *    "16": "Clothing",
+ *    "21": "Decor"
+ * }
+ *
+ * Here category1 is duplicated, so the slug is appended to the name.
+ */
+
+const useTermIdToNameMap = ( taxonomy: Taxonomy ): Map< number, string > => {
+	// Fetch all terms for the given taxonomy.
+	const allTerms: Term[] = useSelect(
+		( select ) => {
+			const { getEntityRecords } = select( coreStore );
+			return getEntityRecords( 'taxonomy', taxonomy.slug, {
+				...BASE_QUERY,
+			} );
+		},
+		[ taxonomy ]
+	);
+
+	// Memoize the result to avoid re-renders.
+	return useMemo( () => {
+		const result = new Map< number, string >();
+
+		if ( ! allTerms ) return result;
+
+		// Count the number of times a term name appears.
+		const nameCountMap = allTerms?.reduce(
+			( accumulator: Map< string, number >, term ) => {
+				const termName = term.name;
+				if ( accumulator.has( termName ) ) {
+					accumulator.set(
+						termName,
+						( accumulator.get( termName ) as number ) + 1
+					);
+				} else {
+					accumulator.set( termName, 1 );
+				}
+				return accumulator;
+			},
+			new Map< string, number >()
+		);
+
+		// Create the map with term ids as keys and term names as values.
+		for ( const term of allTerms ) {
+			const termId = term.id;
+			const termName = term.name;
+			const name =
+				nameCountMap.get( termName ) === 1
+					? termName
+					: `${ termName } - ${ term.slug }`;
+			result.set( termId, name );
+		}
+		return result;
+	}, [ allTerms ] );
 };
 
 const useSearchResults = (
@@ -122,7 +197,7 @@ const useSearchResults = (
 				),
 			};
 		},
-		[ search, termIds ]
+		[ taxonomy, search, termIds ]
 	);
 };
 
@@ -135,7 +210,7 @@ const useSearchResults = (
  * @param {Function} props.onChange Callback `onChange` function.
  * @return {JSX.Element} The rendered component.
  */
-function TaxonomyItem( {
+const TaxonomyItem = ( {
 	taxonomy,
 	termIds,
 	onChange,
@@ -143,7 +218,7 @@ function TaxonomyItem( {
 	taxonomy: Taxonomy;
 	termIds: number[];
 	onChange: ( termIds: number[] ) => void;
-} ) {
+} ) => {
 	const [ search, setSearch ] = useState( '' );
 	const [ value, setValue ] = useState<
 		{
@@ -153,8 +228,10 @@ function TaxonomyItem( {
 	>( [] );
 	const [ suggestions, setSuggestions ] = useState< string[] >( [] );
 
+	// Search is debounced to limit the number of API calls as the user types
 	const debouncedSearch = useDebounce( setSearch, 250 );
 
+	const termIdToNameMap = useTermIdToNameMap( taxonomy );
 	const { searchResults, searchHasResolved } = useSearchResults(
 		search,
 		taxonomy,
@@ -186,7 +263,7 @@ function TaxonomyItem( {
 				if ( entity ) {
 					accumulator.push( {
 						id,
-						value: entity.name,
+						value: termIdToNameMap.get( id ) as string,
 					} );
 				}
 				return accumulator;
@@ -194,36 +271,31 @@ function TaxonomyItem( {
 			[]
 		);
 		setValue( sanitizedValue );
-	}, [ termIds, existingTerms ] );
+	}, [ termIds, existingTerms, termIdToNameMap ] );
 
 	// Update suggestions only when the query has resolved.
 	useEffect( () => {
 		if ( ! searchHasResolved ) return;
-		const suggestionsSet = new Set();
-		setSuggestions(
-			searchResults.map( ( searchResult ) => {
-				const result = suggestionsSet.has( searchResult.name )
-					? `${ searchResult.name } - ${ searchResult.slug }`
-					: searchResult.name;
-				suggestionsSet.add( searchResult.name );
-				return result;
-			} )
+		const newSuggestions = searchResults.map(
+			( searchResult ) => termIdToNameMap.get( searchResult.id ) as string
 		);
-	}, [ searchResults, searchHasResolved ] );
+		setSuggestions( newSuggestions );
+	}, [ searchResults, searchHasResolved, termIdToNameMap ] );
 
 	const onTermsChange = ( newTermValues: FormTokenField.Value[] ) => {
-		const newTermIds = new Set< number >();
+		const newTermIds = [];
 		for ( const termValue of newTermValues ) {
 			const termId = getTermIdByTermValue(
 				searchResults,
-				termValue as string | Term
+				termValue as string | Term,
+				termIdToNameMap
 			);
 			if ( termId ) {
-				newTermIds.add( termId );
+				newTermIds.push( termId );
 			}
 		}
 		setSuggestions( EMPTY_ARRAY );
-		onChange( Array.from( newTermIds ) );
+		onChange( newTermIds );
 	};
 
 	return (
@@ -239,7 +311,7 @@ function TaxonomyItem( {
 			/>
 		</div>
 	);
-}
+};
 
 export function TaxonomyControls( {
 	setQueryAttribute,
