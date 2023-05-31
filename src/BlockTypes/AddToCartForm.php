@@ -23,7 +23,7 @@ class AddToCartForm extends AbstractBlock {
 	 */
 	protected function initialize() {
 		parent::initialize();
-		add_filter ( 'wc_add_to_cart_message_html', array( $this, 'wc_add_to_cart_message_html_filter' ), 10, 2 );
+		add_filter( 'wc_add_to_cart_message_html', array( $this, 'wc_add_to_cart_message_html_filter' ), 10, 2 );
 	}
 
 	/**
@@ -108,6 +108,7 @@ class AddToCartForm extends AbstractBlock {
 	 * Add a hidden input to the Add to Cart form to indicate that it is a descendent of a Single Product block.
 	 *
 	 * @param string $product The Add to Cart Form HTML.
+	 * @param string $is_descendent_of_single_product_block Indicates if block is descendent of Single Product block.
 	 *
 	 * @return string The Add to Cart Form HTML with the hidden input.
 	 */
@@ -119,18 +120,20 @@ class AddToCartForm extends AbstractBlock {
 		);
 		$regex_pattern = '/<button\s+type="submit"[^>]*>.*?<\/button>/i';
 
-		preg_match($regex_pattern, $product, $input_matches);
+		preg_match( $regex_pattern, $product, $input_matches );
 
 		if ( ! empty( $input_matches ) ) {
 			$product = preg_replace( $regex_pattern, $hidden_is_descendent_of_single_product_block_input . $input_matches[0], $product );
 		}
 
 		return $product;
-
 	}
  
-	function wc_add_to_cart_message_html_filter( $message, $products ) {
-		if( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' == $_POST['is-descendent-of-single-product-block'] ){
+	/** 
+	 * Filter the add to cart message to prevent the Notice from being displayed when the Add to Cart form is a descendent of a Single Product block.
+	 */
+	public function wc_add_to_cart_message_html_filter( $message ) {
+		if ( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' == $_POST['is-descendent-of-single-product-block'] ) {
 			return false;
 		}
 		return $message;
