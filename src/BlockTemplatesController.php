@@ -81,11 +81,42 @@ class BlockTemplatesController {
 			add_filter( 'woocommerce_settings_pages', array( $this, 'template_permalink_settings' ) );
 			add_filter( 'pre_update_option', array( $this, 'update_template_permalink' ), 10, 2 );
 			add_action( 'woocommerce_admin_field_permalink', array( SettingsUtils::class, 'permalink_input_field' ) );
+
+			// By default, the Template Part Block only supports template parts that are in the current theme directory.
+			// This render_callback wrapper allows us to add support for plugin-housed template parts.
+			add_filter(
+				'block_type_metadata_settings',
+				function( $settings, $metadata ) {
+					if ( isset( $metadata['name'], $settings['render_callback'] ) && 'core/template-part' === $metadata['name'] && 'render_block_core_template_part' === $settings['render_callback'] ) {
+						$settings['render_callback'] = [ $this, 'render_woocommerce_template_part' ];
+					}
+					return $settings;
+				},
+				10,
+				2
+			);
 		}
 
 		if ( $this->package->is_experimental_build() ) {
 			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 		}
+	}
+
+	/**
+	 * Renders the `core/template-part` block on the server.
+	 *
+	 * @param array $attributes The block attributes.
+	 * @return string The render.
+	 */
+	public function render_woocommerce_template_part( $attributes ) {
+		if ( 'woocommerce/woocommerce' === $attributes['theme'] ) {
+			$template_part = BlockTemplateUtils::get_block_template( $attributes['theme'] . '//' . $attributes['slug'], 'wp_template_part' );
+
+			if ( $template_part && ! empty( $template_part->content ) ) {
+				return do_blocks( $template_part->content );
+			}
+		}
+		return \render_block_core_template_part( $attributes );
 	}
 
 	/**
