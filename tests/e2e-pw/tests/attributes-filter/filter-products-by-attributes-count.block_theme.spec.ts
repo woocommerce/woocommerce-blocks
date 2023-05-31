@@ -2,45 +2,8 @@
  * External dependencies
  */
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
-import { cli } from '@woocommerce/e2e-utils';
-
-const prepareAttributes = async ( page ) => {
-	/*
-	 * Intercept the dialog event.
-	 * This is needed because when the regenerate
-	 * button is clicked, a dialog is shown.
-	 */
-	page.on( 'dialog', async ( dialog ) => {
-		await dialog.accept();
-	} );
-
-	await page.goto( '/wp-admin/admin.php?page=wc-status&tab=tools' );
-
-	await page.waitForSelector(
-		'.regenerate_product_attributes_lookup_table input'
-	);
-
-	await page.click( '.regenerate_product_attributes_lookup_table input' );
-
-	/*
-	 * Note that the two commands below are intentionally
-	 * duplicated as we need to run the cron task twice as
-	 * we need to process more than 1 batch of items.
-	 */
-	await cli(
-		`npm run wp-env run tests-cli wp action-scheduler run --hooks="woocommerce_run_product_attribute_lookup_regeneration_callback"`
-	);
-
-	await cli(
-		`npm run wp-env run tests-cli wp action-scheduler run --hooks="woocommerce_run_product_attribute_lookup_regeneration_callback"`
-	);
-};
 
 test.describe( 'Filter by Attributes Block - with All products Block', () => {
-	test.beforeEach( async ( { page } ) => {
-		await prepareAttributes( page );
-	} );
-
 	test( 'should show correct attrs count (color=blue|query_type_color=or)', async ( {
 		page,
 	} ) => {
