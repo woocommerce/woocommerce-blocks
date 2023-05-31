@@ -74,36 +74,27 @@ const getTermIdByTermValue = (
 	)?.id;
 };
 
-/**
- * Renders a `FormTokenField` for a given taxonomy.
- *
- * @param {Object}   props          The props for the component.
- * @param {Object}   props.taxonomy The taxonomy object.
- * @param {number[]} props.termIds  An array with the block's term ids for the given taxonomy.
- * @param {Function} props.onChange Callback `onChange` function.
- * @return {JSX.Element} The rendered component.
- */
-function TaxonomyItem( {
-	taxonomy,
-	termIds,
-	onChange,
-}: {
-	taxonomy: Taxonomy;
-	termIds: number[];
-	onChange: ( termIds: number[] ) => void;
-} ) {
-	const [ search, setSearch ] = useState( '' );
-	const [ value, setValue ] = useState<
-		{
-			id: number;
-			value: string;
-		}[]
-	>( [] );
-	const [ suggestions, setSuggestions ] = useState< string[] >( [] );
+const useExistingTerms = ( termIds: number[], taxonomy: Taxonomy ): Term[] => {
+	return useSelect(
+		( select ) => {
+			if ( ! termIds?.length ) return EMPTY_ARRAY;
+			const { getEntityRecords } = select( coreStore );
+			return getEntityRecords( 'taxonomy', taxonomy.slug, {
+				...BASE_QUERY,
+				include: termIds,
+				per_page: termIds.length,
+			} );
+		},
+		[ termIds ]
+	);
+};
 
-	const debouncedSearch = useDebounce( setSearch, 250 );
-
-	const { searchResults, searchHasResolved }: SearchResultsState = useSelect(
+const useSearchResults = (
+	search: string,
+	taxonomy: Taxonomy,
+	termIds: number[]
+): SearchResultsState => {
+	return useSelect(
 		( select ) => {
 			if ( ! search ) {
 				return { searchResults: EMPTY_ARRAY, searchHasResolved: true };
@@ -133,22 +124,44 @@ function TaxonomyItem( {
 		},
 		[ search, termIds ]
 	);
+};
 
-	// `existingTerms` are the ones fetched from the API and their type is `{ id: number; name: string }`.
-	// They are used to extract the terms' names to populate the `FormTokenField` properly
-	// and to sanitize the provided `termIds`, by setting only the ones that exist.
-	const existingTerms: Term[] = useSelect(
-		( select ) => {
-			if ( ! termIds?.length ) return EMPTY_ARRAY;
-			const { getEntityRecords } = select( coreStore );
-			return getEntityRecords( 'taxonomy', taxonomy.slug, {
-				...BASE_QUERY,
-				include: termIds,
-				per_page: termIds.length,
-			} );
-		},
-		[ termIds ]
+/**
+ * Renders a `FormTokenField` for a given taxonomy.
+ *
+ * @param {Object}   props          The props for the component.
+ * @param {Object}   props.taxonomy The taxonomy object.
+ * @param {number[]} props.termIds  An array with the block's term ids for the given taxonomy.
+ * @param {Function} props.onChange Callback `onChange` function.
+ * @return {JSX.Element} The rendered component.
+ */
+function TaxonomyItem( {
+	taxonomy,
+	termIds,
+	onChange,
+}: {
+	taxonomy: Taxonomy;
+	termIds: number[];
+	onChange: ( termIds: number[] ) => void;
+} ) {
+	const [ search, setSearch ] = useState( '' );
+	const [ value, setValue ] = useState<
+		{
+			id: number;
+			value: string;
+		}[]
+	>( [] );
+	const [ suggestions, setSuggestions ] = useState< string[] >( [] );
+
+	const debouncedSearch = useDebounce( setSearch, 250 );
+
+	const { searchResults, searchHasResolved } = useSearchResults(
+		search,
+		taxonomy,
+		termIds
 	);
+
+	const existingTerms = useExistingTerms( termIds, taxonomy );
 
 	// Update the `value` state only after the selectors are resolved
 	// to avoid emptying the input when we're changing terms.
