@@ -23,7 +23,6 @@ abstract class AbstractPageTemplate {
 	 */
 	protected function init() {
 		add_filter( 'page_template_hierarchy', array( $this, 'page_template_hierarchy' ), 1 );
-		add_filter( 'frontpage_template_hierarchy', array( $this, 'page_template_hierarchy' ), 1 );
 		add_action( 'current_screen', array( $this, 'page_template_editor_redirect' ) );
 		add_filter( 'pre_get_document_title', array( $this, 'page_template_title' ) );
 	}
