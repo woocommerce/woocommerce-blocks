@@ -14,7 +14,7 @@ import { getTextContent } from '../../page-utils';
 import { SHOP_CHECKOUT_BLOCK_PAGE, useTheme } from '../../utils';
 
 const block = {
-	name: 'Mini Cart',
+	name: 'Mini-Cart',
 	selectors: {
 		frontend: {
 			productWithAddToCartButton:
@@ -73,10 +73,10 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	test.only( `Skipping ${ block.name } tests`, () => {} );
 }
 
-describe( 'Shopper → Mini Cart', () => {
+describe( 'Shopper → Mini-Cart', () => {
 	beforeAll( async () => {
 		/**
-		 * Mini Cart takes time to open. Sometimes, on slow machines, 500ms
+		 * Mini-Cart takes time to open. Sometimes, on slow machines, 500ms
 		 * is not enough. So, we increase the default timeout to 5 seconds.
 		 */
 		setDefaultOptions( { ...options, timeout: 5000 } );
@@ -92,7 +92,7 @@ describe( 'Shopper → Mini Cart', () => {
 	} );
 
 	describe( 'Icon', () => {
-		it( 'Shopper can see the Mini Cart icon and it badge on the front end', async () => {
+		it( 'Shopper can see the Mini-Cart icon and it badge on the front end', async () => {
 			await expect( page ).toMatchElement( '.wc-block-mini-cart' );
 			await expect( page ).toMatchElement(
 				'.wc-block-mini-cart__button'
@@ -109,13 +109,13 @@ describe( 'Shopper → Mini Cart', () => {
 				}
 			);
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__badge', {
-				text: '0',
+				text: '',
 			} );
 		} );
 	} );
 
 	describe( 'Drawer', () => {
-		it( 'The drawer opens when shopper clicks on the mini cart icon', async () => {
+		it( 'The drawer opens when shopper clicks on the Mini-Cart icon', async () => {
 			await clickMiniCartButton();
 
 			await expect( page ).toMatchElement(
@@ -139,9 +139,7 @@ describe( 'Shopper → Mini Cart', () => {
 			// Wait for the drawer to fully open.
 			await page.waitForTimeout( 500 );
 
-			await page.click(
-				'.wc-block-mini-cart__drawer .components-modal__header button'
-			);
+			await page.click( '.wc-block-components-drawer__close' );
 
 			await expect( page ).not.toMatchElement(
 				'.wc-block-mini-cart__drawer',
@@ -172,8 +170,8 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 	} );
 
-	describe( 'Empty mini cart', () => {
-		it( 'When the cart is empty, the Mini Cart Drawer show empty cart message and start shopping button', async () => {
+	describe( 'Empty Mini-Cart', () => {
+		it( 'When the cart is empty, the Mini-Cart Drawer show empty cart message and start shopping button', async () => {
 			await clickMiniCartButton();
 
 			await expect( page ).toMatchElement(
@@ -199,7 +197,7 @@ describe( 'Shopper → Mini Cart', () => {
 		} );
 	} );
 
-	describe( 'Filled mini cart', () => {
+	describe( 'Filled Mini-Cart', () => {
 		beforeAll( async () => {
 			await shopper.block.emptyCart();
 		} );
@@ -208,7 +206,7 @@ describe( 'Shopper → Mini Cart', () => {
 			await shopper.block.emptyCart();
 		} );
 
-		it( 'The Mini Cart title shows correct amount', async () => {
+		it( 'The Mini-Cart title shows correct amount', async () => {
 			await page.click( selectors.frontend.productWithAddToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
@@ -226,14 +224,14 @@ describe( 'Shopper → Mini Cart', () => {
 			} );
 		} );
 
-		it( 'The Mini Cart products table show added products', async () => {
+		it( 'The Mini-Cart products table show added products', async () => {
 			const products = await page.$$(
 				'.wc-block-all-products .wc-block-grid__product'
 			);
 
 			if ( products.length === 0 ) {
 				throw new Error(
-					'No products found on the Mini Cart Block page.'
+					'No products found on the Mini-Cart Block page.'
 				);
 			}
 
@@ -254,7 +252,7 @@ describe( 'Shopper → Mini Cart', () => {
 			);
 		} );
 
-		it( 'Filled Mini Cart footer contains subtotal, view cart button, and go to checkout buttons', async () => {
+		it( 'Filled Mini-Cart footer contains subtotal, view cart button, and go to checkout buttons', async () => {
 			await page.click( selectors.frontend.addToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
@@ -426,7 +424,7 @@ describe( 'Shopper → Mini Cart', () => {
 			await shopper.block.emptyCart();
 		} );
 
-		it( 'Mini Cart show tax label and price including tax', async () => {
+		it( 'Mini-Cart show tax label and price including tax', async () => {
 			const [ priceInLoop ] = await getTextContent(
 				selectors.frontend.productPrice
 			);
@@ -471,7 +469,7 @@ describe( 'Shopper → Mini Cart', () => {
 			await shopper.block.emptyCart();
 		} );
 
-		it( 'Can remove product from Mini Cart', async () => {
+		it( 'Can remove product from Mini-Cart', async () => {
 			await page.click( selectors.frontend.addToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
@@ -496,7 +494,7 @@ describe( 'Shopper → Mini Cart', () => {
 			await shopper.block.emptyCart();
 		} );
 
-		it( 'Can go to cart page from the Mini Cart Footer', async () => {
+		it( 'Can go to cart page from the Mini-Cart Footer', async () => {
 			const [ productTitle ] = await getTextContent(
 				selectors.frontend.productTitle
 			);
@@ -530,7 +528,7 @@ describe( 'Shopper → Mini Cart', () => {
 			await shopper.block.emptyCart();
 		} );
 
-		it( 'Can go to checkout page from the Mini Cart Footer', async () => {
+		it( 'Can go to checkout page from the Mini-Cart Footer', async () => {
 			const productTitle = await page.$eval(
 				selectors.frontend.productTitle,
 				( el ) => el.textContent
@@ -590,7 +588,7 @@ describe( 'Shopper → Mini Cart', () => {
 				await shopper.block.emptyCart();
 			} );
 
-			it( 'User can see translation in empty Mini Cart', async () => {
+			it( 'User can see translation in empty Mini-Cart', async () => {
 				await clickMiniCartButton();
 
 				await expect( page ).toMatchElement(
@@ -601,7 +599,7 @@ describe( 'Shopper → Mini Cart', () => {
 				);
 			} );
 
-			it( 'User can see translation in filled Mini Cart', async () => {
+			it( 'User can see translation in filled Mini-Cart', async () => {
 				await page.click(
 					selectors.frontend.productWithAddToCartButton
 				);
@@ -622,7 +620,7 @@ describe( 'Shopper → Mini Cart', () => {
 				await shopper.block.emptyCart();
 			} );
 
-			it( 'User can see translation in empty Mini Cart', async () => {
+			it( 'User can see translation in empty Mini-Cart', async () => {
 				await clickMiniCartButton();
 
 				await expect( page ).toMatchElement(
@@ -633,7 +631,7 @@ describe( 'Shopper → Mini Cart', () => {
 				);
 			} );
 
-			it( 'User can see translation in filled Mini Cart', async () => {
+			it( 'User can see translation in filled Mini-Cart', async () => {
 				await page.click(
 					selectors.frontend.productWithAddToCartButton
 				);

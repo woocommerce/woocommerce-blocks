@@ -25,7 +25,14 @@ import { defaultCartState } from '../../../data/cart/default-state';
 const MiniCartBlock = ( props ) => (
 	<SlotFillProvider>
 		<Block
-			contents='<div class="wc-block-mini-cart-contents"></div>'
+			contents='<div data-block-name="woocommerce/mini-cart-contents" class="wp-block-woocommerce-mini-cart-contents"><div data-block-name="woocommerce/filled-mini-cart-contents-block" class="wp-block-woocommerce-filled-mini-cart-contents-block"><div data-block-name="woocommerce/mini-cart-title-block" class="wp-block-woocommerce-mini-cart-title-block"><div data-block-name="woocommerce/mini-cart-title-label-block" class="wp-block-woocommerce-mini-cart-title-label-block"></div>
+			<div data-block-name="woocommerce/mini-cart-title-items-counter-block" class="wp-block-woocommerce-mini-cart-title-items-counter-block"></div></div>
+			<div data-block-name="woocommerce/mini-cart-items-block" class="wp-block-woocommerce-mini-cart-items-block"><div data-block-name="woocommerce/mini-cart-products-table-block" class="wp-block-woocommerce-mini-cart-products-table-block"></div></div>
+			<div data-block-name="woocommerce/mini-cart-footer-block" class="wp-block-woocommerce-mini-cart-footer-block"><div data-block-name="woocommerce/mini-cart-cart-button-block" class="wp-block-woocommerce-mini-cart-cart-button-block"></div>
+			<div data-block-name="woocommerce/mini-cart-checkout-button-block" class="wp-block-woocommerce-mini-cart-checkout-button-block"></div></div></div>
+			<div data-block-name="woocommerce/empty-mini-cart-contents-block" class="wp-block-woocommerce-empty-mini-cart-contents-block">
+			<p class="has-text-align-center"><strong>Your cart is currently empty!</strong></p>
+			<div data-block-name="woocommerce/mini-cart-shopping-button-block" class="wp-block-woocommerce-mini-cart-shopping-button-block"></div></div></div>'
 			{ ...props }
 		/>
 	</SlotFillProvider>
@@ -51,7 +58,7 @@ const mockFullCart = () => {
 	} );
 };
 
-describe( 'Testing Mini Cart', () => {
+describe( 'Testing Mini-Cart', () => {
 	beforeEach( () => {
 		act( () => {
 			mockFullCart();
@@ -65,12 +72,55 @@ describe( 'Testing Mini Cart', () => {
 		fetchMock.resetMocks();
 	} );
 
-	it( 'opens Mini Cart drawer when clicking on button', async () => {
+	it( 'shows Mini-Cart count badge when there are items in the cart', async () => {
+		render( <MiniCartBlock /> );
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
+
+		await waitFor( () =>
+			expect( screen.getByText( '3' ) ).toBeInTheDocument()
+		);
+	} );
+
+	it( "doesn't show Mini-Cart count badge when cart is empty", async () => {
+		mockEmptyCart();
+		render( <MiniCartBlock /> );
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
+		const badgeWith0Count = screen.queryByText( '0' );
+
+		expect( badgeWith0Count ).toBeNull();
+	} );
+
+	it( 'opens Mini-Cart drawer when clicking on button', async () => {
 		render( <MiniCartBlock /> );
 		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
 		userEvent.click( screen.getByLabelText( /items/i ) );
 
-		expect( fetchMock ).toHaveBeenCalledTimes( 1 );
+		await waitFor( () =>
+			expect( screen.getByText( /your cart/i ) ).toBeInTheDocument()
+		);
+	} );
+
+	it( 'closes the drawer when clicking on the close button', async () => {
+		render( <MiniCartBlock /> );
+		await waitFor( () => expect( fetchMock ).toHaveBeenCalled() );
+
+		// Open drawer.
+		userEvent.click( screen.getByLabelText( /items/i ) );
+
+		// Close drawer.
+		let closeButton = null;
+		await waitFor( () => {
+			closeButton = screen.getByLabelText( /close/i );
+		} );
+		if ( closeButton ) {
+			userEvent.click( closeButton );
+		}
+
+		await waitFor( () => {
+			expect(
+				screen.queryByText( /your cart/i )
+			).not.toBeInTheDocument();
+		} );
 	} );
 
 	it( 'renders empty cart if there are no items in the cart', async () => {

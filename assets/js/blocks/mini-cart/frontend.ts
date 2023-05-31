@@ -6,6 +6,16 @@ import lazyLoadScript from '@woocommerce/base-utils/lazy-load-script';
 import getNavigationType from '@woocommerce/base-utils/get-navigation-type';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils/legacy-events';
 
+/**
+ * Internal dependencies
+ */
+import {
+	getMiniCartTotalsFromLocalStorage,
+	getMiniCartTotalsFromServer,
+	updateTotals,
+} from './utils/data';
+import setStyles from './utils/set-styles';
+
 interface dependencyData {
 	src: string;
 	version?: string;
@@ -13,6 +23,10 @@ interface dependencyData {
 	before?: string;
 	translations?: string;
 }
+
+updateTotals( getMiniCartTotalsFromLocalStorage() );
+getMiniCartTotalsFromServer().then( updateTotals );
+setStyles();
 
 window.addEventListener( 'load', () => {
 	const miniCartBlocks = document.querySelectorAll( '.wc-block-mini-cart' );
@@ -155,7 +169,7 @@ window.addEventListener( 'load', () => {
 				? openDrawerWithRefresh
 				: loadContentsWithRefresh;
 
-		// There might be more than one Mini Cart block in the page. Make sure
+		// There might be more than one Mini-Cart block in the page. Make sure
 		// only one opens when adding a product to the cart.
 		if ( i === 0 ) {
 			document.body.addEventListener(
@@ -168,25 +182,4 @@ window.addEventListener( 'load', () => {
 			);
 		}
 	} );
-
-	/**
-	 * Get the background color of the body then set it as the background color
-	 * of the Mini Cart Contents block. We use :where here to make customized
-	 * background color alway have higher priority.
-	 *
-	 * We only set the background color, instead of the whole background. As
-	 * we only provide the option to customize the background color.
-	 */
-	const style = document.createElement( 'style' );
-	const backgroundColor = getComputedStyle( document.body ).backgroundColor;
-
-	style.appendChild(
-		document.createTextNode(
-			`:where(.wp-block-woocommerce-mini-cart-contents) {
-				background-color: ${ backgroundColor };
-			}`
-		)
-	);
-
-	document.head.appendChild( style );
 } );

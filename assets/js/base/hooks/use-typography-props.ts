@@ -1,39 +1,38 @@
-/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * External dependencies
  */
 import { isObject, isString } from '@woocommerce/types';
-import { parseStyle } from '@woocommerce/base-utils';
+import type { Style as StyleEngineProperties } from '@wordpress/style-engine/src/types';
 
-type WithClass = {
-	className: string;
+/**
+ * Internal dependencies
+ */
+import type { StyleProps } from './use-style-props';
+
+type blockAttributes = {
+	style: StyleEngineProperties;
+	// String identifier for the font size preset--not an absolute value.
+	fontSize?: string | undefined;
+	// String identifier for the font family preset, not the actual font family.
+	fontFamily?: string | undefined;
 };
 
-type WithStyle = {
-	style: Record< string, unknown >;
-};
-
-export const useTypographyProps = (
-	attributes: unknown
-): WithStyle & WithClass => {
-	const attributesObject = isObject( attributes ) ? attributes : {};
-	const style = parseStyle( attributesObject.style );
-	const typography = isObject( style.typography )
-		? ( style.typography as Record< string, string > )
+export const useTypographyProps = ( props: blockAttributes ): StyleProps => {
+	const typography = isObject( props.style.typography )
+		? props.style.typography
 		: {};
-
 	const classNameFallback = isString( typography.fontFamily )
 		? typography.fontFamily
 		: '';
-	const className = attributesObject.fontFamily
-		? `has-${ attributesObject.fontFamily }-font-family`
+	const className = props.fontFamily
+		? `has-${ props.fontFamily }-font-family`
 		: classNameFallback;
 
 	return {
 		className,
 		style: {
-			fontSize: attributesObject.fontSize
-				? `var(--wp--preset--font-size--${ attributesObject.fontSize })`
+			fontSize: props.fontSize
+				? `var(--wp--preset--font-size--${ props.fontSize })`
 				: typography.fontSize,
 			fontStyle: typography.fontStyle,
 			fontWeight: typography.fontWeight,

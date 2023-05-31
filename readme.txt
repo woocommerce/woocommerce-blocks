@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.2
 Tested up to: 6.2
 Requires PHP: 7.3
-Stable tag: 10.1.0
+Stable tag: 10.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,7 +32,7 @@ Use this plugin if you want access to the bleeding edge of available blocks for 
 - **Filter by Rating**
 - **Filter by Stock**
 - **Hand-picked Products**
-- **Mini Cart**
+- **Mini-Cart**
 - **Newest Products**
 - **On Sale Products**
 - **Product Categories List**
@@ -80,6 +80,108 @@ Yes you can! Join in on our [GitHub repository](https://github.com/woocommerce/w
 Release and roadmap notes available on the [WooCommerce Developers Blog](https://woocommerce.wordpress.com/2019/01/15/woocommerce-blocks-1-3-0-release-notes/)
 
 == Changelog ==
+
+= 10.0.6 - 2023-05-30 =
+
+#### Bug Fixes
+
+- Fix some scripts needed by the Mini-Cart block not loading. ([9649](https://github.com/woocommerce/woocommerce-blocks/pull/9649))
+
+= 10.2.1 - 2023-05-25 =
+
+#### Bug Fixes
+
+- Fix a conflict between the Mini-Cart block and the Page Optimize and Product Bundles extensions. ([9586](https://github.com/woocommerce/woocommerce-blocks/pull/9586))
+
+= 10.0.5 - 2023-05-24 =
+
+#### Bug Fixes
+
+- Fix a conflict between the Mini-Cart block and the Page Optimize and Product Bundles extensions. ([9586](https://github.com/woocommerce/woocommerce-blocks/pull/9586))
+
+= 10.3.0 - 2023-05-24 =
+
+#### Enhancements
+
+- Add Banner pattern. ([9434](https://github.com/woocommerce/woocommerce-blocks/pull/9434))
+- Update Mini-Cart block editor sidebar with a clearer design and texts. ([9420](https://github.com/woocommerce/woocommerce-blocks/pull/9420))
+- Add product details pattern. ([9408](https://github.com/woocommerce/woocommerce-blocks/pull/9408))
+- Modernize the block registration for the Add to Cart button. ([9404](https://github.com/woocommerce/woocommerce-blocks/pull/9404))
+- Fix alignment issue with 'Add Coupon Code' button in WooCommerce Blocks. ([9392](https://github.com/woocommerce/woocommerce-blocks/pull/9392))
+- Add new `Product collections: Featured collections` pattern. ([9388](https://github.com/woocommerce/woocommerce-blocks/pull/9388))
+- Classic Product Block: Improve layout and user experience to migrate to blockified templates. ([9386](https://github.com/woocommerce/woocommerce-blocks/pull/9386))
+- Add the new Product Details: Product listing pattern. ([9383](https://github.com/woocommerce/woocommerce-blocks/pull/9383))
+- Mini cart: Add color and typography styles on the mini cart title block. ([9382](https://github.com/woocommerce/woocommerce-blocks/pull/9382))
+- Add new `Product listing with gallery` pattern. ([9347](https://github.com/woocommerce/woocommerce-blocks/pull/9347))
+- New Mini Cart count badge which is only visible if there is at least one item in the cart. ([9259](https://github.com/woocommerce/woocommerce-blocks/pull/9259))
+- [Pattern] Add new `Hero product chessboard` pattern. ([9180](https://github.com/woocommerce/woocommerce-blocks/pull/9180))
+- Trigger the set-billing-address from the shipping step. ([8841](https://github.com/woocommerce/woocommerce-blocks/pull/8841))
+
+#### Bug Fixes
+
+- Fix an issue that caused the color of the Product Meta block icon to not change when the block was selected in the Site Editor's List View. ([9506](https://github.com/woocommerce/woocommerce-blocks/pull/9506))
+- Fix an issue that caused the color of the Product Details block icon to not change when the block was selected in the Site Editor's List View. ([9503](https://github.com/woocommerce/woocommerce-blocks/pull/9503))
+- Fix Checkout block stepped sections numbers overlapping. ([9497](https://github.com/woocommerce/woocommerce-blocks/pull/9497))
+- Fix compatibility between the checkout block and the template editor. ([9495](https://github.com/woocommerce/woocommerce-blocks/pull/9495))
+- Product Search Results Template: Fix compatibility layer when the Product Catalog isn't blockified. ([9492](https://github.com/woocommerce/woocommerce-blocks/pull/9492))
+- Product Details block: Show the block when used along the Post Content block. ([9479](https://github.com/woocommerce/woocommerce-blocks/pull/9479))
+- Fix: Remove the global variable overwrite for the Product Gallery block while still keeping support for the Single Product block. ([9475](https://github.com/woocommerce/woocommerce-blocks/pull/9475))
+- Archive Templates - Compatibility Layer: Avoid woocommerce_before_shop_loop` and `woocommerce_after_shop_loop are injected when any products is rendered. ([9464](https://github.com/woocommerce/woocommerce-blocks/pull/9464))
+- Allow Shipping method prices to inherit global styles text color. ([9456](https://github.com/woocommerce/woocommerce-blocks/pull/9456))
+- Product Archive Template: Fix compatibility Layer with Product Recommendations extension. ([9452](https://github.com/woocommerce/woocommerce-blocks/pull/9452))
+- Fixed appearance of checkout form step headings in the editor. ([9437](https://github.com/woocommerce/woocommerce-blocks/pull/9437))
+- Global Styles: Fix radio control overlap when font-size is small. ([9436](https://github.com/woocommerce/woocommerce-blocks/pull/9436))
+- Fix COD availability on checkout. ([9375](https://github.com/woocommerce/woocommerce-blocks/pull/9375))
+- Addressed an issue where a fatal error could sometimes be thrown if a plugin modified a shipping package's rates incorrectly. ([9351](https://github.com/woocommerce/woocommerce-blocks/pull/9351))
+- Mini Cart block no longer uses the Modal component from `@wordpress/components`. ([9345](https://github.com/woocommerce/woocommerce-blocks/pull/9345))
+- Fix: ensure the global product variable is restored to its original value after being overridden within the Add to Cart with Options block. ([9581](https://github.com/woocommerce/woocommerce-blocks/pull/9581))
+
+#### Performance
+
+- Removed the block-editor dependency on the frontend. ([9251](https://github.com/woocommerce/woocommerce-blocks/pull/9251))
+
+= 10.2.0 - 2023-05-08 =
+
+#### Enhancements
+
+- Add Shop by Price pattern. ([9373](https://github.com/woocommerce/woocommerce-blocks/pull/9373))
+- Convert featured category triple pattern to use WP core blocks. ([9340](https://github.com/woocommerce/woocommerce-blocks/pull/9340))
+- Add Featured Category pattern. ([9322](https://github.com/woocommerce/woocommerce-blocks/pull/9322))
+- [Pattern] Add new `Hero product 3 split` pattern. ([9319](https://github.com/woocommerce/woocommerce-blocks/pull/9319))
+- Add featured category cover image pattern. ([9284](https://github.com/woocommerce/woocommerce-blocks/pull/9284))
+- Add featured category triple pattern. ([9269](https://github.com/woocommerce/woocommerce-blocks/pull/9269))
+- Add new `Product Collections: Featured Collection` pattern. ([9246](https://github.com/woocommerce/woocommerce-blocks/pull/9246))
+- Make Mini Cart footer border follow the current text color. ([9245](https://github.com/woocommerce/woocommerce-blocks/pull/9245))
+- [Pattern] Add new `Product Collections: Newest Arrivals` pattern. ([9240](https://github.com/woocommerce/woocommerce-blocks/pull/9240))
+- Add the new `WooCommerce Hero Product – Split` pattern. ([9191](https://github.com/woocommerce/woocommerce-blocks/pull/9191))
+- Add product hero pattern. ([9181](https://github.com/woocommerce/woocommerce-blocks/pull/9181))
+- Related Products: Make Product Title a link by default. ([9179](https://github.com/woocommerce/woocommerce-blocks/pull/9179))
+- [Patterns] Add new `Footer with 3 menus` menu. ([9175](https://github.com/woocommerce/woocommerce-blocks/pull/9175))
+- [Patterns]: Add new `Header Centered Search` pattern. ([9081](https://github.com/woocommerce/woocommerce-blocks/pull/9081))
+- Add the new `WooCommerce Featured Products 5-item grid` pattern. ([9006](https://github.com/woocommerce/woocommerce-blocks/pull/9006))
+- Products block: Using nested selectors to add consistent spacing between Product elements. ([8993](https://github.com/woocommerce/woocommerce-blocks/pull/8993))
+
+#### Bug Fixes
+
+- Fix: Ensure the product title within the Single Product Block matches the selected product instead of the title of the post/page where it was inserted. ([9335](https://github.com/woocommerce/woocommerce-blocks/pull/9335))
+- Fix a regression which caused the Mini Cart drawer not to open until its contents have completely loaded. ([9329](https://github.com/woocommerce/woocommerce-blocks/pull/9329))
+- Prevent email being cleared when changing shipping method or when first entering shipping informaiton. ([9328](https://github.com/woocommerce/woocommerce-blocks/pull/9328))
+- Product Image Gallery: Fix resize width when the window resizes. ([9299](https://github.com/woocommerce/woocommerce-blocks/pull/9299))
+- Product Image Gallery: Fix the inline displayed issue. ([9297](https://github.com/woocommerce/woocommerce-blocks/pull/9297))
+- Single Product Template - Related Products: Fix items per page option. ([9286](https://github.com/woocommerce/woocommerce-blocks/pull/9286))
+- Fix shipping notices when cart contains multiple packages. ([9285](https://github.com/woocommerce/woocommerce-blocks/pull/9285))
+- Prevent Product Price global styles leaking into the Mini Cart, Cart and Checkout blocks. ([9276](https://github.com/woocommerce/woocommerce-blocks/pull/9276))
+- Fix consistency between editor and frontend button styling. ([9260](https://github.com/woocommerce/woocommerce-blocks/pull/9260))
+- Fix Mini Cart block not respecting Add-to-Cart behaviour attribute when adding the first product. ([9257](https://github.com/woocommerce/woocommerce-blocks/pull/9257))
+- Make it so wide widths are correctly applied to the Mini Cart Contents block in the editor. ([9201](https://github.com/woocommerce/woocommerce-blocks/pull/9201))
+- Performance: Removed lodash dependency on the frontend. ([9161](https://github.com/woocommerce/woocommerce-blocks/pull/9161))
+
+#### Various
+
+- Update the icon and description for the Product Meta block. ([9243](https://github.com/woocommerce/woocommerce-blocks/pull/9243))
+- Update the icon and description for the Product Details block. ([9241](https://github.com/woocommerce/woocommerce-blocks/pull/9241))
+- Rename Add To Cart Form to Add To Cart Options. ([9238](https://github.com/woocommerce/woocommerce-blocks/pull/9238))
+
 
 = 10.1.0 - 2023-04-24 =
 
