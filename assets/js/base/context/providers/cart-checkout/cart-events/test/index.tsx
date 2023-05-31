@@ -35,6 +35,10 @@ describe( 'CartEventsProvider', () => {
 		);
 		expect( screen.getByText( 'Mock observer' ) ).toBeInTheDocument();
 		const button = screen.getByText( 'Proceed to Checkout' );
+
+		// Forcibly set the button URL to # to prevent JSDOM error: `["Error: Not implemented: navigation (except hash changes)`
+		button.parentElement?.removeAttribute( 'href' );
+
 		// Click twice. The observer should unsubscribe after the first click.
 		button.click();
 		button.click();
