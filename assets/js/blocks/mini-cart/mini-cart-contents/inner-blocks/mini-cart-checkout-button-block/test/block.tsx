@@ -15,10 +15,6 @@ import Block from '../block';
 
 describe( 'Mini Cart Checkout Button Block', () => {
 	it( 'dispatches the onProceedToCheckout event when the button is clicked', async () => {
-		Object.defineProperty( window, 'location', {
-			writable: true,
-			value: { assign: jest.fn() },
-		} );
 		const mockObserver = jest.fn().mockReturnValue( { type: 'error' } );
 		const MockObserverComponent = () => {
 			const { onProceedToCheckout } = useCartEventsContext();
@@ -41,6 +37,9 @@ describe( 'Mini Cart Checkout Button Block', () => {
 		);
 		expect( screen.getByText( 'Mock observer' ) ).toBeInTheDocument();
 		const button = screen.getByText( 'Proceed to Checkout' );
+
+		// Forcibly set the button URL to # to prevent JSDOM error: `["Error: Not implemented: navigation (except hash changes)`
+		button.setAttribute( 'href', '#' );
 		button.click();
 		await waitFor( () => {
 			expect( mockObserver ).toHaveBeenCalled();
