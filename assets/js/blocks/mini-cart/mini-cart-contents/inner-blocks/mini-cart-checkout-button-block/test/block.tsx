@@ -12,6 +12,15 @@ import { render, screen, waitFor } from '@testing-library/react';
  * Internal dependencies
  */
 import Block from '../block';
+
+const assignMock = jest.fn();
+
+delete window.location;
+window.location = { assign: assignMock };
+
+afterEach( () => {
+	assignMock.mockClear();
+} );
 describe( 'Mini Cart Checkout Button Block', () => {
 	it( 'dispatches the onProceedToCheckout event when the button is clicked', async () => {
 		const mockObserver = jest.fn().mockReturnValue( { type: 'error' } );
