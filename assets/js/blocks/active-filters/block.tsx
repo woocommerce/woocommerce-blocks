@@ -411,6 +411,7 @@ const ActiveFiltersBlock = ( {
 		</>
 	);
 };
+
 interface ActiveFiltersBlockProps {
 	/**
 	 * The attributes for this block.
