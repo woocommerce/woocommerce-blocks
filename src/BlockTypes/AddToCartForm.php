@@ -19,7 +19,7 @@ class AddToCartForm extends AbstractBlock {
 	 * Initializes the AddToCartForm block and hooks into the `wc_add_to_cart_message_html` filter
 	 * to prevent displaying the Cart Notice when the block is inside the Single Product block
 	 * and the Add to Cart button is clicked.
-	 * 
+	 *
 	 * It also hooks into the `woocommerce_add_to_cart_redirect` filter to prevent redirecting
 	 * to another page when the block is inside the Single Product block and the Add to Cart button
 	 * is clicked.
@@ -163,7 +163,7 @@ class AddToCartForm extends AbstractBlock {
 		if ( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' == $_POST['is-descendent-of-single-product-block'] ) {
 			return wp_validate_redirect( wp_get_referer(), $url );
 		}
-		
+
 		return $url;
 	}
 
