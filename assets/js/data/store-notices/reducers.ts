@@ -30,6 +30,18 @@ const reducer: Reducer< StoreNoticesState > = (
 					},
 				],
 			};
+		case ACTION_TYPES.UNHIGHLIGHT_NOTICE:
+			return {
+				...state,
+				highlightedNotices: state.highlightedNotices.filter(
+					( notice ) => {
+						return (
+							notice.context !== action.containerContext ||
+							notice.id !== action.noticeId
+						);
+					}
+				),
+			};
 		case ACTION_TYPES.REGISTER_CONTAINER:
 			return {
 				...state,
