@@ -410,7 +410,13 @@ const ActiveFiltersBlock = ( {
 };
 
 export interface ActiveFiltersBlockProps {
+	/**
+	 * The attributes for this block.
+	 */
 	attributes: Attributes;
+	/**
+	 * Whether it's in the editor or frontend display.
+	 */
 	isEditor: IsEditor;
 }
 
