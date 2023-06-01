@@ -14,6 +14,11 @@ const reducer: Reducer< StoreNoticesState > = (
 	action
 ) => {
 	switch ( action.type ) {
+		case ACTION_TYPES.UNHIGHLIGHT_ALL_NOTICES:
+			return {
+				...state,
+				highlightedNotices: [],
+			};
 		case ACTION_TYPES.HIGHLIGHT_NOTICE:
 			return {
 				...state,
