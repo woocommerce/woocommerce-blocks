@@ -3,6 +3,7 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
+import { useRef, useEffect } from '@wordpress/element';
 import { Icon, close } from '@wordpress/icons';
 
 /**
@@ -52,6 +53,14 @@ const NoticeBanner = ( {
 	isHighlighted = false,
 }: NoticeBannerProps ) => {
 	useSpokenMessage( spokenMessage, politeness );
+	const noticeRef = useRef< HTMLDivElement >( null );
+
+	useEffect( () => {
+		if ( ! noticeRef?.current ) {
+			return;
+		}
+		noticeRef.current.scrollIntoView( { behavior: 'smooth' } );
+	}, [ isHighlighted ] );
 
 	const dismiss = ( event: React.SyntheticEvent ) => {
 		if (
@@ -65,6 +74,7 @@ const NoticeBanner = ( {
 
 	return (
 		<div
+			ref={ noticeRef }
 			className={ classnames(
 				className,
 				'wc-block-components-notice-banner',
