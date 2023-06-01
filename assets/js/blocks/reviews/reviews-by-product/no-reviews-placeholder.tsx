@@ -24,7 +24,7 @@ const NoReviewsPlaceholder = ( {
 		<ErrorPlaceholder
 			className="wc-block-featured-product-error"
 			error={ error as ErrorObject }
-			isLoading={ false }
+			isLoading={ isLoading as boolean }
 			onRetry={ getProduct }
 		/>
 	);
