@@ -33,20 +33,30 @@ import {
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 import FilterPlaceholders from './filter-placeholders';
-import { ActiveFiltersBlockProps } from './types';
+import type { ActiveFiltersBlockProps } from './types';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 /**
  * Component displaying active filters.
  *
  * @param {Object}  props            Incoming props for the component.
- * @param {Object}  props.attributes Incoming attributes for the block.
- * @param {boolean} props.isEditor   Whether or not in the editor context.
+ * @param {Object}  props.heading
+ * @param {Object}  props.headingLevel
+ * @param {Object}  props.displayStyle
+ * @param {Object}  props.isEditor
  */
 const ActiveFiltersBlock = ( {
-	attributes: blockAttributes,
-	isEditor = false,
+	heading,
+	headingLevel,
+	displayStyle,
+	isEditor,
 }: ActiveFiltersBlockProps ) => {
+	const props = {
+		heading,
+		headingLevel,
+		displayStyle,
+		isEditor,
+	};
 	const setWrapperVisibility = useSetWraperVisibility();
 	const isMounted = useIsMounted();
 	const componentHasMounted = isMounted();
@@ -61,7 +71,7 @@ const ActiveFiltersBlock = ( {
 		when in a loading state and activeAttributeFilters renders the placeholders.
 	*/
 	const shouldShowLoadingPlaceholders =
-		maybeUrlContainsFilters() && ! isEditor && isLoading;
+		maybeUrlContainsFilters() && ! props.isEditor && isLoading;
 	const [ productAttributes, setProductAttributes ] = useQueryStateByKey(
 		'attributes',
 		[]
@@ -118,7 +128,7 @@ const ActiveFiltersBlock = ( {
 								}
 							},
 							showLabel: false,
-							displayStyle: blockAttributes.displayStyle,
+							displayStyle: props.displayStyle,
 						} );
 					} ) }
 				</ul>
@@ -129,7 +139,7 @@ const ActiveFiltersBlock = ( {
 		STOCK_STATUS_OPTIONS,
 		productStockStatus,
 		setProductStockStatus,
-		blockAttributes.displayStyle,
+		props.displayStyle,
 		filteringForPhpTemplate,
 	] );
 
@@ -150,13 +160,13 @@ const ActiveFiltersBlock = ( {
 					setMaxPrice( undefined );
 				}
 			},
-			displayStyle: blockAttributes.displayStyle,
+			displayStyle: props.displayStyle,
 		} );
 	}, [
 		shouldShowLoadingPlaceholders,
 		minPrice,
 		maxPrice,
-		blockAttributes.displayStyle,
+		props.displayStyle,
 		setMinPrice,
 		setMaxPrice,
 		filteringForPhpTemplate,
@@ -190,7 +200,7 @@ const ActiveFiltersBlock = ( {
 			return (
 				<ActiveAttributeFilters
 					attributeObject={ attributeObject }
-					displayStyle={ blockAttributes.displayStyle }
+					displayStyle={ props.displayStyle }
 					slugs={ attribute.slug }
 					key={ attribute.attribute }
 					operator={ attribute.operator }
@@ -203,7 +213,7 @@ const ActiveFiltersBlock = ( {
 		componentHasMounted,
 		STORE_ATTRIBUTES,
 		isLoading,
-		blockAttributes.displayStyle,
+		props.displayStyle,
 	] );
 
 	/**
@@ -270,7 +280,7 @@ const ActiveFiltersBlock = ( {
 								}
 							},
 							showLabel: false,
-							displayStyle: blockAttributes.displayStyle,
+							displayStyle: props.displayStyle,
 						} );
 					} ) }
 				</ul>
@@ -280,7 +290,7 @@ const ActiveFiltersBlock = ( {
 		shouldShowLoadingPlaceholders,
 		productRatings,
 		setProductRatings,
-		blockAttributes.displayStyle,
+		props.displayStyle,
 		filteringForPhpTemplate,
 	] );
 
@@ -294,24 +304,33 @@ const ActiveFiltersBlock = ( {
 		);
 	};
 
-	if ( ! shouldShowLoadingPlaceholders && ! hasFilters() && ! isEditor ) {
+	if (
+		! shouldShowLoadingPlaceholders &&
+		! hasFilters() &&
+		! props.isEditor
+	) {
 		setWrapperVisibility( false );
 		return null;
 	}
 
-	const TagName =
-		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
-
-	const heading = (
+	const TagName = `h${ props.headingLevel }` as keyof JSX.IntrinsicElements;
+	/**
+	 * had to change the name from "heading" to "title" as
+	 * heading was being duplicated
+	 * if you have any suggestion for an alternative
+	 * or if you want to name it something else
+	 * please mention
+	 */
+	const title = (
 		<TagName className="wc-block-active-filters__title">
-			{ blockAttributes.heading }
+			{ props.heading }
 		</TagName>
 	);
 
 	const filterHeading = shouldShowLoadingPlaceholders ? (
-		<FilterTitlePlaceholder>{ heading }</FilterTitlePlaceholder>
+		<FilterTitlePlaceholder>{ title }</FilterTitlePlaceholder>
 	) : (
-		heading
+		title
 	);
 
 	const hasFilterableProducts = getSettingWithCoercion(
@@ -328,17 +347,16 @@ const ActiveFiltersBlock = ( {
 	setWrapperVisibility( true );
 
 	const listClasses = classnames( 'wc-block-active-filters__list', {
-		'wc-block-active-filters__list--chips':
-			blockAttributes.displayStyle === 'chips',
+		'wc-block-active-filters__list--chips': props.displayStyle === 'chips',
 		'wc-block-active-filters--loading': shouldShowLoadingPlaceholders,
 	} );
 
 	return (
 		<>
-			{ ! isEditor && blockAttributes.heading && filterHeading }
+			{ ! props.isEditor && props.heading && filterHeading }
 			<div className="wc-block-active-filters">
 				<ul className={ listClasses }>
-					{ isEditor ? (
+					{ props.isEditor ? (
 						<>
 							{ renderRemovableListItem( {
 								type: __(
@@ -349,7 +367,7 @@ const ActiveFiltersBlock = ( {
 									'Small',
 									'woo-gutenberg-products-block'
 								),
-								displayStyle: blockAttributes.displayStyle,
+								displayStyle: props.displayStyle,
 							} ) }
 							{ renderRemovableListItem( {
 								type: __(
@@ -360,14 +378,14 @@ const ActiveFiltersBlock = ( {
 									'Blue',
 									'woo-gutenberg-products-block'
 								),
-								displayStyle: blockAttributes.displayStyle,
+								displayStyle: props.displayStyle,
 							} ) }
 						</>
 					) : (
 						<>
 							<FilterPlaceholders
 								isLoading={ shouldShowLoadingPlaceholders }
-								displayStyle={ blockAttributes.displayStyle }
+								displayStyle={ props.displayStyle }
 							/>
 							{ activePriceFilters }
 							{ activeStockStatusFilters }

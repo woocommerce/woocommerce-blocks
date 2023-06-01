@@ -19,7 +19,7 @@ import {
  * Internal dependencies
  */
 import Block from './block';
-import type { Attributes } from './types';
+import type { ActiveFiltersBlockProps } from './types';
 import './editor.scss';
 import { UpgradeNotice } from '../filter-wrapper/upgrade';
 
@@ -27,7 +27,7 @@ const Edit = ( {
 	attributes,
 	setAttributes,
 	clientId,
-}: BlockEditProps< Attributes > ) => {
+}: BlockEditProps< ActiveFiltersBlockProps > ) => {
 	const { className, displayStyle, heading, headingLevel } = attributes;
 
 	const blockProps = useBlockProps( {
@@ -49,7 +49,9 @@ const Edit = ( {
 							'woo-gutenberg-products-block'
 						) }
 						value={ displayStyle }
-						onChange={ ( value: Attributes[ 'displayStyle' ] ) =>
+						onChange={ (
+							value: ActiveFiltersBlockProps[ 'displayStyle' ]
+						) =>
 							setAttributes( {
 								displayStyle: value,
 							} )
@@ -90,13 +92,13 @@ const Edit = ( {
 					className="wc-block-active-filters__title"
 					headingLevel={ headingLevel }
 					heading={ heading }
-					onChange={ ( value: Attributes[ 'heading' ] ) =>
-						setAttributes( { heading: value } )
-					}
+					onChange={ (
+						value: ActiveFiltersBlockProps[ 'heading' ]
+					) => setAttributes( { heading: value } ) }
 				/>
 			) }
 			<Disabled>
-				<Block attributes={ attributes } isEditor={ true } />
+				<Block attributes={ attributes } />
 			</Disabled>
 		</div>
 	);

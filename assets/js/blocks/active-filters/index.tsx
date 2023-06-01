@@ -13,7 +13,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 import edit from './edit';
 import metadata from './block.json';
 import { blockAttributes } from './attributes';
-import { Attributes } from './types';
+import type { ActiveFiltersBlockProps } from './types';
 
 registerBlockType( metadata, {
 	icon: {
@@ -30,7 +30,7 @@ registerBlockType( metadata, {
 	},
 	edit,
 	// Save the props to post content.
-	save( { attributes }: { attributes: Attributes } ) {
+	save( { attributes }: { attributes: ActiveFiltersBlockProps } ) {
 		const { className, displayStyle, heading, headingLevel } = attributes;
 		const data = {
 			'data-display-style': displayStyle,
