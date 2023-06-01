@@ -28,8 +28,9 @@ const config: ExtendedPlaywrightTestConfig = {
 	testDir: 'tests',
 	retries: CI ? 2 : 0,
 	workers: 1,
-	fullyParallel: true,
-	reporter: process.env.CI ? [ [ 'github' ], [ 'list' ] ] : 'list',
+	reporter: process.env.CI
+		? [ [ 'github' ], [ 'list' ], [ 'html' ] ]
+		: 'list',
 	maxFailures: E2E_MAX_FAILURES ? Number( E2E_MAX_FAILURES ) : 0,
 	use: {
 		baseURL: BASE_URL,

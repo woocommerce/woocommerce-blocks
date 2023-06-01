@@ -15,6 +15,7 @@ import {
 	STORAGE_STATE_PATH,
 	EditorUtils,
 } from '@woocommerce/e2e-utils';
+
 /**
  * Set of console logging types observed to protect against unexpected yet
  * handled (i.e. not catastrophic) errors or warnings. Each key corresponds
