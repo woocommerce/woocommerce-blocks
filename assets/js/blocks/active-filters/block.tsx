@@ -409,7 +409,7 @@ const ActiveFiltersBlock = ( {
 	);
 };
 
-export interface ActiveFiltersBlockProps {
+interface ActiveFiltersBlockProps {
 	/**
 	 * The attributes for this block.
 	 */
