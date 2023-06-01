@@ -16,3 +16,14 @@ export const unregisterContainer = ( containerContext: string ) => {
 		containerContext,
 	};
 };
+
+export const unHighlightNotice = (
+	containerContext: string,
+	noticeId: string
+) => {
+	return {
+		type: ACTION_TYPES.UNHIGHLIGHT_NOTICE,
+		containerContext,
+		noticeId,
+	};
+};
