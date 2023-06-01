@@ -108,7 +108,7 @@ class Api {
 			return [];
 		}
 
-		return (array) $transient_value['script_data'] ?? [];
+		return (array) ( $transient_value['script_data'] ?? [] );
 	}
 
 	/**
@@ -152,29 +152,24 @@ class Api {
 		}
 
 		if ( empty( $this->script_data[ $relative_src ] ) ) {
-			$src        = $this->get_asset_url( $relative_src );
-			$asset_path = $this->package->get_path(
-				str_replace( '.js', '.asset.php', $relative_src )
-			);
-
-			if ( file_exists( $asset_path ) ) {
-				// The following require is safe because we are checking if the file exists and it is not a user input.
-				// nosemgrep audit.php.lang.security.file.inclusion-arg.
-				$asset        = require $asset_path;
-				$dependencies = isset( $asset['dependencies'] ) ? array_merge( $asset['dependencies'], $dependencies ) : $dependencies;
-				$version      = ! empty( $asset['version'] ) ? $asset['version'] : $this->get_file_version( $relative_src );
-			} else {
-				$version = $this->get_file_version( $relative_src );
-			}
+			$asset_path = $this->package->get_path( str_replace( '.js', '.asset.php', $relative_src ) );
+			// The following require is safe because we are checking if the file exists and it is not a user input.
+			// nosemgrep audit.php.lang.security.file.inclusion-arg.
+			$asset = file_exists( $asset_path ) ? require $asset_path : [];
 
 			$this->script_data[ $relative_src ] = array(
-				'src'          => $src,
-				'version'      => $version,
-				'dependencies' => $dependencies,
+				'src'          => $this->get_asset_url( $relative_src ),
+				'version'      => ! empty( $asset['version'] ) ? $asset['version'] : $this->get_file_version( $relative_src ),
+				'dependencies' => ! empty( $asset['dependencies'] ) ? $asset['dependencies'] : [],
 			);
 		}
 
-		return $this->script_data[ $relative_src ];
+		// Return asset details as well as the requested dependencies array.
+		return [
+			'src'          => $this->script_data[ $relative_src ]['src'],
+			'version'      => $this->script_data[ $relative_src ]['version'],
+			'dependencies' => array_merge( $this->script_data[ $relative_src ]['dependencies'], $dependencies ),
+		];
 	}
 
 	/**
