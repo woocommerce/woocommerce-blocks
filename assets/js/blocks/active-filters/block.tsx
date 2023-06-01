@@ -33,7 +33,7 @@ import {
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 import FilterPlaceholders from './filter-placeholders';
-import { Attributes, IsEditor } from './types';
+import { ActiveFiltersBlockProps } from './types';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 /**
@@ -408,16 +408,5 @@ const ActiveFiltersBlock = ( {
 		</>
 	);
 };
-
-interface ActiveFiltersBlockProps {
-	/**
-	 * The attributes for this block.
-	 */
-	attributes: Attributes;
-	/**
-	 * Whether it's in the editor or frontend display.
-	 */
-	isEditor: IsEditor;
-}
 
 export default ActiveFiltersBlock;
