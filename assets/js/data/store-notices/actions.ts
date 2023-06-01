@@ -27,3 +27,9 @@ export const unHighlightNotice = (
 		noticeId,
 	};
 };
+
+export const unHighlightAllNotices = () => {
+	return {
+		type: ACTION_TYPES.UNHIGHLIGHT_ALL_NOTICES,
+	};
+};
