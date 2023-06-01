@@ -6,7 +6,6 @@ import { useQueryStateByKey } from '@woocommerce/base-context/hooks';
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import { useMemo, useEffect, useState } from '@wordpress/element';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import Label from '@woocommerce/base-components/label';
 import {
 	isAttributeQueryCollection,
@@ -413,15 +412,18 @@ const ActiveFiltersBlock = ( {
 	);
 };
 
-ActiveFiltersBlock.propTypes = {
+interface ActiveFiltersBlock {
 	/**
 	 * The attributes for this block.
 	 */
-	attributes: PropTypes.object.isRequired,
+	attributes: {
+		// Define the properties of the attributes object.
+		// Adjust the types accordingly.
+	};
 	/**
 	 * Whether it's in the editor or frontend display.
 	 */
-	isEditor: PropTypes.bool,
-};
+	isEditor?: boolean;
+}
 
 export default ActiveFiltersBlock;
