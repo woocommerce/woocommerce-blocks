@@ -15,6 +15,7 @@ import {
  */
 import { defaultCheckoutButtonLabel } from './constants';
 import { getVariant } from '../utils';
+import { usePreventCheckoutWithNotices } from '../../../../../base/hooks/use-prevent-checkout-with-notices';
 
 type MiniCartCheckoutButtonBlockProps = {
 	checkoutButtonLabel?: string;
@@ -29,6 +30,9 @@ const Block = ( {
 }: MiniCartCheckoutButtonBlockProps ): JSX.Element | null => {
 	const styleProps = useStyleProps( { style } );
 	const { dispatchOnProceedToCheckout } = useCartEventsContext();
+
+	// Prevent the shopper from proceeding to checkout if there are error notices.
+	usePreventCheckoutWithNotices();
 
 	if ( ! CHECKOUT_URL ) {
 		return null;

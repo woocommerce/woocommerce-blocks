@@ -18,6 +18,7 @@ import { useCartEventsContext } from '@woocommerce/base-context/providers';
  */
 import './style.scss';
 import { defaultButtonLabel } from './constants';
+import { usePreventCheckoutWithNotices } from '../../../../base/hooks/use-prevent-checkout-with-notices';
 
 /**
  * Checkout button rendered in the full cart page.
@@ -77,6 +78,9 @@ const Block = ( {
 	} );
 
 	const { dispatchOnProceedToCheckout } = useCartEventsContext();
+
+	// Prevent the shopper from proceeding to checkout if there are error notices.
+	usePreventCheckoutWithNotices();
 
 	const submitContainerContents = (
 		<Button
