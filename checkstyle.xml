@@ -3643,13 +3643,13 @@
         Type &apos;{ type: string; default: boolean; }&apos; is not assignable to type &apos;BlockAttribute&lt;unknown&gt;&apos;." source="TS2769" />
 <error line="77" column="11" severity="error" message="Type &apos;{ constructor: Function; toString(): string; toLocaleString(): string; valueOf(): Object; hasOwnProperty(v: PropertyKey): boolean; isPrototypeOf(v: Object): boolean; propertyIsEnumerable(v: PropertyKey): boolean; }&apos; is missing the following properties from type &apos;Omit&lt;{ attributes: Object; debouncedSpeak: (arg0: any) =&gt; any; setAttributes: (arg0: any) =&gt; any; }, &quot;speak&quot; | &quot;debouncedSpeak&quot;&gt;&apos;: attributes, setAttributes" source="TS2739" />
 </file>
-<file name="assets/js/blocks/reviews/reviews-by-product/no-reviews-placeholder.js">
+<file name="assets/js/blocks/reviews/reviews-by-product/no-reviews-placeholder.tsx">
 <error line="11" column="34" severity="error" message="Binding element &apos;error&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="11" column="41" severity="error" message="Binding element &apos;getProduct&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="11" column="53" severity="error" message="Binding element &apos;isLoading&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="11" column="64" severity="error" message="Binding element &apos;product&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 </file>
-<file name="assets/js/blocks/reviews/reviews-by-product/edit.js">
+<file name="assets/js/blocks/reviews/reviews-by-product/edit.tsx">
 <error line="41" column="10" severity="error" message="Property &apos;editMode&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="41" column="20" severity="error" message="Property &apos;productId&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="43" column="37" severity="error" message="Parameter &apos;args&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
@@ -3664,7 +3664,7 @@
 <error line="186" column="5" severity="error" message="Type &apos;ComponentType&lt;{ error: any; getProduct: any; isLoading: any; product: any; }&gt;&apos; is not assignable to type &apos;ReactElementLike&apos;.
   Type &apos;ComponentClass&lt;{ error: any; getProduct: any; isLoading: any; product: any; }, any&gt;&apos; is missing the following properties from type &apos;ReactElementLike&apos;: type, props, key" source="TS2322" />
 </file>
-<file name="assets/js/blocks/reviews/reviews-by-product/index.js">
+<file name="assets/js/blocks/reviews/reviews-by-product/index.tsx">
 <error line="19" column="1" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ productId: unknown; editMode: unknown; imageType: unknown; orderby: unknown; reviewsOnLoadMore: unknown; reviewsOnPageLoad: unknown; showLoadMore: unknown; showOrderby: unknown; showReviewDate: unknown; showReviewerName: unknown; showReviewImage: unknown; showReviewRating: unknown; showReviewContent: unknown; previewReviews: unknown; }&gt;, settings?: Partial&lt;...&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ productId: unknown; editMode: unknown; imageType: unknown; orderby: unknown; reviewsOnLoadMore: unknown; reviewsOnPageLoad: unknown; showLoadMore: unknown; showOrderby: unknown; showReviewDate: unknown; showReviewerName: unknown; showReviewImage: unknown; showReviewRating: unknown; showReviewCon...&apos;.
