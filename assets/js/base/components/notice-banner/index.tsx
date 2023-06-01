@@ -3,7 +3,8 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
-import { useRef, useEffect } from '@wordpress/element';
+import { speak } from '@wordpress/a11y';
+import { useRef, useEffect, renderToString } from '@wordpress/element';
 import { Icon, close } from '@wordpress/icons';
 
 /**
@@ -56,11 +57,17 @@ const NoticeBanner = ( {
 	const noticeRef = useRef< HTMLDivElement >( null );
 
 	useEffect( () => {
-		if ( ! noticeRef?.current ) {
+		if ( ! noticeRef?.current || ! isHighlighted ) {
 			return;
 		}
+		// Speak message when the notice is highlighted.
+		const messageToSpeak =
+			typeof spokenMessage === 'string'
+				? spokenMessage
+				: renderToString( spokenMessage );
+		speak( messageToSpeak, politeness );
 		noticeRef.current.scrollIntoView( { behavior: 'smooth' } );
-	}, [ isHighlighted ] );
+	}, [ isHighlighted, politeness, spokenMessage ] );
 
 	const dismiss = ( event: React.SyntheticEvent ) => {
 		if (
