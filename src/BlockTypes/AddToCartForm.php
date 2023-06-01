@@ -131,13 +131,14 @@ class AddToCartForm extends AbstractBlock {
 
 	/**
 	 * Filter the add to cart message to prevent the Notice from being displayed when the Add to Cart form is a descendent of a Single Product block.
-	 * 
+	 *
 	 * @param string $message Message to be displayed when product is added to the cart.
-	 * 
 	 */
 	public function wc_add_to_cart_message_html_filter( $message ) {
-		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		if ( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' == $_POST['is-descendent-of-single-product-block'] ) {
+		if ( 
+			isset( $_POST['is-descendent-of-single-product-block'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			&& 'true' == $_POST['is-descendent-of-single-product-block'] // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		) {
 			return false;
 		}
 		return $message;
