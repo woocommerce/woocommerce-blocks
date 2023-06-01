@@ -10,7 +10,6 @@ import {
 	withSpokenMessages,
 } from '@wordpress/components';
 import { SearchListItem } from '@woocommerce/editor-components/search-list-control';
-import PropTypes from 'prop-types';
 import ProductControl from '@woocommerce/editor-components/product-control';
 import { Icon, commentContent } from '@wordpress/icons';
 
@@ -18,31 +17,26 @@ import { Icon, commentContent } from '@wordpress/icons';
  * Internal dependencies
  */
 import EditorContainerBlock from '../editor-container-block.js';
-import NoReviewsPlaceholder from './no-reviews-placeholder.js';
 import {
 	getBlockControls,
 	getSharedReviewContentControls,
 	getSharedReviewListControls,
 } from '../edit-utils.js';
+import type { ReviewsByProductEditorProps, SearchListItemProps } from './types';
+import NoReviewsPlaceholder from './no-reviews-placeholder';
 
 /**
  * Component to handle edit mode of "Reviews by Product".
  *
- * @param {Object}            props                Incoming props for the component.
- * @param {Object}            props.attributes     Incoming block attributes.
- * @param {function(any):any} props.debouncedSpeak
- * @param {function(any):any} props.setAttributes  Setter for block attributes.
  */
 const ReviewsByProductEditor = ( {
 	attributes,
 	debouncedSpeak,
 	setAttributes,
-} ) => {
+}: ReviewsByProductEditorProps ) => {
 	const { editMode, productId } = attributes;
 
-	const renderProductControlItem = ( args ) => {
-		const { item = 0 } = args;
-
+	const renderProductControlItem = ( args: SearchListItemProps ) => {
 		return (
 			<SearchListItem
 				{ ...args }
@@ -51,21 +45,21 @@ const ReviewsByProductEditor = ( {
 					_n(
 						'%d review',
 						'%d reviews',
-						item.review_count,
+						args.reviewCount,
 						'woo-gutenberg-products-block'
 					),
-					item.review_count
+					args.reviewCount
 				) }
 				aria-label={ sprintf(
 					/* translators: %1$s is the item name, and %2$d is the number of reviews for the item. */
 					_n(
 						'%1$s, has %2$d review',
 						'%1$s, has %2$d reviews',
-						item.review_count,
+						args.reviewCount,
 						'woo-gutenberg-products-block'
 					),
-					item.name,
-					item.review_count
+					args.name,
+					args.reviewCount
 				) }
 			/>
 		);
@@ -187,23 +181,6 @@ const ReviewsByProductEditor = ( {
 			/>
 		</>
 	);
-};
-
-ReviewsByProductEditor.propTypes = {
-	/**
-	 * The attributes for this block.
-	 */
-	attributes: PropTypes.object.isRequired,
-	/**
-	 * The register block name.
-	 */
-	name: PropTypes.string.isRequired,
-	/**
-	 * A callback to update attributes.
-	 */
-	setAttributes: PropTypes.func.isRequired,
-	// from withSpokenMessages
-	debouncedSpeak: PropTypes.func.isRequired,
 };
 
 export default withSpokenMessages( ReviewsByProductEditor );

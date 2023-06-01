@@ -3,18 +3,28 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { Placeholder, Spinner } from '@wordpress/components';
-import PropTypes from 'prop-types';
-import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
+import ErrorPlaceholder, {
+	ErrorObject,
+} from '@woocommerce/editor-components/error-placeholder';
 import { Icon, commentContent } from '@wordpress/icons';
 import { withProduct } from '@woocommerce/block-hocs';
 import { decodeEntities } from '@wordpress/html-entities';
+/**
+ * Internal dependencies
+ */
+import type { NoReviewsPlaceholderProps } from './types';
 
-const NoReviewsPlaceholder = ( { error, getProduct, isLoading, product } ) => {
+const NoReviewsPlaceholder = ( {
+	error,
+	getProduct,
+	isLoading,
+	product,
+}: NoReviewsPlaceholderProps ) => {
 	const renderApiError = () => (
 		<ErrorPlaceholder
 			className="wc-block-featured-product-error"
-			error={ error }
-			isLoading={ isLoading }
+			error={ error as ErrorObject }
+			isLoading={ false }
 			onRetry={ getProduct }
 		/>
 	);
@@ -51,16 +61,6 @@ const NoReviewsPlaceholder = ( { error, getProduct, isLoading, product } ) => {
 			{ content }
 		</Placeholder>
 	);
-};
-
-NoReviewsPlaceholder.propTypes = {
-	// from withProduct
-	error: PropTypes.object,
-	isLoading: PropTypes.bool,
-	product: PropTypes.shape( {
-		name: PropTypes.node,
-		review_count: PropTypes.number,
-	} ),
 };
 
 export default withProduct( NoReviewsPlaceholder );
