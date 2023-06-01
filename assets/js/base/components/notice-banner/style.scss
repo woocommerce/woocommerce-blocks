@@ -146,4 +146,23 @@
 	&.is-info {
 		@extend %info;
 	}
+	&.is-highlighted {
+		position: relative;
+		animation: shine 1s ease-in-out;
+		animation-iteration-count: 2;
+		overflow: hidden;
+		animation-fill-mode: forwards;
+	}
+}
+
+@keyframes shine {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+	}
 }
