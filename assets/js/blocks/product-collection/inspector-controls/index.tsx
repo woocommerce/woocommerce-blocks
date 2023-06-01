@@ -69,7 +69,7 @@ const ProductCollectionInspectorControls = (
 							resetFilter()
 						);
 					} }
-					className="product-collection-inspector-toolspanel__filters"
+					className="wc-block-editor-product-collection-inspector-toolspanel__filters"
 				>
 					<OnSaleControl { ...props } />
 					<StockStatusControl { ...props } />
