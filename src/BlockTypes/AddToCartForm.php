@@ -16,10 +16,11 @@ class AddToCartForm extends AbstractBlock {
 	protected $block_name = 'add-to-cart-form';
 
 	/**
-	 * Initialize the block and Hook into the `render_block_context` filter
-	 * to update the context with the correct data.
+	 * Initializes the AddToCartForm block and hooks into the `wc_add_to_cart_message_html` filter
+	 * to prevent displaying the Cart Notice when the block is inside the Single Product block
+	 * and the Add to Cart button is clicked.
 	 *
-	 * @var string
+	 * @return void
 	 */
 	protected function initialize() {
 		parent::initialize();
@@ -130,7 +131,8 @@ class AddToCartForm extends AbstractBlock {
 	}
 
 	/**
-	 * Filter the add to cart message to prevent the Notice from being displayed when the Add to Cart form is a descendent of a Single Product block.
+	 * Filter the add to cart message to prevent the Notice from being displayed when the Add to Cart form is a descendent of a Single Product block
+	 * and the Add to Cart button is clicked.
 	 *
 	 * @param string $message Message to be displayed when product is added to the cart.
 	 */
