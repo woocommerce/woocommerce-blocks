@@ -230,7 +230,6 @@ describe( `${ block.name } Block`, () => {
 
 			await insertBlock( 'Products (Beta)' );
 			await insertBlock( block.name );
-			// await page.waitForNetworkIdle();
 			await publishPost();
 
 			editorPageUrl = page.url();
