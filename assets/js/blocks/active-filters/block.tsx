@@ -6,7 +6,6 @@ import { useQueryStateByKey } from '@woocommerce/base-context/hooks';
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import { useMemo, useEffect, useState } from '@wordpress/element';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import Label from '@woocommerce/base-components/label';
 import {
 	isAttributeQueryCollection,
@@ -34,7 +33,7 @@ import {
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 import FilterPlaceholders from './filter-placeholders';
-import { Attributes } from './types';
+import { Attributes, IsEditor } from './types';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 /**
@@ -47,10 +46,7 @@ import { useSetWraperVisibility } from '../filter-wrapper/context';
 const ActiveFiltersBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
-}: {
-	attributes: Attributes;
-	isEditor?: boolean;
-} ) => {
+}: ActiveFiltersBlockProps ) => {
 	const setWrapperVisibility = useSetWraperVisibility();
 	const isMounted = useIsMounted();
 	const componentHasMounted = isMounted();
@@ -413,15 +409,9 @@ const ActiveFiltersBlock = ( {
 	);
 };
 
-ActiveFiltersBlock.propTypes = {
-	/**
-	 * The attributes for this block.
-	 */
-	attributes: PropTypes.object.isRequired,
-	/**
-	 * Whether it's in the editor or frontend display.
-	 */
-	isEditor: PropTypes.bool,
-};
+export interface ActiveFiltersBlockProps {
+	attributes: Attributes;
+	isEditor: IsEditor;
+}
 
 export default ActiveFiltersBlock;

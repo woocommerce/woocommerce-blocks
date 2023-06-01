@@ -4,3 +4,5 @@ export interface Attributes {
 	displayStyle: string;
 	className?: string;
 }
+
+export type IsEditor = boolean;
