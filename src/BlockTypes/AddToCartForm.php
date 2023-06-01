@@ -136,8 +136,8 @@ class AddToCartForm extends AbstractBlock {
 	 */
 	public function wc_add_to_cart_message_html_filter( $message ) {
 		if ( 
-			isset( $_POST['is-descendent-of-single-product-block'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			&& 'true' == $_POST['is-descendent-of-single-product-block'] // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			isset( $_POST['is-descendent-of-single-product-block'] ) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			'true' == $_POST['is-descendent-of-single-product-block'] // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		) {
 			return false;
 		}
