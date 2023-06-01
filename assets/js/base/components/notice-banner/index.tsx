@@ -30,6 +30,8 @@ export interface NoticeBannerProps {
 	status: 'success' | 'error' | 'info' | 'warning' | 'default';
 	// Optional summary text shown above notice content, used when several notices are listed together.
 	summary?: string | undefined;
+	// If this notice should be specifically highlighted to the shopper, if true then the window will scroll to this notice.
+	isHighlighted?: boolean | undefined;
 }
 
 /**
@@ -47,6 +49,7 @@ const NoticeBanner = ( {
 	isDismissible = true,
 	politeness = getDefaultPoliteness( status ),
 	summary,
+	isHighlighted = false,
 }: NoticeBannerProps ) => {
 	useSpokenMessage( spokenMessage, politeness );
 
@@ -68,6 +71,7 @@ const NoticeBanner = ( {
 				'is-' + status,
 				{
 					'is-dismissible': isDismissible,
+					'is-highlighted': isHighlighted,
 				}
 			) }
 		>
