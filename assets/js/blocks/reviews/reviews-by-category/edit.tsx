@@ -7,7 +7,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import Block from './block';
-import { ReviewsByCategoryEditorProps } from './types';
+import type { ReviewsByCategoryEditorProps } from './types';
 
 export const Edit = (
 	props: unknown & ReviewsByCategoryEditorProps
