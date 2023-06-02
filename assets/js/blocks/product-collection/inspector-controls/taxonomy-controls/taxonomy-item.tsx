@@ -7,16 +7,6 @@ import { useState, useMemo, useRef } from '@wordpress/element';
 import { useDebounce } from '@wordpress/compose';
 import { FormTokenField } from '@wordpress/components';
 
-// A constant empty array that is reused throughout the component.
-const EMPTY_ARRAY: [] = [];
-
-// Base arguments for querying terms.
-const BASE_QUERY_ARGS = {
-	order: 'asc',
-	_fields: 'id,name,slug',
-	context: 'view',
-};
-
 type Term = {
 	id: number;
 	name: string;
@@ -29,26 +19,30 @@ interface TaxonomyItemProps {
 	onChange: ( termIds: number[] ) => void;
 }
 
+// A constant empty array that is reused throughout the component.
+const EMPTY_ARRAY: [] = [];
+
+// Base arguments for querying terms.
+const BASE_QUERY_ARGS = {
+	order: 'asc',
+	_fields: 'id,name,slug',
+	context: 'view',
+};
+
 // Function to get the term id based on user input in the `FormTokenField`.
-export const getTermIdByTermValue = (
+const getTermIdByTermValue = (
 	searchTerm: Term | string,
 	termNameToIdMap: Map< string, number >
 ): number | undefined => {
-	// Check if there is an exact match for the term name.
-	const isTermObject = typeof searchTerm === 'object';
-
-	const termId = isTermObject
-		? ( searchTerm as Term ).id
-		: termNameToIdMap.get( searchTerm as string );
+	const termId = ( searchTerm as Term )?.id;
 	if ( termId ) {
 		return termId;
 	}
 
-	// If an exact match is not found, check in a case insensitive manner.
-	const termValueLower = (
-		isTermObject ? searchTerm.name : searchTerm
-	 ).toLocaleLowerCase();
-	return termNameToIdMap.get( termValueLower );
+	return (
+		termNameToIdMap.get( searchTerm as string ) ||
+		termNameToIdMap.get( ( searchTerm as string ).toLocaleLowerCase() )
+	);
 };
 
 /**
@@ -156,6 +150,9 @@ const useTermMaps = (
 			);
 			termIdToNameMap.set( termId, name );
 			termNameToIdMap.set( name, termId );
+			// Add lower case version of the term name to the map as well
+			// Because the search is case insensitive in FormTokenField.
+			termNameToIdMap.set( name.toLocaleLowerCase(), termId );
 		}
 		return {
 			termIdToNameMap,
@@ -166,7 +163,7 @@ const useTermMaps = (
 };
 
 const TaxonomyItem = ( { taxonomy, termIds, onChange }: TaxonomyItemProps ) => {
-	const [ search, setSearch ] = useState( '' );
+	const [ search, setSearch ] = useState< string | undefined >( undefined );
 	const suggestionsRef = useRef< string[] >( EMPTY_ARRAY );
 	const currentValueRef = useRef<
 		{
@@ -186,22 +183,57 @@ const TaxonomyItem = ( { taxonomy, termIds, onChange }: TaxonomyItemProps ) => {
 
 	// Fetch the terms based on the search query.
 	const { records: searchResults, hasResolved: searchHasResolved } =
-		useEntityRecords( 'taxonomy', taxonomy.slug, {
-			...BASE_QUERY_ARGS,
-			search,
-			orderby: 'name',
-			exclude: termIds,
-			per_page: 20,
-		} );
+		useEntityRecords(
+			'taxonomy',
+			taxonomy.slug,
+			{
+				...BASE_QUERY_ARGS,
+				search,
+				orderby: 'name',
+				exclude: termIds,
+				per_page: 20,
+			},
+			{
+				enabled: search !== undefined,
+			}
+		);
 
 	suggestionsRef.current = useMemo( () => {
 		if ( ! searchHasResolved ) return suggestionsRef.current;
 
-		const newSuggestions = searchResults.map( ( searchResult: Term ) =>
-			termIdToNameMap.get( searchResult.id )
+		const newSuggestions = searchResults.map(
+			( searchResult: Term ) =>
+				termIdToNameMap.get( searchResult.id ) || searchResult.name
 		);
 		return newSuggestions;
 	}, [ searchHasResolved, searchResults, termIdToNameMap ] );
+
+	// Fetch the existing terms & set the current value.
+	const { records: existingTerms, hasResolved: hasExistingTermsResolved } =
+		useEntityRecords< Term >(
+			'taxonomy',
+			taxonomy.slug,
+			{
+				...BASE_QUERY_ARGS,
+				include: termIds,
+			},
+			{
+				enabled: termIds?.length > 0,
+			}
+		);
+
+	currentValueRef.current = useMemo( () => {
+		if ( hasExistingTermsResolved === false ) {
+			return currentValueRef.current;
+		}
+
+		if ( ! existingTerms || ! termIds.length ) return EMPTY_ARRAY;
+
+		return existingTerms.map( ( { id, name }: Term ) => ( {
+			id,
+			value: termIdToNameMap.get( id ) || name,
+		} ) );
+	}, [ existingTerms, hasExistingTermsResolved, termIdToNameMap, termIds ] );
 
 	// Update the selected terms when the user selects a suggestion.
 	const onTermsChange = ( newTermValues: FormTokenField.Value[] ) => {
@@ -217,26 +249,6 @@ const TaxonomyItem = ( { taxonomy, termIds, onChange }: TaxonomyItemProps ) => {
 		}
 		onChange( newTermIds );
 	};
-
-	// Fetch the existing terms & set the current value.
-	const { records: existingTerms, hasResolved: hasExistingTermsResolved } =
-		useEntityRecords< Term >( 'taxonomy', taxonomy.slug, {
-			...BASE_QUERY_ARGS,
-			include: termIds,
-		} );
-
-	currentValueRef.current = useMemo( () => {
-		if ( ! hasExistingTermsResolved ) {
-			return currentValueRef.current;
-		}
-
-		if ( ! existingTerms ) return EMPTY_ARRAY;
-
-		return existingTerms.map( ( { id, name }: Term ) => ( {
-			id,
-			value: termIdToNameMap.get( id ) || name,
-		} ) );
-	}, [ existingTerms, hasExistingTermsResolved, termIdToNameMap ] );
 
 	return (
 		<div className="wc-block-editor-product-collection-inspector__taxonomy-control">
