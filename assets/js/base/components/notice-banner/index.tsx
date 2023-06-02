@@ -67,6 +67,7 @@ const NoticeBanner = ( {
 				: renderToString( spokenMessage );
 		speak( messageToSpeak, politeness );
 		noticeRef.current.scrollIntoView( { behavior: 'smooth' } );
+		noticeRef.current.focus();
 	}, [ isHighlighted, politeness, spokenMessage ] );
 
 	const dismiss = ( event: React.SyntheticEvent ) => {
@@ -88,9 +89,9 @@ const NoticeBanner = ( {
 				'is-' + status,
 				{
 					'is-dismissible': isDismissible,
-					'is-highlighted': isHighlighted,
 				}
 			) }
+			tabIndex={ isHighlighted ? 0 : -1 }
 		>
 			<Icon icon={ getStatusIcon( status ) } />
 			<div className="wc-block-components-notice-banner__content">
