@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
+use Automattic\WooCommerce\StoreApi\Utilities\OrderController;
 
 /**
  * OrderSchema class.
@@ -30,6 +31,13 @@ class OrderSchema extends AbstractSchema {
 	public $item_schema;
 
 	/**
+	 * Order controller class instance.
+	 *
+	 * @var OrderController
+	 */
+	protected $order_controller;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param ExtendSchema     $extend Rest Extending instance.
@@ -45,6 +53,7 @@ class OrderSchema extends AbstractSchema {
 		$this->shipping_address_schema = $this->controller->get( ShippingAddressSchema::IDENTIFIER );
 		$this->billing_address_schema  = $this->controller->get( BillingAddressSchema::IDENTIFIER );
 		$this->error_schema            = $this->controller->get( ErrorSchema::IDENTIFIER );
+		$this->order_controller        = new OrderController();
 	}
 
 	/**
@@ -291,8 +300,15 @@ class OrderSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $order ) {
+		$order_id                 = $order->get_id();
+		$errors                   = [];
+		$failed_order_stock_error = $this->order_controller->get_failed_order_stock_error( $order_id );
+		if ( $failed_order_stock_error ) {
+			$errors[] = $failed_order_stock_error;
+		}
+
 		return [
-			'id'                      => $order->get_id(),
+			'id'                      => $order_id,
 			'items'                   => $this->get_item_responses_from_schema( $this->item_schema, $order->get_items() ),
 			'totals'                  => (object) $this->prepare_currency_response( $this->get_totals( $order ) ),
 			'coupons'                 => $this->get_item_responses_from_schema( $this->coupon_schema, $order->get_items( 'coupon' ) ),
@@ -306,7 +322,7 @@ class OrderSchema extends AbstractSchema {
 			'needs_shipping'          => $order->needs_shipping_address(),
 			'has_calculated_shipping' => null,
 			'fees'                    => array(),
-			'errors'                  => [],
+			'errors'                  => $errors,
 			'payment_requirements'    => $this->extend->get_payment_requirements(),
 		];
 	}

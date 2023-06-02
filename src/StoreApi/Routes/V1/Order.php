@@ -76,6 +76,7 @@ class Order extends AbstractRoute {
 	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return boolean|WP_Error
+	 * phpcs:ignore
 	 */
 	public function is_authorized( \WP_REST_Request $request ) {
 		$order_id  = absint( $request['id'] );
@@ -85,6 +86,11 @@ class Order extends AbstractRoute {
 
 		try {
 			$this->order_controller->validate_order_key( $order_id, $order_key );
+
+			// Logged in customer trying to pay for someone else's order.
+			if ( ! current_user_can( 'pay_for_order', $order_id ) ) {
+				throw new RouteException( 'woocommerce_rest_invalid_user', __( 'This order cannot be paid for. Please contact us if you need assistance.', 'woo-gutenberg-products-block' ), 403 );
+			}
 		} catch ( RouteException $error ) {
 			return new \WP_Error(
 				$error->getErrorCode(),
