@@ -64,7 +64,7 @@ class OrderSchema extends AbstractSchema {
 	public function get_properties() {
 		return [
 			'id'                      => [
-				'description' => __( 'The order ID to process during checkout.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'The order ID.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
