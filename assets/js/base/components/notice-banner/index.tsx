@@ -67,7 +67,10 @@ const NoticeBanner = ( {
 				: renderToString( spokenMessage );
 		speak( messageToSpeak, politeness );
 		noticeRef.current.scrollIntoView( { behavior: 'smooth' } );
-		noticeRef.current.focus();
+		const timeout = setTimeout( () => noticeRef.current?.focus(), 500 );
+		return () => {
+			clearTimeout( timeout );
+		};
 	}, [ isHighlighted, politeness, spokenMessage ] );
 
 	const dismiss = ( event: React.SyntheticEvent ) => {
