@@ -474,7 +474,7 @@ class OrderController {
 	}
 
 	/**
-	 * Check validation for the order key.
+	 * Validate a given order key against an existing order.
 	 *
 	 * @throws RouteException Exception if invalid data is detected.
 	 * @param integer $order_id Order ID.
@@ -485,11 +485,6 @@ class OrderController {
 
 		if ( ! $order || $order->get_id() !== $order_id || ! hash_equals( $order->get_order_key(), $order_key ) ) {
 			throw new RouteException( 'woocommerce_rest_invalid_order', __( 'Sorry, this order is invalid and cannot be paid for.', 'woo-gutenberg-products-block' ), 401 );
-		}
-
-		// Logged out customer does not have permission to pay for this order.
-		if ( ! current_user_can( 'pay_for_order', $order_id ) && ! is_user_logged_in() ) {
-			throw new RouteException( 'woocommerce_rest_invalid_user', __( 'Please log in to your account to pay for this order.', 'woo-gutenberg-products-block' ), 403 );
 		}
 	}
 
