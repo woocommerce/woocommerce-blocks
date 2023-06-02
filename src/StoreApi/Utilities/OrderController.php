@@ -483,7 +483,7 @@ class OrderController {
 	public function validate_order_key( $order_id, $order_key ) {
 		$order = $this->get_order( $order_id );
 
-		if ( ! $order || $order->get_id() !== $order_id || ! hash_equals( $order->get_order_key(), $order_key ) ) {
+		if ( ! $order || ! $order_key || $order->get_id() !== $order_id || ! hash_equals( $order->get_order_key(), $order_key ) ) {
 			throw new RouteException( 'woocommerce_rest_invalid_order', __( 'Invalid order ID or key provided.', 'woo-gutenberg-products-block' ), 401 );
 		}
 	}
