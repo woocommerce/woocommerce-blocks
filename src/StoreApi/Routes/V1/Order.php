@@ -87,7 +87,9 @@ class Order extends AbstractRoute {
 		try {
 			$this->order_controller->validate_order_key( $order_id, $order_key );
 
-			// Logged in customer trying to pay for someone else's order.
+			// In this context, pay_for_order capability checks that the current user ID matches the customer ID stored
+			// within the order, or if the order was placed by a guest.
+			// See https://github.com/woocommerce/woocommerce/blob/abcedbefe02f9e89122771100c42ff588da3e8e0/plugins/woocommerce/includes/wc-user-functions.php#L458.
 			if ( ! current_user_can( 'pay_for_order', $order_id ) ) {
 				throw new RouteException( 'woocommerce_rest_invalid_user', __( 'This order cannot be paid for. Please contact us if you need assistance.', 'woo-gutenberg-products-block' ), 403 );
 			}
