@@ -138,7 +138,7 @@ class AddToCartForm extends AbstractBlock {
 	 */
 	public function add_to_cart_message_html_filter( $message ) {
 		// phpcs:ignore
-		if ( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' == $_POST['is-descendent-of-single-product-block'] ) {
+		if ( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' === $_POST['is-descendent-of-single-product-block'] ) {
 			return false;
 		}
 		return $message;
