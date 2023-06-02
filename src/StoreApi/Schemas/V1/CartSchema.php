@@ -351,8 +351,8 @@ class CartSchema extends AbstractSchema {
 		return [
 			'coupons'                 => $this->get_item_responses_from_schema( $this->coupon_schema, $cart->get_applied_coupons() ),
 			'shipping_rates'          => $this->get_item_responses_from_schema( $this->shipping_rate_schema, $shipping_packages ),
-			'shipping_address'        => $this->shipping_address_schema->get_item_response( wc()->customer ),
-			'billing_address'         => $this->billing_address_schema->get_item_response( wc()->customer ),
+			'shipping_address'        => (object) $this->shipping_address_schema->get_item_response( wc()->customer ),
+			'billing_address'         => (object) $this->billing_address_schema->get_item_response( wc()->customer ),
 			'items'                   => $this->get_item_responses_from_schema( $this->item_schema, $cart->get_cart() ),
 			'items_count'             => $cart->get_cart_contents_count(),
 			'items_weight'            => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
