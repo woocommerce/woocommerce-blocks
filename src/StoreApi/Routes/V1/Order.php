@@ -74,9 +74,10 @@ class Order extends AbstractRoute {
 	/**
 	 * Check if authorized to get the order.
 	 *
+	 * @throws RouteException If the order is not found or the order key is invalid.
+	 *
 	 * @param \WP_REST_Request $request Request object.
 	 * @return boolean|WP_Error
-	 * phpcs:ignore
 	 */
 	public function is_authorized( \WP_REST_Request $request ) {
 		$order_id  = absint( $request['id'] );
