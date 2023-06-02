@@ -119,18 +119,21 @@ const ErrorMessage = ( { errorData } ) => {
  */
 const ErrorButton = ( { errorData } ) => {
 	let buttonText = __( 'Retry', 'woo-gutenberg-products-block' );
-	let buttonUrl = 'javascript:window.location.reload(true)';
+	let onClickHandler = () => window.location.reload();
 
 	if ( cartItemErrorCodes.includes( errorData.code ) ) {
 		buttonText = __( 'Edit your cart', 'woo-gutenberg-products-block' );
-		buttonUrl = CART_URL;
+		onClickHandler = () => ( window.location.href = CART_URL );
 	}
 
 	return (
 		<span className="wp-block-button">
-			<a href={ buttonUrl } className="wp-block-button__link">
+			<button
+				onClick={ onClickHandler }
+				className="wp-block-button__link"
+			>
 				{ buttonText }
-			</a>
+			</button>
 		</span>
 	);
 };
