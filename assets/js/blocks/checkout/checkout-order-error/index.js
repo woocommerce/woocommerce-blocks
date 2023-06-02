@@ -123,7 +123,9 @@ const ErrorButton = ( { errorData } ) => {
 
 	if ( cartItemErrorCodes.includes( errorData.code ) ) {
 		buttonText = __( 'Edit your cart', 'woo-gutenberg-products-block' );
-		onClickHandler = () => ( window.location.href = CART_URL );
+		onClickHandler = () => {
+			window.location.href = CART_URL;
+		};
 	}
 
 	return (
