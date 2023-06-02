@@ -208,6 +208,7 @@ describe( 'Shopper → Mini Cart', () => {
 			await shopper.block.emptyCart();
 		} );
 
+		// This test should fail.
 		it( 'The Mini Cart title shows correct amount', async () => {
 			await page.click( selectors.frontend.productWithAddToCartButton );
 
@@ -224,6 +225,8 @@ describe( 'Shopper → Mini Cart', () => {
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (2 items)',
 			} );
+
+			expect( 1 ).toBe( 2 );
 		} );
 
 		it( 'The Mini Cart products table show added products', async () => {
