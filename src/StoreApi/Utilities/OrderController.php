@@ -484,7 +484,7 @@ class OrderController {
 		$order = $this->get_order( $order_id );
 
 		if ( ! $order || $order->get_id() !== $order_id || ! hash_equals( $order->get_order_key(), $order_key ) ) {
-			throw new RouteException( 'woocommerce_rest_invalid_order', __( 'Sorry, this order is invalid and cannot be paid for.', 'woo-gutenberg-products-block' ), 401 );
+			throw new RouteException( 'woocommerce_rest_invalid_order', __( 'Invalid order ID or key provided.', 'woo-gutenberg-products-block' ), 401 );
 		}
 	}
 
