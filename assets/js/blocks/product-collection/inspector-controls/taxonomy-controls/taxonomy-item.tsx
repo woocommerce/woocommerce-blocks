@@ -156,6 +156,9 @@ const useTermMaps = (
 			);
 			termIdToNameMap.set( termId, name );
 			termNameToIdMap.set( name, termId );
+			// Add lower case version of the term name to the map as well
+			// Because the search is case insensitive in FormTokenField.
+			termNameToIdMap.set( name.toLocaleLowerCase(), termId );
 		}
 		return {
 			termIdToNameMap,
