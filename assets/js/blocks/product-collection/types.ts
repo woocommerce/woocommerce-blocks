@@ -4,7 +4,7 @@
 import { AttributeMetadata } from '@woocommerce/types';
 
 export interface ProductCollectionAttributes {
-	query?: ProductCollectionQuery;
+	query: ProductCollectionQuery;
 	queryId: number;
 	queryContext: [
 		{

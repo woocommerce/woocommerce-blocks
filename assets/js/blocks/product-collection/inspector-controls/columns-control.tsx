@@ -22,8 +22,6 @@ import { getDefaultSettings } from '../constants';
 const ColumnsControl = (
 	props: BlockEditProps< ProductCollectionAttributes >
 ) => {
-	if ( ! props.attributes.displayLayout ) return null;
-
 	const { type, columns } = props.attributes.displayLayout;
 	const showColumnsControl = type === 'flex';
 
@@ -45,6 +43,7 @@ const ColumnsControl = (
 			} }
 		>
 			<RangeControl
+				label={ __( 'Columns', 'woo-gutenberg-products-block' ) }
 				value={ columns }
 				onChange={ ( value: number ) =>
 					props.setAttributes( {

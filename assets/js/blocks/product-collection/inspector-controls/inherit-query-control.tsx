@@ -2,9 +2,10 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
 import { isSiteEditorPage } from '@woocommerce/utils';
 import { usePrevious } from '@woocommerce/base-hooks';
+import { select } from '@wordpress/data';
+import { useMemo } from '@wordpress/element';
 import {
 	ToggleControl,
 	// @ts-expect-error Using experimental features
@@ -17,14 +18,7 @@ import {
  */
 import { ProductCollectionQuery } from '../types';
 import { DEFAULT_QUERY } from '../constants';
-
-const ARCHIVE_PRODUCT_TEMPLATES = [
-	'woocommerce/woocommerce//archive-product',
-	'woocommerce/woocommerce//taxonomy-product_cat',
-	'woocommerce/woocommerce//taxonomy-product_tag',
-	'woocommerce/woocommerce//taxonomy-product_attribute',
-	'woocommerce/woocommerce//product-search-results',
-];
+import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
 
 const label = __(
 	'Inherit query from template',
@@ -42,7 +36,6 @@ const InheritQueryControl = ( {
 }: InheritQueryControlProps ) => {
 	const inherit = query?.inherit;
 	const editSiteStore = select( 'core/edit-site' );
-	const currentTemplateId = editSiteStore?.getEditedPostId() as string;
 
 	const queryObjectBeforeInheritEnabled = usePrevious(
 		query,
@@ -51,20 +44,10 @@ const InheritQueryControl = ( {
 		}
 	);
 
-	/**
-	 * Set inherit value when Product Collection block is first added to the page.
-	 * We want inherit value to be true when block is added to ARCHIVE_PRODUCT_TEMPLATES
-	 * and false when added to somewhere else.
-	 */
-	const initialValue = currentTemplateId
-		? ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId )
-		: false;
-	if ( inherit === null ) {
-		setQueryAttribute( {
-			inherit: initialValue,
-		} );
-		return null;
-	}
+	const defaultValue = useMemo(
+		() => getDefaultValueOfInheritQueryFromTemplate(),
+		[]
+	);
 
 	// Hide the control if not in site editor.
 	const isSiteEditor = isSiteEditorPage( editSiteStore );
@@ -75,7 +58,7 @@ const InheritQueryControl = ( {
 	return (
 		<ToolsPanelItem
 			label={ label }
-			hasValue={ () => inherit !== initialValue }
+			hasValue={ () => inherit !== defaultValue }
 			isShownByDefault
 			onDeselect={ () => {
 				setQueryAttribute( {
@@ -92,11 +75,13 @@ const InheritQueryControl = ( {
 				checked={ !! inherit }
 				onChange={ ( newInherit ) => {
 					if ( newInherit ) {
+						// If the inherit is enabled, we want to reset the query to the default.
 						setQueryAttribute( {
 							...DEFAULT_QUERY,
 							inherit: newInherit,
 						} );
 					} else {
+						// If the inherit is disabled, we want to reset the query to the previous query before the inherit was enabled.
 						setQueryAttribute( {
 							...DEFAULT_QUERY,
 							...queryObjectBeforeInheritEnabled,

@@ -5,7 +5,6 @@ import type { BlockEditProps } from '@wordpress/blocks';
 import { InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { useMemo } from '@wordpress/element';
-import { AttributeMetadata } from '@woocommerce/types';
 import {
 	// @ts-expect-error Using experimental features
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -15,7 +14,7 @@ import {
 /**
  * Internal dependencies
  */
-import { ProductCollectionAttributes, ProductCollectionQuery } from '../types';
+import { ProductCollectionAttributes } from '../types';
 import ColumnsControl from './columns-control';
 import InheritQueryControl from './inherit-query-control';
 import OrderByControl from './order-by-control';
@@ -76,15 +75,13 @@ const ProductCollectionInspectorControls = (
 					<KeywordControl { ...props } />
 					<AttributesControl
 						woocommerceAttributes={
-							query?.woocommerceAttributes as AttributeMetadata[]
+							query.woocommerceAttributes || []
 						}
 						setQueryAttribute={ setQueryAttributeBind }
 					/>
 					<TaxonomyControls
 						setQueryAttribute={ setQueryAttributeBind }
-						query={
-							props.attributes.query as ProductCollectionQuery
-						}
+						query={ query }
 					/>
 				</ToolsPanel>
 			) : null }
