@@ -252,6 +252,8 @@ describe( 'Shopper → Mini Cart', () => {
 					text: productTitle,
 				}
 			);
+
+			expect( 1 ).toBe( 2 );
 		} );
 
 		it( 'Filled Mini Cart footer contains subtotal, view cart button, and go to checkout buttons', async () => {
