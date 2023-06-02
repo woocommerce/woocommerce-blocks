@@ -146,7 +146,7 @@
 	&.is-info {
 		@extend %info;
 	}
-	&.is-highlighted {
+	&:focus {
 		position: relative;
 		animation: shine 1s ease-in-out;
 		animation-iteration-count: 2;
