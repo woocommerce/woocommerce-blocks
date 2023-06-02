@@ -373,7 +373,7 @@ class MiniCart extends AbstractBlock {
 		}
 		$price_color = array_key_exists( 'priceColorValue', $attributes ) ? $attributes['priceColorValue'] : '';
 
-		return '<span class="wc-block-mini-cart__amount" style="color:' . $price_color . ' "></span>' . $this->get_include_tax_label_markup();
+		return '<span class="wc-block-mini-cart__amount" style="color:' . $price_color . ' "></span>' . $this->get_include_tax_label_markup( $attributes );
 	}
 
 	/**
@@ -381,12 +381,13 @@ class MiniCart extends AbstractBlock {
 	 *
 	 * @return string
 	 */
-	protected function get_include_tax_label_markup() {
+	protected function get_include_tax_label_markup( $attributes ) {
 		if ( empty( $this->tax_label ) ) {
 			return '';
 		}
+		$price_color = array_key_exists( 'priceColorValue', $attributes ) ? $attributes['priceColorValue'] : '';
 
-		return "<small class='wc-block-mini-cart__tax-label' hidden>" . esc_html( $this->tax_label ) . '</small>';
+		return '<small class="wc-block-mini-cart__tax-label" style="color:' . $price_color . ' " hidden>' . esc_html( $this->tax_label ) . '</small>';
 	}
 
 	/**
