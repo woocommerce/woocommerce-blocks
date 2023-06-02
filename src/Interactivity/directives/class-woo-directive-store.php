@@ -11,10 +11,6 @@ class Woo_Directive_Store {
 		self::$store = array_replace_recursive( self::$store, $data );
 	}
 
-	static function serialize() {
-		return json_encode( self::$store );
-	}
-
 	static function reset() {
 		self::$store = array();
 	}
@@ -24,8 +20,11 @@ class Woo_Directive_Store {
 			return;
 		}
 
-		$id    = 'store';
-		$store = self::serialize();
-		echo "<script id=\"$id\" type=\"application/json\">$store</script>";
+		$id = 'store';
+		echo sprintf(
+			'<script id="%s" type="application/json">%s</script>',
+			esc_attr( $id ),
+			json_encode( self::$store )
+		);
 	}
 }
