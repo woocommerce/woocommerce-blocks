@@ -89,7 +89,7 @@ class Order extends AbstractRoute {
 			// within the order, or if the order was placed by a guest.
 			// See https://github.com/woocommerce/woocommerce/blob/abcedbefe02f9e89122771100c42ff588da3e8e0/plugins/woocommerce/includes/wc-user-functions.php#L458.
 			if ( ! current_user_can( 'pay_for_order', $order_id ) ) {
-				throw new RouteException( 'woocommerce_rest_invalid_user', __( 'This order cannot be paid for. Please contact us if you need assistance.', 'woo-gutenberg-products-block' ), 403 );
+				throw new RouteException( 'woocommerce_rest_invalid_user', __( 'This order belongs to a different customer. Please log in to the correct account.', 'woo-gutenberg-products-block' ), 403 );
 			}
 		} catch ( RouteException $error ) {
 			return new \WP_Error(
