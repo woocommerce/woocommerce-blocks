@@ -491,17 +491,16 @@ class OrderController {
 		if ( ! current_user_can( 'pay_for_order', $order_id ) && ! is_user_logged_in() ) {
 			throw new RouteException( 'woocommerce_rest_invalid_user', __( 'Please log in to your account to pay for this order.', 'woo-gutenberg-products-block' ), 403 );
 		}
+	}
 
-		// Logged in customer trying to pay for someone else's order.
-		if ( ! current_user_can( 'pay_for_order', $order_id ) ) {
-			throw new RouteException( 'woocommerce_rest_invalid_user', __( 'This order cannot be paid for. Please contact us if you need assistance.', 'woo-gutenberg-products-block' ), 403 );
-		}
-
-		// Does not need payment.
-		if ( ! $order->needs_payment() ) {
-			/* translators: %s: order status */
-			throw new RouteException( 'woocommerce_rest_no_payment_needed', sprintf( __( 'This order&rsquo;s status is &ldquo;%s&rdquo;&mdash;it cannot be paid for. Please contact us if you need assistance.', 'woo-gutenberg-products-block' ), wc_get_order_status_name( $order->get_status() ) ), 403 );
-		}
+	/**
+	 * Get errors for order stock on failed orders.
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 * @param integer $order_id Order ID.
+	 */
+	public function get_failed_order_stock_error( $order_id ) {
+		$order = $this->get_order( $order_id );
 
 		// Ensure order items are still stocked if paying for a failed order. Pending orders do not need this check because stock is held.
 		if ( ! $order->has_status( wc_get_is_pending_statuses() ) ) {
@@ -539,8 +538,11 @@ class OrderController {
 						 * @since 9.8.0-dev
 						 */
 						if ( ! apply_filters( 'woocommerce_pay_order_product_in_stock', $product->is_in_stock(), $product, $order ) ) {
-							/* translators: %s: product name */
-							throw new RouteException( 'woocommerce_rest_out_of_stock', sprintf( __( 'Sorry, "%s" is no longer in stock so this order cannot be paid for. We apologize for any inconvenience caused.', 'woo-gutenberg-products-block' ), $product->get_name() ), 403 );
+							return array(
+								'code'    => 'woocommerce_rest_out_of_stock',
+								/* translators: %s: product name */
+								'message' => sprintf( __( 'Sorry, "%s" is no longer in stock so this order cannot be paid for. We apologize for any inconvenience caused.', 'woo-gutenberg-products-block' ), $product->get_name() ),
+							);
 						}
 
 						// We only need to check products managing stock, with a limited stock qty.
@@ -563,12 +565,18 @@ class OrderController {
 						 */
 						if ( ! apply_filters( 'woocommerce_pay_order_product_has_enough_stock', ( $product->get_stock_quantity() >= ( $held_stock + $required_stock ) ), $product, $order ) ) {
 							/* translators: 1: product name 2: quantity in stock */
-							throw new RouteException( 'woocommerce_rest_out_of_stock', sprintf( __( 'Sorry, we do not have enough "%1$s" in stock to fulfill your order (%2$s available). We apologize for any inconvenience caused.', 'woo-gutenberg-products-block' ), $product->get_name(), wc_format_stock_quantity_for_display( $product->get_stock_quantity() - $held_stock, $product ) ), 403 );
+							return array(
+								'code'    => 'woocommerce_rest_out_of_stock',
+								/* translators: %s: product name */
+								'message' => sprintf( __( 'Sorry, we do not have enough "%1$s" in stock to fulfill your order (%2$s available). We apologize for any inconvenience caused.', 'woo-gutenberg-products-block' ), $product->get_name(), wc_format_stock_quantity_for_display( $product->get_stock_quantity() - $held_stock, $product ) ),
+							);
 						}
 					}
 				}
 			}
 		}
+
+		return null;
 	}
 
 	/**
