@@ -64,7 +64,7 @@ class OrderCouponSchema extends AbstractSchema {
 	 * @param \WC_Order_Item_Coupon $coupon Order coupon array.
 	 * @return array
 	 */
-	public function get_item_response( \WC_Order_Item_Coupon $coupon ) {
+	public function get_item_response( $coupon ) {
 		return [
 			'code'   => $coupon->get_code(),
 			'totals' => (object) $this->prepare_currency_response(
