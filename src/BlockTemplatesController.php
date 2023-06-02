@@ -325,7 +325,7 @@ class BlockTemplatesController {
 
 				if ( str_contains( $template->slug, 'single-product' ) ) {
 					if ( ! is_admin() && ! BlockTemplateUtils::template_has_legacy_template_block( $template ) ) {
-						// Add the product class to the body. We should move this move this to a more appropriate place.
+						// Add the product class to the body. We should move this to a more appropriate place.
 						add_filter(
 							'body_class',
 							function( $classes ) {
