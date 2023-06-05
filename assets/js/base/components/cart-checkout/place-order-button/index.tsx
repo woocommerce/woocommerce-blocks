@@ -8,7 +8,7 @@ import Button from '@woocommerce/base-components/button';
 
 interface PlaceOrderButton {
 	label: string;
-	fullWidth?: boolean;
+	fullWidth?: boolean | undefined;
 }
 
 const PlaceOrderButton = ( {
