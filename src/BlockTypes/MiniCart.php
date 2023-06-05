@@ -183,7 +183,7 @@ class MiniCart extends AbstractBlock {
 
 			$template_part_edit_uri = add_query_arg(
 				array(
-					'postId'   => sprintf( '%s//%s', $theme_slug, 'mini-cart' ),
+					'postId'   => sprintf( esc_attr( '%s//%s' ), $theme_slug, 'mini-cart' ),
 					'postType' => 'wp_template_part',
 				),
 				$site_editor_uri
