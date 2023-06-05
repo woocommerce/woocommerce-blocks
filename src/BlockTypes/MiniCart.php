@@ -379,6 +379,8 @@ class MiniCart extends AbstractBlock {
 	/**
 	 * Returns the markup for render the tax label.
 	 *
+	 * @param array $attributes Block attributes.
+	 *
 	 * @return string
 	 */
 	protected function get_include_tax_label_markup( $attributes ) {
