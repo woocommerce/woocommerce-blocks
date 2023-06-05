@@ -5,8 +5,5 @@ export interface Attributes {
 	heading: string;
 	headingLevel: number;
 	className?: string;
-}
-export interface PriceFilterBlockProps {
-	attributes: Attributes;
-	isEditor: boolean;
+	isEditor?: boolean;
 }

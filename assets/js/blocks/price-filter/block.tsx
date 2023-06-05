@@ -27,7 +27,7 @@ import {
  */
 import usePriceConstraints from './use-price-constraints';
 import './style.scss';
-import { PriceFilterBlockProps } from './types';
+import { Attributes } from './types';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
 
 /**
@@ -74,14 +74,11 @@ function formatPrice( value: unknown, minorUnit: number ) {
 /**
  * Component displaying a price filter.
  *
- * @param {Object}  props            Component props.
- * @param {Object}  props.attributes Incoming block attributes.
- * @param {boolean} props.isEditor   Whether the component is being rendered in the editor.
+ * @param {Object}  attributes          Incoming block attributes.
+ * @param {boolean} attributes.isEditor Whether the component is being rendered in the editor.
  */
-const PriceFilterBlock = ( {
-	attributes,
-	isEditor = false,
-}: PriceFilterBlockProps ) => {
+const PriceFilterBlock = ( attributes: Attributes ) => {
+	const { isEditor = false } = attributes;
 	const setWrapperVisibility = useSetWraperVisibility();
 	const hasFilterableProducts = getSettingWithCoercion(
 		'has_filterable_products',
