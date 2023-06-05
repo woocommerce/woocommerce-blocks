@@ -21,7 +21,8 @@
 		"woocommerce/isDescendentOfSingleProductTemplate":
 			"isDescendentOfSingleProductTemplate",
 		"woocommerce/isDescendentOfSingleProductBlock":
-			"woocommerce/isDescendentOfSingleProductBlock"
+			"isDescendentOfSingleProductBlock",
+		"woocommerce/withSuperScriptStyle": "withSuperScriptStyle"
 	},
 	"attributes": {
 		"isDescendentOfSingleProductTemplate": {
@@ -35,6 +36,10 @@
 		"productId": {
 			"type": "number",
 			"default": 0
+		},
+		"withSuperScriptStyle": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"styles": [

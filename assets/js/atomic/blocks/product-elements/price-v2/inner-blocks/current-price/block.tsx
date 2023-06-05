@@ -25,7 +25,6 @@ const Block = ( {
 	const { className: stylesClassName, style } = useStyleProps( attributes );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const wrapperClassName = classnames(
-		'wc-block-product-price__original',
 		className,
 		{
 			[ `${ parentClassName }__product-price` ]: parentClassName,
@@ -38,7 +37,7 @@ const Block = ( {
 
 	const pricePreview = '5000';
 	const priceClassName = classnames( {
-		[ `${ parentClassName }__product-original-price__value` ]:
+		[ `${ parentClassName }__product-current-price__value` ]:
 			parentClassName,
 	} );
 
@@ -49,7 +48,7 @@ const Block = ( {
 			priceStyle={ style }
 			priceClassName={ priceClassName }
 			currency={ currency }
-			withSuperScript={ true }
+			withSuperScript={ context[ 'woocommerce/withSuperScriptStyle' ] }
 			price={
 				isDescendentOfSingleProductTemplate ? pricePreview : rawPrice
 			}

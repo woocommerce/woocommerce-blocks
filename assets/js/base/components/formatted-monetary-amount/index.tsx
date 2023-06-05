@@ -44,7 +44,12 @@ const applySuperscript =
 		return (
 			<>
 				<>{ matches[ 1 ] }</>
-				<sup>{ matches[ 3 ] }</sup>
+				<span className="formatted-money-amount-superscript">
+					<span className="formatted-money-amount-separator">
+						${ currency.decimalSeparator }
+					</span>
+					{ matches[ 3 ] }
+				</span>
 			</>
 		);
 	};

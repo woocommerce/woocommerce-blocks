@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import {
 	InnerBlockLayoutContextProvider,
@@ -10,6 +10,7 @@ import {
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
 import { useStoreProducts } from '@woocommerce/base-context/hooks';
+import { useStyleProps } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -20,6 +21,7 @@ import { TEMPLATE } from './template';
 interface Attributes {
 	isDescendentOfSingleProductBlock: boolean;
 	isDescendentOfSingleProductTemplate: boolean;
+	withSuperScriptStyle: boolean;
 	productId?: number;
 }
 
@@ -39,6 +41,14 @@ interface ContextProviderProps extends Props {
 }
 
 type ProductIdProps = Partial< ContextProviderProps > & { productId: number };
+
+const deriveSuperScriptFromClass = ( className: string ): boolean => {
+	if ( className ) {
+		const classList = className.split( ' ' );
+		return classList.includes( 'is-style-price-super' );
+	}
+	return false;
+};
 
 const ProviderFromAPI = ( {
 	productId,
@@ -71,7 +81,7 @@ const DerivedProductDataContextProvider = ( {
 	attributes,
 	setAttributes,
 	children,
-}: ContextProviderProps ): JSX.Element => {
+}: ContextProviderProps & { withSuperScript: boolean } ): JSX.Element => {
 	const { queryId, postId } = context;
 	const { productId } = attributes;
 	const isDescendentOfQueryLoop = Number.isFinite( queryId );
@@ -112,13 +122,15 @@ const EditBlock = ( {
 	context,
 	attributes,
 	setAttributes,
-}: Props ): JSX.Element => {
+	withSuperScript,
+}: Props & { withSuperScript: boolean } ): JSX.Element => {
 	const { parentClassName } = useInnerBlockLayoutContext();
 	return (
 		<DerivedProductDataContextProvider
 			context={ context }
 			attributes={ attributes }
 			setAttributes={ setAttributes }
+			withSuperScript={ withSuperScript }
 		>
 			<div className={ parentClassName }>
 				<InnerBlocks
@@ -131,15 +143,31 @@ const EditBlock = ( {
 	);
 };
 
-const Edit = ( props: Props ): JSX.Element => {
-	const blockProps = useBlockProps();
+const Edit = ( {
+	setAttributes,
+	attributes,
+	...props
+}: Props ): JSX.Element => {
+	const { style, className } = useStyleProps( attributes );
+	const blockProps = useBlockProps( { style, className } );
+	const withSuperScript = useMemo(
+		() => deriveSuperScriptFromClass( blockProps.className ),
+		[ blockProps.className ]
+	);
+	useEffect( () => {
+		setAttributes( { withSuperScriptStyle: withSuperScript } );
+	}, [ withSuperScript, setAttributes ] );
 	return (
 		<div { ...blockProps }>
 			<InnerBlockLayoutContextProvider
 				parentName={ 'woocommerce/price-block' }
 				parentClassName={ 'wc-block-price-element' }
 			>
-				<EditBlock { ...props } />
+				<EditBlock
+					{ ...props }
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
 			</InnerBlockLayoutContextProvider>
 		</div>
 	);

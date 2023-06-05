@@ -1,3 +1,12 @@
 .wc-block-components-formatted-money-amount {
 	white-space: nowrap;
 }
+
+.formatted-money-amount-superscript {
+	vertical-align: super;
+	font-size: .5em;
+}
+
+.formatted-money-amount-separator {
+	@include visually-hidden();
+}
