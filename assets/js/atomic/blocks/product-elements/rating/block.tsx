@@ -51,7 +51,7 @@ const NoRating = ( { parentClassName }: { parentClassName: string } ) => {
 		<div
 			className={ classnames(
 				'wc-block-components-product-rating__norating-container',
-				`${ parentClassName }__product-rating__norating-container`
+				`${ parentClassName }-product-rating__norating-container`
 			) }
 		>
 			<div
