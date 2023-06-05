@@ -15,7 +15,7 @@ import {
 	getSharedReviewContentControls,
 	getSharedReviewListControls,
 } from '../edit-utils.js';
-import { AllReviewsEditorProps } from './types';
+import type { AllReviewsEditorProps } from './types';
 
 /**
  * Component to handle edit mode of "All Reviews".
