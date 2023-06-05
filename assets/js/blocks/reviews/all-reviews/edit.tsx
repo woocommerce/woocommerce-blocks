@@ -7,7 +7,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import Block from './block';
-import { AllReviewsEditorProps } from './types';
+import type { AllReviewsEditorProps } from './types';
 
 export const Edit = ( props: unknown & AllReviewsEditorProps ): JSX.Element => {
 	const blockProps = useBlockProps();
