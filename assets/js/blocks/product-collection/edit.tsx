@@ -10,7 +10,10 @@ import { useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
-import { ProductCollectionAttributes, ProductCollectionQuery } from './types';
+import type {
+	ProductCollectionAttributes,
+	ProductCollectionQuery,
+} from './types';
 import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 import InspectorControls from './inspector-controls';
 import { DEFAULT_ATTRIBUTES } from './constants';
