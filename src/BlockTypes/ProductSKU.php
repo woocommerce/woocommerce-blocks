@@ -48,7 +48,12 @@ class ProductSKU extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+		
 		if ( ! empty( $content ) ) {
+			if( $this->is_content_loading( $content ) ) {
+				return '';
+			}
+
 			parent::register_block_type_assets();
 			$this->register_chunk_translations( [ $this->block_name ] );
 			return $content;
@@ -78,5 +83,17 @@ class ProductSKU extends AbstractBlock {
 			esc_attr( $styles_and_classes['styles'] ?? '' ),
 			$product_sku
 		);
+	}
+
+	protected function is_content_loading( $content ) {
+		var_dump( $content );
+		$blockName = 'woocommerce/' . $this->block_name;
+
+		$pattern = '/<div(?:\s+\w+="[^"]*")*\s+data-block-name="' . preg_quote($blockName, '/') . '"(?:\s+\w+="[^"]*")*\s+class="(?:[^"]*\s+)?is-loading(?:\s+[^"]*)?"(?:\s+\w+="[^"]*")*\s*><\/div>/';
+
+		var_dump( $pattern );
+		var_dump( preg_match($pattern, $content) );
+		
+		return preg_match($pattern, $content);
 	}
 }
