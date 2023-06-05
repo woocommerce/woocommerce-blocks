@@ -13,7 +13,7 @@ import { Edit } from './edit';
 import sharedAttributes from '../attributes';
 import save from '../save.js';
 import { example } from '../example';
-import { AllReviewsEditorProps } from './types';
+import type { AllReviewsEditorProps } from './types';
 
 /**
  * Register and run the "All Reviews" block.
