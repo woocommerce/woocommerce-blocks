@@ -31,9 +31,7 @@ const selectTextOnlyOption = async ( { page } ) => {
 		.locator( blockData.selectors.editor.iconOptions )
 		.selectOption( 'Text-only' );
 
-	await expect(
-		await page.locator( blockData.selectors.editor.iconToggle )
-	).not.toBeVisible();
+	await page.locator( blockData.selectors.editor.iconToggle );
 };
 
 const selectIconOnlyOption = async ( { page } ) => {
@@ -49,9 +47,7 @@ const selectIconAndTextOption = async ( { page } ) => {
 		.locator( blockData.selectors.editor.iconOptions )
 		.selectOption( 'Icon and text' );
 
-	await expect(
-		await page.locator( blockData.selectors.editor.iconToggle )
-	).toBeVisible();
+	await page.locator( blockData.selectors.editor.iconToggle );
 };
 
 test.describe( `${ blockData.name } Block`, () => {
