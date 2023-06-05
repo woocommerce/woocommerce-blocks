@@ -224,7 +224,6 @@ final class BlockTypesController {
 		);
 
 		if ( Package::feature()->is_experimental_build() ) {
-			$block_types[] = 'SingleProduct';
 			$block_types[] = 'ProductCollection';
 			$block_types[] = 'ProductTemplate';
 		}
