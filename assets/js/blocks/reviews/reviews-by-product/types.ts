@@ -26,9 +26,9 @@ export interface SearchListItemProps extends renderItemArgs {
 }
 
 export interface NoReviewsPlaceholderProps {
-	error?: string | ErrorObject;
+	error: ErrorObject;
 	getProduct: () => void;
-	isLoading?: boolean;
+	isLoading: boolean;
 	product?: {
 		name: string;
 	};

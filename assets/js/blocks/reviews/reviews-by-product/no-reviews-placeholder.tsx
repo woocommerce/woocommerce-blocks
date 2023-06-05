@@ -3,9 +3,7 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { Placeholder, Spinner } from '@wordpress/components';
-import ErrorPlaceholder, {
-	ErrorObject,
-} from '@woocommerce/editor-components/error-placeholder';
+import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 import { Icon, commentContent } from '@wordpress/icons';
 import { withProduct } from '@woocommerce/block-hocs';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -23,8 +21,8 @@ const NoReviewsPlaceholder = ( {
 	const renderApiError = () => (
 		<ErrorPlaceholder
 			className="wc-block-featured-product-error"
-			error={ error as ErrorObject }
-			isLoading={ isLoading as boolean }
+			error={ error }
+			isLoading={ isLoading }
 			onRetry={ getProduct }
 		/>
 	);
