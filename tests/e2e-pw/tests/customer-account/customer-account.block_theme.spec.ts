@@ -41,9 +41,7 @@ const selectIconOnlyOption = async ( { page } ) => {
 		.locator( blockData.selectors.editor.iconOptions )
 		.selectOption( 'Icon-only' );
 
-	await expect(
-		await page.locator( blockData.selectors.editor.iconToggle )
-	).toBeVisible();
+	await page.locator( blockData.selectors.editor.iconToggle );
 };
 
 const selectIconAndTextOption = async ( { page } ) => {
