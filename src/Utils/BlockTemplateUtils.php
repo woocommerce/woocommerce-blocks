@@ -337,11 +337,11 @@ class BlockTemplateUtils {
 			),
 			CartTemplate::get_slug()              => array(
 				'title'       => _x( 'Cart', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Template used to display the Cart.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'The Cart template displays the items selected by the user for purchase, including quantities, prices, and discounts. It allows users to review their choices before proceeding to checkout.', 'woo-gutenberg-products-block' ),
 			),
 			CheckoutTemplate::get_slug()          => array(
 				'title'       => _x( 'Checkout', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Template used to display the Checkout.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'The Checkout template guides users through the final steps of the purchase process. It enables users to enter shipping and billing information, select a payment method, and review order details.', 'woo-gutenberg-products-block' ),
 			),
 			CheckoutHeaderTemplate::SLUG          => array(
 				'title'       => _x( 'Checkout Header', 'Template name', 'woo-gutenberg-products-block' ),
@@ -349,7 +349,7 @@ class BlockTemplateUtils {
 			),
 			OrderConfirmationTemplate::get_slug() => array(
 				'title'       => _x( 'Order Confirmation', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Displays the order confirmation page.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'The Order Confirmation template provides customers with a summary of their completed purchase, including ordered items, shipping details, and order total. It serves as a receipt and confirmation of the successful transaction.', 'woo-gutenberg-products-block' ),
 			),
 		);
 	}
