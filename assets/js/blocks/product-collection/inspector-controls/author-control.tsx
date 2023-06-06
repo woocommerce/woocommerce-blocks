@@ -72,40 +72,33 @@ const getIdByValue = (
 };
 
 function AuthorControl( { value, setQueryAttribute }: AuthorControlProps ) {
-	const {
-		records: authorsList,
-		error,
-		hasResolved,
-	} = useEntityRecords< Author[] >( 'root', 'user', AUTHORS_QUERY );
+	const { records: authorsList, error } = useEntityRecords< Author[] >(
+		'root',
+		'user',
+		AUTHORS_QUERY
+	);
 
-	if ( ! hasResolved || error ) {
+	if ( error ) {
 		return (
 			<ToolsPanelItem
-				hasValue={ () => true }
 				label={ __( 'Authors', 'woo-gutenberg-products-block' ) }
+				hasValue={ () => true }
 			>
 				<FormTokenField
 					label={ __( 'Authors', 'woo-gutenberg-products-block' ) }
-					value={
-						error
-							? [
-									__(
-										'Error loading authors',
-										'woo-gutenberg-products-block'
-									),
-							  ]
-							: [
-									__(
-										'Loading authors…',
-										'woo-gutenberg-products-block'
-									),
-							  ]
-					}
+					value={ [
+						__(
+							'Error occurred while loading authors.',
+							'woo-gutenberg-products-block'
+						),
+					] }
 					disabled={ true }
 				/>
 			</ToolsPanelItem>
 		);
 	}
+
+	if ( ! authorsList ) return null;
 
 	const authorsInfo = getAuthorsInfo( authorsList as Author[] );
 
