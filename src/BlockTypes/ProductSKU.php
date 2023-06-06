@@ -93,8 +93,8 @@ class ProductSKU extends AbstractBlock {
 	protected function is_content_loading( $content ) {
 		$block_name = 'woocommerce/' . $this->block_name;
 
-		$pattern = '/<div(?:\s+\w+="[^"]*")*\s+data-block-name="' . preg_quote($block_name, '/') . '"(?:\s+\w+="[^"]*")*\s+class="(?:[^"]*\s+)?is-loading(?:\s+[^"]*)?"(?:\s+\w+="[^"]*")*\s*><\/div>/';
-		
-		return preg_match($pattern, $content);
+		$pattern = '/<div(?:\s+\w+="[^"]*")*\s+data-block-name="' . preg_quote( $block_name, '/' ) . '"(?:\s+\w+="[^"]*")*\s+class="(?:[^"]*\s+)?is-loading(?:\s+[^"]*)?"(?:\s+\w+="[^"]*")*\s*><\/div>/';
+
+		return preg_match( $pattern, $content );
 	}
 }
