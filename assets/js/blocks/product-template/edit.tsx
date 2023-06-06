@@ -20,12 +20,14 @@ import {
 	ProductCollectionAttributes,
 	ProductCollectionQuery,
 } from '@woocommerce/blocks/product-collection/types';
-import { useStoreProducts } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
 import { Taxonomy, ProductTemplateQuery } from './types';
+import { productApiFetchMiddleware } from './products-middleware';
+
+productApiFetchMiddleware();
 
 const ProductTemplateInnerBlocks = () => {
 	const innerBlocksProps = useInnerBlocksProps(
@@ -78,7 +80,10 @@ const MemoizedProductTemplateBlockPreview = memo( ProductTemplateBlockPreview );
 
 // We have to build the tax query for the REST API and use as
 // keys the taxonomies `rest_base` with the `term ids` as values.
-const buildTaxQuery = ( taxQuery: string, taxonomies?: Taxonomy[] ) =>
+const buildTaxQuery = (
+	taxQuery: Record< string, number[] >,
+	taxonomies?: Taxonomy[]
+) =>
 	Object.entries( taxQuery ).reduce(
 		( accumulator, [ taxonomySlug, terms ] ) => {
 			const taxonomy = taxonomies?.find(
@@ -163,38 +168,39 @@ const ProductTemplateEdit = ( {
 	const [ { page } ] = queryContext;
 	const { taxQuery, inherit } = query;
 	const [ activeBlockContextId, setActiveBlockContextId ] = useState();
-	const { blocks, taxonomies, templateCategory } = useSelect( ( select ) => {
+	const { blocks, products } = useSelect( ( select ) => {
 		const { getBlocks } = select( blockEditorStore );
 		const { getTaxonomies, getEntityRecords } = select( coreStore );
+		const taxonomies = taxQuery
+			? getTaxonomies( {
+					type: 'product',
+					per_page: -1,
+					context: 'view',
+			  } )
+			: [];
+		const templateCategory =
+			inherit &&
+			templateSlug?.startsWith( 'category-' ) &&
+			getEntityRecords( 'postType', 'category', {
+				context: 'view',
+				per_page: 1,
+				_fields: [ 'id' ],
+				slug: templateSlug.replace( 'category-', '' ),
+			} );
+
+		const finalQuery = buildQuery( {
+			query,
+			page,
+			taxonomies,
+			templateCategory,
+			source: 'product-collection',
+		} );
+
 		return {
 			blocks: getBlocks( clientId ),
-			taxonomies: taxQuery
-				? getTaxonomies( {
-						type: 'product',
-						per_page: -1,
-						context: 'view',
-				  } )
-				: [],
-			templateCategory:
-				inherit &&
-				templateSlug?.startsWith( 'category-' ) &&
-				getEntityRecords( 'taxonomy', 'category', {
-					context: 'view',
-					per_page: 1,
-					_fields: [ 'id' ],
-					slug: templateSlug.replace( 'category-', '' ),
-				} ),
+			products: getEntityRecords( 'postType', 'product', finalQuery ),
 		};
 	} );
-
-	const finalQuery = buildQuery( {
-		query,
-		page,
-		taxonomies,
-		templateCategory,
-	} );
-
-	const { products, productsLoading } = useStoreProducts( finalQuery );
 
 	const hasLayoutFlex = layoutType === 'flex' && columns > 1;
 	const blockProps = useBlockProps( {
@@ -208,7 +214,7 @@ const ProductTemplateEdit = ( {
 		),
 	} );
 
-	if ( productsLoading ) {
+	if ( ! products ) {
 		return (
 			<p { ...blockProps }>
 				<Spinner />
