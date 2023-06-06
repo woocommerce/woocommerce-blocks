@@ -48,9 +48,8 @@ class ProductSKU extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		
 		if ( ! empty( $content ) ) {
-			if( $this->is_content_loading( $content ) ) {
+			if ( $this->is_content_loading( $content ) ) {
 				return '';
 			}
 
@@ -85,14 +84,16 @@ class ProductSKU extends AbstractBlock {
 		);
 	}
 
+	/**
+	 * Checks if the given content contains a loading indicator for the current block.
+	 *
+	 * @param string $content The content to check for a loading indicator.
+	 * @return bool True if the content contains a loading indicator, false otherwise.
+	 */
 	protected function is_content_loading( $content ) {
-		var_dump( $content );
-		$blockName = 'woocommerce/' . $this->block_name;
+		$block_name = 'woocommerce/' . $this->block_name;
 
-		$pattern = '/<div(?:\s+\w+="[^"]*")*\s+data-block-name="' . preg_quote($blockName, '/') . '"(?:\s+\w+="[^"]*")*\s+class="(?:[^"]*\s+)?is-loading(?:\s+[^"]*)?"(?:\s+\w+="[^"]*")*\s*><\/div>/';
-
-		var_dump( $pattern );
-		var_dump( preg_match($pattern, $content) );
+		$pattern = '/<div(?:\s+\w+="[^"]*")*\s+data-block-name="' . preg_quote($block_name, '/') . '"(?:\s+\w+="[^"]*")*\s+class="(?:[^"]*\s+)?is-loading(?:\s+[^"]*)?"(?:\s+\w+="[^"]*")*\s*><\/div>/';
 		
 		return preg_match($pattern, $content);
 	}
