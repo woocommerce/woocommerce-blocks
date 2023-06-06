@@ -17,9 +17,9 @@
 
 		<!-- wp:buttons -->
 		<div class="wp-block-buttons">
-			<!-- wp:button {"style":{"color":{"background":"#000000","text":"#ffffff"}}} -->
+			<!-- wp:button -->
 			<div class="wp-block-button">
-				<a class="wp-block-button__link has-text-color has-background wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" style="color:#ffffff;background-color:#000000">More new products</a>
+				<a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">More new products</a>
 			</div>
 			<!-- /wp:button -->
 		</div>
