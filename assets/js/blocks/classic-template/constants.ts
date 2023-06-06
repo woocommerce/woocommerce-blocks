@@ -82,26 +82,17 @@ export const TEMPLATES: TemplateDetails = {
 	},
 	checkout: {
 		type: TYPES.checkout,
-		title: __(
-			'WooCommerce Checkout Block',
-			'woo-gutenberg-products-block'
-		),
+		title: __( 'Checkout Block', 'woo-gutenberg-products-block' ),
 		placeholder: 'checkout',
 	},
 	'checkout-header': {
 		type: TYPES.checkoutHeader,
-		title: __(
-			'WooCommerce Checkout Header',
-			'woo-gutenberg-products-block'
-		),
+		title: __( 'Checkout Header', 'woo-gutenberg-products-block' ),
 		placeholder: 'checkout-header',
 	},
 	'order-received': {
 		type: TYPES.orderReceived,
-		title: __(
-			'WooCommerce Order Received Block',
-			'woo-gutenberg-products-block'
-		),
+		title: __( 'Order Received Block', 'woo-gutenberg-products-block' ),
 		placeholder: PLACEHOLDERS.orderReceived,
 	},
 };
