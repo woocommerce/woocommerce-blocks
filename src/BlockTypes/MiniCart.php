@@ -181,7 +181,7 @@ class MiniCart extends AbstractBlock {
 				);
 			}
 
-			$template_part_edit_uri = esc_url(
+			$template_part_edit_uri = esc_url_raw(
 				add_query_arg(
 					array(
 						'postId'   => sprintf( '%s//%s', $theme_slug, 'mini-cart' ),
