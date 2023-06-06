@@ -10,7 +10,7 @@ const isConversionPossible = () => {
 
 const getDescription = () => {
 	return __(
-		'This block represents the <strong>thankyou.php</strong> classic template. The actual rendered template may appear different from this placeholder.',
+		'This block represents the classic template used to display the order confirmation. The actual rendered template may appear different from this placeholder.',
 		'woo-gutenberg-products-block'
 	);
 };
