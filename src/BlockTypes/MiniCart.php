@@ -70,8 +70,6 @@ class MiniCart extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 
-		echo '<h1>Test</h1>';
-		die();
 		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
 		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_wc_settings' ), 1 );
 		// We need this action to run after the equivalent in AssetDataRegistry.
@@ -213,6 +211,7 @@ class MiniCart extends AbstractBlock {
 	 * data to be printed to the page.
 	 */
 	public function enqueue_wc_settings() {
+		die( 'enqueue_wc_settings' );
 		// Return early if another block has already enqueued `wc-settings`.
 		if ( wp_script_is( 'wc-settings', 'enqueued' ) ) {
 			echo '<h1>wc-settings already enqueued</h1>';
