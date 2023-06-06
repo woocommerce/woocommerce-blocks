@@ -67,6 +67,9 @@ const config: ExtendedPlaywrightTestConfig = {
 			testMatch: /.*.classic_theme.spec.ts/,
 			dependencies: [ 'classicThemeConfiguration' ],
 		},
+		{
+			name: 'cartCheckout',
+		},
 	],
 };
 
