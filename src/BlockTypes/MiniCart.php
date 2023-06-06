@@ -9,6 +9,7 @@ use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
+die( 'test 2' );
 /**
  * Mini-Cart class.
  *
@@ -58,6 +59,7 @@ class MiniCart extends AbstractBlock {
 	 * @param IntegrationRegistry $integration_registry Instance of the integration registry.
 	 */
 	public function __construct( AssetApi $asset_api, AssetDataRegistry $asset_data_registry, IntegrationRegistry $integration_registry ) {
+		die( 'test 3' );
 		parent::__construct( $asset_api, $asset_data_registry, $integration_registry, $this->block_name );
 	}
 

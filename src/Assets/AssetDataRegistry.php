@@ -58,6 +58,8 @@ class AssetDataRegistry {
 	 * @param Api $asset_api  Asset API interface for various asset registration.
 	 */
 	public function __construct( Api $asset_api ) {
+
+		die( 'test 1' );
 		$this->api = $asset_api;
 		$this->init();
 	}
