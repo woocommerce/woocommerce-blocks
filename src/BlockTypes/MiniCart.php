@@ -69,6 +69,9 @@ class MiniCart extends AbstractBlock {
 	 */
 	protected function initialize() {
 		parent::initialize();
+
+		echo '<h1>Test</h1>';
+		die();
 		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
 		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_wc_settings' ), 1 );
 		// We need this action to run after the equivalent in AssetDataRegistry.
@@ -212,10 +215,12 @@ class MiniCart extends AbstractBlock {
 	public function enqueue_wc_settings() {
 		// Return early if another block has already enqueued `wc-settings`.
 		if ( wp_script_is( 'wc-settings', 'enqueued' ) ) {
+			echo '<h1>wc-settings already enqueued</h1>';
 			return;
 		}
 		// We are lazy-loading `wc-settings`, but we need to enqueue it here so
 		// AssetDataRegistry knows it's going to load.
+		echo '<h1>enqueue wc-settings</h1>';
 		wp_enqueue_script( 'wc-settings' );
 		// After AssetDataRegistry function runs, we dequeue `wc-settings`.
 		add_action( 'wp_print_footer_scripts', array( $this, 'dequeue_wc_settings' ), 4 );
@@ -225,6 +230,7 @@ class MiniCart extends AbstractBlock {
 	 * Function to dequeue `wc-settings` script.
 	 */
 	public function dequeue_wc_settings() {
+		echo '<h1>dequeue wc-settings</h1>';
 		wp_dequeue_script( 'wc-settings' );
 	}
 

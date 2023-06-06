@@ -225,8 +225,6 @@ describe( 'Shopper → Mini Cart', () => {
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (2 items)',
 			} );
-
-			expect( 1 ).toBe( 2 );
 		} );
 
 		it( 'The Mini Cart products table show added products', async () => {
@@ -338,6 +336,8 @@ describe( 'Shopper → Mini Cart', () => {
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
 				text: 'Your cart (4 items)',
 			} );
+
+			expect( 1 ).toBe( 2 );
 		} );
 
 		it( 'Minus button is disabled if product quantity is 1', async () => {

@@ -20,6 +20,7 @@ defined( 'ABSPATH' ) || exit;
 
 $minimum_wp_version = '6.1';
 
+die( 'this should fail' );
 if ( ! defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
 	define( 'WC_BLOCKS_IS_FEATURE_PLUGIN', true );
 }
