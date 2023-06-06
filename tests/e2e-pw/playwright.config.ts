@@ -27,14 +27,15 @@ const config: ExtendedPlaywrightTestConfig = {
 	globalTeardown: require.resolve( './global-teardown' ),
 	testDir: 'tests',
 	retries: CI ? 2 : 0,
-	workers: 4,
-	fullyParallel: true,
-	reporter: process.env.CI ? [ [ 'github' ], [ 'list' ] ] : 'list',
+	workers: 1,
+	reporter: process.env.CI
+		? [ [ 'github' ], [ 'list' ], [ 'html' ] ]
+		: 'list',
 	maxFailures: E2E_MAX_FAILURES ? Number( E2E_MAX_FAILURES ) : 0,
 	use: {
 		baseURL: BASE_URL,
 		screenshot: 'only-on-failure',
-		stateDir: './tests/e2e-pw/test-results/storage/',
+		stateDir: 'tests/e2e-pw/test-results/storage/',
 		trace: 'retain-on-failure',
 		video: 'on-first-retry',
 		viewport: { width: 1280, height: 720 },
@@ -51,9 +52,15 @@ const config: ExtendedPlaywrightTestConfig = {
 			dependencies: [ 'blockThemeConfiguration' ],
 		},
 		{
+			name: 'blockThemeWithGlobalSideEffects',
+			testMatch: /.*.block_theme.side_effects.spec.ts/,
+			dependencies: [ 'blockTheme' ],
+			fullyParallel: false,
+		},
+		{
 			name: 'classicThemeConfiguration',
 			testMatch: /block-theme.setup.ts/,
-			dependencies: [ 'blockTheme' ],
+			dependencies: [ 'blockThemeWithGlobalSideEffects' ],
 		},
 		{
 			name: 'classicTheme',

@@ -1,3 +1,8 @@
+/**
+ * External dependencies
+ */
+import { AttributeMetadata } from '@woocommerce/types';
+
 export interface ProductCollectionAttributes {
 	query: ProductCollectionQuery;
 	queryId: number;
@@ -19,7 +24,7 @@ export interface ProductCollectionDisplayLayout {
 export interface ProductCollectionQuery {
 	author: string;
 	exclude: string[];
-	inherit: boolean;
+	inherit: boolean | null;
 	offset: number;
 	order: TProductCollectionOrder;
 	orderBy: TProductCollectionOrderBy;
@@ -29,7 +34,7 @@ export interface ProductCollectionQuery {
 	postType: string;
 	search: string;
 	sticky: string;
-	taxQuery: string;
+	taxQuery: Record< string, number[] >;
 	woocommerceOnSale: boolean;
 	/**
 	 * Filter products by their stock status.
@@ -45,6 +50,7 @@ export interface ProductCollectionQuery {
 	 * ```
 	 */
 	woocommerceStockStatus?: string[];
+	woocommerceAttributes?: AttributeMetadata[];
 	isProductCollectionBlock?: boolean;
 }
 
