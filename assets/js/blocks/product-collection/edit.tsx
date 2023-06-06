@@ -10,9 +10,15 @@ import { useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
+import type {
+	ProductCollectionAttributes,
+	ProductCollectionQuery,
+} from './types';
 import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
-import { ProductCollectionAttributes } from './types';
 import InspectorControls from './inspector-controls';
+import { DEFAULT_ATTRIBUTES } from './constants';
+import './editor.scss';
+import { getDefaultValueOfInheritQueryFromTemplate } from './utils';
 
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 	[
@@ -86,9 +92,34 @@ const Edit = ( props: BlockEditProps< ProductCollectionAttributes > ) => {
 	// Query parameters for each block are scoped to their ID.
 	useEffect( () => {
 		if ( ! Number.isFinite( queryId ) ) {
-			setAttributes( { queryId: instanceId } );
+			setAttributes( { queryId: Number( instanceId ) } );
 		}
 	}, [ queryId, instanceId, setAttributes ] );
+
+	/**
+	 * Because of issue https://github.com/WordPress/gutenberg/issues/7342,
+	 * We are using this workaround to set default attributes.
+	 */
+	useEffect( () => {
+		setAttributes( {
+			...DEFAULT_ATTRIBUTES,
+			query: {
+				...( DEFAULT_ATTRIBUTES.query as ProductCollectionQuery ),
+				inherit: getDefaultValueOfInheritQueryFromTemplate(),
+			},
+			...( attributes as Partial< ProductCollectionAttributes > ),
+		} );
+		// We don't wanna add attributes as a dependency here.
+		// Because we want this to run only once.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ setAttributes ] );
+
+	/**
+	 * If inherit is not a boolean, then we haven't set default attributes yet.
+	 * We don't wanna render anything until default attributes are set.
+	 * Default attributes are set in the useEffect above.
+	 */
+	if ( typeof attributes?.query?.inherit !== 'boolean' ) return null;
 
 	return (
 		<div { ...blockProps }>

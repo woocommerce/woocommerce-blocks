@@ -24,7 +24,7 @@
 }
 
 .wc-block-mini-cart__amount {
-	display: none;
+	margin-right: 0.5em;
 }
 
 .wc-block-mini-cart--preview {
@@ -57,6 +57,7 @@
 	.wp-block-woocommerce-mini-cart-contents {
 		box-sizing: border-box;
 		padding: 0;
+		position: relative;
 		justify-content: center;
 
 		.wc-block-components-notices {
@@ -174,11 +175,13 @@ h2.wc-block-mini-cart__title {
 		}
 
 		.wp-block-woocommerce-mini-cart-cart-button-block {
-			display: none;
-
 			@media only screen and (min-width: 480px) {
 				display: inline-flex;
 			}
+		}
+
+		@media only screen and (max-width: 480px) {
+			flex-direction: column;
 		}
 	}
 

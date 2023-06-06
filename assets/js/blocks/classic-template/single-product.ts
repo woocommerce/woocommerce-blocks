@@ -34,6 +34,7 @@ const getBlockifiedTemplate = () =>
 					createBlock( 'core/post-title', {
 						__woocommerceNamespace: PRODUCT_TITLE_VARIATION_NAME,
 					} ),
+					createBlock( 'woocommerce/product-rating' ),
 					createBlock( 'woocommerce/product-price', {
 						fontSize: 'large',
 					} ),
@@ -63,7 +64,7 @@ const getDescriptionAllowingConversion = ( templateTitle: string ) =>
 	sprintf(
 		/* translators: %s is the template title */
 		__(
-			'Transform this template into multiple blocks so you can add, remove, reorder, and customize your %s.',
+			'Transform this template into multiple blocks so you can add, remove, reorder, and customize your %s template.',
 			'woo-gutenberg-products-block'
 		),
 		templateTitle

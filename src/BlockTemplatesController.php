@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
+use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
@@ -69,10 +70,7 @@ class BlockTemplatesController {
 		add_filter( 'current_theme_supports-block-templates', array( $this, 'remove_block_template_support_for_shop_page' ) );
 		add_filter( 'taxonomy_template_hierarchy', array( $this, 'add_archive_product_to_eligible_for_fallback_templates' ), 10, 1 );
 		add_filter( 'post_type_archive_title', array( $this, 'update_product_archive_title' ), 10, 2 );
-
-		if ( $this->package->is_experimental_build() ) {
-			add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
-		}
+		add_action( 'after_switch_theme', array( $this, 'check_should_use_blockified_product_grid_templates' ), 10, 2 );
 	}
 
 	/**
@@ -315,6 +313,24 @@ class BlockTemplatesController {
 		 */
 		$query_result = array_map(
 			function( $template ) {
+				if ( str_contains( $template->slug, 'single-product' ) ) {
+					// We don't want to add the compatibility layer on the Editor Side.
+					// The second condition is necessary to not apply the compatibility layer on the REST API. Gutenberg uses the REST API to clone the template.
+					// More details: https://github.com/woocommerce/woocommerce-blocks/issues/9662.
+					if ( ( ! is_admin() && ! ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) && ! BlockTemplateUtils::template_has_legacy_template_block( $template ) ) {
+						// Add the product class to the body. We should move this to a more appropriate place.
+						add_filter(
+							'body_class',
+							function( $classes ) {
+								return array_merge( $classes, wc_get_product_class() );
+							}
+						);
+
+						$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
+						$template->content = $new_content;
+					}
+				}
+
 				if ( 'theme' === $template->origin && BlockTemplateUtils::template_has_title( $template ) ) {
 					return $template;
 				}
@@ -323,15 +339,6 @@ class BlockTemplatesController {
 				}
 				if ( ! $template->description ) {
 					$template->description = BlockTemplateUtils::get_block_template_description( $template->slug );
-				}
-
-				if ( str_contains( $template->slug, 'single-product' ) ) {
-					if ( ! is_admin() && ! BlockTemplateUtils::template_has_legacy_template_block( $template ) ) {
-
-						$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
-						$template->content = $new_content;
-					}
-					return $template;
 				}
 
 				return $template;
@@ -372,11 +379,7 @@ class BlockTemplatesController {
 
 		foreach ( $template_files as $template_file ) {
 			// Skip the template if it's blockified, and we should only use classic ones.
-			// Until the blockified Product Grid Block is implemented, we need to always skip the blockified templates.
-			// phpcs:ignore Squiz.PHP.CommentedOutCode
-			if ( // $this->package->is_experimental_build() &&
-				// ! BlockTemplateUtils::should_use_blockified_product_grid_templates() &&
-				strpos( $template_file, 'blockified' ) !== false ) {
+			if ( ! BlockTemplateUtils::should_use_blockified_product_grid_templates() && strpos( $template_file, 'blockified' ) !== false ) {
 				continue;
 			}
 
@@ -465,10 +468,9 @@ class BlockTemplatesController {
 			return $this->template_parts_directory;
 		}
 
-		// When the blockified Product Grid Block will be implemented, we need to use the blockified templates.
-		// if ( $this->package->is_experimental_build() && BlockTemplateUtils::should_use_blockified_product_grid_templates() ) {
-		// return $this->templates_directory . '/blockified';
-		// }.
+		if ( BlockTemplateUtils::should_use_blockified_product_grid_templates() ) {
+			return $this->templates_directory . '/blockified';
+		}
 
 		return $this->templates_directory;
 	}
@@ -546,6 +548,16 @@ class BlockTemplatesController {
 			}
 
 			if ( ! BlockTemplateUtils::theme_has_template( 'taxonomy-product_tag' ) ) {
+				add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
+			}
+		} elseif ( is_post_type_archive( 'product' ) && is_search() ) {
+			$templates = get_block_templates( array( 'slug__in' => array( ProductSearchResultsTemplate::SLUG ) ) );
+
+			if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
+				add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
+			}
+
+			if ( ! BlockTemplateUtils::theme_has_template( ProductSearchResultsTemplate::SLUG ) ) {
 				add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 			}
 		} elseif (
