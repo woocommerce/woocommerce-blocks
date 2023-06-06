@@ -28,7 +28,7 @@ use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutHeaderTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ClassicTemplatesCompatibility;
-use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
+use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
@@ -139,7 +139,7 @@ class Bootstrap {
 		$this->container->get( CartTemplate::class );
 		$this->container->get( CheckoutTemplate::class );
 		$this->container->get( CheckoutHeaderTemplate::class );
-		$this->container->get( OrderReceivedTemplate::class );
+		$this->container->get( OrderConfirmationTemplate::class );
 		$this->container->get( ClassicTemplatesCompatibility::class );
 		$this->container->get( ArchiveProductTemplatesCompatibility::class )->init();
 		$this->container->get( SingleProductTemplateCompatibility::class )->init();
@@ -300,9 +300,9 @@ class Bootstrap {
 			}
 		);
 		$this->container->register(
-			OrderReceivedTemplate::class,
+			OrderConfirmationTemplate::class,
 			function () {
-				return new OrderReceivedTemplate();
+				return new OrderConfirmationTemplate();
 			}
 		);
 		$this->container->register(
