@@ -47,9 +47,9 @@ interface Props {
 	attributes: Attributes;
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 	clientId: number;
-	setPriceColor: ( colorValue: string ) => void;
-	setIconColor: ( colorValue: string ) => void;
-	setProductCountColor: ( colorValue: string ) => void;
+	setPriceColor: ( colorValue: string | undefined ) => void;
+	setIconColor: ( colorValue: string | undefined ) => void;
+	setProductCountColor: ( colorValue: string | undefined ) => void;
 }
 
 const Edit = ( {
@@ -93,7 +93,7 @@ const Edit = ( {
 	const colorSettings = [
 		{
 			value: priceColorValue,
-			onChange: ( colorValue ) => {
+			onChange: ( colorValue: string ) => {
 				setPriceColor( colorValue );
 				setAttributes( { priceColorValue: colorValue } );
 			},
@@ -105,7 +105,7 @@ const Edit = ( {
 		},
 		{
 			value: iconColorValue,
-			onChange: ( colorValue ) => {
+			onChange: ( colorValue: string ) => {
 				setIconColor( colorValue );
 				setAttributes( { iconColorValue: colorValue } );
 			},
@@ -117,7 +117,7 @@ const Edit = ( {
 		},
 		{
 			value: productCountColorValue,
-			onChange: ( colorValue ) => {
+			onChange: ( colorValue: string ) => {
 				setProductCountColor( colorValue );
 				setAttributes( { productCountColorValue: colorValue } );
 			},
