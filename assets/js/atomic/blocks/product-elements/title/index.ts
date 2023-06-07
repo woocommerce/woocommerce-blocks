@@ -18,7 +18,6 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
-import { Save } from './save';
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,
@@ -28,7 +27,6 @@ const blockConfig: BlockConfiguration = {
 	icon: { src: icon },
 	attributes,
 	edit,
-	save: Save,
 	usesContext: [ 'query', 'queryId', 'postId' ],
 	supports: {
 		...sharedConfig.supports,
