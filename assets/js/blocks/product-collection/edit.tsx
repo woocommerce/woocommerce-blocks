@@ -34,7 +34,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 				'woocommerce/product-title',
 				{
 					textAlign: 'center',
-					level: 3,
+					headingLevel: 3,
 					fontSize: 'medium',
 					style: {
 						spacing: {
@@ -44,7 +44,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 							},
 						},
 					},
-					isLink: true,
+					showProductLink: true,
 				},
 			],
 			[
