@@ -74,6 +74,47 @@ class ProductTitle extends AbstractBlock {
 	}
 
 	/**
+	 * Provide the opening tag of title depends on heading level.
+	 *
+	 * @param number $heading Heading level.
+	 * @return string Opening header tag.
+	 */
+	protected function get_opening_tag_name( $heading ) {
+		return '<h' . $heading . '>';
+	}
+
+	/**
+	 * Provide the closing tag of title depends on heading level.
+	 *
+	 * @param number $heading Heading level.
+	 * @return string Closing header tag.
+	 */
+	protected function get_closing_tag_name( $heading ) {
+		return '</h' . $heading . '>';
+	}
+
+	/**
+	 * Provide the anchor markup.
+	 *
+	 * @param string $permalink Link to product.
+	 * @param string $title Title.
+	 * @return string Anchor tag.
+	 */
+	protected function get_link( $permalink, $title ) {
+		return '<a href="' . $permalink . '">' . $title . '</a>';
+	}
+
+	/**
+	 * Provide the regular text markup.
+	 *
+	 * @param string $title Title.
+	 * @return string Span tag.
+	 */
+	protected function get_title( $title ) {
+		return '<span>' . $title . '</span>';
+	}
+
+	/**
 	 * Include and render the block.
 	 *
 	 * @param array    $attributes Block attributes. Default empty array.
@@ -88,9 +129,13 @@ class ProductTitle extends AbstractBlock {
 			return $content;
 		}
 
-		$post_id = $block->context['postId'];
-		$product = wc_get_product( $post_id );
-		$title   = $product->get_title();
+		$post_id         = $block->context['postId'];
+		$product         = wc_get_product( $post_id );
+		$title           = $product->get_title();
+		$permalink       = $product->get_permalink();
+		$sanitized_title = wp_kses_post( $title );
+		$heading_level   = isset( $attributes['headingLevel'] ) ? $attributes['headingLevel'] : 2;
+		$is_link         = isset( $attributes['showProductLink'] ) ? $attributes['showProductLink'] : true;
 
 		if ( ! $title ) {
 			return '';
@@ -107,7 +152,9 @@ class ProductTitle extends AbstractBlock {
 		}
 
 		$output .= '>';
-		$output .= '<p>' . wp_kses_post( $title ) . '</p>';
+		$output .= $this->get_opening_tag_name( $heading_level );
+		$output .= $is_link ? $this->get_link( $permalink, $sanitized_title ) : $this->get_title( $sanitized_title );
+		$output .= $this->get_closing_tag_name( $heading_level );
 		$output .= '</div>';
 
 		return $output;
