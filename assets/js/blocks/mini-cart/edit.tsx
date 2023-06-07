@@ -159,7 +159,7 @@ const Edit = ( {
 								'woo-gutenberg-products-block'
 							) }
 							value={ cartAndCheckoutRenderStyle }
-							onChange={ ( value ) => {
+							onChange={ ( value: boolean ) => {
 								setAttributes( {
 									cartAndCheckoutRenderStyle: value,
 								} );
