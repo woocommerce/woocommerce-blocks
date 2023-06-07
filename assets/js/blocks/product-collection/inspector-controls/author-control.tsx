@@ -20,14 +20,11 @@ interface Author {
 	name: string;
 }
 
-interface AuthorsMapping {
+interface AuthorsInfo {
+	authors: Author[];
 	mapById: Map< number, Author >;
 	mapByName: Map< string, Author >;
 	names: string[];
-}
-
-interface AuthorsInfo extends AuthorsMapping {
-	authors: Author[];
 }
 
 interface AuthorControlProps {
