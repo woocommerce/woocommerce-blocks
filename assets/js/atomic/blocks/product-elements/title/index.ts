@@ -29,6 +29,7 @@ const blockConfig: BlockConfiguration = {
 	attributes,
 	edit,
 	save: Save,
+	usesContext: [ 'query', 'queryId', 'postId' ],
 	supports: {
 		...sharedConfig.supports,
 		...( isFeaturePluginBuild() && {
