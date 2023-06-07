@@ -54,6 +54,7 @@ $class_aliases = [
 	Automattic\WooCommerce\StoreApi\Routes\V1\CartRemoveItem::class => Automattic\WooCommerce\Blocks\StoreApi\Routes\CartRemoveItem::class,
 	Automattic\WooCommerce\StoreApi\Routes\V1\CartSelectShippingRate::class => Automattic\WooCommerce\Blocks\StoreApi\Routes\CartSelectShippingRate::class,
 	Automattic\WooCommerce\StoreApi\Routes\V1\CartUpdateCustomer::class => Automattic\WooCommerce\Blocks\StoreApi\Routes\CartUpdateCustomer::class,
+	Automattic\WooCommerce\StoreApi\Routes\V1\OrderUpdateCustomer::class => Automattic\WooCommerce\Blocks\StoreApi\Routes\OrderUpdateCustomer::class,
 	Automattic\WooCommerce\StoreApi\Routes\V1\CartUpdateItem::class => Automattic\WooCommerce\Blocks\StoreApi\Routes\CartUpdateItem::class,
 	Automattic\WooCommerce\StoreApi\Routes\V1\Checkout::class => Automattic\WooCommerce\Blocks\StoreApi\Routes\Checkout::class,
 	Automattic\WooCommerce\StoreApi\Routes\V1\ProductAttributes::class => Automattic\WooCommerce\Blocks\StoreApi\Routes\ProductAttributes::class,

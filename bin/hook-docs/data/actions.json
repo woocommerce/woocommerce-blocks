@@ -773,6 +773,39 @@
             "args": 2
         },
         {
+            "name": "woocommerce_store_api_order_update_customer_from_request",
+            "file": "StoreApi/Routes/V1/OrderUpdateCustomer.php",
+            "type": "action",
+            "doc": {
+                "description": "Fires when the Checkout Block/Store API updates a customer from the API request data.",
+                "long_description": "",
+                "tags": [
+                    {
+                        "name": "since",
+                        "content": "7.2.0"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Customer object.",
+                        "types": [
+                            "\\WC_Customer"
+                        ],
+                        "variable": "$customer"
+                    },
+                    {
+                        "name": "param",
+                        "content": "Full details about the request.",
+                        "types": [
+                            "\\WP_REST_Request"
+                        ],
+                        "variable": "$request"
+                    }
+                ],
+                "long_description_html": ""
+            },
+            "args": 2
+        },
+        {
             "name": "woocommerce_store_api_cart_update_order_from_request",
             "file": "StoreApi/Routes/V1/AbstractCartRoute.php",
             "type": "action",
