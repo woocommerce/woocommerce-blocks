@@ -63,27 +63,39 @@ export const HandPickedProductsControl = ( {
 	const onTokenChange = useCallback(
 		( values: string[] ) => {
 			// Map the tokens to product ids.
-			const newHandPickedProducts = values.reduce( ( acc, nameOrId ) => {
-				const product =
-					productsMap.get( nameOrId ) ||
-					productsMap.get( Number( nameOrId ) );
-				if ( product ) acc.push( String( product.id ) );
-				return acc;
-			}, [] as string[] );
+			const newHandPickedProductsSet = values.reduce(
+				( acc, nameOrId ) => {
+					const product =
+						productsMap.get( nameOrId ) ||
+						productsMap.get( Number( nameOrId ) );
+					if ( product ) acc.add( String( product.id ) );
+					return acc;
+				},
+				new Set< string >()
+			);
 
 			setQueryAttribute( {
-				woocommerceHandPickedProducts: newHandPickedProducts,
+				woocommerceHandPickedProducts: Array.from(
+					newHandPickedProductsSet
+				),
 			} );
 		},
 		[ setQueryAttribute, productsMap ]
 	);
 
 	const suggestions = useMemo( () => {
-		return productsList.map( ( product ) => product.name );
-	}, [ productsList ] );
+		return (
+			productsList
+				// Filter out products that are already selected.
+				.filter(
+					( product ) =>
+						! selectedProductIds?.includes( String( product.id ) )
+				)
+				.map( ( product ) => product.name )
+		);
+	}, [ productsList, selectedProductIds ] );
 
-	// Transform the token to a product name while displaying in the input field.
-	const displayTransform = ( token: string ) => {
+	const transformTokenIntoProductName = ( token: string ) => {
 		const parsedToken = Number( token );
 
 		if ( Number.isNaN( parsedToken ) ) {
@@ -110,7 +122,7 @@ export const HandPickedProductsControl = ( {
 		>
 			<FormTokenField
 				disabled={ ! productsMap.size }
-				displayTransform={ displayTransform }
+				displayTransform={ transformTokenIntoProductName }
 				label={ __(
 					'Pick some products',
 					'woo-gutenberg-products-block'
