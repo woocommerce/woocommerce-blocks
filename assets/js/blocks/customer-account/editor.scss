@@ -1,5 +1,12 @@
 .wc-block-editor-customer-account {
 	padding: em($gap-smaller) em($gap-smaller);
+
+	&.aligncenter {
+		text-align: center;
+		div {
+			display: inline-block;
+		}
+	}
 }
 
 .wc-block-editor-customer-account__icon-style-toggle {

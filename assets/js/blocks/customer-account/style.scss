@@ -1,4 +1,8 @@
 .wp-block-woocommerce-customer-account {
+	&.aligncenter > a {
+		justify-content: center;
+	}
+
 	a {
 		text-decoration: none !important;
 		align-items: center;
