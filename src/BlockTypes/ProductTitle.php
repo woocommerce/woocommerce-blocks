@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
+
 /**
  * ProductTitle class.
  */
@@ -59,7 +61,53 @@ class ProductTitle extends AbstractBlock {
 	 * This registers the scripts; it does not enqueue them.
 	 */
 	protected function register_block_type_assets() {
-		parent::register_block_type_assets();
-		$this->register_chunk_translations( [ $this->block_name ] );
+		return null;
+	}
+
+	/**
+	 * Register the context.
+	 */
+	protected function get_block_type_uses_context() {
+		return [ 'query', 'queryId', 'postId' ];
+	}
+
+	/**
+	 * Include and render the block.
+	 *
+	 * @param array    $attributes Block attributes. Default empty array.
+	 * @param string   $content    Block content. Default empty string.
+	 * @param WP_Block $block      Block instance.
+	 * @return string Rendered block type output.
+	 */
+	protected function render( $attributes, $content, $block ) {
+		if ( ! empty( $content ) ) {
+			parent::register_block_type_assets();
+			$this->register_chunk_translations( [ $this->block_name ] );
+			return $content;
+		}
+
+		$post_id = $block->context['postId'];
+		$product = wc_get_product( $post_id );
+		$title   = $product->get_title();
+
+		if ( ! $title ) {
+			return '';
+		}
+
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
+		$classname          = isset( $attributes['className'] ) ? $attributes['className'] : '';
+
+		$output = '<div class="wc-block-components-product-title '
+			. esc_attr( $classes_and_styles['classes'] ) . ' ' . esc_attr( $classname ) . '"';
+
+		if ( isset( $classes_and_styles['styles'] ) ) {
+			$output .= ' style="' . esc_attr( $classes_and_styles['styles'] ) . '"';
+		}
+
+		$output .= '>';
+		$output .= '<p>' . wp_kses_post( $title ) . '</p>';
+		$output .= '</div>';
+
+		return $output;
 	}
 }
