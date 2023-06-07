@@ -28,6 +28,11 @@ const blockConfig: BlockConfiguration = {
 	attributes,
 	edit,
 	usesContext: [ 'query', 'queryId', 'postId' ],
+	ancestor: [
+		'woocommerce/all-products',
+		'woocommerce/single-product',
+		'woocommerce/product-template',
+	],
 	supports: {
 		...sharedConfig.supports,
 		...( isFeaturePluginBuild() && {
