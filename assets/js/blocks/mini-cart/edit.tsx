@@ -35,9 +35,9 @@ interface Attributes {
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
 	cartAndCheckoutRenderStyle: boolean;
-	priceColor: object;
-	iconColor: object;
-	productCountColor: object;
+	priceColor: string;
+	iconColor: string;
+	productCountColor: string;
 	priceColorValue: string;
 	iconColorValue: string;
 	productCountColorValue: string;
