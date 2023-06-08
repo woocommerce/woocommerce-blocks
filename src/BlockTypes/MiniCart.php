@@ -274,8 +274,6 @@ class MiniCart extends AbstractBlock {
 			$mini_cart_dependencies_script,
 			'before'
 		);
-		wp_deregister_script( 'wc-settings' );
-		wp_dequeue_script( 'wc-settings' );
 	}
 
 	/**
