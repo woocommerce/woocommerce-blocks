@@ -8,8 +8,8 @@
 <!-- wp:group {"align":"wide","style":{"color":{"background":"#f9eddb","text":"#443127"},"spacing":{"padding":{"right":"50px","bottom":"50px","left":"50px","top":"50px"}}},"layout":{"type":"default"}} -->
 <div class="wp-block-group alignwide has-text-color has-background" style="color:#443127;background-color:#f9eddb;padding-top:50px;padding-right:50px;padding-bottom:50px;padding-left:50px"><!-- wp:columns -->
 <div class="wp-block-columns"><!-- wp:column {"style":{"spacing":{"padding":{"left":"110px"}}}} -->
-<div class="wp-block-column" style="padding-left:110px"><!-- wp:group {"style":{"spacing":{"padding":{"top":"60px","right":"0","left":"0"}}},"layout":{"type":"constrained","wideSize":"360px","justifyContent":"left"}} -->
-<div class="wp-block-group" style="padding-top:60px;padding-right:0;padding-left:0"><!-- wp:paragraph {"style":{"color":{"text":"#c85643"},"typography":{"fontSize":"18px"},"spacing":{"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}}} -->
+<div class="wp-block-column" style="padding-left:110px"><!-- wp:group {"style":{"spacing":{"padding":{"top":"0","right":"0","left":"0"}}},"layout":{"type":"constrained","wideSize":"360px","justifyContent":"left"}} -->
+<div class="wp-block-group" style="padding-top:0;padding-right:0;padding-left:0"><!-- wp:paragraph {"style":{"color":{"text":"#c85643"},"typography":{"fontSize":"18px"},"spacing":{"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}}} -->
 <p class="has-text-color" style="color:#c85643;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-size:18px"><strong>HOLIDAY SALE</strong></p>
 <!-- /wp:paragraph -->
 
