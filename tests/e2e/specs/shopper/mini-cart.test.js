@@ -1,6 +1,12 @@
 /**
  * External dependencies
  */
+import {
+	createNewPost,
+	insertBlock,
+	publishPost,
+	switchUserToAdmin,
+} from '@wordpress/e2e-test-utils';
 import { setDefaultOptions, getDefaultOptions } from 'expect-puppeteer';
 import { default as WooCommerceRestApi } from '@woocommerce/woocommerce-rest-api';
 import { SHOP_PAGE, SHOP_CART_PAGE } from '@woocommerce/e2e-utils';
@@ -11,7 +17,12 @@ import { SHOP_PAGE, SHOP_CART_PAGE } from '@woocommerce/e2e-utils';
 import { shopper } from '../../../utils';
 import { merchant } from '../../../utils/merchant';
 import { getTextContent } from '../../page-utils';
-import { SHOP_CHECKOUT_BLOCK_PAGE, useTheme } from '../../utils';
+import {
+	insertAllProductsBlock,
+	SHOP_CHECKOUT_BLOCK_PAGE,
+	useTheme,
+	waitForAllProductsBlockLoaded,
+} from '../../utils';
 
 const block = {
 	name: 'Mini-Cart',
@@ -195,6 +206,37 @@ describe( 'Shopper → Mini-Cart', () => {
 
 			expect( shopLink ).toMatch( SHOP_PAGE );
 		} );
+	} );
+} );
+
+describe( 'Shopper → Mini-Cart with the All Products block', () => {
+	beforeAll( async () => {
+		/**
+		 * Mini-Cart takes time to open. Sometimes, on slow machines, 500ms
+		 * is not enough. So, we increase the default timeout to 5 seconds.
+		 */
+		setDefaultOptions( { ...options, timeout: 5000 } );
+
+		await switchUserToAdmin();
+		await createNewPost( {
+			postType: 'post',
+			title: block.name + ' with All Products',
+		} );
+
+		await insertBlock( block.name );
+		await insertAllProductsBlock();
+		await publishPost();
+
+		const link = await page.evaluate( () =>
+			wp.data.select( 'core/editor' ).getPermalink()
+		);
+		await page.goto( link );
+		await waitForAllProductsBlockLoaded();
+	} );
+
+	afterAll( async () => {
+		// Reset default options.
+		setDefaultOptions( options );
 	} );
 
 	describe( 'Filled Mini-Cart', () => {
