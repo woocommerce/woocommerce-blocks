@@ -28,9 +28,9 @@ const blockConfig: BlockConfiguration = {
 	edit,
 	usesContext: [ 'query', 'queryId', 'postId' ],
 	ancestor: [
-		'@woocommerce/all-products',
-		'@woocommerce/single-product',
-		'@woocommerce/product-collection',
+		'woocommerce/all-products',
+		'woocommerce/single-product',
+		'woocommerce/product-collection',
 	],
 };
 
