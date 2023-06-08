@@ -54,7 +54,7 @@ function useProducts() {
 	return { productsMap, productsList };
 }
 
-export const HandPickedProductsControl = ( {
+const HandPickedProductsControl = ( {
 	selectedProductIds,
 	setQueryAttribute,
 }: HandPickedProductsControlProps ) => {
@@ -142,3 +142,5 @@ export const HandPickedProductsControl = ( {
 		</ToolsPanelItem>
 	);
 };
+
+export default HandPickedProductsControl;
