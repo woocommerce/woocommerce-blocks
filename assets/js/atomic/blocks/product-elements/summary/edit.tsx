@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -20,11 +21,21 @@ interface Props {
 	attributes: BlockAttributes;
 }
 
-const Edit = ( { attributes }: Props ): JSX.Element => {
+const Edit = ( { attributes, context, setAttributes }: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
+	const blockAttrs = {
+		...attributes,
+		...context,
+	};
+	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
+
+	useEffect(
+		() => setAttributes( { isDescendentOfQueryLoop } ),
+		[ setAttributes, isDescendentOfQueryLoop ]
+	);
 	return (
 		<div { ...blockProps }>
-			<Block { ...attributes } />
+			<Block { ...blockAttrs } />
 		</div>
 	);
 };
