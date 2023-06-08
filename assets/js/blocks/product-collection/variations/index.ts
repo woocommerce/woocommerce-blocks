@@ -9,9 +9,8 @@ import { isWpVersion } from '@woocommerce/settings';
  * Internal dependencies
  */
 import { CORE_NAME as PRODUCT_TITLE_ID } from './elements/product-title';
-import { CORE_NAME as PRODUCT_SUMMARY_ID } from './elements/product-summary';
 
-const EXTENDED_CORE_ELEMENTS = [ PRODUCT_SUMMARY_ID, PRODUCT_TITLE_ID ];
+const EXTENDED_CORE_ELEMENTS = [ PRODUCT_TITLE_ID ];
 
 function registerProductQueryElementsNamespace(
 	props: Block,
