@@ -12,8 +12,7 @@ import {
 	ToolbarGroup,
 	withSpokenMessages,
 } from '@wordpress/components';
-import { Component } from '@wordpress/element';
-import PropTypes from 'prop-types';
+import { useEffect, useState } from '@wordpress/element';
 import GridContentControl from '@woocommerce/editor-components/grid-content-control';
 import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
 import ProductTagControl from '@woocommerce/editor-components/product-tag-control';
@@ -22,69 +21,48 @@ import ProductStockControl from '@woocommerce/editor-components/product-stock-co
 import { Icon, tag } from '@wordpress/icons';
 import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { getSetting } from '@woocommerce/settings';
+/**
+ * Internal dependencies
+ */
+import type { ProductsByTagBlockProps } from './types';
 
 /**
  * Component to handle edit mode of "Products by Tag".
  */
-class ProductsByTagBlock extends Component {
-	constructor() {
-		super( ...arguments );
-		this.state = {
-			changedAttributes: {},
-			isEditing: false,
-		};
+const ProductsByTagBlock = ( {
+	attributes,
+	name,
+	setAttributes,
+	debouncedSpeak,
+}: ProductsByTagBlockProps ) => {
+	const [ changedAttributes, setChangedAttributes ] = useState<
+		Partial< ProductsByTagBlockProps[ 'attributes' ] >
+	>( {} );
+	const [ isEditing, setIsEditing ] = useState( false );
 
-		this.startEditing = this.startEditing.bind( this );
-		this.stopEditing = this.stopEditing.bind( this );
-		this.setChangedAttributes = this.setChangedAttributes.bind( this );
-		this.save = this.save.bind( this );
-	}
-
-	componentDidMount() {
-		const { attributes } = this.props;
-
+	useEffect( () => {
 		if ( ! attributes.tags.length ) {
 			// We've removed all selected categories, or no categories have been selected yet.
-			this.setState( { isEditing: true } );
+			setIsEditing( true );
 		}
-	}
+	}, [ attributes.tags.length ] );
 
-	startEditing() {
-		this.setState( {
-			isEditing: true,
-			changedAttributes: {},
-		} );
-	}
+	const startEditing = () => {
+		setIsEditing( true );
+		setChangedAttributes( {} );
+	};
 
-	stopEditing() {
-		this.setState( {
-			isEditing: false,
-			changedAttributes: {},
-		} );
-	}
+	const stopEditing = () => {
+		setIsEditing( false );
+		setChangedAttributes( {} );
+	};
 
-	setChangedAttributes( attributes ) {
-		this.setState( ( prevState ) => {
-			return {
-				changedAttributes: {
-					...prevState.changedAttributes,
-					...attributes,
-				},
-			};
-		} );
-	}
-
-	save() {
-		const { changedAttributes } = this.state;
-		const { setAttributes } = this.props;
-
+	const save = () => {
 		setAttributes( changedAttributes );
-		this.stopEditing();
-	}
+		stopEditing();
+	};
 
-	getInspectorControls() {
-		const { attributes, setAttributes } = this.props;
-		const { isEditing } = this.state;
+	const getInspectorControls = () => {
 		const {
 			columns,
 			tagOperator,
@@ -166,14 +144,12 @@ class ProductsByTagBlock extends Component {
 				</PanelBody>
 			</InspectorControls>
 		);
-	}
+	};
 
-	renderEditMode() {
-		const { attributes, debouncedSpeak } = this.props;
-		const { changedAttributes } = this.state;
+	const renderEditMode = () => {
 		const currentAttributes = { ...attributes, ...changedAttributes };
 		const onDone = () => {
-			this.save();
+			save();
 			debouncedSpeak(
 				__(
 					'Showing Products by Tag block preview.',
@@ -182,7 +158,7 @@ class ProductsByTagBlock extends Component {
 			);
 		};
 		const onCancel = () => {
-			this.stopEditing();
+			stopEditing();
 			debouncedSpeak(
 				__(
 					'Showing Products by Tag block preview.',
@@ -211,11 +187,11 @@ class ProductsByTagBlock extends Component {
 						selected={ currentAttributes.tags }
 						onChange={ ( value = [] ) => {
 							const ids = value.map( ( { id } ) => id );
-							this.setChangedAttributes( { tags: ids } );
+							setChangedAttributes( { tags: ids } );
 						} }
 						operator={ currentAttributes.tagOperator }
 						onOperatorChange={ ( value = 'any' ) =>
-							this.setChangedAttributes( { tagOperator: value } )
+							setChangedAttributes( { tagOperator: value } )
 						}
 					/>
 					<Button isPrimary onClick={ onDone }>
@@ -231,10 +207,8 @@ class ProductsByTagBlock extends Component {
 				</div>
 			</Placeholder>
 		);
-	}
-
-	renderViewMode() {
-		const { attributes, name } = this.props;
+	};
+	const renderViewMode = () => {
 		const selectedTags = attributes.tags.length;
 
 		return (
@@ -266,76 +240,44 @@ class ProductsByTagBlock extends Component {
 				) }
 			</Disabled>
 		);
+	};
+
+	if ( attributes.isPreview ) {
+		return gridBlockPreview;
 	}
 
-	render() {
-		const { isEditing } = this.state;
-		const { attributes } = this.props;
-
-		if ( attributes.isPreview ) {
-			return gridBlockPreview;
-		}
-
-		return getSetting( 'hasTags', true ) ? (
-			<>
-				<BlockControls>
-					<ToolbarGroup
-						controls={ [
-							{
-								icon: 'edit',
-								title: __(
-									'Edit selected tags',
-									'woo-gutenberg-products-block'
-								),
-								onClick: () =>
-									isEditing
-										? this.stopEditing()
-										: this.startEditing(),
-								isActive: isEditing,
-							},
-						] }
-					/>
-				</BlockControls>
-				{ this.getInspectorControls() }
-				{ isEditing ? this.renderEditMode() : this.renderViewMode() }
-			</>
-		) : (
-			<Placeholder
-				icon={
-					<Icon icon={ tag } className="block-editor-block-icon" />
-				}
-				label={ __(
-					'Products by Tag',
-					'woo-gutenberg-products-block'
-				) }
-				className="wc-block-products-grid wc-block-product-tag"
-			>
-				{ __(
-					'This block displays products from selected tags. To use it you first need to create products and assign tags to them.',
-					'woo-gutenberg-products-block'
-				) }
-			</Placeholder>
-		);
-	}
-}
-
-ProductsByTagBlock.propTypes = {
-	/**
-	 * The attributes for this block
-	 */
-	attributes: PropTypes.object.isRequired,
-	/**
-	 * The register block name.
-	 */
-	name: PropTypes.string.isRequired,
-	/**
-	 * A callback to update attributes
-	 */
-	setAttributes: PropTypes.func.isRequired,
-	/**
-	 * From withSpokenMessages
-	 */
-	debouncedSpeak: PropTypes.func.isRequired,
+	return getSetting( 'hasTags', true ) ? (
+		<>
+			<BlockControls>
+				<ToolbarGroup
+					controls={ [
+						{
+							icon: 'edit',
+							title: __(
+								'Edit selected tags',
+								'woo-gutenberg-products-block'
+							),
+							onClick: () =>
+								isEditing ? stopEditing() : startEditing(),
+							isActive: isEditing,
+						},
+					] }
+				/>
+			</BlockControls>
+			{ getInspectorControls() }
+			{ isEditing ? renderEditMode() : renderViewMode() }
+		</>
+	) : (
+		<Placeholder
+			icon={ <Icon icon={ tag } className="block-editor-block-icon" /> }
+			label={ __( 'Products by Tag', 'woo-gutenberg-products-block' ) }
+			className="wc-block-products-grid wc-block-product-tag"
+		>
+			{ __(
+				'This block displays products from selected tags. To use it you first need to create products and assign tags to them.',
+				'woo-gutenberg-products-block'
+			) }
+		</Placeholder>
+	);
 };
-
 export default withSpokenMessages( ProductsByTagBlock );
