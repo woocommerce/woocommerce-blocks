@@ -251,6 +251,11 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		setDefaultOptions( options );
 	} );
 
+	beforeEach( async () => {
+		await page.goto( link );
+		await waitForAllProductsBlockLoaded();
+	} );
+
 	describe( 'Filled Mini-Cart', () => {
 		beforeAll( async () => {
 			await shopper.block.emptyCart();
@@ -261,8 +266,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		} );
 
 		it( 'The Mini-Cart title shows correct amount', async () => {
-			await page.goto( link );
-			await waitForAllProductsBlockLoaded();
 			await page.click( selectors.frontend.productWithAddToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
@@ -281,8 +284,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		} );
 
 		it( 'The Mini-Cart products table show added products', async () => {
-			await page.goto( link );
-			await waitForAllProductsBlockLoaded();
 			const products = await page.$$(
 				'.wc-block-all-products .wc-block-grid__product'
 			);
@@ -311,8 +312,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		} );
 
 		it( 'Filled Mini-Cart footer contains subtotal, view cart button, and go to checkout buttons', async () => {
-			await page.goto( link );
-			await waitForAllProductsBlockLoaded();
 			await page.click( selectors.frontend.addToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
@@ -352,8 +351,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		} );
 
 		it( 'The quantity of a product can be updated using plus and minus button', async () => {
-			await page.goto( link );
-			await waitForAllProductsBlockLoaded();
 			await page.click( selectors.frontend.productWithAddToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
@@ -396,8 +393,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		} );
 
 		it( 'Minus button is disabled if product quantity is 1', async () => {
-			await page.goto( link );
-			await waitForAllProductsBlockLoaded();
 			await page.click( selectors.frontend.productWithAddToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
@@ -489,8 +484,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		} );
 
 		it( 'Mini-Cart show tax label and price including tax', async () => {
-			await page.goto( link );
-			await waitForAllProductsBlockLoaded();
 			const [ priceInLoop ] = await getTextContent(
 				selectors.frontend.productPrice
 			);
@@ -536,8 +529,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		} );
 
 		it( 'Can remove product from Mini-Cart', async () => {
-			await page.goto( link );
-			await waitForAllProductsBlockLoaded();
 			await page.click( selectors.frontend.addToCartButton );
 
 			await expect( page ).toMatchElement( '.wc-block-mini-cart__title', {
@@ -563,8 +554,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		} );
 
 		it( 'Can go to cart page from the Mini-Cart Footer', async () => {
-			await page.goto( link );
-			await waitForAllProductsBlockLoaded();
 			const [ productTitle ] = await getTextContent(
 				selectors.frontend.productTitle
 			);
@@ -599,8 +588,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		} );
 
 		it( 'Can go to checkout page from the Mini-Cart Footer', async () => {
-			await page.goto( link );
-			await waitForAllProductsBlockLoaded();
 			const productTitle = await page.$eval(
 				selectors.frontend.productTitle,
 				( el ) => el.textContent
@@ -624,9 +611,7 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 
 			await page.goto( checkoutUrl, { waitUntil: 'networkidle0' } );
 
-			await expect( page ).toMatchElement( 'h1', {
-				text: 'Checkout',
-			} );
+			await expect( page ).toMatchElement( 'h1', { text: 'Checkout' } );
 
 			const orderSummaryToggle = await page.$(
 				selectors.frontend.checkoutOrderSummary.toggle
@@ -663,8 +648,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 			} );
 
 			it( 'User can see translation in empty Mini-Cart', async () => {
-				await page.goto( link );
-				await waitForAllProductsBlockLoaded();
 				await clickMiniCartButton();
 
 				await expect( page ).toMatchElement(
@@ -676,8 +659,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 			} );
 
 			it( 'User can see translation in filled Mini-Cart', async () => {
-				await page.goto( link );
-				await waitForAllProductsBlockLoaded();
 				await page.click(
 					selectors.frontend.productWithAddToCartButton
 				);
@@ -699,8 +680,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 			} );
 
 			it( 'User can see translation in empty Mini-Cart', async () => {
-				await page.goto( link );
-				await waitForAllProductsBlockLoaded();
 				await clickMiniCartButton();
 
 				await expect( page ).toMatchElement(
@@ -712,8 +691,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 			} );
 
 			it( 'User can see translation in filled Mini-Cart', async () => {
-				await page.goto( link );
-				await waitForAllProductsBlockLoaded();
 				await page.click(
 					selectors.frontend.productWithAddToCartButton
 				);
