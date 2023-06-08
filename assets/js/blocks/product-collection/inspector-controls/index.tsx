@@ -26,6 +26,7 @@ import KeywordControl from './keyword-control';
 import AttributesControl from './attributes-control';
 import TaxonomyControls from './taxonomy-controls';
 import { HandPickedProductsControl } from './hand-picked-products-control';
+import AuthorControl from './author-control';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -89,6 +90,10 @@ const ProductCollectionInspectorControls = (
 					<TaxonomyControls
 						setQueryAttribute={ setQueryAttributeBind }
 						query={ query }
+					/>
+					<AuthorControl
+						value={ query.author }
+						setQueryAttribute={ setQueryAttributeBind }
 					/>
 				</ToolsPanel>
 			) : null }
