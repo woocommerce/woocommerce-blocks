@@ -225,6 +225,8 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		 */
 		setDefaultOptions( { ...options, timeout: 5000 } );
 
+		await shopper.block.emptyCart();
+
 		await switchUserToAdmin();
 		await createNewPost( {
 			postType: 'post',
@@ -256,15 +258,11 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		await waitForAllProductsBlockLoaded();
 	} );
 
+	afterEach( async () => {
+		await shopper.block.emptyCart();
+	} );
+
 	describe( 'Filled Mini-Cart', () => {
-		beforeAll( async () => {
-			await shopper.block.emptyCart();
-		} );
-
-		afterEach( async () => {
-			await shopper.block.emptyCart();
-		} );
-
 		it( 'The Mini-Cart title shows correct amount', async () => {
 			await page.click( selectors.frontend.productWithAddToCartButton );
 
@@ -342,14 +340,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 	} );
 
 	describe( 'Update quantity', () => {
-		beforeAll( async () => {
-			await shopper.block.emptyCart();
-		} );
-
-		afterEach( async () => {
-			await shopper.block.emptyCart();
-		} );
-
 		it( 'The quantity of a product can be updated using plus and minus button', async () => {
 			await page.click( selectors.frontend.productWithAddToCartButton );
 
@@ -458,7 +448,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 					},
 				],
 			} );
-			await shopper.block.emptyCart();
 		} );
 
 		afterAll( async () => {
@@ -480,7 +469,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 					},
 				],
 			} );
-			await shopper.block.emptyCart();
 		} );
 
 		it( 'Mini-Cart show tax label and price including tax', async () => {
@@ -520,14 +508,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 	} );
 
 	describe( 'Remove product', () => {
-		beforeAll( async () => {
-			await shopper.block.emptyCart();
-		} );
-
-		afterAll( async () => {
-			await shopper.block.emptyCart();
-		} );
-
 		it( 'Can remove product from Mini-Cart', async () => {
 			await page.click( selectors.frontend.addToCartButton );
 
@@ -549,10 +529,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 	} );
 
 	describe( 'Cart page', () => {
-		beforeAll( async () => {
-			await shopper.block.emptyCart();
-		} );
-
 		it( 'Can go to cart page from the Mini-Cart Footer', async () => {
 			const [ productTitle ] = await getTextContent(
 				selectors.frontend.productTitle
@@ -583,10 +559,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 	} );
 
 	describe( 'Checkout page', () => {
-		beforeAll( async () => {
-			await shopper.block.emptyCart();
-		} );
-
 		it( 'Can go to checkout page from the Mini-Cart Footer', async () => {
 			const productTitle = await page.$eval(
 				selectors.frontend.productTitle,
@@ -631,7 +603,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 	describe( 'Translations', () => {
 		beforeAll( async () => {
 			await merchant.changeLanguage( 'nl_NL' );
-			await shopper.block.emptyCart();
 		} );
 
 		beforeEach( async () => {
@@ -643,10 +614,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 		} );
 
 		describe( 'Classic Themes', () => {
-			afterAll( async () => {
-				await shopper.block.emptyCart();
-			} );
-
 			it( 'User can see translation in empty Mini-Cart', async () => {
 				await clickMiniCartButton();
 
@@ -674,10 +641,6 @@ describe( 'Shopper → Mini-Cart with the All Products block', () => {
 
 		describe( 'Block Themes', () => {
 			useTheme( 'twentytwentytwo' );
-
-			afterAll( async () => {
-				await shopper.block.emptyCart();
-			} );
 
 			it( 'User can see translation in empty Mini-Cart', async () => {
 				await clickMiniCartButton();
