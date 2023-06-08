@@ -14,9 +14,11 @@
 				</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"top":"0","right":"0","bottom":"0","left":"0"}},"color":{"text":"#ffffff"}},"fontSize":"small"} -->
-<p class="has-text-align-center has-text-color has-small-font-size" style="color:#ffffff;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"> <strong><span style="text-decoration: underline;"><a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">Shop Now</a></span></strong> </p>
-<!-- /wp:paragraph --></div></div>
+<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+<div class="wp-block-buttons"><!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
+<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size"><a class="wp-block-button__link has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" style="border-style:none;border-width:0px;color:#ffffff;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px"><strong><span style="text-decoration: underline;">Shop Now</span></strong></a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons --></div></div>
 <!-- /wp:cover --></div>
 <!-- /wp:column -->
 
@@ -28,9 +30,11 @@
 				</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"top":"0","right":"0","bottom":"0","left":"0"}},"color":{"text":"#ffffff"}},"fontSize":"small"} -->
-<p class="has-text-align-center has-text-color has-small-font-size" style="color:#ffffff;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"> <strong><span style="text-decoration: underline;"><a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">Shop Now</a></span></strong> </p>
-<!-- /wp:paragraph --></div></div>
+<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+<div class="wp-block-buttons"><!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
+<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size"><a class="wp-block-button__link has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" style="border-style:none;border-width:0px;color:#ffffff;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px"><strong><span style="text-decoration: underline;">Shop Now</span></strong></a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons --></div></div>
 <!-- /wp:cover --></div>
 <!-- /wp:column -->
 
@@ -42,9 +46,11 @@
 				</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"align":"center","style":{"spacing":{"margin":{"top":"0","right":"0","bottom":"0","left":"0"}},"color":{"text":"#ffffff"}},"fontSize":"small"} -->
-<p class="has-text-align-center has-text-color has-small-font-size" style="color:#ffffff;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"> <strong><span style="text-decoration: underline;"><a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>">Shop Now</a></span></strong> </p>
-<!-- /wp:paragraph --></div></div>
+<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+<div class="wp-block-buttons"><!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
+<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size"><a class="wp-block-button__link has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" style="border-style:none;border-width:0px;color:#ffffff;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px"><strong><span style="text-decoration: underline;">Shop Now</span></strong></a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons --></div></div>
 <!-- /wp:cover --></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
