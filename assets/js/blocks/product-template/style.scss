@@ -6,7 +6,8 @@ $break-small: 600px;
 	}
 }
 
-.wc-block-product-template {
+.wc-block-product-template,
+.products-block-post-template {
 	margin-top: 0;
 	margin-bottom: 0;
 	max-width: 100%;
@@ -27,6 +28,14 @@ $break-small: 600px;
 		> li {
 			margin: 0;
 			width: 100%;
+			display: flex;
+			flex-direction: column;
+
+			.wc-block-components-product-button {
+				margin-top: auto;
+				margin-left: auto;
+				margin-right: auto;
+			}
 		}
 
 		@include break-small {

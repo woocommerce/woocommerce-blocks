@@ -1,5 +1,19 @@
-ul.wc-block-product-template {
+ul.wc-block-product-template,
+ul.products-block-post-template {
 	padding-left: 0;
 	margin-left: 0;
 	list-style: none;
+
+	&.is-flex-container {
+		> li {
+			display: flex;
+			flex-direction: column;
+
+			.wp-block-woocommerce-product-button {
+				margin-top: auto;
+				margin-left: auto;
+				margin-right: auto;
+			}
+		}
+	}
 }
