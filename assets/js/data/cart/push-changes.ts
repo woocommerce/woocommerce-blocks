@@ -123,84 +123,96 @@ const dirtyProps = <
 /**
  * Function to dispatch an update to the server. This is debounced.
  */
-const updateCustomerData = debounce( (): void => {
-	const { billingAddress, shippingAddress } = customerData;
-	const validationStore = select( VALIDATION_STORE_KEY );
+const updateCustomerData = debounce(
+	( orderId: number | null, orderKey: string | null ): void => {
+		const { billingAddress, shippingAddress } = customerData;
+		const validationStore = select( VALIDATION_STORE_KEY );
 
-	// Before we push anything, we need to ensure that the data we're pushing (dirty fields) are valid, otherwise we will
-	// abort and wait for the validation issues to be resolved.
-	const invalidProps = [
-		...dirtyProps.billingAddress.filter( ( key ) => {
-			return (
-				validationStore.getValidationError( 'billing_' + key ) !==
-				undefined
+		// Before we push anything, we need to ensure that the data we're pushing (dirty fields) are valid, otherwise we will
+		// abort and wait for the validation issues to be resolved.
+		const invalidProps = [
+			...dirtyProps.billingAddress.filter( ( key ) => {
+				return (
+					validationStore.getValidationError( 'billing_' + key ) !==
+					undefined
+				);
+			} ),
+			...dirtyProps.shippingAddress.filter( ( key ) => {
+				return (
+					validationStore.getValidationError( 'shipping_' + key ) !==
+					undefined
+				);
+			} ),
+		].filter( Boolean );
+
+		if ( invalidProps.length ) {
+			return;
+		}
+
+		// Find valid data from the list of dirtyProps and prepare to push to the server.
+		const customerDataToUpdate =
+			{} as Partial< BillingAddressShippingAddress >;
+
+		if ( dirtyProps.billingAddress.length ) {
+			customerDataToUpdate.billing_address = pick(
+				billingAddress,
+				dirtyProps.billingAddress
 			);
-		} ),
-		...dirtyProps.shippingAddress.filter( ( key ) => {
-			return (
-				validationStore.getValidationError( 'shipping_' + key ) !==
-				undefined
+			dirtyProps.billingAddress = [];
+		}
+
+		if ( dirtyProps.shippingAddress.length ) {
+			customerDataToUpdate.shipping_address = pick(
+				shippingAddress,
+				dirtyProps.shippingAddress
 			);
-		} ),
-	].filter( Boolean );
+			dirtyProps.shippingAddress = [];
+		}
 
-	if ( invalidProps.length ) {
-		return;
-	}
+		// If there is customer data to update, push it to the server.
+		if ( Object.keys( customerDataToUpdate ).length ) {
+			dispatch( STORE_KEY )
+				.updateCustomerData(
+					customerDataToUpdate,
+					true,
+					orderId,
+					orderKey
+				)
+				.then( removeAllNotices )
+				.catch( ( response ) => {
+					processErrorResponse( response );
 
-	// Find valid data from the list of dirtyProps and prepare to push to the server.
-	const customerDataToUpdate = {} as Partial< BillingAddressShippingAddress >;
-
-	if ( dirtyProps.billingAddress.length ) {
-		customerDataToUpdate.billing_address = pick(
-			billingAddress,
-			dirtyProps.billingAddress
-		);
-		dirtyProps.billingAddress = [];
-	}
-
-	if ( dirtyProps.shippingAddress.length ) {
-		customerDataToUpdate.shipping_address = pick(
-			shippingAddress,
-			dirtyProps.shippingAddress
-		);
-		dirtyProps.shippingAddress = [];
-	}
-
-	// If there is customer data to update, push it to the server.
-	if ( Object.keys( customerDataToUpdate ).length ) {
-		dispatch( STORE_KEY )
-			.updateCustomerData( customerDataToUpdate )
-			.then( removeAllNotices )
-			.catch( ( response ) => {
-				processErrorResponse( response );
-
-				// Data did not persist due to an error. Make the props dirty again so they get pushed to the server.
-				if ( customerDataToUpdate.billing_address ) {
-					dirtyProps.billingAddress = [
-						...dirtyProps.billingAddress,
-						...( Object.keys(
-							customerDataToUpdate.billing_address
-						) as BaseAddressKey[] ),
-					];
-				}
-				if ( customerDataToUpdate.shipping_address ) {
-					dirtyProps.shippingAddress = [
-						...dirtyProps.shippingAddress,
-						...( Object.keys(
-							customerDataToUpdate.shipping_address
-						) as BaseAddressKey[] ),
-					];
-				}
-			} );
-	}
-}, 1000 );
+					// Data did not persist due to an error. Make the props dirty again so they get pushed to the server.
+					if ( customerDataToUpdate.billing_address ) {
+						dirtyProps.billingAddress = [
+							...dirtyProps.billingAddress,
+							...( Object.keys(
+								customerDataToUpdate.billing_address
+							) as BaseAddressKey[] ),
+						];
+					}
+					if ( customerDataToUpdate.shipping_address ) {
+						dirtyProps.shippingAddress = [
+							...dirtyProps.shippingAddress,
+							...( Object.keys(
+								customerDataToUpdate.shipping_address
+							) as BaseAddressKey[] ),
+						];
+					}
+				} );
+		}
+	},
+	1000
+);
 
 /**
  * After cart has fully initialized, pushes changes to the server when data in the store is changed. Updates to the
  * server are debounced to prevent excessive requests.
  */
-export const pushChanges = (): void => {
+export const pushChanges = (
+	orderId: number | null,
+	orderKey: string | null
+): void => {
 	const store = select( STORE_KEY );
 
 	if ( ! store.hasFinishedResolution( 'getCartData' ) ) {
@@ -256,7 +268,7 @@ export const pushChanges = (): void => {
 		dirtyProps.billingAddress.length ||
 		dirtyProps.shippingAddress.length
 	) {
-		updateCustomerData();
+		updateCustomerData( orderId, orderKey );
 	}
 };
 

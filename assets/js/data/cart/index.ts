@@ -13,7 +13,7 @@ import * as actions from './actions';
 import * as resolvers from './resolvers';
 import reducer, { State } from './reducers';
 import type { SelectFromMap, DispatchFromMap } from '../mapped-types';
-import { pushChanges, flushChanges } from './push-changes';
+import { flushChanges } from './push-changes';
 import {
 	updatePaymentMethods,
 	debouncedUpdatePaymentMethods,
@@ -31,9 +31,6 @@ const registeredStore = registerStore< State >( STORE_KEY, {
 	resolvers,
 	__experimentalUseThunks: true,
 } );
-
-registeredStore.subscribe( pushChanges );
-
 // This will skip the debounce and immediately push changes to the server when a field is blurred.
 document.body.addEventListener( 'focusout', ( event: FocusEvent ) => {
 	if (

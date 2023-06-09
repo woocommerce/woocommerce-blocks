@@ -13,6 +13,7 @@ import { removeNoticesWithContext } from '@woocommerce/base-utils';
  */
 import ShippingCalculatorAddress from './address';
 import './style.scss';
+import { useStoreOrder } from '@woocommerce/base-context/hooks/cart/use-store-order';
 
 interface ShippingCalculatorProps {
 	onUpdate?: ( newAddress: ShippingAddress ) => void;
@@ -30,6 +31,7 @@ const ShippingCalculator = ( {
 	addressFields = [ 'country', 'state', 'city', 'postcode' ],
 }: ShippingCalculatorProps ): JSX.Element => {
 	const { shippingAddress } = useCustomerData();
+	const { orderId, orderKey } = useStoreOrder();
 	const noticeContext = 'wc/cart/shipping-calculator';
 	return (
 		<div className="wc-block-components-shipping-calculator">
@@ -45,7 +47,9 @@ const ShippingCalculator = ( {
 							{
 								shipping_address: newAddress,
 							},
-							false
+							false,
+							orderId,
+							orderKey
 						)
 						.then( () => {
 							removeNoticesWithContext( noticeContext );

@@ -449,15 +449,23 @@ export const updateCustomerData =
 		// Address data to be updated; can contain both billing_address and shipping_address.
 		customerData: Partial< BillingAddressShippingAddress >,
 		// If the address is being edited, we don't update the customer data in the store from the response.
-		editing = true
+		editing = true,
+		orderId: number | null,
+		orderKey: string | null
 	) =>
 	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
 		try {
 			dispatch.updatingCustomerData( true );
 			const { response } = await apiFetchWithHeaders( {
-				path: '/wc/store/v1/cart/update-customer',
+				path:
+					orderId && orderKey
+						? `/wc/store/v1/order/${ orderId }/update-customer`
+						: '/wc/store/v1/cart/update-customer',
 				method: 'POST',
-				data: customerData,
+				data: {
+					...customerData,
+					key: orderKey,
+				},
 				cache: 'no-store',
 			} );
 			if ( editing ) {
