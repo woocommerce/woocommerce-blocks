@@ -55,7 +55,7 @@
 	<!-- wp:column -->
 	<div class="wp-block-column">
 		<!-- wp:heading {"style":{"typography":{"fontSize":"48px","fontStyle":"normal","fontWeight":"700"}},"textColor":"foreground"} -->
-		<h2 class="wp-block-heading has-foreground-color has-text-color" style="font-size:48px;font-style:normal;font-weight:700">Wicker Back Dining Chair, Blue Seat, Wood Base</h2>
+		<h2 class="wp-block-heading has-foreground-color has-text-color" style="font-size:48px;font-style:normal;font-weight:700">Patterned Upright, Orange and White, Wood Legs</h2>
 		<!-- /wp:heading -->
 
 		<!-- wp:group {"style":{"spacing":{"padding":{"top":"0px","right":"0px","bottom":"0px","left":"0px"},"blockGap":"0px","margin":{"top":"10px","bottom":"0px"}}},"layout":{"type":"flex","flexWrap":"nowrap","verticalAlignment":"center"}} -->
@@ -93,13 +93,7 @@
 		<!-- wp:group {"layout":{"type":"constrained","justifyContent":"left"}} -->
 		<div class="wp-block-group">
 			<!-- wp:paragraph {"style":{"typography":{"fontSize":"18px"}},"textColor":"foreground"} -->
-			<p class="has-foreground-color has-text-color" style="font-size:18px">Crafted from solid wood with a rich
-				walnut finish, this table exudes warmth and sophistication. The clean lines and minimalist design
-				effortlessly complement a variety of interior styles, from modern to rustic. With its spacious tabletop,
-				the Urban Loft Dining Table comfortably seats six guests, making it ideal for family dinners, social
-				gatherings, and special occasions. The sturdy construction ensures lasting durability, while the
-				easy-to-clean surface allows for hassle-free maintenance.
-			</p>
+			<p class="has-foreground-color has-text-color" style="font-size:18px">Designed with your well-being in mind, this chair features a contoured backrest that provides exceptional lumbar support, helping to reduce strain on your back during long hours of sitting. The adjustable height and tilt mechanisms allow you to customize the chair to your preferred sitting position, ensuring a comfortable and productive workday. Upholstered in premium fabric and available in a variety of colors, the Harmony Ergonomic Chair adds a touch of elegance to any room.</p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:group -->
