@@ -440,17 +440,21 @@ class BlockTemplateUtils {
 	/**
 	 * Checks to see if they are using a compatible version of WP, or if not they have a compatible version of the Gutenberg plugin installed.
 	 *
+	 * @param  boolean $template_part Whether we are checking for a template part or not.
 	 * @return boolean
 	 */
-	public static function supports_block_templates() {
-		if (
-			! wc_current_theme_is_fse_theme() &&
-			( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
-		) {
-			return false;
+	public static function supports_block_templates( $template_part = false ) {
+		if ( (bool) $template_part && ( wc_current_theme_is_fse_theme() || current_theme_supports( 'block-template-parts' ) ) ) {
+				return true;
+		} else {
+			if (
+				! wc_current_theme_is_fse_theme() &&
+				( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
+			) {
+				return false;
+			}
+			return true;
 		}
-
-		return true;
 	}
 
 	/**
