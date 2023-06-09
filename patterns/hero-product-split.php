@@ -6,10 +6,11 @@
  */
 ?>
 
-<!-- wp:media-text {"align":"full","mediaPosition":"right","mediaType":"image","mediaSizeSlug":"full","imageFill":false,"backgroundColor":"contrast","textColor":"base"} -->
-<div class="wp-block-media-text alignfull has-media-on-the-right is-stacked-on-mobile has-base-color has-contrast-background-color has-text-color has-background">
-	<div class="wp-block-media-text__content"><!-- wp:heading -->
-		<h2 class="wp-block-heading">Get cozy this fall with flannel shirts</h2>
+<!-- wp:media-text {"align":"full","mediaPosition":"right","mediaType":"image","mediaSizeSlug":"full","imageFill":false,"style":{"color":{"background":"#000000","text":"#ffffff"}}} -->
+<div class="wp-block-media-text alignfull has-media-on-the-right is-stacked-on-mobile has-text-color has-background" style="color:#ffffff;background-color:#000000">
+	<div class="wp-block-media-text__content">
+		<!-- wp:heading {"style":{"color":{"text":"#ffffff"}}} -->
+		<h2 class="wp-block-heading has-text-color" style="color:#ffffff;"><?php esc_html_e( 'Get cozy this fall with knit sweaters', 'woo-gutenberg-products-block' ); ?></h2>
 		<!-- /wp:heading -->
 
 		<!-- wp:buttons {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|40"}}}} -->
