@@ -39,6 +39,7 @@ export const supports = {
 		spacing: {
 			margin: true,
 			padding: true,
+			blockGap: true,
 		},
 	} ),
 };
