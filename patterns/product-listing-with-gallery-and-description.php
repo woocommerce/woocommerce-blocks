@@ -18,19 +18,19 @@
 				<div class="wp-block-group">
 					<!-- wp:image {"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}},"className":"is-resized"} -->
 					<figure class="wp-block-image size-thumbnail has-custom-border is-resized">
-						<img src="http://woo-dev.test/wp-content/plugins/woocommerce-blocks/images/pattern-placeholders/desk-table-wood-chair-floor-home-square.png" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px"/>
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/desk-table-wood-chair-floor-home-square.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px"/>
 					</figure>
 					<!-- /wp:image -->
 
 					<!-- wp:image {"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}},"className":"is-resized"} -->
 					<figure class="wp-block-image size-thumbnail has-custom-border is-resized">
-						<img src="http://woo-dev.test/wp-content/plugins/woocommerce-blocks/images/pattern-placeholders/table-floor-interior-atmosphere-living-room-furniture-square.png" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px"/>
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/table-floor-interior-atmosphere-living-room-furniture-square.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px"/>
 					</figure>
 					<!-- /wp:image -->
 
 					<!-- wp:image {"sizeSlug":"thumbnail","linkDestination":"none","style":{"border":{"color":"#dddddd","width":"1px","radius":"5px"}},"className":"is-resized"} -->
 					<figure class="wp-block-image size-thumbnail has-custom-border is-resized">
-						<img src="http://woo-dev.test/wp-content/plugins/woocommerce-blocks/images/pattern-placeholders/table-floor-home-living-room-furniture-room-square.png" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px"/>
+						<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/table-floor-home-living-room-furniture-room-square.png', dirname( __FILE__ ) ) ); ?>" alt="" class="has-border-color" style="border-color:#dddddd;border-width:1px;border-radius:5px"/>
 					</figure>
 					<!-- /wp:image -->
 				</div>
@@ -42,7 +42,7 @@
 			<div class="wp-block-column" style="flex-basis:85%">
 				<!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
 				<figure class="wp-block-image size-full">
-					<img src="http://woo-dev.test/wp-content/plugins/woocommerce-blocks/images/pattern-placeholders/table-wood-chair-floor-living-room-furniture-vertical.png" alt=""/>
+					<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/table-wood-chair-floor-living-room-furniture-vertical.png', dirname( __FILE__ ) ) ); ?>" alt=""/>
 				</figure>
 				<!-- /wp:image -->
 			</div>
