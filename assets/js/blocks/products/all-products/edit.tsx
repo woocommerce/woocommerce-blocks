@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createBlock } from '@wordpress/blocks';
+import { createBlock, BlockInstance } from '@wordpress/blocks';
 import {
 	BlockControls,
 	InnerBlocks,
@@ -20,7 +20,6 @@ import {
 } from '@wordpress/components';
 import { Component } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
-import PropTypes from 'prop-types';
 import { Icon, grid } from '@wordpress/icons';
 import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
 import {
@@ -48,25 +47,37 @@ import { getSharedContentControls, getSharedListControls } from '../edit';
 import Block from './block';
 import './editor.scss';
 
+type EditorAttributes = {
+	columns: number;
+	rows: number;
+	alignButtons: boolean;
+	contentVisibility: object;
+	orderby: string;
+	layoutConfig: Array< number >;
+	isPreview: boolean;
+};
+
+interface EditorProps {
+	block: BlockInstance;
+	attributes: EditorAttributes;
+	debouncedSpeak: ( label: string ) => void;
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
+	replaceInnerBlocks: (
+		rootClientId: string,
+		blocks: BlockInstance[],
+		updateSelection?: boolean
+	) => void;
+}
+
+interface EditorState {
+	isEditing: boolean;
+	innerBlocks: BlockInstance[];
+}
+
 /**
  * Component to handle edit mode of "All Products".
  */
-class Editor extends Component {
-	static propTypes = {
-		/**
-		 * The attributes for this block.
-		 */
-		attributes: PropTypes.object.isRequired,
-		/**
-		 * A callback to update attributes.
-		 */
-		setAttributes: PropTypes.func.isRequired,
-		/**
-		 * From withSpokenMessages.
-		 */
-		debouncedSpeak: PropTypes.func.isRequired,
-	};
-
+class Editor extends Component< EditorProps, EditorState > {
 	state = {
 		isEditing: false,
 		innerBlocks: [],
@@ -74,20 +85,20 @@ class Editor extends Component {
 
 	blockMap = getBlockMap( 'woocommerce/all-products' );
 
-	componentDidMount = () => {
+	componentDidMount = (): void => {
 		const { block } = this.props;
 		this.setState( { innerBlocks: block.innerBlocks } );
 	};
 
-	getTitle = () => {
+	getTitle = (): string => {
 		return __( 'All Products', 'woo-gutenberg-products-block' );
 	};
 
-	getIcon = () => {
+	getIcon = (): JSX.Element => {
 		return <Icon icon={ grid } />;
 	};
 
-	togglePreview = () => {
+	togglePreview = (): void => {
 		const { debouncedSpeak } = this.props;
 
 		this.setState( { isEditing: ! this.state.isEditing } );
@@ -102,7 +113,7 @@ class Editor extends Component {
 		}
 	};
 
-	getInspectorControls = () => {
+	getInspectorControls = (): JSX.Element => {
 		const { attributes, setAttributes } = this.props;
 		const { columns, rows, alignButtons } = attributes;
 
@@ -139,7 +150,7 @@ class Editor extends Component {
 		);
 	};
 
-	getBlockControls = () => {
+	getBlockControls = (): JSX.Element => {
 		const { isEditing } = this.state;
 
 		return (
@@ -180,7 +191,7 @@ class Editor extends Component {
 
 		const onReset = () => {
 			const { block, replaceInnerBlocks } = this.props;
-			const newBlocks = [];
+			const newBlocks: BlockInstance[] = [];
 			DEFAULT_PRODUCT_LIST_LAYOUT.map( ( [ name, attributes ] ) => {
 				newBlocks.push( createBlock( name, attributes ) );
 				return true;
@@ -193,6 +204,7 @@ class Editor extends Component {
 			template: this.props.attributes.layoutConfig,
 			templateLock: false,
 			allowedBlocks: Object.keys( this.blockMap ),
+			renderAppender: true,
 		};
 
 		if ( this.props.attributes.layoutConfig.length !== 0 ) {
@@ -222,6 +234,7 @@ class Editor extends Component {
 									<ProductDataContextProvider
 										product={ previewProducts[ 0 ] }
 									>
+										{ /* @ts-expect-error: `InnerBlocks` is a component that is typed in WordPress core*/ }
 										<InnerBlocks { ...InnerBlockProps } />
 									</ProductDataContextProvider>
 								</li>
@@ -276,6 +289,7 @@ class Editor extends Component {
 
 		return (
 			<Disabled>
+				{ /* @ts-expect-error: `Block` is a component that is typed in WordPress core*/ }
 				<Block attributes={ attributes } />
 			</Disabled>
 		);

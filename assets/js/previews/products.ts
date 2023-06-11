@@ -3,13 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
+import { ProductResponseItem } from '@woocommerce/types';
 
 const shortDescription = __(
 	'Fly your WordPress banner with this beauty! Deck out your office space or add it to your kids walls. This banner will spruce up any space it’s hung!',
 	'woo-gutenberg-products-block'
 );
 
-export const previewProducts = [
+export const previewProducts: Array< ProductResponseItem > = [
 	{
 		id: 1,
 		name: 'WordPress Pennant',
@@ -33,7 +34,7 @@ export const previewProducts = [
 				sizes: '',
 			},
 		],
-		average_rating: 5,
+		average_rating: '5',
 		categories: [
 			{
 				id: 1,
@@ -58,6 +59,10 @@ export const previewProducts = [
 		add_to_cart: {
 			text: __( 'Add to cart', 'woo-gutenberg-products-block' ),
 			description: __( 'Add to cart', 'woo-gutenberg-products-block' ),
+			url: '',
+			minimum: 1,
+			maximum: 99,
+			multiple_of: 1,
 		},
 		has_options: false,
 		is_purchasable: true,
