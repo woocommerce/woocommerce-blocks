@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import { createContext, useContext } from '@wordpress/element';
 
 /**
@@ -20,11 +19,17 @@ const InnerBlockLayoutContext = createContext( {
 export const useInnerBlockLayoutContext = () =>
 	useContext( InnerBlockLayoutContext );
 
+interface InnerBlockLayoutContextProviderProps {
+	parentName?: string;
+	parentClassName?: string;
+	children: React.ReactNode;
+}
+
 export const InnerBlockLayoutContextProvider = ( {
 	parentName = '',
 	parentClassName = '',
 	children,
-} ) => {
+}: InnerBlockLayoutContextProviderProps ) => {
 	const contextValue = {
 		parentName,
 		parentClassName,
@@ -34,10 +39,4 @@ export const InnerBlockLayoutContextProvider = ( {
 			{ children }
 		</InnerBlockLayoutContext.Provider>
 	);
-};
-
-InnerBlockLayoutContextProvider.propTypes = {
-	children: PropTypes.node,
-	parentName: PropTypes.string,
-	parentClassName: PropTypes.string,
 };
