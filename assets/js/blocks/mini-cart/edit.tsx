@@ -12,10 +12,11 @@ import {
 	__experimentalToggleGroupControl as ToggleGroupControl,
 } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
-import { __ } from '@wordpress/i18n';
+import { __, isRTL } from '@wordpress/i18n';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
+import { isSiteEditorPage } from '@woocommerce/utils';
 import type { ReactElement } from 'react';
-import { useSelect } from '@wordpress/data';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -41,7 +42,7 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 		className: `wc-block-mini-cart`,
 	} );
 
-	const isSiteEditor = useSelect( 'core/edit-site' ) !== undefined;
+	const isSiteEditor = isSiteEditorPage( select( 'core/edit-site' ) );
 
 	const templatePartEditUri = getSetting(
 		'templatePartEditUri',
@@ -118,7 +119,11 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 						<>
 							<img
 								className="wc-block-editor-mini-cart__drawer-image"
-								src="/wp-content/plugins/woocommerce-blocks/images/blocks/mini-cart/cart-drawer.svg"
+								src={
+									isRTL()
+										? '/wp-content/plugins/woocommerce-blocks/images/blocks/mini-cart/cart-drawer-rtl.svg'
+										: '/wp-content/plugins/woocommerce-blocks/images/blocks/mini-cart/cart-drawer.svg'
+								}
 								alt=""
 							/>
 							<p>
