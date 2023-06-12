@@ -18,6 +18,8 @@ const Block = ( {
 	attributes,
 	context,
 	rawPrice,
+	minPrice,
+	maxPrice,
 	currency,
 }: Props ): JSX.Element | null => {
 	const { className } = attributes;
@@ -51,6 +53,8 @@ const Block = ( {
 			price={
 				isDescendentOfSingleProductTemplate ? pricePreview : rawPrice
 			}
+			minPrice={ minPrice }
+			maxPrice={ maxPrice }
 		/>
 	);
 };

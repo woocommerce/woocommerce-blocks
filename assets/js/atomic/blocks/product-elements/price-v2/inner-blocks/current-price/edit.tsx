@@ -33,6 +33,8 @@ const CurrentPriceEdit = ( { attributes, context }: Props ): JSX.Element => {
 		currency,
 		context,
 		rawPrice: currentPrice,
+		minPrice: product?.prices?.price_range?.min_amount,
+		maxPrice: product?.prices?.price_range?.max_amount,
 		priceType: 'current',
 	};
 	return (
