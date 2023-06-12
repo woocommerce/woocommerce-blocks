@@ -49,7 +49,7 @@ const Block = ( {
 			style={ style }
 			priceClassName={ priceClassName }
 			currency={ currency }
-			withSuperScript={ context[ 'woocommerce/withSuperScriptStyle' ] }
+			withSuperScript={ context?.[ 'woocommerce/withSuperScriptStyle' ] }
 			price={
 				isDescendentOfSingleProductTemplate ? pricePreview : rawPrice
 			}
