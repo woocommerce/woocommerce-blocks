@@ -53,7 +53,7 @@ type EditorAttributes = {
 	alignButtons: boolean;
 	contentVisibility: object;
 	orderby: string;
-	layoutConfig: Array< number >;
+	layoutConfig: Array< object >;
 	isPreview: boolean;
 };
 
@@ -233,6 +233,7 @@ class Editor extends Component< EditorProps, EditorState > {
 								<li className="wc-block-grid__product">
 									<ProductDataContextProvider
 										product={ previewProducts[ 0 ] }
+										isLoading={ false }
 									>
 										{ /* @ts-expect-error: `InnerBlocks` is a component that is typed in WordPress core*/ }
 										<InnerBlocks { ...InnerBlockProps } />
