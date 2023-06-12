@@ -36,7 +36,7 @@ const Block = ( {
 		return <ProductPrice className={ wrapperClassName } />;
 	}
 
-	const pricePreview = '5000';
+	const pricePreview = '3000';
 	const priceClassName = classnames( {
 		[ `${ parentClassName }__product-${ priceType }-price__value` ]:
 			parentClassName,
@@ -46,7 +46,6 @@ const Block = ( {
 		<ProductPrice
 			className={ wrapperClassName }
 			style={ style }
-			priceStyle={ style }
 			priceClassName={ priceClassName }
 			currency={ currency }
 			withSuperScript={ context[ 'woocommerce/withSuperScriptStyle' ] }

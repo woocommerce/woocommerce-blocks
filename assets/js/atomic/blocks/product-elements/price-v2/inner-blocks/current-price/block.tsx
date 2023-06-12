@@ -45,7 +45,6 @@ const Block = ( {
 		<ProductPrice
 			className={ wrapperClassName }
 			style={ style }
-			priceStyle={ style }
 			priceClassName={ priceClassName }
 			currency={ currency }
 			withSuperScript={ context[ 'woocommerce/withSuperScriptStyle' ] }
