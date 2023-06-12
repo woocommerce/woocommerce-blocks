@@ -7,8 +7,11 @@
 	display: flex;
 	flex-direction: column;
 	max-width: 900px;
-	width: 400px;
 	margin: auto;
+
+	@media only screen and (min-width: 768px) {
+		width: 400px;
+	}
 }
 
 .wp-block-woocommerce-classic-template__placeholder-warning {
