@@ -6,7 +6,6 @@ import { useQueryStateByKey } from '@woocommerce/base-context/hooks';
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import { useMemo, useEffect, useState } from '@wordpress/element';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import Label from '@woocommerce/base-components/label';
 import {
 	isAttributeQueryCollection,
@@ -31,11 +30,23 @@ import {
 	cleanFilterUrl,
 	maybeUrlContainsFilters,
 	urlContainsAttributeFilter,
+	StoreAttributes,
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 import FilterPlaceholders from './filter-placeholders';
 import { Attributes } from './types';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
+
+interface ActiveFiltersProps {
+	/**
+	 * The attributes for this block.
+	 */
+	attributes: Attributes;
+	/**
+	 * Whether it's in the editor or frontend display.
+	 */
+	isEditor?: boolean;
+}
 
 /**
  * Component displaying active filters.
@@ -47,10 +58,7 @@ import { useSetWraperVisibility } from '../filter-wrapper/context';
 const ActiveFiltersBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
-}: {
-	attributes: Attributes;
-	isEditor?: boolean;
-} ) => {
+}: ActiveFiltersProps ) => {
 	const setWrapperVisibility = useSetWraperVisibility();
 	const isMounted = useIsMounted();
 	const componentHasMounted = isMounted();
@@ -81,7 +89,7 @@ const ActiveFiltersBlock = ( {
 		useQueryStateByKey( 'rating' );
 
 	const STOCK_STATUS_OPTIONS = getSetting( 'stockStatusOptions', [] );
-	const STORE_ATTRIBUTES = getSetting( 'attributes', [] );
+	const STORE_ATTRIBUTES: StoreAttributes[] = getSetting( 'attributes', [] );
 	const activeStockStatusFilters = useMemo( () => {
 		if (
 			shouldShowLoadingPlaceholders ||
@@ -411,17 +419,6 @@ const ActiveFiltersBlock = ( {
 			</div>
 		</>
 	);
-};
-
-ActiveFiltersBlock.propTypes = {
-	/**
-	 * The attributes for this block.
-	 */
-	attributes: PropTypes.object.isRequired,
-	/**
-	 * Whether it's in the editor or frontend display.
-	 */
-	isEditor: PropTypes.bool,
 };
 
 export default ActiveFiltersBlock;
