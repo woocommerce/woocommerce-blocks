@@ -351,6 +351,8 @@ const registerClassicTemplateBlock = ( {
  * This function replaces the 'core/missing' block with the original Classic Template block that failed
  * to render, allowing the block to be displayed correctly.
  *
+ * @see {@link https://github.com/woocommerce/woocommerce-blocks/issues/9637|Issue: Block error is displayed on clearing customizations for Woo Templates}
+ *
  */
 const tryToRecoverClassicTemplateBlockWhenItFailsToRender = debounce( () => {
 	const blocks = select( 'core/block-editor' ).getBlocks();
