@@ -15,6 +15,8 @@ export interface BlockAttributes {
 
 export interface PriceContext {
 	isDescendentOfSingleProductTemplate: boolean;
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	'woocommerce/withSuperScriptStyle'?: boolean;
 }
 
 export interface PriceAttributes {
@@ -26,5 +28,7 @@ export interface PriceProps extends ProductPriceProps {
 	attributes: PriceAttributes;
 	context?: PriceContext;
 	rawPrice?: string;
+	minPrice?: string;
+	maxPrice?: string;
 	priceType: 'original' | 'current';
 }

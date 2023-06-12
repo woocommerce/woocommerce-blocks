@@ -15,7 +15,11 @@ import { useStyleProps } from '@woocommerce/base-hooks';
 /**
  * Internal dependencies
  */
-import { originalPriceName, currentPriceName } from './inner-blocks';
+import {
+	originalPriceName,
+	currentPriceName,
+	priceDiscount,
+} from './inner-blocks';
 import { TEMPLATE } from './template';
 
 interface Attributes {
@@ -134,7 +138,11 @@ const EditBlock = ( {
 		>
 			<div className={ parentClassName }>
 				<InnerBlocks
-					allowedBlocks={ [ originalPriceName, currentPriceName ] }
+					allowedBlocks={ [
+						originalPriceName,
+						currentPriceName,
+						priceDiscount,
+					] }
 					// todo add template for initial price layout
 					template={ TEMPLATE }
 				/>

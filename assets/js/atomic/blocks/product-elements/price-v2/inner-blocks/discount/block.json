@@ -1,0 +1,12 @@
+{
+	"name": "woocommerce/discount",
+	"version": "1.0.0",
+	"icon": "info",
+	"title": "Discount",
+	"description": "Display the discounted amount for a product.",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}
