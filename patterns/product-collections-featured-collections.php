@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Product Collections: Featured Collections
+ * Title: WooCommerce Blocks - Product Collections Featured Collections
  * Slug: woocommerce-blocks/product-collections-featured-collections
  * Categories: WooCommerce
  */
