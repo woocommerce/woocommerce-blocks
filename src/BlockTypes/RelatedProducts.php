@@ -122,8 +122,6 @@ class RelatedProducts extends AbstractBlock {
 		return $content;
 	}
 
-
-
 	/**
 	 * Determines whether the block is a related products block.
 	 *
