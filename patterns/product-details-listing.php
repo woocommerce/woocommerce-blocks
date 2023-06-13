@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Product Details: product listing
+ * Title: WooCommerce Blocks - Product Details Product Listing
  * Slug: woocommerce-blocks/product-details-listing
  * Categories: WooCommerce
  */
