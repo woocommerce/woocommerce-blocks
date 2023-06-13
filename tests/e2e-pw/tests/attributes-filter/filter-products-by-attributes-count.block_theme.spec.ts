@@ -8,7 +8,7 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		page,
 	} ) => {
 		await page.goto(
-			'/active-filters-block/?filter_color=blue&query_type_color=or'
+			'/active-product-filters/?filter_color=blue&query_type_color=or'
 		);
 		await page.waitForLoadState( 'networkidle' );
 
