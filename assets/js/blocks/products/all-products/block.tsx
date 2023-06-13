@@ -7,10 +7,11 @@ import { InnerBlockLayoutContextProvider } from '@woocommerce/shared-context';
 import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
 import { Attributes as ProductListAttributes } from 'assets/js/base/components/product-list/types';
-import { BlockAttributes } from '@wordpress/blocks';
 
 interface BlockProps {
-	attributes: BlockAttributes & ProductListAttributes;
+	attributes: {
+		isPreview?: boolean;
+	} & ProductListAttributes;
 	urlParameterSuffix?: string;
 }
 
