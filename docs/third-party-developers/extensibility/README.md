@@ -47,6 +47,12 @@ In addition to the reference material below, [please see the `block-checkout` pa
 | [DOM Events](./checkout-block/dom-events.md)                                                     | A list of DOM Events used by some blocks to communicate between them and with other parts of WooCommerce.         |
 | [Filter Registry](../../../packages/checkout/filter-registry/README.md)                          | The filter registry allows callbacks to be registered to manipulate certain values.                               |
 
+## Editor
+
+| Document                                                             | Description                                                    |
+| -------------------------------------------------------------------- | -------------------------------------------------------------- |
+| [Curating Editor Experience](./editor/curating-editor-experience.md) | Documentation covering options to influence Editor experience. |
+
 <!-- FEEDBACK -->
 
 ---
