@@ -9,6 +9,20 @@ use WC_Shipping_Method;
 class PickupLocation extends WC_Shipping_Method {
 
 	/**
+	 * Pickup locations.
+	 *
+	 * @var array
+	 */
+	protected $pickup_locations = [];
+
+	/**
+	 * Cost
+	 *
+	 * @var string
+	 */
+	protected $cost = '';
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -42,6 +56,7 @@ class PickupLocation extends WC_Shipping_Method {
 				if ( ! $location['enabled'] ) {
 					continue;
 				}
+				$has_pickup_address = ! empty( $location['address'] ) && ! empty( $location['address']['city'] ) && ! empty( $location['address']['state'] ) && ! empty( $location['address']['country'] );
 				$this->add_rate(
 					array(
 						'id'        => $this->id . ':' . $index,
@@ -51,7 +66,7 @@ class PickupLocation extends WC_Shipping_Method {
 						'cost'      => $this->cost,
 						'meta_data' => array(
 							'pickup_location' => wp_kses_post( $location['name'] ),
-							'pickup_address'  => wc()->countries->get_formatted_address( $location['address'], ', ' ),
+							'pickup_address'  => $has_pickup_address ? wc()->countries->get_formatted_address( $location['address'], ', ' ) : '',
 							'pickup_details'  => wp_kses_post( $location['details'] ),
 						),
 					)
