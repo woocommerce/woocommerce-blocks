@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Product Hero
+ * Title: WooCommerce Blocks - Product Hero
  * Slug: woocommerce-blocks/product-hero
  * Categories: WooCommerce
  */
