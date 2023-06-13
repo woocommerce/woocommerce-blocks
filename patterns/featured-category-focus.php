@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Featured Category Focus
+ * Title: WooCommerce Blocks - Featured Category Focus
  * Slug: woocommerce-blocks/featured-category-focus
  * Categories: WooCommerce
  */
