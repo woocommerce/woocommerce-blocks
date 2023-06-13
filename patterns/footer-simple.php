@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Simple Footer
+ * Title: WooCommerce Blocks - Simple Footer
  * Slug: woocommerce-blocks/footer-simple
  * Categories: WooCommerce
  * Block Types: core/template-part/footer
