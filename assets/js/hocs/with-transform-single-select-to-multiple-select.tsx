@@ -6,8 +6,10 @@
 // eslint-disable-next-line
 import { FunctionComponent } from '@wordpress/element';
 
+type SelectedOption = number | string | null | number[] | string[];
+
 interface OriginalComponentProps {
-	selected?: number | string | null;
+	selected?: SelectedOption;
 }
 
 /**
@@ -20,8 +22,8 @@ const withTransformSingleSelectToMultipleSelect = (
 ) => {
 	return ( props: OriginalComponentProps ): JSX.Element => {
 		let { selected } = props;
-		selected = selected || null;
-		const isNil = selected === null || selected === undefined;
+		selected = selected === undefined ? null : selected;
+		const isNil = selected === null;
 
 		return Array.isArray( selected ) ? (
 			<OriginalComponent { ...props } />
