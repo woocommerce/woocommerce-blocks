@@ -248,6 +248,7 @@ const Edit = ( {
 				</PanelBody>
 			</InspectorControls>
 			{ colorGradientSettings.hasColorsOrGradients && (
+				// @ts-to-do: Fix outdated InspectorControls type definitions in DefinitelyTyped and/or Gutenberg.
 				<InspectorControls group="color">
 					{ colorSettings.map(
 						( { onChange, label, value, resetAllFilter } ) => (
@@ -298,4 +299,10 @@ const miniCartColorAttributes = {
 	productCountColor: 'product-count-color',
 };
 
-export default withColors( miniCartColorAttributes )( Edit );
+// @ts-to-do: TypeScript doesn't resolve the shared react dependency and cannot resolve the type returned by `withColors`.
+// Similar issue example: https://github.com/microsoft/TypeScript/issues/47663
+const EditWithColors: JSX.Element = withColors( miniCartColorAttributes )(
+	Edit
+);
+
+export default EditWithColors;
