@@ -9,10 +9,8 @@ ul.products-block-post-template {
 			display: flex;
 			flex-direction: column;
 
-			.wp-block-woocommerce-product-button {
+			> :last-child {
 				margin-top: auto;
-				margin-left: auto;
-				margin-right: auto;
 			}
 		}
 	}

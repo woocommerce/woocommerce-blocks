@@ -31,10 +31,8 @@ $break-small: 600px;
 			display: flex;
 			flex-direction: column;
 
-			.wc-block-components-product-button {
+			> :last-child {
 				margin-top: auto;
-				margin-left: auto;
-				margin-right: auto;
 			}
 		}
 
