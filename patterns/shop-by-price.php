@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Shop by Price
+ * Title: WooCommerce Blocks - Shop by Price
  * Slug: woocommerce-blocks/shop-by-price
  * Categories: WooCommerce
  */
