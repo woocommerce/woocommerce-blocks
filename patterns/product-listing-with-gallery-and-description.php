@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Product Listing with Gallery and Description
+ * Title: WooCommerce Blocks - Product Listing with Gallery and Description
  * Slug: woocommerce-blocks/product-listing-with-gallery-and-description
  * Categories: WooCommerce
  */
