@@ -48,6 +48,7 @@ class BlockPatterns {
 		$this->patterns_path = $package->get_path( 'patterns' );
 
 		add_action( 'init', array( $this, 'register_block_patterns' ) );
+		add_theme_support( 'woocommerce-blocks-patterns' );
 	}
 
 	/**
@@ -55,6 +56,12 @@ class BlockPatterns {
 	 */
 	public function register_block_patterns() {
 		if ( ! class_exists( 'WP_Block_Patterns_Registry' ) ) {
+			return;
+		}
+
+		$supports_wc_blocks_patterns = get_theme_support( 'woocommerce-blocks-patterns' );
+
+		if ( ! $supports_wc_blocks_patterns ) {
 			return;
 		}
 
