@@ -34,6 +34,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import type { BlockAttributes } from './types';
 import QuantityBadge from './quantity-badge';
 import { MiniCartContentsBlock } from './mini-cart-contents/block';
 import './style.scss';
@@ -42,17 +43,7 @@ import {
 	attributes as miniCartContentsAttributes,
 } from './mini-cart-contents/attributes';
 
-interface Props {
-	isInitiallyOpen?: boolean;
-	colorClassNames?: string;
-	style?: Record< string, Record< string, string > >;
-	contents: string;
-	addToCartBehaviour: string;
-	hasHiddenPrice: boolean;
-	priceColorValue: string;
-	iconColorValue: string;
-	productCountColorValue: string;
-}
+type Props = BlockAttributes;
 
 function getScrollbarWidth() {
 	return window.innerWidth - document.documentElement.clientWidth;
@@ -63,6 +54,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 		isInitiallyOpen = false,
 		colorClassNames,
 		contents = '',
+		miniCartIcon,
 		addToCartBehaviour = 'none',
 		hasHiddenPrice = false,
 		priceColorValue,
@@ -276,6 +268,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				) }
 				<QuantityBadge
 					count={ cartItemsCount }
+					icon={ miniCartIcon }
 					iconColor={ iconColorValue }
 					productCountColor={ productCountColorValue }
 				/>
