@@ -20,7 +20,7 @@ import {
 } from '../../utils.js';
 
 const block = {
-	name: 'Add to Cart form',
+	name: 'Add to Cart with Options',
 	slug: 'woocommerce/add-to-cart-form',
 	class: '.wc-block-add-to-cart-form',
 };
@@ -54,7 +54,6 @@ describe( `${ block.name } Block`, () => {
 		} );
 
 		it( 'can be inserted more than once', async () => {
-			await insertBlockDontWaitForInsertClose( block.name );
 			await insertBlockDontWaitForInsertClose( block.name );
 			const filteredBlocks = await filterCurrentBlocks(
 				( b ) => b.name === block.slug

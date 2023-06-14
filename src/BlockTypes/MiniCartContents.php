@@ -4,7 +4,7 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
 /**
- * Mini Cart class.
+ * Mini-Cart Contents class.
  *
  * @internal
  */
@@ -40,13 +40,13 @@ class MiniCartContents extends AbstractBlock {
 	 * @return null
 	 */
 	protected function get_block_type_script( $key = null ) {
-		// The frontend script is a dependency of the Mini Cart block so it's
+		// The frontend script is a dependency of the Mini-Cart block so it's
 		// already lazy-loaded.
 		return null;
 	}
 
 	/**
-	 * Render the markup for the Mini Cart contents block.
+	 * Render the markup for the Mini-Cart Contents block.
 	 *
 	 * @param array    $attributes Block attributes.
 	 * @param string   $content    Block content.
@@ -75,15 +75,6 @@ class MiniCartContents extends AbstractBlock {
 
 		$styles = array(
 			array(
-				'selector'   => '.wc-block-mini-cart__drawer .components-modal__header',
-				'properties' => array(
-					array(
-						'property' => 'color',
-						'value'    => $text_color ? $text_color['value'] : false,
-					),
-				),
-			),
-			array(
 				'selector'   => array(
 					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout',
 					'.wc-block-mini-cart__footer .wc-block-mini-cart__footer-actions .wc-block-mini-cart__footer-checkout:hover',
@@ -111,6 +102,9 @@ class MiniCartContents extends AbstractBlock {
 		);
 
 		$parsed_style = '';
+		if ( array_key_exists( 'width', $attributes ) ) {
+			$parsed_style .= ':root{--drawer-width: ' . esc_html( $attributes['width'] ) . '}';
+		}
 
 		foreach ( $styles as $style ) {
 			$selector = is_array( $style['selector'] ) ? implode( ',', $style['selector'] ) : $style['selector'];
@@ -138,7 +132,7 @@ class MiniCartContents extends AbstractBlock {
 	}
 
 	/**
-	 * Get list of Mini Cart block & its inner-block types.
+	 * Get list of Mini-Cart Contents block & its inner-block types.
 	 *
 	 * @return array;
 	 */

@@ -7,12 +7,6 @@
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 ###################################################################################################
-# Install the WordPress Importer plugin and activate it
-###################################################################################################
-
-wp-env run tests-cli "wp plugin install wordpress-importer --activate"
-
-###################################################################################################
 # Empty site to prevent conflicts with existing data
 ###################################################################################################
 
@@ -22,17 +16,17 @@ wp-env run tests-cli "wp site empty --yes"
 # If no attributes exist, otherwiese create them
 ###################################################################################################
 
-attributes=$(wp-env run tests-cli "wc product_attribute list --format=json --user=1")
+attributes=$(wp-env run tests-cli "wp wc product_attribute list --format=json --user=1")
 
 if [ -z "$attributes" ] || [ "$attributes" == "[]" ]; then
-    pa_color=$(wp-env run tests-cli "wc product_attribute create \
+    pa_color=$(wp-env run tests-cli "wp wc product_attribute create \
         --name=Color \
         --slug=pa_color \
         --user=1 \
         --porcelain \
     ")
 
-    pa_size=$(wp-env run tests-cli "wc product_attribute create \
+    pa_size=$(wp-env run tests-cli "wp wc product_attribute create \
         --name=Size \
         --slug=pa_size \
         --user=1 \
@@ -41,9 +35,8 @@ if [ -z "$attributes" ] || [ "$attributes" == "[]" ]; then
 fi
 
 ###################################################################################################
-# Import sample products and egenerate product lookup tables
+# Import sample products and regenerate product lookup tables
 ###################################################################################################
-
 wp-env run tests-cli "wp import wp-content/plugins/woocommerce/sample-data/sample_products.xml --authors=skip"
 wp-env run tests-cli "wp wc tool run regenerate_product_lookup_tables --user=1"
 
@@ -138,7 +131,7 @@ post_content=$(cat "${script_dir}/mini-cart.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
-	--post_title='Mini Cart block' \
+	--post_title='Mini-Cart block' \
 	--post_content=\"$post_content\"
 "
 
@@ -211,14 +204,6 @@ wp-env run tests-cli "wp post create \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='On Sale Products block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/product-category.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Products by Category block' \
 	--post_content=\"$post_content\"
 "
 
@@ -342,9 +327,10 @@ wp-env run tests-cli "wp wc tax create \
 ###################################################################################################
 # Adjust and flush rewrite rules
 ###################################################################################################
-
-wp-env run tests-cli "wp rewrite structure /%postname%/"
-wp-env run tests-cli "wp rewrite flush"
+# Currently, the rewrite rules don't work properly in the test environment: https://github.com/WordPress/gutenberg/issues/28201
+wp-env run tests-wordpress "chmod -c ugo+w /var/www/html"
+wp-env run tests-cli "wp rewrite structure /%postname%/ --hard"
+wp-env run tests-cli "wp rewrite flush --hard"
 
 ###################################################################################################
 # Create a customer

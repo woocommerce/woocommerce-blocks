@@ -7,11 +7,7 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import {
-	useColorProps,
-	useSpacingProps,
-	useTypographyProps,
-} from '@woocommerce/base-hooks';
+import { useStyleProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import { isNumber, ProductResponseItem } from '@woocommerce/types';
 
@@ -20,19 +16,10 @@ import { isNumber, ProductResponseItem } from '@woocommerce/types';
  */
 import './style.scss';
 
-type Props = {
-	textAlign?: string;
-	className?: string;
-};
-
 type RatingProps = {
 	reviews: number;
 	rating: number;
 	parentClassName?: string;
-};
-
-type AddReviewProps = {
-	href?: string;
 };
 
 const getAverageRating = (
@@ -45,11 +32,6 @@ const getAverageRating = (
 	return Number.isFinite( rating ) && rating > 0 ? rating : 0;
 };
 
-const getReviewsHref = ( product: ProductResponseItem ) => {
-	const { permalink } = product;
-	return `${ permalink }#reviews`;
-};
-
 const getRatingCount = ( product: ProductResponseItem ) => {
 	const count = isNumber( product.review_count )
 		? product.review_count
@@ -58,12 +40,35 @@ const getRatingCount = ( product: ProductResponseItem ) => {
 	return Number.isFinite( count ) && count > 0 ? count : 0;
 };
 
+const getStarStyle = ( rating: number ) => ( {
+	width: ( rating / 5 ) * 100 + '%',
+} );
+
+const NoRating = ( { parentClassName }: { parentClassName: string } ) => {
+	const starStyle = getStarStyle( 0 );
+
+	return (
+		<div
+			className={ classnames(
+				'wc-block-components-product-rating__norating-container',
+				`${ parentClassName }-product-rating__norating-container`
+			) }
+		>
+			<div
+				className={ 'wc-block-components-product-rating__norating' }
+				role="img"
+			>
+				<span style={ starStyle } />
+			</div>
+			<span>{ __( 'No Reviews', 'woo-gutenberg-products-block' ) }</span>
+		</div>
+	);
+};
+
 const Rating = ( props: RatingProps ): JSX.Element => {
 	const { rating, reviews, parentClassName } = props;
 
-	const starStyle = {
-		width: ( rating / 5 ) * 100 + '%',
-	};
+	const starStyle = getStarStyle( rating );
 
 	const ratingText = sprintf(
 		/* translators: %f is referring to the average rating value */
@@ -98,45 +103,60 @@ const Rating = ( props: RatingProps ): JSX.Element => {
 	);
 };
 
-const AddReview = ( props: AddReviewProps ): JSX.Element | null => {
-	const { href } = props;
-	const label = __( 'Add review', 'woo-gutenberg-products-block' );
+const ReviewsCount = ( props: { reviews: number } ): JSX.Element => {
+	const { reviews } = props;
 
-	return href ? (
-		<a className="wc-block-components-product-rating__link" href={ href }>
-			{ label }
-		</a>
-	) : null;
+	const reviewsCount = sprintf(
+		/* translators: %s is referring to the total of reviews for a product */
+		_n(
+			'(%s customer review)',
+			'(%s customer reviews)',
+			reviews,
+			'woo-gutenberg-products-block'
+		),
+		reviews
+	);
+
+	return (
+		<span className="wc-block-components-product-rating__reviews_count">
+			{ reviewsCount }
+		</span>
+	);
 };
 
-/**
- * Product Rating Block Component.
- *
- * @param {Object} props             Incoming props.
- * @param {string} [props.className] CSS Class name for the component.
- * @param {string} [props.textAlign] Text alignment.
- *
- * @return {*} The component.
- */
-export const Block = ( props: Props ): JSX.Element | null => {
-	const { textAlign } = props;
+interface ProductRatingProps {
+	className?: string;
+	textAlign?: string;
+	isDescendentOfSingleProductBlock: boolean;
+	isDescendentOfQueryLoop: boolean;
+	postId: number;
+	productId: number;
+	shouldDisplayMockedReviewsWhenProductHasNoReviews: boolean;
+}
+
+export const Block = ( props: ProductRatingProps ): JSX.Element | null => {
+	const {
+		textAlign,
+		isDescendentOfSingleProductBlock,
+		shouldDisplayMockedReviewsWhenProductHasNoReviews,
+	} = props;
+	const styleProps = useStyleProps( props );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
 	const rating = getAverageRating( product );
-	const colorProps = useColorProps( props );
-	const typographyProps = useTypographyProps( props );
-	const spacingProps = useSpacingProps( props );
 	const reviews = getRatingCount( product );
-	const href = getReviewsHref( product );
 
 	const className = classnames(
-		colorProps.className,
+		styleProps.className,
 		'wc-block-components-product-rating',
 		{
 			[ `${ parentClassName }__product-rating` ]: parentClassName,
 			[ `has-text-align-${ textAlign }` ]: textAlign,
 		}
 	);
+	const mockedRatings = shouldDisplayMockedReviewsWhenProductHasNoReviews ? (
+		<NoRating parentClassName={ parentClassName } />
+	) : null;
 
 	const content = reviews ? (
 		<Rating
@@ -145,19 +165,17 @@ export const Block = ( props: Props ): JSX.Element | null => {
 			parentClassName={ parentClassName }
 		/>
 	) : (
-		<AddReview href={ href } />
+		mockedRatings
 	);
 
 	return (
-		<div
-			className={ className }
-			style={ {
-				...colorProps.style,
-				...typographyProps.style,
-				...spacingProps.style,
-			} }
-		>
-			{ content }
+		<div className={ className } style={ styleProps.style }>
+			<div className="wc-block-components-product-rating__container">
+				{ content }
+				{ reviews && isDescendentOfSingleProductBlock ? (
+					<ReviewsCount reviews={ reviews } />
+				) : null }
+			</div>
 		</div>
 	);
 };

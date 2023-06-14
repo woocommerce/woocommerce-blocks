@@ -64,10 +64,14 @@ const blocks = {
 	'reviews-by-product': {
 		customDir: 'reviews/reviews-by-product',
 	},
-	'single-product': {
+	'single-product': {},
+	'stock-filter': {},
+	'product-collection': {
 		isExperimental: true,
 	},
-	'stock-filter': {},
+	'product-template': {
+		isExperimental: true,
+	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,

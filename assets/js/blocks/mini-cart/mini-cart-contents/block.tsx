@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { DrawerCloseButton } from '@woocommerce/base-components/drawer';
 
 /**
  * Internal dependencies
@@ -15,12 +16,12 @@ type MiniCartContentsBlockProps = {
 export const MiniCartContentsBlock = (
 	props: MiniCartContentsBlockProps
 ): JSX.Element => {
-	const {
-		children,
-		attributes: { width },
-	} = props;
+	const { children } = props;
 
-	document.documentElement.style.setProperty( '--drawer-width', width );
-
-	return <>{ children }</>;
+	return (
+		<>
+			<DrawerCloseButton />
+			{ children }
+		</>
+	);
 };

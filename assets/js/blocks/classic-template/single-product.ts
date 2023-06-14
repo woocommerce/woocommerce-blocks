@@ -7,6 +7,11 @@ import { BlockInstance, createBlock } from '@wordpress/blocks';
 import { VARIATION_NAME as PRODUCT_TITLE_VARIATION_NAME } from '@woocommerce/blocks/product-query/variations/elements/product-title';
 import { VARIATION_NAME as PRODUCT_SUMMARY_VARIATION_NAME } from '@woocommerce/blocks/product-query/variations/elements/product-summary';
 
+/**
+ * Internal dependencies
+ */
+import { OnClickCallbackParameter } from './types';
+
 const getBlockifiedTemplate = () =>
 	[
 		createBlock( 'woocommerce/breadcrumbs' ),
@@ -28,7 +33,9 @@ const getBlockifiedTemplate = () =>
 				createBlock( 'core/column', {}, [
 					createBlock( 'core/post-title', {
 						__woocommerceNamespace: PRODUCT_TITLE_VARIATION_NAME,
+						level: 1,
 					} ),
+					createBlock( 'woocommerce/product-rating' ),
 					createBlock( 'woocommerce/product-price', {
 						fontSize: 'large',
 					} ),
@@ -58,7 +65,7 @@ const getDescriptionAllowingConversion = ( templateTitle: string ) =>
 	sprintf(
 		/* translators: %s is the template title */
 		__(
-			"This block serves as a placeholder for your %s. We recommend upgrading to the Single Products block for more features to edit your products visually. Don't worry, you can always revert back.",
+			'Transform this template into multiple blocks so you can add, remove, reorder, and customize your %s template.',
 			'woo-gutenberg-products-block'
 		),
 		templateTitle
@@ -83,14 +90,34 @@ const getDescription = ( templateTitle: string, canConvert: boolean ) => {
 };
 
 const getButtonLabel = () =>
-	__(
-		'Upgrade to Blockified Single Product template',
-		'woo-gutenberg-products-block'
+	__( 'Transform into blocks', 'woo-gutenberg-products-block' );
+
+const onClickCallback = ( {
+	clientId,
+	getBlocks,
+	replaceBlock,
+	selectBlock,
+}: OnClickCallbackParameter ) => {
+	replaceBlock( clientId, getBlockifiedTemplate() );
+
+	const blocks = getBlocks();
+	const groupBlock = blocks.find(
+		( block ) =>
+			block.name === 'core/group' &&
+			block.innerBlocks.some(
+				( innerBlock ) => innerBlock.name === 'woocommerce/breadcrumbs'
+			)
 	);
+
+	if ( groupBlock ) {
+		selectBlock( groupBlock.clientId );
+	}
+};
 
 export {
 	getBlockifiedTemplate,
 	isConversionPossible,
 	getDescription,
 	getButtonLabel,
+	onClickCallback,
 };

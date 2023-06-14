@@ -15,19 +15,19 @@ import edit from './edit';
 
 const settings: BlockConfiguration = {
 	apiVersion: 2,
-	title: __( 'Mini Cart', 'woo-gutenberg-products-block' ),
+	title: __( 'Mini-Cart', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: (
 			<Icon
 				icon={ miniCartAlt }
-				className="wc-block-editor-components-block-icon"
+				className="wc-block-editor-components-block-icon wc-block-editor-mini-cart__icon"
 			/>
 		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
 	description: __(
-		'Display a mini cart widget.',
+		'Display a button for shoppers to quickly view their cart.',
 		'woo-gutenberg-products-block'
 	),
 	supports: {
@@ -52,6 +52,10 @@ const settings: BlockConfiguration = {
 		isPreview: {
 			type: 'boolean',
 			default: false,
+		},
+		miniCartIcon: {
+			type: 'string',
+			default: 'cart',
 		},
 		addToCartBehaviour: {
 			type: 'string',

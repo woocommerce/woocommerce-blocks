@@ -1,14 +1,13 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {
 	AddToCartFormContextProvider,
 	useAddToCartFormContext,
 } from '@woocommerce/base-context';
 import { useProductDataContext } from '@woocommerce/shared-context';
-import { isEmpty } from 'lodash';
+import { isEmpty } from '@woocommerce/types';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 
 /**
@@ -83,10 +82,6 @@ const Block = ( { className, showFormElements }: Props ) => {
 			</div>
 		</AddToCartFormContextProvider>
 	);
-};
-
-Block.propTypes = {
-	className: PropTypes.string,
 };
 
 export default withProductDataContext( Block );

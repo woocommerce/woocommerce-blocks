@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import {
 	AlignmentToolbar,
 	BlockControls,
@@ -15,29 +14,47 @@ import { ProductQueryContext as Context } from '@woocommerce/blocks/product-quer
  * Internal dependencies
  */
 import Block from './block';
-import withProductSelector from '../shared/with-product-selector';
-import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 import { BlockAttributes } from './types';
 import './editor.scss';
+import { useIsDescendentOfSingleProductBlock } from '../shared/use-is-descendent-of-single-product-block';
+import { useIsDescendentOfSingleProductTemplate } from '../shared/use-is-descendent-of-single-product-template';
 
-const Edit = ( {
-	attributes,
-	setAttributes,
-	context,
-}: BlockEditProps< BlockAttributes > & { context: Context } ): JSX.Element => {
+const Edit = (
+	props: BlockEditProps< BlockAttributes > & { context: Context }
+): JSX.Element => {
+	const { attributes, setAttributes, context } = props;
 	const blockProps = useBlockProps( {
 		className: 'wp-block-woocommerce-product-rating',
 	} );
 	const blockAttrs = {
 		...attributes,
 		...context,
+		shouldDisplayMockedReviewsWhenProductHasNoReviews: true,
 	};
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
+	const { isDescendentOfSingleProductBlock } =
+		useIsDescendentOfSingleProductBlock( {
+			blockClientId: blockProps?.id,
+		} );
+	let { isDescendentOfSingleProductTemplate } =
+		useIsDescendentOfSingleProductTemplate();
 
-	useEffect(
-		() => setAttributes( { isDescendentOfQueryLoop } ),
-		[ setAttributes, isDescendentOfQueryLoop ]
-	);
+	if ( isDescendentOfQueryLoop || isDescendentOfSingleProductBlock ) {
+		isDescendentOfSingleProductTemplate = false;
+	}
+
+	useEffect( () => {
+		setAttributes( {
+			isDescendentOfQueryLoop,
+			isDescendentOfSingleProductBlock,
+			isDescendentOfSingleProductTemplate,
+		} );
+	}, [
+		setAttributes,
+		isDescendentOfQueryLoop,
+		isDescendentOfSingleProductBlock,
+		isDescendentOfSingleProductTemplate,
+	] );
 
 	return (
 		<>
@@ -55,11 +72,5 @@ const Edit = ( {
 		</>
 	);
 };
-export default withProductSelector( {
-	icon: BLOCK_ICON,
-	label: BLOCK_TITLE,
-	description: __(
-		'Choose a product to display its rating.',
-		'woo-gutenberg-products-block'
-	),
-} )( Edit );
+
+export default Edit;

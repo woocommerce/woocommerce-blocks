@@ -1,9 +1,12 @@
 /**
  * External dependencies
  */
-import { debounce, pick } from 'lodash';
 import { select, dispatch } from '@wordpress/data';
-import { pluckEmail, removeAllNotices } from '@woocommerce/base-utils';
+import {
+	pluckEmail,
+	removeAllNotices,
+	debounce,
+} from '@woocommerce/base-utils';
 import {
 	CartBillingAddress,
 	CartShippingAddress,
@@ -17,7 +20,6 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { STORE_KEY } from './constants';
 import { VALIDATION_STORE_KEY } from '../validation';
 import { processErrorResponse } from '../utils';
-import { shippingAddressHasValidationErrors } from './utils';
 
 type CustomerData = {
 	billingAddress: CartBillingAddress;
@@ -25,6 +27,15 @@ type CustomerData = {
 };
 
 type BillingOrShippingAddress = CartBillingAddress | CartShippingAddress;
+
+const pick = < Type >( object: Type, keys: string[] ): Type => {
+	return keys.reduce( ( obj, key ) => {
+		if ( object && object.hasOwnProperty( key ) ) {
+			obj[ key as keyof Type ] = object[ key as keyof Type ];
+		}
+		return obj;
+	}, {} as Type );
+};
 
 /**
  * Checks if a cart response contains an email property.
@@ -199,11 +210,6 @@ const updateCustomerData = debounce( (): void => {
 							customerDataToUpdate.shipping_address
 						) as BaseAddressKey[] ),
 					];
-				}
-			} )
-			.finally( () => {
-				if ( ! shippingAddressHasValidationErrors() ) {
-					dispatch( STORE_KEY ).setFullShippingAddressPushed( true );
 				}
 			} );
 	}

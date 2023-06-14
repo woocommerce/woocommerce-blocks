@@ -50,13 +50,14 @@ class SingleProduct extends AbstractBlock {
 	 * @return string Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$classname = $attributes['className'] ?? '';
+		$classname          = $attributes['className'] ?? '';
+		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
 
 		$html = sprintf(
-			'<div class="wp-block-woocommerce-single-product %1$s">
+			'<div %1$s>
 				%2$s
 			</div>',
-			esc_attr( $classname ),
+			$wrapper_attributes,
 			$content
 		);
 
@@ -74,7 +75,7 @@ class SingleProduct extends AbstractBlock {
 	 * @return array Updated block context.
 	 */
 	public function update_context( $context, $block, $parent_block ) {
-		if ( 'woocommerce/single-product' == $block['blockName']
+		if ( 'woocommerce/single-product' === $block['blockName']
 			&& isset( $block['attrs']['productId'] ) ) {
 				$this->product_id = $block['attrs']['productId'];
 
@@ -124,19 +125,28 @@ class SingleProduct extends AbstractBlock {
 		if ( $this->single_product_inner_blocks_names ) {
 			$block_name = array_pop( $this->single_product_inner_blocks_names );
 
+			static $global_post_variable_changed;
+
 			if ( $block_name === $block['blockName'] ) {
-				// @todo This is a temporary fix to make the Post Excerpt block work while https://github.com/WordPress/gutenberg/pull/49495 is not merged
-				if ( 'core/post-excerpt' === $block_name ) {
+				/**
+				 * This is a temporary fix to ensure the Post Title and Excerpt blocks work as expected
+				 * until Gutenberg versions 15.2 and 15.6 are included in the core of WordPress.
+				 *
+				 * @see https://github.com/WordPress/gutenberg/pull/48001
+				 * @see https://github.com/WordPress/gutenberg/pull/49495
+				 */
+				if ( 'core/post-excerpt' === $block_name || 'core/post-title' === $block_name ) {
 					global $post;
 					// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-					$post = get_post( $this->product_id );
-					setup_postdata( $post );
+					$post                         = get_post( $this->product_id );
+					$global_post_variable_changed = setup_postdata( $post );
 				}
 				$context['postId'] = $this->product_id;
 			}
 
-			if ( ! $this->single_product_inner_blocks_names ) {
+			if ( ! $this->single_product_inner_blocks_names && $global_post_variable_changed ) {
 				wp_reset_postdata();
+				$global_post_variable_changed = false;
 			}
 		}
 	}
