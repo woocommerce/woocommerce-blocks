@@ -22,17 +22,20 @@ export const useInnerBlockLayoutContext = () =>
 interface InnerBlockLayoutContextProviderProps {
 	parentName?: string;
 	parentClassName?: string;
+	isLoading?: boolean;
 	children: React.ReactNode;
 }
 
 export const InnerBlockLayoutContextProvider = ( {
 	parentName = '',
 	parentClassName = '',
+	isLoading = false,
 	children,
 }: InnerBlockLayoutContextProviderProps ) => {
 	const contextValue = {
 		parentName,
 		parentClassName,
+		isLoading,
 	};
 	return (
 		<InnerBlockLayoutContext.Provider value={ contextValue }>
