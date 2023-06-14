@@ -54,4 +54,14 @@ class CatalogSorting extends AbstractBlock {
 	protected function get_block_type_script( $key = null ) {
 		return null;
 	}
+
+	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @see $this->register_block_type()
+	 * @return string[]|null
+	 */
+	protected function get_block_type_style() {
+		return null;
+	}
 }

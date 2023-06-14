@@ -109,6 +109,16 @@ class MiniCart extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @see $this->register_block_type()
+	 * @return string[]|null
+	 */
+	protected function get_block_type_style() {
+		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
+	}
+
+	/**
 	 * Extra data passed through from server to client for block.
 	 *
 	 * @param array $attributes  Any attributes that currently are available from the block.

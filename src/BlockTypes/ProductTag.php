@@ -67,4 +67,13 @@ class ProductTag extends AbstractProductGrid {
 		$this->asset_data_registry->add( 'hasTags', $tag_count > 0, true );
 		$this->asset_data_registry->add( 'limitTags', $tag_count > 100, true );
 	}
+
+	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return string[]|null
+	 */
+	protected function get_block_type_style() {
+		return null;
+	}
 }

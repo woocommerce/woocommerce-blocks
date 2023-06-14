@@ -21,6 +21,15 @@ class ProductReviews extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return string[]|null
+	 */
+	protected function get_block_type_style() {
+		return null;
+	}
+
+	/**
 	 * Render the block.
 	 *
 	 * @param array    $attributes Block attributes.
