@@ -339,7 +339,7 @@ const miniCartColorAttributes = {
 	productCountColor: 'product-count-color',
 };
 
-// @ts-to-do: TypeScript doesn't resolve the shared react dependency and cannot resolve the type returned by `withColors`.
+// @ts-expect-error: TypeScript doesn't resolve the shared React dependency and cannot resolve the type returned by `withColors`.
 // Similar issue example: https://github.com/microsoft/TypeScript/issues/47663
 const EditWithColors: JSX.Element = withColors( miniCartColorAttributes )(
 	Edit
