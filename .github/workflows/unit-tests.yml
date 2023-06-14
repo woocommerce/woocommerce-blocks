@@ -19,7 +19,7 @@ concurrency:
 jobs:
   JSUnitTests:
     name: JS Unit Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     if: ${{ github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' }}
     
     strategy:
@@ -47,7 +47,7 @@ jobs:
   
   PHPUnitTests:
     name: PHP ${{ matrix.php }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     timeout-minutes: 20
     if: ${{ github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' }}
     strategy:
