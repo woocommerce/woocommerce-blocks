@@ -100,25 +100,25 @@ const prepareAttributes = async ( config: FullConfig ) => {
 		await dialog.accept();
 	} );
 
-	await page.goto( '/wp-admin/admin.php?page=wc-status&tab=tools' );
+	// await page.goto( '/wp-admin/admin.php?page=wc-status&tab=tools' );
 
-	await page.click( '.regenerate_product_attributes_lookup_table input' );
+	// await page.click( '.regenerate_product_attributes_lookup_table input' );
 
 	await context.close();
 	await browser.close();
 
-	/*
-	 * Note that the two commands below are intentionally
-	 * duplicated as we need to run the cron task twice as
-	 * we need to process more than 1 batch of items.
-	 */
-	await cli(
-		`npm run wp-env run tests-cli wp action-scheduler run --hooks="woocommerce_run_product_attribute_lookup_regeneration_callback"`
-	);
+	// /*
+	//  * Note that the two commands below are intentionally
+	//  * duplicated as we need to run the cron task twice as
+	//  * we need to process more than 1 batch of items.
+	//  */
+	// await cli(
+	// 	`npm run wp-env run tests-cli wp action-scheduler run --hooks="woocommerce_run_product_attribute_lookup_regeneration_callback"`
+	// );
 
-	await cli(
-		`npm run wp-env run tests-cli wp action-scheduler run --hooks="woocommerce_run_product_attribute_lookup_regeneration_callback"`
-	);
+	// await cli(
+	// 	`npm run wp-env run tests-cli wp action-scheduler run --hooks="woocommerce_run_product_attribute_lookup_regeneration_callback"`
+	// );
 };
 
 async function globalSetup( config: FullConfig ) {
