@@ -1,31 +1,18 @@
 /**
  * External dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
-import { Icon, category } from '@wordpress/icons';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
-import edit from './edit';
 import type { BlockAttributes } from './types';
 import { blockAttributes } from './attributes';
 import metadata from './block.json';
-import v1 from './v1';
 
-registerBlockType( metadata, {
-	deprecated: [ v1 ],
-	icon: {
-		src: (
-			<Icon
-				icon={ category }
-				className="wc-block-editor-components-block-icon"
-			/>
-		),
-	},
+const v1 = {
 	supports: {
 		...metadata.supports,
 		...( isFeaturePluginBuild() && {
@@ -38,11 +25,13 @@ registerBlockType( metadata, {
 	},
 	attributes: {
 		...metadata.attributes,
+		showCounts: {
+			type: 'boolean',
+			default: true,
+		},
 		...blockAttributes,
 	},
-	edit,
-	// Save the props to post content.
-	save( { attributes }: { attributes: BlockAttributes } ) {
+	save: ( { attributes }: { attributes: BlockAttributes } ) => {
 		const {
 			className,
 			showCounts,
@@ -84,4 +73,6 @@ registerBlockType( metadata, {
 			</div>
 		);
 	},
-} );
+};
+
+export default v1;
