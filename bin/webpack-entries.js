@@ -38,7 +38,11 @@ const blocks = {
 	'legacy-template': {
 		customDir: 'classic-template',
 	},
-	'mini-cart': {},
+	'mini-cart': {
+		// As the Mini-Cart block scripts are lazy-loaded, we need to explicitly
+		// include the styles here.
+		extraImport: 'block.tsx',
+	},
 	'mini-cart-contents': {
 		customDir: 'mini-cart/mini-cart-contents',
 	},
@@ -99,6 +103,13 @@ const getBlockEntries = ( relativePath ) => {
 					`./assets/js/blocks/${ config.customDir || blockCode }/` +
 						relativePath
 				);
+				if ( config.extraImport ) {
+					filePaths.push(
+						`./assets/js/blocks/${
+							config.customDir || blockCode
+						}/${ config.extraImport }`
+					);
+				}
 				if ( filePaths.length > 0 ) {
 					return [ blockCode, filePaths ];
 				}
@@ -110,27 +121,14 @@ const getBlockEntries = ( relativePath ) => {
 
 const entries = {
 	styling: {
-		// @wordpress/components styles
-		'custom-select-control-style':
-			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
-		'snackbar-notice-style':
-			'./node_modules/wordpress-components/src/snackbar/style.scss',
-		'combobox-control-style':
-			'./node_modules/wordpress-components/src/combobox-control/style.scss',
-		'form-token-field-style':
-			'./node_modules/wordpress-components/src/form-token-field/style.scss',
+		// Packages styles
+		'packages-style': glob.sync( './packages/**/index.js' ),
 
-		'general-style': glob.sync( './assets/**/*.scss', {
-			ignore: [
-				// Block styles are added below.
-				'./assets/js/blocks/*/*.scss',
-			],
-		} ),
+		// Shared blocks code
+		'wc-blocks': './assets/js/index.js',
 
-		'packages-style': glob.sync( './packages/**/*.scss' ),
-
-		'reviews-style': './assets/js/blocks/reviews/editor.scss',
-		...getBlockEntries( '**/*.scss' ),
+		// Blocks
+		...getBlockEntries( 'index.{t,j}s{,x}' ),
 	},
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
