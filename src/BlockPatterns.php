@@ -40,15 +40,34 @@ class BlockPatterns {
 	private $patterns_path;
 
 	/**
+	 * Info whether the theme support was already invoked.
+	 *
+	 * @var bool $theme_support_added
+	 */
+	private $theme_support_added;
+
+	/**
 	 * Constructor for class
 	 *
 	 * @param Package $package An instance of Package.
 	 */
 	public function __construct( Package $package ) {
-		$this->patterns_path = $package->get_path( 'patterns' );
+		$this->patterns_path       = $package->get_path( 'patterns' );
+		$this->theme_support_added = false;
 
+		add_action( 'after_setup_theme', array( $this, 'set_woocommerce_blocks_patterns_support' ), 5 );
 		add_action( 'init', array( $this, 'register_block_patterns' ) );
-		add_theme_support( 'woocommerce-blocks-patterns' );
+
+	}
+
+	/**
+	 * Adds the theme support for WooCommerce Blocks patterns.
+	 */
+	public function set_woocommerce_blocks_patterns_support() {
+		if ( ! $this->theme_support_added ) {
+			add_theme_support( 'woocommerce-blocks-patterns' );
+			$this->theme_support_added = true;
+		}
 	}
 
 	/**
