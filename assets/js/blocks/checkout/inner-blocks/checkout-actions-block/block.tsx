@@ -17,7 +17,6 @@ import {
 /**
  * Internal dependencies
  */
-import './style.scss';
 import { defaultPlaceOrderButtonLabel } from './constants';
 
 const Block = ( {
