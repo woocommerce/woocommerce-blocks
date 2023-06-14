@@ -1,37 +1,26 @@
 /**
  * External dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
-import { Icon, box } from '@wordpress/icons';
 import classNames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
-import edit from './edit';
 import metadata from './block.json';
 import { blockAttributes } from './attributes';
 import type { Attributes } from './types';
-import v1 from './v1';
 
-registerBlockType( metadata, {
-	deprecated: [ v1 ],
-	icon: {
-		src: (
-			<Icon
-				icon={ box }
-				className="wc-block-editor-components-block-icon"
-			/>
-		),
-	},
+const v1 = {
 	attributes: {
 		...metadata.attributes,
+		showCounts: {
+			type: 'boolean',
+			default: true,
+		},
 		...blockAttributes,
 	},
-	edit,
-	// Save the props to post content.
-	save( { attributes }: { attributes: Attributes } ) {
+	save: ( { attributes }: { attributes: Attributes } ) => {
 		const {
 			className,
 			showCounts,
@@ -61,4 +50,6 @@ registerBlockType( metadata, {
 			</div>
 		);
 	},
-} );
+};
+
+export default v1;
