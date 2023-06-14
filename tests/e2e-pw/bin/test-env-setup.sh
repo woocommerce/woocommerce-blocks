@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 wp-env run tests-cli "wp db reset --yes"
 wp-env run tests-cli "wp db import woocommerce.sql"
 wp-env run tests-wordpress "chmod -c ugo+w /var/www/html"
