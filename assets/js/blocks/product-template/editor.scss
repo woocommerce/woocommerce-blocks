@@ -9,7 +9,7 @@ ul.products-block-post-template {
 			display: flex;
 			flex-direction: column;
 
-			> :last-child {
+			.wc-block-components-product-button {
 				margin-top: auto;
 			}
 		}
