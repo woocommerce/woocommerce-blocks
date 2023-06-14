@@ -51,8 +51,8 @@ if ( ! empty( $attributes ) ) {
 }
 ?>
 
-<!-- wp:woocommerce/attribute-filter {"attributeId":<?php echo esc_html( $attribute_id ); ?>,"heading":"","lock":{"remove":true}} -->
-<div class="wp-block-woocommerce-attribute-filter is-loading" data-attribute-id="<?php echo esc_html( $attribute_id ); ?>" data-show-counts="true" data-query-type="or" data-heading="" data-heading-level="3"><span aria-hidden="true" class="wc-block-product-attribute-filter__placeholder"></span></div>
+<!-- wp:woocommerce/attribute-filter {"attributeId":<?php echo esc_attr( $attribute_id ); ?>,"heading":"","lock":{"remove":true}} -->
+<div class="wp-block-woocommerce-attribute-filter is-loading" data-attribute-id="<?php echo esc_attr( $attribute_id ); ?>" data-show-counts="true" data-query-type="or" data-heading="" data-heading-level="3"><span aria-hidden="true" class="wc-block-product-attribute-filter__placeholder"></span></div>
 <!-- /wp:woocommerce/attribute-filter --></div>
 <!-- /wp:woocommerce/filter-wrapper -->
 
