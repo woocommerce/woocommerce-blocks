@@ -8,6 +8,11 @@ class ProductCollectionPage {
 	private page: Page;
 	private admin: Admin;
 	private editor: Editor;
+	productTemplate!: Locator;
+	productImages!: Locator;
+	productTitles!: Locator;
+	productPrices!: Locator;
+	addToCartButtons!: Locator;
 
 	constructor( {
 		page,
@@ -29,6 +34,8 @@ class ProductCollectionPage {
 			name: 'woocommerce/product-collection',
 		} );
 		await this.page.waitForLoadState( 'networkidle' );
+
+		await this.initializeLocatorsForEditor();
 	}
 
 	async publishAndGoToFrontend() {
@@ -37,6 +44,44 @@ class ProductCollectionPage {
 		const postId = url.searchParams.get( 'post' );
 		await this.page.goto( `/?p=${ postId }`, { waitUntil: 'networkidle' } );
 		await this.page.waitForLoadState( 'networkidle' );
+
+		await this.initializeLocatorsForFrontend();
+	}
+
+	async initializeLocatorsForEditor() {
+		this.productTemplate = await this.page.locator(
+			'.wc-block-product-template'
+		);
+		this.productImages = await this.productTemplate
+			.locator( '[data-type="woocommerce/product-image"]' )
+			.locator( 'visible=true' );
+		this.productTitles = await this.productTemplate
+			.locator( '.wp-block-post-title' )
+			.locator( 'visible=true' );
+		this.productPrices = await this.productTemplate
+			.locator( '[data-type="woocommerce/product-price"]' )
+			.locator( 'visible=true' );
+		this.addToCartButtons = await this.productTemplate
+			.locator( '[data-type="woocommerce/product-button"]' )
+			.locator( 'visible=true' );
+	}
+
+	async initializeLocatorsForFrontend() {
+		this.productTemplate = await this.page.locator(
+			'.wc-block-product-template'
+		);
+		this.productImages = await this.productTemplate.locator(
+			'[data-block-name="woocommerce/product-image"]'
+		);
+		this.productTitles = await this.productTemplate.locator(
+			'.wp-block-post-title'
+		);
+		this.productPrices = await this.productTemplate.locator(
+			'[data-block-name="woocommerce/product-price"]'
+		);
+		this.addToCartButtons = await this.productTemplate.locator(
+			'[data-block-name="woocommerce/product-button"]'
+		);
 	}
 
 	async setNumberOfColumns( numberOfColumns: number ) {
@@ -44,56 +89,6 @@ class ProductCollectionPage {
 			name: 'Columns',
 		} );
 		await inputField.fill( numberOfColumns.toString() );
-	}
-
-	locateProductTemplate() {
-		return this.page.locator( '.wc-block-product-template' );
-	}
-
-	async locateProductTitles() {
-		const productTemplate = await this.locateProductTemplate();
-		return productTemplate
-			.locator( '.wp-block-post-title' )
-			.locator( 'visible=true' );
-	}
-
-	async locateProductImages(): Promise< Locator > {
-		return this.locator( {
-			editorSelector: `[data-type="woocommerce/product-image"]`,
-			frontendSelector: `[data-block-name="woocommerce/product-image"]`,
-		} );
-	}
-
-	async locateProductPrices(): Promise< Locator > {
-		return this.locator( {
-			editorSelector: `[data-type="woocommerce/product-price"]`,
-			frontendSelector: `[data-block-name="woocommerce/product-price"]`,
-		} );
-	}
-
-	async locateAddToCartButtons(): Promise< Locator > {
-		return this.locator( {
-			editorSelector: `[data-type="woocommerce/product-button"]`,
-			frontendSelector: `[data-block-name="woocommerce/product-button"]`,
-		} );
-	}
-
-	private async locator( {
-		editorSelector,
-		frontendSelector,
-	}: {
-		editorSelector: string;
-		frontendSelector: string;
-	} ): Promise< Locator > {
-		const productTemplate = await this.locateProductTemplate();
-		const editor = productTemplate
-			.locator( editorSelector )
-			.locator( 'visible=true' );
-		const frontend = productTemplate
-			.locator( frontendSelector )
-			.locator( 'visible=true' );
-
-		return editor.or( frontend );
 	}
 }
 
