@@ -1,12 +1,20 @@
-.wc-block-editor-customer-account {
-	padding: em($gap-smaller) em($gap-smaller);
+.editor-styles-wrapper .is-layout-constrained > .wc-block-editor-customer-account.alignright {
+	float: none;
+	justify-content: flex-end;
+}
 
-	&.aligncenter {
-		text-align: center;
-		div {
-			display: inline-block;
-		}
-	}
+.editor-styles-wrapper .is-layout-constrained > .wc-block-editor-customer-account.alignleft {
+	float: none;
+	justify-content: flex-start;
+}
+
+.editor-styles-wrapper .is-layout-constrained > .wc-block-editor-customer-account.aligncenter {
+	justify-content: center;
+}
+
+.wc-block-editor-customer-account {
+	display: flex;
+	padding: em($gap-smaller) em($gap-smaller);
 }
 
 .wc-block-editor-customer-account__icon-style-toggle {

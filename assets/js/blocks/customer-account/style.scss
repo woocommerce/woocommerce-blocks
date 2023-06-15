@@ -1,7 +1,19 @@
+.is-layout-constrained > .wp-block-woocommerce-customer-account.alignright {
+	float: none;
+	justify-content: flex-end;
+}
+
+.is-layout-constrained > .wp-block-woocommerce-customer-account.alignleft {
+	float: none;
+	justify-content: flex-start;
+}
+
+.is-layout-constrained > .wp-block-woocommerce-customer-account.aligncenter {
+	justify-content: center;
+}
+
 .wp-block-woocommerce-customer-account {
-	&.aligncenter > a {
-		justify-content: center;
-	}
+	display: flex;
 
 	a {
 		text-decoration: none !important;
