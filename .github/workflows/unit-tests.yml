@@ -17,10 +17,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      js: ${{ steps.changes.outputs.js }}
+      php: ${{ steps.changes.outputs.php }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          js:
+            - '**.js'
+            - '**.ts'
+            - '**.jsx'
+            - '**.tsx'
+          php:
+            - '**.php'
+
   JSUnitTests:
     name: JS Unit Tests
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' }}
+    if: ${{ github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' && steps.changes.outputs.js == 'true' }}
     
     strategy:
       fail-fast: false
@@ -48,16 +67,8 @@ jobs:
   PHPUnitTests:
     name: PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
-    on:
-      pull_request:
-        # Path is temporarily limited to .php files only, since unit tests
-        # cannot run because of the image update that broke them.
-        # Image is provided by @wordpress/env, so we no control over it
-        # and need to wait for an udpate.
-        paths:
-          - "**.php"
     timeout-minutes: 20
-    if: ${{ github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' }}
+    if: ${{ github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' && steps.changes.outputs.php == 'true' }}
     strategy:
       fail-fast: true
       matrix:
