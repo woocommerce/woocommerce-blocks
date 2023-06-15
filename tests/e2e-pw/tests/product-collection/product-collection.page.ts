@@ -46,10 +46,6 @@ class ProductCollectionPage {
 		await inputField.fill( numberOfColumns.toString() );
 	}
 
-	/**
-	 * Locators
-	 */
-
 	locateProductTemplate() {
 		return this.page.locator( '.wc-block-product-template' );
 	}
@@ -90,7 +86,7 @@ class ProductCollectionPage {
 		frontendSelector: string;
 	} ): Promise< Locator > {
 		const productTemplate = await this.locateProductTemplate();
-		const editor = await productTemplate
+		const editor = productTemplate
 			.locator( editorSelector )
 			.locator( 'visible=true' );
 		const frontend = productTemplate
