@@ -41,7 +41,7 @@ jobs:
     name: JS Unit Tests
     runs-on: ubuntu-latest
     needs: FileTypeChanges
-    if: ${{ needs.FileTypeChanges.outputs.js == true && github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request'  }}
+    if: ${{ needs.FileTypeChanges.outputs.js != 'false' && github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request'  }}
     
     strategy:
       fail-fast: false
@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: FileTypeChanges
     timeout-minutes: 20
-    if: ${{ needs.FileTypeChanges.outputs.php == true && github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' }}
+    if: ${{ needs.FileTypeChanges.outputs.php != 'false' && github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' }}
     strategy:
       fail-fast: true
       matrix:
