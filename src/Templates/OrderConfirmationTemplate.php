@@ -2,18 +2,18 @@
 namespace Automattic\WooCommerce\Blocks\Templates;
 
 /**
- * OrderReceivedTemplate class.
+ * OrderConfirmationTemplate class.
  *
  * @internal
  */
-class OrderReceivedTemplate extends AbstractPageTemplate {
+class OrderConfirmationTemplate extends AbstractPageTemplate {
 	/**
 	 * Template slug.
 	 *
 	 * @return string
 	 */
 	public static function get_slug() {
-		return 'order-received';
+		return 'order-confirmation';
 	}
 
 	/**
@@ -40,6 +40,6 @@ class OrderReceivedTemplate extends AbstractPageTemplate {
 	 * @return string
 	 */
 	public static function get_template_title() {
-		return __( 'Order Received', 'woo-gutenberg-products-block' );
+		return __( 'Order Confirmation', 'woo-gutenberg-products-block' );
 	}
 }

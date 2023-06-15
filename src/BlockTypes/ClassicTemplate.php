@@ -3,7 +3,7 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
-use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
+use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 use WC_Shortcode_Checkout;
 
@@ -79,7 +79,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			$frontend_scripts::load_scripts();
 		}
 
-		if ( OrderReceivedTemplate::get_slug() === $attributes['template'] ) {
+		if ( OrderConfirmationTemplate::get_slug() === $attributes['template'] ) {
 			return $this->render_order_received();
 		}
 
@@ -121,7 +121,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 	}
 
 	/**
-	 * Render method for rendering the order received template.
+	 * Render method for rendering the order confirmation template.
 	 *
 	 * @return string Rendered block type output.
 	 */
@@ -134,7 +134,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			'<%1$s %2$s>%3$s</%1$s>',
 			'h1',
 			get_block_wrapper_attributes(), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			esc_html__( 'Order received', 'woo-gutenberg-products-block' )
+			esc_html__( 'Order confirmation', 'woo-gutenberg-products-block' )
 		);
 
 		WC_Shortcode_Checkout::output( array() );

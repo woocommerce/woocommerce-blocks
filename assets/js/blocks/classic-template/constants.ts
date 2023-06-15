@@ -14,7 +14,7 @@ export const TYPES = {
 	productCatalog: 'product-catalog',
 	productTaxonomy: 'product-taxonomy',
 	productSearchResults: 'product-search-results',
-	orderReceived: 'order-received',
+	orderConfirmation: 'order-confirmation',
 	cart: 'cart',
 	checkout: 'checkout',
 	checkoutHeader: 'checkout-header',
@@ -22,7 +22,7 @@ export const TYPES = {
 export const PLACEHOLDERS = {
 	singleProduct: 'single-product',
 	archiveProduct: 'archive-product',
-	orderReceived: 'fallback',
+	orderConfirmation: 'fallback',
 	checkoutHeader: 'checkout-header',
 };
 
@@ -90,9 +90,9 @@ export const TEMPLATES: TemplateDetails = {
 		title: __( 'Checkout Header', 'woo-gutenberg-products-block' ),
 		placeholder: 'checkout-header',
 	},
-	'order-received': {
-		type: TYPES.orderReceived,
-		title: __( 'Order Received Block', 'woo-gutenberg-products-block' ),
-		placeholder: PLACEHOLDERS.orderReceived,
+	'order-confirmation': {
+		type: TYPES.orderConfirmation,
+		title: __( 'Order Confirmation Block', 'woo-gutenberg-products-block' ),
+		placeholder: PLACEHOLDERS.orderConfirmation,
 	},
 };

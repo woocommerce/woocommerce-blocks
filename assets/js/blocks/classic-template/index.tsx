@@ -49,7 +49,7 @@ import {
 } from './archive-product';
 import * as blockifiedSingleProduct from './single-product';
 import * as blockifiedProductSearchResults from './product-search-results';
-import * as blockifiedOrderReceived from './order-received';
+import * as blockifiedOrderConfirmation from './order-confirmation';
 
 import type { BlockifiedTemplateConfig } from './types';
 
@@ -70,7 +70,7 @@ const conversionConfig: { [ key: string ]: BlockifiedTemplateConfig } = {
 	[ TYPES.productTaxonomy ]: blockifiedProductTaxonomyConfig,
 	[ TYPES.singleProduct ]: blockifiedSingleProduct,
 	[ TYPES.productSearchResults ]: blockifiedProductSearchResults,
-	[ TYPES.orderReceived ]: blockifiedOrderReceived,
+	[ TYPES.orderConfirmation ]: blockifiedOrderConfirmation,
 	fallback: blockifiedFallbackConfig,
 };
 

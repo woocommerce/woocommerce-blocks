@@ -7,7 +7,7 @@ use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutHeaderTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
 use Automattic\WooCommerce\Blocks\Templates\MiniCartTemplate;
-use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
+use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 
@@ -307,49 +307,49 @@ class BlockTemplateUtils {
 	 */
 	public static function get_plugin_block_template_types() {
 		return array(
-			'single-product'                   => array(
+			'single-product'                      => array(
 				'title'       => _x( 'Single Product', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Displays a single product.', 'woo-gutenberg-products-block' ),
 			),
-			'archive-product'                  => array(
+			'archive-product'                     => array(
 				'title'       => _x( 'Product Catalog', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Displays your products.', 'woo-gutenberg-products-block' ),
 			),
-			'taxonomy-product_cat'             => array(
+			'taxonomy-product_cat'                => array(
 				'title'       => _x( 'Products by Category', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Displays products filtered by a category.', 'woo-gutenberg-products-block' ),
 			),
-			'taxonomy-product_tag'             => array(
+			'taxonomy-product_tag'                => array(
 				'title'       => _x( 'Products by Tag', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Displays products filtered by a tag.', 'woo-gutenberg-products-block' ),
 			),
-			ProductAttributeTemplate::SLUG     => array(
+			ProductAttributeTemplate::SLUG        => array(
 				'title'       => _x( 'Products by Attribute', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Displays products filtered by an attribute.', 'woo-gutenberg-products-block' ),
 			),
-			ProductSearchResultsTemplate::SLUG => array(
+			ProductSearchResultsTemplate::SLUG    => array(
 				'title'       => _x( 'Product Search Results', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Displays search results for your store.', 'woo-gutenberg-products-block' ),
 			),
-			MiniCartTemplate::SLUG             => array(
+			MiniCartTemplate::SLUG                => array(
 				'title'       => _x( 'Mini-Cart', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display the Mini-Cart drawer.', 'woo-gutenberg-products-block' ),
 			),
-			CartTemplate::get_slug()           => array(
+			CartTemplate::get_slug()              => array(
 				'title'       => _x( 'Cart', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Template used to display the Cart.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'The Cart template displays the items selected by the user for purchase, including quantities, prices, and discounts. It allows users to review their choices before proceeding to checkout.', 'woo-gutenberg-products-block' ),
 			),
-			CheckoutTemplate::get_slug()       => array(
+			CheckoutTemplate::get_slug()          => array(
 				'title'       => _x( 'Checkout', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Template used to display the Checkout.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'The Checkout template guides users through the final steps of the purchase process. It enables users to enter shipping and billing information, select a payment method, and review order details.', 'woo-gutenberg-products-block' ),
 			),
-			CheckoutHeaderTemplate::SLUG       => array(
+			CheckoutHeaderTemplate::SLUG          => array(
 				'title'       => _x( 'Checkout Header', 'Template name', 'woo-gutenberg-products-block' ),
 				'description' => __( 'Template used to display the simplified Checkout header.', 'woo-gutenberg-products-block' ),
 			),
-			OrderReceivedTemplate::get_slug()  => array(
-				'title'       => _x( 'Order Received', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'Displays the order confirmation page.', 'woo-gutenberg-products-block' ),
+			OrderConfirmationTemplate::get_slug() => array(
+				'title'       => _x( 'Order Confirmation', 'Template name', 'woo-gutenberg-products-block' ),
+				'description' => __( 'The Order Confirmation template provides customers with a summary of their completed purchase, including ordered items, shipping details, and order total. It serves as a receipt and confirmation of the successful transaction.', 'woo-gutenberg-products-block' ),
 			),
 		);
 	}
