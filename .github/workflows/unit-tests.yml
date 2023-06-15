@@ -4,6 +4,12 @@ name: Unit Tests
 # we cannot disable them for documentation-only changes.
 on:
   pull_request:
+    # Path is temporarily limited to .php files only, since unit tests
+    # cannot run because of the image update that broke them.
+    # Image is provided by @wordpress/env, so we no control over it
+    # and need to wait for an udpate.
+    paths:
+      - "**.php"
   push:
     branches: [trunk]
   # Allow manually triggering the workflow.
