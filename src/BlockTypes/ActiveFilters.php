@@ -11,5 +11,4 @@ class ActiveFilters extends AbstractBlock {
 	 * @var string
 	 */
 	protected $block_name = 'active-filters';
-
 }
