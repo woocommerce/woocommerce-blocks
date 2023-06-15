@@ -8,7 +8,7 @@ use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
-use Automattic\WooCommerce\Blocks\Templates\OrderReceivedTemplate;
+use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
 use Automattic\WooCommerce\Blocks\Utils\SettingsUtils;
 use \WP_Post;
 
@@ -626,8 +626,8 @@ class BlockTemplatesController {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} elseif (
 			is_wc_endpoint_url( 'order-received' )
-			&& ! BlockTemplateUtils::theme_has_template( OrderReceivedTemplate::get_slug() )
-			&& $this->block_template_is_available( OrderReceivedTemplate::get_slug() )
+			&& ! BlockTemplateUtils::theme_has_template( OrderConfirmationTemplate::get_slug() )
+			&& $this->block_template_is_available( OrderConfirmationTemplate::get_slug() )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} else {
