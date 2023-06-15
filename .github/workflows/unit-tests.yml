@@ -49,7 +49,7 @@ jobs:
     steps:
       - run: |
           echo "${{needs.FileTypeChanges.outputs.js}}"
-          echo "${{needs.FileTypeChanges.outputs.php}"
+          echo "${{needs.FileTypeChanges.outputs.php}}"
       - uses: actions/checkout@v3
 
       - name: Use desired version of NodeJS
