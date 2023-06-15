@@ -77,16 +77,13 @@ test.describe( 'Product Collection', () => {
 			} );
 			await pageObject.createNewPostAndInsertBlock();
 
-			// Set order by to title ascending.
 			await pageObject.setOrderBy( 'title/desc' );
-			await pageObject.refreshLocators( 'editor' );
 			const allTitles = await pageObject.productTitles.allInnerTexts();
 			const expectedTitles = [ ...allTitles ].sort().reverse();
 
 			expect( allTitles ).toStrictEqual( expectedTitles );
 
 			await pageObject.publishAndGoToFrontend();
-			await pageObject.refreshLocators( 'frontend' );
 
 			expect(
 				await pageObject.productTitles.allInnerTexts()

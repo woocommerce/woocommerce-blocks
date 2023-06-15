@@ -110,6 +110,7 @@ class ProductCollectionPage {
 			name: 'Order by',
 		} );
 		await orderByComboBox.selectOption( orderBy );
+		await this.refreshLocators( 'editor' );
 	}
 
 	private async waitForProductsToLoad() {
