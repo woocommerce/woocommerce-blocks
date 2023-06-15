@@ -10,9 +10,8 @@ import {
 	withSpokenMessages,
 } from '@wordpress/components';
 import { SearchListItem } from '@woocommerce/editor-components/search-list-control';
-import type { BlockAttributes } from '@wordpress/blocks';
 import ProductControl from '@woocommerce/editor-components/product-control';
-import { Icon, commentContent } from '@wordpress/icons';
+import { commentContent, Icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -24,13 +23,7 @@ import {
 	getSharedReviewContentControls,
 	getSharedReviewListControls,
 } from '../edit-utils.js';
-
-interface ReviewsByProductEditorProps {
-	name: string;
-	attributes: BlockAttributes;
-	setAttributes: ( attrs: BlockAttributes ) => void;
-	debouncedSpeak: ( message: string ) => void;
-}
+import { ReviewsByProductEditorProps } from './types';
 
 const ReviewsByProductEditor = ( {
 	attributes,
