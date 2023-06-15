@@ -15,30 +15,27 @@ import '../css/style.scss';
 import './filters/block-list-block';
 import './filters/get-block-attributes';
 
-setCategories(
-	[
-		...getCategories().filter(
-			( { slug } ) =>
-				slug !== 'woocommerce' &&
-				slug !== 'woocommerce-product-elements'
+setCategories( [
+	...getCategories().filter(
+		( { slug } ) =>
+			slug !== 'woocommerce' && slug !== 'woocommerce-product-elements'
+	),
+	{
+		slug: 'woocommerce',
+		title: __( 'WooCommerce', 'woo-gutenberg-products-block' ),
+		icon: <Icon icon={ woo } />,
+	},
+	{
+		slug: 'woocommerce-product-elements',
+		title: __(
+			'WooCommerce Product Elements',
+			'woo-gutenberg-products-block'
 		),
-		{
-			slug: 'woocommerce',
-			title: __( 'WooCommerce', 'woo-gutenberg-products-block' ),
-			icon: <Icon icon={ woo } />,
-		},
-		{
-			slug: 'woocommerce-product-elements',
-			title: __(
-				'WooCommerce Product Elements',
-				'woo-gutenberg-products-block'
-			),
-			icon: (
-				<Icon
-					icon={ woo }
-					className="wc-block-editor-components-block-icon"
-				/>
-			),
-		},
-	] || []
-);
+		icon: (
+			<Icon
+				icon={ woo }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
+	},
+] );
