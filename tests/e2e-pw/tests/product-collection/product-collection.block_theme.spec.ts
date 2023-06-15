@@ -9,7 +9,11 @@ import { test, expect } from '@woocommerce/e2e-playwright-utils';
 import ProductCollectionPage from './product-collection.page';
 
 test.describe( 'Product Collection', () => {
-	test( 'Block renders correctly', async ( { page, admin, editor } ) => {
+	test( 'Renders product collection block correctly with 9 items', async ( {
+		page,
+		admin,
+		editor,
+	} ) => {
 		const pageObject = new ProductCollectionPage( {
 			page,
 			admin,
@@ -32,8 +36,8 @@ test.describe( 'Product Collection', () => {
 		expect( pageObject.addToCartButtons ).toHaveCount( 9 );
 	} );
 
-	test.describe( 'Sidebar settings', () => {
-		test( 'Shows the correct number of columns as set in settings.', async ( {
+	test.describe( 'Product Collection Sidebar Settings', () => {
+		test( 'Reflects the correct number of columns according to sidebar settings', async ( {
 			page,
 			admin,
 			editor,
@@ -59,6 +63,34 @@ test.describe( 'Product Collection', () => {
 			await expect(
 				await pageObject.productTemplate.getAttribute( 'class' )
 			).toContain( 'columns-4' );
+		} );
+
+		test( 'Order By - sort products by title in descending order correctly', async ( {
+			page,
+			admin,
+			editor,
+		} ) => {
+			const pageObject = new ProductCollectionPage( {
+				page,
+				admin,
+				editor,
+			} );
+			await pageObject.createNewPostAndInsertBlock();
+
+			// Set order by to title ascending.
+			await pageObject.setOrderBy( 'title/desc' );
+			await pageObject.refreshLocators( 'editor' );
+			const allTitles = await pageObject.productTitles.allInnerTexts();
+			const expectedTitles = [ ...allTitles ].sort().reverse();
+
+			expect( allTitles ).toStrictEqual( expectedTitles );
+
+			await pageObject.publishAndGoToFrontend();
+			await pageObject.refreshLocators( 'frontend' );
+
+			expect(
+				await pageObject.productTitles.allInnerTexts()
+			).toStrictEqual( expectedTitles );
 		} );
 	} );
 } );

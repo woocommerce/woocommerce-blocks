@@ -33,9 +33,7 @@ class ProductCollectionPage {
 		await this.editor.insertBlock( {
 			name: 'woocommerce/product-collection',
 		} );
-		await this.page.waitForLoadState( 'networkidle' );
-
-		await this.initializeLocatorsForEditor();
+		await this.refreshLocators( 'editor' );
 	}
 
 	async publishAndGoToFrontend() {
@@ -43,25 +41,33 @@ class ProductCollectionPage {
 		const url = new URL( this.page.url() );
 		const postId = url.searchParams.get( 'post' );
 		await this.page.goto( `/?p=${ postId }`, { waitUntil: 'networkidle' } );
-		await this.page.waitForLoadState( 'networkidle' );
+		await this.refreshLocators( 'frontend' );
+	}
 
-		await this.initializeLocatorsForFrontend();
+	async refreshLocators( currentUI: 'editor' | 'frontend' ) {
+		await this.waitForProductsToLoad();
+
+		if ( currentUI === 'editor' ) {
+			await this.initializeLocatorsForEditor();
+		} else {
+			await this.initializeLocatorsForFrontend();
+		}
 	}
 
 	async initializeLocatorsForEditor() {
 		this.productTemplate = await this.page.locator(
 			'.wc-block-product-template'
 		);
-		this.productImages = await this.productTemplate
+		this.productImages = await this.page
 			.locator( '[data-type="woocommerce/product-image"]' )
 			.locator( 'visible=true' );
 		this.productTitles = await this.productTemplate
 			.locator( '.wp-block-post-title' )
 			.locator( 'visible=true' );
-		this.productPrices = await this.productTemplate
+		this.productPrices = await this.page
 			.locator( '[data-type="woocommerce/product-price"]' )
 			.locator( 'visible=true' );
-		this.addToCartButtons = await this.productTemplate
+		this.addToCartButtons = await this.page
 			.locator( '[data-type="woocommerce/product-button"]' )
 			.locator( 'visible=true' );
 	}
@@ -89,6 +95,32 @@ class ProductCollectionPage {
 			name: 'Columns',
 		} );
 		await inputField.fill( numberOfColumns.toString() );
+	}
+
+	async setOrderBy(
+		orderBy:
+			| 'title/asc'
+			| 'title/desc'
+			| 'date/desc'
+			| 'date/asc'
+			| 'popularity/desc'
+			| 'rating/desc'
+	) {
+		const orderByComboBox = await this.page.getByRole( 'combobox', {
+			name: 'Order by',
+		} );
+		await orderByComboBox.selectOption( orderBy );
+	}
+
+	private async waitForProductsToLoad() {
+		await this.page.waitForLoadState( 'networkidle' );
+		await this.page.waitForFunction( () => {
+			const element = document.querySelector(
+				'.wc-block-product-template'
+			);
+			return element && element.children.length > 1;
+		} );
+		await this.page.waitForLoadState( 'networkidle' );
 	}
 }
 
