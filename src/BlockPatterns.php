@@ -40,13 +40,6 @@ class BlockPatterns {
 	private $patterns_path;
 
 	/**
-	 * Info whether the theme support was already invoked.
-	 *
-	 * @var bool $theme_support_added
-	 */
-	private $theme_support_added;
-
-	/**
 	 * Constructor for class
 	 *
 	 * @param Package $package An instance of Package.
@@ -64,10 +57,7 @@ class BlockPatterns {
 	 * Adds the theme support for WooCommerce Blocks patterns.
 	 */
 	public function set_woocommerce_blocks_patterns_support() {
-		if ( ! $this->theme_support_added ) {
-			add_theme_support( 'woocommerce-blocks-patterns' );
-			$this->theme_support_added = true;
-		}
+		add_theme_support( 'woocommerce-blocks-patterns' );
 	}
 
 	/**
