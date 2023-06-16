@@ -10,8 +10,8 @@ import '@woocommerce/atomic-blocks';
  */
 import metadata from './block.json';
 import deprecated from './deprecated';
-import edit from './edit';
-import save from './save';
+import Edit from './edit';
+import Save from './save';
 import defaults from './defaults';
 
 const { name } = metadata;
@@ -26,9 +26,9 @@ const settings = {
 			/>
 		),
 	},
-	edit,
+	edit: Edit,
 	// Save the props to post content.
-	save,
+	save: Save,
 	deprecated,
 	defaults,
 };

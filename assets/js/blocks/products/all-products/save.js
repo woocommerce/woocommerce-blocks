@@ -8,7 +8,7 @@ import { InnerBlocks } from '@wordpress/block-editor';
  */
 import { getBlockClassName } from '../utils.js';
 
-export default function save( { attributes } ) {
+export default function Save( { attributes } ) {
 	const dataAttributes = {};
 	Object.keys( attributes )
 		.sort()
