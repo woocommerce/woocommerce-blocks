@@ -48,6 +48,7 @@ class BlockPatterns {
 		$this->patterns_path       = $package->get_path( 'patterns' );
 		$this->theme_support_added = false;
 
+		// Setting the priority to 5, to let the theme developers remove patterns support with a default priority.
 		add_action( 'after_setup_theme', array( $this, 'set_woocommerce_blocks_patterns_support' ), 5 );
 		add_action( 'init', array( $this, 'register_block_patterns' ) );
 
