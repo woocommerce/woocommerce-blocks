@@ -159,4 +159,27 @@ test.describe( 'Product Collection', () => {
 		expect( pageObject.productTitles ).toHaveCount( 2 );
 		expect( pageObject.productTitles ).toHaveText( productNames );
 	} );
+
+	test( 'Products can be filtered based on keyword.', async ( {
+		page,
+		admin,
+		editor,
+	} ) => {
+		const pageObject = new ProductCollectionPage( {
+			page,
+			admin,
+			editor,
+		} );
+		await pageObject.createNewPostAndInsertBlock();
+		await pageObject.addFilter( 'Keyword' );
+
+		await pageObject.setKeyword( 'Album' );
+		expect( pageObject.productTitles ).toHaveText( [ 'Album' ] );
+
+		await pageObject.setKeyword( 'Cap' );
+		expect( pageObject.productTitles ).toHaveText( [ 'Cap' ] );
+
+		await pageObject.publishAndGoToFrontend();
+		expect( pageObject.productTitles ).toHaveText( [ 'Cap' ] );
+	} );
 } );

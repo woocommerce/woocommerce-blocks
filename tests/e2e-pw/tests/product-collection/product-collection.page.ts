@@ -44,7 +44,7 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'frontend' );
 	}
 
-	async addFilter( name: string ) {
+	async addFilter( name: 'Show Hand-picked Products' | 'Keyword' ) {
 		await this.page
 			.getByRole( 'button', { name: 'Filters options' } )
 			.click();
@@ -119,6 +119,18 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'editor' );
 	}
 
+	async setKeyword( keyword: string ) {
+		const input = this.page.getByLabel( 'Keyword' );
+		await input.clear();
+		await input.fill( keyword );
+		// Timeout is needed because of debounce in the block.
+		await this.page.waitForTimeout( 300 );
+		await this.refreshLocators( 'editor' );
+	}
+
+	/**
+	 * Private methods to be used by the class.
+	 */
 	private async refreshLocators( currentUI: 'editor' | 'frontend' ) {
 		await this.waitForProductsToLoad();
 
