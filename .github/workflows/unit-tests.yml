@@ -56,6 +56,7 @@ jobs:
         php:
           - '7.4'
           - '8.0'
+          # Disabled temporary as docker-images for those cause the errors when pipeline is running
           # - '8.1'
           # - '8.2'
     
