@@ -50,9 +50,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     if: ${{ github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' }}
-    continue-on-error: true
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         php:
           - '7.4'
