@@ -53,15 +53,15 @@ jobs:
     # if: ${{ github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' }}
     strategy:
       fail-fast: true
-      matrix:
-        php:
-          - '7.4'
-          - '8.0'
-          - '8.1'
-          - '8.2'
+      # matrix:
+        # php:
+          # - '7.4'
+          # - '8.0'
+          # - '8.1'
+          # - '8.2'
     
     env:
-      WP_ENV_PHP_VERSION: ${{ matrix.php }}
+      # WP_ENV_PHP_VERSION: ${{ matrix.php }}
     
     steps:
       - uses: actions/checkout@v3
