@@ -89,5 +89,40 @@ test.describe( 'Product Collection', () => {
 				await pageObject.productTitles.allInnerTexts()
 			).toStrictEqual( expectedTitles );
 		} );
+
+		// Products can be filtered based on 'on sale' status.
+		test( 'Products can be filtered based on "on sale" status.', async ( {
+			page,
+			admin,
+			editor,
+		} ) => {
+			const pageObject = new ProductCollectionPage( {
+				page,
+				admin,
+				editor,
+			} );
+			await pageObject.createNewPostAndInsertBlock();
+
+			// On each page we show 9 products.
+			await expect( pageObject.productImages ).toHaveCount( 9 );
+			// All products should not be on sale.
+			await expect(
+				await pageObject.productImages.filter( {
+					hasText: 'Product on sale',
+				} )
+			).not.toHaveCount( 9 );
+
+			await pageObject.setShowOnlyProductsOnSale( true );
+
+			// In test data we have only 6 products on sale
+			await expect( pageObject.productImages ).toHaveCount( 6 );
+
+			// Expect all shown products to be on sale.
+			await expect(
+				await pageObject.productImages.filter( {
+					hasText: 'Product on sale',
+				} )
+			).toHaveCount( await pageObject.productImages.count() );
+		} );
 	} );
 } );

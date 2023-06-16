@@ -44,52 +44,6 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'frontend' );
 	}
 
-	async refreshLocators( currentUI: 'editor' | 'frontend' ) {
-		await this.waitForProductsToLoad();
-
-		if ( currentUI === 'editor' ) {
-			await this.initializeLocatorsForEditor();
-		} else {
-			await this.initializeLocatorsForFrontend();
-		}
-	}
-
-	async initializeLocatorsForEditor() {
-		this.productTemplate = await this.page.locator(
-			'.wc-block-product-template'
-		);
-		this.productImages = await this.page
-			.locator( '[data-type="woocommerce/product-image"]' )
-			.locator( 'visible=true' );
-		this.productTitles = await this.productTemplate
-			.locator( '.wp-block-post-title' )
-			.locator( 'visible=true' );
-		this.productPrices = await this.page
-			.locator( '[data-type="woocommerce/product-price"]' )
-			.locator( 'visible=true' );
-		this.addToCartButtons = await this.page
-			.locator( '[data-type="woocommerce/product-button"]' )
-			.locator( 'visible=true' );
-	}
-
-	async initializeLocatorsForFrontend() {
-		this.productTemplate = await this.page.locator(
-			'.wc-block-product-template'
-		);
-		this.productImages = await this.productTemplate.locator(
-			'[data-block-name="woocommerce/product-image"]'
-		);
-		this.productTitles = await this.productTemplate.locator(
-			'.wp-block-post-title'
-		);
-		this.productPrices = await this.productTemplate.locator(
-			'[data-block-name="woocommerce/product-price"]'
-		);
-		this.addToCartButtons = await this.productTemplate.locator(
-			'[data-block-name="woocommerce/product-button"]'
-		);
-	}
-
 	async setNumberOfColumns( numberOfColumns: number ) {
 		const inputField = await this.page.getByRole( 'spinbutton', {
 			name: 'Columns',
@@ -113,14 +67,68 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'editor' );
 	}
 
+	async setShowOnlyProductsOnSale( onSale: boolean ) {
+		const input = this.page.getByLabel( 'Show only products on sale' );
+		if ( onSale ) {
+			await input.check();
+		} else {
+			await input.uncheck();
+		}
+		await this.refreshLocators( 'editor' );
+	}
+
+	private async refreshLocators( currentUI: 'editor' | 'frontend' ) {
+		await this.waitForProductsToLoad();
+
+		if ( currentUI === 'editor' ) {
+			await this.initializeLocatorsForEditor();
+		} else {
+			await this.initializeLocatorsForFrontend();
+		}
+	}
+
+	private async initializeLocatorsForEditor() {
+		this.productTemplate = await this.page.locator(
+			'.wc-block-product-template'
+		);
+		this.productImages = await this.page
+			.locator( '[data-type="woocommerce/product-image"]' )
+			.locator( 'visible=true' );
+		this.productTitles = await this.productTemplate
+			.locator( '.wp-block-post-title' )
+			.locator( 'visible=true' );
+		this.productPrices = await this.page
+			.locator( '[data-type="woocommerce/product-price"]' )
+			.locator( 'visible=true' );
+		this.addToCartButtons = await this.page
+			.locator( '[data-type="woocommerce/product-button"]' )
+			.locator( 'visible=true' );
+	}
+
+	private async initializeLocatorsForFrontend() {
+		this.productTemplate = await this.page.locator(
+			'.wc-block-product-template'
+		);
+		this.productImages = await this.productTemplate.locator(
+			'[data-block-name="woocommerce/product-image"]'
+		);
+		this.productTitles = await this.productTemplate.locator(
+			'.wp-block-post-title'
+		);
+		this.productPrices = await this.productTemplate.locator(
+			'[data-block-name="woocommerce/product-price"]'
+		);
+		this.addToCartButtons = await this.productTemplate.locator(
+			'[data-block-name="woocommerce/product-button"]'
+		);
+	}
+
 	private async waitForProductsToLoad() {
 		await this.page.waitForLoadState( 'networkidle' );
-		await this.page.waitForFunction( () => {
-			const element = document.querySelector(
-				'.wc-block-product-template'
-			);
-			return element && element.children.length > 1;
-		} );
+		// Wait for the product blocks to be loaded.
+		await this.page.waitForSelector( '.wc-block-product' );
+		// Wait for the loading spinner to be detached.
+		await this.page.waitForSelector( '.is-loading', { state: 'detached' } );
 		await this.page.waitForLoadState( 'networkidle' );
 	}
 }
