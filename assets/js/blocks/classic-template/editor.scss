@@ -6,12 +6,8 @@
 .wp-block-woocommerce-classic-template__placeholder-copy {
 	display: flex;
 	flex-direction: column;
-	max-width: 900px;
+	max-width: 400px;
 	margin: auto;
-
-	@media only screen and (min-width: 768px) {
-		width: 400px;
-	}
 }
 
 .wp-block-woocommerce-classic-template__placeholder-warning {
@@ -26,6 +22,7 @@
 	flex-wrap: wrap;
 	gap: $gap-large;
 	margin: auto;
+	padding: 0.75rem;
 
 	@media only screen and (min-width: 768px) {
 		height: auto;
@@ -37,6 +34,7 @@
 	display: none;
 	width: 400px;
 	height: auto;
+	margin: 0 auto;
 
 	@media only screen and (min-width: 768px) {
 		display: block;
@@ -54,7 +52,15 @@
 	align-items: center;
 	gap: $gap-small;
 
+	@media only screen and (max-width: 480px) {
+		gap: $gap-smaller;
+	}
+
 	span {
 		@include font-size(larger);
+
+		@media only screen and (max-width: 480px) {
+			@include font-size(regular, 1.25rem);
+		}
 	}
 }
