@@ -123,6 +123,14 @@ test.describe( 'Product Collection', () => {
 					hasText: 'Product on sale',
 				} )
 			).toHaveCount( await pageObject.productImages.count() );
+
+			await pageObject.publishAndGoToFrontend();
+			await expect( pageObject.productImages ).toHaveCount( 6 );
+			await expect(
+				await pageObject.productImages.filter( {
+					hasText: 'Product on sale',
+				} )
+			).toHaveCount( await pageObject.productImages.count() );
 		} );
 	} );
 
