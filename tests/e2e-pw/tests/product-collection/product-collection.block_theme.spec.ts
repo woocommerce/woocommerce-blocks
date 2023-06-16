@@ -125,4 +125,30 @@ test.describe( 'Product Collection', () => {
 			).toHaveCount( await pageObject.productImages.count() );
 		} );
 	} );
+
+	test( 'Products can be filtered based on selection in handpicked products option', async ( {
+		page,
+		admin,
+		editor,
+	} ) => {
+		const pageObject = new ProductCollectionPage( {
+			page,
+			admin,
+			editor,
+		} );
+		await pageObject.createNewPostAndInsertBlock();
+		await pageObject.addFilter( 'Show Hand-picked Products' );
+
+		await pageObject.setHandpickedProducts( [ 'Album' ] );
+		expect( pageObject.productTitles ).toHaveCount( 1 );
+
+		const productNames = [ 'Album', 'Cap' ];
+		await pageObject.setHandpickedProducts( productNames );
+		expect( pageObject.productTitles ).toHaveCount( 2 );
+		expect( pageObject.productTitles ).toHaveText( productNames );
+
+		await pageObject.publishAndGoToFrontend();
+		expect( pageObject.productTitles ).toHaveCount( 2 );
+		expect( pageObject.productTitles ).toHaveText( productNames );
+	} );
 } );

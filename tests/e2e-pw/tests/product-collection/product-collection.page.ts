@@ -44,6 +44,20 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'frontend' );
 	}
 
+	async addFilter( name: string ) {
+		await this.page
+			.getByRole( 'button', { name: 'Filters options' } )
+			.click();
+		await this.page
+			.getByRole( 'menuitemcheckbox', {
+				name,
+			} )
+			.click();
+		await this.page
+			.getByRole( 'button', { name: 'Filters options' } )
+			.click();
+	}
+
 	async setNumberOfColumns( numberOfColumns: number ) {
 		const inputField = await this.page.getByRole( 'spinbutton', {
 			name: 'Columns',
@@ -74,6 +88,34 @@ class ProductCollectionPage {
 		} else {
 			await input.uncheck();
 		}
+		await this.refreshLocators( 'editor' );
+	}
+
+	async setHandpickedProducts( names: string[] ) {
+		const input = this.page.getByLabel( 'Pick some products' );
+		await input.click();
+
+		// Clear the input field.
+		let numberOfAlreadySelectedProducts = await input.evaluate(
+			( node ) => {
+				return node.parentElement?.children.length;
+			}
+		);
+		while ( numberOfAlreadySelectedProducts ) {
+			// Backspace will remove token
+			await this.page.keyboard.press( 'Backspace' );
+			numberOfAlreadySelectedProducts--;
+		}
+
+		// Add new products.
+		for ( const name of names ) {
+			await input.fill( name );
+			await this.page
+				.getByRole( 'option', { name } )
+				.getByText( name )
+				.click();
+		}
+
 		await this.refreshLocators( 'editor' );
 	}
 
