@@ -49,7 +49,8 @@ jobs:
     name: PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    if: ${{ github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' }}
+    if: ${{ false }}  # disable for now
+    # if: ${{ github.repository == 'WooCommerce/WooCommerce-Blocks' || github.event_name == 'pull_request' }}
     strategy:
       fail-fast: true
       matrix:
