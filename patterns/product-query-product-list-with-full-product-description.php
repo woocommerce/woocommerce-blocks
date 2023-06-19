@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Blocks - Product List with Full Product Description
+ * Title: Product List with Full Product Description
  * Slug: woocommerce-blocks/product-query-product-list-with-full-product-description
  * Categories: WooCommerce
  * Block Types: core/query/woocommerce/product-query
