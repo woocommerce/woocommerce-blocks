@@ -1,2 +1,2 @@
-export const csnMetaTagItemprop = 'woo-client-side-navigation';
-export const directivePrefix = 'woo';
+export const csnMetaTagItemprop = 'wc-client-side-navigation';
+export const directivePrefix = 'wc';

@@ -27,7 +27,7 @@ const mergeDeepSignals = ( target, source ) => {
 };
 
 export default () => {
-	// data-woo-context
+	// data-wc-context
 	directive(
 		'context',
 		( {
@@ -50,7 +50,7 @@ export default () => {
 		{ priority: 5 }
 	);
 
-	// data-woo-effect--[name]
+	// data-wc-effect--[name]
 	directive( 'effect', ( { directives: { effect }, context, evaluate } ) => {
 		const contextValue = useContext( context );
 		Object.values( effect ).forEach( ( path ) => {
@@ -60,7 +60,7 @@ export default () => {
 		} );
 	} );
 
-	// data-woo-on--[event]
+	// data-wc-on--[event]
 	directive( 'on', ( { directives: { on }, element, evaluate, context } ) => {
 		const contextValue = useContext( context );
 		Object.entries( on ).forEach( ( [ name, path ] ) => {
@@ -70,7 +70,7 @@ export default () => {
 		} );
 	} );
 
-	// data-woo-class--[classname]
+	// data-wc-class--[classname]
 	directive(
 		'class',
 		( {
@@ -115,7 +115,7 @@ export default () => {
 		}
 	);
 
-	// data-woo-bind--[attribute]
+	// data-wc-bind--[attribute]
 	directive(
 		'bind',
 		( { directives: { bind }, element, context, evaluate } ) => {
@@ -151,7 +151,7 @@ export default () => {
 		}
 	);
 
-	// data-woo-link
+	// data-wc-link
 	directive(
 		'link',
 		( {
@@ -191,7 +191,7 @@ export default () => {
 		}
 	);
 
-	// data-woo-show
+	// data-wc-show
 	directive(
 		'show',
 		( {
@@ -211,7 +211,7 @@ export default () => {
 		}
 	);
 
-	// data-woo-ignore
+	// data-wc-ignore
 	directive(
 		'ignore',
 		( {
@@ -231,7 +231,7 @@ export default () => {
 		}
 	);
 
-	// data-woo-text
+	// data-wc-text
 	directive(
 		'text',
 		( {
