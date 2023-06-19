@@ -25,8 +25,7 @@ function woocommerce_interactivity_process_wc_style( $tags, $context ) {
 			$style_attr = woocommerce_interactivity_set_style( $style_attr, $style_name, $style_value );
 			$tags->set_attribute( 'style', $style_attr );
 		} else {
-			// TODO: Do we want to unset styles if they're null?
-		}
+					}
 	}
 }
 
@@ -44,8 +43,7 @@ function woocommerce_interactivity_set_style( $style, $name, $value ) {
 	foreach ( $style_assignments as $style_assignment ) {
 		list( $style_name ) = explode( ':', $style_assignment );
 		if ( trim( $style_name ) === $name ) {
-			// TODO: Retain surrounding whitespace from $style_value, if any.
-			$style_assignment = $style_name . ': ' . $value;
+						$style_assignment = $style_name . ': ' . $value;
 			$modified         = true;
 			break;
 		}

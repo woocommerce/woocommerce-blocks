@@ -13,8 +13,7 @@ function woocommerce_interactivity_process_directives_in_root_blocks( $block_con
 		return $block_content;
 	}
 
-	// TODO: Add some directive/components registration mechanism.
-	$directives = array(
+		$directives = array(
 		'data-wc-bind'    => 'woocommerce_interactivity_process_wc_bind',
 		'data-wc-context' => 'woocommerce_interactivity_process_wc_context',
 		'data-wc-class'   => 'woocommerce_interactivity_process_wc_class',

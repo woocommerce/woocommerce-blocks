@@ -39,8 +39,7 @@ class WC_Interactivity_Store {
 	 * @return string|false Serialized JSON data.
 	 */
 	static function serialize() {
-		// TODO: Escape?
-		return wp_json_encode( self::$store );
+				return wp_json_encode( self::$store );
 	}
 
 	/**
