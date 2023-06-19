@@ -13,6 +13,7 @@
 		"./storybook/build",
 		"./storybook/webpack.config.js",
 		"./storybook/preview.js",
-		"./bin"
+		"./bin",
+		"./assets/js/interactivity/*"
 	]
 }
