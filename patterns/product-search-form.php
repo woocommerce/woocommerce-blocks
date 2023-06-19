@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Blocks - Product Search
+ * Title: Product Search
  * Slug: woocommerce/product-search-form
  * Inserter: no
  * Categories: WooCommerce
