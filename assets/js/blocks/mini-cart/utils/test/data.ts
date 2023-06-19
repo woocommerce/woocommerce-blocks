@@ -19,6 +19,7 @@ const responseMock = {
 	json: async () => ( {
 		totals: {
 			total_price: '1600',
+			total_items: '1400',
 			currency_code: 'USD',
 			currency_symbol: '$',
 			currency_minor_unit: 2,
@@ -33,6 +34,7 @@ const responseMock = {
 const localStorageMock = {
 	totals: {
 		total_price: '1600',
+		total_items: '1400',
 		currency_code: 'USD',
 		currency_symbol: '$',
 		currency_minor_unit: 2,
@@ -78,7 +80,7 @@ describe( 'Mini-Cart frontend script', () => {
 		// Assert that we are rendering the amount.
 		await waitFor( () =>
 			expect( getByTestId( container, 'amount' ).textContent ).toBe(
-				'$16.00'
+				'$14.00'
 			)
 		);
 		// Assert that we are rendering the quantity.
@@ -113,7 +115,7 @@ describe( 'Mini-Cart frontend script', () => {
 		// Assert that we are rendering the amount.
 		await waitFor( () =>
 			expect( getByTestId( container, 'amount' ).textContent ).toBe(
-				'$16.00'
+				'$14.00'
 			)
 		);
 		// Assert that we are rendering the quantity.
