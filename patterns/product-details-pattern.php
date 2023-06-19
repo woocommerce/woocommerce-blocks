@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Blocks - Product Details Pattern
+ * Title: Product Details Pattern
  * Slug: woocommerce-blocks/product-details-pattern
  * Categories: WooCommerce
  */
