@@ -1,13 +1,13 @@
 <?php
 /**
- * Process wp-text directive attribute.
+ * Process wc-text directive attribute.
  *
  * @package Gutenberg
  * @subpackage Interactivity API
  */
 
 /**
- * Process wp-text directive attribute.
+ * Process wc-text directive attribute.
  *
  * @param WC_Directive_Processor $tags Tags.
  * @param WC_Directive_Context   $context Directive context.
@@ -17,7 +17,7 @@ function gutenberg_interactivity_process_wc_text( $tags, $context ) {
 		return;
 	}
 
-	$value = $tags->get_attribute( 'data-wp-text' );
+	$value = $tags->get_attribute( 'data-wc-text' );
 	if ( null === $value ) {
 		return;
 	}

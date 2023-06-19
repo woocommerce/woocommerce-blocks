@@ -17,21 +17,21 @@
  */
 function gutenberg_interactivity_process_directives_in_root_blocks( $block_content, $block ) {
 	// Don't process inner blocks or root blocks that don't contain directives.
-	if ( isset( $block['is_inner_block'] ) || strpos( $block_content, 'data-wp-' ) === false ) {
+	if ( isset( $block['is_inner_block'] ) || strpos( $block_content, 'data-wc-' ) === false ) {
 		return $block_content;
 	}
 
 	// TODO: Add some directive/components registration mechanism.
 	$directives = array(
-		'data-wp-bind'    => 'gutenberg_interactivity_process_wc_bind',
-		'data-wp-context' => 'gutenberg_interactivity_process_wc_context',
-		'data-wp-class'   => 'gutenberg_interactivity_process_wc_class',
-		'data-wp-style'   => 'gutenberg_interactivity_process_wc_style',
-		'data-wp-text'    => 'gutenberg_interactivity_process_wc_text',
+		'data-wc-bind'    => 'gutenberg_interactivity_process_wc_bind',
+		'data-wc-context' => 'gutenberg_interactivity_process_wc_context',
+		'data-wc-class'   => 'gutenberg_interactivity_process_wc_class',
+		'data-wc-style'   => 'gutenberg_interactivity_process_wc_style',
+		'data-wc-text'    => 'gutenberg_interactivity_process_wc_text',
 	);
 
 	$tags = new WC_Directive_Processor( $block_content );
-	$tags = gutenberg_interactivity_process_directives( $tags, 'data-wp-', $directives );
+	$tags = gutenberg_interactivity_process_directives( $tags, 'data-wc-', $directives );
 	return $tags->get_updated_html();
 }
 add_filter( 'render_block', 'gutenberg_interactivity_process_directives_in_root_blocks', 10, 2 );
@@ -91,8 +91,8 @@ function gutenberg_interactivity_process_directives( $tags, $prefix, $directives
 			foreach ( $tags->get_attribute_names_with_prefix( $prefix ) as $name ) {
 				/*
 				 * Removes the part after the double hyphen before looking for
-				 * the directive processor inside `$directives`, e.g., "wp-bind"
-				 * from "wp-bind--src" and "wp-context" from "wp-context" etc...
+				 * the directive processor inside `$directives`, e.g., "wc-bind"
+				 * from "wc-bind--src" and "wc-context" from "wc-context" etc...
 				 */
 				list( $type ) = WC_Directive_Processor::parse_attribute_name( $name );
 				if ( array_key_exists( $type, $directives ) ) {

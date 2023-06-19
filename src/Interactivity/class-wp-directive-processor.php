@@ -180,9 +180,9 @@ class WC_Directive_Processor extends WP_HTML_Tag_Processor {
 	 *
 	 * Examples:
 	 *
-	 *     'wp-island'            => array( 'wp-island', null )
-	 *     'wp-bind--src'         => array( 'wp-bind', 'src' )
-	 *     'wp-thing--and--thang' => array( 'wp-thing', 'and--thang' )
+	 *     'wc-island'            => array( 'wc-island', null )
+	 *     'wc-bind--src'         => array( 'wc-bind', 'src' )
+	 *     'wc-thing--and--thang' => array( 'wc-thing', 'and--thang' )
 	 *
 	 * @param string $name The attribute name.
 	 * @return array The resulting array

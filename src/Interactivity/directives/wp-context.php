@@ -1,12 +1,12 @@
 <?php
 /**
- * Process wp-context directive attribute.
+ * Process wc-context directive attribute.
  *
- * @package wp-directives
+ * @package wc-directives
  */
 
 /**
- * Process wp-context directive attribute.
+ * Process wc-context directive attribute.
  *
  * @param WC_Directive_Processor $tags Tags.
  * @param WC_Directive_Context   $context Directive context.
@@ -17,9 +17,9 @@ function gutenberg_interactivity_process_wc_context( $tags, $context ) {
 		return;
 	}
 
-	$value = $tags->get_attribute( 'data-wp-context' );
+	$value = $tags->get_attribute( 'data-wc-context' );
 	if ( null === $value ) {
-		// No data-wp-context directive.
+		// No data-wc-context directive.
 		return;
 	}
 

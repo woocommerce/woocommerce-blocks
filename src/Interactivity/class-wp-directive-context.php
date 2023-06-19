@@ -9,7 +9,7 @@
 /**
  * This is a data structure to hold the current context.
  *
- * Whenever encountering a `data-wp-context` directive, we need to update
+ * Whenever encountering a `data-wc-context` directive, we need to update
  * the context with the data found in that directive. Conversely,
  * when "leaving" that context (by encountering a closing tag), we
  * need to reset the context to its previous state. This means that
@@ -17,9 +17,9 @@
  *
  * Example:
  *
- * <div data-wp-context='{ "foo": 123 }'>
+ * <div data-wc-context='{ "foo": 123 }'>
  *     <!-- foo should be 123 here. -->
- *     <div data-wp-context='{ "foo": 456 }'>
+ *     <div data-wc-context='{ "foo": 456 }'>
  *         <!-- foo should be 456 here. -->
  *     </div>
  *     <!-- foo should be reset to 123 here. -->

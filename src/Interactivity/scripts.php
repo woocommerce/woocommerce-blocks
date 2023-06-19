@@ -13,7 +13,7 @@
  */
 function gutenberg_interactivity_move_interactive_scripts_to_the_footer() {
 	// Move the @wordpress/interactivity package to the footer.
-	wp_script_add_data( 'wp-interactivity', 'group', 1 );
+	wp_script_add_data( 'wc-interactivity', 'group', 1 );
 
 	// Move all the view scripts of the interactive blocks to the footer.
 	$registered_blocks = \WP_Block_Type_Registry::get_instance()->get_all_registered();

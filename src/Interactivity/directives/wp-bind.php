@@ -1,13 +1,13 @@
 <?php
 /**
- * Process the wp-bind directive attribute.
+ * Process the wc-bind directive attribute.
  *
  * @package Gutenberg
  * @subpackage Interactivity API
  */
 
 /**
- * Process wp-bind directive attribute.
+ * Process wc-bind directive attribute.
  *
  * @param WC_Directive_Processor $tags Tags.
  * @param WC_Directive_Context   $context Directive context.
@@ -17,7 +17,7 @@ function gutenberg_interactivity_process_wc_bind( $tags, $context ) {
 		return;
 	}
 
-	$prefixed_attributes = $tags->get_attribute_names_with_prefix( 'data-wp-bind--' );
+	$prefixed_attributes = $tags->get_attribute_names_with_prefix( 'data-wc-bind--' );
 
 	foreach ( $prefixed_attributes as $attr ) {
 		list( , $bound_attr ) = WC_Directive_Processor::parse_attribute_name( $attr );

@@ -68,6 +68,6 @@ class WC_Interactivity_Store {
 			return;
 		}
 		$store = self::serialize();
-		echo "<script id=\"wp-interactivity-store-data\" type=\"application/json\">$store</script>";
+		echo "<script id=\"wc-interactivity-store-data\" type=\"application/json\">$store</script>";
 	}
 }

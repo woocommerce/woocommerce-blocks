@@ -1,13 +1,13 @@
 <?php
 /**
- * Process wp-class directive attribute.
+ * Process wc-class directive attribute.
  *
  * @package Gutenberg
  * @subpackage Interactivity API
  */
 
 /**
- * Process wp-class directive attribute.
+ * Process wc-class directive attribute.
  *
  * @param WC_Directive_Processor $tags Tags.
  * @param WC_Directive_Context   $context Directive context.
@@ -17,7 +17,7 @@ function gutenberg_interactivity_process_wc_class( $tags, $context ) {
 		return;
 	}
 
-	$prefixed_attributes = $tags->get_attribute_names_with_prefix( 'data-wp-class--' );
+	$prefixed_attributes = $tags->get_attribute_names_with_prefix( 'data-wc-class--' );
 
 	foreach ( $prefixed_attributes as $attr ) {
 		list( , $class_name ) = WC_Directive_Processor::parse_attribute_name( $attr );
