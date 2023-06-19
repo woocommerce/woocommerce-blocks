@@ -10,7 +10,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Empty site to prevent conflicts with existing data
 ###################################################################################################
 
-wp-env run tests-cli "wp site empty --yes"
+wp-env run tests-cli wp site empty -- --yes
 
 ###################################################################################################
 # If no attributes exist, otherwiese create them
