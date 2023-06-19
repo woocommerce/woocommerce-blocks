@@ -26,6 +26,7 @@ const getSerializedState = () => {
 		if ( isObject( state ) ) return state;
 		throw Error( 'Parsed state is not an object' );
 	} catch ( e ) {
+		// eslint-disable-next-line no-console
 		console.log( e );
 	}
 	return {};
