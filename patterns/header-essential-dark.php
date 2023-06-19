@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Blocks - Essential Header Dark
+ * Title: Essential Header Dark
  * Slug: woocommerce-blocks/header-essential-dark
  * Categories: WooCommerce
  * Block Types: core/template-part/header
