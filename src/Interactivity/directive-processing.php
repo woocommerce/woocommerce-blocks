@@ -23,14 +23,14 @@ function gutenberg_interactivity_process_directives_in_root_blocks( $block_conte
 
 	// TODO: Add some directive/components registration mechanism.
 	$directives = array(
-		'data-wp-bind'    => 'gutenberg_interactivity_process_wp_bind',
-		'data-wp-context' => 'gutenberg_interactivity_process_wp_context',
-		'data-wp-class'   => 'gutenberg_interactivity_process_wp_class',
-		'data-wp-style'   => 'gutenberg_interactivity_process_wp_style',
-		'data-wp-text'    => 'gutenberg_interactivity_process_wp_text',
+		'data-wp-bind'    => 'gutenberg_interactivity_process_wc_bind',
+		'data-wp-context' => 'gutenberg_interactivity_process_wc_context',
+		'data-wp-class'   => 'gutenberg_interactivity_process_wc_class',
+		'data-wp-style'   => 'gutenberg_interactivity_process_wc_style',
+		'data-wp-text'    => 'gutenberg_interactivity_process_wc_text',
 	);
 
-	$tags = new WP_Directive_Processor( $block_content );
+	$tags = new WC_Directive_Processor( $block_content );
 	$tags = gutenberg_interactivity_process_directives( $tags, 'data-wp-', $directives );
 	return $tags->get_updated_html();
 }
@@ -57,15 +57,15 @@ add_filter( 'render_block_data', 'gutenberg_interactivity_mark_inner_blocks', 10
 /**
  * Process directives.
  *
- * @param WP_Directive_Processor $tags An instance of the WP_Directive_Processor.
+ * @param WC_Directive_Processor $tags An instance of the WC_Directive_Processor.
  * @param string                 $prefix Attribute prefix.
  * @param string[]               $directives Directives.
  *
- * @return WP_Directive_Processor The modified instance of the
- * WP_Directive_Processor.
+ * @return WC_Directive_Processor The modified instance of the
+ * WC_Directive_Processor.
  */
 function gutenberg_interactivity_process_directives( $tags, $prefix, $directives ) {
-	$context   = new WP_Directive_Context;
+	$context   = new WC_Directive_Context;
 	$tag_stack = array();
 
 	while ( $tags->next_tag( array( 'tag_closers' => 'visit' ) ) ) {
@@ -94,7 +94,7 @@ function gutenberg_interactivity_process_directives( $tags, $prefix, $directives
 				 * the directive processor inside `$directives`, e.g., "wp-bind"
 				 * from "wp-bind--src" and "wp-context" from "wp-context" etc...
 				 */
-				list( $type ) = WP_Directive_Processor::parse_attribute_name( $name );
+				list( $type ) = WC_Directive_Processor::parse_attribute_name( $name );
 				if ( array_key_exists( $type, $directives ) ) {
 					$attributes[] = $type;
 				}
@@ -107,7 +107,7 @@ function gutenberg_interactivity_process_directives( $tags, $prefix, $directives
 			 * encounter the matching closing tag.
 			 */
 			if (
-				! WP_Directive_Processor::is_html_void_element( $tags->get_tag() ) &&
+				! WC_Directive_Processor::is_html_void_element( $tags->get_tag() ) &&
 				( 0 !== count( $attributes ) || 0 !== count( $tag_stack ) )
 			) {
 				$tag_stack[] = array( $tag_name, $attributes );
@@ -131,7 +131,7 @@ function gutenberg_interactivity_process_directives( $tags, $prefix, $directives
  */
 function gutenberg_interactivity_evaluate_reference( $path, array $context = array() ) {
 	$store = array_merge(
-		WP_Interactivity_Store::get_data(),
+		WC_Interactivity_Store::get_data(),
 		array( 'context' => $context )
 	);
 

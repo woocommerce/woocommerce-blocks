@@ -8,7 +8,7 @@
 
 /**
  * Move interactive scripts to the footer. This is a temporary measure to make
- * it work with `wp_store` and it should be replaced with deferred scripts or
+ * it work with `wc_store` and it should be replaced with deferred scripts or
  * modules.
  */
 function gutenberg_interactivity_move_interactive_scripts_to_the_footer() {

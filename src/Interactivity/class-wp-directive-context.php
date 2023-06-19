@@ -25,7 +25,7 @@
  *     <!-- foo should be reset to 123 here. -->
  * </div>
  */
-class WP_Directive_Context {
+class WC_Directive_Context {
 	/**
 	 * The stack used to store contexts internally.
 	 *

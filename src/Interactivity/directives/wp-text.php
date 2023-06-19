@@ -9,10 +9,10 @@
 /**
  * Process wp-text directive attribute.
  *
- * @param WP_Directive_Processor $tags Tags.
- * @param WP_Directive_Context   $context Directive context.
+ * @param WC_Directive_Processor $tags Tags.
+ * @param WC_Directive_Context   $context Directive context.
  */
-function gutenberg_interactivity_process_wp_text( $tags, $context ) {
+function gutenberg_interactivity_process_wc_text( $tags, $context ) {
 	if ( $tags->is_tag_closer() ) {
 		return;
 	}

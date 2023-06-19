@@ -1,6 +1,6 @@
 <?php
 /**
- * Functions to expose the store of the WP_Interactivity_Store class.
+ * Functions to expose the store of the WC_Interactivity_Store class.
  *
  * @package Gutenberg
  * @subpackage Interactivity API
@@ -13,14 +13,14 @@
  *
  * @return $data The current store data.
  */
-function wp_store( $data = null ) {
+function wc_store( $data = null ) {
 	if ( $data ) {
-		WP_Interactivity_Store::merge_data( $data );
+		WC_Interactivity_Store::merge_data( $data );
 	}
-	return WP_Interactivity_Store::get_data();
+	return WC_Interactivity_Store::get_data();
 }
 
 /**
  * Render the Interactivity API store in the frontend.
  */
-add_action( 'wp_footer', array( 'WP_Interactivity_Store', 'render' ), 8 );
+add_action( 'wp_footer', array( 'WC_Interactivity_Store', 'render' ), 8 );

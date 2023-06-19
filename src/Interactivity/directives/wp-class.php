@@ -9,10 +9,10 @@
 /**
  * Process wp-class directive attribute.
  *
- * @param WP_Directive_Processor $tags Tags.
- * @param WP_Directive_Context   $context Directive context.
+ * @param WC_Directive_Processor $tags Tags.
+ * @param WC_Directive_Context   $context Directive context.
  */
-function gutenberg_interactivity_process_wp_class( $tags, $context ) {
+function gutenberg_interactivity_process_wc_class( $tags, $context ) {
 	if ( $tags->is_tag_closer() ) {
 		return;
 	}
@@ -20,7 +20,7 @@ function gutenberg_interactivity_process_wp_class( $tags, $context ) {
 	$prefixed_attributes = $tags->get_attribute_names_with_prefix( 'data-wp-class--' );
 
 	foreach ( $prefixed_attributes as $attr ) {
-		list( , $class_name ) = WP_Directive_Processor::parse_attribute_name( $attr );
+		list( , $class_name ) = WC_Directive_Processor::parse_attribute_name( $attr );
 		if ( empty( $class_name ) ) {
 			continue;
 		}

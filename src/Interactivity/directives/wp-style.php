@@ -9,10 +9,10 @@
 /**
  * Process wp-style directive attribute.
  *
- * @param WP_Directive_Processor $tags Tags.
- * @param WP_Directive_Context   $context Directive context.
+ * @param WC_Directive_Processor $tags Tags.
+ * @param WC_Directive_Context   $context Directive context.
  */
-function gutenberg_interactivity_process_wp_style( $tags, $context ) {
+function gutenberg_interactivity_process_wc_style( $tags, $context ) {
 	if ( $tags->is_tag_closer() ) {
 		return;
 	}
@@ -20,7 +20,7 @@ function gutenberg_interactivity_process_wp_style( $tags, $context ) {
 	$prefixed_attributes = $tags->get_attribute_names_with_prefix( 'data-wp-style--' );
 
 	foreach ( $prefixed_attributes as $attr ) {
-		list( , $style_name ) = WP_Directive_Processor::parse_attribute_name( $attr );
+		list( , $style_name ) = WC_Directive_Processor::parse_attribute_name( $attr );
 		if ( empty( $style_name ) ) {
 			continue;
 		}

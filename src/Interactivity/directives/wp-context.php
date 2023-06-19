@@ -8,10 +8,10 @@
 /**
  * Process wp-context directive attribute.
  *
- * @param WP_Directive_Processor $tags Tags.
- * @param WP_Directive_Context   $context Directive context.
+ * @param WC_Directive_Processor $tags Tags.
+ * @param WC_Directive_Context   $context Directive context.
  */
-function gutenberg_interactivity_process_wp_context( $tags, $context ) {
+function gutenberg_interactivity_process_wc_context( $tags, $context ) {
 	if ( $tags->is_tag_closer() ) {
 		$context->rewind_context();
 		return;

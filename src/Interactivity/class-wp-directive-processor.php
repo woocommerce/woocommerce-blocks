@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Directive_Processor class
+ * WC_Directive_Processor class
  *
  * @package Gutenberg
  * @subpackage Interactivity API
@@ -16,7 +16,7 @@
  * available.  Please restrain from investing unnecessary time and effort trying
  * to improve this code.
  */
-class WP_Directive_Processor extends WP_HTML_Tag_Processor {
+class WC_Directive_Processor extends WP_HTML_Tag_Processor {
 	/**
 	 * Find the matching closing tag for an opening tag.
 	 *

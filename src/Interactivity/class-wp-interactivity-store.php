@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Interactivity_Store class
+ * WC_Interactivity_Store class
  *
  * Manages the initial state of the Interactivity API store in the server and
  * its serialization so it can be restored in the browser upon hydration.
@@ -13,11 +13,11 @@
  * Manages the initial state of the Interactivity API store in the server and
  * its serialization so it can be restored in the browser upon hydration.
  *
- * It's a private class, exposed by other functions, like `wp_store`.
+ * It's a private class, exposed by other functions, like `wc_store`.
  *
  * @access private
  */
-class WP_Interactivity_Store {
+class WC_Interactivity_Store {
 	/**
 	 * Store.
 	 *
