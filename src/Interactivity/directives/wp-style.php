@@ -12,7 +12,7 @@
  * @param WC_Directive_Processor $tags Tags.
  * @param WC_Directive_Context   $context Directive context.
  */
-function gutenberg_interactivity_process_wc_style( $tags, $context ) {
+function woocommerce_interactivity_process_wc_style( $tags, $context ) {
 	if ( $tags->is_tag_closer() ) {
 		return;
 	}
@@ -26,10 +26,10 @@ function gutenberg_interactivity_process_wc_style( $tags, $context ) {
 		}
 
 		$expr        = $tags->get_attribute( $attr );
-		$style_value = gutenberg_interactivity_evaluate_reference( $expr, $context->get_context() );
+		$style_value = woocommerce_interactivity_evaluate_reference( $expr, $context->get_context() );
 		if ( $style_value ) {
 			$style_attr = $tags->get_attribute( 'style' );
-			$style_attr = gutenberg_interactivity_set_style( $style_attr, $style_name, $style_value );
+			$style_attr = woocommerce_interactivity_set_style( $style_attr, $style_name, $style_value );
 			$tags->set_attribute( 'style', $style_attr );
 		} else {
 			// TODO: Do we want to unset styles if they're null?
@@ -45,7 +45,7 @@ function gutenberg_interactivity_process_wc_style( $tags, $context ) {
  * @param string $value Style property value.
  * @return string Amended styles.
  */
-function gutenberg_interactivity_set_style( $style, $name, $value ) {
+function woocommerce_interactivity_set_style( $style, $name, $value ) {
 	$style_assignments = explode( ';', $style );
 	$modified          = false;
 	foreach ( $style_assignments as $style_assignment ) {

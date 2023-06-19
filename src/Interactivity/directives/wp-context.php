@@ -11,7 +11,7 @@
  * @param WC_Directive_Processor $tags Tags.
  * @param WC_Directive_Context   $context Directive context.
  */
-function gutenberg_interactivity_process_wc_context( $tags, $context ) {
+function woocommerce_interactivity_process_wc_context( $tags, $context ) {
 	if ( $tags->is_tag_closer() ) {
 		$context->rewind_context();
 		return;

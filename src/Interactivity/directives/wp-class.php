@@ -12,7 +12,7 @@
  * @param WC_Directive_Processor $tags Tags.
  * @param WC_Directive_Context   $context Directive context.
  */
-function gutenberg_interactivity_process_wc_class( $tags, $context ) {
+function woocommerce_interactivity_process_wc_class( $tags, $context ) {
 	if ( $tags->is_tag_closer() ) {
 		return;
 	}
@@ -26,7 +26,7 @@ function gutenberg_interactivity_process_wc_class( $tags, $context ) {
 		}
 
 		$expr      = $tags->get_attribute( $attr );
-		$add_class = gutenberg_interactivity_evaluate_reference( $expr, $context->get_context() );
+		$add_class = woocommerce_interactivity_evaluate_reference( $expr, $context->get_context() );
 		if ( $add_class ) {
 			$tags->add_class( $class_name );
 		} else {

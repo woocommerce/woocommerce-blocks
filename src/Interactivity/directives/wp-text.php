@@ -12,7 +12,7 @@
  * @param WC_Directive_Processor $tags Tags.
  * @param WC_Directive_Context   $context Directive context.
  */
-function gutenberg_interactivity_process_wc_text( $tags, $context ) {
+function woocommerce_interactivity_process_wc_text( $tags, $context ) {
 	if ( $tags->is_tag_closer() ) {
 		return;
 	}
@@ -22,6 +22,6 @@ function gutenberg_interactivity_process_wc_text( $tags, $context ) {
 		return;
 	}
 
-	$text = gutenberg_interactivity_evaluate_reference( $value, $context->get_context() );
+	$text = woocommerce_interactivity_evaluate_reference( $value, $context->get_context() );
 	$tags->set_inner_html( esc_html( $text ) );
 }

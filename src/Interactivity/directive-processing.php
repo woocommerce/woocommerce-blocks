@@ -15,7 +15,7 @@
  *
  * @return string Filtered block content.
  */
-function gutenberg_interactivity_process_directives_in_root_blocks( $block_content, $block ) {
+function woocommerce_interactivity_process_directives_in_root_blocks( $block_content, $block ) {
 	// Don't process inner blocks or root blocks that don't contain directives.
 	if ( isset( $block['is_inner_block'] ) || strpos( $block_content, 'data-wc-' ) === false ) {
 		return $block_content;
@@ -23,18 +23,18 @@ function gutenberg_interactivity_process_directives_in_root_blocks( $block_conte
 
 	// TODO: Add some directive/components registration mechanism.
 	$directives = array(
-		'data-wc-bind'    => 'gutenberg_interactivity_process_wc_bind',
-		'data-wc-context' => 'gutenberg_interactivity_process_wc_context',
-		'data-wc-class'   => 'gutenberg_interactivity_process_wc_class',
-		'data-wc-style'   => 'gutenberg_interactivity_process_wc_style',
-		'data-wc-text'    => 'gutenberg_interactivity_process_wc_text',
+		'data-wc-bind'    => 'woocommerce_interactivity_process_wc_bind',
+		'data-wc-context' => 'woocommerce_interactivity_process_wc_context',
+		'data-wc-class'   => 'woocommerce_interactivity_process_wc_class',
+		'data-wc-style'   => 'woocommerce_interactivity_process_wc_style',
+		'data-wc-text'    => 'woocommerce_interactivity_process_wc_text',
 	);
 
 	$tags = new WC_Directive_Processor( $block_content );
-	$tags = gutenberg_interactivity_process_directives( $tags, 'data-wc-', $directives );
+	$tags = woocommerce_interactivity_process_directives( $tags, 'data-wc-', $directives );
 	return $tags->get_updated_html();
 }
-add_filter( 'render_block', 'gutenberg_interactivity_process_directives_in_root_blocks', 10, 2 );
+add_filter( 'render_block', 'woocommerce_interactivity_process_directives_in_root_blocks', 10, 2 );
 
 /**
  * Mark the inner blocks with a temporary property so we can discard them later,
@@ -46,13 +46,13 @@ add_filter( 'render_block', 'gutenberg_interactivity_process_directives_in_root_
  *
  * @return array The parsed block.
  */
-function gutenberg_interactivity_mark_inner_blocks( $parsed_block, $source_block, $parent_block ) {
+function woocommerce_interactivity_mark_inner_blocks( $parsed_block, $source_block, $parent_block ) {
 	if ( isset( $parent_block ) ) {
 		$parsed_block['is_inner_block'] = true;
 	}
 	return $parsed_block;
 }
-add_filter( 'render_block_data', 'gutenberg_interactivity_mark_inner_blocks', 10, 3 );
+add_filter( 'render_block_data', 'woocommerce_interactivity_mark_inner_blocks', 10, 3 );
 
 /**
  * Process directives.
@@ -64,7 +64,7 @@ add_filter( 'render_block_data', 'gutenberg_interactivity_mark_inner_blocks', 10
  * @return WC_Directive_Processor The modified instance of the
  * WC_Directive_Processor.
  */
-function gutenberg_interactivity_process_directives( $tags, $prefix, $directives ) {
+function woocommerce_interactivity_process_directives( $tags, $prefix, $directives ) {
 	$context   = new WC_Directive_Context;
 	$tag_stack = array();
 
@@ -129,7 +129,7 @@ function gutenberg_interactivity_process_directives( $tags, $prefix, $directives
  * @param array  $context Context data.
  * @return mixed
  */
-function gutenberg_interactivity_evaluate_reference( $path, array $context = array() ) {
+function woocommerce_interactivity_evaluate_reference( $path, array $context = array() ) {
 	$store = array_merge(
 		WC_Interactivity_Store::get_data(),
 		array( 'context' => $context )

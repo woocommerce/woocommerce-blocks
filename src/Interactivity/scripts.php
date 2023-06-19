@@ -11,7 +11,7 @@
  * it work with `wc_store` and it should be replaced with deferred scripts or
  * modules.
  */
-function gutenberg_interactivity_move_interactive_scripts_to_the_footer() {
+function woocommerce_interactivity_move_interactive_scripts_to_the_footer() {
 	// Move the @wordpress/interactivity package to the footer.
 	wp_script_add_data( 'wc-interactivity', 'group', 1 );
 
@@ -25,4 +25,4 @@ function gutenberg_interactivity_move_interactive_scripts_to_the_footer() {
 		}
 	}
 }
-add_action( 'wp_enqueue_scripts', 'gutenberg_interactivity_move_interactive_scripts_to_the_footer', 11 );
+add_action( 'wp_enqueue_scripts', 'woocommerce_interactivity_move_interactive_scripts_to_the_footer', 11 );

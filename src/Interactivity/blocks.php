@@ -13,7 +13,7 @@
  *
  * @return array Filtered block type metadata.
  */
-function gutenberg_block_update_interactive_view_script( $metadata ) {
+function woocommerce_block_update_interactive_view_script( $metadata ) {
 	if (
 		in_array( $metadata['name'], array( 'core/image' ), true ) &&
 		str_contains( $metadata['file'], 'build/block-library/blocks' )
@@ -22,4 +22,4 @@ function gutenberg_block_update_interactive_view_script( $metadata ) {
 	}
 	return $metadata;
 }
-add_filter( 'block_type_metadata', 'gutenberg_block_update_interactive_view_script', 10, 1 );
+add_filter( 'block_type_metadata', 'woocommerce_block_update_interactive_view_script', 10, 1 );
