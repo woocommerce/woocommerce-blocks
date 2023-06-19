@@ -119,10 +119,10 @@ jobs:
       - name: Docker container debug information
         run: |
           npm run wp-env run tests-mysql mysql -- --version
-          npm run wp-env run tests-wordpress "php --version"
-          npm run wp-env run tests-wordpress "php -m"
-          npm run wp-env run tests-wordpress "php -i"
-          npm run wp-env run tests-wordpress "locale -a"
+          npm run wp-env run tests-wordpress php -- --version
+          npm run wp-env run tests-wordpress php -- -m
+          npm run wp-env run tests-wordpress php -- -i
+          npm run wp-env run tests-wordpress locale -- -a
           
       - name: Run PHPUnit tests
         run: npm run test:php
