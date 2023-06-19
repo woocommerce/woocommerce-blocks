@@ -5,7 +5,7 @@
  * modules.
  */
 function woocommerce_interactivity_move_interactive_scripts_to_the_footer() {
-	// Move the @wordpress/interactivity package to the footer.
+	// Move the @woocommerce/interactivity package to the footer.
 	wp_script_add_data( 'wc-interactivity', 'group', 1 );
 
 	// Move all the view scripts of the interactive blocks to the footer.
