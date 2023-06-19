@@ -97,8 +97,6 @@ jobs:
           npm run build
           
       - name: Docker debug information
-        # 8.1 and 8.2 are temporarily disabled as docker-images for those cause the errors when pipeline is running
-        if: ${{ matrix.php == '7.4' || matrix.php == '8.0' }}
         run: |
           docker -v
           docker-compose -v
