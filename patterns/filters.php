@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Blocks - Product Filters
+ * Title: Product Filters
  * Slug: woocommerce-blocks/product-filters
  * Categories: WooCommerce
  * Block Types: woocommerce/active-filters, woocommerce/price-filter, woocommerce/attribute-filter, woocommerce/stock-filter
