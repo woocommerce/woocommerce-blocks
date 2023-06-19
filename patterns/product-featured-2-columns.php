@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Blocks - Featured Products 2 Columns
+ * Title: Featured Products 2 Columns
  * Slug: woocommerce-blocks/featured-products-2-cols
  * Categories: WooCommerce
  */
