@@ -20,10 +20,8 @@ class Woo_Directive_Store {
 			return;
 		}
 
-		$id = 'store';
 		echo sprintf(
-			'<script id="%s" type="application/json">%s</script>',
-			esc_attr( $id ),
+			'<script id="store" type="application/json">%s</script>',
 			json_encode( self::$store )
 		);
 	}
