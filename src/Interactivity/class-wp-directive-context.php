@@ -2,13 +2,14 @@
 /**
  * Context data implementation.
  *
- * @package block-hydration-experiments
+ * @package Gutenberg
+ * @subpackage Interactivity API
  */
 
 /**
  * This is a data structure to hold the current context.
  *
- * Whenever encountering a `woo-context` directive, we need to update
+ * Whenever encountering a `data-wp-context` directive, we need to update
  * the context with the data found in that directive. Conversely,
  * when "leaving" that context (by encountering a closing tag), we
  * need to reset the context to its previous state. This means that
@@ -16,15 +17,15 @@
  *
  * Example:
  *
- * <woo-context data='{ "foo": 123 }'>
+ * <div data-wp-context='{ "foo": 123 }'>
  *     <!-- foo should be 123 here. -->
- *     <woo-context data='{ "foo": 456 }'>
+ *     <div data-wp-context='{ "foo": 456 }'>
  *         <!-- foo should be 456 here. -->
- *     </woo-context>
+ *     </div>
  *     <!-- foo should be reset to 123 here. -->
- * </woo-context>
+ * </div>
  */
-class Woo_Directive_Context {
+class WP_Directive_Context {
 	/**
 	 * The stack used to store contexts internally.
 	 *
@@ -56,10 +57,13 @@ class Woo_Directive_Context {
 	 * Set the current context.
 	 *
 	 * @param array $context The context to be set.
+	 *
 	 * @return void
 	 */
 	public function set_context( $context ) {
-		array_push( $this->stack, array_replace_recursive( $this->get_context(), $context ) );
+		if ( $context ) {
+			array_push( $this->stack, array_replace_recursive( $this->get_context(), $context ) );
+		}
 	}
 
 	/**
