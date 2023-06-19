@@ -1,26 +1,29 @@
 /**
  * External dependencies
  */
-import { test, expect } from '@woocommerce/e2e-playwright-utils';
+import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
 
 /**
  * Internal dependencies
  */
 import ProductCollectionPage from './product-collection.page';
 
-test.describe( 'Product Collection', () => {
-	test( 'Renders product collection block correctly with 9 items', async ( {
-		page,
-		admin,
-		editor,
-	} ) => {
+const test = base.extend< { pageObject: ProductCollectionPage } >( {
+	pageObject: async ( { page, admin, editor }, use ) => {
 		const pageObject = new ProductCollectionPage( {
 			page,
 			admin,
 			editor,
 		} );
 		await pageObject.createNewPostAndInsertBlock();
+		await use( pageObject );
+	},
+} );
 
+test.describe( 'Product Collection', () => {
+	test( 'Renders product collection block correctly with 9 items', async ( {
+		pageObject,
+	} ) => {
 		expect( pageObject.productTemplate ).not.toBeNull();
 		expect( pageObject.productImages ).toHaveCount( 9 );
 		expect( pageObject.productTitles ).toHaveCount( 9 );
@@ -38,16 +41,8 @@ test.describe( 'Product Collection', () => {
 
 	test.describe( 'Product Collection Sidebar Settings', () => {
 		test( 'Reflects the correct number of columns according to sidebar settings', async ( {
-			page,
-			admin,
-			editor,
+			pageObject,
 		} ) => {
-			const pageObject = new ProductCollectionPage( {
-				page,
-				admin,
-				editor,
-			} );
-			await pageObject.createNewPostAndInsertBlock();
 			await pageObject.setNumberOfColumns( 2 );
 			await expect(
 				await pageObject.productTemplate.getAttribute( 'class' )
@@ -66,17 +61,8 @@ test.describe( 'Product Collection', () => {
 		} );
 
 		test( 'Order By - sort products by title in descending order correctly', async ( {
-			page,
-			admin,
-			editor,
+			pageObject,
 		} ) => {
-			const pageObject = new ProductCollectionPage( {
-				page,
-				admin,
-				editor,
-			} );
-			await pageObject.createNewPostAndInsertBlock();
-
 			await pageObject.setOrderBy( 'title/desc' );
 			const allTitles = await pageObject.productTitles.allInnerTexts();
 			const expectedTitles = [ ...allTitles ].sort().reverse();
@@ -92,17 +78,8 @@ test.describe( 'Product Collection', () => {
 
 		// Products can be filtered based on 'on sale' status.
 		test( 'Products can be filtered based on "on sale" status.', async ( {
-			page,
-			admin,
-			editor,
+			pageObject,
 		} ) => {
-			const pageObject = new ProductCollectionPage( {
-				page,
-				admin,
-				editor,
-			} );
-			await pageObject.createNewPostAndInsertBlock();
-
 			// On each page we show 9 products.
 			await expect( pageObject.productImages ).toHaveCount( 9 );
 			// All products should not be on sale.
@@ -135,16 +112,8 @@ test.describe( 'Product Collection', () => {
 	} );
 
 	test( 'Products can be filtered based on selection in handpicked products option', async ( {
-		page,
-		admin,
-		editor,
+		pageObject,
 	} ) => {
-		const pageObject = new ProductCollectionPage( {
-			page,
-			admin,
-			editor,
-		} );
-		await pageObject.createNewPostAndInsertBlock();
 		await pageObject.addFilter( 'Show Hand-picked Products' );
 
 		await pageObject.setHandpickedProducts( [ 'Album' ] );
