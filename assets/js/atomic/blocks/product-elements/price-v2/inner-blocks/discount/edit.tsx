@@ -1,51 +1,49 @@
 /**
  * External dependencies
  */
-import { useBlockProps } from '@wordpress/block-editor';
-import type { HTMLAttributes, CSSProperties } from 'react';
+import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { useProductDataContext } from '@woocommerce/shared-context';
-import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
+import { useStyleProps } from '@woocommerce/base-hooks';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import DiscountBlock from './block';
+import { discountAmountName } from './inner-blocks';
+import { TEMPLATE } from './template';
 
-interface Attributes {
-	style: CSSProperties;
-}
-
-type Props = {
-	attributes: Attributes;
-	context?: { isDescendentOfSingleProductTemplate: boolean };
-} & HTMLAttributes< HTMLDivElement >;
-
-const DiscountEdit = ( { attributes, context }: Props ): JSX.Element => {
-	const blockProps = useBlockProps();
+export const Edit = ( { attributes, setAttributes } ): JSX.Element => {
+	const { style, className } = useStyleProps( attributes );
 	const { product } = useProductDataContext();
-	const { isDescendentOfSingleProductTemplate = false } = context || {};
 	const originalPrice = product?.prices?.regular_price;
 	const currentPrice = product?.prices?.price;
 	const showPrice = originalPrice && currentPrice !== originalPrice;
-	const currency = isDescendentOfSingleProductTemplate
-		? getCurrencyFromPriceResponse()
-		: getCurrencyFromPriceResponse( product?.prices );
-	const blockAttrs = {
-		attributes,
-		currency,
-		context,
-		originalPrice,
-		currentPrice,
-	};
+	useEffect( () => {
+		if ( ! attributes?.style ) {
+			setAttributes( { style: { spacing: { blockGap: '0' } } } );
+		}
+	}, [ attributes, setAttributes ] );
 	return (
 		<>
 			{ showPrice && (
-				<div { ...blockProps }>
-					<DiscountBlock { ...blockAttrs } />
+				<div className={ className } style={ style }>
+					<InnerBlocks
+						allowedBlocks={ [
+							discountAmountName,
+							'core/paragraph',
+						] }
+						template={ TEMPLATE }
+					/>
 				</div>
 			) }
 		</>
 	);
 };
 
-export default DiscountEdit;
+export const Save = (): JSX.Element => {
+	return (
+		<div { ...useBlockProps.save() }>
+			<InnerBlocks.Content />
+		</div>
+	);
+};

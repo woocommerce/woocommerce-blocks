@@ -6,9 +6,8 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { Edit as edit, Save as save } from './edit';
-import sharedConfig from '../../../shared/config';
-import { supports } from '../../supports';
+import edit from './edit';
+import sharedConfig from '../../../../../shared/config';
 import metadata from './block.json';
 
 const { ancestor, ...configuration } = sharedConfig;
@@ -16,12 +15,11 @@ const { ancestor, ...configuration } = sharedConfig;
 const blockConfig = {
 	...configuration,
 	...metadata,
-	supports: {
-		...supports,
-		...metadata.supports,
-	},
 	edit,
-	save,
+	supports: {
+		...configuration.supports,
+		context: '',
+	},
 };
 
 registerBlockType( metadata.name, blockConfig );
