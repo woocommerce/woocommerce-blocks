@@ -1,12 +1,5 @@
 <?php
 /**
- * Functions to expose the store of the WC_Interactivity_Store class.
- *
- * @package Gutenberg
- * @subpackage Interactivity API
- */
-
-/**
  * Merge data with the exsisting store.
  *
  * @param array $data Data that will be merged with the exsisting store.

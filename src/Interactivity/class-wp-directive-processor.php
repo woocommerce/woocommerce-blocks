@@ -1,12 +1,5 @@
 <?php
 /**
- * WC_Directive_Processor class
- *
- * @package Gutenberg
- * @subpackage Interactivity API
- */
-
-/**
  * This processor is built on top of the HTML Tag Processor and augments its
  * capabilities to process the Interactivity API directives.
  *

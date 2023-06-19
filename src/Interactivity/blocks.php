@@ -1,12 +1,5 @@
 <?php
 /**
- * Extend WordPress core blocks to use the Interactivity API.
- *
- * @package Gutenberg
- * @subpackage Interactivity API
- */
-
-/**
  * Replaces view script for the Image block with version using Interactivity API.
  *
  * @param array $metadata Block metadata as read in via block.json.

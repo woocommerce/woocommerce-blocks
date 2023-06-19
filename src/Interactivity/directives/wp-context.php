@@ -2,12 +2,6 @@
 /**
  * Process wc-context directive attribute.
  *
- * @package wc-directives
- */
-
-/**
- * Process wc-context directive attribute.
- *
  * @param WC_Directive_Processor $tags Tags.
  * @param WC_Directive_Context   $context Directive context.
  */

@@ -1,12 +1,5 @@
 <?php
 /**
- * Utils to optimize the interactive scripts.
- *
- * @package Gutenberg
- * @subpackage Interactivity API
- */
-
-/**
  * Move interactive scripts to the footer. This is a temporary measure to make
  * it work with `wc_store` and it should be replaced with deferred scripts or
  * modules.

@@ -1,13 +1,5 @@
 <?php
 /**
- * Functions and hooks to process the server side rendering of the Interactivity
- * API directives.
- *
- * @package Gutenberg
- * @subpackage Interactivity API
- */
-
-/**
  * Process directives in each block.
  *
  * @param string $block_content The block content.

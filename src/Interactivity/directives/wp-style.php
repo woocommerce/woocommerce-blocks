@@ -2,13 +2,6 @@
 /**
  * Process wc-style directive attribute.
  *
- * @package Gutenberg
- * @subpackage Interactivity API
- */
-
-/**
- * Process wc-style directive attribute.
- *
  * @param WC_Directive_Processor $tags Tags.
  * @param WC_Directive_Context   $context Directive context.
  */

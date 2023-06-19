@@ -1,12 +1,5 @@
 <?php
 /**
- * Process the wc-bind directive attribute.
- *
- * @package Gutenberg
- * @subpackage Interactivity API
- */
-
-/**
  * Process wc-bind directive attribute.
  *
  * @param WC_Directive_Processor $tags Tags.

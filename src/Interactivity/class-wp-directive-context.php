@@ -1,12 +1,5 @@
 <?php
 /**
- * Context data implementation.
- *
- * @package Gutenberg
- * @subpackage Interactivity API
- */
-
-/**
  * This is a data structure to hold the current context.
  *
  * Whenever encountering a `data-wc-context` directive, we need to update
