@@ -2,6 +2,7 @@
 require __DIR__ . '/class-wc-interactivity-store.php';
 require __DIR__ . '/store.php';
 require __DIR__ . '/scripts.php';
+require __DIR__ . '/client-side-navigation.php';
 require __DIR__ . '/class-wc-directive-processor.php';
 require __DIR__ . '/class-wc-directive-context.php';
 require __DIR__ . '/directive-processing.php';
