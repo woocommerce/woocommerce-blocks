@@ -25,12 +25,25 @@ add_action( 'wp_enqueue_scripts', 'woocommerce_interactivity_move_interactive_sc
  * as a dependency in interactive blocks.
  */
 function woocommerce_interactivity_register_runtime() {
-	$script_path = plugins_url( '../../build/wc-interactivity.js', __FILE__ );
+	$plugin_path = \Automattic\WooCommerce\Blocks\Package::get_path();
+	$plugin_url  = plugin_dir_url( $plugin_path . '/index.php' );
+
+	$file = 'build/wc-interactivity.js';
+
+	$file_path = $plugin_path . $file;
+	$file_url  = $plugin_url . $file;
+
+	if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG && file_exists( $file_path ) ) {
+		$version = filemtime( $file_path );
+	} else {
+		$version = \Automattic\WooCommerce\Blocks\Package::get_version();
+	}
+
 	wp_register_script(
 		'wc-interactivity',
-		$script_path,
+		$file_url,
 		array(),
-		filemtime( $script_path ),
+		$version,
 		true
 	);
 }
