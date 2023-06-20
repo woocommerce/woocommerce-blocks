@@ -14,11 +14,11 @@
 			<span aria-hidden="true" class="wp-block-cover__background has-background-dim-100 has-background-dim" style="background-color:#e09300"></span>
 			<div class="wp-block-cover__inner-container">
 				<!-- wp:paragraph {"align":"left","placeholder":"Write title…","style":{"typography":{"fontSize":"0.7em","lineHeight":"1"},"spacing":{"margin":{"top":"0px","bottom":"5px"}},"color":{"text":"#ffffff"},"elements":{"link":{"color":{"text":"var:preset|color|base"}}}}} -->
-				<p class="has-text-align-left has-text-color has-link-color" style="color:#ffffff;margin-top:0px;margin-bottom:5px;font-size:0.7em;line-height:1"><a style="text-decoration:none;" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>?rating_filter=5">Best</a></p>
+				<p class="has-text-align-left has-text-color has-link-color" style="color:#ffffff;margin-top:0px;margin-bottom:5px;font-size:0.7em;line-height:1"><a style="text-decoration:none;" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>?rating_filter=5">Highest</a></p>
 				<!-- /wp:paragraph -->
 
 				<!-- wp:paragraph {"style":{"typography":{"fontSize":"0.7em","lineHeight":"1"},"spacing":{"margin":{"top":"0px","bottom":"5px"}},"color":{"text":"#ffffff"},"elements":{"link":{"color":{"text":"var:preset|color|base"}}}},"fontSize":"large"} -->
-				<p class="has-text-color has-link-color has-large-font-size" style="color:#ffffff;margin-top:0px;margin-bottom:5px;font-size:0.7em;line-height:1"><strong><a style="text-decoration:none;" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>?rating_filter=5">sellers</a></strong></p>
+				<p class="has-text-color has-link-color has-large-font-size" style="color:#ffffff;margin-top:0px;margin-bottom:5px;font-size:0.7em;line-height:1"><strong><a style="text-decoration:none;" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>?rating_filter=5">rated</a></strong></p>
 				<!-- /wp:paragraph -->
 			</div>
 		</div>
