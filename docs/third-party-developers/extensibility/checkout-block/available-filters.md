@@ -128,9 +128,9 @@ By using the `additionalCartCheckoutInnerBlockTypes` filter it is possible to ad
 
 This filter is called once for each inner block area, so it is possible to be very granular when determining what blocks can be added where. See the [Allowing blocks in specific areas in the Cart and Checkout blocks.](#allowing-blocks-in-specific-areas-in-the-cart-and-checkout-blocks) example for more information.
 
-| Filter name                             | Description                             | Return type   |
-| -------------------                     | --------------------------------------- | ------------- |
-| `additionalCartCheckoutInnerBlockTypes` | The new array of allowed block types.   | `string[]`    |
+| Filter name                             | Description                           | Return type |
+| --------------------------------------- | ------------------------------------- | ----------- |
+| `additionalCartCheckoutInnerBlockTypes` | The new array of allowed block types. | `string[]`  |
 
 ## Examples
 
@@ -367,4 +367,3 @@ The error will also be shown in your console.
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/checkout-block/available-filters.md)
 
 <!-- /FEEDBACK -->
-
