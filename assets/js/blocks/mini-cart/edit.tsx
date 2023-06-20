@@ -238,8 +238,8 @@ const Edit = ( {
 								className="wc-block-editor-mini-cart__drawer-image"
 								src={
 									isRTL()
-										? `${ WC_BLOCKS_IMAGE_URL }/blocks/mini-cart/cart-drawer-rtl.svg`
-										: `${ WC_BLOCKS_IMAGE_URL }/blocks/mini-cart/cart-drawer.svg`
+										? `${ WC_BLOCKS_IMAGE_URL }blocks/mini-cart/cart-drawer-rtl.svg`
+										: `${ WC_BLOCKS_IMAGE_URL }blocks/mini-cart/cart-drawer.svg`
 								}
 								alt=""
 							/>
