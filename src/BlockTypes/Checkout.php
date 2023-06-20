@@ -274,7 +274,7 @@ class Checkout extends AbstractBlock {
 			// not just the ones that are available for the current cart (which may not exist yet).
 			$payment_methods           = $this->get_enabled_payment_gateways();
 			$formatted_payment_methods = array_reduce(
-				$payment_gateways,
+				$payment_methods,
 				function( $acc, $method ) {
 					$acc[] = [
 						'id'          => $method->id,
