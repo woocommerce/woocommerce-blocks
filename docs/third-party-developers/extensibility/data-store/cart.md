@@ -62,12 +62,19 @@ Returns the shipping and billing address from the state.
 
 #### _Returns_
 
-`object`- The current shipping and billing address. This will be an object with the following keys:
+`object` The current shipping and billing address. This will be an object with the following keys:
 
--   `shippingAddress`- Object containing the shipping address. This will be an object with the following
-    keys: - `first_name`- string containing the first name. - `last_name`- string containing the last name. - `company`- string containing the company. - `address_1`- string containing the address line 1. - `address_2`- string containing the address line 2. - `city`- string containing the city. - `state`- string containing the state. - `postcode`- string containing the postcode. - `country`- string containing the country.
-
--   `billingAddress`- Object containing the billing address (same keys as shipping address).
+-   `shippingAddress`- Object containing the shipping address. This will be an object with the following keys:
+    -   `first_name` string containing the first name.
+    -   `last_name` string containing the last name.
+    -   `company` string containing the company.
+    -   `address_1` string containing the address line 1.
+    -   `address_2` string containing the address line 2.
+    -   `city` string containing the city.
+    -   `state` string containing the state.
+    -   `postcode` string containing the postcode.
+    -   `country` string containing the country.
+-   `billingAddress` Object containing the billing address (same keys as shipping address).
 
 #### _Example_
 
