@@ -53,13 +53,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 	],
 	[
 		'core/post-template',
-		{
-			__woocommerceNamespace: PRODUCT_TEMPLATE_ID,
-			layout: {
-				type: 'grid',
-				columnsCount: 3,
-			},
-		},
+		{ __woocommerceNamespace: PRODUCT_TEMPLATE_ID },
 		[
 			[
 				'woocommerce/product-image',
