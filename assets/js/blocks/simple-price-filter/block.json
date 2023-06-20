@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"name": "woocommerce/simple-price-filter",
+	"version": "1.0.0",
+	"title": "Simple Price filter",
+	"description": "Enable customers to filter the product grid by choosing a price range.",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"viewScript": [
+		"wc-simple-price-filter-block-frontend",
+		"wc-interactivity"
+	],
+	"supports": {
+		"interactivity": true
+	}
+}
