@@ -18,7 +18,7 @@ export const deepMerge = ( target, source ) => {
 
 const getSerializedState = () => {
 	const storeTag = document.querySelector(
-		`script[type="application/json"]#store`
+		`script[type="application/json"]#wc-interactivity-store-data`
 	);
 	if ( ! storeTag ) return {};
 	try {
