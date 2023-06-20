@@ -84,7 +84,7 @@ class CheckoutSchema extends AbstractSchema {
 				'readonly'    => true,
 			],
 			'order_number'      => [
-				'description' => __( 'Order number used to update order data.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'Order number used for display.', 'woo-gutenberg-products-block' ),
 				'type'        => 'string',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
