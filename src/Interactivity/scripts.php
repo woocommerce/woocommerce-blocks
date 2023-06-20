@@ -19,3 +19,19 @@ function woocommerce_interactivity_move_interactive_scripts_to_the_footer() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'woocommerce_interactivity_move_interactive_scripts_to_the_footer', 11 );
+
+/**
+ * Register the Interactivity API runtime and make it available to be enqueued
+ * as a dependency in interactive blocks.
+ */
+function woocommerce_interactivity_register_runtime() {
+	$script_path = plugins_url( '../../build/wc-interactivity.js', __FILE__ );
+	wp_register_script(
+		'wc-interactivity',
+		$script_path,
+		array(),
+		filemtime( $script_path ),
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'woocommerce_interactivity_register_runtime' );
