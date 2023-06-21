@@ -25,9 +25,12 @@ import {
  * Internal dependencies
  */
 import { Taxonomy, ProductTemplateQuery } from './types';
-import { productApiFetchMiddleware } from './products-middleware';
+import {
+	productCollectionApiFetchMiddleware,
+	transformProductData,
+} from './products-middleware';
 
-productApiFetchMiddleware();
+productCollectionApiFetchMiddleware( transformProductData );
 
 const ProductTemplateInnerBlocks = () => {
 	const innerBlocksProps = useInnerBlocksProps(
