@@ -75,4 +75,6 @@ const v1 = {
 	},
 };
 
-export default v1;
+const deprecated = [ v1 ];
+
+export default deprecated;

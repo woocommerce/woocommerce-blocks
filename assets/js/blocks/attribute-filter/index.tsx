@@ -14,10 +14,9 @@ import edit from './edit';
 import type { BlockAttributes } from './types';
 import { blockAttributes } from './attributes';
 import metadata from './block.json';
-import v1 from './v1';
+import deprecated from './deprecated';
 
 registerBlockType( metadata, {
-	deprecated: [ v1 ],
 	icon: {
 		src: (
 			<Icon
@@ -43,39 +42,13 @@ registerBlockType( metadata, {
 	edit,
 	// Save the props to post content.
 	save( { attributes }: { attributes: BlockAttributes } ) {
-		const {
-			className,
-			showCounts,
-			queryType,
-			attributeId,
-			heading,
-			headingLevel,
-			displayStyle,
-			showFilterButton,
-			selectType,
-		} = attributes;
-		const data: Record< string, unknown > = {
-			'data-attribute-id': attributeId,
-			'data-show-counts': showCounts,
-			'data-query-type': queryType,
-			'data-heading': heading,
-			'data-heading-level': headingLevel,
-		};
-		if ( displayStyle !== 'list' ) {
-			data[ 'data-display-style' ] = displayStyle;
-		}
-		if ( showFilterButton ) {
-			data[ 'data-show-filter-button' ] = showFilterButton;
-		}
-		if ( selectType === 'single' ) {
-			data[ 'data-select-type' ] = selectType;
-		}
+		const { className } = attributes;
+
 		return (
 			<div
 				{ ...useBlockProps.save( {
 					className: classNames( 'is-loading', className ),
 				} ) }
-				{ ...data }
 			>
 				<span
 					aria-hidden
@@ -84,4 +57,5 @@ registerBlockType( metadata, {
 			</div>
 		);
 	},
+	deprecated,
 } );
