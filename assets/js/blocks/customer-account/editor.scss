@@ -1,15 +1,15 @@
+@import "./style";
+
 .editor-styles-wrapper .is-layout-constrained > .wc-block-editor-customer-account.alignright {
-	float: none;
-	justify-content: flex-end;
+	@include flex-justify-content(flex-end);
 }
 
 .editor-styles-wrapper .is-layout-constrained > .wc-block-editor-customer-account.alignleft {
-	float: none;
-	justify-content: flex-start;
+	@include flex-justify-content(flex-start);
 }
 
 .editor-styles-wrapper .is-layout-constrained > .wc-block-editor-customer-account.aligncenter {
-	justify-content: center;
+	@include flex-justify-content(center);
 }
 
 .wc-block-editor-customer-account {
