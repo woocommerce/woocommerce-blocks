@@ -47,6 +47,7 @@ const blocks = {
 	'product-best-sellers': {},
 	'product-category': {},
 	'product-categories': {},
+	'product-gallery': {},
 	'product-new': {},
 	'product-on-sale': {},
 	'product-query': {
