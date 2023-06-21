@@ -105,8 +105,8 @@ class BlockTemplatesController {
 				),
 			),
 		);
-		$template_query = new \WP_Query( $wp_query_args );
-		$posts          = $template_query->posts;
+			$TemplateQuery = new \WP_Query( $wp_query_args );
+		$posts          = $TemplateQuery->posts;
 
 		// If we have more than one result from the query, it means that the current template is present in the db (has
 		// been customized by the user) and we should not return the `archive-product` template.
