@@ -26,7 +26,7 @@ class SimplePriceFilter extends AbstractBlock {
 	 */
 	public function render( $attributes = [], $content = '', $block = null ) {
 		$wrapper_attributes = get_block_wrapper_attributes();
-		$max_range          = 90; // TODO: get this value from DB.
+		$max_range          = 90; // This value should come from DB.
 		$min_price          = get_query_var( self::MIN_PRICE_QUERY_VAR, 0 );
 		$max_price          = get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range );
 
@@ -55,6 +55,7 @@ class SimplePriceFilter extends AbstractBlock {
 			<h3>Filter by price</h3>
 			<div
 				class='range'
+				style='$range_style'
 				data-wc-bind--style='state.filters.rangeStyle'
 				data-wc-on--mousemove='actions.filters.updateActiveHandle'
 			>
@@ -62,6 +63,9 @@ class SimplePriceFilter extends AbstractBlock {
 				<input
 					type='range'
 					min='0'
+					max='$max_range'
+					value='$min_price'
+					class='active'
 					data-wc-bind--max='state.filters.maxRange'
 					data-wc-bind--value='state.filters.minPrice'
 					data-wc-class--active='state.filters.isMinActive'
@@ -71,6 +75,8 @@ class SimplePriceFilter extends AbstractBlock {
 				<input
 					type='range'
 					min='0'
+					max='$max_range'
+					value='$max_price'
 					data-wc-bind--max='state.filters.maxRange'
 					data-wc-bind--value='state.filters.maxPrice'
 					data-wc-class--active='state.filters.isMaxActive'
@@ -81,12 +87,14 @@ class SimplePriceFilter extends AbstractBlock {
 			<div class='text'>
 				<input
 					type='text'
+					value='$min_price'
 					data-wc-bind--value='state.filters.minPrice'
 					data-wc-on--input='actions.filters.setMinPrice'
 					data-wc-on--change='actions.filters.updateProducts'
 				>
 				<input
 					type='text'
+					value='$max_price'
 					data-wc-bind--value='state.filters.maxPrice'
 					data-wc-on--input='actions.filters.setMaxPrice'
 					data-wc-on--change='actions.filters.updateProducts'
