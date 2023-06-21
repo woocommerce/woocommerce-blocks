@@ -28,7 +28,7 @@
 		<div class="wp-block-buttons">
 			<!-- wp:button {"style":{"color":{"background":"#ff7179"},"border":{"radius":"40px"},"spacing":{"padding":{"top":"10px","bottom":"10px","left":"30px","right":"30px"}}}} -->
 			<div class="wp-block-button">
-				<a class="wp-block-button__link has-background wp-element-button" style="border-radius:40px;background-color:#ff7179;padding-top:10px;padding-right:30px;padding-bottom:10px;padding-left:30px">
+				<a href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" class="wp-block-button__link has-background wp-element-button" style="border-radius:40px;background-color:#ff7179;padding-top:10px;padding-right:30px;padding-bottom:10px;padding-left:30px">
 					Shop now
 				</a>
 			</div>
