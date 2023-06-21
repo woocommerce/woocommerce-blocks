@@ -598,7 +598,23 @@ class ProductCollection extends AbstractBlock {
 		 */
 		$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
 
-		$products    = new \WP_Query( $final_query );
+		// Create a new query to get product ids for filter blocks.
+		$query = [
+			'post_type'      => 'product',
+			'post__in'       => array(),
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+			'meta_query'     => array(),
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+			'tax_query'      => array(),
+			'on_sale'        => $final_query['on_sale'],
+			'attributes'     => $final_query['product_attributes'],
+			'stock_status'   => $final_query['stock_status'],
+			'visibility'     => $final_query['visibility'],
+		];
+
+		$products    = new \WP_Query( $query );
 		$product_ids = wp_list_pluck( $products->posts, 'ID' );
 		$this->asset_data_registry->add( 'product_ids', $product_ids, true );
 	}

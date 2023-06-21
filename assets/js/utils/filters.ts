@@ -34,6 +34,23 @@ export function getUrlParameter( name: string ) {
  */
 export function changeUrl( newUrl: string ) {
 	if ( filteringForPhpTemplate ) {
+		/**
+		 * We want to remove page number from URL whenever filters are changed.
+		 * This will move the user to the first page of results.
+		 *
+		 * There are following page number formats:
+		 * 1. query-{number}-page={number} (ex. query-1-page=2)
+		 * 	- ref: https://github.com/WordPress/gutenberg/blob/5693a62214b6c76d3dc5f3f69d8aad187748af79/packages/block-library/src/query-pagination-numbers/index.php#L18
+		 * 2. query-page={number} (ex. query-page=2)
+		 * 	- ref: same as above
+		 * 3. page/{number} (ex. page/2) (Default WordPress pagination format)
+		 */
+		newUrl = newUrl.replace(
+			/(?:query-(?:\d+-)?page=(\d+))|(?:page\/(\d+))/g,
+			''
+		);
+
+		// Reload the page with the updated URL
 		window.location.href = newUrl;
 	} else {
 		window.history.replaceState( {}, '', newUrl );
