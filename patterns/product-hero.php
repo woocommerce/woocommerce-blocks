@@ -33,7 +33,9 @@ $product_id = $products ? $products[0] : null;
 
 			<!-- wp:woocommerce/product-price {"isDescendentOfSingleProductBlock":true,"style":{"typography":{"fontStyle":"normal","fontWeight":"700","fontSize":"16px"}}} /-->
 
-			<!-- wp:woocommerce/add-to-cart-form {"isDescendentOfSingleProductBlock":true} /-->
+			<!-- wp:woocommerce/product-button {"style":{"color":{"background":"#000001","text":"#fffff1"}}} -->
+			<div class="wp-block-woocommerce-product-button is-loading"></div>
+			<!-- /wp:woocommerce/product-button -->
 
 			<!-- wp:post-excerpt {"style":{"typography":{"fontSize":"0.8em"}},"__woocommerceNamespace":"woocommerce/product-query/product-summary"} /--></div>
 		<!-- /wp:column -->
