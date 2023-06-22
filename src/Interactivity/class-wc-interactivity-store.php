@@ -34,15 +34,6 @@ class WC_Interactivity_Store {
 	}
 
 	/**
-	 * Serialize store data to JSON.
-	 *
-	 * @return string|false Serialized JSON data.
-	 */
-	static function serialize() {
-				return wp_json_encode( self::$store );
-	}
-
-	/**
 	 * Reset the store data.
 	 */
 	static function reset() {
@@ -56,7 +47,10 @@ class WC_Interactivity_Store {
 		if ( empty( self::$store ) ) {
 			return;
 		}
-		$store = self::serialize();
-		echo "<script id=\"wc-interactivity-store-data\" type=\"application/json\">$store</script>";
+
+		echo sprintf(
+			'<script id="wc-interactivity-store-data" type="application/json">%s</script>',
+			wp_json_encode( self::$store )
+		);
 	}
 }
