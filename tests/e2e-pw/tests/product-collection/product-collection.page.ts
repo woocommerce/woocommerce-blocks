@@ -44,10 +44,13 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'frontend' );
 	}
 
-	async addFilter( name: 'Show Hand-picked Products' | 'Keyword' ) {
+	async addFilter(
+		name: 'Show Hand-picked Products' | 'Keyword' | 'Show Taxonomies'
+	) {
 		await this.page
 			.getByRole( 'button', { name: 'Filters options' } )
 			.click();
+		await this.page.waitForTimeout( 500 );
 		await this.page
 			.getByRole( 'menuitemcheckbox', {
 				name,
@@ -91,8 +94,8 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'editor' );
 	}
 
-	async setHandpickedProducts( names: string[] ) {
-		const input = this.page.getByLabel( 'Pick some products' );
+	async setFilterComboboxValue( filterName: string, filterValue: string[] ) {
+		const input = this.page.getByLabel( filterName );
 		await input.click();
 
 		// Clear the input field.
@@ -107,8 +110,8 @@ class ProductCollectionPage {
 			numberOfAlreadySelectedProducts--;
 		}
 
-		// Add new products.
-		for ( const name of names ) {
+		// Add new values.
+		for ( const name of filterValue ) {
 			await input.fill( name );
 			await this.page
 				.getByRole( 'option', { name } )

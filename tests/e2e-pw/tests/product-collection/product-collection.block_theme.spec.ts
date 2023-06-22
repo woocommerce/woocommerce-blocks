@@ -109,46 +109,72 @@ test.describe( 'Product Collection', () => {
 				} )
 			).toHaveCount( await pageObject.productImages.count() );
 		} );
-	} );
 
-	test( 'Products can be filtered based on selection in handpicked products option', async ( {
-		pageObject,
-	} ) => {
-		await pageObject.addFilter( 'Show Hand-picked Products' );
+		test( 'Products can be filtered based on selection in handpicked products option', async ( {
+			pageObject,
+		} ) => {
+			await pageObject.addFilter( 'Show Hand-picked Products' );
 
-		await pageObject.setHandpickedProducts( [ 'Album' ] );
-		expect( pageObject.productTitles ).toHaveCount( 1 );
+			const filterName = 'Pick some products';
+			await pageObject.setFilterComboboxValue( filterName, [ 'Album' ] );
+			expect( pageObject.productTitles ).toHaveCount( 1 );
 
-		const productNames = [ 'Album', 'Cap' ];
-		await pageObject.setHandpickedProducts( productNames );
-		expect( pageObject.productTitles ).toHaveCount( 2 );
-		expect( pageObject.productTitles ).toHaveText( productNames );
+			const productNames = [ 'Album', 'Cap' ];
+			await pageObject.setFilterComboboxValue( filterName, productNames );
+			expect( pageObject.productTitles ).toHaveCount( 2 );
+			expect( pageObject.productTitles ).toHaveText( productNames );
 
-		await pageObject.publishAndGoToFrontend();
-		expect( pageObject.productTitles ).toHaveCount( 2 );
-		expect( pageObject.productTitles ).toHaveText( productNames );
-	} );
-
-	test( 'Products can be filtered based on keyword.', async ( {
-		page,
-		admin,
-		editor,
-	} ) => {
-		const pageObject = new ProductCollectionPage( {
-			page,
-			admin,
-			editor,
+			await pageObject.publishAndGoToFrontend();
+			expect( pageObject.productTitles ).toHaveCount( 2 );
+			expect( pageObject.productTitles ).toHaveText( productNames );
 		} );
-		await pageObject.createNewPostAndInsertBlock();
-		await pageObject.addFilter( 'Keyword' );
 
-		await pageObject.setKeyword( 'Album' );
-		expect( pageObject.productTitles ).toHaveText( [ 'Album' ] );
+		test( 'Products can be filtered based on keyword.', async ( {
+			pageObject,
+		} ) => {
+			await pageObject.createNewPostAndInsertBlock();
+			await pageObject.addFilter( 'Keyword' );
 
-		await pageObject.setKeyword( 'Cap' );
-		expect( pageObject.productTitles ).toHaveText( [ 'Cap' ] );
+			await pageObject.setKeyword( 'Album' );
+			await expect( pageObject.productTitles ).toHaveText( [ 'Album' ] );
 
-		await pageObject.publishAndGoToFrontend();
-		expect( pageObject.productTitles ).toHaveText( [ 'Cap' ] );
+			await pageObject.setKeyword( 'Cap' );
+			await expect( pageObject.productTitles ).toHaveText( [ 'Cap' ] );
+
+			await pageObject.publishAndGoToFrontend();
+			await expect( pageObject.productTitles ).toHaveText( [ 'Cap' ] );
+		} );
+
+		test( 'Products can be filtered based on category.', async ( {
+			pageObject,
+		} ) => {
+			const filterName = 'Product categories';
+			await pageObject.addFilter( 'Show Taxonomies' );
+			await pageObject.setFilterComboboxValue( filterName, [
+				'Clothing',
+			] );
+			await expect( pageObject.productTitles ).toHaveText( [
+				'Logo Collection',
+			] );
+
+			await pageObject.setFilterComboboxValue( filterName, [
+				'Accessories',
+			] );
+			const accessoriesProductNames = [
+				'Beanie',
+				'Beanie with Logo',
+				'Belt',
+				'Cap',
+				'Sunglasses',
+			];
+			await expect( pageObject.productTitles ).toHaveText(
+				accessoriesProductNames
+			);
+
+			await pageObject.publishAndGoToFrontend();
+			await expect( pageObject.productTitles ).toHaveText(
+				accessoriesProductNames
+			);
+		} );
 	} );
 } );
