@@ -22,17 +22,17 @@ const blockData: BlockData = {
 };
 
 const templates = {
-	// 'taxonomy-product_attribute': {
-	// 	templateTitle: 'Product Attribute',
-	// 	slug: 'taxonomy-product_attribute',
-	// 	frontendPage: '/product-attribute/color/',
-	// 	legacyBlockName: 'WooCommerce Product Attribute Block',
-	// },
+	'taxonomy-product_attribute': {
+		templateTitle: 'Product Attribute',
+		slug: 'taxonomy-product_attribute',
+		frontendPage: '/product-attribute/color/',
+		legacyBlockName: 'woocommerce/legacy-template',
+	},
 	'taxonomy-product_cat': {
 		templateTitle: 'Product Category',
 		slug: 'taxonomy-product_cat',
 		frontendPage: '/product-category/music/',
-		legacyBlockName: 'WooCommerce Product Taxonomy Block',
+		legacyBlockName: 'woocommerce/legacy-template',
 	},
 	// We don't have products with tags in the test site. Uncomment this when we have products with tags.
 	// 'taxonomy-product_tag': {
@@ -40,18 +40,18 @@ const templates = {
 	// 	slug: 'taxonomy-product_tag',
 	// 	frontendPage: '/product-tag/hoodie/',
 	// },
-	// 'archive-product': {
-	// 	templateTitle: 'Product Catalog',
-	// 	slug: 'archive-product',
-	// 	frontendPage: '/shop/',
-	// 	legacyBlockName: 'WooCommerce Product Grid Block',
-	// },
-	// 'product-search-results': {
-	// 	templateTitle: 'Product Search Results',
-	// 	slug: 'product-search-results',
-	// 	frontendPage: '/?s=shirt&post_type=product',
-	// 	legacyBlockName: 'WooCommerce Product Search Results',
-	// },
+	'archive-product': {
+		templateTitle: 'Product Catalog',
+		slug: 'archive-product',
+		frontendPage: '/shop/',
+		legacyBlockName: 'woocommerce/legacy-template',
+	},
+	'product-search-results': {
+		templateTitle: 'Product Search Results',
+		slug: 'product-search-results',
+		frontendPage: '/?s=shirt&post_type=product',
+		legacyBlockName: 'woocommerce/legacy-template',
+	},
 };
 
 test.describe( `${ blockData.name } Block `, () => {
@@ -126,7 +126,7 @@ for ( const {
 			await requestUtils.deleteAllTemplates( 'wp_template' );
 			await requestUtils.deleteAllTemplates( 'wp_template_part' );
 		} );
-		test.only( 'Products block matches with classic template block', async ( {
+		test( 'Products block matches with classic template block', async ( {
 			admin,
 			editor,
 			page,
@@ -144,8 +144,15 @@ for ( const {
 			await editorUtils.insertBlockViaInserter( legacyBlockName );
 
 			await editor.saveSiteEditorEntities();
+			await page
+				.locator(
+					"button.edit-site-save-button__button[aria-label='Save']"
+				)
+				.waitFor();
 
-			await page.goto( frontendPage );
+			await page.goto( frontendPage, {
+				waitUntil: 'load',
+			} );
 
 			const classicProducts = await getProductsNameFromClassicTemplate(
 				page

@@ -3,6 +3,7 @@
  */
 import { Page } from '@playwright/test';
 import { Editor } from '@wordpress/e2e-test-utils-playwright';
+import { MIN_TIMEOUT } from '@woocommerce/e2e-utils';
 /**
  * Internal dependencies
  */
@@ -19,12 +20,24 @@ export class EditorUtils {
 		return this.editor.canvas.locator( `[data-type="${ name }"]` );
 	}
 
+	/**
+	 * Inserts a block via the inserter.
+	 *
+	 * @param  blockName - The block name to insert.
+	 *
+	 * @deprecated This method is very flaky. Please, if you can, use {@link EditorUtils#insertBlockViaInserter} instead.
+	 */
 	async insertBlockViaInserter( blockName: string ) {
 		await this.page
 			.locator( '[aria-label="Toggle block inserter"]' )
 			.click();
-		await this.page.getByPlaceholder( 'Search' ).fill( blockName );
-		await this.page.waitForTimeout( 2000 );
-		await this.page.getByRole( 'listbox' ).getByText( blockName ).click();
+		await this.page.getByPlaceholder( 'Search' ).type( blockName );
+		await this.page.waitForTimeout( MIN_TIMEOUT );
+		await this.page
+			.getByRole( 'listbox' )
+			.locator( 'button[tabindex="0"]' )
+			.click();
+
+		await this.page.waitForTimeout( MIN_TIMEOUT );
 	}
 }

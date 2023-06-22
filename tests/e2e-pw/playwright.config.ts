@@ -13,9 +13,13 @@ interface ExtendedPlaywrightTestConfig extends PlaywrightTestConfig {
 	} & PlaywrightTestConfig[ 'use' ];
 }
 
-const { CI, E2E_MAX_FAILURES } = process.env;
+const { CI, DEFAULT_TIMEOUT_OVERRIDE, E2E_MAX_FAILURES } = process.env;
 
 const config: ExtendedPlaywrightTestConfig = {
+	timeout: DEFAULT_TIMEOUT_OVERRIDE
+		? Number( DEFAULT_TIMEOUT_OVERRIDE )
+		: 90 * 1000,
+	expect: { timeout: 20 * 1000 },
 	outputDir: path.join( process.cwd(), 'artifacts/test-results' ),
 	globalSetup: fileURLToPath(
 		new URL( 'global-setup.ts', 'file:' + __filename ).href
