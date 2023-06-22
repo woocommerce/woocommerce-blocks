@@ -10,7 +10,7 @@
 <div class="wp-block-columns alignwide are-vertically-aligned-center has-background" style="background-color:#254094;padding-top:30px;padding-right:30px;padding-bottom:30px;padding-left:30px">
 	<!-- wp:column {"verticalAlignment":"center","width":""} -->
 	<div class="wp-block-column is-vertically-aligned-center">
-		<!-- wp:group {"style":{"spacing":{"padding":{"top":"15px"}}},"layout":{"type":"constrained","contentSize":"340px"}} -->
+		<!-- wp:group {"style":{"spacing":{"padding":{"top":"15px"}}},"layout":{"type":"constrained","contentSize":"350px"}} -->
 		<div class="wp-block-group" style="padding-top:15px">
 			<!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"500","fontSize":"45px","lineHeight":"0"},"color":{"text":"#ffffff"}}} -->
 			<p class="has-text-color" style="color:#ffffff;font-size:45px;font-style:normal;font-weight:500;line-height:0">UP TO</p>
