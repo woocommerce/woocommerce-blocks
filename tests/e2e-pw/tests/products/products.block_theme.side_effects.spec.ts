@@ -26,11 +26,13 @@ const templates = {
 		templateTitle: 'Product Attribute',
 		slug: 'taxonomy-product_attribute',
 		frontendPage: '/product-attribute/color/',
+		legacyBlockName: 'WooCommerce Product Attribute Block',
 	},
 	'taxonomy-product_cat': {
 		templateTitle: 'Product Category',
 		slug: 'taxonomy-product_cat',
 		frontendPage: '/product-category/music/',
+		legacyBlockName: 'WooCommerce Product Taxonomy Block',
 	},
 	// We don't have products with tags in the test site. Uncomment this when we have products with tags.
 	// 'taxonomy-product_tag': {
@@ -42,11 +44,13 @@ const templates = {
 		templateTitle: 'Product Catalog',
 		slug: 'archive-product',
 		frontendPage: '/shop/',
+		legacyBlockName: 'WooCommerce Product Grid Block',
 	},
 	'product-search-results': {
 		templateTitle: 'Product Search Results',
 		slug: 'product-search-results',
 		frontendPage: '/?s=shirt&post_type=product',
+		legacyBlockName: 'WooCommerce Product Search Results',
 	},
 };
 
@@ -110,15 +114,19 @@ test.describe( `${ blockData.name } Block `, () => {
 		await expect( inheritQueryFromTemplateOption ).toBeVisible();
 	} );
 } );
-for ( const { templateTitle, slug, frontendPage } of Object.values(
-	templates
-) ) {
-	test.afterAll( async ( { requestUtils } ) => {
-		await requestUtils.deleteAllTemplates( 'wp_template' );
-		await requestUtils.deleteAllTemplates( 'wp_template_part' );
-	} );
-	test.describe( `${ templateTitle } template`, () =>
-		test( 'Products block matches with classic template block', async ( {
+
+for ( const {
+	templateTitle,
+	slug,
+	frontendPage,
+	legacyBlockName,
+} of Object.values( templates ) ) {
+	test.describe( `${ templateTitle } template`, () => {
+		test.afterAll( async ( { requestUtils } ) => {
+			await requestUtils.deleteAllTemplates( 'wp_template' );
+			await requestUtils.deleteAllTemplates( 'wp_template_part' );
+		} );
+		test.only( 'Products block matches with classic template block', async ( {
 			admin,
 			editor,
 			page,
@@ -133,12 +141,7 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 			await editor.canvas.waitForLoadState( 'networkidle' );
 			const block = await editorUtils.getBlockByName( blockData.name );
 			await editor.selectBlocks( block );
-			await editor.insertBlock( {
-				name: 'woocommerce/legacy-template',
-				attributes: {
-					template: slug,
-				},
-			} );
+			await editorUtils.insertBlockViaInserter( legacyBlockName );
 
 			await editor.saveSiteEditorEntities();
 
@@ -152,6 +155,6 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 			);
 
 			expect( classicProducts ).toEqual( productQueryProducts );
-		} )
-	);
+		} );
+	} );
 }
