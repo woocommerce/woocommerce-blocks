@@ -27,7 +27,9 @@ export const editBlockPage = async (
 	page: PlaywrightTestArgs[ 'page' ],
 	{ title, selectors }: BlockData
 ) => {
-	const { block: blockSelector } = selectors;
+	const {
+		editor: { block: blockSelector },
+	} = selectors;
 	await page.goto(
 		`/wp-admin/edit.php?post_type=page&s=${ encodeURIComponent( title ) }`
 	);
