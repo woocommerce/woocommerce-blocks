@@ -55,7 +55,7 @@ test.describe(
 				const cartText = await page.getByText(
 					'Your cart is currently empty!'
 				);
-				expect( cartText ).not.toBeNull();
+				expect( cartText ).toBeVisible();
 			} );
 			test( 'Changing checkout permalink works', async ( { page } ) => {
 				await page.goto(
@@ -76,7 +76,7 @@ test.describe(
 				const cartText = await page.getByText(
 					'Your cart is currently empty!'
 				);
-				expect( cartText ).not.toBeNull();
+				expect( cartText ).toBeVisible();
 			} );
 		} );
 	}

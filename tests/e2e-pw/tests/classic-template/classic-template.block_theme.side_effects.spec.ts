@@ -100,9 +100,7 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 
 			await page.goto( frontendPage );
 
-			const helloWorldText = await page.getByText( 'Hello World' );
-
-			expect( helloWorldText ).not.toBeNull();
+			await expect( page.getByText( 'Hello World' ) ).toBeVisible();
 		} );
 
 		test.afterAll( async ( { requestUtils } ) => {
