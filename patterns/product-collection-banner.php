@@ -28,8 +28,8 @@
 
 		<!-- wp:column {"verticalAlignment":"center"} -->
 		<div class="wp-block-column is-vertically-aligned-center">
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"22px","fontStyle":"normal","fontWeight":"300","lineHeight":"1.3"}},"fontFamily":"inter"} -->
-			<p class="has-inter-font-family" style="font-size:22px;font-style:normal;font-weight:300;line-height:1.3">Check out our brand new<br>collection of holiday products and find the right gift for anyone.</p>
+			<!-- wp:paragraph {"style":{"typography":{"fontSize":"22px","fontStyle":"normal","fontWeight":"300","lineHeight":"1.3"},"color":{"text":"#000000"}},"fontFamily":"inter"} -->
+			<p class="has-text-color has-inter-font-family" style="color:#000000;font-size:22px;font-style:normal;font-weight:300;line-height:1.3">Check out our brand new<br>collection of holiday products and find the right gift for anyone.</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:buttons -->
