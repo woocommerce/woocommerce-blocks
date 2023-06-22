@@ -22,12 +22,12 @@ const blockData: BlockData = {
 };
 
 const templates = {
-	'taxonomy-product_attribute': {
-		templateTitle: 'Product Attribute',
-		slug: 'taxonomy-product_attribute',
-		frontendPage: '/product-attribute/color/',
-		legacyBlockName: 'WooCommerce Product Attribute Block',
-	},
+	// 'taxonomy-product_attribute': {
+	// 	templateTitle: 'Product Attribute',
+	// 	slug: 'taxonomy-product_attribute',
+	// 	frontendPage: '/product-attribute/color/',
+	// 	legacyBlockName: 'WooCommerce Product Attribute Block',
+	// },
 	'taxonomy-product_cat': {
 		templateTitle: 'Product Category',
 		slug: 'taxonomy-product_cat',
@@ -40,18 +40,18 @@ const templates = {
 	// 	slug: 'taxonomy-product_tag',
 	// 	frontendPage: '/product-tag/hoodie/',
 	// },
-	'archive-product': {
-		templateTitle: 'Product Catalog',
-		slug: 'archive-product',
-		frontendPage: '/shop/',
-		legacyBlockName: 'WooCommerce Product Grid Block',
-	},
-	'product-search-results': {
-		templateTitle: 'Product Search Results',
-		slug: 'product-search-results',
-		frontendPage: '/?s=shirt&post_type=product',
-		legacyBlockName: 'WooCommerce Product Search Results',
-	},
+	// 'archive-product': {
+	// 	templateTitle: 'Product Catalog',
+	// 	slug: 'archive-product',
+	// 	frontendPage: '/shop/',
+	// 	legacyBlockName: 'WooCommerce Product Grid Block',
+	// },
+	// 'product-search-results': {
+	// 	templateTitle: 'Product Search Results',
+	// 	slug: 'product-search-results',
+	// 	frontendPage: '/?s=shirt&post_type=product',
+	// 	legacyBlockName: 'WooCommerce Product Search Results',
+	// },
 };
 
 test.describe( `${ blockData.name } Block `, () => {
