@@ -198,16 +198,6 @@ class OrderSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->coupon_schema->get_properties() ),
 				],
 			],
-			'shipping_rates'       => [
-				'description' => __( 'List of available shipping rates for the cart.', 'woo-gutenberg-products-block' ),
-				'type'        => 'array',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-				'items'       => [
-					'type'       => 'object',
-					'properties' => $this->force_schema_readonly( $this->shipping_rate_schema->get_properties() ),
-				],
-			],
 			'shipping_address'     => [
 				'description' => __( 'Current set shipping address for the customer.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
@@ -221,18 +211,6 @@ class OrderSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'properties'  => $this->force_schema_readonly( $this->billing_address_schema->get_properties() ),
-			],
-			'items_count'          => [
-				'description' => __( 'Number of items in the cart.', 'woo-gutenberg-products-block' ),
-				'type'        => 'integer',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-			],
-			'items_weight'         => [
-				'description' => __( 'Total weight (in grams) of all products in the cart.', 'woo-gutenberg-products-block' ),
-				'type'        => 'number',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
 			],
 			'needs_payment'        => [
 				'description' => __( 'True if the cart needs payment. False for carts with only free products and no shipping costs.', 'woo-gutenberg-products-block' ),
@@ -284,11 +262,8 @@ class OrderSchema extends AbstractSchema {
 			'items'                => $this->get_item_responses_from_schema( $this->item_schema, $order->get_items() ),
 			'totals'               => (object) $this->prepare_currency_response( $this->get_totals( $order ) ),
 			'coupons'              => $this->get_item_responses_from_schema( $this->coupon_schema, $order->get_items( 'coupon' ) ),
-			'shipping_rates'       => array(),
 			'shipping_address'     => (object) $this->shipping_address_schema->get_item_response( new \WC_Customer( $order->get_customer_id() ) ),
 			'billing_address'      => (object) $this->billing_address_schema->get_item_response( new \WC_Customer( $order->get_customer_id() ) ),
-			'items_count'          => $order->get_item_count(),
-			'items_weight'         => 0,
 			'needs_payment'        => $order->needs_payment(),
 			'needs_shipping'       => $order->needs_shipping_address(),
 			'errors'               => $errors,
