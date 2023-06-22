@@ -46,9 +46,7 @@ class OrderSchema extends AbstractSchema {
 	public function __construct( ExtendSchema $extend, SchemaController $controller ) {
 		parent::__construct( $extend, $controller );
 		$this->item_schema             = $this->controller->get( OrderItemSchema::IDENTIFIER );
-		$this->cross_sells_item_schema = $this->controller->get( ProductSchema::IDENTIFIER );
 		$this->coupon_schema           = $this->controller->get( CartCouponSchema::IDENTIFIER );
-		$this->fee_schema              = $this->controller->get( CartFeeSchema::IDENTIFIER );
 		$this->shipping_rate_schema    = $this->controller->get( CartShippingRateSchema::IDENTIFIER );
 		$this->shipping_address_schema = $this->controller->get( ShippingAddressSchema::IDENTIFIER );
 		$this->billing_address_schema  = $this->controller->get( BillingAddressSchema::IDENTIFIER );
@@ -63,13 +61,13 @@ class OrderSchema extends AbstractSchema {
 	 */
 	public function get_properties() {
 		return [
-			'id'                      => [
+			'id'                   => [
 				'description' => __( 'The order ID.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'items'                   => [
+			'items'                => [
 				'description' => __( 'Line items data.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -78,7 +76,7 @@ class OrderSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->item_schema->get_properties() ),
 				],
 			],
-			'totals'                  => [
+			'totals'               => [
 				'description' => __( 'Order totals.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
@@ -190,7 +188,7 @@ class OrderSchema extends AbstractSchema {
 					]
 				),
 			],
-			'coupons'                 => [
+			'coupons'              => [
 				'description' => __( 'List of applied cart coupons.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -200,7 +198,7 @@ class OrderSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->coupon_schema->get_properties() ),
 				],
 			],
-			'shipping_rates'          => [
+			'shipping_rates'       => [
 				'description' => __( 'List of available shipping rates for the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -210,71 +208,45 @@ class OrderSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->shipping_rate_schema->get_properties() ),
 				],
 			],
-			'shipping_address'        => [
+			'shipping_address'     => [
 				'description' => __( 'Current set shipping address for the customer.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'properties'  => $this->force_schema_readonly( $this->shipping_address_schema->get_properties() ),
 			],
-			'billing_address'         => [
+			'billing_address'      => [
 				'description' => __( 'Current set billing address for the customer.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 				'properties'  => $this->force_schema_readonly( $this->billing_address_schema->get_properties() ),
 			],
-			'items_count'             => [
+			'items_count'          => [
 				'description' => __( 'Number of items in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'items_weight'            => [
+			'items_weight'         => [
 				'description' => __( 'Total weight (in grams) of all products in the cart.', 'woo-gutenberg-products-block' ),
 				'type'        => 'number',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'cross_sells'             => [
-				'description' => __( 'List of cross-sells items related to cart items.', 'woo-gutenberg-products-block' ),
-				'type'        => 'array',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-				'items'       => [
-					'type'       => 'object',
-					'properties' => $this->force_schema_readonly( $this->cross_sells_item_schema->get_properties() ),
-				],
-			],
-			'needs_payment'           => [
+			'needs_payment'        => [
 				'description' => __( 'True if the cart needs payment. False for carts with only free products and no shipping costs.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'needs_shipping'          => [
+			'needs_shipping'       => [
 				'description' => __( 'True if the cart needs shipping. False for carts with only digital goods or stores with no shipping methods set-up.', 'woo-gutenberg-products-block' ),
 				'type'        => 'boolean',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'has_calculated_shipping' => [
-				'description' => __( 'True if the cart meets the criteria for showing shipping costs, and rates have been calculated and included in the totals.', 'woo-gutenberg-products-block' ),
-				'type'        => 'boolean',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-			],
-			'fees'                    => [
-				'description' => __( 'List of cart fees.', 'woo-gutenberg-products-block' ),
-				'type'        => 'array',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-				'items'       => [
-					'type'       => 'object',
-					'properties' => $this->force_schema_readonly( $this->fee_schema->get_properties() ),
-				],
-			],
-			'errors'                  => [
+			'errors'               => [
 				'description' => __( 'List of cart item errors, for example, items in the cart which are out of stock.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -284,7 +256,7 @@ class OrderSchema extends AbstractSchema {
 					'properties' => $this->force_schema_readonly( $this->error_schema->get_properties() ),
 				],
 			],
-			'payment_requirements'    => [
+			'payment_requirements' => [
 				'description' => __( 'List of required payment gateway features to process the order.', 'woo-gutenberg-products-block' ),
 				'type'        => 'array',
 				'context'     => [ 'view', 'edit' ],
@@ -308,22 +280,19 @@ class OrderSchema extends AbstractSchema {
 		}
 
 		return [
-			'id'                      => $order_id,
-			'items'                   => $this->get_item_responses_from_schema( $this->item_schema, $order->get_items() ),
-			'totals'                  => (object) $this->prepare_currency_response( $this->get_totals( $order ) ),
-			'coupons'                 => $this->get_item_responses_from_schema( $this->coupon_schema, $order->get_items( 'coupon' ) ),
-			'shipping_rates'          => array(),
-			'shipping_address'        => (object) $this->shipping_address_schema->get_item_response( new \WC_Customer( $order->get_customer_id() ) ),
-			'billing_address'         => (object) $this->billing_address_schema->get_item_response( new \WC_Customer( $order->get_customer_id() ) ),
-			'items_count'             => $order->get_item_count(),
-			'items_weight'            => 0,
-			'cross_sells'             => array(),
-			'needs_payment'           => $order->needs_payment(),
-			'needs_shipping'          => $order->needs_shipping_address(),
-			'has_calculated_shipping' => null,
-			'fees'                    => array(),
-			'errors'                  => $errors,
-			'payment_requirements'    => $this->extend->get_payment_requirements(),
+			'id'                   => $order_id,
+			'items'                => $this->get_item_responses_from_schema( $this->item_schema, $order->get_items() ),
+			'totals'               => (object) $this->prepare_currency_response( $this->get_totals( $order ) ),
+			'coupons'              => $this->get_item_responses_from_schema( $this->coupon_schema, $order->get_items( 'coupon' ) ),
+			'shipping_rates'       => array(),
+			'shipping_address'     => (object) $this->shipping_address_schema->get_item_response( new \WC_Customer( $order->get_customer_id() ) ),
+			'billing_address'      => (object) $this->billing_address_schema->get_item_response( new \WC_Customer( $order->get_customer_id() ) ),
+			'items_count'          => $order->get_item_count(),
+			'items_weight'         => 0,
+			'needs_payment'        => $order->needs_payment(),
+			'needs_shipping'       => $order->needs_shipping_address(),
+			'errors'               => $errors,
+			'payment_requirements' => $this->extend->get_payment_requirements(),
 		];
 	}
 
