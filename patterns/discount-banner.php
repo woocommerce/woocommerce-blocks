@@ -21,7 +21,7 @@
 		<!-- /wp:paragraph -->
 
 		<!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"300","fontSize":"35px"}},"textColor":"base"} -->
-		<p class="has-base-color has-text-color" style="font-size:35px;font-style:normal;font-weight:300">Select product</p>
+		<p class="has-base-color has-text-color" style="font-size:35px;font-style:normal;font-weight:300">Select products</p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:buttons -->
