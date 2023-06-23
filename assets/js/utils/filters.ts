@@ -50,7 +50,19 @@ export function changeUrl( newUrl: string ) {
 			''
 		);
 
-		// Reload the page with the updated URL
+		/**
+		 * If there are no query parameters in the URL and the URL ends with '?', we remove
+		 * the trailing '?' from the URL. The reason for this is that a '?' in the URL
+		 * typically indicates that query parameters will follow. If there are no query parameters,
+		 * the '?' is unnecessary and can cause the page to reload, which can negatively affect
+		 * performance. Therefore, by removing the '?', we prevent this unnecessary reload.
+		 */
+		const urlObject = new URL( newUrl );
+		const numberOfQueryParams = [ ...urlObject.searchParams.keys() ].length;
+		if ( numberOfQueryParams === 0 && newUrl.endsWith( '?' ) ) {
+			newUrl = newUrl.slice( 0, -1 );
+		}
+
 		window.location.href = newUrl;
 	} else {
 		window.history.replaceState( {}, '', newUrl );
