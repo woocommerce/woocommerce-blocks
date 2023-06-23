@@ -54,7 +54,7 @@ const config: ExtendedPlaywrightTestConfig = {
 		{
 			name: 'blockThemeWithGlobalSideEffects',
 			testMatch: /.*.block_theme.side_effects.spec.ts/,
-			// dependencies: [ 'blockTheme' ],
+			dependencies: [ 'blockTheme' ],
 			fullyParallel: false,
 		},
 		{
