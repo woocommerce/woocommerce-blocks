@@ -155,6 +155,8 @@ class SingleProduct extends AbstractBlock {
 				 * This is a temporary fix to ensure the Post Title and Excerpt blocks work as expected
 				 * until Gutenberg versions 15.2 and 15.6 are included in the core of WordPress.
 				 *
+				 * Important: the original post data is restored in the restore_global_post method.
+				 *
 				 * @see https://github.com/WordPress/gutenberg/pull/48001
 				 * @see https://github.com/WordPress/gutenberg/pull/49495
 				 */
