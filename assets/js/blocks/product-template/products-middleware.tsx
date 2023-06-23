@@ -103,8 +103,7 @@ const createImagesProperty = ( input: ProductItem ) => {
 			...rest,
 			sizes: '(max-width: 800px) 100vw, 800px',
 			srcset: 'http://another-try.local/wp-content/uploads/2023/04/album-1.jpg 800w, http://another-try.local/wp-content/uploads/2023/04/album-1-450x450.jpg 450w, http://another-try.local/wp-content/uploads/2023/04/album-1-100x100.jpg 100w, http://another-try.local/wp-content/uploads/2023/04/album-1-600x600.jpg 600w, http://another-try.local/wp-content/uploads/2023/04/album-1-300x300.jpg 300w, http://another-try.local/wp-content/uploads/2023/04/album-1-150x150.jpg 150w, http://another-try.local/wp-content/uploads/2023/04/album-1-768x768.jpg 768w',
-			thumbnal:
-				'http://another-try.local/wp-content/uploads/2023/04/album-1-450x450.jpg',
+			thumbnail: image.src,
 		};
 	};
 	return images.map( adjustImage );
