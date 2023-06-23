@@ -3,7 +3,7 @@
  */
 import { Page } from '@playwright/test';
 import { Editor } from '@wordpress/e2e-test-utils-playwright';
-import { MIN_TIMEOUT } from '@woocommerce/e2e-utils';
+import { BlockRepresentation } from '@wordpress/e2e-test-utils-playwright/build-types/editor/insert-block';
 /**
  * Internal dependencies
  */
@@ -20,24 +20,50 @@ export class EditorUtils {
 		return this.editor.canvas.locator( `[data-type="${ name }"]` );
 	}
 
+	// todo: Make a PR to @wordpress/e2e-test-utils-playwright to add this method.
 	/**
-	 * Inserts a block via the inserter.
+	 * Inserts a block after a given client ID.
 	 *
-	 * @param  blockName - The block name to insert.
-	 *
-	 * @deprecated This method is very flaky. Please, if you can, use {@link EditorUtils#insertBlockViaInserter} instead.
 	 */
-	async insertBlockViaInserter( blockName: string ) {
-		await this.page
-			.locator( '[aria-label="Toggle block inserter"]' )
-			.click();
-		await this.page.getByPlaceholder( 'Search' ).type( blockName );
-		await this.page.waitForTimeout( MIN_TIMEOUT );
-		await this.page
-			.getByRole( 'listbox' )
-			.locator( 'button[tabindex="0"]' )
-			.click();
+	async insertBlock(
+		blockRepresentation: BlockRepresentation,
+		index?: string,
+		rootClientId?: string
+	) {
+		await this.page.evaluate(
+			( {
+				blockRepresentation: _blockRepresentation,
+				index: _index,
+				rootClientId: _rootClientId,
+			} ) => {
+				function recursiveCreateBlock( {
+					name,
+					attributes = {},
+					innerBlocks = [],
+				}: BlockRepresentation ): BlockRepresentation {
+					return window.wp.blocks.createBlock(
+						name,
+						attributes,
+						innerBlocks.map( ( innerBlock ) =>
+							recursiveCreateBlock( innerBlock )
+						)
+					);
+				}
+				const block = recursiveCreateBlock( _blockRepresentation );
 
-		await this.page.waitForTimeout( MIN_TIMEOUT );
+				window.wp.data
+					.dispatch( 'core/block-editor' )
+					.insertBlock( block, _index, _rootClientId );
+			},
+			{ blockRepresentation, index, rootClientId }
+		);
+	}
+
+	async getBlockRootClientId( clientId: string ) {
+		return this.page.evaluate< string | null, string >( ( id ) => {
+			return window.wp.data
+				.select( 'core/block-editor' )
+				.getBlockRootClientId( id );
+		}, clientId );
 	}
 }

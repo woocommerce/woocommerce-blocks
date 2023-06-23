@@ -140,15 +140,29 @@ for ( const {
 			await editor.canvas.click( 'body' );
 			await editor.canvas.waitForLoadState( 'networkidle' );
 			const block = await editorUtils.getBlockByName( blockData.name );
+			const clientId = ( await block.getAttribute( 'data-block' ) ) ?? '';
+			const parentClientId =
+				( await editorUtils.getBlockRootClientId( clientId ) ) ?? '';
 			await editor.selectBlocks( block );
-			await editorUtils.insertBlockViaInserter( legacyBlockName );
+			await editorUtils.insertBlock(
+				{ name: legacyBlockName },
+				undefined,
+				parentClientId
+			);
 
 			await editor.saveSiteEditorEntities();
+			// @todo This is a workaround to wait for the save button to be enabled. It works only without Gutenberg enabled. We have to refactor this.
 			await page
 				.locator(
-					"button.edit-site-save-button__button[aria-label='Save']"
+					"button.edit-site-save-button__button[aria-label='Save'][aria-disabled='true']"
 				)
-				.waitFor();
+				.waitFor( {
+					state: 'visible',
+				} );
+
+			await page.waitForResponse( ( response ) =>
+				response.url().includes( 'wp-json/wp/v2/templates/' )
+			);
 
 			await page.goto( frontendPage, {
 				waitUntil: 'load',
