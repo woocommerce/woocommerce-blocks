@@ -3,7 +3,7 @@ export const wooCommerceAPIResponse = [
 		id: 15,
 		name: 'Album',
 		slug: 'album',
-		permalink: 'http://another-try.local/hoodie-with-logo/music/album/',
+		permalink: 'http://your-shop-domain/hoodie-with-logo/music/album/',
 		date_created: '2023-04-19T12:15:04',
 		date_created_gmt: '2023-04-19T12:15:04',
 		date_modified: '2023-04-19T12:15:15',
@@ -85,7 +85,7 @@ export const wooCommerceAPIResponse = [
 				date_created_gmt: '2023-04-19T12:15:15',
 				date_modified: '2023-04-19T12:15:15',
 				date_modified_gmt: '2023-04-19T12:15:15',
-				src: 'http://another-try.local/wp-content/uploads/2023/04/album-1.jpg',
+				src: 'http://your-shop-domain/wp-content/uploads/2023/04/album-1.jpg',
 				name: 'album-1.jpg',
 				alt: '',
 			},
@@ -108,17 +108,17 @@ export const wooCommerceAPIResponse = [
 		stock_status: 'instock',
 		has_options: false,
 		permalink_template:
-			'http://another-try.local/hoodie-with-logo/music/%pagename%/',
+			'http://your-shop-domain/hoodie-with-logo/music/%pagename%/',
 		generated_slug: 'album',
 		_links: {
 			self: [
 				{
-					href: 'http://another-try.local/wp-json/wc/v3/products/15',
+					href: 'http://your-shop-domain/wp-json/wc/v3/products/15',
 				},
 			],
 			collection: [
 				{
-					href: 'http://another-try.local/wp-json/wc/v3/products',
+					href: 'http://your-shop-domain/wp-json/wc/v3/products',
 				},
 			],
 		},
@@ -128,7 +128,7 @@ export const wooCommerceAPIResponse = [
 		name: 'Beanie',
 		slug: 'beanie',
 		permalink:
-			'http://another-try.local/hoodie-with-logo/clothing/accessories/beanie/',
+			'http://your-shop-domain/hoodie-with-logo/clothing/accessories/beanie/',
 		date_created: '2023-04-19T12:15:04',
 		date_created_gmt: '2023-04-19T12:15:04',
 		date_modified: '2023-04-19T12:15:10',
@@ -199,7 +199,7 @@ export const wooCommerceAPIResponse = [
 				date_created_gmt: '2023-04-19T12:15:10',
 				date_modified: '2023-04-19T12:15:10',
 				date_modified_gmt: '2023-04-19T12:15:10',
-				src: 'http://another-try.local/wp-content/uploads/2023/04/beanie-2.jpg',
+				src: 'http://your-shop-domain/wp-content/uploads/2023/04/beanie-2.jpg',
 				name: 'beanie-2.jpg',
 				alt: '',
 			},
@@ -231,17 +231,17 @@ export const wooCommerceAPIResponse = [
 		stock_status: 'instock',
 		has_options: false,
 		permalink_template:
-			'http://another-try.local/hoodie-with-logo/clothing/accessories/%pagename%/',
+			'http://your-shop-domain/hoodie-with-logo/clothing/accessories/%pagename%/',
 		generated_slug: 'beanie',
 		_links: {
 			self: [
 				{
-					href: 'http://another-try.local/wp-json/wc/v3/products/7',
+					href: 'http://your-shop-domain/wp-json/wc/v3/products/7',
 				},
 			],
 			collection: [
 				{
-					href: 'http://another-try.local/wp-json/wc/v3/products',
+					href: 'http://your-shop-domain/wp-json/wc/v3/products',
 				},
 			],
 		},
@@ -256,7 +256,7 @@ export const wooCommerceBlocksStoreAPIResponse = [
 		parent: 0,
 		type: 'simple',
 		variation: '',
-		permalink: 'http://another-try.local/hoodie-with-logo/music/album/',
+		permalink: 'http://your-shop-domain/hoodie-with-logo/music/album/',
 		sku: 'woo-album',
 		short_description: '<p>This is a simple, virtual product.</p>',
 		description:
@@ -282,10 +282,10 @@ export const wooCommerceBlocksStoreAPIResponse = [
 		images: [
 			{
 				id: 44,
-				src: 'http://another-try.local/wp-content/uploads/2023/04/album-1.jpg',
+				src: 'http://your-shop-domain/wp-content/uploads/2023/04/album-1.jpg',
 				thumbnail:
-					'http://another-try.local/wp-content/uploads/2023/04/album-1-450x450.jpg',
-				srcset: 'http://another-try.local/wp-content/uploads/2023/04/album-1.jpg 800w, http://another-try.local/wp-content/uploads/2023/04/album-1-450x450.jpg 450w, http://another-try.local/wp-content/uploads/2023/04/album-1-100x100.jpg 100w, http://another-try.local/wp-content/uploads/2023/04/album-1-600x600.jpg 600w, http://another-try.local/wp-content/uploads/2023/04/album-1-300x300.jpg 300w, http://another-try.local/wp-content/uploads/2023/04/album-1-150x150.jpg 150w, http://another-try.local/wp-content/uploads/2023/04/album-1-768x768.jpg 768w',
+					'http://your-shop-domain/wp-content/uploads/2023/04/album-1-450x450.jpg',
+				srcset: 'http://your-shop-domain/wp-content/uploads/2023/04/album-1.jpg 800w, http://your-shop-domain/wp-content/uploads/2023/04/album-1-450x450.jpg 450w, http://your-shop-domain/wp-content/uploads/2023/04/album-1-100x100.jpg 100w, http://your-shop-domain/wp-content/uploads/2023/04/album-1-600x600.jpg 600w, http://your-shop-domain/wp-content/uploads/2023/04/album-1-300x300.jpg 300w, http://your-shop-domain/wp-content/uploads/2023/04/album-1-150x150.jpg 150w, http://your-shop-domain/wp-content/uploads/2023/04/album-1-768x768.jpg 768w',
 				sizes: '(max-width: 800px) 100vw, 800px',
 				name: 'album-1.jpg',
 				alt: '',
@@ -296,7 +296,7 @@ export const wooCommerceBlocksStoreAPIResponse = [
 				id: 7,
 				name: 'Music',
 				slug: 'music',
-				link: 'http://another-try.local/product-category/music/',
+				link: 'http://your-shop-domain/product-category/music/',
 			},
 		],
 		tags: [],
@@ -326,7 +326,7 @@ export const wooCommerceBlocksStoreAPIResponse = [
 		type: 'simple',
 		variation: '',
 		permalink:
-			'http://another-try.local/hoodie-with-logo/clothing/accessories/beanie/',
+			'http://your-shop-domain/hoodie-with-logo/clothing/accessories/beanie/',
 		sku: 'woo-beanie',
 		short_description: '<p>This is a simple product.</p>',
 		description:
@@ -352,10 +352,10 @@ export const wooCommerceBlocksStoreAPIResponse = [
 		images: [
 			{
 				id: 36,
-				src: 'http://another-try.local/wp-content/uploads/2023/04/beanie-2.jpg',
+				src: 'http://your-shop-domain/wp-content/uploads/2023/04/beanie-2.jpg',
 				thumbnail:
-					'http://another-try.local/wp-content/uploads/2023/04/beanie-2-450x450.jpg',
-				srcset: 'http://another-try.local/wp-content/uploads/2023/04/beanie-2.jpg 801w, http://another-try.local/wp-content/uploads/2023/04/beanie-2-450x450.jpg 450w, http://another-try.local/wp-content/uploads/2023/04/beanie-2-100x100.jpg 100w, http://another-try.local/wp-content/uploads/2023/04/beanie-2-600x600.jpg 600w, http://another-try.local/wp-content/uploads/2023/04/beanie-2-300x300.jpg 300w, http://another-try.local/wp-content/uploads/2023/04/beanie-2-150x150.jpg 150w, http://another-try.local/wp-content/uploads/2023/04/beanie-2-768x768.jpg 768w',
+					'http://your-shop-domain/wp-content/uploads/2023/04/beanie-2-450x450.jpg',
+				srcset: 'http://your-shop-domain/wp-content/uploads/2023/04/beanie-2.jpg 801w, http://your-shop-domain/wp-content/uploads/2023/04/beanie-2-450x450.jpg 450w, http://your-shop-domain/wp-content/uploads/2023/04/beanie-2-100x100.jpg 100w, http://your-shop-domain/wp-content/uploads/2023/04/beanie-2-600x600.jpg 600w, http://your-shop-domain/wp-content/uploads/2023/04/beanie-2-300x300.jpg 300w, http://your-shop-domain/wp-content/uploads/2023/04/beanie-2-150x150.jpg 150w, http://your-shop-domain/wp-content/uploads/2023/04/beanie-2-768x768.jpg 768w',
 				sizes: '(max-width: 801px) 100vw, 801px',
 				name: 'beanie-2.jpg',
 				alt: '',
@@ -366,7 +366,7 @@ export const wooCommerceBlocksStoreAPIResponse = [
 				id: 6,
 				name: 'Accessories',
 				slug: 'accessories',
-				link: 'http://another-try.local/product-category/clothing/accessories/',
+				link: 'http://your-shop-domain/product-category/clothing/accessories/',
 			},
 		],
 		tags: [],
