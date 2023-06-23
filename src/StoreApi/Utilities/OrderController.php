@@ -489,6 +489,21 @@ class OrderController {
 	}
 
 	/**
+	 * Validate a given billing email against an existing order.
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 * @param integer $order_id Order ID.
+	 * @param string  $billing_email Billing email.
+	 */
+	public function validate_billing_email( $order_id, $billing_email ) {
+		$order = $this->get_order( $order_id );
+
+		if ( ! $order || ! $billing_email || $order->get_billing_email() !== $billing_email ) {
+			throw new RouteException( 'woocommerce_rest_invalid_billing_email', __( 'Invalid billing email provided.', 'woo-gutenberg-products-block' ), 401 );
+		}
+	}
+
+	/**
 	 * Get errors for order stock on failed orders.
 	 *
 	 * @throws RouteException Exception if invalid data is detected.
