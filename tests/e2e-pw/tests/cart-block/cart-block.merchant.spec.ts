@@ -43,7 +43,7 @@ test.describe( 'Merchant → Cart', () => {
 			await editorUtils.openGlobalBlockInserter( page );
 			await page.getByPlaceholder( 'Search' ).fill( blockData.slug );
 			const cartBlockButton = await page.locator( 'button', {
-				has: page.locator( `text="${ blockData.title }"` ),
+				has: page.locator( `text="${ blockData.name }"` ),
 			} );
 			await expect( cartBlockButton ).toHaveAttribute(
 				'aria-disabled',
