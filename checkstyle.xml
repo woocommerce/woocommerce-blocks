@@ -1982,7 +1982,7 @@
 <error line="174" column="35" severity="error" message="Argument of type &apos;unknown&apos; is not assignable to parameter of type &apos;StoreAttributes[]&apos;." source="TS2345" />
 <error line="182" column="35" severity="error" message="Parameter &apos;attribute&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
-<file name="assets/js/editor-components/block-title/index.js">
+<file name="assets/js/editor-components/block-title/index.tsx">
 <error line="15" column="2" severity="error" message="Binding element &apos;className&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="16" column="2" severity="error" message="Binding element &apos;headingLevel&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
 <error line="17" column="2" severity="error" message="Binding element &apos;onChange&apos; implicitly has an &apos;any&apos; type." source="TS7031" />
@@ -3038,7 +3038,7 @@
 <error line="55" column="6" severity="error" message="Type &apos;{ selected: number[]; onChange: (value?: never[]) =&gt; void; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; { selected: number[]; }&apos;.
   Property &apos;onChange&apos; does not exist on type &apos;IntrinsicAttributes &amp; { selected: number[]; }&apos;." source="TS2322" />
 </file>
-<file name="assets/js/editor-components/grid-content-control/index.js">
+<file name="assets/js/editor-components/grid-content-control/index.tsx">
 <error line="16" column="10" severity="error" message="Property &apos;image&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="16" column="17" severity="error" message="Property &apos;button&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="16" column="25" severity="error" message="Property &apos;price&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
@@ -3328,12 +3328,12 @@
   Overload 2 of 2, &apos;(name: string, settings: BlockConfiguration&lt;{ columns: unknown; rows: unknown; alignButtons: unknown; categories: unknown; catOperator: unknown; contentVisibility: unknown; isPreview: unknown; stockStatus: unknown; editMode: unknown; orderby: unknown; }&gt;): Block&lt;...&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;{ name: string; title: string; category: string; keywords: string[]; description: string; supports: { align: string[]; html: boolean; }; example: { attributes: { isPreview: boolean; }; }; attributes: { columns: { ...; }; ... 8 more ...; orderby: { ...; }; }; textdomain: string; apiVersion: number; $schema: string; }&apos; is not assignable to parameter of type &apos;string&apos;." source="TS2769" />
 </file>
-<file name="assets/js/blocks/product-new/block.js">
+<file name="assets/js/blocks/product-new/block.tsx">
 <error line="8" column="30" severity="error" message="Could not find a declaration file for module &apos;@wordpress/server-side-render&apos;. &apos;/home/runner/work/woocommerce-blocks/woocommerce-blocks/node_modules/@wordpress/server-side-render/build/index.js&apos; implicitly has an &apos;any&apos; type.
   Try `npm i --save-dev @types/wordpress__server-side-render` if it exists or add a new declaration (.d.ts) file containing `declare module &apos;@wordpress/server-side-render&apos;;`" source="TS7016" />
 <error line="82" column="20" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any[]&apos; type." source="TS7006" />
 </file>
-<file name="assets/js/blocks/product-new/index.js">
+<file name="assets/js/blocks/product-new/index.tsx">
 <error line="17" column="1" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ columns: unknown; rows: unknown; alignButtons: unknown; categories: unknown; catOperator: unknown; contentVisibility: unknown; isPreview: unknown; stockStatus: unknown; }&gt;, settings?: Partial&lt;BlockConfiguration&lt;{ columns: unknown; rows: unknown; ... 5 more ...; stockStatus: unknown; }&gt;&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ columns: unknown; rows: unknown; alignButtons: unknown; categories: unknown; catOperator: unknown; contentVisibility: unknown; isPreview: unknown; stockStatus: unknown; }&gt;&apos;.
@@ -3370,12 +3370,12 @@
 <error line="118" column="6" severity="error" message="Type &apos;{ label: string; onChange: (statusLabels: readonly Value[]) =&gt; void; suggestions: string[]; validateInput: (value: string) =&gt; boolean; value: string[]; __experimentalExpandOnFocus: boolean; }&apos; is not assignable to type &apos;IntrinsicAttributes &amp; Props &amp; { children?: ReactNode; }&apos;.
   Property &apos;label&apos; does not exist on type &apos;IntrinsicAttributes &amp; Props &amp; { children?: ReactNode; }&apos;." source="TS2322" />
 </file>
-<file name="assets/js/blocks/product-search/block.js">
+<file name="assets/js/blocks/product-search/block.tsx">
 <error line="38" column="37" severity="error" message="Type &apos;unknown&apos; is not assignable to type &apos;string | undefined&apos;." source="TS2322" />
 <error line="61" column="7" severity="error" message="Type &apos;{ children: Element; type: &quot;submit&quot;; className: string; label: string; }&apos; is not assignable to type &apos;DetailedHTMLProps&lt;ButtonHTMLAttributes&lt;HTMLButtonElement&gt;, HTMLButtonElement&gt;&apos;.
   Property &apos;label&apos; does not exist on type &apos;DetailedHTMLProps&lt;ButtonHTMLAttributes&lt;HTMLButtonElement&gt;, HTMLButtonElement&gt;&apos;." source="TS2322" />
 </file>
-<file name="assets/js/blocks/product-search/edit.js">
+<file name="assets/js/blocks/product-search/edit.tsx">
 <error line="109" column="7" severity="error" message="Type &apos;string&apos; is not assignable to type &apos;number&apos;." source="TS2322" />
 <error line="149" column="32" severity="error" message="Argument of type &apos;{ ({ attributes: { label, placeholder, formId, className, hasLabel, align }, instanceId, setAttributes, }: {    attributes: {        label: string;        placeholder: string;        formId: string;        className: string;        hasLabel: boolean;        align: string;    };    instanceId: string;    setAttribute...&apos; is not assignable to parameter of type &apos;ComponentType&lt;{ attributes: { label: string; placeholder: string; formId: string; className: string; hasLabel: boolean; align: string; }; instanceId: string; setAttributes: (arg0: any) =&gt; any; }&gt;&apos;.
   Type &apos;{ ({ attributes: { label, placeholder, formId, className, hasLabel, align }, instanceId, setAttributes, }: {    attributes: {        label: string;        placeholder: string;        formId: string;        className: string;        hasLabel: boolean;        align: string;    };    instanceId: string;    setAttribute...&apos; is not assignable to type &apos;FunctionComponent&lt;{ attributes: { label: string; placeholder: string; formId: string; className: string; hasLabel: boolean; align: string; }; instanceId: string; setAttributes: (arg0: any) =&gt; any; }&gt;&apos;.
@@ -3621,7 +3621,7 @@
 <error line="71" column="26" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ showProductName: unknown; editMode: unknown; imageType: unknown; orderby: unknown; reviewsOnLoadMore: unknown; reviewsOnPageLoad: unknown; showLoadMore: unknown; showOrderby: unknown; showReviewDate: unknown; showReviewerName: unknown; showReviewImage: unknown; showReviewRating: unknown; showReviewContent: unknown...&apos;." source="TS2339" />
 <error line="73" column="20" severity="error" message="Property &apos;instance&apos; does not exist on type &apos;{ showProductName: unknown; editMode: unknown; imageType: unknown; orderby: unknown; reviewsOnLoadMore: unknown; reviewsOnPageLoad: unknown; showLoadMore: unknown; showOrderby: unknown; showReviewDate: unknown; showReviewerName: unknown; showReviewImage: unknown; showReviewRating: unknown; showReviewContent: unknown...&apos;." source="TS2339" />
 </file>
-<file name="assets/js/blocks/reviews/reviews-by-category/edit.js">
+<file name="assets/js/blocks/reviews/reviews-by-category/edit.tsx">
 <error line="41" column="10" severity="error" message="Property &apos;editMode&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="41" column="20" severity="error" message="Property &apos;categoryIds&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
 <error line="51" column="29" severity="error" message="Property &apos;categoryIds&apos; does not exist on type &apos;Object&apos;." source="TS2339" />
@@ -3632,7 +3632,7 @@
 <error line="124" column="20" severity="error" message="Parameter &apos;value&apos; implicitly has an &apos;any[]&apos; type." source="TS7006" />
 <error line="163" column="26" severity="error" message="Type &apos;() =&gt; JSX.Element&apos; is not assignable to type &apos;ReactElementLike&apos;." source="TS2322" />
 </file>
-<file name="assets/js/blocks/reviews/reviews-by-category/index.js">
+<file name="assets/js/blocks/reviews/reviews-by-category/index.tsx">
 <error line="19" column="1" severity="error" message="No overload matches this call.
   Overload 1 of 2, &apos;(metadata: BlockConfiguration&lt;{ categoryIds: unknown; showProductName: unknown; editMode: unknown; imageType: unknown; orderby: unknown; reviewsOnLoadMore: unknown; reviewsOnPageLoad: unknown; showLoadMore: unknown; showOrderby: unknown; showReviewDate: unknown; showReviewerName: unknown; showReviewImage: unknown; showReviewRating: unknown; showReviewContent: unknown; previewReviews: unknown; }&gt;, settings?: Partial&lt;...&gt; | undefined): Block&lt;...&gt; | undefined&apos;, gave the following error.
     Argument of type &apos;string&apos; is not assignable to parameter of type &apos;BlockConfiguration&lt;{ categoryIds: unknown; showProductName: unknown; editMode: unknown; imageType: unknown; orderby: unknown; reviewsOnLoadMore: unknown; reviewsOnPageLoad: unknown; showLoadMore: unknown; showOrderby: unknown; showReviewDate: unknown; showReviewerName: unknown; showReviewImage: unknown; showReviewRa...&apos;.

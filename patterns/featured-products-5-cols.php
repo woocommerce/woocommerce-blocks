@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Featured Products 5-item grid
+ * Title: Featured Products 5-Item Grid
  * Slug: woocommerce-blocks/featured-products-5-item-grid
  * Categories: WooCommerce
  * Block Types: core/query/woocommerce/product-query
@@ -16,8 +16,9 @@
 <div class="wp-block-query alignwide">
 	<!-- wp:post-template {"__woocommerceNamespace":"woocommerce/product-query/product-template"} -->
 
-		<!-- wp:cover {"useFeaturedImage":true,"dimRatio":0,"minHeight":190,"minHeightUnit":"px","contentPosition":"top right","isDark":false,"align":"right","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|40"}}}} -->
-		<div class="wp-block-cover alignright is-light has-custom-content-position is-position-top-right" style="margin-bottom:var(--wp--preset--spacing--40);min-height:190px"><span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span>
+		<!-- wp:cover {"useFeaturedImage":true,"dimRatio":0,"minHeight":190,"minHeightUnit":"px","contentPosition":"top right","isDark":false,"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|40"}}}} -->
+		<div class="wp-block-cover is-light has-custom-content-position is-position-top-right" style="margin-bottom:var(--wp--preset--spacing--40);min-height:190px">
+			<span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span>
 			<div class="wp-block-cover__inner-container">
 				<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
 				<div class="wp-block-group">
@@ -29,7 +30,7 @@
 		<!-- /wp:cover -->
 
 		<!-- wp:post-title {"level":3,"isLink":true,"style":{"spacing":{"margin":{"top":"0","right":"0","bottom":"0rem"}},"typography":{"fontStyle":"normal","fontWeight":"700"}},"fontSize":"small","__woocommerceNamespace":"woocommerce/product-query/product-title"} /-->
-	
+
 		<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"textAlign":"left","fontSize":"small","style":{"spacing":{"margin":{"bottom":"0","top":"var:preset|spacing|20"}}}} /-->
 
 	<!-- /wp:post-template -->

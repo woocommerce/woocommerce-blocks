@@ -33,7 +33,9 @@ const getBlockifiedTemplate = () =>
 				createBlock( 'core/column', {}, [
 					createBlock( 'core/post-title', {
 						__woocommerceNamespace: PRODUCT_TITLE_VARIATION_NAME,
+						level: 1,
 					} ),
+					createBlock( 'woocommerce/product-rating' ),
 					createBlock( 'woocommerce/product-price', {
 						fontSize: 'large',
 					} ),

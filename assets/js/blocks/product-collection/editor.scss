@@ -1,0 +1,11 @@
+.wc-block-editor-product-collection-inspector-toolspanel__filters {
+	.wc-block-editor-product-collection-inspector__taxonomy-control:not(:last-child) {
+		margin-bottom: $grid-unit-30;
+	}
+}
+
+.wc-block-editor-product-collection__display-settings {
+	.components-popover__content {
+		min-width: 230px;
+	}
+}

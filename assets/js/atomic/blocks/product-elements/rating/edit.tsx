@@ -19,34 +19,44 @@ import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import blockMeta from './block.json';
 import { BlockAttributes } from './types';
-import './editor.scss';
 import { useIsDescendentOfSingleProductBlock } from '../shared/use-is-descendent-of-single-product-block';
+import { useIsDescendentOfSingleProductTemplate } from '../shared/use-is-descendent-of-single-product-template';
 
-const Edit = ( {
-	attributes,
-	setAttributes,
-	context,
-}: BlockEditProps< BlockAttributes > & { context: Context } ): JSX.Element => {
+const Edit = (
+	props: BlockEditProps< BlockAttributes > & { context: Context }
+): JSX.Element => {
+	const { attributes, setAttributes, context } = props;
 	const blockProps = useBlockProps( {
 		className: 'wp-block-woocommerce-product-rating',
 	} );
 	const blockAttrs = {
 		...attributes,
 		...context,
+		shouldDisplayMockedReviewsWhenProductHasNoReviews: true,
 	};
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
 	const { isDescendentOfSingleProductBlock } =
 		useIsDescendentOfSingleProductBlock( {
 			blockClientId: blockProps?.id,
 		} );
+	let { isDescendentOfSingleProductTemplate } =
+		useIsDescendentOfSingleProductTemplate();
+
+	if ( isDescendentOfQueryLoop || isDescendentOfSingleProductBlock ) {
+		isDescendentOfSingleProductTemplate = false;
+	}
 
 	useEffect( () => {
-		setAttributes( { isDescendentOfQueryLoop } );
-		setAttributes( { isDescendentOfSingleProductBlock } );
+		setAttributes( {
+			isDescendentOfQueryLoop,
+			isDescendentOfSingleProductBlock,
+			isDescendentOfSingleProductTemplate,
+		} );
 	}, [
 		setAttributes,
 		isDescendentOfQueryLoop,
 		isDescendentOfSingleProductBlock,
+		isDescendentOfSingleProductTemplate,
 	] );
 
 	return (
