@@ -10,8 +10,9 @@ import { test, expect } from '@woocommerce/e2e-playwright-utils';
 import { editBlockPage } from '../../utils/navigation/navigation';
 
 const blockData: BlockData = {
-	title: 'Cart',
+	name: 'Cart',
 	slug: 'woocommerce/cart',
+	mainClass: '.wp-block-woocommerce-cart',
 	selectors: {
 		editor: {
 			block: '.wp-block-woocommerce-cart',
@@ -135,6 +136,55 @@ test.describe( 'Merchant → Cart', () => {
 				name: 'Audio',
 			} );
 			await expect( filledCartAudioButton ).not.toBeVisible();
+		} );
+
+		test( 'shows empty cart when changing the view', async ( {
+			page,
+			editor,
+		} ) => {
+			await editor.selectBlocks( blockData.selectors.editor.block );
+			await page.getByRole( 'button', { name: 'Switch view' } ).click();
+			const emptyCartButton = await page.getByRole( 'menuitem', {
+				name: 'Empty Cart',
+			} );
+
+			// Focus the empty cart button and wait for the tooltip to disappear.
+			await emptyCartButton.focus();
+			await page.waitForTimeout( 1000 );
+			await emptyCartButton.click();
+
+			await expect(
+				page.locator(
+					blockData.selectors.editor.block +
+						' [data-type="woocommerce/filled-cart-block"]'
+				)
+			).not.toBeVisible();
+			await expect(
+				page.locator(
+					blockData.selectors.editor.block +
+						' [data-type="woocommerce/empty-cart-block"]'
+				)
+			).toBeVisible();
+			await editor.selectBlocks( blockData.selectors.editor.block );
+			await page.getByRole( 'button', { name: 'Switch view' } ).click();
+
+			const filledCartButton = await page.getByRole( 'menuitem', {
+				name: 'Filled Cart',
+			} );
+
+			await filledCartButton.click();
+			await expect(
+				page.locator(
+					blockData.selectors.editor.block +
+						' [data-type="woocommerce/filled-cart-block"]'
+				)
+			).toBeVisible();
+			await expect(
+				page.locator(
+					blockData.selectors.editor.block +
+						' [data-type="woocommerce/empty-cart-block"]'
+				)
+			).not.toBeVisible();
 		} );
 	} );
 } );
