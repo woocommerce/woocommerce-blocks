@@ -25,18 +25,18 @@ export const closeModalIfExists = async (
  */
 export const editBlockPage = async (
 	page: PlaywrightTestArgs[ 'page' ],
-	{ title, selectors }: BlockData
+	{ name, selectors }: BlockData
 ) => {
 	const {
 		editor: { block: blockSelector },
 	} = selectors;
 	await page.goto(
-		`/wp-admin/edit.php?post_type=page&s=${ encodeURIComponent( title ) }`
+		`/wp-admin/edit.php?post_type=page&s=${ encodeURIComponent( name ) }`
 	);
 
 	// This is the link to the edit page of the block, this is the page's title.
 	await page
-		.getByRole( 'link', { name: `“${ title } block” (Edit)` } )
+		.getByRole( 'link', { name: `“${ name } block” (Edit)` } )
 		.click();
 
 	await page.waitForLoadState( 'networkidle' );
