@@ -154,7 +154,13 @@ class ProductImage extends AbstractBlock {
 			return wc_placeholder_img( $image_size, array( 'alt' => '' ) );
 		}
 
-		return $product->get_image( $image_size, array( 'alt' => $product->get_title() ) );
+		return $product->get_image(
+			$image_size,
+			array(
+				'alt'         => $product->get_title(),
+				'data-testid' => 'product-image',
+			)
+		);
 	}
 
 	/**
