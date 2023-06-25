@@ -17,6 +17,7 @@ import {
 import { getUrlParameter } from '@woocommerce/utils';
 import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import { useIsMounted } from '@woocommerce/base-hooks';
+import type { BlockAttributes } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -34,31 +35,26 @@ import {
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 import FilterPlaceholders from './filter-placeholders';
-import { Attributes } from './types';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
 
-interface ActiveFiltersProps {
+interface ActiveFiltersBlockProps {
 	/**
 	 * The attributes for this block.
 	 */
-	attributes: Attributes;
+	attributes: BlockAttributes;
 	/**
 	 * Whether it's in the editor or frontend display.
 	 */
-	isEditor?: boolean;
+	isEditor: boolean;
 }
 
 /**
  * Component displaying active filters.
- *
- * @param {Object}  props            Incoming props for the component.
- * @param {Object}  props.attributes Incoming attributes for the block.
- * @param {boolean} props.isEditor   Whether or not in the editor context.
  */
 const ActiveFiltersBlock = ( {
 	attributes: blockAttributes,
 	isEditor = false,
-}: ActiveFiltersProps ) => {
+}: ActiveFiltersBlockProps ) => {
 	const setWrapperVisibility = useSetWraperVisibility();
 	const isMounted = useIsMounted();
 	const componentHasMounted = isMounted();

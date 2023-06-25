@@ -34,6 +34,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import type { BlockAttributes } from './types';
 import QuantityBadge from './quantity-badge';
 import { MiniCartContentsBlock } from './mini-cart-contents/block';
 import './style.scss';
@@ -42,14 +43,7 @@ import {
 	attributes as miniCartContentsAttributes,
 } from './mini-cart-contents/attributes';
 
-interface Props {
-	isInitiallyOpen?: boolean;
-	colorClassNames?: string;
-	style?: Record< string, Record< string, string > >;
-	contents: string;
-	addToCartBehaviour: string;
-	hasHiddenPrice: boolean;
-}
+type Props = BlockAttributes;
 
 function getScrollbarWidth() {
 	return window.innerWidth - document.documentElement.clientWidth;
@@ -59,10 +53,13 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 	const {
 		isInitiallyOpen = false,
 		colorClassNames,
-		style,
 		contents = '',
+		miniCartIcon,
 		addToCartBehaviour = 'none',
 		hasHiddenPrice = false,
+		priceColorValue,
+		iconColorValue,
+		productCountColorValue,
 	} = attributes;
 
 	const {
@@ -238,16 +235,10 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				)
 		  );
 
-	const colorStyle = {
-		backgroundColor: style?.color?.background,
-		color: style?.color?.text,
-	};
-
 	return (
 		<>
 			<button
 				className={ `wc-block-mini-cart__button ${ colorClassNames }` }
-				style={ colorStyle }
 				onClick={ () => {
 					if ( ! isOpen ) {
 						setIsOpen( true );
@@ -257,7 +248,10 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				aria-label={ ariaLabel }
 			>
 				{ ! hasHiddenPrice && (
-					<span className="wc-block-mini-cart__amount">
+					<span
+						className="wc-block-mini-cart__amount"
+						style={ { color: priceColorValue } }
+					>
 						{ formatPrice(
 							subTotal,
 							getCurrencyFromPriceResponse( cartTotals )
@@ -265,11 +259,19 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 					</span>
 				) }
 				{ taxLabel !== '' && subTotal !== 0 && ! hasHiddenPrice && (
-					<small className="wc-block-mini-cart__tax-label">
+					<small
+						className="wc-block-mini-cart__tax-label"
+						style={ { color: priceColorValue } }
+					>
 						{ taxLabel }
 					</small>
 				) }
-				<QuantityBadge count={ cartItemsCount } />
+				<QuantityBadge
+					count={ cartItemsCount }
+					icon={ miniCartIcon }
+					iconColor={ iconColorValue }
+					productCountColor={ productCountColorValue }
+				/>
 			</button>
 			<Drawer
 				className={ classnames(
