@@ -8,7 +8,7 @@ import {
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 import {
 	PanelBody,
 	Placeholder,
@@ -65,20 +65,12 @@ type Props = {
 
 export default function Edit( props: Props ): JSX.Element {
 	const [ isEditing, setIsEditing ] = useState< boolean >( false );
-	const [ , setInnerBlocks ] = useState< BlockInstance[] | boolean >( false );
+	const [ innerBlocks, setInnerBlocks ] = useState< BlockInstance[] >( [] );
 	const blockMap = getBlockMap( 'woocommerce/all-products' );
 
 	const { clientId, attributes, setAttributes } = props;
 
 	const { columns, rows, alignButtons, layoutConfig } = attributes;
-
-	const { innerBlocks } = useSelect( ( select ) => {
-		const { getBlock } = select( 'core/block-editor' );
-		const block = getBlock( clientId );
-		return {
-			innerBlocks: block ? block.innerBlocks : [],
-		};
-	} );
 
 	useEffect( () => {
 		setInnerBlocks( innerBlocks );
