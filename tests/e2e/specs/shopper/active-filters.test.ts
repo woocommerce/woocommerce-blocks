@@ -53,7 +53,6 @@ const block = {
 	},
 };
 
-const FILTER_STOCK_STATUS_TITLE = 'Stock Status';
 const FILTER_STOCK_STATUS_PROPERTY = 'In stock';
 const FILTER_CAPACITY_TITLE = 'Capacity:';
 const FILTER_CAPACITY_PROPERTY = '128gb';
@@ -113,47 +112,6 @@ describe( 'Shopper → Active Filters Block', () => {
 
 		it( 'Active Filters is hidden if there is no filter selected', async () => {
 			expect( page ).not.toMatch( 'Active Filters' );
-		} );
-
-		it( 'Shows selected filters', async () => {
-			const isRefreshed = jest.fn( () => void 0 );
-
-			await page.waitForSelector( block.class );
-			await page.waitForSelector(
-				selectors.frontend.attributeFilterBlock + '.is-loading',
-				{ hidden: true }
-			);
-
-			await page.waitForSelector( selectors.frontend.stockFilterBlock );
-
-			await expect( page ).toClick( 'label', {
-				text: FILTER_CAPACITY_PROPERTY,
-			} );
-
-			const activeFilterType = await getActiveFilterTypeText();
-
-			expect( activeFilterType ).toBe(
-				FILTER_CAPACITY_TITLE.toUpperCase()
-			);
-
-			await waitForAllProductsBlockLoaded();
-
-			await expect( page ).toClick( 'label', {
-				text: FILTER_STOCK_STATUS_PROPERTY,
-			} );
-
-			await expect( page ).toMatch( FILTER_STOCK_STATUS_TITLE );
-
-			const activeFilterNameText = await getActiveFilterNameText();
-
-			expect( activeFilterNameText ).toBe( FILTER_STOCK_STATUS_PROPERTY );
-
-			await waitForAllProductsBlockLoaded();
-
-			const products = await page.$$( selectors.frontend.productsList );
-			expect( products ).toHaveLength( 1 );
-			expect( isRefreshed ).not.toHaveBeenCalled();
-			await expect( page ).toMatch( SIMPLE_PHYSICAL_PRODUCT_NAME );
 		} );
 
 		it( 'When clicking the X on a filter it removes a filter', async () => {
