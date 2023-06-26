@@ -7,12 +7,12 @@ const permalink = '/checkout';
 const templatePath = 'woocommerce/woocommerce//checkout';
 const templateType = 'wp_template';
 
-test.afterAll( async ( { requestUtils } ) => {
-	await requestUtils.deleteAllTemplates( 'wp_template' );
-	await requestUtils.deleteAllTemplates( 'wp_template_part' );
-} );
-
 test.describe( 'Test the checkout template', async () => {
+	test.afterAll( async ( { requestUtils } ) => {
+		await requestUtils.deleteAllTemplates( 'wp_template' );
+		await requestUtils.deleteAllTemplates( 'wp_template_part' );
+	} );
+
 	test( 'Template can be opened in the site editor', async ( { page } ) => {
 		await page.goto( '/wp-admin/site-editor.php' );
 		await page.click( 'text=Templates' );

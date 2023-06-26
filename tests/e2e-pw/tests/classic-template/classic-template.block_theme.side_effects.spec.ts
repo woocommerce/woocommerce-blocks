@@ -24,12 +24,12 @@ const templates = {
 		slug: 'single-product',
 		frontendPage: '/product/single/',
 	},
-	'taxonomy-product_attribute': {
-		templateTitle: 'Product Attribute',
-		slug: 'taxonomy-product_attribute',
-		frontendPage: '/product-attribute/color/',
-	},
-
+	// This test is disabled because archives are disabled for attributes by default. This can be uncommented when this is toggled on.
+	//'taxonomy-product_attribute': {
+	//	templateTitle: 'Product Attribute',
+	//	slug: 'taxonomy-product_attribute',
+	//	frontendPage: '/product-attribute/color/',
+	//},
 	'taxonomy-product_cat': {
 		templateTitle: 'Product Category',
 		slug: 'taxonomy-product_cat',
@@ -100,7 +100,9 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 
 			await page.goto( frontendPage );
 
-			await expect( page.getByText( 'Hello World' ) ).toBeVisible();
+			await expect(
+				page.getByText( 'Hello World' ).first()
+			).toBeVisible();
 		} );
 
 		test.afterAll( async ( { requestUtils } ) => {
