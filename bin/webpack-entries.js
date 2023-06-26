@@ -38,11 +38,7 @@ const blocks = {
 	'legacy-template': {
 		customDir: 'classic-template',
 	},
-	'mini-cart': {
-		// As the Mini-Cart block scripts are lazy-loaded, we need to explicitly
-		// include the styles here.
-		extraImport: 'block.tsx',
-	},
+	'mini-cart': {},
 	'mini-cart-contents': {
 		customDir: 'mini-cart/mini-cart-contents',
 	},
@@ -103,13 +99,6 @@ const getBlockEntries = ( relativePath ) => {
 					`./assets/js/blocks/${ config.customDir || blockCode }/` +
 						relativePath
 				);
-				if ( config.extraImport ) {
-					filePaths.push(
-						`./assets/js/blocks/${
-							config.customDir || blockCode
-						}/${ config.extraImport }`
-					);
-				}
 				if ( filePaths.length > 0 ) {
 					return [ blockCode, filePaths ];
 				}
@@ -128,7 +117,7 @@ const entries = {
 		'wc-blocks': './assets/js/index.js',
 
 		// Blocks
-		...getBlockEntries( 'index.{t,j}s{,x}' ),
+		...getBlockEntries( '{index,frontend}.{t,j}s{,x}' ),
 	},
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',

@@ -3,6 +3,7 @@
  */
 import { Icon, customPostType } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
+
 /**
  * Internal dependencies
  */

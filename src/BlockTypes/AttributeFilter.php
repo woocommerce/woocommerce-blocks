@@ -32,6 +32,6 @@ class AttributeFilter extends AbstractBlock {
 	 * @return string[]|null
 	 */
 	protected function get_block_type_style() {
-		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-style' ] );
+		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
 	}
 }
