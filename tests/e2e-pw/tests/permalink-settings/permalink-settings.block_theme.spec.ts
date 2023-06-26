@@ -4,18 +4,23 @@
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
 import { cli } from '@woocommerce/e2e-utils';
 
-test.afterAll( async () => {
-	await cli(
-		'npm run wp-env run tests-cli "wp option update woocommerce_cart_page_endpoint cart"'
-	);
-	await cli(
-		'npm run wp-env run tests-cli "wp option update woocommerce_checkout_page_endpoint checkout"'
-	);
-} );
+/**
+ * Internal dependencies
+ */
+import { goToShop, addToCart } from '../../utils';
 
 test.describe(
 	'Tests permalink settings for the cart and checkout templates',
 	async () => {
+		test.afterAll( async () => {
+			await cli(
+				'npm run wp-env run tests-cli "wp option update woocommerce_cart_page_endpoint cart"'
+			);
+			await cli(
+				'npm run wp-env run tests-cli "wp option update woocommerce_checkout_page_endpoint checkout"'
+			);
+		} );
+
 		test.describe( 'Settings page', () => {
 			test( 'Load advanced settings', async ( { page } ) => {
 				await page.goto(
@@ -41,7 +46,13 @@ test.describe(
 				await expect( checkoutInput ).toBeVisible();
 			} );
 		} );
+
 		test.describe( 'Frontend templates are updated', () => {
+			test.beforeEach( async ( { page } ) => {
+				await goToShop( page );
+				await addToCart( page );
+			} );
+
 			test( 'Changing cart permalink works', async ( { page } ) => {
 				await page.goto(
 					'/wp-admin/admin.php?page=wc-settings&tab=advanced'
@@ -58,6 +69,7 @@ test.describe(
 				const cartText = await page.getByText( 'Proceed to checkout' );
 				expect( cartText ).toBeVisible();
 			} );
+
 			test( 'Changing checkout permalink works', async ( { page } ) => {
 				await page.goto(
 					'/wp-admin/admin.php?page=wc-settings&tab=advanced'
