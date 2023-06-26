@@ -16,6 +16,7 @@ import {
 	BLOCK_DESCRIPTION as description,
 } from './constants';
 import { supports } from './support';
+import './style.scss';
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,

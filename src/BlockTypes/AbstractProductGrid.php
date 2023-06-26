@@ -694,6 +694,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 	 * @return string[]|null
 	 */
 	protected function get_block_type_style() {
-		return array_merge( [ 'wc-blocks-style' ] );
+		// Currently these blocks rely on the styles from the All Products block.
+		return [ 'wc-blocks-style', 'wc-blocks-style-all-products' ];
 	}
 }

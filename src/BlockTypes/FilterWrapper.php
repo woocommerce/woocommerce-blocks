@@ -19,6 +19,6 @@ class FilterWrapper extends AbstractBlock {
 	 * @return string[]|null
 	 */
 	protected function get_block_type_style() {
-		return array_merge( [ 'wc-blocks-style' ] );
+		return null;
 	}
 }

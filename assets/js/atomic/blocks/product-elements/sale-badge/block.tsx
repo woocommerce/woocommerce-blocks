@@ -15,7 +15,6 @@ import type { HTMLAttributes } from 'react';
 /**
  * Internal dependencies
  */
-import './style.scss';
 import type { BlockAttributes } from './types';
 
 type Props = BlockAttributes & HTMLAttributes< HTMLDivElement >;

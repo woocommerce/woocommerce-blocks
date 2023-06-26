@@ -57,7 +57,7 @@ class RelatedProducts extends AbstractBlock {
 	 * @return string[]|null
 	 */
 	protected function get_block_type_style() {
-		return null;
+		return [ 'wc-blocks-style' ];
 	}
 
 	/**
