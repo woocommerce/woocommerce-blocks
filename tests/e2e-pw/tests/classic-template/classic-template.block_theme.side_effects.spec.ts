@@ -49,7 +49,7 @@ const templates = {
 	'product-search-results': {
 		templateTitle: 'Product Search Results',
 		slug: 'product-search-results',
-		frontendPage: '/?s=single&post_type=product',
+		frontendPage: '/?s=s&post_type=product',
 	},
 };
 
