@@ -32,7 +32,8 @@
 		"align": [ "wide", "full" ],
 		"color": {
 			"background": false,
-			"link": true
+			"link": true,
+			"interactivity":true
 		},
 		"html": false,
 		"typography": {
@@ -56,6 +57,9 @@
 			"name": "outline",
 			"label": "Outline"
 		}
+	],
+	"viewScript": [
+		"wc-interactivity"
 	],
 	"apiVersion": 2,
 	"$schema": "https://schemas.wp.org/trunk/block.json"
