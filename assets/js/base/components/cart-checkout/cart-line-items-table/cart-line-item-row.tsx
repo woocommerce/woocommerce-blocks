@@ -13,7 +13,11 @@ import {
 	useStoreCart,
 } from '@woocommerce/base-context/hooks';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
-import { applyCheckoutFilter, mustContain } from '@woocommerce/blocks-checkout';
+import {
+	applyCheckoutFilter,
+	getRegisteredCartItemDataControls,
+	mustContain,
+} from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
 import { forwardRef, useMemo } from '@wordpress/element';
 import type { CartItem } from '@woocommerce/types';
@@ -201,6 +205,8 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 			arg,
 		} );
 
+		const additionalDataControls = getRegisteredCartItemDataControls();
+
 		return (
 			<tr
 				className={ classnames(
@@ -346,6 +352,58 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 										'woo-gutenberg-products-block'
 									) }
 								</button>
+							) }
+						</div>
+						<div className="wc-block-cart-item__additional-data-controls">
+							{ Object.values( additionalDataControls ).map(
+								( namespace ) => {
+									return Object.values( namespace ).map(
+										( control ) => {
+											const id = `${ namespace }-${ control.key }`;
+											switch ( control.type ) {
+												case 'checkbox':
+													return (
+														<label htmlFor={ id }>
+															<span>
+																Custom checkbox
+																for{ ' ' }
+																{ control.key }
+															</span>
+															<input
+																type="checkbox"
+																id={ id }
+																onChange={ (
+																	value
+																) => {
+																	control.onChange(
+																		value
+																	);
+																} }
+															/>
+														</label>
+													);
+												case 'text':
+													return (
+														<label htmlFor={ id }>
+															<span>
+																Custom text
+																input for{ ' ' }
+																{ control.key }
+															</span>
+															<input
+																id={ id }
+																type="text"
+																onChange={
+																	control.onChange
+																}
+															/>
+														</label>
+													);
+											}
+											return null;
+										}
+									);
+								}
 							) }
 						</div>
 					</div>
