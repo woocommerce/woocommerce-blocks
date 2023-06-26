@@ -23,6 +23,8 @@ import { forwardRef, useMemo } from '@wordpress/element';
 import type { CartItem } from '@woocommerce/types';
 import { objectHasProp, Currency } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
+import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -206,6 +208,8 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 		} );
 
 		const additionalDataControls = getRegisteredCartItemDataControls();
+		const { __internalSetExtensionData: setExtensionData } =
+			useDispatch( CHECKOUT_STORE_KEY );
 
 		return (
 			<tr
@@ -355,11 +359,19 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 							) }
 						</div>
 						<div className="wc-block-cart-item__additional-data-controls">
-							{ Object.values( additionalDataControls ).map(
-								( namespace ) => {
-									return Object.values( namespace ).map(
+							{ Object.entries( additionalDataControls ).map(
+								( [ namespace, configurations ] ) => {
+									return Object.values( configurations ).map(
 										( control ) => {
 											const id = `${ namespace }-${ control.key }`;
+											const onChangeFunction = ( e ) => {
+												const { value: newValue } =
+													e.target;
+												setExtensionData( namespace, {
+													[ control.key ]: newValue,
+												} );
+												control.onChange( newValue );
+											};
 											switch ( control.type ) {
 												case 'checkbox':
 													return (
@@ -372,13 +384,9 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 															<input
 																type="checkbox"
 																id={ id }
-																onChange={ (
-																	value
-																) => {
-																	control.onChange(
-																		value
-																	);
-																} }
+																onChange={
+																	onChangeFunction
+																}
 															/>
 														</label>
 													);
@@ -394,7 +402,7 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 																id={ id }
 																type="text"
 																onChange={
-																	control.onChange
+																	onChangeFunction
 																}
 															/>
 														</label>
