@@ -40,7 +40,7 @@ const Cart = ( { children, attributes = {} } ) => {
 			key: 'gift-wrapping',
 			type: 'checkbox',
 			onChange: ( newValue ) => {
-				alert( 'thanks for choosing gift wrapping!' );
+				console.log( 'new value of gift-wrapping', newValue );
 			},
 			isVisible: ( args, cartItem ) => {
 				return !! cartItem;
