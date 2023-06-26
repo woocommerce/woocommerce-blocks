@@ -44,14 +44,6 @@
 		}
 	}
 
-	&__link {
-		display: inline-block;
-		height: 1.618em;
-		width: 100%;
-		text-align: inherit;
-		@include font-size(small);
-	}
-
 	.wc-block-all-products & {
 		margin-top: 0;
 		margin-bottom: $gap-small;
