@@ -184,8 +184,6 @@ class ProductRating extends AbstractBlock {
 				3
 			);
 
-			wc_get_star_rating_html( $product->get_average_rating(), $product->get_review_count() );
-
 			$rating_html = wc_get_rating_html( $product->get_average_rating() );
 
 			remove_filter(
