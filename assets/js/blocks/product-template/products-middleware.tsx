@@ -129,6 +129,15 @@ export const transformProductData = (
 		review_count: input.rating_count,
 		variation: '',
 		extensions: {},
+		title: {
+			raw: input.name,
+			rendered: input.name,
+		},
+		excerpt: {
+			protected: false,
+			raw: input.short_description,
+			rendered: `<p>${ input.short_description }</p>`,
+		},
 	};
 };
 
