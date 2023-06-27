@@ -45,6 +45,7 @@ class ProductButton extends AbstractBlock {
 		$product = wc_get_product( $post_id );
 
 		if ( $product ) {
+			$number_of_items_in_cart = $this->get_cart_item_quantities_by_product_id( $product->get_id() );
 
 			wc_store(
 				[
@@ -58,15 +59,14 @@ class ProductButton extends AbstractBlock {
 				]
 			);
 
-			$number_of_items_in_cart = $this->get_cart_item_quantities_by_product_id( $product->get_id() );
-
 			$context = array(
 				'woocommerce' => array(
-					'isLoading'     => false,
-					'numberOfItems' => $number_of_items_in_cart,
-					'addToCart'     => $product->add_to_cart_text(),
-					'productId'     => $product->get_id(),
-					'isAdded'       => false,
+					'isLoading'       => false,
+					'numberOfItems'   => $number_of_items_in_cart,
+					'addToCart'       => $number_of_items_in_cart > 0 ? sprintf( __( '%s in the cart', 'woo-gutenberg-products-block' ), $number_of_items_in_cart ) : $product->add_to_cart_text(),
+					'productId'       => $product->get_id(),
+					'isAdded'         => false,
+					'moreThanOneItem' => $number_of_items_in_cart > 0,
 				),
 			);
 
@@ -79,6 +79,7 @@ class ProductButton extends AbstractBlock {
 			$text_align_styles_and_classes = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
 			$classname                     = $attributes['className'] ?? '';
 			$custom_width_classes          = isset( $attributes['width'] ) ? 'has-custom-width wp-block-button__width-' . $attributes['width'] : '';
+			$is_added_class                = $context['woocommerce']['moreThanOneItem'] ? 'added' : '';
 			$html_classes                  = implode(
 				' ',
 				array_filter(
@@ -129,7 +130,9 @@ class ProductButton extends AbstractBlock {
 					'<div class="wp-block-button wc-block-components-product-button %1$s %2$s" data-wc-context=%9$s>
 					<%3$s href="%4$s" class="%5$s" style="%6$s"
 					data-wc-on--click="actions.woocommerce.addToCart"
-					data-wc-class--added="state.woocommerce.moreThanOneItem" data-wc-text="state.woocommerce.addToCartText"
+					data-wc-class--loading="context.woocommerce.isLoading"
+					data-wc-class--added="context.woocommerce.moreThanOneItem"
+					data-wc-text="state.woocommerce.addToCartText"
 					%7$s>%8$s</%3$s>
 					%10$s
 				</div>',
@@ -137,10 +140,10 @@ class ProductButton extends AbstractBlock {
 					esc_attr( $classname . ' ' . $custom_width_classes ),
 					$html_element,
 					esc_url( $product->add_to_cart_url() ),
-					isset( $args['class'] ) ? esc_attr( $args['class'] ) : '',
+					isset( $args['class'] ) ? esc_attr( $args['class'] . ' ' . $is_added_class ) : $is_added_class,
 					esc_attr( $styles_and_classes['styles'] ),
 					isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
-					esc_html( $product->add_to_cart_text() ),
+					esc_html( $context['woocommerce']['addToCart'] ),
 					'\'' . $parsed_context . '\'',
 					$this->get_view_cart_html()
 				),
@@ -160,7 +163,7 @@ class ProductButton extends AbstractBlock {
 	}
 
 	private function get_view_cart_html() {
-		return '<a data-wc-bind--hidden="!context.woocommerce.isAdded" data-wc-bind--href="state.woocommerce.cartUrl" class="added_to_cart wc_forward" data-wc-bind--title="state.woocommerce.viewCart" data-wc-text="state.woocommerce.viewCart"></a>';
+		return '<a hidden="!context.woocommerce.isAdded" data-wc-bind--hidden="!context.woocommerce.isAdded" data-wc-bind--href="state.woocommerce.cartUrl" class="added_to_cart wc_forward" data-wc-bind--title="state.woocommerce.viewCart" data-wc-text="state.woocommerce.viewCart"></a>';
 	}
 
 }

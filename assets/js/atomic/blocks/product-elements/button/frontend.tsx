@@ -1,9 +1,7 @@
 /**
  * External dependencies
  */
-import { useStoreAddToCart } from '@woocommerce/base-context';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-
 import { store } from '@woocommerce/interactivity';
 import { dispatch } from '@wordpress/data';
 
@@ -28,10 +26,8 @@ store( {
 	actions: {
 		woocommerce: {
 			addToCart: async ( { context, event, ref } ) => {
-				event.preventDefault();
 				context.woocommerce.isLoading = true;
-				context.woocommerce.numberOfItems++;
-				context.woocommerce.isAdded = true;
+
 				try {
 					await dispatch( storeKey ).addItemToCart(
 						context.woocommerce.productId,
@@ -40,6 +36,10 @@ store( {
 				} catch ( error ) {
 					context.woocommerce.numberOfItems--;
 				}
+
+				context.woocommerce.numberOfItems++;
+				context.woocommerce.isAdded = true;
+				context.woocommerce.isLoading = false;
 			},
 		},
 	},
