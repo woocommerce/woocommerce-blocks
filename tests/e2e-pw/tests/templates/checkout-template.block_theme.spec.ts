@@ -30,13 +30,17 @@ test.describe( 'Test the checkout template', async () => {
 		).toBeVisible();
 	} );
 
-	test( 'Template can be modified', async ( { page, admin, editor } ) => {
+	test( 'Template can be modified', async ( {
+		page,
+		admin,
+		editor,
+		editorUtils,
+	} ) => {
 		await admin.visitSiteEditor( {
 			postId: templatePath,
 			postType: templateType,
 		} );
-		await editor.canvas.click( 'body' );
-		await editor.canvas.waitForLoadState( 'networkidle' );
+		await editorUtils.enterEditMode();
 		await editor.insertBlock( {
 			name: 'core/paragraph',
 			attributes: { content: 'Hello World' },
