@@ -13,11 +13,14 @@ test.describe( 'Test the cart template', async () => {
 		await requestUtils.deleteAllTemplates( 'wp_template_part' );
 	} );
 
-	test( 'Template can be opened in the site editor', async ( { page } ) => {
+	test( 'Template can be opened in the site editor', async ( {
+		page,
+		editor,
+	} ) => {
 		await page.goto( '/wp-admin/site-editor.php' );
 		await page.getByRole( 'button', { name: /Templates/i } ).click();
 		await page.getByRole( 'button', { name: /Cart/i } ).click();
-		await page.getByRole( 'button', { name: /Edit/i } ).click();
+		await editor.canvas.click( 'body' );
 
 		await expect(
 			page
