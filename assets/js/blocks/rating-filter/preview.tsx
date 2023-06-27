@@ -11,7 +11,7 @@ export const previewOptions = [
 				className={ '' }
 				key={ 5 }
 				rating={ 5 }
-				ratedProductsCount={ 5 }
+				ratedProductsCount={ null }
 			/>
 		),
 		value: '5',
@@ -22,7 +22,7 @@ export const previewOptions = [
 				className={ '' }
 				key={ 4 }
 				rating={ 4 }
-				ratedProductsCount={ 4 }
+				ratedProductsCount={ null }
 			/>
 		),
 		value: '4',
@@ -33,7 +33,7 @@ export const previewOptions = [
 				className={ '' }
 				key={ 3 }
 				rating={ 3 }
-				ratedProductsCount={ 3 }
+				ratedProductsCount={ null }
 			/>
 		),
 		value: '3',
@@ -44,7 +44,7 @@ export const previewOptions = [
 				className={ '' }
 				key={ 2 }
 				rating={ 2 }
-				ratedProductsCount={ 2 }
+				ratedProductsCount={ null }
 			/>
 		),
 		value: '2',
@@ -55,7 +55,7 @@ export const previewOptions = [
 				className={ '' }
 				key={ 1 }
 				rating={ 1 }
-				ratedProductsCount={ 1 }
+				ratedProductsCount={ null }
 			/>
 		),
 		value: '1',
