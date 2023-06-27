@@ -36,7 +36,7 @@ test.describe( 'Test the order confirmation template', async () => {
 			attributes: { content: 'Hello World' },
 		} );
 		await editor.saveSiteEditorEntities();
-		await page.goto( permalink );
+		await page.goto( permalink, { waitUntil: 'networkidle' } );
 
 		await expect( page.getByText( 'Hello World' ).first() ).toBeVisible();
 	} );
