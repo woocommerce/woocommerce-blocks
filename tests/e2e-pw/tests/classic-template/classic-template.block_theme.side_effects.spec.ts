@@ -4,6 +4,7 @@
 import { BlockData } from '@woocommerce/e2e-types';
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
 import { cli } from '@woocommerce/e2e-utils';
+import { deleteAllTemplates } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -53,16 +54,23 @@ const templates = {
 	},
 };
 
+test.beforeAll( async () => {
+	await cli(
+		'npm run wp-env run tests-cli "wp option update wc_blocks_use_blockified_product_grid_block_as_template no"'
+	);
+} );
+
+test.afterAll( async () => {
+	await cli(
+		'npm run wp-env run tests-cli "wp option delete wc_blocks_use_blockified_product_grid_block_as_template"'
+	);
+	await deleteAllTemplates( 'wp_template' );
+} );
+
 for ( const { templateTitle, slug, frontendPage } of Object.values(
 	templates
 ) ) {
 	test.describe( `${ blockData.name } Block `, () => {
-		test.beforeAll( async () => {
-			await cli(
-				'npm run wp-env run tests-cli "wp option update wc_blocks_use_blockified_product_grid_block_as_template no"'
-			);
-		} );
-
 		test( `is rendered on ${ templateTitle } template`, async ( {
 			admin,
 			editorUtils,
@@ -73,12 +81,13 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 				postType: 'wp_template',
 			} );
 			await editor.canvas.click( 'body' );
-			await editor.canvas.waitForLoadState( 'networkidle' );
 
-			const block = await editorUtils.getBlockByName( blockData.name );
-			expect( block ).not.toBeNull();
+			const block = (
+				await editorUtils.getBlockByName( blockData.name )
+			 ).first();
+
+			expect( block ).toBeVisible();
 		} );
-
 		test( `is rendered on ${ templateTitle } template - frontend side`, async ( {
 			admin,
 			editor,
@@ -89,27 +98,16 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 				postType: 'wp_template',
 			} );
 			await editor.canvas.click( 'body' );
-			await editor.canvas.waitForLoadState( 'networkidle' );
 			await editor.insertBlock( {
 				name: 'core/paragraph',
 				attributes: { content: 'Hello World' },
 			} );
 			await editor.saveSiteEditorEntities();
-
-			await page.goto( frontendPage, { waitUntil: 'networkidle' } );
+			await page.goto( frontendPage );
 
 			await expect(
 				page.getByText( 'Hello World' ).first()
 			).toBeVisible();
-		} );
-
-		test.afterAll( async ( { requestUtils } ) => {
-			await cli(
-				'npm run wp-env run tests-cli "wp option delete wc_blocks_use_blockified_product_grid_block_as_template"'
-			);
-
-			await requestUtils.deleteAllTemplates( 'wp_template' );
-			await requestUtils.deleteAllTemplates( 'wp_template_part' );
 		} );
 	} );
 }

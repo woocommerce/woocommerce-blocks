@@ -665,7 +665,7 @@ class BlockTemplateUtils {
 			return false;
 		}
 
-		$use_blockified_templates = get_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE );
+		$use_blockified_templates = wc_string_to_bool( get_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE ) );
 
 		if ( false === $use_blockified_templates ) {
 			return wc_current_theme_is_fse_theme();

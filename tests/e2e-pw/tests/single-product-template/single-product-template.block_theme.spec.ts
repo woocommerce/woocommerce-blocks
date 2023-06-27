@@ -45,7 +45,7 @@ for ( const { classes, product, frontendPage } of products ) {
 		test( 'add product specific classes to the body', async ( {
 			page,
 		} ) => {
-			await page.goto( frontendPage, { waitUntil: 'networkidle' } );
+			await page.goto( frontendPage );
 			const body = await page.locator( 'body' );
 			const bodyClasses = await body.getAttribute( 'class' );
 
