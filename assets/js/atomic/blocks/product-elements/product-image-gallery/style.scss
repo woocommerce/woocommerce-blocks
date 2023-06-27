@@ -18,6 +18,10 @@
 }
 
 
-.woocommerce .wp-block-woocommerce-product-image-gallery .woocommerce-product-gallery.images, .woocommerce div.product div.images a img {
+.woocommerce .wp-block-woocommerce-product-image-gallery .woocommerce-product-gallery.images {
 	width: 100%;	
+
+	a img {
+		width: 100%;
+	}
 }
