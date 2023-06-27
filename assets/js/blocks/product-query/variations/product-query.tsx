@@ -21,7 +21,9 @@ import {
 	INNER_BLOCKS_TEMPLATE,
 	QUERY_DEFAULT_ATTRIBUTES,
 	QUERY_LOOP_ID,
+	REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
 } from '../constants';
+import { getProductsBlockClientIds } from '../utils';
 
 export const VARIATION_NAME = 'woocommerce/product-query';
 
@@ -33,7 +35,41 @@ const ARCHIVE_PRODUCT_TEMPLATES = [
 	'woocommerce/woocommerce//product-search-results',
 ];
 
+const displaySuccessNotice = () => {
+	if ( window?.wp ) {
+		window.wp.data
+			.dispatch( 'core/notices' )
+			.createNotice(
+				'success',
+				'Products (Beta) block has been replaced with Product Collection! Learn more'
+			);
+	}
+};
+
+const displayNotice = ( result ) => {};
+
+const replaceProductsBlock = ( clientId ) => {
+	const attributes = {};
+	const innerBlocks = [];
+	wp.data.dispatch( 'core/block-editor' ).replaceBlock( clientId );
+};
+
+const replaceProductsWithProductCollection = () => {
+	if ( window?.wp ) {
+		const blocks = window.wp.data.select( 'core/block-editor' ).getBlocks();
+		const productsBlockClientIds = getProductsBlockClientIds( blocks );
+
+		const results = productsBlockClientIds.map( replaceProductsBlock );
+		results.forEach( displayNotice );
+	}
+};
+
 const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
+	// Prevent registering Products block if the replacement is turned on.
+	// if ( REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION ) {
+	// 	return;
+	// }
+
 	registerBlockVariation( QUERY_LOOP_ID, {
 		description: __(
 			'A block that displays a selection of products in your store.',
@@ -97,4 +133,10 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 			registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
 		}
 	}, 'core/edit-post' );
+
+	if ( REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION ) {
+		subscribe( () => {
+			replaceProductsWithProductCollection();
+		}, 'core/block-editor' );
+	}
 }

@@ -99,3 +99,20 @@ export function useAllowedControls(
 		? controls.filter( ( control ) => control === 'wooInherit' )
 		: controls;
 }
+
+export const getProductsBlockClientIds = ( blocks ) => {
+	let clientIds = [];
+	blocks.forEach( ( block ) => {
+		if (
+			block.name === 'core/query' &&
+			block.attributes.namespace === 'woocommerce/product-query'
+		) {
+			clientIds = [ ...clientIds, block.clientId ];
+		}
+		clientIds = [
+			...clientIds,
+			...getProductsBlockClientIds( block.innerBlocks ),
+		];
+	} );
+	return clientIds;
+};
