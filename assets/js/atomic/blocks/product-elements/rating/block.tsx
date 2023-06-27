@@ -124,7 +124,7 @@ const ReviewsCount = ( props: { reviews: number } ): JSX.Element => {
 	);
 };
 
-type ProductRatingProps = {
+interface ProductRatingProps {
 	className?: string;
 	textAlign?: string;
 	isDescendentOfSingleProductBlock: boolean;
@@ -132,7 +132,7 @@ type ProductRatingProps = {
 	postId: number;
 	productId: number;
 	shouldDisplayMockedReviewsWhenProductHasNoReviews: boolean;
-};
+}
 
 export const Block = ( props: ProductRatingProps ): JSX.Element | undefined => {
 	const {
