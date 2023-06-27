@@ -197,6 +197,7 @@ final class BlockTypesController {
 			'ProductPrice',
 			'ProductQuery',
 			'ProductRating',
+			'ProductRatingStars',
 			'ProductResultsCount',
 			'ProductReviews',
 			'ProductSaleBadge',
