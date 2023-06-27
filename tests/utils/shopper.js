@@ -300,6 +300,7 @@ export const shopper = {
 			// Blur active field to trigger customer address update, then wait for requests to finish.
 			await page.evaluate( 'document.activeElement.blur()' );
 			await checkCustomerPushCompleted( 'billing', customerBillingDetails );
+
 		},
 
 		// prettier-ignore
