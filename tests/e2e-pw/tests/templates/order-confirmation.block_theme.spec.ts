@@ -10,14 +10,14 @@ const templateType = 'wp_template';
 test.describe( 'Test the order confirmation template', async () => {
 	test( 'Template can be opened in the site editor', async ( {
 		page,
-		editor,
+		editorUtils,
 	} ) => {
 		await page.goto( '/wp-admin/site-editor.php' );
 		await page.getByRole( 'button', { name: /Templates/i } ).click();
 		await page
 			.getByRole( 'button', { name: /Order confirmation/i } )
 			.click();
-		await editor.canvas.click( 'body' );
+		await editorUtils.enterEditMode();
 
 		await expect(
 			page

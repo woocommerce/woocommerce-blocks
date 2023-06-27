@@ -15,12 +15,12 @@ test.describe( 'Test the checkout template', async () => {
 
 	test( 'Template can be opened in the site editor', async ( {
 		page,
-		editor,
+		editorUtils,
 	} ) => {
 		await page.goto( '/wp-admin/site-editor.php' );
 		await page.getByRole( 'button', { name: /Templates/i } ).click();
 		await page.getByRole( 'button', { name: /Checkout/i } ).click();
-		await editor.canvas.click( 'body' );
+		await editorUtils.enterEditMode();
 
 		await expect(
 			page
