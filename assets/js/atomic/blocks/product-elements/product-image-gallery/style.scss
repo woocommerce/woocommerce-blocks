@@ -18,7 +18,6 @@
 }
 
 
-.woocommerce .wp-block-woocommerce-product-image-gallery .woocommerce-product-gallery.images {
-	width: auto;
+.woocommerce .wp-block-woocommerce-product-image-gallery .woocommerce-product-gallery.images, .woocommerce div.product div.images a img {
+	width: 100%;	
 }
-
