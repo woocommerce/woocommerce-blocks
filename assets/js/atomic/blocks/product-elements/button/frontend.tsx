@@ -1,4 +1,11 @@
+/**
+ * External dependencies
+ */
+import { useStoreAddToCart } from '@woocommerce/base-context';
+import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+
 import { store } from '@woocommerce/interactivity';
+import { dispatch } from '@wordpress/data';
 
 store( {
 	state: {
@@ -8,11 +15,8 @@ store( {
 			},
 			addToCartText: ( { context, state } ) => {
 				if ( context.woocommerce.numberOfItems === 0 ) {
-					return state.woocommerce.addToCart;
+					return context.woocommerce.addToCart;
 				}
-
-				console.log( context.woocommerce.numberOfItems );
-				console.log( state.woocommerce.inTheCart );
 
 				return state.woocommerce.inTheCart.replace(
 					'###',
@@ -21,25 +25,22 @@ store( {
 			},
 		},
 	},
-	// actions: {
-	//   woocommerce: {
-	// 	addToCart: async ({ context, event, ref }) => {
-	// 	  event.preventDefault();
-
-	// 	  const data = ref.dataset.map(item => ...);
-
-	// 	  context.woocommerce.isLoading = true;
-
-	// 	  const res = await fetch(wc_add_to_cart_..., {
-	// 		method: "POST",
-	// 	  }).then(res => res.json());
-
-	// 	  context.woocommerce.numberOfItems += 1;
-
-	// 	  context.woocommerce.isLoading = false;
-
-	// 	  redux.dispatch("UPDATE_CART"); // For the mini cart
-	// 	}
-	//   }
-	// }
+	actions: {
+		woocommerce: {
+			addToCart: async ( { context, event, ref } ) => {
+				event.preventDefault();
+				context.woocommerce.isLoading = true;
+				context.woocommerce.numberOfItems++;
+				context.woocommerce.isAdded = true;
+				try {
+					await dispatch( storeKey ).addItemToCart(
+						context.woocommerce.productId,
+						1
+					);
+				} catch ( error ) {
+					context.woocommerce.numberOfItems--;
+				}
+			},
+		},
+	},
 } );

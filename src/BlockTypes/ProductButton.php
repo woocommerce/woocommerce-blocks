@@ -50,30 +50,27 @@ class ProductButton extends AbstractBlock {
 				[
 					'state' => [
 						'woocommerce' => [
-							'addToCart' => __( 'Add to cart', 'woo-gutenberg-products-block' ),
 							'inTheCart' => sprintf( __( '%s in the cart', 'woo-gutenberg-products-block' ), '###' ),
+							'viewCart'  => __( 'View cart', 'woo-gutenberg-products-block' ),
+							'cartUrl'   => wc_get_cart_url(),
 						],
 					],
 				]
 			);
-			$number_of_items_in_cart = $this->get_cart_item_quantities_by_product_it( $product->get_id() );
+
+			$number_of_items_in_cart = $this->get_cart_item_quantities_by_product_id( $product->get_id() );
 
 			$context = array(
 				'woocommerce' => array(
 					'isLoading'     => false,
 					'numberOfItems' => $number_of_items_in_cart,
-					// Change to "hello world" to see the error.
-					'addToCart'     => 'hello',
+					'addToCart'     => $product->add_to_cart_text(),
+					'productId'     => $product->get_id(),
+					'isAdded'       => false,
 				),
 			);
 
-			$parsed_context = wp_json_encode( $context );
-			error_log( $parsed_context );
-			$add_to_cart_text = $number_of_items_in_cart === 0 ? __( 'Add to cart', 'woo-gutenberg-products-block' ) : sprintf(
-				/* translators: Placeholders are class and method names */
-				__( '%1$s in cart', 'woo-gutenberg-products-block' ),
-				$number_of_items_in_cart
-			);
+			$parsed_context                = wp_json_encode( $context );
 			$cart_redirect_after_add       = get_option( 'woocommerce_cart_redirect_after_add' ) === 'yes';
 			$ajax_add_to_cart_enabled      = get_option( 'woocommerce_enable_ajax_add_to_cart' ) === 'yes';
 			$is_ajax_button                = $ajax_add_to_cart_enabled && ! $cart_redirect_after_add && $product->supports( 'ajax_add_to_cart' ) && $product->is_purchasable() && $product->is_in_stock();
@@ -90,7 +87,7 @@ class ProductButton extends AbstractBlock {
 						'wp-element-button',
 						'wc-block-components-product-button__button',
 						$product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
-						$is_ajax_button ? 'ajax_add_to_cart' : '',
+						$is_ajax_button ? '' : '',
 						'product_type_' . $product->get_type(),
 						$styles_and_classes['classes'],
 					)
@@ -130,8 +127,11 @@ class ProductButton extends AbstractBlock {
 				'woocommerce_loop_add_to_cart_link',
 				sprintf(
 					'<div class="wp-block-button wc-block-components-product-button %1$s %2$s" data-wc-context=%9$s>
-					<%3$s href="%4$s" class="%5$s" style="%6$s" data-wc-class--added="state.woocommerce.moreThanOneItem" data-wc-text="state.woocommerce.addToCartText"
+					<%3$s href="%4$s" class="%5$s" style="%6$s"
+					data-wc-on--click="actions.woocommerce.addToCart"
+					data-wc-class--added="state.woocommerce.moreThanOneItem" data-wc-text="state.woocommerce.addToCartText"
 					%7$s>%8$s</%3$s>
+					%10$s
 				</div>',
 					esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
 					esc_attr( $classname . ' ' . $custom_width_classes ),
@@ -141,7 +141,8 @@ class ProductButton extends AbstractBlock {
 					esc_attr( $styles_and_classes['styles'] ),
 					isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
 					esc_html( $product->add_to_cart_text() ),
-					$parsed_context
+					'\'' . $parsed_context . '\'',
+					$this->get_view_cart_html()
 				),
 				$product,
 				$args
@@ -149,12 +150,17 @@ class ProductButton extends AbstractBlock {
 		}
 	}
 
-	private function get_cart_item_quantities_by_product_it( $product_id ) {
+	private function get_cart_item_quantities_by_product_id( $product_id ) {
+		if ( ! isset( WC()->cart ) ) {
+			return 0;
+		}
+
 		$cart = WC()->cart->get_cart_item_quantities();
-
 		return isset( $cart[ $product_id ] ) ? $cart[ $product_id ] : 0;
-
 	}
 
+	private function get_view_cart_html() {
+		return '<a data-wc-bind--hidden="!context.woocommerce.isAdded" data-wc-bind--href="state.woocommerce.cartUrl" class="added_to_cart wc_forward" data-wc-bind--title="state.woocommerce.viewCart" data-wc-text="state.woocommerce.viewCart"></a>';
+	}
 
 }

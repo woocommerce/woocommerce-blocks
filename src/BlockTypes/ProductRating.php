@@ -166,7 +166,7 @@ class ProductRating extends AbstractBlock {
 						$is_descendent_of_single_product_block ? $reviews_count_html : ''
 					);
 				} else {
-					$html = '';
+					$html = 'lollone';
 				}
 
 				return $html;
