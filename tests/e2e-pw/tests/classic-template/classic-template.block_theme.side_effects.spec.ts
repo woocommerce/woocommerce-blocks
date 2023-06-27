@@ -72,8 +72,8 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 				postId: `woocommerce/woocommerce//${ slug }`,
 				postType: 'wp_template',
 			} );
-
 			await editor.canvas.click( 'body' );
+			await editor.canvas.waitForLoadState( 'networkidle' );
 
 			const block = await editorUtils.getBlockByName( blockData.name );
 			expect( block ).not.toBeNull();
@@ -88,14 +88,12 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 				postId: `woocommerce/woocommerce//${ slug }`,
 				postType: 'wp_template',
 			} );
-
 			await editor.canvas.click( 'body' );
-
+			await editor.canvas.waitForLoadState( 'networkidle' );
 			await editor.insertBlock( {
 				name: 'core/paragraph',
 				attributes: { content: 'Hello World' },
 			} );
-
 			await editor.saveSiteEditorEntities();
 
 			await page.goto( frontendPage, { waitUntil: 'networkidle' } );

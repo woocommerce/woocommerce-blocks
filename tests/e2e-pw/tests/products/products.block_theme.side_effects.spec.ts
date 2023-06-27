@@ -62,8 +62,8 @@ test.describe( `${ blockData.name } Block `, () => {
 			postId: 'woocommerce/woocommerce//archive-product',
 			postType: 'wp_template',
 		} );
-
 		await editor.canvas.click( 'body' );
+		await editor.canvas.waitForLoadState( 'networkidle' );
 
 		const block = await editorUtils.getBlockByName( blockData.name );
 		await editor.selectBlocks( block );
@@ -90,8 +90,8 @@ test.describe( `${ blockData.name } Block `, () => {
 			postId: 'woocommerce/woocommerce//archive-product',
 			postType: 'wp_template',
 		} );
-
 		await editor.canvas.click( 'body' );
+		await editor.canvas.waitForLoadState( 'networkidle' );
 
 		const block = await editorUtils.getBlockByName( blockData.name );
 		await editor.selectBlocks( block );
