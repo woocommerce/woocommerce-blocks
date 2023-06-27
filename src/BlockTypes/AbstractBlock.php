@@ -306,7 +306,7 @@ abstract class AbstractBlock {
 	protected function get_block_type_style() {
 		$this->asset_api->register_style( 'wc-blocks-style-' . $this->block_name, $this->asset_api->get_block_asset_build_path( $this->block_name, 'css' ), [], 'all', true );
 
-		return array( 'wc-blocks-style-' . $this->block_name );
+		return [ 'wc-blocks-style', 'wc-blocks-style-' . $this->block_name ];
 	}
 
 	/**

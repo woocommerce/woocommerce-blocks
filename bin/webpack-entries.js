@@ -117,7 +117,7 @@ const entries = {
 		'wc-blocks': './assets/js/index.js',
 
 		// Blocks
-		...getBlockEntries( '{index,frontend}.{t,j}s{,x}' ),
+		...getBlockEntries( '{index,block,frontend}.{t,j}s{,x}' ),
 	},
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
