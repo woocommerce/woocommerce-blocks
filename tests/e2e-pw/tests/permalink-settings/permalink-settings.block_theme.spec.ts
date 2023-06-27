@@ -65,7 +65,9 @@ test.describe(
 				await page.waitForLoadState( 'networkidle' );
 
 				// Visit the updated page.
-				await page.goto( '/updated-cart-permalink' );
+				await page.goto( '/updated-cart-permalink', {
+					waitUntil: 'networkidle',
+				} );
 				const cartText = await page.getByText( 'Proceed to checkout' );
 				expect( cartText ).toBeVisible();
 			} );
@@ -82,7 +84,9 @@ test.describe(
 				await page.waitForLoadState( 'networkidle' );
 
 				// Visit the updated page.
-				await page.goto( '/updated-checkout-permalink' );
+				await page.goto( '/updated-checkout-permalink', {
+					waitUntil: 'networkidle',
+				} );
 				const cartText = await page.getByText( 'Place Order' );
 				expect( cartText ).toBeVisible();
 			} );

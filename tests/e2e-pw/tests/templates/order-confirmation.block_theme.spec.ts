@@ -9,7 +9,9 @@ const templateType = 'wp_template';
 
 test.describe( 'Test the order confirmation template', async () => {
 	test( 'Template can be opened in the site editor', async ( { page } ) => {
-		await page.goto( '/wp-admin/site-editor.php' );
+		await page.goto( '/wp-admin/site-editor.php', {
+			waitUntil: 'networkidle',
+		} );
 		await page.click( 'text=Templates' );
 		await page.click( 'text=Order confirmation' );
 		await page.getByRole( 'button', { name: /Edit/i } ).click();

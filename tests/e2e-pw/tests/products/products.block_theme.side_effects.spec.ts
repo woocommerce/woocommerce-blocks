@@ -143,7 +143,7 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 
 			await editor.saveSiteEditorEntities();
 
-			await page.goto( frontendPage );
+			await page.goto( frontendPage, { waitUntil: 'networkidle' } );
 
 			const classicProducts = await getProductsNameFromClassicTemplate(
 				page
