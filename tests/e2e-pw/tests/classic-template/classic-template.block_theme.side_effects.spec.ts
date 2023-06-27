@@ -12,11 +12,6 @@ import { deleteAllTemplates } from '@wordpress/e2e-test-utils';
 
 const blockData: BlockData = {
 	name: 'woocommerce/legacy-template',
-	mainClass: '.wc-block-price-filter',
-	selectors: {
-		frontend: {},
-		editor: {},
-	},
 };
 
 const templates = {
@@ -56,8 +51,9 @@ const templates = {
 
 test.beforeAll( async () => {
 	await cli(
-		'npm run wp-env run tests-cli "wp option update wc_blocks_use_blockified_product_grid_block_as_template no"'
+		'npm run wp-env run tests-cli "wp option update wc_blocks_use_blockified_product_grid_block_as_template false"'
 	);
+	await deleteAllTemplates( 'wp_template' );
 } );
 
 test.afterAll( async () => {
@@ -74,30 +70,28 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 		test( `is rendered on ${ templateTitle } template`, async ( {
 			admin,
 			editorUtils,
-			editor,
 		} ) => {
 			await admin.visitSiteEditor( {
 				postId: `woocommerce/woocommerce//${ slug }`,
 				postType: 'wp_template',
 			} );
-			await editor.canvas.click( 'body' );
+			await editorUtils.enterEditMode();
+			const block = await editorUtils.getBlockByName( blockData.name );
 
-			const block = (
-				await editorUtils.getBlockByName( blockData.name )
-			 ).first();
-
-			expect( block ).toBeVisible();
+			await expect( block ).toBeVisible();
 		} );
+
 		test( `is rendered on ${ templateTitle } template - frontend side`, async ( {
 			admin,
 			editor,
+			editorUtils,
 			page,
 		} ) => {
 			await admin.visitSiteEditor( {
 				postId: `woocommerce/woocommerce//${ slug }`,
 				postType: 'wp_template',
 			} );
-			await editor.canvas.click( 'body' );
+			await editorUtils.enterEditMode();
 			await editor.insertBlock( {
 				name: 'core/paragraph',
 				attributes: { content: 'Hello World' },
