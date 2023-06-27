@@ -240,6 +240,12 @@ class OrderSchema extends AbstractSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
+			'status'               => [
+				'description' => __( 'Status of the order.', 'woo-gutenberg-products-block' ),
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 		];
 	}
 
@@ -268,6 +274,7 @@ class OrderSchema extends AbstractSchema {
 			'needs_shipping'       => $order->needs_shipping_address(),
 			'errors'               => $errors,
 			'payment_requirements' => $this->extend->get_payment_requirements(),
+			'status'               => $order->get_status(),
 		];
 	}
 
