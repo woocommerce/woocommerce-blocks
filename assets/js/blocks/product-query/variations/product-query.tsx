@@ -4,6 +4,7 @@
 import {
 	registerBlockVariation,
 	unregisterBlockVariation,
+	createBlock,
 } from '@wordpress/blocks';
 import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -35,41 +36,64 @@ const ARCHIVE_PRODUCT_TEMPLATES = [
 	'woocommerce/woocommerce//product-search-results',
 ];
 
-const displaySuccessNotice = () => {
-	if ( window?.wp ) {
-		window.wp.data
-			.dispatch( 'core/notices' )
-			.createNotice(
-				'success',
-				'Products (Beta) block has been replaced with Product Collection! Learn more'
-			);
+const sinlgeBlockNotice = __(
+	'Products (Beta) block has been replaced with Product Collection! Learn more.',
+	'woo-gutenberg-products-block'
+);
+const multipleBlocksNotice = __(
+	'Products (Beta) blocks have been replaced with Product Collection block! Learn more.',
+	'woo-gutenberg-products-block'
+);
+
+const displaySuccessNotice = ( amount: number ) => {
+	const notice = amount < 2 ? sinlgeBlockNotice : multipleBlocksNotice;
+	window.wp.data.dispatch( 'core/notices' ).createNotice( 'success', notice );
+};
+
+const createProductCollection = ( attributes, innerBlocks ) =>
+	createBlock( 'woocommerce/product-collection', attributes, innerBlocks );
+
+const replaceProductsBlock = async ( clientId ) => {
+	const productsBlock = wp.data
+		.select( 'core/block-editor' )
+		.getBlock( clientId );
+	if ( productsBlock ) {
+		const { attributes = {}, innerBlocks = [] } = productsBlock;
+		const productCollectionBlock = createProductCollection(
+			attributes,
+			innerBlocks
+		);
+		// There's no way to determine if the replacement actually happened.
+		// Unfortunately, too fast replaceBlock doesn't have an effect on the
+		// editor, so can we determine if that already happened or not?
+		await wp.data
+			.dispatch( 'core/block-editor' )
+			.replaceBlock( clientId, productCollectionBlock );
+		return true;
 	}
+	return false;
 };
 
-const displayNotice = ( result ) => {};
-
-const replaceProductsBlock = ( clientId ) => {
-	const attributes = {};
-	const innerBlocks = [];
-	wp.data.dispatch( 'core/block-editor' ).replaceBlock( clientId );
+const replaceProductsBlocks = async ( productsBlockClientIds ) => {
+	const results = await productsBlockClientIds.map( replaceProductsBlock );
+	return !! results.length && results.every( ( result ) => !! result );
 };
 
-const replaceProductsWithProductCollection = () => {
+const replaceProductsWithProductCollection = async ( unsubscribe ) => {
 	if ( window?.wp ) {
 		const blocks = window.wp.data.select( 'core/block-editor' ).getBlocks();
 		const productsBlockClientIds = getProductsBlockClientIds( blocks );
+		const amountOfReplacedBlocks = productsBlockClientIds.length;
 
-		const results = productsBlockClientIds.map( replaceProductsBlock );
-		results.forEach( displayNotice );
+		const replaced = await replaceProductsBlocks( productsBlockClientIds );
+		if ( replaced ) {
+			displaySuccessNotice( amountOfReplacedBlocks );
+			unsubscribe();
+		}
 	}
 };
 
 const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
-	// Prevent registering Products block if the replacement is turned on.
-	// if ( REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION ) {
-	// 	return;
-	// }
-
 	registerBlockVariation( QUERY_LOOP_ID, {
 		description: __(
 			'A block that displays a selection of products in your store.',
@@ -135,8 +159,9 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 	}, 'core/edit-post' );
 
 	if ( REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION ) {
-		subscribe( () => {
-			replaceProductsWithProductCollection();
+		// Unsubscribe after replacement completes
+		const unsubscribe = subscribe( () => {
+			replaceProductsWithProductCollection( unsubscribe );
 		}, 'core/block-editor' );
 	}
 }
