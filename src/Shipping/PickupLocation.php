@@ -79,7 +79,7 @@ class PickupLocation extends WC_Shipping_Method {
 		foreach ( $country_address_fields as $field_name => $field ) {
 			$key = str_replace( 'shipping_', '', $field_name );
 
-			if ( true === $field['required'] && empty( $address_fields[ $key ] ) ) {
+			if ( isset( $address_fields[ $key ] ) && true === $field['required'] && empty( $address_fields[ $key ] ) ) {
 				return false;
 			}
 		}
