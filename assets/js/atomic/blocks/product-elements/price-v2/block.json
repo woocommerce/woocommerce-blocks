@@ -8,7 +8,7 @@
 	"textdomain": "woo-gutenberg-products-block",
 	"description": "Display the price of a product, including any discounts.",
 	"supports": {
-		"__experimentalLayout": {
+		"layout": {
 			"allowSwitching": false,
 			"allowInheriting": false,
 			"default": { "type": "flex" }

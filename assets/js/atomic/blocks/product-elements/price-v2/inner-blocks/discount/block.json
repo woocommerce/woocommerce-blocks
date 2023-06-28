@@ -8,7 +8,7 @@
 	"keywords": [ "WooCommerce" ],
 	"textdomain": "woo-gutenberg-products-block",
 	"supports": {
-		"__experimentalLayout": {
+		"layout": {
 			"allowSwitching": false,
 			"allowInheriting": false,
 			"default": { "type": "flex" }
