@@ -6,11 +6,11 @@ import { test, expect } from '@woocommerce/e2e-playwright-utils';
 
 /**
  * Internal dependencies
-  import {
-  getProductsNameFromClassicTemplate,
-  getProductsNameFromProductQuery,
-  } from './utils';
  */
+import {
+	getProductsNameFromClassicTemplate,
+	getProductsNameFromProductQuery,
+} from './utils';
 
 const blockData: BlockData = {
 	name: 'core/query',
@@ -21,7 +21,7 @@ const blockData: BlockData = {
 	},
 };
 
-/*const templates = {
+const templates = {
 	// This test is disabled because archives are disabled for attributes by default. This can be uncommented when this is toggled on.
 	//'taxonomy-product_attribute': {
 	//	templateTitle: 'Product Attribute',
@@ -49,7 +49,7 @@ const blockData: BlockData = {
 		slug: 'product-search-results',
 		frontendPage: '/?s=shirt&post_type=product',
 	},
-};*/
+};
 
 test.describe( `${ blockData.name } Block `, () => {
 	test( 'when Inherit Query from template is enabled all the settings that customize the query should be hidden', async ( {
@@ -109,8 +109,7 @@ test.describe( `${ blockData.name } Block `, () => {
 		await expect( inheritQueryFromTemplateOption ).toBeVisible();
 	} );
 } );
-// These tests are disabled because there is an issue with the default contents of this page, possible caused by other tests.
-/*
+
 for ( const { templateTitle, slug, frontendPage } of Object.values(
 	templates
 ) ) {
@@ -119,7 +118,7 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 		await requestUtils.deleteAllTemplates( 'wp_template_part' );
 	} );
 	test.describe( `${ templateTitle } template`, () =>
-		test( 'Products block matches with classic template block', async ( {
+		test.skip( 'Products block matches with classic template block', async ( {
 			admin,
 			editor,
 			page,
@@ -155,4 +154,4 @@ for ( const { templateTitle, slug, frontendPage } of Object.values(
 			expect( classicProducts ).toEqual( productQueryProducts );
 		} )
 	);
-}*/
+}

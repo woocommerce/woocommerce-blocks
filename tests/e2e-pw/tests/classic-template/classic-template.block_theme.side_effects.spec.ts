@@ -79,11 +79,10 @@ for ( const { templateTitle, slug } of Object.values( templates ) ) {
 			await expect( block ).toBeVisible();
 		} );
 
-		/*
-		These tests consistently fail due to the default content of the page--potentially the classic block is not being
-		used after another test runs. Reenable this when we have a solution for this.
+		// These tests consistently fail due to the default content of the page--potentially the classic block is not being
+		// used after another test runs. Reenable this when we have a solution for this.
 
-		test( `is rendered on ${ templateTitle } template - frontend side`, async ( {
+		test.skip( `is rendered on ${ templateTitle } template - frontend side`, async ( {
 			admin,
 			editor,
 			editorUtils,
@@ -104,6 +103,6 @@ for ( const { templateTitle, slug } of Object.values( templates ) ) {
 			await expect(
 				page.getByText( 'Hello World' ).first()
 			).toBeVisible();
-		} );*/
+		} );
 	} );
 }

@@ -35,12 +35,8 @@ test.describe(
 				await page.goto(
 					'/wp-admin/admin.php?page=wc-settings&tab=advanced'
 				);
-				const cartInput = page.locator(
-					'tr:has-text("Cart page "):has-text("cart template") input'
-				);
-				const checkoutInput = page.locator(
-					'tr:has-text("Checkout page "):has-text("checkout template") input'
-				);
+				const cartInput = page.getByLabel( 'Cart page' );
+				const checkoutInput = page.getByLabel( 'Checkout page' );
 
 				await expect( cartInput ).toBeVisible();
 				await expect( checkoutInput ).toBeVisible();
@@ -57,9 +53,7 @@ test.describe(
 				await page.goto(
 					'/wp-admin/admin.php?page=wc-settings&tab=advanced'
 				);
-				const cartInput = page.locator(
-					'tr:has-text("Cart page "):has-text("cart template") input'
-				);
+				const cartInput = page.getByLabel( 'Cart page' );
 				cartInput.fill( 'updated-cart-permalink' );
 				await page.click( 'button[name="save"]' );
 				await page.waitForLoadState( 'networkidle' );
@@ -76,9 +70,7 @@ test.describe(
 				await page.goto(
 					'/wp-admin/admin.php?page=wc-settings&tab=advanced'
 				);
-				const checkoutInput = page.locator(
-					'tr:has-text("Checkout page "):has-text("checkout template") input'
-				);
+				const checkoutInput = page.getByLabel( 'Checkout page' );
 				checkoutInput.fill( 'updated-checkout-permalink' );
 				await page.click( 'button[name="save"]' );
 				await page.waitForLoadState( 'networkidle' );
