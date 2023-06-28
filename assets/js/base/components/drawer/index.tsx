@@ -146,6 +146,8 @@ const UnforwardedDrawer = (
 			) }
 			onKeyDown={ handleEscapeKeyDown }
 			onClick={ ( e ) => {
+				// If click was done directly in the overlay element and not one
+				// of its descendants, close the drawer.
 				if ( e.target === ref.current ) {
 					onRequestClose();
 				}
