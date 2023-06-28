@@ -219,6 +219,10 @@ final class BlockTypesController {
 			'ProductDetails',
 			'SingleProduct',
 			'StockFilter',
+			'OrderConfirmation\Summary',
+			'OrderConfirmation\Details',
+			'OrderConfirmation\BillingAddress',
+			'OrderConfirmation\ShippingAddress',
 		];
 
 		$block_types = array_merge(
