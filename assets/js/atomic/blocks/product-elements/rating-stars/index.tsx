@@ -3,6 +3,7 @@
  */
 import { BlockConfiguration } from '@wordpress/blocks';
 import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
+import { isExperimentalBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -12,7 +13,6 @@ import edit from './edit';
 import sharedConfig from '../shared/config';
 import { supports } from './support';
 import { BLOCK_ICON } from './constants';
-import { isExperimentalBuild } from '@woocommerce/block-settings';
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,
