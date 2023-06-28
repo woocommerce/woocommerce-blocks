@@ -86,6 +86,8 @@ describe( 'PickupLocation', () => {
 		dispatch( CART_STORE_KEY ).receiveCart( previewCart );
 
 		render( <PickupLocation /> );
-		expect( screen.getByText( /Collection from / ) ).notToBeInTheDocument();
+		expect(
+			screen.queryByText( /Collection from / )
+		).not.toBeInTheDocument();
 	} );
 } );
