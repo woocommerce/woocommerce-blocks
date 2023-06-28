@@ -117,9 +117,7 @@ export class EditorUtils {
 	 */
 	async openGlobalBlockInserter() {
 		if ( ! ( await this.isGlobalInserterOpen() ) ) {
-			await this.toggleGlobalBlockInserter(); // Waiting here is necessary because sometimes the inserter takes more
-			// time to render than Puppeteer takes to complete the 'click' action.
-
+			await this.toggleGlobalBlockInserter();
 			await this.page.waitForSelector( '.block-editor-inserter__menu' );
 		}
 	}
