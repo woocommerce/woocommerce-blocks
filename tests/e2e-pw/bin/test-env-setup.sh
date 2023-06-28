@@ -51,7 +51,7 @@ wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='All Products block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 
 post_content=$(cat "${script_dir}/cart.txt" | sed 's/"/\\"/g')
@@ -62,7 +62,7 @@ post_id=$(wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Cart block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 )
 wp-env run tests-cli wp option update woocommerce_cart_page_id $post_id
 
@@ -74,7 +74,7 @@ post_id=$(wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Checkout block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 )
 wp-env run tests-cli wp option update woocommerce_checkout_page_id $post_id
 
@@ -86,9 +86,9 @@ post_id=$(wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='My Account' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 )
-wp-env run tests-cli "wp option update woocommerce_myaccount_page_id $post_id"
+wp-env run tests-cli wp option update woocommerce_myaccount_page_id $post_id
 
 post_id=$(wp-env run tests-cli wp post create -- \
 	--porcelain \
@@ -114,7 +114,7 @@ wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='All Reviews block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 
 if [ "$pa_color" ] && [ "$pa_size" ]; then
@@ -123,7 +123,7 @@ if [ "$pa_color" ] && [ "$pa_size" ]; then
 		--post_status=publish \
 		--post_author=1 \
 		--post_title='Active Filters block' \
-		--post_content=\"$post_content\"
+		--post_content="$post_content"
 fi
 
 post_content=$(cat "${script_dir}/mini-cart.txt" | sed 's/"/\\"/g')
@@ -131,113 +131,112 @@ wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Mini-Cart block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/product-best-sellers.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Best Selling Products block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/products-by-attribute.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
+wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Products by Attribute block' \
-	--post_content=\"$post_content\"
-"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/single-product.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Single Product block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/customer-account.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Customer Account block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/featured-category.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Featured Category block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/featured-product.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Featured Product block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/handpicked-products.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Hand-picked Products block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/product-new.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Newest Products block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/product-on-sale.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='On Sale Products block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/product-category.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Products by Category block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/product-categories.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Product Categories List block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/product-search.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Product Search block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/reviews-by-category.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Reviews by Category block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/reviews-by-product.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Reviews by Product block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 post_content=$(cat "${script_dir}/product-top-rated.txt" | sed 's/"/\\"/g')
 wp-env run tests-cli wp post create -- \
 	--post_status=publish \
 	--post_author=1 \
 	--post_title='Top Rated Products block' \
-	--post_content=\"$post_content\"
+	--post_content="$post_content"
 
 ###################################################################################################
 # Set up shipping
@@ -262,24 +261,24 @@ wp-env run tests-cli wp wc shipping_zone_method create 0 -- \
 ###################################################################################################
 
 wp-env run tests-cli wp option set -- --format=json woocommerce_cod_settings '{
-    \"enabled\":\"yes\",
-    \"title\":\"Cash on delivery\",
-    \"description\":\"Cash on delivery description\",
-    \"instructions\":\"Cash on delivery instructions\"
+    "enabled":"yes",
+    "title":"Cash on delivery",
+    "description":"Cash on delivery description",
+    "instructions":"Cash on delivery instructions"
 }'
 
 wp-env run tests-cli wp option set -- --format=json woocommerce_bacs_settings '{
-    \"enabled\":\"yes\",
-    \"title\":\"Direct bank transfer\",
-    \"description\":\"Direct bank transfer description\",
-    \"instructions\":\"Direct bank transfer instructions\"
+    "enabled":"yes",
+    "title":"Direct bank transfer",
+    "description":"Direct bank transfer description",
+    "instructions":"Direct bank transfer instructions"
 }'
 
 wp-env run tests-cli wp option set -- --format=json woocommerce_cheque_settings '{
-    \"enabled\":\"yes\",
-    \"title\":\"Check payments\",
-    \"description\":\"Check payments description\",
-    \"instructions\":\"Check payments instructions\"
+    "enabled":"yes",
+    "title":"Check payments",
+    "description":"Check payments description",
+    "instructions":"Check payments instructions"
 }'
 
 ###################################################################################################
