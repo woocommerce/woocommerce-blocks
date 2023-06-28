@@ -1,7 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
-use Automattic\WooCommerce\Blocks\BlockTypes\AtomicBlock;
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
@@ -216,6 +215,10 @@ final class BlockTypesController {
 			'ProductDetails',
 			'SingleProduct',
 			'StockFilter',
+			'OrderConfirmation\Summary',
+			'OrderConfirmation\Details',
+			'OrderConfirmation\BillingAddress',
+			'OrderConfirmation\ShippingAddress',
 		];
 
 		$block_types = array_merge(
