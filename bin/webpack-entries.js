@@ -94,6 +94,17 @@ const blocks = {
 	'stock-filter': {},
 	'collection-filters': {
 		isExperimental: true,
+	'order-confirmation-summary': {
+		customDir: 'order-confirmation/summary',
+	},
+	'order-confirmation-details': {
+		customDir: 'order-confirmation/details',
+	},
+	'order-confirmation-billing-address': {
+		customDir: 'order-confirmation/billing-address',
+	},
+	'order-confirmation-shipping-address': {
+		customDir: 'order-confirmation/shipping-address',
 	},
 };
 
