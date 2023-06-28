@@ -10,7 +10,7 @@ import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { stacks } from '@woocommerce/icons';
 import { isWpVersion } from '@woocommerce/settings';
-import { select, subscribe } from '@wordpress/data';
+import { select, dispatch, subscribe } from '@wordpress/data';
 import { QueryBlockAttributes } from '@woocommerce/blocks/product-query/types';
 import { isSiteEditorPage } from '@woocommerce/utils';
 
@@ -47,17 +47,27 @@ const multipleBlocksNotice = __(
 
 const displaySuccessNotice = ( amount: number ) => {
 	const notice = amount < 2 ? sinlgeBlockNotice : multipleBlocksNotice;
-	window.wp.data.dispatch( 'core/notices' ).createNotice( 'success', notice );
+	dispatch( 'core/notices' ).createNotice( 'success', notice );
 };
 
 const createProductCollection = ( attributes, innerBlocks ) =>
 	createBlock( 'woocommerce/product-collection', attributes, innerBlocks );
 
-const replaceProductsBlock = async ( clientId ) => {
-	const productsBlock = wp.data
-		.select( 'core/block-editor' )
-		.getBlock( clientId );
-	if ( productsBlock ) {
+const replaceProductsBlock = ( clientId ) => {
+	const productsBlock = select( 'core/block-editor' ).getBlock( clientId );
+	// We need to duplicate checks that are happening within replaceBlocks method
+	// as replacement is initially blocked and there's no information returned
+	// that would determine if replacement happened or not.
+	// https://github.com/WordPress/gutenberg/issues/46740
+	const rootClientId =
+		select( 'core/block-editor' ).getBlockRootClientId( clientId ) ||
+		undefined;
+	const canInsertBlock = select( 'core/block-editor' ).canInsertBlockType(
+		'woocommerce/product-collection',
+		rootClientId
+	);
+
+	if ( productsBlock && canInsertBlock ) {
 		const { attributes = {}, innerBlocks = [] } = productsBlock;
 		const productCollectionBlock = createProductCollection(
 			attributes,
@@ -66,9 +76,10 @@ const replaceProductsBlock = async ( clientId ) => {
 		// There's no way to determine if the replacement actually happened.
 		// Unfortunately, too fast replaceBlock doesn't have an effect on the
 		// editor, so can we determine if that already happened or not?
-		await wp.data
-			.dispatch( 'core/block-editor' )
-			.replaceBlock( clientId, productCollectionBlock );
+		dispatch( 'core/block-editor' ).replaceBlock(
+			clientId,
+			productCollectionBlock
+		);
 		return true;
 	}
 	return false;
@@ -80,16 +91,14 @@ const replaceProductsBlocks = async ( productsBlockClientIds ) => {
 };
 
 const replaceProductsWithProductCollection = async ( unsubscribe ) => {
-	if ( window?.wp ) {
-		const blocks = window.wp.data.select( 'core/block-editor' ).getBlocks();
-		const productsBlockClientIds = getProductsBlockClientIds( blocks );
-		const amountOfReplacedBlocks = productsBlockClientIds.length;
+	const blocks = select( 'core/block-editor' ).getBlocks();
+	const productsBlockClientIds = getProductsBlockClientIds( blocks );
+	const amountOfReplacedBlocks = productsBlockClientIds.length;
 
-		const replaced = await replaceProductsBlocks( productsBlockClientIds );
-		if ( replaced ) {
-			displaySuccessNotice( amountOfReplacedBlocks );
-			unsubscribe();
-		}
+	const replaced = await replaceProductsBlocks( productsBlockClientIds );
+	if ( replaced ) {
+		displaySuccessNotice( amountOfReplacedBlocks );
+		unsubscribe();
 	}
 };
 
