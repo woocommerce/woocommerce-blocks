@@ -66,7 +66,27 @@ const checkIfBlockCanBeReplaced = ( clientId: string ) => {
 };
 
 const mapAttributes = ( atrributes: Record< string, unknown > ) => {
-	return atrributes;
+	const { query, namespace, ...restAttributes } = atrributes;
+	const {
+		__woocommerceAttributes,
+		__woocommerceStockStatus,
+		__woocommerceOnSale,
+		include,
+		...restQuery
+	} = query;
+	return {
+		...restAttributes,
+		query: {
+			woocommerceAttributes: __woocommerceAttributes,
+			woocommerceStockStatus: __woocommerceStockStatus,
+			woocommerceOnSale: __woocommerceOnSale,
+			woocommerceHandPickedProducts: include,
+			taxQuery: {},
+			parents: [],
+			isProductCollectionBlock: true,
+			...restQuery,
+		},
+	};
 };
 
 const mapInnerBlocks = ( innerBlocks: BlockInstance[] ) => {
