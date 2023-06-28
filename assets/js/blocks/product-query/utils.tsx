@@ -2,7 +2,10 @@
  * External dependencies
  */
 import { useSelect } from '@wordpress/data';
-import { store as WP_BLOCKS_STORE } from '@wordpress/blocks';
+import {
+	store as WP_BLOCKS_STORE,
+	type BlockInstance,
+} from '@wordpress/blocks';
 import { isSiteEditorPage } from '@woocommerce/utils';
 
 /**
@@ -100,13 +103,14 @@ export function useAllowedControls(
 		: controls;
 }
 
-export const getProductsBlockClientIds = ( blocks ) => {
-	let clientIds = [];
+const isProductsBlock = ( block: BlockInstance ) =>
+	block.name === 'core/query' &&
+	block.attributes.namespace === 'woocommerce/product-query';
+
+export const getProductsBlockClientIds = ( blocks: BlockInstance[] ) => {
+	let clientIds: string[] = [];
 	blocks.forEach( ( block ) => {
-		if (
-			block.name === 'core/query' &&
-			block.attributes.namespace === 'woocommerce/product-query'
-		) {
+		if ( isProductsBlock( block ) ) {
 			clientIds = [ ...clientIds, block.clientId ];
 		}
 		clientIds = [

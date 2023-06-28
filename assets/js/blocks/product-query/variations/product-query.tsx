@@ -5,6 +5,7 @@ import {
 	registerBlockVariation,
 	unregisterBlockVariation,
 	createBlock,
+	BlockInstance,
 } from '@wordpress/blocks';
 import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -50,11 +51,7 @@ const displaySuccessNotice = ( amount: number ) => {
 	dispatch( 'core/notices' ).createNotice( 'success', notice );
 };
 
-const createProductCollection = ( attributes, innerBlocks ) =>
-	createBlock( 'woocommerce/product-collection', attributes, innerBlocks );
-
-const replaceProductsBlock = ( clientId ) => {
-	const productsBlock = select( 'core/block-editor' ).getBlock( clientId );
+const checkIfBlockCanBeReplaced = ( clientId: string ) => {
 	// We need to duplicate checks that are happening within replaceBlocks method
 	// as replacement is initially blocked and there's no information returned
 	// that would determine if replacement happened or not.
@@ -62,20 +59,34 @@ const replaceProductsBlock = ( clientId ) => {
 	const rootClientId =
 		select( 'core/block-editor' ).getBlockRootClientId( clientId ) ||
 		undefined;
-	const canInsertBlock = select( 'core/block-editor' ).canInsertBlockType(
+	return select( 'core/block-editor' ).canInsertBlockType(
 		'woocommerce/product-collection',
 		rootClientId
 	);
+};
 
-	if ( productsBlock && canInsertBlock ) {
+const mapAttributes = ( atrributes: Record< string, unknown > ) => {
+	return atrributes;
+};
+
+const mapInnerBlocks = ( innerBlocks: BlockInstance[] ) => {
+	return innerBlocks;
+};
+
+const replaceProductsBlock = ( clientId: string ) => {
+	const productsBlock = select( 'core/block-editor' ).getBlock( clientId );
+	const canBeReplaced = checkIfBlockCanBeReplaced( clientId );
+
+	if ( productsBlock && canBeReplaced ) {
 		const { attributes = {}, innerBlocks = [] } = productsBlock;
-		const productCollectionBlock = createProductCollection(
-			attributes,
-			innerBlocks
+		const adjustedAttributes = mapAttributes( attributes );
+		const adjustedInnerBlocks = mapInnerBlocks( innerBlocks );
+
+		const productCollectionBlock = createBlock(
+			'woocommerce/product-collection',
+			adjustedAttributes,
+			adjustedInnerBlocks
 		);
-		// There's no way to determine if the replacement actually happened.
-		// Unfortunately, too fast replaceBlock doesn't have an effect on the
-		// editor, so can we determine if that already happened or not?
 		dispatch( 'core/block-editor' ).replaceBlock(
 			clientId,
 			productCollectionBlock
@@ -85,17 +96,20 @@ const replaceProductsBlock = ( clientId ) => {
 	return false;
 };
 
-const replaceProductsBlocks = async ( productsBlockClientIds ) => {
-	const results = await productsBlockClientIds.map( replaceProductsBlock );
+const replaceProductsBlocks = ( productsBlockClientIds: string[] ) => {
+	const results = productsBlockClientIds.map( replaceProductsBlock );
 	return !! results.length && results.every( ( result ) => !! result );
 };
 
-const replaceProductsWithProductCollection = async ( unsubscribe ) => {
+const replaceProductsWithProductCollection = ( unsubscribe: () => void ) => {
 	const blocks = select( 'core/block-editor' ).getBlocks();
 	const productsBlockClientIds = getProductsBlockClientIds( blocks );
 	const amountOfReplacedBlocks = productsBlockClientIds.length;
 
-	const replaced = await replaceProductsBlocks( productsBlockClientIds );
+	const replaced =
+		amountOfReplacedBlocks &&
+		replaceProductsBlocks( productsBlockClientIds );
+
 	if ( replaced ) {
 		displaySuccessNotice( amountOfReplacedBlocks );
 		unsubscribe();
