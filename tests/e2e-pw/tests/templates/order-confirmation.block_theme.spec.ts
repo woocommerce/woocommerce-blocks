@@ -21,7 +21,7 @@ test.describe( 'Test the order confirmation template', async () => {
 
 		await expect(
 			page
-				.frameLocator( 'iFrame' )
+				.frameLocator( 'iframe[name="editor-canvas"]' )
 				.locator(
 					'p:has-text("Thank you. Your order has been received.")'
 				)

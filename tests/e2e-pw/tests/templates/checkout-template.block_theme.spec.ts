@@ -24,7 +24,7 @@ test.describe( 'Test the checkout template', async () => {
 
 		await expect(
 			page
-				.frameLocator( 'iFrame' )
+				.frameLocator( 'iframe[name="editor-canvas"]' )
 				.locator( 'button:has-text("Place order")' )
 				.first()
 		).toBeVisible();
