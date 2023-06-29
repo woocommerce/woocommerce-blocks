@@ -20,6 +20,12 @@ import {
 	// @ts-ignore - Ignoring because `__experimentalToggleGroupControl` is not yet in the type definitions.
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+	// @ts-expect-error Using experimental features
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToolsPanel as ToolsPanel,
+	// @ts-expect-error Using experimental features
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 
 /**
@@ -41,8 +47,14 @@ const Edit = ( {
 	setAttributes,
 	context,
 }: BlockEditProps< BlockAttributes > & { context: Context } ): JSX.Element => {
-	const { showProductLink, imageSizing, showSaleBadge, saleBadgeAlign } =
-		attributes;
+	const {
+		showProductLink,
+		imageSizing,
+		showSaleBadge,
+		saleBadgeAlign,
+		width,
+		height,
+	} = attributes;
 	const blockProps = useBlockProps();
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
 	const isBlockThemeEnabled = getSettingWithCoercion(
@@ -59,6 +71,37 @@ const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<ToolsPanel
+					className="wc-block-product-image__tools-panel"
+					label={ __( 'Image size', 'woo-gutenberg-products-block' ) }
+				>
+					<UnitControl
+						label={ __( 'Width', 'woo-gutenberg-products-block' ) }
+						onChange={ ( value: string ) => {
+							setAttributes( { width: value } );
+						} }
+						value={ width }
+						units={ [
+							{
+								value: 'px',
+								label: 'px',
+							},
+						] }
+					/>
+					<UnitControl
+						label={ __( 'Height', 'woo-gutenberg-products-block' ) }
+						onChange={ ( value: string ) => {
+							setAttributes( { height: value } );
+						} }
+						value={ height }
+						units={ [
+							{
+								value: 'px',
+								label: 'px',
+							},
+						] }
+					/>
+				</ToolsPanel>
 				<PanelBody
 					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
 				>
