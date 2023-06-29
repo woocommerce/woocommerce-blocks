@@ -25,12 +25,12 @@ const getPrice = ( totals: CartResponseTotals, showIncludingTax: boolean ) => {
 };
 
 export const updateTotals = (
-	cart: [ CartResponseTotals, number ] | undefined
+	cartData: [ CartResponseTotals, number ] | undefined
 ) => {
-	if ( ! cart ) {
+	if ( ! cartData ) {
 		return;
 	}
-	const [ totals, quantity ] = cart;
+	const [ totals, quantity ] = cartData;
 	const showIncludingTax = getSettingWithCoercion(
 		'displayCartPricesIncludingTax',
 		false,
@@ -54,36 +54,34 @@ export const updateTotals = (
 			'.wc-block-mini-cart__button'
 		);
 
-		if ( miniCartButton instanceof HTMLButtonElement ) {
-			miniCartButton.setAttribute(
-				'aria-label',
-				miniCartBlock.dataset.hasHiddenPrice
-					? sprintf(
-							/* translators: %s number of products in cart. */
-							_n(
-								'%1$d item in cart',
-								'%1$d items in cart',
-								quantity,
-								'woo-gutenberg-products-block'
-							),
-							quantity
-					  )
-					: sprintf(
-							/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
-							_n(
-								'%1$d item in cart, total price of %2$s',
-								'%1$d items in cart, total price of %2$s',
-								quantity,
-								'woo-gutenberg-products-block'
-							),
+		miniCartButton?.setAttribute(
+			'aria-label',
+			miniCartBlock.dataset.hasHiddenPrice
+				? sprintf(
+						/* translators: %s number of products in cart. */
+						_n(
+							'%1$d item in cart',
+							'%1$d items in cart',
 							quantity,
-							amount
-					  )
-			);
+							'woo-gutenberg-products-block'
+						),
+						quantity
+				  )
+				: sprintf(
+						/* translators: %1$d is the number of products in the cart. %2$s is the cart total */
+						_n(
+							'%1$d item in cart, total price of %2$s',
+							'%1$d items in cart, total price of %2$s',
+							quantity,
+							'woo-gutenberg-products-block'
+						),
+						quantity,
+						amount
+				  )
+		);
 
-			miniCartButton.dataset.cartTotals = JSON.stringify( totals );
-			miniCartButton.dataset.cartItemsCount = quantity.toString();
-		}
+		miniCartBlock.dataset.cartTotals = JSON.stringify( totals );
+		miniCartBlock.dataset.cartItemsCount = quantity.toString();
 	} );
 	miniCartQuantities.forEach( ( miniCartQuantity ) => {
 		if ( quantity > 0 || miniCartQuantity.textContent !== '' ) {

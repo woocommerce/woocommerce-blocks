@@ -14,7 +14,7 @@ import {
 	getCurrencyFromPriceResponse,
 } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isBoolean, isString } from '@woocommerce/types';
+import { isBoolean, isString, isCartResponseTotals } from '@woocommerce/types';
 import {
 	unmountComponentAtNode,
 	useCallback,
@@ -178,13 +178,16 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 
 	const taxLabel = getSettingWithCoercion( 'taxLabel', '', isString );
 
+	const cartTotals =
+		cartIsLoadingForTheFirstTime.current ||
+		! isCartResponseTotals( initialCartTotals )
+			? initialCartTotals
+			: cartTotalsFromApi;
+
 	const cartItemsCount = cartIsLoadingForTheFirstTime.current
 		? initialCartItemsCount
 		: cartItemsCountFromApi;
 
-	const cartTotals = cartIsLoadingForTheFirstTime.current
-		? initialCartTotals
-		: cartTotalsFromApi;
 	const subTotal = showIncludingTax
 		? parseInt( cartTotals.total_items, 10 ) +
 		  parseInt( cartTotals.total_items_tax, 10 )
@@ -239,7 +242,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 						) }
 					</span>
 				) }
-				{ taxLabel !== '' && subTotal > 0 && ! hasHiddenPrice && (
+				{ taxLabel !== '' && subTotal !== 0 && ! hasHiddenPrice && (
 					<small
 						className="wc-block-mini-cart__tax-label"
 						style={ { color: priceColorValue } }
