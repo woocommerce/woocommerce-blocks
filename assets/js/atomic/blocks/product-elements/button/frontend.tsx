@@ -37,7 +37,7 @@ addAction(
 );
 
 store( {
-	state: {
+	selectors: {
 		woocommerce: {
 			addToCartText: ( {
 				context,
@@ -47,12 +47,20 @@ store( {
 				state: State;
 			} ) => {
 				if ( context.woocommerce.numberOfItems === 0 ) {
-					return context.woocommerce.addToCart;
+					return state.woocommerce.addToCartText;
 				}
-
-				return state.woocommerce.inTheCart.replace(
+				return state.woocommerce.inTheCartText.replace(
 					'###',
 					context.woocommerce.numberOfItems.toString()
+				);
+			},
+			moreThanOneItem: ( { context } ) =>
+				context.woocommerce.numberOfItems > 0,
+			isAdded: ( store ) => {
+				const { context, selectors } = store;
+				return (
+					context.woocommerce.isAdded &&
+					selectors.woocommerce.moreThanOneItem( store )
 				);
 			},
 		},
