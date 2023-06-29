@@ -98,6 +98,9 @@ const blocks = {
 	'order-confirmation-shipping-address': {
 		customDir: 'order-confirmation/shipping-address',
 	},
+	'order-confirmation-status': {
+		customDir: 'order-confirmation/status',
+	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,
