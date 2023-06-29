@@ -21,9 +21,10 @@ import ProductSaleBadge from '../sale-badge/block';
 import './style.scss';
 import { BlockAttributes, ImageSizing } from './types';
 
-const ImagePlaceholder = (): JSX.Element => {
+const ImagePlaceholder = ( props ): JSX.Element => {
 	return (
 		<img
+			{ ...props }
 			src={ PLACEHOLDER_IMG_SRC }
 			alt=""
 			width={ undefined }
@@ -67,7 +68,7 @@ const Image = ( {
 		...( showFullSize && { src, srcSet: srcset, sizes } ),
 	};
 
-	const imageStyles = {
+	const imageStyles: Record< string, string | undefined > = {
 		height,
 		width,
 		objectFit: scale,
@@ -83,7 +84,7 @@ const Image = ( {
 					{ ...imageProps }
 				/>
 			) }
-			{ ! image && <ImagePlaceholder /> }
+			{ ! image && <ImagePlaceholder style={ imageStyles } /> }
 		</>
 	);
 };
@@ -119,7 +120,6 @@ export const Block = ( props: Props ): JSX.Element | null => {
 					},
 					styleProps.className
 				) }
-				style={ styleProps.style }
 			>
 				<ImagePlaceholder />
 			</div>
@@ -153,7 +153,6 @@ export const Block = ( props: Props ): JSX.Element | null => {
 				},
 				styleProps.className
 			) }
-			style={ styleProps.style }
 		>
 			<ParentComponent { ...( showProductLink && anchorProps ) }>
 				{ !! showSaleBadge && (

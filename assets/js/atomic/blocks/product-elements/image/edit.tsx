@@ -33,7 +33,7 @@ import {
 	BLOCK_DESCRIPTION as description,
 } from './constants';
 import { BlockAttributes, ImageSizing } from './types';
-import { ImageSizeSettings } from './ImageSizeSettings';
+import { ImageSizeSettings } from './image-size-settings';
 
 type SaleBadgeAlignProps = 'left' | 'center' | 'right';
 
