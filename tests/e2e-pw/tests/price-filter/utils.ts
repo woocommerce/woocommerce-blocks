@@ -1,20 +1,16 @@
 /**
  * External dependencies
  */
-import { Page } from '@playwright/test';
-import { getBlockByName } from '@woocommerce/e2e-utils';
+import { Locator } from '@playwright/test';
 
 export const getMinMaxPriceInputs = async ( {
-	page,
 	blockName,
+	getBlockByName,
 }: {
-	page: Page;
 	blockName: string;
+	getBlockByName: ( blockName: string ) => Promise< Locator >;
 } ) => {
-	const priceFilterBlock = await getBlockByName( {
-		page,
-		name: blockName,
-	} );
+	const priceFilterBlock = await getBlockByName( blockName );
 
 	const maxPriceInput = await priceFilterBlock.locator(
 		'.wc-block-price-filter__amount--max'
