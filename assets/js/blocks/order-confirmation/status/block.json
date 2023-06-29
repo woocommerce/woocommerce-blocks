@@ -1,0 +1,21 @@
+{
+	"name": "woocommerce/order-confirmation-status",
+	"version": "1.0.0",
+	"title": "Order Confirmation Status",
+	"description": "Displays a confirmation of the status of an order.",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"supports": {
+		"multiple": false,
+		"align": [ "wide", "full" ]
+	},
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "wide"
+		}
+	},
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}

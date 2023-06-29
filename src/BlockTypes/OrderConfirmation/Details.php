@@ -26,7 +26,8 @@ class Details extends AbstractOrderConfirmationBlock {
 	 * @return string | void Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$content            = $this->render_order_details_table( $this->get_order() );
+		$order              = $this->get_order();
+		$content            = $order && $this->is_current_customer_order( $order ) ? $this->render_content( $order ) : $this->render_content_fallback();
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
@@ -35,12 +36,53 @@ class Details extends AbstractOrderConfirmationBlock {
 		}
 
 		return sprintf(
-			'<div class="woocommerce wc-block-order-%4$s %1$s %2$s">%3$s</div>',
+			'<div class="woocommerce wc-block-%4$s %1$s %2$s">%3$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			$content,
 			esc_attr( $this->block_name )
 		);
+	}
+
+	/**
+	 * This is what gets rendered when the order does not exist.
+	 *
+	 * @return string
+	 */
+	protected function render_content_fallback() {
+		return '<p>' . esc_html__( 'The details of your order can be found in the email that was sent to you when the order was placed.', 'woo-gutenberg-products-block' ) . '</p>';
+	}
+
+	/**
+	 * This renders the content of the block within the wrapper.
+	 *
+	 * @param \WC_Order $order Order object.
+	 * @return string
+	 */
+	protected function render_content( $order ) {
+		return '
+			<section class="woocommerce-order-details">
+				' . $this->get_hook_content( 'woocommerce_order_details_before_order_table', [ $order ] ) . '
+				<table class="woocommerce-table woocommerce-table--order-details shop_table order_details">
+					<thead>
+						<tr>
+							<th class="woocommerce-table__product-name product-name">' . esc_html__( 'Product', 'woo-gutenberg-products-block' ) . '</th>
+							<th class="woocommerce-table__product-table product-total">' . esc_html__( 'Total', 'woo-gutenberg-products-block' ) . '</th>
+						</tr>
+					</thead>
+					<tbody>
+						' . $this->get_hook_content( 'woocommerce_order_details_before_order_table_items', [ $order ] ) . '
+						' . $this->render_order_details_table_items( $order ) . '
+						' . $this->get_hook_content( 'woocommerce_order_details_after_order_table_items', [ $order ] ) . '
+					</tbody>
+					<tfoot>
+						' . $this->render_order_details_table_totals( $order ) . '
+					</tfoot>
+				</table>
+				' . $this->get_hook_content( 'woocommerce_order_details_after_order_table', [ $order ] ) . '
+			</section>
+			' . $this->get_hook_content( 'woocommerce_after_order_details', [ $order ] ) . '
+		';
 	}
 
 	/**
@@ -103,39 +145,5 @@ class Details extends AbstractOrderConfirmationBlock {
 		}
 
 		return ob_get_clean();
-	}
-
-	/**
-	 * Render order details table.
-	 *
-	 * @param \WC_Order $order Order object.
-	 * @return string
-	 */
-	protected function render_order_details_table( $order ) {
-		if ( ! $order ) {
-			return '';
-		}
-		return '
-		<section class="woocommerce-order-details">
-			' . $this->get_hook_content( 'woocommerce_order_details_before_order_table', $order ) . '
-			<table class="woocommerce-table woocommerce-table--order-details shop_table order_details">
-				<thead>
-					<tr>
-						<th class="woocommerce-table__product-name product-name">' . esc_html__( 'Product', 'woo-gutenberg-products-block' ) . '</th>
-						<th class="woocommerce-table__product-table product-total">' . esc_html__( 'Total', 'woo-gutenberg-products-block' ) . '</th>
-					</tr>
-				</thead>
-				<tbody>
-					' . $this->get_hook_content( 'woocommerce_order_details_before_order_table_items', $order ) . '
-					' . $this->render_order_details_table_items( $order ) . '
-					' . $this->get_hook_content( 'woocommerce_order_details_after_order_table_items', $order ) . '
-				</tbody>
-				<tfoot>
-					' . $this->render_order_details_table_totals( $order ) . '
-				</tfoot>
-			</table>
-			' . $this->get_hook_content( 'woocommerce_order_details_after_order_table', $order ) . '
-		</section>
-		';
 	}
 }
