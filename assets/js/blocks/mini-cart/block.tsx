@@ -14,13 +14,7 @@ import {
 	getCurrencyFromPriceResponse,
 } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import {
-	CartResponseTotals,
-	isBoolean,
-	isString,
-	isCartResponseTotals,
-	isNumber,
-} from '@woocommerce/types';
+import { isBoolean, isString } from '@woocommerce/types';
 import {
 	unmountComponentAtNode,
 	useCallback,
@@ -51,6 +45,8 @@ function getScrollbarWidth() {
 
 const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 	const {
+		initialCartItemsCount,
+		initialCartSubtotal,
 		isInitiallyOpen = false,
 		colorClassNames,
 		contents = '',
@@ -65,7 +61,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 	const {
 		cartItemsCount: cartItemsCountFromApi,
 		cartIsLoading,
-		cartTotals: cartTotalsFromApi,
+		cartTotals,
 	} = useStoreCart();
 
 	const isFirstLoadingCompleted = useRef( cartIsLoading );
@@ -180,34 +176,23 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 		isBoolean
 	);
 
-	const preFetchedCartTotals =
-		getSettingWithCoercion< CartResponseTotals | null >(
-			'cartTotals',
-			null,
-			isCartResponseTotals
-		);
-
-	const preFetchedCartItemsCount = getSettingWithCoercion< number >(
-		'cartItemsCount',
-		0,
-		isNumber
-	);
-
 	const taxLabel = getSettingWithCoercion( 'taxLabel', '', isString );
-
-	const cartTotals =
-		! isFirstLoadingCompleted.current || preFetchedCartTotals === null
-			? cartTotalsFromApi
-			: preFetchedCartTotals;
 
 	const cartItemsCount = ! isFirstLoadingCompleted.current
 		? cartItemsCountFromApi
-		: preFetchedCartItemsCount;
+		: initialCartItemsCount;
 
-	const subTotal = showIncludingTax
-		? parseInt( cartTotals.total_items, 10 ) +
-		  parseInt( cartTotals.total_items_tax, 10 )
-		: parseInt( cartTotals.total_items, 10 );
+	let subTotal = initialCartSubtotal;
+	if ( ! isFirstLoadingCompleted.current ) {
+		const rawSubTotal = showIncludingTax
+			? parseInt( cartTotals.total_items, 10 ) +
+			  parseInt( cartTotals.total_items_tax, 10 )
+			: parseInt( cartTotals.total_items, 10 );
+		subTotal = formatPrice(
+			rawSubTotal,
+			getCurrencyFromPriceResponse( cartTotals )
+		);
+	}
 
 	const ariaLabel = hasHiddenPrice
 		? sprintf(
@@ -229,10 +214,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 					'woo-gutenberg-products-block'
 				),
 				cartItemsCount,
-				formatPrice(
-					subTotal,
-					getCurrencyFromPriceResponse( cartTotals )
-				)
+				subTotal
 		  );
 
 	return (
@@ -252,13 +234,10 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 						className="wc-block-mini-cart__amount"
 						style={ { color: priceColorValue } }
 					>
-						{ formatPrice(
-							subTotal,
-							getCurrencyFromPriceResponse( cartTotals )
-						) }
+						{ subTotal }
 					</span>
 				) }
-				{ taxLabel !== '' && subTotal !== 0 && ! hasHiddenPrice && (
+				{ taxLabel !== '' && subTotal !== '' && ! hasHiddenPrice && (
 					<small
 						className="wc-block-mini-cart__tax-label"
 						style={ { color: priceColorValue } }

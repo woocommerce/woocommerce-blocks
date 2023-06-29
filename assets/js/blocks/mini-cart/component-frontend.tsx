@@ -29,28 +29,37 @@ const renderMiniCartFrontend = () => {
 		selector: '.wc-block-mini-cart',
 		Block: MiniCartBlock,
 		getProps: ( el ) => {
-			let colorClassNames = '';
 			const button = el.querySelector( '.wc-block-mini-cart__button' );
-			if ( button !== null ) {
-				colorClassNames = button.classList
+
+			if ( button instanceof HTMLButtonElement ) {
+				const colorClassNames = button.classList
 					.toString()
 					.replace( 'wc-block-mini-cart__button', '' );
+
+				return {
+					initialCartSubtotal: button.dataset.cartSubtotal
+						? button.dataset.cartSubtotal
+						: '',
+					initialCartItemsCount: button.dataset.cartItemsCount
+						? parseInt( button.dataset.cartItemsCount, 10 )
+						: 0,
+					isInitiallyOpen: el.dataset.isInitiallyOpen === 'true',
+					colorClassNames,
+					style: el.dataset.style
+						? JSON.parse( el.dataset.style )
+						: {},
+					miniCartIcon: el.dataset.miniCartIcon,
+					addToCartBehaviour: el.dataset.addToCartBehaviour || 'none',
+					hasHiddenPrice: el.dataset.hasHiddenPrice,
+					priceColorValue: el.dataset.priceColorValue,
+					iconColorValue: el.dataset.iconColorValue,
+					productCountColorValue: el.dataset.productCountColorValue,
+					contents:
+						el.querySelector( '.wc-block-mini-cart__template-part' )
+							?.innerHTML ?? '',
+				};
 			}
-			return {
-				isDataOutdated: el.dataset.isDataOutdated,
-				isInitiallyOpen: el.dataset.isInitiallyOpen === 'true',
-				colorClassNames,
-				style: el.dataset.style ? JSON.parse( el.dataset.style ) : {},
-				miniCartIcon: el.dataset.miniCartIcon,
-				addToCartBehaviour: el.dataset.addToCartBehaviour || 'none',
-				hasHiddenPrice: el.dataset.hasHiddenPrice,
-				priceColorValue: el.dataset.priceColorValue,
-				iconColorValue: el.dataset.iconColorValue,
-				productCountColorValue: el.dataset.productCountColorValue,
-				contents:
-					el.querySelector( '.wc-block-mini-cart__template-part' )
-						?.innerHTML ?? '',
-			};
+			return {};
 		},
 	} );
 
