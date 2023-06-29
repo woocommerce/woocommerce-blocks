@@ -10,11 +10,10 @@ import {
 	getBlockByName,
 } from '@woocommerce/e2e-utils';
 
+const WOOCOMMERCE_ALL_PRODUCTS = 'woocommerce/all-products';
+const WOOCOMMERCE_FILTER_WRAPPER = 'woocommerce/filter-wrapper';
+
 export const blockData: BlockData< {
-	urlSearchParamWhenFilterIsApplied: (
-		minPrice: number | null,
-		maxPrice: number | null
-	) => string;
 	placeholderUrl: string;
 } > = {
 	name: 'woocommerce/price-filter',
@@ -22,16 +21,6 @@ export const blockData: BlockData< {
 	selectors: {
 		frontend: {},
 		editor: {},
-	},
-	urlSearchParamWhenFilterIsApplied: ( minPrice, maxPrice ) => {
-		let result = '';
-		if ( minPrice ) {
-			result += `min_price=${ minPrice }`;
-		}
-		if ( maxPrice ) {
-			result += `&max_price=${ maxPrice }`;
-		}
-		return result;
 	},
 	placeholderUrl: `${ BASE_URL }/wp-content/plugins/woocommerce/assets/images/placeholder.png`,
 };
@@ -70,7 +59,7 @@ class PriceFilterPage {
 		await this.editor.canvas.click( 'body' );
 
 		await this.editor.insertBlock( {
-			name: 'woocommerce/filter-wrapper',
+			name: WOOCOMMERCE_FILTER_WRAPPER,
 			attributes: {
 				filterType: 'price-filter',
 				heading: 'Filter By Price',
@@ -83,9 +72,9 @@ class PriceFilterPage {
 
 	async addPriceFilterBlockToNewPostAndGoToFrontend() {
 		await this.admin.createNewPost();
-		await this.editor.insertBlock( { name: 'woocommerce/all-products' } );
+		await this.editor.insertBlock( { name: WOOCOMMERCE_ALL_PRODUCTS } );
 		await this.editor.insertBlock( {
-			name: 'woocommerce/filter-wrapper',
+			name: WOOCOMMERCE_FILTER_WRAPPER,
 			attributes: {
 				filterType: 'price-filter',
 				heading: 'Filter By Price',
@@ -98,17 +87,11 @@ class PriceFilterPage {
 		await this.page.goto( `/?p=${ postId }`, { waitUntil: 'networkidle' } );
 	}
 
-	async getAllProducts() {
-		const products = await this.page.locator(
-			'.products-block-post-template .product'
-		);
-		return products;
-	}
-
-	async setPrice( minPrice: number | null, maxPrice: number | null ) {
-		const priceFilterBlock = await this.page.locator(
-			'.wc-block-price-slider'
-		);
+	async setPriceFilterRange(
+		minPrice: number | null,
+		maxPrice: number | null
+	) {
+		const priceFilterBlock = await this.page.locator( blockData.mainClass );
 		const minPriceInput = await priceFilterBlock.getByRole( 'textbox', {
 			name: 'Filter products by minimum price',
 		} );
@@ -117,14 +100,6 @@ class PriceFilterPage {
 		} );
 
 		if ( minPrice !== null ) {
-			// 			await page.getByRole('textbox', { name: 'Filter products by minimum price' }).click();
-			//    await page.getByRole('textbox', { name: 'Filter products by minimum price' }).press('Meta+a');
-			//    await page.getByRole('textbox', { name: 'Filter products by minimum price' }).fill('$20');
-			//    await page.getByRole('textbox', { name: 'Filter products by minimum price' }).press('ArrowRight');
-			//    await page.getByRole('textbox', { name: 'Filter products by minimum price' }).fill('$');
-			//    await page.getByRole('textbox', { name: 'Filter products by minimum price' }).press('ArrowRight');
-			//    await page.getByRole('textbox', { name: 'Filter products by maximum price' }).click();
-			//    await page.getByRole('textbox', { name: 'Filter products by maximum price' }).fill('$19');
 			await minPriceInput.click();
 			await minPriceInput.fill( `${ minPrice }` );
 		}
@@ -134,14 +109,12 @@ class PriceFilterPage {
 		}
 
 		await this.page.click( 'body' );
+
 		await this.page.waitForURL( ( url ) =>
 			url
 				.toString()
 				.includes(
-					blockData.urlSearchParamWhenFilterIsApplied(
-						minPrice,
-						maxPrice
-					)
+					this.generatePriceFilterQueryString( minPrice, maxPrice )
 				)
 		);
 	}
@@ -159,7 +132,7 @@ class PriceFilterPage {
 		await this.page.waitForLoadState( 'networkidle' );
 		const allProductsBlock = await getBlockByName( {
 			page: this.page,
-			name: 'woocommerce/all-products',
+			name: WOOCOMMERCE_ALL_PRODUCTS,
 		} );
 
 		return await allProductsBlock.locator( 'img' ).first();
@@ -168,8 +141,32 @@ class PriceFilterPage {
 	async locateAllProductsBlock() {
 		return await getBlockByName( {
 			page: this.page,
-			name: 'woocommerce/all-products',
+			name: WOOCOMMERCE_ALL_PRODUCTS,
 		} );
+	}
+
+	async locateAllProducts() {
+		const products = await this.page.locator(
+			'.products-block-post-template .product'
+		);
+		return products;
+	}
+
+	/**
+	 * Private functions to be used in this class
+	 */
+	private generatePriceFilterQueryString(
+		minPrice: number | null,
+		maxPrice: number | null
+	) {
+		let result = '';
+		if ( minPrice ) {
+			result += `min_price=${ minPrice }`;
+		}
+		if ( maxPrice ) {
+			result += `&max_price=${ maxPrice }`;
+		}
+		return result;
 	}
 }
 

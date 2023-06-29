@@ -24,39 +24,33 @@ const test = base.extend< { pageObject: PriceFilterPage } >( {
 test.describe( `${ blockData.name } Block - with All products Block`, () => {
 	test( 'should show all products', async ( { pageObject } ) => {
 		await pageObject.addPriceFilterBlockToNewPostAndGoToFrontend();
-		const img = await pageObject.locateFirstImage();
 
-		await expect( img ).not.toHaveAttribute(
+		const firstProductImage = await pageObject.locateFirstImage();
+		await expect( firstProductImage ).not.toHaveAttribute(
 			'src',
 			blockData.placeholderUrl
 		);
 
 		const allProductsBlock = await pageObject.locateAllProductsBlock();
 		const products = await allProductsBlock.getByRole( 'listitem' ).all();
-
 		expect( products ).toHaveLength( 9 );
 	} );
 
 	test( 'should show only products that match the filter', async ( {
-		page,
 		pageObject,
 	} ) => {
 		await pageObject.addPriceFilterBlockToNewPostAndGoToFrontend();
-		await pageObject.setPrice( 2, 3 );
+		await pageObject.setPriceFilterRange( 2, 3 );
 
-		const img = await pageObject.locateFirstImage();
-		await expect( img ).not.toHaveAttribute(
+		const firstProductImage = await pageObject.locateFirstImage();
+		await expect( firstProductImage ).not.toHaveAttribute(
 			'src',
 			blockData.placeholderUrl
 		);
 
 		const allProductsBlock = await pageObject.locateAllProductsBlock();
 		const products = await allProductsBlock.getByRole( 'listitem' ).all();
-
 		expect( products ).toHaveLength( 1 );
-		expect( page.url() ).toContain(
-			blockData.urlSearchParamWhenFilterIsApplied( 2, 3 )
-		);
 	} );
 } );
 
@@ -74,7 +68,7 @@ test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 	test( 'should show all products', async ( { pageObject } ) => {
 		await pageObject.addPriceFilterBlockToProductCatalogAndGoToShop();
 
-		const products = await pageObject.getAllProducts();
+		const products = await pageObject.locateAllProducts();
 		expect( products ).toHaveCount( 16 );
 	} );
 
@@ -82,9 +76,9 @@ test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 		pageObject,
 	} ) => {
 		await pageObject.addPriceFilterBlockToProductCatalogAndGoToShop();
-		await pageObject.setPrice( 2, 3 );
+		await pageObject.setPriceFilterRange( 2, 3 );
 
-		const products = await pageObject.getAllProducts();
+		const products = await pageObject.locateAllProducts();
 		expect( products ).toHaveCount( 1 );
 	} );
 
