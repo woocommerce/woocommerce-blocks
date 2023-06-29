@@ -55,11 +55,11 @@ export const ImageSizeSettings = ( {
 			label={ __( 'Image size', 'woo-gutenberg-products-block' ) }
 		>
 			<UnitControl
-				label={ __( 'Width', 'woo-gutenberg-products-block' ) }
+				label={ __( 'Height', 'woo-gutenberg-products-block' ) }
 				onChange={ ( value: string ) => {
-					setAttributes( { width: value } );
+					setAttributes( { height: value } );
 				} }
-				value={ width }
+				value={ height }
 				units={ [
 					{
 						value: 'px',
@@ -68,11 +68,11 @@ export const ImageSizeSettings = ( {
 				] }
 			/>
 			<UnitControl
-				label={ __( 'Height', 'woo-gutenberg-products-block' ) }
+				label={ __( 'Width', 'woo-gutenberg-products-block' ) }
 				onChange={ ( value: string ) => {
-					setAttributes( { height: value } );
+					setAttributes( { width: value } );
 				} }
-				value={ height }
+				value={ width }
 				units={ [
 					{
 						value: 'px',

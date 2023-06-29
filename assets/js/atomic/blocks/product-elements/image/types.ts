@@ -23,5 +23,5 @@ export interface BlockAttributes {
 	// Width of the image.
 	width?: string;
 	// Image scaling method.
-	scale: string;
+	scale: 'cover' | 'contain' | 'fill';
 }

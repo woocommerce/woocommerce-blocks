@@ -78,6 +78,7 @@ class ProductImage extends AbstractBlock {
 			'imageSizing'             => 'single',
 			'productId'               => 'number',
 			'isDescendentOfQueryLoop' => 'false',
+			'scale'                   => 'cover',
 		);
 
 		return wp_parse_args( $attributes, $defaults );
@@ -159,6 +160,7 @@ class ProductImage extends AbstractBlock {
 			array(
 				'alt'         => $product->get_title(),
 				'data-testid' => 'product-image',
+				'style'       => sprintf( 'height:%s; width:%s; object-fit:%s;', $attributes['height'] ?? '', $attributes['width'] ?? '', $attributes['scale'] ?? '' ),
 			)
 		);
 	}
