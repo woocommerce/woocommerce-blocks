@@ -51,9 +51,9 @@ test.describe( `${ blockData.name } Block`, () => {
 			block.click(),
 		] );
 
-		expect( button ).toHaveClass( /added/ );
-		expect( button ).toHaveText( '1 in the cart' );
-		expect( await block.getByRole( 'link' ) ).toBeVisible();
+		await expect( button ).toHaveClass( /added/ );
+		await expect( button ).toHaveText( '1 in the cart' );
+		await expect( await block.getByRole( 'link' ) ).toBeVisible();
 
 		await frontendUtils.goToCheckout();
 		const productElement = await page.getByText( productName, {
@@ -66,7 +66,7 @@ test.describe( `${ blockData.name } Block`, () => {
 		page,
 		admin,
 	} ) => {
-		await handleAddToCartAjaxSetting( admin, page, { isChecked: false } );
+		await handleAddToCartAjaxSetting( admin, page, { isChecked: true } );
 		await frontendUtils.goToShop();
 
 		const blocks = await frontendUtils.getBlockByName( blockData.name );
@@ -102,6 +102,6 @@ test.describe( `${ blockData.name } Block`, () => {
 			'wp-admin/admin.php?page=wc-settings&tab=products'
 		);
 
-		await handleAddToCartAjaxSetting( admin, page, { isChecked: true } );
+		await handleAddToCartAjaxSetting( admin, page, { isChecked: false } );
 	} );
 } );
