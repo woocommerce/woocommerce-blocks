@@ -14,7 +14,12 @@ import {
 	getCurrencyFromPriceResponse,
 } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isBoolean, isString, isCartResponseTotals } from '@woocommerce/types';
+import {
+	isBoolean,
+	isString,
+	isCartResponseTotals,
+	isNumber,
+} from '@woocommerce/types';
 import {
 	unmountComponentAtNode,
 	useCallback,
@@ -179,14 +184,16 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 	const taxLabel = getSettingWithCoercion( 'taxLabel', '', isString );
 
 	const cartTotals =
-		cartIsLoadingForTheFirstTime.current ||
-		! isCartResponseTotals( initialCartTotals )
+		cartIsLoadingForTheFirstTime.current &&
+		isCartResponseTotals( initialCartTotals )
 			? initialCartTotals
 			: cartTotalsFromApi;
 
-	const cartItemsCount = cartIsLoadingForTheFirstTime.current
-		? initialCartItemsCount
-		: cartItemsCountFromApi;
+	const cartItemsCount =
+		cartIsLoadingForTheFirstTime.current &&
+		isNumber( initialCartItemsCount )
+			? initialCartItemsCount
+			: cartItemsCountFromApi;
 
 	const subTotal = showIncludingTax
 		? parseInt( cartTotals.total_items, 10 ) +

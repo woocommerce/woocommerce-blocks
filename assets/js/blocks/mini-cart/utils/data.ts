@@ -112,8 +112,8 @@ export const getMiniCartTotalsFromLocalStorage = ():
 	if ( ! rawMiniCartTotals ) {
 		return undefined;
 	}
-	const miniCartTotals = JSON.parse( rawMiniCartTotals );
-	return [ miniCartTotals, miniCartTotals.itemsCount ] as [
+	const cartData = JSON.parse( rawMiniCartTotals );
+	return [ cartData.totals, cartData.itemsCount ] as [
 		CartResponseTotals,
 		number
 	];
