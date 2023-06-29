@@ -214,6 +214,7 @@ final class BlockTypesController {
 			'ProductDetails',
 			'SingleProduct',
 			'StockFilter',
+			'OrderConfirmation\Status',
 			'OrderConfirmation\Summary',
 			'OrderConfirmation\Details',
 			'OrderConfirmation\BillingAddress',
