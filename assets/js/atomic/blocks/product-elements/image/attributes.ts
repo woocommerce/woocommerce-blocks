@@ -43,6 +43,10 @@ export const blockAttributes: BlockAttributes = {
 	height: {
 		type: 'string',
 	},
+	scale: {
+		type: 'string',
+		default: 'cover',
+	},
 };
 
 export default blockAttributes;

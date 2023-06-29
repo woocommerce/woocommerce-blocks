@@ -45,6 +45,9 @@ interface ImageProps {
 	loaded: boolean;
 	showFullSize: boolean;
 	fallbackAlt: string;
+	// width?: string;
+	scale: string;
+	height?: string | undefined;
 }
 
 const Image = ( {
@@ -52,6 +55,9 @@ const Image = ( {
 	loaded,
 	showFullSize,
 	fallbackAlt,
+	// width,
+	scale,
+	height,
 }: ImageProps ): JSX.Element => {
 	const { thumbnail, src, srcset, sizes, alt } = image || {};
 	const imageProps = {
@@ -61,11 +67,22 @@ const Image = ( {
 		...( showFullSize && { src, srcSet: srcset, sizes } ),
 	};
 
+	const imageStyles = {
+		height,
+		// height: aspectRatio ? '100%' : height,
+		// width: !! aspectRatio && '100%',
+		objectFit: scale,
+	};
+
 	return (
 		<>
 			{ imageProps.src && (
 				/* eslint-disable-next-line jsx-a11y/alt-text */
-				<img data-testid="product-image" { ...imageProps } />
+				<img
+					style={ imageStyles }
+					data-testid="product-image"
+					{ ...imageProps }
+				/>
 			) }
 			{ ! image && <ImagePlaceholder /> }
 		</>
@@ -81,6 +98,9 @@ export const Block = ( props: Props ): JSX.Element | null => {
 		showProductLink = true,
 		showSaleBadge,
 		saleBadgeAlign = 'right',
+		height,
+		width,
+		scale,
 		...restProps
 	} = props;
 	const styleProps = useStyleProps( props );
@@ -148,6 +168,8 @@ export const Block = ( props: Props ): JSX.Element | null => {
 					image={ image }
 					loaded={ ! isLoading }
 					showFullSize={ imageSizing !== ImageSizing.THUMBNAIL }
+					height={ height }
+					scale={ scale }
 				/>
 			</ParentComponent>
 		</div>

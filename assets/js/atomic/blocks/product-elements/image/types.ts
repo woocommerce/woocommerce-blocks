@@ -22,4 +22,6 @@ export interface BlockAttributes {
 	height?: string;
 	// Width of the image.
 	width?: string;
+	// Image scaling method.
+	scale: string;
 }

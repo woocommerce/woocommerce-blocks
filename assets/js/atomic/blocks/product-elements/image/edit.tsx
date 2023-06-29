@@ -20,12 +20,6 @@ import {
 	// @ts-ignore - Ignoring because `__experimentalToggleGroupControl` is not yet in the type definitions.
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
-	// @ts-expect-error Using experimental features
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToolsPanel as ToolsPanel,
-	// @ts-expect-error Using experimental features
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 
 /**
@@ -39,6 +33,7 @@ import {
 	BLOCK_DESCRIPTION as description,
 } from './constants';
 import { BlockAttributes, ImageSizing } from './types';
+import { ImageSizeSettings } from './ImageSizeSettings';
 
 type SaleBadgeAlignProps = 'left' | 'center' | 'right';
 
@@ -52,10 +47,11 @@ const Edit = ( {
 		imageSizing,
 		showSaleBadge,
 		saleBadgeAlign,
-		width,
+		// width,
 		height,
+		scale,
 	} = attributes;
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( { style: { /*width,*/ height } } );
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
 	const isBlockThemeEnabled = getSettingWithCoercion(
 		'is_block_theme_enabled',
@@ -71,37 +67,11 @@ const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				<ToolsPanel
-					className="wc-block-product-image__tools-panel"
-					label={ __( 'Image size', 'woo-gutenberg-products-block' ) }
-				>
-					<UnitControl
-						label={ __( 'Width', 'woo-gutenberg-products-block' ) }
-						onChange={ ( value: string ) => {
-							setAttributes( { width: value } );
-						} }
-						value={ width }
-						units={ [
-							{
-								value: 'px',
-								label: 'px',
-							},
-						] }
-					/>
-					<UnitControl
-						label={ __( 'Height', 'woo-gutenberg-products-block' ) }
-						onChange={ ( value: string ) => {
-							setAttributes( { height: value } );
-						} }
-						value={ height }
-						units={ [
-							{
-								value: 'px',
-								label: 'px',
-							},
-						] }
-					/>
-				</ToolsPanel>
+				<ImageSizeSettings
+					scale={ scale }
+					height={ height }
+					setAttributes={ setAttributes }
+				/>
 				<PanelBody
 					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
 				>
