@@ -108,7 +108,7 @@ const prepareAttributes = async ( config: FullConfig ) => {
 		waitUntil: 'networkidle',
 	} );
 
-	await page.click( '.regenerate_product_attributes_lookup_table input' );
+	// await page.click( '.regenerate_product_attributes_lookup_table input' );
 
 	await context.close();
 	await browser.close();

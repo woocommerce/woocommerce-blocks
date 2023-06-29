@@ -28,4 +28,10 @@ export class FrontendUtils {
 			waitUntil: 'networkidle',
 		} );
 	}
+
+	async goToCheckout() {
+		await this.page.goto( '/checkout', {
+			waitUntil: 'networkidle',
+		} );
+	}
 }
