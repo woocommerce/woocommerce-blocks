@@ -45,8 +45,8 @@ interface ImageProps {
 	loaded: boolean;
 	showFullSize: boolean;
 	fallbackAlt: string;
-	// width?: string;
 	scale: string;
+	width?: string | undefined;
 	height?: string | undefined;
 }
 
@@ -55,7 +55,7 @@ const Image = ( {
 	loaded,
 	showFullSize,
 	fallbackAlt,
-	// width,
+	width,
 	scale,
 	height,
 }: ImageProps ): JSX.Element => {
@@ -69,8 +69,7 @@ const Image = ( {
 
 	const imageStyles = {
 		height,
-		// height: aspectRatio ? '100%' : height,
-		// width: !! aspectRatio && '100%',
+		width,
 		objectFit: scale,
 	};
 
@@ -168,6 +167,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 					image={ image }
 					loaded={ ! isLoading }
 					showFullSize={ imageSizing !== ImageSizing.THUMBNAIL }
+					width={ width }
 					height={ height }
 					scale={ scale }
 				/>

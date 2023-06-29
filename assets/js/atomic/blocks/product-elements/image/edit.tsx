@@ -47,11 +47,11 @@ const Edit = ( {
 		imageSizing,
 		showSaleBadge,
 		saleBadgeAlign,
-		// width,
+		width,
 		height,
 		scale,
 	} = attributes;
-	const blockProps = useBlockProps( { style: { /*width,*/ height } } );
+	const blockProps = useBlockProps( { style: { width, height } } );
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
 	const isBlockThemeEnabled = getSettingWithCoercion(
 		'is_block_theme_enabled',
@@ -69,6 +69,7 @@ const Edit = ( {
 			<InspectorControls>
 				<ImageSizeSettings
 					scale={ scale }
+					width={ width }
 					height={ height }
 					setAttributes={ setAttributes }
 				/>
