@@ -107,3 +107,4 @@ Current list of events:
 -   `experimental__woocommerce_blocks-checkout-set-shipping-address` - Fired when a shipping address is added during checkout.
 -   `experimental__woocommerce_blocks-checkout-set-billing-address` - Fired when a billing address is added during checkout.
 -   `experimental__woocommerce_blocks-checkout-set-phone-number` - Fired when a phone number is added during checkout.
+-   `experimental__woocommerce_blocks-refresh-page` - Fired when the page should be refreshed because the store status has changed.

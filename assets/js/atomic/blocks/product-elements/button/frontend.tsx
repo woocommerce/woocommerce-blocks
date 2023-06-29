@@ -2,8 +2,9 @@
  * External dependencies
  */
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { store } from '@woocommerce/interactivity';
+import { store, navigate } from '@woocommerce/interactivity';
 import { dispatch } from '@wordpress/data';
+import { addAction } from '@wordpress/hooks';
 
 type Context = {
 	woocommerce: {
@@ -23,6 +24,17 @@ type State = {
 		cartUrl: string;
 	};
 };
+
+addAction(
+	'experimental__woocommerce_blocks-refresh-page',
+	'woocommerce',
+	async () => {
+		await navigate( window.location.href, {
+			force: true,
+			replace: true,
+		} );
+	}
+);
 
 store( {
 	state: {
