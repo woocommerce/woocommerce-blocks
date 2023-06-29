@@ -38,6 +38,10 @@
 		}
 	}
 
+	a[hidden] {
+		display: none;
+	}
+
 	.wc-block-components-product-button__button {
 		border-style: none;
 		display: inline-flex;
@@ -106,5 +110,3 @@
 		}
 	}
 }
-
-

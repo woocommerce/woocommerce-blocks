@@ -15,6 +15,12 @@ class ProductButton extends AbstractBlock {
 	 */
 	protected $block_name = 'product-button';
 
+
+	/**
+	 * Get the frontend script handle for this block type.
+	 *
+	 * @param string $key Data to get, or default to everything.
+	 */
 	protected function get_block_type_script( $key = null ) {
 		$script = [
 			'handle'       => 'wc-' . $this->block_name . '-interactivity-frontend',
@@ -33,6 +39,22 @@ class ProductButton extends AbstractBlock {
 	}
 
 	/**
+	 * Enqueue frontend assets for this block, just in time for rendering.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 */
+	protected function enqueue_assets( array $attributes ) {
+		parent::enqueue_assets( $attributes );
+		// The block uses Interactivity API, it isn't necessary enqueue the add-to-cart script.
+		add_action(
+			'wp_enqueue_scripts',
+			function() {
+				wp_dequeue_script( 'wc-add-to-cart' );
+			}
+		);
+	}
+
+	/**
 	 * Include and render the block.
 	 *
 	 * @param array    $attributes Block attributes. Default empty array.
@@ -45,13 +67,23 @@ class ProductButton extends AbstractBlock {
 		$product = wc_get_product( $post_id );
 
 		if ( $product ) {
-			$number_of_items_in_cart = $this->get_cart_item_quantities_by_product_id( $product->get_id() );
+			$number_of_items_in_cart  = $this->get_cart_item_quantities_by_product_id( $product->get_id() );
+			$cart_redirect_after_add  = get_option( 'woocommerce_cart_redirect_after_add' ) === 'yes';
+			$ajax_add_to_cart_enabled = get_option( 'woocommerce_enable_ajax_add_to_cart' ) === 'yes';
+			$is_ajax_button           = $ajax_add_to_cart_enabled && ! $cart_redirect_after_add && $product->supports( 'ajax_add_to_cart' ) && $product->is_purchasable() && $product->is_in_stock();
 
 			wc_store(
 				[
 					'state' => [
 						'woocommerce' => [
-							'inTheCart' => sprintf( __( '%s in the cart', 'woo-gutenberg-products-block' ), '###' ),
+							'inTheCart' => sprintf(
+								/* translators: %s: product number. */
+								__(
+									'%s in the cart',
+									'woo-gutenberg-products-block'
+								),
+								'###'
+							),
 							'viewCart'  => __( 'View cart', 'woo-gutenberg-products-block' ),
 							'cartUrl'   => wc_get_cart_url(),
 						],
@@ -63,7 +95,14 @@ class ProductButton extends AbstractBlock {
 				'woocommerce' => array(
 					'isLoading'       => false,
 					'numberOfItems'   => $number_of_items_in_cart,
-					'addToCart'       => $number_of_items_in_cart > 0 ? sprintf( __( '%s in the cart', 'woo-gutenberg-products-block' ), $number_of_items_in_cart ) : $product->add_to_cart_text(),
+					'addToCart'       => $number_of_items_in_cart > 0 ? sprintf(
+						/* translators: %s: product number. */
+						__(
+							'%s in the cart',
+							'woo-gutenberg-products-block'
+						),
+						$number_of_items_in_cart
+					) : $product->add_to_cart_text(),
 					'productId'       => $product->get_id(),
 					'isAdded'         => false,
 					'moreThanOneItem' => $number_of_items_in_cart > 0,
@@ -71,9 +110,6 @@ class ProductButton extends AbstractBlock {
 			);
 
 			$parsed_context                = wp_json_encode( $context );
-			$cart_redirect_after_add       = get_option( 'woocommerce_cart_redirect_after_add' ) === 'yes';
-			$ajax_add_to_cart_enabled      = get_option( 'woocommerce_enable_ajax_add_to_cart' ) === 'yes';
-			$is_ajax_button                = $ajax_add_to_cart_enabled && ! $cart_redirect_after_add && $product->supports( 'ajax_add_to_cart' ) && $product->is_purchasable() && $product->is_in_stock();
 			$html_element                  = $is_ajax_button ? 'button' : 'a';
 			$styles_and_classes            = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 			$text_align_styles_and_classes = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
@@ -88,7 +124,7 @@ class ProductButton extends AbstractBlock {
 						'wp-element-button',
 						'wc-block-components-product-button__button',
 						$product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
-						$is_ajax_button ? '' : '',
+						$is_ajax_button ? 'ajax_add_to_cart' : '',
 						'product_type_' . $product->get_type(),
 						$styles_and_classes['classes'],
 					)
@@ -126,26 +162,28 @@ class ProductButton extends AbstractBlock {
 			 */
 			return apply_filters(
 				'woocommerce_loop_add_to_cart_link',
-				sprintf(
-					'<div class="wp-block-button wc-block-components-product-button %1$s %2$s" data-wc-context=%9$s>
-					<%3$s href="%4$s" class="%5$s" style="%6$s"
+				strtr(
+					'<div class="wp-block-button wc-block-components-product-button {classes} {custom_classes}" data-wc-context={context}>
+					<{html_element} href="{add_to_cart_url}" class="{button_classes}" style="{button_styles}"
 					data-wc-on--click="actions.woocommerce.addToCart"
 					data-wc-class--loading="context.woocommerce.isLoading"
 					data-wc-class--added="context.woocommerce.moreThanOneItem"
 					data-wc-text="state.woocommerce.addToCartText"
-					%7$s>%8$s</%3$s>
-					%10$s
+					{attributes}>{add_to_cart_text}</{html_element}>
+					{view_cart_anchor}
 				</div>',
-					esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
-					esc_attr( $classname . ' ' . $custom_width_classes ),
-					$html_element,
-					esc_url( $product->add_to_cart_url() ),
-					isset( $args['class'] ) ? esc_attr( $args['class'] . ' ' . $is_added_class ) : $is_added_class,
-					esc_attr( $styles_and_classes['styles'] ),
-					isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
-					esc_html( $context['woocommerce']['addToCart'] ),
-					'\'' . $parsed_context . '\'',
-					$this->get_view_cart_html()
+					array(
+						'{classes}'          => esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
+						'{custom_classes}'   => esc_attr( $classname . ' ' . $custom_width_classes ),
+						'{html_element}'     => $html_element,
+						'{add_to_cart_url}'  => esc_url( $product->add_to_cart_url() ),
+						'{button_classes}'   => isset( $args['class'] ) ? esc_attr( $args['class'] . ' ' . $is_added_class ) : $is_added_class,
+						'{button_styles}'    => esc_attr( $styles_and_classes['styles'] ),
+						'{attributes}'       => isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
+						'{add_to_cart_text}' => esc_html( $context['woocommerce']['addToCart'] ),
+						'{context}'          => '\'' . $parsed_context . '\'',
+						'{view_cart_anchor}' => $this->get_view_cart_html(),
+					)
 				),
 				$product,
 				$args
@@ -153,6 +191,12 @@ class ProductButton extends AbstractBlock {
 		}
 	}
 
+	/**
+	 * Get the number of items in the cart for a given product id.
+	 *
+	 * @param number $product_id The product id.
+	 * @return number The number of items in the cart.
+	 */
 	private function get_cart_item_quantities_by_product_id( $product_id ) {
 		if ( ! isset( WC()->cart ) ) {
 			return 0;
@@ -162,6 +206,11 @@ class ProductButton extends AbstractBlock {
 		return isset( $cart[ $product_id ] ) ? $cart[ $product_id ] : 0;
 	}
 
+	/**
+	 * Get the view cart link html.
+	 *
+	 * @return string The view cart html.
+	 */
 	private function get_view_cart_html() {
 		return '<a hidden="!context.woocommerce.isAdded" data-wc-bind--hidden="!context.woocommerce.isAdded" data-wc-bind--href="state.woocommerce.cartUrl" class="added_to_cart wc_forward" data-wc-bind--title="state.woocommerce.viewCart" data-wc-text="state.woocommerce.viewCart"></a>';
 	}
