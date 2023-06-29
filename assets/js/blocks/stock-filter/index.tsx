@@ -13,6 +13,7 @@ import edit from './edit';
 import metadata from './block.json';
 import { blockAttributes } from './attributes';
 import type { Attributes } from './types';
+import deprecated from './deprecated';
 
 registerBlockType( metadata, {
 	icon: {
@@ -30,27 +31,13 @@ registerBlockType( metadata, {
 	edit,
 	// Save the props to post content.
 	save( { attributes }: { attributes: Attributes } ) {
-		const {
-			className,
-			showCounts,
-			heading,
-			headingLevel,
-			showFilterButton,
-		} = attributes;
-		const data: Record< string, unknown > = {
-			'data-show-counts': showCounts,
-			'data-heading': heading,
-			'data-heading-level': headingLevel,
-		};
-		if ( showFilterButton ) {
-			data[ 'data-show-filter-button' ] = showFilterButton;
-		}
+		const { className } = attributes;
+
 		return (
 			<div
 				{ ...useBlockProps.save( {
 					className: classNames( 'is-loading', className ),
 				} ) }
-				{ ...data }
 			>
 				<span
 					aria-hidden
@@ -59,4 +46,5 @@ registerBlockType( metadata, {
 			</div>
 		);
 	},
+	deprecated,
 } );
