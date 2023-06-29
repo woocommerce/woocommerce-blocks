@@ -37,9 +37,9 @@ const renderMiniCartFrontend = () => {
 					.replace( 'wc-block-mini-cart__button', '' );
 
 				return {
-					initialCartSubtotal: button.dataset.cartSubtotal
-						? button.dataset.cartSubtotal
-						: '',
+					initialCartTotals: button.dataset.cartTotals
+						? JSON.parse( button.dataset.cartTotals )
+						: 0,
 					initialCartItemsCount: button.dataset.cartItemsCount
 						? parseInt( button.dataset.cartItemsCount, 10 )
 						: 0,

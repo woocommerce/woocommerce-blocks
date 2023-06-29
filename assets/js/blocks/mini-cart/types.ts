@@ -1,8 +1,13 @@
+/**
+ * External dependencies
+ */
+import { CartResponseTotals } from '@woocommerce/types';
+
 export type IconType = 'cart' | 'bag' | 'bag-alt' | undefined;
 
 export interface BlockAttributes {
 	initialCartItemsCount: number;
-	initialCartSubtotal: string;
+	initialCartTotals: CartResponseTotals;
 	isInitiallyOpen?: boolean;
 	colorClassNames?: string;
 	style?: Record< string, Record< string, string > >;

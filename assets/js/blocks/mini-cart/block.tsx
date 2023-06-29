@@ -46,7 +46,7 @@ function getScrollbarWidth() {
 const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 	const {
 		initialCartItemsCount,
-		initialCartSubtotal,
+		initialCartTotals,
 		isInitiallyOpen = false,
 		colorClassNames,
 		contents = '',
@@ -61,16 +61,16 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 	const {
 		cartItemsCount: cartItemsCountFromApi,
 		cartIsLoading,
-		cartTotals,
+		cartTotals: cartTotalsFromApi,
 	} = useStoreCart();
 
-	const isFirstLoadingCompleted = useRef( cartIsLoading );
+	const cartIsLoadingForTheFirstTime = useRef( cartIsLoading );
 
 	useEffect( () => {
-		if ( isFirstLoadingCompleted.current && ! cartIsLoading ) {
-			isFirstLoadingCompleted.current = false;
+		if ( cartIsLoadingForTheFirstTime.current && ! cartIsLoading ) {
+			cartIsLoadingForTheFirstTime.current = false;
 		}
-	}, [ cartIsLoading, isFirstLoadingCompleted ] );
+	}, [ cartIsLoading, cartIsLoadingForTheFirstTime ] );
 
 	const [ isOpen, setIsOpen ] = useState< boolean >( isInitiallyOpen );
 	// We already rendered the HTML drawer placeholder, so we want to skip the
@@ -178,21 +178,17 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 
 	const taxLabel = getSettingWithCoercion( 'taxLabel', '', isString );
 
-	const cartItemsCount = ! isFirstLoadingCompleted.current
-		? cartItemsCountFromApi
-		: initialCartItemsCount;
+	const cartItemsCount = cartIsLoadingForTheFirstTime.current
+		? initialCartItemsCount
+		: cartItemsCountFromApi;
 
-	let subTotal = initialCartSubtotal;
-	if ( ! isFirstLoadingCompleted.current ) {
-		const rawSubTotal = showIncludingTax
-			? parseInt( cartTotals.total_items, 10 ) +
-			  parseInt( cartTotals.total_items_tax, 10 )
-			: parseInt( cartTotals.total_items, 10 );
-		subTotal = formatPrice(
-			rawSubTotal,
-			getCurrencyFromPriceResponse( cartTotals )
-		);
-	}
+	const cartTotals = cartIsLoadingForTheFirstTime.current
+		? initialCartTotals
+		: cartTotalsFromApi;
+	const subTotal = showIncludingTax
+		? parseInt( cartTotals.total_items, 10 ) +
+		  parseInt( cartTotals.total_items_tax, 10 )
+		: parseInt( cartTotals.total_items, 10 );
 
 	const ariaLabel = hasHiddenPrice
 		? sprintf(
@@ -214,7 +210,10 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 					'woo-gutenberg-products-block'
 				),
 				cartItemsCount,
-				subTotal
+				formatPrice(
+					subTotal,
+					getCurrencyFromPriceResponse( cartTotals )
+				)
 		  );
 
 	return (
@@ -234,10 +233,13 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 						className="wc-block-mini-cart__amount"
 						style={ { color: priceColorValue } }
 					>
-						{ subTotal }
+						{ formatPrice(
+							subTotal,
+							getCurrencyFromPriceResponse( cartTotals )
+						) }
 					</span>
 				) }
-				{ taxLabel !== '' && subTotal !== '' && ! hasHiddenPrice && (
+				{ taxLabel !== '' && subTotal > 0 && ! hasHiddenPrice && (
 					<small
 						className="wc-block-mini-cart__tax-label"
 						style={ { color: priceColorValue } }
