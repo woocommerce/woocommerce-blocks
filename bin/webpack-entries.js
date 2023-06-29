@@ -117,6 +117,12 @@ const entries = {
 		'wc-blocks': './assets/js/index.js',
 
 		// Blocks
+		'product-image-gallery':
+			'./assets/js/atomic/blocks/product-elements/product-image-gallery/index.ts',
+		'product-reviews':
+			'./assets/js/atomic/blocks/product-elements/product-reviews/index.tsx',
+		'product-details':
+			'./assets/js/atomic/blocks/product-elements/product-details/index.tsx',
 		...getBlockEntries( '{index,block,frontend}.{t,j}s{,x}' ),
 	},
 	core: {

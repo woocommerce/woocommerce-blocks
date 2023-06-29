@@ -177,6 +177,16 @@ class AddToCartForm extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @see $this->register_block_type()
+	 * @return string[]|null
+	 */
+	protected function get_block_type_style() {
+		return null;
+	}
+
+	/**
 	 * It isn't necessary register block assets because it is a server side block.
 	 */
 	protected function register_block_type_assets() {
