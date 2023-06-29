@@ -3,20 +3,14 @@
  */
 import { Locator } from '@playwright/test';
 
-export const getMinMaxPriceInputs = async ( {
-	blockName,
-	getBlockByName,
-}: {
-	blockName: string;
-	getBlockByName: ( blockName: string ) => Promise< Locator >;
-} ) => {
-	const priceFilterBlock = await getBlockByName( blockName );
-
-	const maxPriceInput = await priceFilterBlock.locator(
+export const getMinMaxPriceInputs = async (
+	priceFilterBlockLocator: Locator
+) => {
+	const maxPriceInput = await priceFilterBlockLocator.locator(
 		'.wc-block-price-filter__amount--max'
 	);
 
-	const minPriceInput = await priceFilterBlock.locator(
+	const minPriceInput = await priceFilterBlockLocator.locator(
 		'.wc-block-price-filter__amount--min'
 	);
 
