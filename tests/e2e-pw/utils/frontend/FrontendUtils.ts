@@ -19,7 +19,7 @@ export class FrontendUtils {
 	}
 
 	async addToCart() {
-		await this.page.locator( 'text=Add to cart' ).click();
+		await this.page.click( 'text=Add to cart' );
 		await this.page.waitForLoadState( 'networkidle' );
 	}
 

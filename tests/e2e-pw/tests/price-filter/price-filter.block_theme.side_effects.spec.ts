@@ -68,10 +68,12 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 		pageUtils,
 		frontendUtils,
 	} ) => {
-		const { maxPriceInput } = await getMinMaxPriceInputs( {
-			blockName: 'woocommerce/filter-wrapper',
-			getBlockByName: frontendUtils.getBlockByName,
-		} );
+		const priceFilterBlockLocator = await frontendUtils.getBlockByName(
+			'woocommerce/filter-wrapper'
+		);
+		const { maxPriceInput } = await getMinMaxPriceInputs(
+			priceFilterBlockLocator
+		);
 
 		await maxPriceInput.selectText();
 		await maxPriceInput.type( '10' );
@@ -154,10 +156,12 @@ test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 		pageUtils,
 		frontendUtils,
 	} ) => {
-		const { maxPriceInput } = await getMinMaxPriceInputs( {
-			blockName: 'woocommerce/filter-wrapper',
-			getBlockByName: frontendUtils.getBlockByName,
-		} );
+		const priceFilterBlockLocator = await frontendUtils.getBlockByName(
+			'woocommerce/filter-wrapper'
+		);
+		const { maxPriceInput } = await getMinMaxPriceInputs(
+			priceFilterBlockLocator
+		);
 
 		await maxPriceInput.selectText();
 		await maxPriceInput.type( '10' );
