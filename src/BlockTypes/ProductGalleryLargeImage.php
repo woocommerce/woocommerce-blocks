@@ -183,11 +183,6 @@ class ProductGalleryLargeImage extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		if ( ! empty( $content ) ) {
-			parent::register_block_type_assets();
-			$this->register_chunk_translations( [ $this->block_name ] );
-			return $content;
-		}
 		$parsed_attributes = $this->parse_attributes( $attributes );
 
 		$border_radius      = StyleAttributesUtils::get_border_radius_class_and_style( $attributes );
