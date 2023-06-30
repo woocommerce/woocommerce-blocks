@@ -27,6 +27,7 @@ const getBlockifiedTemplate = () =>
 					{
 						type: 'constrained',
 						justifyContent: 'right',
+						width: '512px',
 					},
 					[ createBlock( 'woocommerce/product-image-gallery' ) ]
 				),
@@ -114,10 +115,10 @@ const onClickCallback = ( {
 	}
 };
 
-export {
-	getBlockifiedTemplate,
-	isConversionPossible,
-	getDescription,
+const blockifyConfig = {
 	getButtonLabel,
 	onClickCallback,
+	getBlockifiedTemplate,
 };
+
+export { isConversionPossible, getDescription, blockifyConfig };
