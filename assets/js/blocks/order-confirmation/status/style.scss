@@ -1,0 +1,7 @@
+.wc-block-order-confirmation-status {
+	margin: $gap 0;
+	p {
+		@include font-size(large);
+		margin: 0;
+	}
+}
