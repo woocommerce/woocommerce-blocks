@@ -40,11 +40,12 @@
 		"<rootDir>/tests/js/setup-after-env.ts"
 	],
 	"testPathIgnorePatterns": [
-		"<rootDir>/tests/",
+		"<rootDir>/tests/e2e",
+		"<rootDir>/tests/e2e-pw",
 		"<rootDir>/node_modules/",
 		"<rootDir>/vendor/"
 	],
-	"transformIgnorePatterns": [ "node_modules/(?!(simple-html-tokenizer)/)" ],
+	"transformIgnorePatterns": [ "node_modules/(?!(simple-html-tokenizer|is-plain-obj|memize)/)" ],
 	"testEnvironment": "jsdom",
 	"preset": "@wordpress/jest-preset-default",
 	"transform": {

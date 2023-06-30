@@ -6,6 +6,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { Icon, category } from '@wordpress/icons';
 import classNames from 'classnames';
+import { initBlock } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -16,7 +17,7 @@ import { blockAttributes } from './attributes';
 import metadata from './block.json';
 import deprecated from './deprecated';
 
-registerBlockType( metadata, {
+const settings = {
 	icon: {
 		src: (
 			<Icon
@@ -58,4 +59,9 @@ registerBlockType( metadata, {
 		);
 	},
 	deprecated,
-} );
+};
+
+registerBlockType( metadata, settings );
+
+export const init = () =>
+	initBlock( { name: metadata.name, metadata, settings } );

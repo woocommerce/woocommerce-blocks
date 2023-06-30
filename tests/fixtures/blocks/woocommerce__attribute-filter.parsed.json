@@ -1,0 +1,43 @@
+[
+	{
+		"blockName": "woocommerce/filter-wrapper",
+		"attrs": {
+			"filterType": "attribute-filter",
+			"heading": "Filter by Size"
+		},
+		"innerBlocks": [
+			{
+				"blockName": "core/heading",
+				"attrs": {
+					"level": 3
+				},
+				"innerBlocks": [],
+				"innerHTML": "\n\t<h3 class=\"wp-block-heading\">Filter by Size</h3>\n\t",
+				"innerContent": [
+					"\n\t<h3 class=\"wp-block-heading\">Filter by Size</h3>\n\t"
+				]
+			},
+			{
+				"blockName": "woocommerce/attribute-filter",
+				"attrs": {
+					"attributeId": 2,
+					"showCounts": true,
+					"heading": ""
+				},
+				"innerBlocks": [],
+				"innerHTML": "\n\t<div class=\"wp-block-woocommerce-attribute-filter is-loading\"><span aria-hidden=\"true\" class=\"wc-block-product-attribute-filter__placeholder\"></span></div>\n\t",
+				"innerContent": [
+					"\n\t<div class=\"wp-block-woocommerce-attribute-filter is-loading\"><span aria-hidden=\"true\" class=\"wc-block-product-attribute-filter__placeholder\"></span></div>\n\t"
+				]
+			}
+		],
+		"innerHTML": "\n<div class=\"wp-block-woocommerce-filter-wrapper\">\n\n\t</div>\n",
+		"innerContent": [
+			"\n<div class=\"wp-block-woocommerce-filter-wrapper\">",
+			null,
+			"\n\n\t",
+			null,
+			"</div>\n"
+		]
+	}
+]
