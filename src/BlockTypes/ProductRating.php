@@ -150,7 +150,11 @@ class ProductRating extends AbstractBlock {
 						esc_html( $reviews_count )
 					);
 
-					$customer_reviews_count = '<a class="woocommerce-review-link" rel="nofollow" href="' . esc_url( $product_permalink ) . '#reviews">' . $customer_reviews_count . '</a>';
+					if ( $is_descendent_of_single_product_block ) {
+						$customer_reviews_count = '<a href="' . esc_url( $product_permalink ) . '#reviews">' . $customer_reviews_count . '</a>';
+					} elseif ( $is_descendent_of_single_product_template ) {
+						$customer_reviews_count = '<a class="woocommerce-review-link" rel="nofollow" href="#reviews">' . $customer_reviews_count . '</a>';
+					}
 
 					$reviews_count_html = sprintf( '<span class="wc-block-components-product-rating__reviews_count">%1$s</span>', $customer_reviews_count );
 					$html               = sprintf(
