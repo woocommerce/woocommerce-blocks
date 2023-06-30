@@ -2,7 +2,7 @@
 	"name": "woocommerce/order-confirmation-summary",
 	"version": "1.0.0",
 	"title": "Order Confirmation Summary",
-	"description": "Display the order confirmation summary.",
+	"description": "Display a summary of a new order on the order confirmation page.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"supports": {
