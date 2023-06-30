@@ -8,7 +8,6 @@ import prettierConfig from '@wordpress/prettier-config';
 import {
 	getBlockTypes,
 	serialize,
-	parse,
 	unstable__bootstrapServerSideBlockDefinitions,
 } from '@wordpress/blocks';
 
@@ -27,7 +26,6 @@ import {
 	writeBlockFixtureSerializedHTML,
 } from './utils';
 import { registerWooBlocks } from './registerBlocks';
-
 import '../../assets/js/categories/register-woo-category';
 
 const blockBasenames = getAvailableBlockFixturesBasenames();

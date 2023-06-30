@@ -93,7 +93,10 @@
 		"ts:check": "tsc --build",
 		"ts:log-errors": "npm --silent run ts:check | npx -y @bartekbp/typescript-checkstyle > checkstyle.xml",
 		"wp-env": "wp-env",
-		"wp-env:config": "./bin/wp-env-pre-config.sh"
+		"wp-env:config": "./bin/wp-env-pre-config.sh",
+		"fixtures:clean": "rimraf \"tests/fixtures/blocks/*.+(json|serialized.html)\"",
+		"fixtures:generate": "cross-env GENERATE_MISSING_FIXTURES=y npm run test tests/fixtures/full-content.test.ts && npm run format tests/fixtures/blocks/*.json",
+		"fixtures:regenerate": "npm run fixtures:clean && npm run fixtures:generate"
 	},
 	"devDependencies": {
 		"@actions/core": "1.10.0",
