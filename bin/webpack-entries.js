@@ -50,6 +50,9 @@ const blocks = {
 	'product-gallery': {
 		isExperimental: true,
 	},
+	'product-gallery-large-image': {
+		customDir: 'product-gallery/inner-blocks/product-gallery-large-image',
+	},
 	'product-new': {},
 	'product-on-sale': {},
 	'product-query': {

@@ -4,24 +4,14 @@
 	"title": "Product Gallery",
 	"description": "Showcase your products relevant images and media.",
 	"category": "woocommerce",
-	"keywords": [ "WooCommerce" ],
-	"textdomain": "woo-gutenberg-products-block",
-	"attributes": {
-		"contentJustification": {
-			"type": "string"
-		},
-		"fontSize": {
-			"type": "string",
-			"default": "small"
-		},
-		"align": {
-			"type": "string",
-			"default": "wide"
-		}
-	},
 	"supports": {
-		"html": false
+		"align": true,
+		"multiple": false
 	},
+	"keywords": [ "WooCommerce" ],
+	"usesContext": [ "postId", "postType", "queryId" ],
+	"textdomain": "woo-gutenberg-products-block",
+
 	"apiVersion": 2,
 	"$schema": "https://schemas.wp.org/trunk/block.json"
 }
