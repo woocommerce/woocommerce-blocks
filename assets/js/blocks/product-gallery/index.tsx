@@ -10,6 +10,7 @@ import { isExperimentalBuild } from '@woocommerce/block-settings';
 import { Edit, Save } from './edit';
 import metadata from './block.json';
 import icon from './icon';
+import './inner-blocks/product-gallery-thumbnails';
 
 if ( isExperimentalBuild() ) {
 	registerBlockSingleProductTemplate( {

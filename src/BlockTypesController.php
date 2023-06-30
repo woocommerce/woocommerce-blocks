@@ -191,6 +191,7 @@ final class BlockTypesController {
 			'ProductCategories',
 			'ProductCategory',
 			'ProductGallery',
+			'ProductGalleryThumbnails',
 			'ProductImage',
 			'ProductImageGallery',
 			'ProductNew',
