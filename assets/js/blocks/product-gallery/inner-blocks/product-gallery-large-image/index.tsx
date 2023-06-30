@@ -10,6 +10,7 @@ import { isExperimentalBuild } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
+import './style.scss';
 
 if ( isExperimentalBuild() ) {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
