@@ -36,7 +36,7 @@ class ShippingAddress extends AbstractOrderConfirmationBlock {
 		}
 
 		return sprintf(
-			'<div class="woocommerce wc-block-%4$s %1$s %2$s">%3$s</div>',
+			'<div class="wc-block-%4$s %1$s %2$s">%3$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			$content,
@@ -55,15 +55,14 @@ class ShippingAddress extends AbstractOrderConfirmationBlock {
 		if ( $order->needs_shipping_address() ) {
 			$address = $order->get_formatted_shipping_address( $fallback );
 			$address = $address . ( $order->get_shipping_phone() ? '<p class="woocommerce-customer-details--phone">' . esc_html( $order->get_shipping_phone() ) . '</p>' : '' );
+		} else {
+			$address = esc_html__( 'This order does not require shipping.', 'woo-gutenberg-products-block' );
 		}
-		$address = esc_html__( 'This order does not require shipping.', 'woo-gutenberg-products-block' );
 
 		return '
-			<div class="woocommerce-customer-details">
-				<address>
-					' . wp_kses_post( $address ) . '
-				</address>
-			</div>
+			<address>
+				' . wp_kses_post( $address ) . '
+			</address>
 		';
 	}
 
