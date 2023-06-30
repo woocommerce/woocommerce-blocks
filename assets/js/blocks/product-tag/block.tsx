@@ -1,9 +1,11 @@
+// @ts-expect-error: `ServerSideRender ` currently does not have a type definition in WordPress core
+// eslint-disable-next-line @woocommerce/dependency-group
+import ServerSideRender from '@wordpress/server-side-render';
 /**
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { BlockControls, InspectorControls } from '@wordpress/block-editor';
-import ServerSideRender from '@wordpress/server-side-render';
 import {
 	Button,
 	Disabled,
@@ -20,12 +22,13 @@ import ProductOrderbyControl from '@woocommerce/editor-components/product-orderb
 import ProductStockControl from '@woocommerce/editor-components/product-stock-control';
 import { Icon, tag } from '@wordpress/icons';
 import { gridBlockPreview } from '@woocommerce/resource-previews';
-import { getSetting } from '@woocommerce/settings';
+import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
+import { isNumber } from '@woocommerce/types';
+
 /**
  * Internal dependencies
  */
 import type { ProductsByTagBlockProps } from './types';
-
 /**
  * Component to handle edit mode of "Products by Tag".
  */
@@ -82,6 +85,7 @@ const ProductsByTagBlock = ( {
 					) }
 					initialOpen={ ! attributes.tags.length && ! isEditing }
 				>
+					{ /* @ts-expect-error ProductTagControl is yet to be converted to tsx*/ }
 					<ProductTagControl
 						selected={ attributes.tags }
 						onChange={ ( value = [] ) => {
@@ -104,10 +108,26 @@ const ProductsByTagBlock = ( {
 						rows={ rows }
 						alignButtons={ alignButtons }
 						setAttributes={ setAttributes }
-						minColumns={ getSetting( 'min_columns', 1 ) }
-						maxColumns={ getSetting( 'max_columns', 6 ) }
-						minRows={ getSetting( 'min_rows', 1 ) }
-						maxRows={ getSetting( 'max_rows', 6 ) }
+						minColumns={ getSettingWithCoercion(
+							'min_columns',
+							1,
+							isNumber
+						) }
+						maxColumns={ getSettingWithCoercion(
+							'max_columns',
+							6,
+							isNumber
+						) }
+						minRows={ getSettingWithCoercion(
+							'min_rows',
+							6,
+							isNumber
+						) }
+						maxRows={ getSettingWithCoercion(
+							'max_rows',
+							6,
+							isNumber
+						) }
 					/>
 				</PanelBody>
 				<PanelBody
@@ -183,6 +203,7 @@ const ProductsByTagBlock = ( {
 					'woo-gutenberg-products-block'
 				) }
 				<div className="wc-block-product-tag__selection">
+					{ /* @ts-expect-error ProductTagControl is yet to be converted to tsx*/ }
 					<ProductTagControl
 						selected={ currentAttributes.tags }
 						onChange={ ( value = [] ) => {
