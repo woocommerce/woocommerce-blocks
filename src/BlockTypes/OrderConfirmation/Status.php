@@ -36,7 +36,7 @@ class Status extends AbstractOrderConfirmationBlock {
 		}
 
 		return sprintf(
-			'<div class="woocommerce wc-block-%4$s %1$s %2$s">%3$s</div>',
+			'<div class="wc-block-%4$s %1$s %2$s">%3$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			$content,
@@ -65,12 +65,12 @@ class Status extends AbstractOrderConfirmationBlock {
 			$actions .= '<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="button pay">' . esc_html_e( 'My account', 'woo-gutenberg-products-block' ) . '</a> ';
 
 			$content .= '
-				<p class="woocommerce-notice woocommerce-notice--error woocommerce-thankyou-order-failed">' . $order_received_text . '</p>
-				<p class="woocommerce-notice woocommerce-notice--error woocommerce-thankyou-order-failed-actions">' . $actions . '</p>
+				<p class="woocommerce-thankyou-order-failed">' . $order_received_text . '</p>
+				<p class="woocommerce-thankyou-order-failed-actions">' . $actions . '</p>
 			';
 		} else {
 			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-			$content .= '<p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received">' . wp_kses_post( apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'woo-gutenberg-products-block' ), $order ) ) . '</p>';
+			$content .= '<p class="woocommerce-thankyou-order-received">' . wp_kses_post( apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'woo-gutenberg-products-block' ), $order ) ) . '</p>';
 		}
 
 		return $content;
@@ -83,6 +83,6 @@ class Status extends AbstractOrderConfirmationBlock {
 	 */
 	protected function render_content_fallback() {
 		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-		return '<p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received">' . wp_kses_post( apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'woo-gutenberg-products-block' ), null ) ) . '</p>';
+		return '<p class="woocommerce-thankyou-order-received">' . wp_kses_post( apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'woo-gutenberg-products-block' ), null ) ) . '</p>';
 	}
 }
