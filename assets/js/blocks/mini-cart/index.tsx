@@ -31,11 +31,6 @@ const settings: BlockConfiguration = {
 		'Display a button for shoppers to quickly view their cart.',
 		'woo-gutenberg-products-block'
 	),
-	providesContext: {
-		priceColorValue: 'priceColorValue',
-		iconColorValue: 'iconColorValue',
-		productCountColorValue: 'productCountColorValue',
-	},
 	supports: {
 		html: false,
 		multiple: false,
@@ -75,22 +70,13 @@ const settings: BlockConfiguration = {
 			default: 'hidden',
 		},
 		priceColor: {
-			type: 'string',
-		},
-		priceColorValue: {
-			type: 'string',
+			type: 'object',
 		},
 		iconColor: {
-			type: 'string',
-		},
-		iconColorValue: {
-			type: 'string',
+			type: 'object',
 		},
 		productCountColor: {
-			type: 'string',
-		},
-		productCountColorValue: {
-			type: 'string',
+			type: 'object',
 		},
 	},
 	edit,

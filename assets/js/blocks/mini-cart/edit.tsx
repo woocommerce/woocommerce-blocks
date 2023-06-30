@@ -1,13 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	InspectorControls,
-	useBlockProps,
-	withColors,
-	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
-	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
-} from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { formatPrice } from '@woocommerce/price-format';
 import {
 	PanelBody,
@@ -27,6 +21,8 @@ import classNames from 'classnames';
 import { cartOutline, bag, bagAlt } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
+import { ColorPanel } from '@woocommerce/editor-components/color-panel';
+import type { ColorPaletteOption } from '@woocommerce/editor-components/color-panel';
 
 /**
  * Internal dependencies
@@ -39,12 +35,9 @@ interface Attributes {
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
 	cartAndCheckoutRenderStyle: boolean;
-	priceColor: string;
-	iconColor: string;
-	productCountColor: string;
-	priceColorValue: string;
-	iconColorValue: string;
-	productCountColorValue: string;
+	priceColor: ColorPaletteOption;
+	iconColor: ColorPaletteOption;
+	productCountColor: ColorPaletteOption;
 }
 
 interface Props {
@@ -56,29 +49,28 @@ interface Props {
 	setProductCountColor: ( colorValue: string | undefined ) => void;
 }
 
-const Edit = ( {
-	attributes,
-	setAttributes,
-	clientId,
-	setPriceColor,
-	setIconColor,
-	setProductCountColor,
-}: Props ): ReactElement => {
+const defaultColorItem = {
+	name: undefined,
+	color: undefined,
+	slug: undefined,
+};
+
+const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 	const {
 		cartAndCheckoutRenderStyle,
 		addToCartBehaviour,
 		hasHiddenPrice,
-		priceColorValue,
-		iconColorValue,
-		productCountColorValue,
+		priceColor = defaultColorItem,
+		iconColor = defaultColorItem,
+		productCountColor = defaultColorItem,
 		miniCartIcon,
 	} = attributes;
 
 	const className = classNames( {
 		'wc-block-mini-cart': true,
-		'has-price-color': priceColorValue,
-		'has-icon-color': iconColorValue,
-		'has-product-count-color': productCountColorValue,
+		'has-price-color': priceColor,
+		'has-icon-color': iconColor,
+		'has-product-count-color': productCountColor,
 	} );
 
 	const blockProps = useBlockProps( { className } );
@@ -92,48 +84,20 @@ const Edit = ( {
 
 	const productCount = 0;
 	const productTotal = 0;
-
-	const colorGradientSettings = useMultipleOriginColorsAndGradients();
-
-	const colorSettings = [
-		{
-			value: priceColorValue,
-			onChange: ( colorValue: string ) => {
-				setPriceColor( colorValue );
-				setAttributes( { priceColorValue: colorValue } );
-			},
+	const miniCartColorAttributes = {
+		priceColor: {
 			label: __( 'Price', 'woo-gutenberg-products-block' ),
-			resetAllFilter: () => {
-				setPriceColor( undefined );
-				setAttributes( { priceColorValue: undefined } );
-			},
+			context: 'price-color',
 		},
-		{
-			value: iconColorValue,
-			onChange: ( colorValue: string ) => {
-				setIconColor( colorValue );
-				setAttributes( { iconColorValue: colorValue } );
-			},
+		iconColor: {
 			label: __( 'Icon', 'woo-gutenberg-products-block' ),
-			resetAllFilter: () => {
-				setIconColor( undefined );
-				setAttributes( { iconColorValue: undefined } );
-			},
+			context: 'icon-color',
 		},
-		{
-			value: productCountColorValue,
-			onChange: ( colorValue: string ) => {
-				setProductCountColor( colorValue );
-				setAttributes( { productCountColorValue: colorValue } );
-			},
-			label: __( 'Product count', 'woo-gutenberg-products-block' ),
-			resetAllFilter: () => {
-				setProductCountColor( undefined );
-				setAttributes( { productCountColorValue: undefined } );
-			},
+		productCountColor: {
+			label: __( 'Product Count', 'woo-gutenberg-products-block' ),
+			context: 'product-count-color',
 		},
-	];
-
+	};
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
@@ -287,45 +251,21 @@ const Edit = ( {
 					</BaseControl>
 				</PanelBody>
 			</InspectorControls>
-			{ colorGradientSettings.hasColorsOrGradients && (
-				// @ts-to-do: Fix outdated InspectorControls type definitions in DefinitelyTyped and/or Gutenberg.
-				<InspectorControls group="color">
-					{ colorSettings.map(
-						( { onChange, label, value, resetAllFilter } ) => (
-							<ColorGradientSettingsDropdown
-								key={ `mini-cart-color-${ label }` }
-								__experimentalIsRenderedInSidebar
-								settings={ [
-									{
-										colorValue: value,
-										label,
-										onColorChange: onChange,
-										isShownByDefault: true,
-										resetAllFilter,
-										enableAlpha: true,
-									},
-								] }
-								panelId={ clientId }
-								{ ...colorGradientSettings }
-							/>
-						)
-					) }
-				</InspectorControls>
-			) }
+			<ColorPanel colorTypes={ miniCartColorAttributes } />
 			<Noninteractive>
 				<button className="wc-block-mini-cart__button">
 					{ ! hasHiddenPrice && (
 						<span
 							className="wc-block-mini-cart__amount"
-							style={ { color: priceColorValue } }
+							style={ { color: priceColor.color } }
 						>
 							{ formatPrice( productTotal ) }
 						</span>
 					) }
 					<QuantityBadge
 						count={ productCount }
-						iconColor={ iconColorValue }
-						productCountColor={ productCountColorValue }
+						iconColor={ iconColor }
+						productCountColor={ productCountColor }
 						icon={ miniCartIcon }
 					/>
 				</button>
@@ -334,16 +274,4 @@ const Edit = ( {
 	);
 };
 
-const miniCartColorAttributes = {
-	priceColor: 'price-color',
-	iconColor: 'icon-color',
-	productCountColor: 'product-count-color',
-};
-
-// @ts-expect-error: TypeScript doesn't resolve the shared React dependency and cannot resolve the type returned by `withColors`.
-// Similar issue example: https://github.com/microsoft/TypeScript/issues/47663
-const EditWithColors: JSX.Element = withColors( miniCartColorAttributes )(
-	Edit
-);
-
-export default EditWithColors;
+export default Edit;

@@ -58,9 +58,9 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 		miniCartIcon,
 		addToCartBehaviour = 'none',
 		hasHiddenPrice = false,
-		priceColorValue,
-		iconColorValue,
-		productCountColorValue,
+		priceColor,
+		iconColor,
+		productCountColor,
 	} = attributes;
 
 	const {
@@ -259,7 +259,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				{ ! hasHiddenPrice && (
 					<span
 						className="wc-block-mini-cart__amount"
-						style={ { color: priceColorValue } }
+						style={ { color: priceColor.color } }
 					>
 						{ formatPrice(
 							subTotal,
@@ -270,7 +270,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				{ taxLabel !== '' && subTotal !== 0 && ! hasHiddenPrice && (
 					<small
 						className="wc-block-mini-cart__tax-label"
-						style={ { color: priceColorValue } }
+						style={ { color: priceColor.color } }
 					>
 						{ taxLabel }
 					</small>
@@ -278,8 +278,8 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				<QuantityBadge
 					count={ cartItemsCount }
 					icon={ miniCartIcon }
-					iconColor={ iconColorValue }
-					productCountColor={ productCountColorValue }
+					iconColor={ iconColor }
+					productCountColor={ productCountColor }
 				/>
 			</button>
 			<Drawer
