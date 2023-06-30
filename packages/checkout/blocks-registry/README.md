@@ -44,7 +44,7 @@ Blocks can be registered within several different areas or parent blocks. Valid 
 | `woocommerce/checkout-shipping-methods-block`    | Within the shipping methods form step.                        |
 | `woocommerce/checkout-payment-methods-block`     | Within the payment methods form step.                         |
 
-See the `innerBlockAreas` typedef for the most up to date list of available areas.
+See the [`innerBlockAreas`](https://github.com/woocommerce/woocommerce-blocks/blob/6b9955d2a51bc56b0b029edc521ff98e3403dffc/packages/checkout/blocks-registry/types.ts#L8-L33) typedef for the most up to date list of available areas.
 
 ## Registering a Block
 
@@ -212,4 +212,3 @@ const isValid = hasInnerBlocks( 'woocommerce/checkout-totals-block' ); // true
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./packages/checkout/blocks-registry/README.md)
 
 <!-- /FEEDBACK -->
-
