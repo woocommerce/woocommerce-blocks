@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 10.5.0-dev
+ * Version: 10.6.0-dev
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
@@ -314,7 +314,7 @@ function woocommerce_blocks_interactivity_setup() {
 	);
 
 	if ( $is_enabled ) {
-		require_once __DIR__ . '/src/Interactivity/woo-directives.php';
+		require_once __DIR__ . '/src/Interactivity/load.php';
 	}
 }
 add_action( 'plugins_loaded', 'woocommerce_blocks_interactivity_setup' );
