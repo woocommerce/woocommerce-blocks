@@ -15,6 +15,7 @@ import {
  * Internal dependencies
  */
 import { ProductCollectionAttributes } from '../types';
+import UpgradeNotice from './upgrade-notice';
 import ColumnsControl from './columns-control';
 import InheritQueryControl from './inherit-query-control';
 import OrderByControl from './order-by-control';
@@ -42,6 +43,7 @@ const ProductCollectionInspectorControls = (
 
 	return (
 		<InspectorControls>
+			<UpgradeNotice { ...props } />
 			<ToolsPanel
 				label={ __( 'Settings', 'woo-gutenberg-products-block' ) }
 				resetAll={ () => {
