@@ -217,11 +217,6 @@ final class BlockTypesController {
 			'ProductDetails',
 			'SingleProduct',
 			'StockFilter',
-			'OrderConfirmation\Status',
-			'OrderConfirmation\Summary',
-			'OrderConfirmation\Details',
-			'OrderConfirmation\BillingAddress',
-			'OrderConfirmation\ShippingAddress',
 		];
 
 		$block_types = array_merge(
@@ -237,6 +232,11 @@ final class BlockTypesController {
 			$block_types[] = 'ProductGallery';
 			$block_types[] = 'ProductGalleryLargeImage';
 			$block_types[] = 'ProductGalleryThumbnails';
+			$block_types[] = 'OrderConfirmation\Status';
+			$block_types[] = 'OrderConfirmation\Summary';
+			$block_types[] = 'OrderConfirmation\Details';
+			$block_types[] = 'OrderConfirmation\BillingAddress';
+			$block_types[] = 'OrderConfirmation\ShippingAddress';
 		}
 
 		/**
