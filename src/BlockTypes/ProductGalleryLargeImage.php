@@ -29,24 +29,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 	 * @return array
 	 */
 	protected function get_block_type_supports() {
-		return array(
-			'__experimentalBorder'   =>
-			array(
-				'radius'                          => true,
-				'__experimentalSkipSerialization' => true,
-			),
-			'typography'             =>
-			array(
-				'fontSize'                        => true,
-				'__experimentalSkipSerialization' => true,
-			),
-			'spacing'                =>
-			array(
-				'margin'                          => true,
-				'__experimentalSkipSerialization' => true,
-			),
-			'__experimentalSelector' => '.wc-block-components-product-gallery-large-image',
-		);
+		return null;
 	}
 
 	/**
