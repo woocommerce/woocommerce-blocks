@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { gallery as icon } from '@wordpress/icons';
 import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
 import { isExperimentalBuild } from '@woocommerce/block-settings';
 
@@ -10,6 +9,7 @@ import { isExperimentalBuild } from '@woocommerce/block-settings';
  */
 import { Edit, Save } from './edit';
 import metadata from './block.json';
+import icon from './icon';
 
 if ( isExperimentalBuild() ) {
 	registerBlockSingleProductTemplate( {
