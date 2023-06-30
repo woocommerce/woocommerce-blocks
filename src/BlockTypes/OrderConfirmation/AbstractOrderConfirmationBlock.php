@@ -87,4 +87,34 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	protected function get_block_type_script( $key = null ) {
 		return null;
 	}
+
+	/**
+	 * Get a fake order for previews.
+	 *
+	 * @return \WC_Order Fake order.
+	 */
+	protected function get_preview_order() {
+		$product = new \WC_Product();
+		$product->set_name( 'Test Product' );
+		$product->set_price( '10' );
+
+		$order = new \WC_Order();
+		$order->set_id( 123 );
+		$order->set_billing_email( 'test@test.com' );
+		$order->set_date_created( 'now' );
+		$order->set_payment_method_title( 'Credit Card' );
+		$order->set_total( 40 );
+
+		$item_1 = new \WC_Order_Item_Product();
+		$item_1->set_props(
+			array(
+				'product'  => $product,
+				'quantity' => 4,
+				'total'    => 40,
+			)
+		);
+		$order->add_item( $item_1 );
+
+		return $order;
+	}
 }

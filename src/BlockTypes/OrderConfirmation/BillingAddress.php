@@ -36,7 +36,7 @@ class BillingAddress extends AbstractOrderConfirmationBlock {
 		}
 
 		return sprintf(
-			'<div class="woocommerce wc-block-%4$s %1$s %2$s">%3$s</div>',
+			'<div class="wc-block-%4$s %1$s %2$s">%3$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			$content,
@@ -57,11 +57,9 @@ class BillingAddress extends AbstractOrderConfirmationBlock {
 		$address  = $address . ( $order->get_billing_email() ? '<p class="woocommerce-customer-details--email">' . esc_html( $order->get_billing_email() ) . '</p>' : '' );
 
 		return '
-			<div class="woocommerce-customer-details">
-				<address>
-					' . wp_kses_post( $address ) . '
-				</address>
-			</div>
+			<address>
+				' . wp_kses_post( $address ) . '
+			</address>
 		';
 	}
 

@@ -1,0 +1,25 @@
+.wc-block-order-confirmation-summary {
+	margin: $gap-large 0;
+	ul {
+		list-style: none outside;
+		display: flex;
+		flex-direction: row;
+		margin: 0 0 $gap-largest;
+		padding: 0;
+		gap: 1em;
+
+		li {
+			flex: 1 1 auto;
+
+			> span {
+				text-transform: uppercase;
+				@include font-size(smaller);
+			}
+			> strong {
+				font-weight: bold;
+				display: block;
+				@include font-size(small);
+			}
+		}
+	}
+}

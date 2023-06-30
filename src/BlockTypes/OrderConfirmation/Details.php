@@ -26,8 +26,17 @@ class Details extends AbstractOrderConfirmationBlock {
 	 * @return string | void Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$order              = $this->get_order();
-		$content            = $order && $this->is_current_customer_order( $order ) ? $this->render_content( $order ) : $this->render_content_fallback();
+		if ( ! empty( $attributes['isPreview'] ) ) {
+			$order = $this->get_preview_order();
+		} else {
+			$order = $this->get_order();
+
+			if ( ! $this->is_current_customer_order( $order ) ) {
+				$order = null;
+			}
+		}
+
+		$content            = $order ? $this->render_content( $order ) : $this->render_content_fallback();
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
@@ -36,7 +45,7 @@ class Details extends AbstractOrderConfirmationBlock {
 		}
 
 		return sprintf(
-			'<div class="woocommerce wc-block-%4$s %1$s %2$s">%3$s</div>',
+			'<div class="wc-block-%4$s %1$s %2$s">%3$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			$content,
@@ -63,7 +72,7 @@ class Details extends AbstractOrderConfirmationBlock {
 		return '
 			<section class="woocommerce-order-details">
 				' . $this->get_hook_content( 'woocommerce_order_details_before_order_table', [ $order ] ) . '
-				<table class="woocommerce-table woocommerce-table--order-details shop_table order_details">
+				<table class="woocommerce-table woocommerce-table--order-details shop_table order_details" cellspacing="0">
 					<thead>
 						<tr>
 							<th class="woocommerce-table__product-name product-name">' . esc_html__( 'Product', 'woo-gutenberg-products-block' ) . '</th>
