@@ -68,7 +68,8 @@ class PriceFilterPage {
 		await this.page.waitForLoadState( 'networkidle' );
 		await this.editor.openDocumentSettingsSidebar();
 		await this.editor.saveSiteEditorEntities();
-		await this.page.waitForLoadState( 'networkidle' );
+		await this.page.waitForTimeout( 1000 );
+
 		await this.page.goto( `/shop`, { waitUntil: 'networkidle' } );
 	}
 

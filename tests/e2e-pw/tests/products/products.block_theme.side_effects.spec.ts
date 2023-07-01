@@ -151,6 +151,7 @@ for ( const {
 			);
 
 			await editor.saveSiteEditorEntities();
+			await page.waitForTimeout( 1000 );
 
 			await page.waitForResponse( ( response ) =>
 				response.url().includes( 'wp-json/wp/v2/templates/' )
