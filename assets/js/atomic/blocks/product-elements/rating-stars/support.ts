@@ -3,29 +3,30 @@
  * External dependencies
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
-import { __experimentalGetSpacingClassesAndStyles as getSpacingClassesAndStyles } from '@wordpress/block-editor';
-
-/**
- * Internal dependencies
- */
+import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
 
 export const supports = {
-	html: false,
 	...( isFeaturePluginBuild() && {
-		__experimentalBorder: {
-			radius: true,
+		color: {
+			text: true,
+			background: false,
+			link: false,
 			__experimentalSkipSerialization: true,
+		},
+		spacing: {
+			margin: true,
+			padding: true,
 		},
 		typography: {
 			fontSize: true,
 			__experimentalSkipSerialization: true,
 		},
-		...( typeof getSpacingClassesAndStyles === 'function' && {
+		__experimentalSelector: '.wc-block-components-product-rating',
+	} ),
+	...( ! isFeaturePluginBuild() &&
+		typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
 			spacing: {
 				margin: true,
-				padding: true,
 			},
 		} ),
-		__experimentalSelector: '.wc-block-components-product-image',
-	} ),
 };
