@@ -105,7 +105,7 @@ class ProductRating extends AbstractBlock {
 		$post_id = $block->context['postId'];
 		$product = wc_get_product( $post_id );
 
-		if ( $product ) {
+		if ( $product && $product->get_review_count() > 0 ) {
 			$product_reviews_count                    = $product->get_review_count();
 			$product_rating                           = $product->get_average_rating();
 			$parsed_attributes                        = $this->parse_attributes( $attributes );
@@ -151,10 +151,9 @@ class ProductRating extends AbstractBlock {
 					);
 
 					if ( $is_descendent_of_single_product_block ) {
-						$customer_reviews_count = '<a href="' . esc_url( $product_permalink ) . '">' . $customer_reviews_count . '</a>';
-					} elseif ( $is_descendent_of_single_product_template ) {
-						$product_permalink      = untrailingslashit( $product_permalink );
 						$customer_reviews_count = '<a href="' . esc_url( $product_permalink ) . '#reviews">' . $customer_reviews_count . '</a>';
+					} elseif ( $is_descendent_of_single_product_template ) {
+						$customer_reviews_count = '<a class="woocommerce-review-link" rel="nofollow" href="#reviews">' . $customer_reviews_count . '</a>';
 					}
 
 					$reviews_count_html = sprintf( '<span class="wc-block-components-product-rating__reviews_count">%1$s</span>', $customer_reviews_count );
@@ -202,5 +201,6 @@ class ProductRating extends AbstractBlock {
 				$rating_html
 			);
 		}
+		return '';
 	}
 }
