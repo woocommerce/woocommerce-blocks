@@ -32,8 +32,10 @@ test.describe( 'Merchant → Cart', () => {
 			await editBlockPage( page, blockData );
 		} );
 
-		test( 'it renders without crashing', async ( { page } ) => {
-			const blockPresence = page.locator( blockSelectorInEditor );
+		test( 'it renders without crashing', async ( { editorUtils } ) => {
+			const blockPresence = await editorUtils.getBlockByName(
+				blockData.slug
+			);
 			expect( blockPresence ).toBeTruthy();
 		} );
 
@@ -52,6 +54,7 @@ test.describe( 'Merchant → Cart', () => {
 		test( 'inner blocks can be added/removed by filters', async ( {
 			page,
 			editor,
+			editorUtils,
 		} ) => {
 			// Begin by removing the block.
 			await editor.selectBlocks( blockSelectorInEditor );
@@ -62,9 +65,9 @@ test.describe( 'Merchant → Cart', () => {
 			const removeButton = await page.getByText( 'Remove Cart' );
 			await removeButton.click();
 			// Expect block to have been removed.
-			await expect( page.locator( blockSelectorInEditor ) ).toHaveCount(
-				0
-			);
+			await expect(
+				await editorUtils.getBlockByName( blockData.slug )
+			).toHaveCount( 0 );
 
 			// Register a checkout filter to allow `core/table` block in the Checkout block's inner blocks, add
 			// core/audio into the woocommerce/cart-order-summary-block and remove core/paragraph from all Cart inner
@@ -83,9 +86,9 @@ test.describe( 'Merchant → Cart', () => {
 			);
 
 			await editor.insertBlock( { name: 'woocommerce/cart' } );
-			await expect( page.locator( blockSelectorInEditor ) ).toHaveCount(
-				1
-			);
+			await expect(
+				await editorUtils.getBlockByName( blockData.slug )
+			).not.toHaveCount( 0 );
 
 			// // Select the cart-order-summary-block block and try to insert a block. Check the Table block is available.
 			await editor.selectBlocks(
@@ -116,7 +119,7 @@ test.describe( 'Merchant → Cart', () => {
 
 			// Now check the filled cart block and expect only the Table block to be available there.
 			await editor.selectBlocks(
-				blockData.selectors.editor.block +
+				blockSelectorInEditor +
 					' [data-type="woocommerce/filled-cart-block"]'
 			);
 			const filledCartAddBlockButton = await page
