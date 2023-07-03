@@ -40,10 +40,10 @@ const mapAttributes = ( attributes ) => {
 		...restAttributes,
 		namespace: VARIATION_NAME,
 		query: {
-			__woocommerceAttributes: woocommerceAttributes,
-			__woocommerceStockStatus: woocommerceStockStatus,
-			__woocommerceOnSale: woocommerceOnSale,
-			include: woocommerceHandPickedProducts,
+			__woocommerceAttributes: woocommerceAttributes || [],
+			__woocommerceStockStatus: woocommerceStockStatus || [],
+			__woocommerceOnSale: woocommerceOnSale || false,
+			include: woocommerceHandPickedProducts || [],
 			...restQuery,
 		},
 	};
