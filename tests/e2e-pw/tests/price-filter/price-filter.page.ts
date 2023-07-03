@@ -161,14 +161,17 @@ class PriceFilterPage {
 		minPrice: number | null,
 		maxPrice: number | null
 	) {
-		let result = '';
-		if ( minPrice ) {
-			result += `min_price=${ minPrice }`;
+		const params = new URLSearchParams();
+
+		if ( minPrice !== null ) {
+			params.append( 'min_price', minPrice.toString() );
 		}
-		if ( maxPrice ) {
-			result += `&max_price=${ maxPrice }`;
+
+		if ( maxPrice !== null ) {
+			params.append( 'max_price', maxPrice.toString() );
 		}
-		return result;
+
+		return params.toString();
 	}
 }
 
