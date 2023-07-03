@@ -442,6 +442,11 @@ class CartController {
 		remove_action( 'woocommerce_check_cart_items', array( $cart, 'check_cart_items' ), 1 );
 		remove_action( 'woocommerce_check_cart_items', array( $cart, 'check_cart_coupons' ), 1 );
 
+		if ( ! wc()->is_rest_api_request() ) {
+			// Also backup existing notices--this API call may be made to hydrate blocks on regular pages, so we don't want to destroy notices that existed beforehand.
+			$old_notices = WC()->session->get( 'wc_notices', array() );
+		}
+
 		/**
 		 * Fires when cart items are being validated.
 		 *
@@ -457,6 +462,11 @@ class CartController {
 		do_action( 'woocommerce_check_cart_items' );
 
 		$cart_errors = NoticeHandler::convert_notices_to_wp_errors( 'woocommerce_rest_cart_item_error' );
+
+		if ( ! wc()->is_rest_api_request() ) {
+			// Restore notices.
+			WC()->session->set( 'wc_notices', $old_notices );
+		}
 
 		if ( $cart_errors->has_errors() ) {
 			throw new InvalidCartException(
