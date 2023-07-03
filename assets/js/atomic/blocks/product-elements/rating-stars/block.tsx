@@ -103,28 +103,7 @@ const Rating = ( props: RatingProps ): JSX.Element => {
 	);
 };
 
-const ReviewsCount = ( props: { reviews: number } ): JSX.Element => {
-	const { reviews } = props;
-
-	const reviewsCount = sprintf(
-		/* translators: %s is referring to the total of reviews for a product */
-		_n(
-			'(%s customer review)',
-			'(%s customer reviews)',
-			reviews,
-			'woo-gutenberg-products-block'
-		),
-		reviews
-	);
-
-	return (
-		<span className="wc-block-components-product-rating__reviews_count">
-			{ reviewsCount }
-		</span>
-	);
-};
-
-type ProductRatingProps = {
+interface ProductRatingStarsProps {
 	className?: string;
 	textAlign?: string;
 	isDescendentOfSingleProductBlock: boolean;
@@ -132,14 +111,11 @@ type ProductRatingProps = {
 	postId: number;
 	productId: number;
 	shouldDisplayMockedReviewsWhenProductHasNoReviews: boolean;
-};
+}
 
-export const Block = ( props: ProductRatingProps ): JSX.Element | undefined => {
-	const {
-		textAlign,
-		isDescendentOfSingleProductBlock,
-		shouldDisplayMockedReviewsWhenProductHasNoReviews,
-	} = props;
+export const Block = ( props: ProductRatingStarsProps ): JSX.Element | null => {
+	const { textAlign, shouldDisplayMockedReviewsWhenProductHasNoReviews } =
+		props;
 	const styleProps = useStyleProps( props );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
@@ -168,18 +144,13 @@ export const Block = ( props: ProductRatingProps ): JSX.Element | undefined => {
 		mockedRatings
 	);
 
-	if ( reviews || shouldDisplayMockedReviewsWhenProductHasNoReviews ) {
-		return (
-			<div className={ className } style={ styleProps.style }>
-				<div className="wc-block-components-product-rating__container">
-					{ content }
-					{ reviews && isDescendentOfSingleProductBlock ? (
-						<ReviewsCount reviews={ reviews } />
-					) : null }
-				</div>
+	return (
+		<div className={ className } style={ styleProps.style }>
+			<div className="wc-block-components-product-rating-stars__container">
+				{ content }
 			</div>
-		);
-	}
+		</div>
+	);
 };
 
 export default withProductDataContext( Block );
