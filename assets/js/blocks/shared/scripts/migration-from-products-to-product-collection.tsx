@@ -8,38 +8,22 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getProductsBlockClientIds } from './migration-utils';
+import {
+	getProductsBlockClientIds,
+	checkIfBlockCanBeInserted,
+} from './migration-utils';
 
-const sinlgeBlockNotice = __(
-	'Products (Beta) block has been replaced with Product Collection! Learn more.',
+const notice = __(
+	'Products (Beta) block(s) has been replaced with Product Collection! Learn more.',
 	'woo-gutenberg-products-block'
 );
-const multipleBlocksNotice = __(
-	'Products (Beta) blocks have been replaced with Product Collection block! Learn more.',
-	'woo-gutenberg-products-block'
-);
 
-const displaySuccessNotice = ( amount: number ) => {
-	const notice = amount < 2 ? sinlgeBlockNotice : multipleBlocksNotice;
+const displaySuccessNotice = () => {
 	dispatch( 'core/notices' ).createNotice( 'success', notice );
 };
 
-const checkIfBlockCanBeReplaced = ( clientId: string ) => {
-	// We need to duplicate checks that are happening within replaceBlocks method
-	// as replacement is initially blocked and there's no information returned
-	// that would determine if replacement happened or not.
-	// https://github.com/WordPress/gutenberg/issues/46740
-	const rootClientId =
-		select( 'core/block-editor' ).getBlockRootClientId( clientId ) ||
-		undefined;
-	return select( 'core/block-editor' ).canInsertBlockType(
-		'woocommerce/product-collection',
-		rootClientId
-	);
-};
-
-const mapAttributes = ( atrributes: Record< string, unknown > ) => {
-	const { query, namespace, ...restAttributes } = atrributes;
+const mapAttributes = ( attributes: Record< string, unknown > ) => {
+	const { query, namespace, ...restAttributes } = attributes;
 	const {
 		__woocommerceAttributes,
 		__woocommerceStockStatus,
@@ -68,9 +52,12 @@ const mapInnerBlocks = ( innerBlocks: BlockInstance[] ) => {
 
 const replaceProductsBlock = ( clientId: string ) => {
 	const productsBlock = select( 'core/block-editor' ).getBlock( clientId );
-	const canBeReplaced = checkIfBlockCanBeReplaced( clientId );
+	const canBeInserted = checkIfBlockCanBeInserted(
+		clientId,
+		'woocommerce/product-collection'
+	);
 
-	if ( productsBlock && canBeReplaced ) {
+	if ( productsBlock && canBeInserted ) {
 		const { attributes = {}, innerBlocks = [] } = productsBlock;
 		const adjustedAttributes = mapAttributes( attributes );
 		const adjustedInnerBlocks = mapInnerBlocks( innerBlocks );
@@ -95,18 +82,20 @@ const replaceProductsBlocks = ( productsBlockClientIds: string[] ) => {
 };
 
 export const replaceProductsWithProductCollection = (
-	unsubscribe: () => void
+	unsubscribe?: () => void
 ) => {
 	const blocks = select( 'core/block-editor' ).getBlocks();
 	const productsBlockClientIds = getProductsBlockClientIds( blocks );
 	const amountOfReplacedBlocks = productsBlockClientIds.length;
 
 	const replaced =
-		amountOfReplacedBlocks &&
+		!! amountOfReplacedBlocks &&
 		replaceProductsBlocks( productsBlockClientIds );
 
 	if ( replaced ) {
-		displaySuccessNotice( amountOfReplacedBlocks );
-		unsubscribe();
+		displaySuccessNotice();
+		if ( typeof unsubscribe === 'function' ) {
+			unsubscribe();
+		}
 	}
 };

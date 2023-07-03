@@ -24,7 +24,9 @@ const FormattedNotice = ( { notice }: { notice: string } ) => {
 };
 
 const UpgradeNotice = (
-	props: BlockEditProps< ProductCollectionAttributes >
+	props: BlockEditProps< ProductCollectionAttributes > & {
+		replaceBlocks: () => void;
+	}
 ) => {
 	const { displayUpgradeNotice } = props.attributes;
 	const notice = __(
@@ -45,7 +47,7 @@ const UpgradeNotice = (
 	};
 
 	const handleClick = () => {
-		// Revert the Product Collection to Products (Beta)
+		props.replaceBlocks();
 	};
 
 	return displayUpgradeNotice ? (
