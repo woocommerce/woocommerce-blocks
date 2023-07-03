@@ -21,9 +21,7 @@ import {
 	INNER_BLOCKS_TEMPLATE,
 	QUERY_DEFAULT_ATTRIBUTES,
 	QUERY_LOOP_ID,
-	REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
 } from '../constants';
-import { replaceProductsWithProductCollection } from '../../shared/scripts';
 
 export const VARIATION_NAME = 'woocommerce/product-query';
 
@@ -99,10 +97,4 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 			registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
 		}
 	}, 'core/edit-post' );
-
-	if ( REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION ) {
-		const unsubscribe = subscribe( () => {
-			replaceProductsWithProductCollection( unsubscribe );
-		}, 'core/block-editor' );
-	}
 }

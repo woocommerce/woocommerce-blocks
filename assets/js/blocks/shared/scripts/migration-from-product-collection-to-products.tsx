@@ -12,7 +12,8 @@ import {
 	getProductCollectionBlockClientIds,
 	checkIfBlockCanBeInserted,
 } from './migration-utils';
-import { VARIATION_NAME } from '../../product-query/variations/product-query';
+
+const VARIATION_NAME = 'woocommerce/product-query';
 
 const notice = __(
 	'Product Collection block(s) has been reverted with Products block!',
