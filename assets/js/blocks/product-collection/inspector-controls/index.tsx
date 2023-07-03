@@ -1,10 +1,13 @@
 /**
  * External dependencies
  */
+import type { ElementType } from 'react';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { useMemo } from '@wordpress/element';
+import { EditorBlock } from '@woocommerce/types';
+import { addFilter } from '@wordpress/hooks';
 import {
 	// @ts-expect-error Using experimental features
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -43,7 +46,6 @@ const ProductCollectionInspectorControls = (
 
 	return (
 		<InspectorControls>
-			<UpgradeNotice { ...props } />
 			<ToolsPanel
 				label={ __( 'Settings', 'woo-gutenberg-products-block' ) }
 				resetAll={ () => {
@@ -104,3 +106,22 @@ const ProductCollectionInspectorControls = (
 };
 
 export default ProductCollectionInspectorControls;
+
+export const withUpgradeNoticeControls =
+	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
+	( props: BlockEditProps< ProductCollectionAttributes > ) => {
+		return (
+			<>
+				<InspectorControls>
+					<UpgradeNotice { ...props } />
+				</InspectorControls>
+				<BlockEdit { ...props } />
+			</>
+		);
+	};
+
+addFilter(
+	'editor.BlockEdit',
+	'woocommerce/product-collection',
+	withUpgradeNoticeControls
+);
