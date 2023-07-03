@@ -7,16 +7,32 @@ const isProductsBlock = ( block: BlockInstance ) =>
 	block.name === 'core/query' &&
 	block.attributes.namespace === 'woocommerce/product-query';
 
-export const getProductsBlockClientIds = ( blocks: BlockInstance[] ) => {
+const isProductCollectionBlock = ( block: BlockInstance ) =>
+	block.name === 'woocommerce/product-collection';
+
+export const getBlockClientIdsByPredicate = (
+	blocks: BlockInstance[],
+	predicate: ( block: BlockInstance ) => boolean
+): string[] => {
 	let clientIds: string[] = [];
 	blocks.forEach( ( block ) => {
-		if ( isProductsBlock( block ) ) {
+		if ( predicate( block ) ) {
 			clientIds = [ ...clientIds, block.clientId ];
 		}
 		clientIds = [
 			...clientIds,
-			...getProductsBlockClientIds( block.innerBlocks ),
+			...getBlockClientIdsByPredicate( block.innerBlocks, predicate ),
 		];
 	} );
 	return clientIds;
+};
+
+export const getProductsBlockClientIds = ( blocks: BlockInstance[] ) => {
+	getBlockClientIdsByPredicate( blocks, isProductsBlock );
+};
+
+export const getProductCollectionBlockClientIds = (
+	blocks: BlockInstance[]
+) => {
+	getBlockClientIdsByPredicate( blocks, isProductCollectionBlock );
 };
