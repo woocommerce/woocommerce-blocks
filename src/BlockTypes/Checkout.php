@@ -88,7 +88,7 @@ class Checkout extends AbstractBlock {
 		if ( $this->is_checkout_endpoint() ) {
 			// Note: Currently the block only takes care of the main checkout form -- if an endpoint is set, refer to the
 			// legacy shortcode instead and do not render block.
-			return '[woocommerce_checkout]';
+			return wc_current_theme_is_fse_theme() ? do_shortcode( '[woocommerce_checkout]' ) : '[woocommerce_checkout]';
 		}
 
 		// Deregister core checkout scripts and styles.
