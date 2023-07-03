@@ -26,7 +26,6 @@ const blockData: BlockData = {
 
 test.describe( 'Merchant → Cart', () => {
 	const blockSelectorInEditor = blockData.selectors.editor.block as string;
-	test.use( { storageState: process.env.ADMINSTATE } );
 
 	test.describe( 'in page editor', () => {
 		test.beforeEach( async ( { page } ) => {
