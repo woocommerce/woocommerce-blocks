@@ -52,25 +52,74 @@ class Status extends AbstractOrderConfirmationBlock {
 	 */
 	protected function render_content( $order ) {
 		$content = $this->get_hook_content( 'woocommerce_before_thankyou', [ $order ] );
+		$status  = $order->get_status();
 
-		if ( $order->has_status( 'failed' ) ) {
-			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-			$order_received_text = apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Your order cannot be processed as the originating bank/merchant has declined your transaction. Please attempt your purchase again.', 'woo-gutenberg-products-block' ), null );
-			$actions             = '';
+		// Unlike the core handling, this includes some extra messaging for completed orders to the text is appropriate for other order statuses.
+		switch ( $status ) {
+			case 'cancelled':
+				$content .= '<p class="woocommerce-thankyou-order-received">' . wp_kses_post(
+						// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+					apply_filters(
+						'woocommerce_thankyou_order_received_text',
+						esc_html__( 'Your order has been cancelled.', 'woo-gutenberg-products-block' ),
+						$order
+					)
+				) . '</p>';
+				break;
+			case 'refunded':
+					$content .= '<p class="woocommerce-thankyou-order-received">' . wp_kses_post(
+						sprintf(
+							// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+							apply_filters(
+								'woocommerce_thankyou_order_received_text',
+								// translators: %s: date and time of the order refund.
+								esc_html__( 'Your order was refunded %s.', 'woo-gutenberg-products-block' ),
+								$order
+							),
+							wc_format_datetime( $order->get_date_modified() )
+						)
+					) . '</p>';
+				break;
+			case 'completed':
+				$content .= '<p class="woocommerce-thankyou-order-received">' . wp_kses_post(
+					sprintf(
+						// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+						apply_filters(
+							'woocommerce_thankyou_order_received_text',
+							// translators: %s: date and time of the order completion.
+							esc_html__( 'Your order has been processed and was marked complete %s.', 'woo-gutenberg-products-block' ),
+							$order
+						),
+						wc_format_datetime( $order->get_date_completed() )
+					)
+				) . '</p>';
+				break;
+			case 'failed':
+				// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+				$order_received_text = apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Your order cannot be processed as the originating bank/merchant has declined your transaction. Please attempt your purchase again.', 'woo-gutenberg-products-block' ), null );
+				$actions             = '';
 
-			if ( $this->is_current_customer_order( $order ) ) {
-				$actions .= '<a href="' . esc_url( $order->get_checkout_payment_url() ) . '" class="button pay">' . esc_html__( 'Try again', 'woo-gutenberg-products-block' ) . '</a> ';
-			}
+				if ( $this->is_current_customer_order( $order ) ) {
+					$actions .= '<a href="' . esc_url( $order->get_checkout_payment_url() ) . '" class="button pay">' . esc_html__( 'Try again', 'woo-gutenberg-products-block' ) . '</a> ';
+				}
 
-			$actions .= '<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="button pay">' . esc_html_e( 'My account', 'woo-gutenberg-products-block' ) . '</a> ';
+				$actions .= '<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="button pay">' . esc_html_e( 'My account', 'woo-gutenberg-products-block' ) . '</a> ';
 
-			$content .= '
+				$content .= '
 				<p class="woocommerce-thankyou-order-failed">' . $order_received_text . '</p>
 				<p class="woocommerce-thankyou-order-failed-actions">' . $actions . '</p>
 			';
-		} else {
-			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-			$content .= '<p class="woocommerce-thankyou-order-received">' . wp_kses_post( apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'woo-gutenberg-products-block' ), $order ) ) . '</p>';
+				break;
+			default:
+				$content .= '<p class="woocommerce-thankyou-order-received">' . wp_kses_post(
+					// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+					apply_filters(
+						'woocommerce_thankyou_order_received_text',
+						esc_html__( 'Thank you. Your order has been received.', 'woo-gutenberg-products-block' ),
+						$order
+					)
+				) . '</p>';
+				break;
 		}
 
 		return $content;
