@@ -73,16 +73,15 @@ test.describe( 'Merchant → Cart', () => {
 			// core/audio into the woocommerce/cart-order-summary-block and remove core/paragraph from all Cart inner
 			// blocks.
 			await page.evaluate(
-				"wc.blocksCheckout.registerCheckoutFilters( 'woo-test-namespace'," +
-					'{ additionalCartCheckoutInnerBlockTypes: ( value, extensions, { block } ) => {' +
-					"    value.push('core/table');" +
-					"    if ( block === 'woocommerce/cart-order-summary-block' ) {" +
-					"        value.push( 'core/audio' );" +
-					'    }' +
-					'    return value;' +
-					'}' +
-					'}' +
-					');'
+				`wc.blocksCheckout.registerCheckoutFilters( 'woo-test-namespace', {
+					additionalCartCheckoutInnerBlockTypes: ( value, extensions, { block } ) => {
+						value.push( 'core/table' );
+						if ( block === 'woocommerce/cart-order-summary-block' ) {
+							value.push( 'core/audio' );
+						}
+						return value;
+					},
+				} );`
 			);
 
 			await editor.insertBlock( { name: 'woocommerce/cart' } );
