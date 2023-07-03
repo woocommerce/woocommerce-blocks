@@ -59,13 +59,14 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		}
 
 		ob_start();
-		remove_action( 'woocommerce_product_thumbnails', 'woocommerce_show_product_thumbnails', 20 );
 		woocommerce_show_product_sale_flash();
 		$sale_badge_html = ob_get_clean();
 
 		ob_start();
+		remove_action( 'woocommerce_product_thumbnails', 'woocommerce_show_product_thumbnails', 20 );
 		woocommerce_show_product_images();
 		$product_image_gallery_html = ob_get_clean();
+		add_action( 'woocommerce_product_thumbnails', 'woocommerce_show_product_thumbnails', 20 );
 
 		$product   = $previous_product;
 		$classname = $attributes['className'] ?? '';
