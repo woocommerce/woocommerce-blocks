@@ -65,11 +65,10 @@ class PriceFilterPage {
 				heading: 'Filter By Price',
 			},
 		} );
-		await this.page.waitForLoadState( 'networkidle' );
-		await this.editor.openDocumentSettingsSidebar();
-		await this.editor.saveSiteEditorEntities();
-		await this.page.waitForTimeout( 1000 );
 
+		await this.page.waitForLoadState( 'networkidle' );
+
+		await this.editor.saveSiteEditorEntities();
 		await this.page.goto( `/shop`, { waitUntil: 'networkidle' } );
 	}
 
