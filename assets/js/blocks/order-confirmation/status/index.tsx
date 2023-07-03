@@ -2,8 +2,7 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { Icon } from '@wordpress/icons';
-import { totals } from '@woocommerce/icons';
+import { Icon, info } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -15,7 +14,7 @@ registerBlockType( metadata, {
 	icon: {
 		src: (
 			<Icon
-				icon={ totals }
+				icon={ info }
 				className="wc-block-editor-components-block-icon"
 			/>
 		),
