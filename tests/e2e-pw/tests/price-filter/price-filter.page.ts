@@ -66,8 +66,6 @@ class PriceFilterPage {
 			},
 		} );
 
-		await this.page.waitForLoadState( 'networkidle' );
-
 		await this.editor.saveSiteEditorEntities();
 		await this.page.goto( `/shop`, { waitUntil: 'networkidle' } );
 	}
@@ -147,11 +145,20 @@ class PriceFilterPage {
 		} );
 	}
 
-	async locateAllProducts() {
-		const products = await this.page.locator(
+	async locateAllProducts(
+		{ isClassicTemplate } = {
+			isClassicTemplate: false,
+		}
+	) {
+		if ( isClassicTemplate ) {
+			return await this.page.locator( '.products .product' );
+		}
+
+		// If it's not a classic template, then it's products beta block.
+		// TODO Soon products beta block will be replaced by Product Collection block. Update this accordingly.
+		return await this.page.locator(
 			'.products-block-post-template .product'
 		);
-		return products;
 	}
 
 	/**
