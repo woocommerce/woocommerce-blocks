@@ -25,6 +25,7 @@ const blockData: BlockData = {
 };
 
 test.describe( 'Merchant → Cart', () => {
+	const blockSelectorInEditor = blockData.selectors.editor.block as string;
 	test.use( { storageState: process.env.ADMINSTATE } );
 
 	test.describe( 'in page editor', () => {
@@ -33,14 +34,12 @@ test.describe( 'Merchant → Cart', () => {
 		} );
 
 		test( 'it renders without crashing', async ( { page } ) => {
-			const blockPresence = page.locator(
-				blockData.selectors.editor.block
-			);
+			const blockPresence = page.locator( blockSelectorInEditor );
 			expect( blockPresence ).toBeTruthy();
 		} );
 
 		test( 'can only be inserted once', async ( { page, editorUtils } ) => {
-			await editorUtils.openGlobalBlockInserter( page );
+			await editorUtils.openGlobalBlockInserter();
 			await page.getByPlaceholder( 'Search' ).fill( blockData.slug );
 			const cartBlockButton = await page.locator( 'button', {
 				has: page.locator( `text="${ blockData.name }"` ),
@@ -56,7 +55,7 @@ test.describe( 'Merchant → Cart', () => {
 			editor,
 		} ) => {
 			// Begin by removing the block.
-			await editor.selectBlocks( blockData.selectors.editor.block );
+			await editor.selectBlocks( blockSelectorInEditor );
 			const options = await page
 				.getByRole( 'toolbar', { name: 'Block tools' } )
 				.getByRole( 'button', { name: 'Options' } );
@@ -64,9 +63,9 @@ test.describe( 'Merchant → Cart', () => {
 			const removeButton = await page.getByText( 'Remove Cart' );
 			await removeButton.click();
 			// Expect block to have been removed.
-			await expect(
-				page.locator( blockData.selectors.editor.block )
-			).toHaveCount( 0 );
+			await expect( page.locator( blockSelectorInEditor ) ).toHaveCount(
+				0
+			);
 
 			// Register a checkout filter to allow `core/table` block in the Checkout block's inner blocks, add
 			// core/audio into the woocommerce/cart-order-summary-block and remove core/paragraph from all Cart inner
@@ -85,9 +84,9 @@ test.describe( 'Merchant → Cart', () => {
 			);
 
 			await editor.insertBlock( { name: 'woocommerce/cart' } );
-			await expect(
-				page.locator( blockData.selectors.editor.block )
-			).toHaveCount( 1 );
+			await expect( page.locator( blockSelectorInEditor ) ).toHaveCount(
+				1
+			);
 
 			// // Select the cart-order-summary-block block and try to insert a block. Check the Table block is available.
 			await editor.selectBlocks(
@@ -141,8 +140,9 @@ test.describe( 'Merchant → Cart', () => {
 		test( 'shows empty cart when changing the view', async ( {
 			page,
 			editor,
+			editorUtils,
 		} ) => {
-			await editor.selectBlocks( blockData.selectors.editor.block );
+			await editor.selectBlocks( blockSelectorInEditor );
 			await page.getByRole( 'button', { name: 'Switch view' } ).click();
 			const emptyCartButton = await page.getByRole( 'menuitem', {
 				name: 'Empty Cart',
@@ -153,19 +153,15 @@ test.describe( 'Merchant → Cart', () => {
 			await page.waitForTimeout( 1000 );
 			await emptyCartButton.click();
 
-			await expect(
-				page.locator(
-					blockData.selectors.editor.block +
-						' [data-type="woocommerce/filled-cart-block"]'
-				)
-			).not.toBeVisible();
-			await expect(
-				page.locator(
-					blockData.selectors.editor.block +
-						' [data-type="woocommerce/empty-cart-block"]'
-				)
-			).toBeVisible();
-			await editor.selectBlocks( blockData.selectors.editor.block );
+			const filledCartBlock = await editorUtils.getBlockByName(
+				'woocommerce/filled-cart-block'
+			);
+			const emptyCartBlock = await editorUtils.getBlockByName(
+				'woocommerce/empty-cart-block'
+			);
+			await expect( filledCartBlock ).not.toBeVisible();
+			await expect( emptyCartBlock ).toBeVisible();
+			await editor.selectBlocks( blockSelectorInEditor );
 			await page.getByRole( 'button', { name: 'Switch view' } ).click();
 
 			const filledCartButton = await page.getByRole( 'menuitem', {
