@@ -2,15 +2,15 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 /**
- * FilledCartBlock class.
+ * ProductGallery class.
  */
-class FilterWrapper extends AbstractBlock {
+class ProductGallery extends AbstractBlock {
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'filter-wrapper';
+	protected $block_name = 'product-gallery';
 
 	/**
 	 * Get the frontend style handle for this block type.
