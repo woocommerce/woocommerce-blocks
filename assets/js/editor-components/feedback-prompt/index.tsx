@@ -103,6 +103,6 @@ export const ProductCollectionFeedbackPrompt = () => (
 			'woo-gutenberg-products-block'
 		) }
 		title={ __( 'Share your feedback!', 'woo-gutenberg-products-block' ) }
-		url={ 'https://airtable.com/shrFX5FAqmCY6hVYI' }
+		url={ 'https://airtable.com/shrqsMSDPvAKoY99u' }
 	/>
 );
