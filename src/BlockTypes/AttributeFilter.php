@@ -29,7 +29,7 @@ class AttributeFilter extends AbstractBlock {
 	/**
 	 * Get the frontend style handle for this block type.
 	 *
-	 * @return string[]|null
+	 * @return string[]
 	 */
 	protected function get_block_type_style() {
 		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
