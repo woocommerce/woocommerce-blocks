@@ -111,13 +111,18 @@ export default ProductCollectionInspectorControls;
 export const withUpgradeNoticeControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
 	( props: BlockEditProps< ProductCollectionAttributes > ) => {
+		const { displayUpgradeNotice } = props.attributes;
 		return (
 			<>
 				<InspectorControls>
-					<UpgradeNotice
-						{ ...props }
-						replaceBlocks={ replaceProductCollectionWithProducts }
-					/>
+					{ displayUpgradeNotice && (
+						<UpgradeNotice
+							{ ...props }
+							replaceBlocks={
+								replaceProductCollectionWithProducts
+							}
+						/>
+					) }
 				</InspectorControls>
 				<BlockEdit { ...props } />
 			</>

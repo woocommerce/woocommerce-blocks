@@ -25,7 +25,7 @@ const displaySuccessNotice = () => {
 };
 
 const mapAttributes = ( attributes ) => {
-	const { query, displayLayout, ...restAttributes } = attributes;
+	const { query, ...restAttributes } = attributes;
 	const {
 		woocommerceAttributes,
 		woocommerceStockStatus,

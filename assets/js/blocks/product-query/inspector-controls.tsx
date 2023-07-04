@@ -43,7 +43,10 @@ import {
 import { AttributesFilter } from './inspector-controls/attributes-filter';
 import { PopularPresets } from './inspector-controls/popular-presets';
 import { ProductSelector } from './inspector-controls/product-selector';
-import { replaceProductsWithProductCollection } from '../shared/scripts';
+import {
+	replaceProductsWithProductCollection,
+	shouldMigrateAutomatically,
+} from '../shared/scripts';
 
 import './editor.scss';
 
@@ -272,7 +275,11 @@ addFilter( 'editor.BlockEdit', QUERY_LOOP_ID, withProductQueryControls );
 
 if ( isWpVersion( '6.1', '>=' ) ) {
 	let unsubscribe: ( () => void ) | undefined;
-	if ( REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION && ! unsubscribe ) {
+	if (
+		shouldMigrateAutomatically() &&
+		REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION &&
+		! unsubscribe
+	) {
 		unsubscribe = subscribe( () => {
 			replaceProductsWithProductCollection( unsubscribe );
 		}, 'core/block-editor' );

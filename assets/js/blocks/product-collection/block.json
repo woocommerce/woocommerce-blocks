@@ -23,7 +23,7 @@
 		},
 		"displayUpgradeNotice": {
 			"type": "boolean",
-			"default": true
+			"default": false
 		}
 	},
 	"providesContext": {
