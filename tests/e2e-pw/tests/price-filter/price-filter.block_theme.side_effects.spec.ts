@@ -20,11 +20,6 @@ const test = base.extend< { pageObject: PriceFilterPage } >( {
 		await use( pageObject );
 	},
 } );
-/**
- * It's taking lot of time to load Product catalog template page on slow machines.
- * Therefore, increasing the timeout to 3 minutes.
- */
-test.setTimeout( 3 * 60 * 1000 );
 
 test.describe( `${ blockData.name } Block - with All products Block`, () => {
 	test( 'should show all products', async ( { pageObject } ) => {
