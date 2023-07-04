@@ -35,6 +35,13 @@ const getSerializedState = () => {
 const rawState = getSerializedState();
 export const rawStore = { state: deepSignal( rawState ) };
 
+export const updateStore = ( newStore ) => {
+	rawStore.state.woocommerce = {
+		...rawStore.state.woocommerce,
+		...newStore.state.woocommerce,
+	};
+};
+
 if ( typeof window !== 'undefined' ) window.store = rawStore;
 
 export const store = ( { state, ...block } ) => {

@@ -17,7 +17,6 @@ import {
 	triggerAddingToCartEvent,
 	camelCaseKeys,
 } from '@woocommerce/base-utils';
-import { doAction } from '@wordpress/hooks';
 
 /**
  * Internal dependencies
@@ -291,7 +290,6 @@ export const addItemToCart =
 			} );
 			dispatch.receiveCart( response );
 			triggerAddedToCartEvent( { preserveCartData: true } );
-			doAction( 'experimental__woocommerce_blocks-refresh-page' );
 			return response;
 		} catch ( error ) {
 			dispatch.receiveError( error );
@@ -322,7 +320,6 @@ export const removeItemFromCart =
 				cache: 'no-store',
 			} );
 			dispatch.receiveCart( response );
-			doAction( 'experimental__woocommerce_blocks-refresh-page' );
 			return response;
 		} catch ( error ) {
 			dispatch.receiveError( error );
@@ -370,7 +367,6 @@ export const changeCartItemQuantity =
 				cache: 'no-store',
 			} );
 			dispatch.receiveCart( response );
-			doAction( 'experimental__woocommerce_blocks-refresh-page' );
 			return response;
 		} catch ( error ) {
 			dispatch.receiveError( error );

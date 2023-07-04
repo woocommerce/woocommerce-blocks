@@ -2,18 +2,18 @@
  * External dependencies
  */
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { store, navigate } from '@woocommerce/interactivity';
+import { store } from '@woocommerce/interactivity';
 import { dispatch } from '@wordpress/data';
-import { addAction } from '@wordpress/hooks';
+import { Cart } from '@woocommerce/type-defs/cart';
 
 type Context = {
 	woocommerce: {
 		isLoading: boolean;
-		numberOfItems: number;
 		addToCart: string;
 		productId: number;
 		isAdded: boolean;
 		moreThanOneItem: boolean;
+		numberOfItems: number;
 	};
 };
 
@@ -22,49 +22,93 @@ type State = {
 		inTheCart: string;
 		viewCart: string;
 		cartUrl: string;
+		cart: Cart;
+		addToCartText: string;
+		inTheCartText: string;
 	};
 };
 
-addAction(
-	'experimental__woocommerce_blocks-refresh-page',
-	'woocommerce',
-	async () => {
-		await navigate( window.location.href, {
-			force: true,
-			replace: true,
-		} );
-	}
-);
+const getProductById = ( cartState: Cart, productId: number ) => {
+	return cartState.items.find( ( item ) => item.id === productId );
+};
 
-store( {
-	selectors: {
-		woocommerce: {
-			addToCartText: ( {
-				context,
-				state,
-			}: {
-				context: Context;
-				state: State;
-			} ) => {
-				if ( context.woocommerce.numberOfItems === 0 ) {
-					return state.woocommerce.addToCartText;
-				}
+const productButtonSelectors = {
+	woocommerce: {
+		addToCartText: ( {
+			context,
+			state,
+		}: {
+			context: Context;
+			state: State;
+		} ) => {
+			if ( context.woocommerce.numberOfItems === 0 ) {
+				return state.woocommerce.addToCartText;
+			}
+
+			if ( ! state.woocommerce.cart ) {
 				return state.woocommerce.inTheCartText.replace(
 					'###',
 					context.woocommerce.numberOfItems.toString()
 				);
-			},
-			moreThanOneItem: ( { context } ) =>
-				context.woocommerce.numberOfItems > 0,
-			isAdded: ( store ) => {
-				const { context, selectors } = store;
-				return (
-					context.woocommerce.isAdded &&
-					selectors.woocommerce.moreThanOneItem( store )
-				);
-			},
+			}
+
+			const cartState = state.woocommerce.cart;
+			const product = getProductById(
+				cartState,
+				context.woocommerce.productId
+			);
+
+			if ( ! product ) {
+				return state.woocommerce.addToCartText;
+			}
+
+			return state.woocommerce.inTheCartText.replace(
+				'###',
+				product?.quantity?.toString()
+			);
+		},
+		moreThanOneItem: ( {
+			context,
+			state,
+		}: {
+			context: Context;
+			state: State;
+		} ) => {
+			if ( ! state.woocommerce?.cart ) {
+				return context.woocommerce.numberOfItems > 0;
+			}
+			const product = getProductById(
+				state.woocommerce.cart,
+				context.woocommerce.productId
+			);
+
+			return product !== undefined && product.quantity > 0;
+		},
+		isAdded: ( {
+			context,
+			selectors,
+			state,
+		}: {
+			context: Context;
+			// For now, let's just use any.
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			selectors: any;
+			state: State;
+		} ) => {
+			return (
+				context.woocommerce.isAdded &&
+				selectors.woocommerce.moreThanOneItem( {
+					context,
+					state,
+				} )
+			);
 		},
 	},
+};
+
+// @ts-expect-error: Store function isn't typed.
+store( {
+	selectors: productButtonSelectors,
 	actions: {
 		woocommerce: {
 			addToCart: async ( {
