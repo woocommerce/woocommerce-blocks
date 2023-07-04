@@ -53,7 +53,7 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 		expect( products ).toHaveLength( 1 );
 	} );
 } );
-
+// These tests are disabled because there is an issue with the default contents of this page, possible caused by other tests.
 test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 	test.beforeAll( async () => {
 		await cli(
