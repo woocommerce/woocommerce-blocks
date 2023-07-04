@@ -1,0 +1,23 @@
+.wc-block-order-confirmation-downloads {
+	.woocommerce-order-downloads table,
+	.woocommerce-order-downloads table.shop_table {
+		width: 100%;
+		border: 1px solid currentColor;
+		border-bottom: 0;
+
+		thead {
+			text-transform: uppercase;
+		}
+
+		th,
+		td {
+			border-style: solid;
+			border-color: currentColor;
+			border-width: 0 0 1px 0;
+			padding: $gap-small;
+			margin: 0;
+			text-align: left;
+		}
+	}
+}
+
