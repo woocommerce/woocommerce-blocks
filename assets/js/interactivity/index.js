@@ -1,6 +1,6 @@
 import registerDirectives from './directives';
 import { init } from './router';
-export { store } from './store';
+export { store, updateStore } from './store';
 export { navigate } from './router';
 
 /**
