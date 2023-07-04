@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { Notice, Button } from '@wordpress/components';
 import { BlockEditProps } from '@wordpress/blocks';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -33,12 +33,10 @@ const UpgradeNotice = (
 		replaceBlocks: () => void;
 	}
 ) => {
-	const [ upgradeState, setUpgradeState ] = useState( 'not_seen' );
+	const upgradeState = getUpdateStateFromLocalStorage();
 	useEffect( () => {
-		const localStorageState = getUpdateStateFromLocalStorage();
-		setUpgradeState( localStorageState );
 		return () => {
-			if ( upgradeState !== 'reverted' ) {
+			if ( getUpdateStateFromLocalStorage() !== 'reverted' ) {
 				setUpdateStateInLocalStorage( 'seen' );
 			}
 		};
