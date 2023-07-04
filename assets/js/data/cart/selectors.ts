@@ -222,3 +222,5 @@ export const getItemsPendingQuantityUpdate = ( state: CartState ): string[] => {
 export const getItemsPendingDelete = ( state: CartState ): string[] => {
 	return state.cartItemsPendingDelete;
 };
+
+export const getState = ( state: CartState ): CartState => state;

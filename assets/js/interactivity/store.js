@@ -35,6 +35,12 @@ const getSerializedState = () => {
 const rawState = getSerializedState();
 export const rawStore = { state: deepSignal( rawState ) };
 
+export const updateStore = ( newStore ) => {
+	deepMerge( rawStore, newStore );
+
+	console.log( 'after the update', rawStore );
+};
+
 if ( typeof window !== 'undefined' ) window.store = rawStore;
 
 export const store = ( { state, ...block } ) => {

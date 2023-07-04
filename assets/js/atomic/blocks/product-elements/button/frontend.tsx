@@ -2,9 +2,11 @@
  * External dependencies
  */
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
+import productCategoryControl from '@woocommerce/editor-components/product-category-control';
 import { store, navigate } from '@woocommerce/interactivity';
 import { dispatch } from '@wordpress/data';
 import { addAction } from '@wordpress/hooks';
+import { CartState } from 'assets/js/data/cart/default-state';
 
 type Context = {
 	woocommerce: {
@@ -25,17 +27,17 @@ type State = {
 	};
 };
 
-addAction(
-	'experimental__woocommerce_blocks-refresh-page',
-	'woocommerce',
-	async () => {
-		await navigate( window.location.href, {
-			force: true,
-			replace: true,
-		} );
-	}
-);
-
+// addAction(
+// 	'experimental__woocommerce_blocks-refresh-page',
+// 	'woocommerce',
+// 	async () => {
+// 		await navigate( window.location.href, {
+// 			force: true,
+// 			replace: true,
+// 		} );
+// 	}
+// );
+// @ts-ignore
 store( {
 	selectors: {
 		woocommerce: {
@@ -46,13 +48,29 @@ store( {
 				context: Context;
 				state: State;
 			} ) => {
-				if ( context.woocommerce.numberOfItems === 0 ) {
-					return state.woocommerce.addToCartText;
-				}
-				return state.woocommerce.inTheCartText.replace(
-					'###',
-					context.woocommerce.numberOfItems.toString()
-				);
+				// if ( context.woocommerce.numberOfItems === 0 ) {
+				// 	return state.woocommerce.addToCartText;
+				// }
+
+				const cartState = state.woocommerce.cart;
+				console.log( cartState );
+				// console.log( state.woocommerce );
+				// console.log( cartState.cartData.items );
+				// // console.log( cartState );
+				// // console.log(
+				// // 	'🚀 ~ file: frontend.tsx:54 ~ cartState:',
+				// // 	cartState
+				// // );
+				// const product = cartState?.cardData?.items?.find(
+				// 	( item ) => item.id === context.woocommerce.productId
+				// );
+
+				return '';
+
+				// return state.woocommerce.inTheCartText.replace(
+				// 	'###',
+				// 	product?.quantity?.toString()
+				// );
 			},
 			moreThanOneItem: ( { context } ) =>
 				context.woocommerce.numberOfItems > 0,

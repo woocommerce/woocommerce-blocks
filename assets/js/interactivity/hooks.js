@@ -34,6 +34,7 @@ const getEvaluate =
 		const hasNegationOperator =
 			path[ 0 ] === '!' && !! ( path = path.slice( 1 ) );
 		const value = resolve( path, extraArgs.context );
+		console.log( store, 'getEvaluate' );
 		const returnValue =
 			typeof value === 'function'
 				? value( {
