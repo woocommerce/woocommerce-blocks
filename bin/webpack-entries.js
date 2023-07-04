@@ -47,6 +47,9 @@ const blocks = {
 	'product-best-sellers': {},
 	'product-category': {},
 	'product-categories': {},
+	'product-gallery': {
+		isExperimental: true,
+	},
 	'product-new': {},
 	'product-on-sale': {},
 	'product-query': {
@@ -58,6 +61,9 @@ const blocks = {
 	'product-top-rated': {},
 	'products-by-attribute': {},
 	'rating-filter': {},
+	'product-rating-stars': {
+		isExperimental: true,
+	},
 	'reviews-by-category': {
 		customDir: 'reviews/reviews-by-category',
 	},
