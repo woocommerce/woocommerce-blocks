@@ -23,7 +23,8 @@ const displaySuccessNotice = () => {
 };
 
 const mapAttributes = ( attributes: Record< string, unknown > ) => {
-	const { query, namespace, ...restAttributes } = attributes;
+	const { query, namespace, displayUpgradeNotice, ...restAttributes } =
+		attributes;
 	const {
 		__woocommerceAttributes,
 		__woocommerceStockStatus,
@@ -31,6 +32,7 @@ const mapAttributes = ( attributes: Record< string, unknown > ) => {
 		include,
 		...restQuery
 	} = query;
+
 	return {
 		...restAttributes,
 		query: {

@@ -25,7 +25,7 @@ const displaySuccessNotice = () => {
 };
 
 const mapAttributes = ( attributes ) => {
-	const { query, ...restAttributes } = attributes;
+	const { query, displayLayout, ...restAttributes } = attributes;
 	const {
 		woocommerceAttributes,
 		woocommerceStockStatus,
@@ -36,18 +36,29 @@ const mapAttributes = ( attributes ) => {
 		isProductCollectionBlock,
 		...restQuery
 	} = query;
+
+	// These fields have to be explicitly removed if they are empty
+	// otherwise incorrect data is fetched even if they are set as undefined.
+	const mappedQuery = { ...restQuery };
+	if ( woocommerceHandPickedProducts ) {
+		mappedQuery.include = woocommerceHandPickedProducts;
+	}
+
+	if ( woocommerceOnSale ) {
+		mappedQuery.__woocommerceOnSale = woocommerceOnSale;
+	}
+
 	return {
 		...restAttributes,
 		namespace: VARIATION_NAME,
 		query: {
 			__woocommerceAttributes: woocommerceAttributes || [],
 			__woocommerceStockStatus: woocommerceStockStatus || [],
-			__woocommerceOnSale: woocommerceOnSale || false,
-			include: woocommerceHandPickedProducts || [],
-			...restQuery,
+			...mappedQuery,
 		},
 	};
 };
+
 const mapInnerBlocks = ( innerBlocks ) => innerBlocks;
 
 const replaceProductCollectionBlock = ( clientId: string ) => {
