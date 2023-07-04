@@ -27,16 +27,28 @@ class Downloads extends AbstractOrderConfirmationBlock {
 	 */
 	protected function render( $attributes, $content, $block ) {
 		if ( ! empty( $attributes['isPreview'] ) ) {
-			$order = $this->get_preview_order();
+			$order          = $this->get_preview_order();
+			$show_downloads = true;
+			$downloads      = [
+				[
+					'product_name'  => 'Test Product',
+					'product_url'   => 'https://example.com',
+					'download_name' => 'Test Download',
+					'download_url'  => 'https://example.com',
+				],
+			];
 		} else {
 			$order = $this->get_order();
 
 			if ( ! $this->is_current_customer_order( $order ) ) {
 				$order = null;
 			}
+
+			$show_downloads = $order && $order->has_downloadable_item() && $order->is_download_permitted();
+			$downloads      = $order ? $order->get_downloadable_items() : [];
 		}
 
-		$content            = $order ? $this->render_content( $order ) : $this->render_content_fallback();
+		$content            = $order && $show_downloads ? $this->render_content( $order, $downloads ) : $this->render_content_fallback();
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
@@ -44,29 +56,23 @@ class Downloads extends AbstractOrderConfirmationBlock {
 			$classname .= " align{$attributes['align']}";
 		}
 
-		return sprintf(
+		return $content ? sprintf(
 			'<div class="wc-block-%4$s %1$s %2$s">%3$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			$content,
 			esc_attr( $this->block_name )
-		);
+		) : '';
 	}
 
 	/**
 	 * This renders the content of the block within the wrapper.
 	 *
 	 * @param \WC_Order $order Order object.
+	 * @param array     $downloads Array of downloads.
 	 * @return string
 	 */
-	protected function render_content( $order ) {
-		$downloads      = $order->get_downloadable_items();
-		$show_downloads = $order->has_downloadable_item() && $order->is_download_permitted();
-
-		if ( ! $show_downloads ) {
-			return '<p>' . esc_html__( 'This order does not contain any downloads.', 'woo-gutenberg-products-block' ) . '</p>';
-		}
-
+	protected function render_content( $order, $downloads = [] ) {
 		return '
 			<section class="woocommerce-order-downloads">
 				<table class="woocommerce-table woocommerce-table--order-downloads shop_table shop_table_responsive order_details" cellspacing="0">

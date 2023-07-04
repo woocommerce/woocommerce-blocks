@@ -9,6 +9,15 @@ import { useBlockProps } from '@wordpress/block-editor';
  */
 import './style.scss';
 
+interface Props {
+	attributes: {
+		align: string;
+		className: string;
+		isPreview: boolean;
+	};
+	name: string;
+}
+
 const Edit = ( props: Props ): JSX.Element => {
 	const { attributes, name } = props;
 	const blockProps = useBlockProps( {
