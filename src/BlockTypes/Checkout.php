@@ -56,6 +56,15 @@ class Checkout extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return string[]
+	 */
+	protected function get_block_type_style() {
+		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
+	}
+
+	/**
 	 * Enqueue frontend assets for this block, just in time for rendering.
 	 *
 	 * @param array $attributes  Any attributes that currently are available from the block.
@@ -88,7 +97,7 @@ class Checkout extends AbstractBlock {
 		if ( $this->is_checkout_endpoint() ) {
 			// Note: Currently the block only takes care of the main checkout form -- if an endpoint is set, refer to the
 			// legacy shortcode instead and do not render block.
-			return '[woocommerce_checkout]';
+			return wc_current_theme_is_fse_theme() ? do_shortcode( '[woocommerce_checkout]' ) : '[woocommerce_checkout]';
 		}
 
 		// Deregister core checkout scripts and styles.
@@ -212,6 +221,7 @@ class Checkout extends AbstractBlock {
 		$this->asset_data_registry->add( 'shippingEnabled', wc_shipping_enabled(), true );
 		$this->asset_data_registry->add( 'hasDarkEditorStyleSupport', current_theme_supports( 'dark-editor-style' ), true );
 		$this->asset_data_registry->register_page_id( isset( $attributes['cartPageId'] ) ? $attributes['cartPageId'] : 0 );
+		$this->asset_data_registry->add( 'isBlockTheme', wc_current_theme_is_fse_theme(), true );
 
 		$pickup_location_settings = get_option( 'woocommerce_pickup_location_settings', [] );
 		$this->asset_data_registry->add( 'localPickupEnabled', wc_string_to_bool( $pickup_location_settings['enabled'] ?? 'no' ), true );
@@ -360,17 +370,19 @@ class Checkout extends AbstractBlock {
 	 * Hydrate the checkout block with data from the API.
 	 */
 	protected function hydrate_from_api() {
+		// Cache existing notices now, otherwise they are caught by the Cart Controller and converted to exceptions.
+		$old_notices = WC()->session->get( 'wc_notices', array() );
+		wc_clear_notices();
+
 		$this->asset_data_registry->hydrate_api_request( '/wc/store/v1/cart' );
 
-		// Print existing notices now, otherwise they are caught by the Cart
-		// Controller and converted to exceptions.
-		wc_print_notices();
 		add_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
-
 		$rest_preload_api_requests = rest_preload_api_request( [], '/wc/store/v1/checkout' );
 		$this->asset_data_registry->add( 'checkoutData', $rest_preload_api_requests['/wc/store/v1/checkout']['body'] ?? [] );
-
 		remove_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
+
+		// Restore notices.
+		WC()->session->set( 'wc_notices', $old_notices );
 	}
 
 	/**
