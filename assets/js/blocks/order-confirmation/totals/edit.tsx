@@ -12,7 +12,7 @@ import './style.scss';
 const Edit = ( props: Props ): JSX.Element => {
 	const { attributes, name } = props;
 	const blockProps = useBlockProps( {
-		className: 'wc-block-order-confirmation-details',
+		className: 'wc-block-order-confirmation-totals',
 	} );
 
 	return (

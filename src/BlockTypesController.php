@@ -230,7 +230,7 @@ final class BlockTypesController {
 			$block_types[] = 'ProductTemplate';
 			$block_types[] = 'OrderConfirmation\Status';
 			$block_types[] = 'OrderConfirmation\Summary';
-			$block_types[] = 'OrderConfirmation\Details';
+			$block_types[] = 'OrderConfirmation\Totals';
 			$block_types[] = 'OrderConfirmation\BillingAddress';
 			$block_types[] = 'OrderConfirmation\ShippingAddress';
 		}

@@ -5,16 +5,16 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes\OrderConfirmation;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
 /**
- * Details class.
+ * Totals class.
  */
-class Details extends AbstractOrderConfirmationBlock {
+class Totals extends AbstractOrderConfirmationBlock {
 
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'order-confirmation-details';
+	protected $block_name = 'order-confirmation-totals';
 
 	/**
 	 * Render the block.
