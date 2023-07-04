@@ -45,7 +45,11 @@ class ProductCollectionPage {
 	}
 
 	async addFilter(
-		name: 'Show Hand-picked Products' | 'Keyword' | 'Show Taxonomies'
+		name:
+			| 'Show Hand-picked Products'
+			| 'Keyword'
+			| 'Show Taxonomies'
+			| 'Show Product Attributes'
 	) {
 		await this.page
 			.getByRole( 'button', { name: 'Filters options' } )
@@ -128,6 +132,34 @@ class ProductCollectionPage {
 		await input.fill( keyword );
 		// Timeout is needed because of debounce in the block.
 		await this.page.waitForTimeout( 300 );
+		await this.refreshLocators( 'editor' );
+	}
+
+	async setProductAttribute( attribute: 'Color' | 'Size', value: string ) {
+		await this.page.waitForLoadState( 'networkidle' );
+		const productAttributesContainer = await this.page.locator(
+			'.woocommerce-product-attributes'
+		);
+
+		// Whenever attributes filter is added, it fetched the attributes from the server.
+		// So, we need to wait for the attributes to be fetched.
+		await productAttributesContainer.getByLabel( 'Attributes' ).isEnabled();
+
+		// If value is not visible, then toggle the attribute to make it visible.
+		const isAttributeValueVisible =
+			(
+				await productAttributesContainer
+					.getByLabel( value )
+					.elementHandles()
+			 ).length !== 0;
+		if ( ! isAttributeValueVisible ) {
+			await productAttributesContainer
+				.locator( `li:has-text("${ attribute }")` )
+				.click();
+		}
+
+		// Now, check the value.
+		await productAttributesContainer.getByLabel( value ).check();
 		await this.refreshLocators( 'editor' );
 	}
 

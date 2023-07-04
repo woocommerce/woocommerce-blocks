@@ -176,5 +176,22 @@ test.describe( 'Product Collection', () => {
 				accessoriesProductNames
 			);
 		} );
+
+		test( 'Products can be filtered based on product attributes like color, size etc.', async ( {
+			pageObject,
+		} ) => {
+			await pageObject.addFilter( 'Show Product Attributes' );
+			await pageObject.setProductAttribute( 'Color', 'Green' );
+
+			await expect( pageObject.productTitles ).toHaveCount( 3 );
+
+			await pageObject.setProductAttribute( 'Size', 'Large' );
+
+			await expect( pageObject.productTitles ).toHaveCount( 1 );
+
+			await pageObject.publishAndGoToFrontend();
+
+			await expect( pageObject.productTitles ).toHaveCount( 1 );
+		} );
 	} );
 } );
