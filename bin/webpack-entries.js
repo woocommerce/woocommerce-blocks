@@ -64,6 +64,9 @@ const blocks = {
 	'product-rating-stars': {
 		isExperimental: true,
 	},
+	'product-rating-counter': {
+		isExperimental: true,
+	},
 	'reviews-by-category': {
 		customDir: 'reviews/reviews-by-category',
 	},
