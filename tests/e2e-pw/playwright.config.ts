@@ -34,7 +34,10 @@ const config: ExtendedPlaywrightTestConfig = {
 	maxFailures: E2E_MAX_FAILURES ? Number( E2E_MAX_FAILURES ) : 0,
 	use: {
 		baseURL: BASE_URL,
-		screenshot: 'only-on-failure',
+		screenshot: {
+			mode: 'only-on-failure',
+			fullPage: true,
+		},
 		stateDir: 'tests/e2e-pw/test-results/storage/',
 		trace: 'retain-on-failure',
 		video: 'on-first-retry',
