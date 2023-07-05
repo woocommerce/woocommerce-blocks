@@ -1,0 +1,27 @@
+.wc-block-order-confirmation-totals {
+	.woocommerce-order-details table,
+	.woocommerce-order-details table.shop_table {
+		width: 100%;
+		border: 1px solid currentColor;
+		border-bottom: 0;
+
+		thead {
+			text-transform: uppercase;
+		}
+
+		th {
+			font-weight: bold;
+		}
+
+		th,
+		td {
+			border-style: solid;
+			border-color: currentColor;
+			border-width: 0 0 1px 0;
+			padding: $gap-small;
+			margin: 0;
+			text-align: left;
+		}
+	}
+}
+
