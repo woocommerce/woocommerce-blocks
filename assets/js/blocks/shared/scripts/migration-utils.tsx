@@ -5,12 +5,17 @@ import { type BlockInstance } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 
 type GetBlocksClientIds = ( blocks: BlockInstance[] ) => string[];
+export type IsBlockType = ( block: BlockInstance ) => boolean;
+export type TransformBlock = (
+	block: BlockInstance,
+	innerBlock: BlockInstance[]
+) => BlockInstance;
 
-const isProductsBlock = ( block: BlockInstance ) =>
+const isProductsBlock: IsBlockType = ( block ) =>
 	block.name === 'core/query' &&
 	block.attributes.namespace === 'woocommerce/product-query';
 
-const isProductCollectionBlock = ( block: BlockInstance ) =>
+const isProductCollectionBlock: IsBlockType = ( block ) =>
 	block.name === 'woocommerce/product-collection';
 
 const getBlockClientIdsByPredicate = (

@@ -11,6 +11,8 @@ import { select, dispatch } from '@wordpress/data';
 import {
 	getProductCollectionBlockClientIds,
 	checkIfBlockCanBeInserted,
+	type TransformBlock,
+	type IsBlockType,
 } from './migration-utils';
 
 const VARIATION_NAME = 'woocommerce/product-query';
@@ -58,12 +60,6 @@ const mapAttributes = ( attributes ) => {
 		},
 	};
 };
-
-type IsBlockType = ( block: BlockInstance ) => boolean;
-type TransformBlock = (
-	block: BlockInstance,
-	innerBlock: BlockInstance[]
-) => BlockInstance;
 
 const isProductTemplate: IsBlockType = ( { name } ) =>
 	name === 'woocommerce/product-template';

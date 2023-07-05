@@ -11,6 +11,8 @@ import { select, dispatch } from '@wordpress/data';
 import {
 	getProductsBlockClientIds,
 	checkIfBlockCanBeInserted,
+	type TransformBlock,
+	type IsBlockType,
 } from './migration-utils';
 
 const notice = __(
@@ -48,12 +50,6 @@ const mapAttributes = ( attributes: Record< string, unknown > ) => {
 		displayUpgradeNotice: true,
 	};
 };
-
-type IsBlockType = ( block: BlockInstance ) => boolean;
-type TransformBlock = (
-	block: BlockInstance,
-	innerBlock: BlockInstance[]
-) => BlockInstance;
 
 const isPostTemplate: IsBlockType = ( { name, attributes } ) =>
 	name === 'core/post-template' &&
