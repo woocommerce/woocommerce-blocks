@@ -48,6 +48,19 @@ module.exports = ( { config: storybookConfig } ) => {
 			loaders: [ require.resolve( '@storybook/source-loader' ) ],
 			enforce: 'pre',
 		},
+		{
+			test: /\.(j|t)sx?$/,
+			use: {
+				loader: 'babel-loader?cacheDirectory',
+				options: {
+					presets: [ '@wordpress/babel-preset-default' ],
+					plugins: [
+						'@babel/plugin-proposal-optional-chaining',
+						'@babel/plugin-proposal-class-properties',
+					],
+				},
+			},
+		},
 		...wooBlocksConfig.module.rules,
 		...wooStylingConfig.module.rules
 	);

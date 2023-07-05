@@ -31,6 +31,14 @@ const {
 
 const isProduction = NODE_ENV === 'production';
 
+const babelPlugins = [
+	isProduction
+		? require.resolve( 'babel-plugin-transform-react-remove-prop-types' )
+		: false,
+	'@babel/plugin-proposal-optional-chaining',
+	'@babel/plugin-proposal-class-properties',
+].filter( Boolean );
+
 /**
  * Shared config for all script builds.
  */
@@ -98,10 +106,7 @@ const getCoreConfig = ( options = {} ) => {
 						loader: 'babel-loader?cacheDirectory',
 						options: {
 							presets: [ '@wordpress/babel-preset-default' ],
-							plugins: [
-								'@babel/plugin-proposal-optional-chaining',
-								'@babel/plugin-proposal-class-properties',
-							],
+							plugins: babelPlugins,
 						},
 					},
 				},
@@ -209,15 +214,7 @@ const getMainConfig = ( options = {} ) => {
 						loader: 'babel-loader?cacheDirectory',
 						options: {
 							presets: [ '@wordpress/babel-preset-default' ],
-							plugins: [
-								isProduction
-									? require.resolve(
-											'babel-plugin-transform-react-remove-prop-types'
-									  )
-									: false,
-								'@babel/plugin-proposal-optional-chaining',
-								'@babel/plugin-proposal-class-properties',
-							].filter( Boolean ),
+							plugins: babelPlugins,
 						},
 					},
 				},
@@ -357,15 +354,7 @@ const getFrontConfig = ( options = {} ) => {
 									},
 								],
 							],
-							plugins: [
-								isProduction
-									? require.resolve(
-											'babel-plugin-transform-react-remove-prop-types'
-									  )
-									: false,
-								'@babel/plugin-proposal-optional-chaining',
-								'@babel/plugin-proposal-class-properties',
-							].filter( Boolean ),
+							plugins: babelPlugins,
 						},
 					},
 				},
@@ -460,15 +449,7 @@ const getPaymentsConfig = ( options = {} ) => {
 									},
 								],
 							],
-							plugins: [
-								isProduction
-									? require.resolve(
-											'babel-plugin-transform-react-remove-prop-types'
-									  )
-									: false,
-								'@babel/plugin-proposal-optional-chaining',
-								'@babel/plugin-proposal-class-properties',
-							].filter( Boolean ),
+							plugins: babelPlugins,
 						},
 					},
 				},
@@ -564,15 +545,7 @@ const getExtensionsConfig = ( options = {} ) => {
 									},
 								],
 							],
-							plugins: [
-								isProduction
-									? require.resolve(
-											'babel-plugin-transform-react-remove-prop-types'
-									  )
-									: false,
-								'@babel/plugin-proposal-optional-chaining',
-								'@babel/plugin-proposal-class-properties',
-							].filter( Boolean ),
+							plugins: babelPlugins,
 						},
 					},
 				},
@@ -683,13 +656,7 @@ const getStylingConfig = ( options = {} ) => {
 						loader: 'babel-loader?cacheDirectory',
 						options: {
 							presets: [ '@wordpress/babel-preset-default' ],
-							plugins: [
-								isProduction
-									? require.resolve(
-											'babel-plugin-transform-react-remove-prop-types'
-									  )
-									: false,
-							].filter( Boolean ),
+							plugins: babelPlugins,
 						},
 					},
 				},
@@ -815,11 +782,7 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 										},
 									],
 								],
-								// Required until Webpack is updated to ^5.0.0
-								plugins: [
-									'@babel/plugin-proposal-optional-chaining',
-									'@babel/plugin-proposal-class-properties',
-								],
+								plugins: babelPlugins,
 							},
 						},
 					],
