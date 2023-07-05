@@ -25,7 +25,6 @@ jobs:
                   steps.metadata.outputs.dependency-names == '@babel/core' ||
                   steps.metadata.outputs.dependency-names == '@babel/plugin-proposal-class-properties' ||
                   steps.metadata.outputs.dependency-names == '@babel/plugin-syntax-jsx' ||
-                  steps.metadata.outputs.dependency-names == '@babel/polyfill' ||
                   steps.metadata.outputs.dependency-names == '@types/classnames' ||
                   steps.metadata.outputs.dependency-names == '@types/dinero.js' ||
                   steps.metadata.outputs.dependency-names == '@types/dompurify' ||

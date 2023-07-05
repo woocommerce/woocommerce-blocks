@@ -1,7 +1,8 @@
 const babelOptions = {
-	presets: [ '@babel/preset-typescript', '@wordpress/babel-preset-default' ],
+	presets: [ '@wordpress/babel-preset-default' ],
 	plugins: [
 		'explicit-exports-references',
+		'@babel/plugin-proposal-optional-chaining',
 		'@babel/plugin-proposal-class-properties',
 	],
 };

@@ -44,11 +44,11 @@
 		"<rootDir>/node_modules/",
 		"<rootDir>/vendor/"
 	],
-	"transformIgnorePatterns": [ "node_modules/(?!(simple-html-tokenizer)/)" ],
+	"transformIgnorePatterns": [ "node_modules/(?!(simple-html-tokenizer|is-plain-obj|memize|@wordpress/a11y|@wordpress/keycodes|@wordpress/shortcode)/)" ],
 	"testEnvironment": "jsdom",
 	"preset": "@wordpress/jest-preset-default",
 	"transform": {
-		"^.+\\.(js|ts|tsx)$": "<rootDir>/tests/js/jestPreprocess.js"
+		"^.+\\.[jt]sx?$": "<rootDir>/tests/js/jestPreprocess.js"
 	},
 	"verbose": true
 }
