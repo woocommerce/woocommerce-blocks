@@ -84,21 +84,30 @@ const replaceProductsBlocks = ( productsBlockClientIds: string[] ) => {
 	return !! results.length && results.every( ( result ) => !! result );
 };
 
-export const replaceProductsWithProductCollection = (
-	unsubscribe?: () => void
-) => {
-	const blocks = select( 'core/block-editor' ).getBlocks();
-	const productsBlockClientIds = getProductsBlockClientIds( blocks );
-	const amountOfReplacedBlocks = productsBlockClientIds.length;
-
-	const replaced =
-		!! amountOfReplacedBlocks &&
-		replaceProductsBlocks( productsBlockClientIds );
-
-	if ( replaced ) {
-		displaySuccessNotice();
-		if ( typeof unsubscribe === 'function' ) {
-			unsubscribe();
+export const replaceProductsWithProductCollection = () =>
+	// TODO: unsubscribe if user REVERTED changes
+	// unsubscribe?: () => void
+	{
+		const queryBlocksCount =
+			select( 'core/block-editor' ).getGlobalBlockCount( 'core/query' );
+		if ( queryBlocksCount === 0 ) {
+			return;
 		}
-	}
-};
+
+		if ( queryBlocksCount ) {
+			const blocks = select( 'core/block-editor' ).getBlocks();
+			const productsBlockClientIds = getProductsBlockClientIds( blocks );
+			const productsBlocksCount = productsBlockClientIds.length;
+
+			if ( productsBlocksCount === 0 ) {
+				return;
+			}
+
+			const replaced = replaceProductsBlocks( productsBlockClientIds );
+
+			// To be removed
+			if ( replaced ) {
+				displaySuccessNotice();
+			}
+		}
+	};
