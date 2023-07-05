@@ -32,9 +32,9 @@
 		"align": [ "wide", "full" ],
 		"color": {
 			"background": false,
-			"link": true,
-			"interactivity":true
+			"link": true
 		},
+		"interactivity":true,
 		"html": false,
 		"typography": {
 			"fontSize": true,
