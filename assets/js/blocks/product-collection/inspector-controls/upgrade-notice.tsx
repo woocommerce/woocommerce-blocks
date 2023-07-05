@@ -4,16 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import { Notice, Button } from '@wordpress/components';
 import { BlockEditProps } from '@wordpress/blocks';
-import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { ProductCollectionAttributes } from '../types';
-import {
-	getUpdateStateFromLocalStorage,
-	setUpdateStateInLocalStorage,
-} from '../../shared/scripts';
 
 const FormattedNotice = ( { notice }: { notice: string } ) => {
 	const strongText = 'Product Collection';
@@ -33,16 +28,7 @@ const UpgradeNotice = (
 		replaceBlocks: () => void;
 	}
 ) => {
-	const upgradeState = getUpdateStateFromLocalStorage();
-	useEffect( () => {
-		return () => {
-			if ( getUpdateStateFromLocalStorage() !== 'reverted' ) {
-				setUpdateStateInLocalStorage( 'seen' );
-			}
-		};
-	}, [ upgradeState ] );
-
-	const displayNotice = upgradeState === 'not_seen';
+	const { displayUpgradeNotice } = props.attributes;
 	const notice = __(
 		'Products (Beta) block was upgraded to Product Collection, an updated version with new features and simplified settings.',
 		'woo-gutenberg-products-block'
@@ -54,18 +40,16 @@ const UpgradeNotice = (
 	);
 
 	const handleRemove = () => {
-		setUpdateStateInLocalStorage( 'seen' );
 		props.setAttributes( {
 			displayUpgradeNotice: false,
 		} );
 	};
 
 	const handleClick = () => {
-		setUpdateStateInLocalStorage( 'reverted' );
 		props.replaceBlocks();
 	};
 
-	return displayNotice ? (
+	return displayUpgradeNotice ? (
 		<Notice onRemove={ handleRemove }>
 			<FormattedNotice notice={ notice } />
 			<br />

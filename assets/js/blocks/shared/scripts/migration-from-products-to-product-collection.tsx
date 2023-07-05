@@ -102,23 +102,3 @@ export const replaceProductsWithProductCollection = (
 		}
 	}
 };
-
-type UpgradeStates = 'not_seen' | 'seen' | 'reverted';
-const initialUpgradeState = 'not_seen';
-
-export const PRODUCTS_UPDATE_LOCAL_STORAGE_KEY =
-	'wc-blocks_products-upgrade-state';
-
-export const getUpdateStateFromLocalStorage = (): UpgradeStates => {
-	return ( localStorage.getItem( PRODUCTS_UPDATE_LOCAL_STORAGE_KEY ) ||
-		initialUpgradeState ) as UpgradeStates;
-};
-
-export const setUpdateStateInLocalStorage = ( value: UpgradeStates ) => {
-	return localStorage.setItem( PRODUCTS_UPDATE_LOCAL_STORAGE_KEY, value );
-};
-
-export const shouldMigrateAutomatically = () => {
-	const state = getUpdateStateFromLocalStorage();
-	return state !== 'reverted';
-};
