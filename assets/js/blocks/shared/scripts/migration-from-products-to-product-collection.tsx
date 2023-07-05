@@ -49,8 +49,84 @@ const mapAttributes = ( attributes: Record< string, unknown > ) => {
 	};
 };
 
-const mapInnerBlocks = ( innerBlocks: BlockInstance[] ) => {
-	return innerBlocks;
+type IsBlockType = ( block: BlockInstance ) => boolean;
+type MapBlock = (
+	block: BlockInstance,
+	innerBlock: BlockInstance[]
+) => BlockInstance;
+
+const isPostTemplate: IsBlockType = ( { name, attributes } ) =>
+	name === 'core/post-template' &&
+	attributes.__woocommerceNamespace ===
+		'woocommerce/product-query/product-template';
+
+const isPostTitle: IsBlockType = ( { name, attributes } ) =>
+	name === 'core/post-title' &&
+	attributes.__woocommerceNamespace ===
+		'woocommerce/product-query/product-title';
+
+const isPostSummary: IsBlockType = ( { name, attributes } ) =>
+	name === 'core/post-excerpt' &&
+	attributes.__woocommerceNamespace ===
+		'woocommerce/product-query/product-summary';
+
+const transformPostTemplate: MapBlock = ( block, innerBlocks ) => {
+	const { __woocommerceNamespace, className, layout, ...restAttrributes } =
+		block.attributes;
+	return createBlock(
+		'woocommerce/product-template',
+		restAttrributes,
+		innerBlocks
+	);
+};
+
+const transformPostTitle: MapBlock = ( block, innerBlocks ) => {
+	const { __woocommerceNamespace, ...restAttrributes } = block.attributes;
+	return createBlock(
+		'core/post-title',
+		{
+			__woocommerceNamespace:
+				'woocommerce/product-collection/product-title',
+			...restAttrributes,
+		},
+		innerBlocks
+	);
+};
+
+const transformPostSummary: MapBlock = ( block, innerBlocks ) => {
+	const { __woocommerceNamespace, ...restAttrributes } = block.attributes;
+	return createBlock(
+		'core/post-excerpt',
+		{
+			__woocommerceNamespace:
+				'woocommerce/product-collection/product-summary',
+			...restAttrributes,
+		},
+		innerBlocks
+	);
+};
+
+const mapInnerBlocks = ( innerBlocks: BlockInstance[] ): BlockInstance[] => {
+	const mappedInnerBlocks = innerBlocks.map( ( innerBlock ) => {
+		const { name, attributes } = innerBlock;
+
+		const mappedInnerInnerBlocks = mapInnerBlocks( innerBlock.innerBlocks );
+
+		if ( isPostTemplate( innerBlock ) ) {
+			return transformPostTemplate( innerBlock, mappedInnerInnerBlocks );
+		}
+
+		if ( isPostTitle( innerBlock ) ) {
+			return transformPostTitle( innerBlock, mappedInnerInnerBlocks );
+		}
+
+		if ( isPostSummary( innerBlock ) ) {
+			return transformPostSummary( innerBlock, mappedInnerInnerBlocks );
+		}
+		return createBlock( name, attributes, mappedInnerInnerBlocks );
+	} );
+
+	return mappedInnerBlocks;
 };
 
 const replaceProductsBlock = ( clientId: string ) => {
