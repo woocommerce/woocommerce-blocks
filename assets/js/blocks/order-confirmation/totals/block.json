@@ -1,8 +1,8 @@
 {
-	"name": "woocommerce/order-confirmation-details",
+	"name": "woocommerce/order-confirmation-totals",
 	"version": "1.0.0",
-	"title": "Order Confirmation Details",
-	"description": "Display the order confirmation details.",
+	"title": "Order Totals",
+	"description": "Display the items purchased and order totals.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"supports": {
