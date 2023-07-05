@@ -12,8 +12,8 @@
 </h2>
 <!-- /wp:heading -->
 
-<!-- wp:group {"align":"full","layout":{"type":"flex","flexWrap":"nowrap"}} -->
-<div class="wp-block-group alignfull">
+<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-group alignwide">
 	<!-- wp:query {"query":{"perPage":"5","pages":0,"offset":0,"postType":"product","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","onbackorder"]},"displayLayout":{"type":"flex","columns":5},"namespace":"woocommerce/product-query"} -->
 	<div class="wp-block-query">
 		<!-- wp:post-template {"__woocommerceNamespace":"woocommerce/product-query/product-template"} -->
