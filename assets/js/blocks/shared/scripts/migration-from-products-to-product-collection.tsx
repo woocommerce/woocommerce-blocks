@@ -50,7 +50,7 @@ const mapAttributes = ( attributes: Record< string, unknown > ) => {
 };
 
 type IsBlockType = ( block: BlockInstance ) => boolean;
-type MapBlock = (
+type TransformBlock = (
 	block: BlockInstance,
 	innerBlock: BlockInstance[]
 ) => BlockInstance;
@@ -70,7 +70,7 @@ const isPostSummary: IsBlockType = ( { name, attributes } ) =>
 	attributes.__woocommerceNamespace ===
 		'woocommerce/product-query/product-summary';
 
-const transformPostTemplate: MapBlock = ( block, innerBlocks ) => {
+const transformPostTemplate: TransformBlock = ( block, innerBlocks ) => {
 	const { __woocommerceNamespace, className, layout, ...restAttrributes } =
 		block.attributes;
 	return createBlock(
@@ -80,7 +80,7 @@ const transformPostTemplate: MapBlock = ( block, innerBlocks ) => {
 	);
 };
 
-const transformPostTitle: MapBlock = ( block, innerBlocks ) => {
+const transformPostTitle: TransformBlock = ( block, innerBlocks ) => {
 	const { __woocommerceNamespace, ...restAttrributes } = block.attributes;
 	return createBlock(
 		'core/post-title',
@@ -93,7 +93,7 @@ const transformPostTitle: MapBlock = ( block, innerBlocks ) => {
 	);
 };
 
-const transformPostSummary: MapBlock = ( block, innerBlocks ) => {
+const transformPostSummary: TransformBlock = ( block, innerBlocks ) => {
 	const { __woocommerceNamespace, ...restAttrributes } = block.attributes;
 	return createBlock(
 		'core/post-excerpt',

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createBlock } from '@wordpress/blocks';
+import { createBlock, BlockInstance } from '@wordpress/blocks';
 import { select, dispatch } from '@wordpress/data';
 
 /**
@@ -59,7 +59,90 @@ const mapAttributes = ( attributes ) => {
 	};
 };
 
-const mapInnerBlocks = ( innerBlocks ) => innerBlocks;
+type IsBlockType = ( block: BlockInstance ) => boolean;
+type TransformBlock = (
+	block: BlockInstance,
+	innerBlock: BlockInstance[]
+) => BlockInstance;
+
+const isProductTemplate: IsBlockType = ( { name } ) =>
+	name === 'woocommerce/product-template';
+
+const isPostTitle: IsBlockType = ( { name, attributes } ) =>
+	name === 'core/post-title' &&
+	attributes.__woocommerceNamespace ===
+		'woocommerce/product-collection/product-title';
+
+const isPostSummary: IsBlockType = ( { name, attributes } ) =>
+	name === 'core/post-excerpt' &&
+	attributes.__woocommerceNamespace ===
+		'woocommerce/product-collection/product-summary';
+
+const transformProductTemplate: TransformBlock = ( block, innerBlocks ) => {
+	return createBlock(
+		'core/post-template',
+		{
+			className: 'products-block-post-template',
+			layout: { type: 'grid', columnCount: 3 },
+			__woocommerceNamespace:
+				'woocommerce/product-query/product-template',
+			...block.attributes,
+		},
+		innerBlocks
+	);
+};
+
+const transformPostTitle: TransformBlock = ( block, innerBlocks ) => {
+	const { __woocommerceNamespace, ...restAttrributes } = block.attributes;
+	return createBlock(
+		'core/post-title',
+		{
+			__woocommerceNamespace:
+				'woocommerce/product-collection/product-title',
+			...restAttrributes,
+		},
+		innerBlocks
+	);
+};
+
+const transformPostSummary: TransformBlock = ( block, innerBlocks ) => {
+	const { __woocommerceNamespace, ...restAttrributes } = block.attributes;
+	return createBlock(
+		'core/post-excerpt',
+		{
+			__woocommerceNamespace:
+				'woocommerce/product-collection/product-summary',
+			...restAttrributes,
+		},
+		innerBlocks
+	);
+};
+
+const mapInnerBlocks = ( innerBlocks: BlockInstance[] ): BlockInstance[] => {
+	const mappedInnerBlocks = innerBlocks.map( ( innerBlock ) => {
+		const { name, attributes } = innerBlock;
+
+		const mappedInnerInnerBlocks = mapInnerBlocks( innerBlock.innerBlocks );
+
+		if ( isProductTemplate( innerBlock ) ) {
+			return transformProductTemplate(
+				innerBlock,
+				mappedInnerInnerBlocks
+			);
+		}
+
+		if ( isPostTitle( innerBlock ) ) {
+			return transformPostTitle( innerBlock, mappedInnerInnerBlocks );
+		}
+
+		if ( isPostSummary( innerBlock ) ) {
+			return transformPostSummary( innerBlock, mappedInnerInnerBlocks );
+		}
+		return createBlock( name, attributes, mappedInnerInnerBlocks );
+	} );
+
+	return mappedInnerBlocks;
+};
 
 const replaceProductCollectionBlock = ( clientId: string ) => {
 	const productCollectionBlock =
