@@ -28,7 +28,8 @@
 		"./assets/js/blocks/product-query/variations/**.tsx",
 		"./assets/js/blocks/product-query/index.tsx",
 		"./assets/js/blocks/product-query/inspector-controls.tsx",
-		"./assets/js/templates/revert-button/index.tsx"
+		"./assets/js/templates/revert-button/index.tsx",
+		"./assets/js/data/cart/cart-store.ts"
 	],
 	"repository": {
 		"type": "git",

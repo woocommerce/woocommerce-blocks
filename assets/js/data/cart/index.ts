@@ -19,7 +19,6 @@ import {
 	debouncedUpdatePaymentMethods,
 } from './update-payment-methods';
 import { ResolveSelectFromMap } from '../mapped-types';
-import './interactivity';
 
 // Please update from deprecated "registerStore" to "createReduxStore" when this PR is merged:
 // https://github.com/WordPress/gutenberg/pull/45513

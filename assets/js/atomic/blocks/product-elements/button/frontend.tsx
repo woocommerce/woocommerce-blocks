@@ -9,21 +9,15 @@ import { Cart } from '@woocommerce/type-defs/cart';
 type Context = {
 	woocommerce: {
 		isLoading: boolean;
-		addToCart: string;
+		addToCartText: string;
 		productId: number;
-		isAdded: boolean;
-		moreThanOneItem: boolean;
 		numberOfItems: number;
 	};
 };
 
 type State = {
 	woocommerce: {
-		inTheCart: string;
-		viewCart: string;
-		cartUrl: string;
 		cart: Cart;
-		addToCartText: string;
 		inTheCartText: string;
 	};
 };
@@ -42,7 +36,7 @@ const productButtonSelectors = {
 			state: State;
 		} ) => {
 			if ( context.woocommerce.numberOfItems === 0 ) {
-				return state.woocommerce.addToCartText;
+				return context.woocommerce.addToCartText;
 			}
 
 			if ( ! state.woocommerce.cart ) {
@@ -59,7 +53,7 @@ const productButtonSelectors = {
 			);
 
 			if ( ! product ) {
-				return state.woocommerce.addToCartText;
+				return context.woocommerce.addToCartText;
 			}
 
 			return state.woocommerce.inTheCartText.replace(
@@ -95,13 +89,10 @@ const productButtonSelectors = {
 			selectors: any;
 			state: State;
 		} ) => {
-			return (
-				context.woocommerce.isAdded &&
-				selectors.woocommerce.moreThanOneItem( {
-					context,
-					state,
-				} )
-			);
+			return selectors.woocommerce.moreThanOneItem( {
+				context,
+				state,
+			} );
 		},
 	},
 };
@@ -148,9 +139,7 @@ store( {
 						1
 					);
 					context.woocommerce.numberOfItems++;
-					context.woocommerce.moreThanOneItem = true;
 					context.woocommerce.isLoading = false;
-					context.woocommerce.isAdded = true;
 				} catch ( error ) {
 					context.woocommerce.numberOfItems--;
 				}
