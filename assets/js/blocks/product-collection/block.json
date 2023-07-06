@@ -20,10 +20,6 @@
 		},
 		"displayLayout": {
 			"type": "object"
-		},
-		"displayUpgradeNotice": {
-			"type": "boolean",
-			"default": false
 		}
 	},
 	"providesContext": {

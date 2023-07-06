@@ -1,13 +1,10 @@
 /**
  * External dependencies
  */
-import type { ElementType } from 'react';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { useMemo } from '@wordpress/element';
-import { EditorBlock } from '@woocommerce/types';
-import { addFilter } from '@wordpress/hooks';
 import {
 	// @ts-expect-error Using experimental features
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -18,7 +15,6 @@ import {
  * Internal dependencies
  */
 import { ProductCollectionAttributes } from '../types';
-import UpgradeNotice from './upgrade-notice';
 import ColumnsControl from './columns-control';
 import InheritQueryControl from './inherit-query-control';
 import OrderByControl from './order-by-control';
@@ -31,7 +27,6 @@ import AttributesControl from './attributes-control';
 import TaxonomyControls from './taxonomy-controls';
 import HandPickedProductsControl from './hand-picked-products-control';
 import AuthorControl from './author-control';
-import { replaceProductCollectionWithProducts } from '../../shared/scripts';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -107,30 +102,3 @@ const ProductCollectionInspectorControls = (
 };
 
 export default ProductCollectionInspectorControls;
-
-export const withUpgradeNoticeControls =
-	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
-	( props: BlockEditProps< ProductCollectionAttributes > ) => {
-		const { displayUpgradeNotice } = props.attributes;
-		return (
-			<>
-				<InspectorControls>
-					{ displayUpgradeNotice && (
-						<UpgradeNotice
-							{ ...props }
-							replaceBlocks={
-								replaceProductCollectionWithProducts
-							}
-						/>
-					) }
-				</InspectorControls>
-				<BlockEdit { ...props } />
-			</>
-		);
-	};
-
-addFilter(
-	'editor.BlockEdit',
-	'woocommerce/product-collection',
-	withUpgradeNoticeControls
-);

@@ -14,7 +14,6 @@ export interface ProductCollectionAttributes {
 	templateSlug: string;
 	displayLayout: ProductCollectionDisplayLayout;
 	tagName: string;
-	displayUpgradeNotice: boolean;
 }
 
 export interface ProductCollectionDisplayLayout {
