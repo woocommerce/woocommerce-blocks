@@ -164,6 +164,16 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'editor' );
 	}
 
+	async setViewportSize( {
+		width,
+		height,
+	}: {
+		width: number;
+		height: number;
+	} ) {
+		await this.page.setViewportSize( { width, height } );
+	}
+
 	/**
 	 * Private methods to be used by the class.
 	 */

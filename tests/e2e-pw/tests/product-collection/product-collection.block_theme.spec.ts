@@ -25,6 +25,7 @@ test.describe( 'Product Collection', () => {
 		pageObject,
 	} ) => {
 		expect( pageObject.productTemplate ).not.toBeNull();
+		expect( pageObject.products ).toHaveCount( 9 );
 		expect( pageObject.productImages ).toHaveCount( 9 );
 		expect( pageObject.productTitles ).toHaveCount( 9 );
 		expect( pageObject.productPrices ).toHaveCount( 9 );
@@ -33,6 +34,7 @@ test.describe( 'Product Collection', () => {
 		await pageObject.publishAndGoToFrontend();
 
 		expect( pageObject.productTemplate ).not.toBeNull();
+		expect( pageObject.products ).toHaveCount( 9 );
 		expect( pageObject.productImages ).toHaveCount( 9 );
 		expect( pageObject.productTitles ).toHaveCount( 9 );
 		expect( pageObject.productPrices ).toHaveCount( 9 );
@@ -81,7 +83,7 @@ test.describe( 'Product Collection', () => {
 			pageObject,
 		} ) => {
 			// On each page we show 9 products.
-			await expect( pageObject.productImages ).toHaveCount( 9 );
+			await expect( pageObject.products ).toHaveCount( 9 );
 			// All products should not be on sale.
 			await expect(
 				await pageObject.productImages.filter( {
@@ -92,7 +94,7 @@ test.describe( 'Product Collection', () => {
 			await pageObject.setShowOnlyProductsOnSale( true );
 
 			// In test data we have only 6 products on sale
-			await expect( pageObject.productImages ).toHaveCount( 6 );
+			await expect( pageObject.products ).toHaveCount( 6 );
 
 			// Expect all shown products to be on sale.
 			await expect(
@@ -102,7 +104,7 @@ test.describe( 'Product Collection', () => {
 			).toHaveCount( await pageObject.productImages.count() );
 
 			await pageObject.publishAndGoToFrontend();
-			await expect( pageObject.productImages ).toHaveCount( 6 );
+			await expect( pageObject.products ).toHaveCount( 6 );
 			await expect(
 				await pageObject.productImages.filter( {
 					hasText: 'Product on sale',
@@ -117,16 +119,16 @@ test.describe( 'Product Collection', () => {
 
 			const filterName = 'Pick some products';
 			await pageObject.setFilterComboboxValue( filterName, [ 'Album' ] );
-			expect( pageObject.productTitles ).toHaveCount( 1 );
+			await expect( pageObject.products ).toHaveCount( 1 );
 
 			const productNames = [ 'Album', 'Cap' ];
 			await pageObject.setFilterComboboxValue( filterName, productNames );
-			expect( pageObject.productTitles ).toHaveCount( 2 );
-			expect( pageObject.productTitles ).toHaveText( productNames );
+			await expect( pageObject.products ).toHaveCount( 2 );
+			await expect( pageObject.productTitles ).toHaveText( productNames );
 
 			await pageObject.publishAndGoToFrontend();
-			expect( pageObject.productTitles ).toHaveCount( 2 );
-			expect( pageObject.productTitles ).toHaveText( productNames );
+			await expect( pageObject.products ).toHaveCount( 2 );
+			await expect( pageObject.productTitles ).toHaveText( productNames );
 		} );
 
 		test( 'Products can be filtered based on keyword.', async ( {
@@ -183,15 +185,15 @@ test.describe( 'Product Collection', () => {
 			await pageObject.addFilter( 'Show Product Attributes' );
 			await pageObject.setProductAttribute( 'Color', 'Green' );
 
-			await expect( pageObject.productTitles ).toHaveCount( 3 );
+			await expect( pageObject.products ).toHaveCount( 3 );
 
 			await pageObject.setProductAttribute( 'Size', 'Large' );
 
-			await expect( pageObject.productTitles ).toHaveCount( 1 );
+			await expect( pageObject.products ).toHaveCount( 1 );
 
 			await pageObject.publishAndGoToFrontend();
 
-			await expect( pageObject.productTitles ).toHaveCount( 1 );
+			await expect( pageObject.products ).toHaveCount( 1 );
 		} );
 	} );
 
@@ -212,7 +214,7 @@ test.describe( 'Product Collection', () => {
 			parentWidth?.width as number
 		);
 
-		await pageObject.page.setViewportSize( {
+		await pageObject.setViewportSize( {
 			height: 667,
 			width: 375,
 		} );
