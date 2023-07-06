@@ -11,6 +11,8 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
+      - run:
+          sudo apt install zip unzip
       - uses: actions/checkout@v3
 
       - name: Setup node version and npm cache
