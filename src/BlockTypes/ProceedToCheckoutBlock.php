@@ -12,6 +12,7 @@ class ProceedToCheckoutBlock extends AbstractInnerBlock {
 	 */
 	protected $block_name = 'proceed-to-checkout-block';
 
+
 	/**
 	 * Extra data passed through from server to client for block.
 	 *

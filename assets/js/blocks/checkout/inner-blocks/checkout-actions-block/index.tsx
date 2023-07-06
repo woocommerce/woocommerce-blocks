@@ -10,7 +10,6 @@ import type { BlockConfiguration } from '@wordpress/blocks';
  */
 import attributes from './attributes';
 import { Edit, Save } from './edit';
-import './style.scss';
 
 const blockConfig: BlockConfiguration = {
 	icon: {

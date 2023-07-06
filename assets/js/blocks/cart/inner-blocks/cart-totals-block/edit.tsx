@@ -9,6 +9,7 @@ import type { TemplateArray } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
+import './style.scss';
 import {
 	useForcedLayout,
 	getAllowedBlocks,

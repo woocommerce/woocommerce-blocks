@@ -54,12 +54,4 @@ abstract class AbstractInnerBlock extends AbstractBlock {
 		return parent::get_block_type_script( $key );
 	}
 
-	/**
-	 * Get the frontend style handle for this block type.
-	 *
-	 * @return null
-	 */
-	protected function get_block_type_style() {
-		return null;
-	}
 }

@@ -151,12 +151,11 @@ for ( const {
 				parentClientId
 			);
 
-			await Promise.all( [
-				editor.saveSiteEditorEntities(),
-				page.waitForResponse( ( response ) =>
-					response.url().includes( 'wp-json/wp/v2/templates/' )
-				),
-			] );
+			await editor.saveSiteEditorEntities();
+
+			await page.waitForResponse( ( response ) =>
+				response.url().includes( 'wp-json/wp/v2/templates/' )
+			);
 
 			// @todo This is a workaround to wait for the save button to be enabled. It works only without Gutenberg enabled. We have to refactor this.
 			await page

@@ -34,7 +34,6 @@ import type {
 	ListItemsProps,
 	SearchListItemsContainerProps,
 } from './types';
-import './style.scss';
 
 const defaultRenderListItem = ( args: renderItemArgs ): JSX.Element => {
 	return <SearchListItem { ...args } />;

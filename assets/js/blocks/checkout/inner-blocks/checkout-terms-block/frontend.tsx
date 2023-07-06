@@ -14,6 +14,7 @@ import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
  * Internal dependencies
  */
 import { termsConsentDefaultText, termsCheckboxDefaultText } from './constants';
+import './style.scss';
 
 const FrontendBlock = ( {
 	text,

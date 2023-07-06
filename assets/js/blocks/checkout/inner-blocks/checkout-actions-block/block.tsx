@@ -17,8 +17,8 @@ import {
 /**
  * Internal dependencies
  */
-import { defaultPlaceOrderButtonLabel } from './constants';
 import './style.scss';
+import { defaultPlaceOrderButtonLabel } from './constants';
 
 const Block = ( {
 	cartPageId,

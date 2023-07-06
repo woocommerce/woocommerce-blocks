@@ -9,7 +9,6 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { Edit, Save } from './edit';
-import './style.scss';
 
 registerBlockType( 'woocommerce/empty-cart-block', {
 	icon: {

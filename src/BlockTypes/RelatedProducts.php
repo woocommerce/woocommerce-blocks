@@ -52,15 +52,6 @@ class RelatedProducts extends AbstractBlock {
 	}
 
 	/**
-	 * Get the frontend style handle for this block type.
-	 *
-	 * @return null
-	 */
-	protected function get_block_type_style() {
-		return null;
-	}
-
-	/**
 	 * Update the query for the product query block.
 	 *
 	 * @param string|null $pre_render   The pre-rendered content. Default null.
@@ -130,6 +121,8 @@ class RelatedProducts extends AbstractBlock {
 
 		return $content;
 	}
+
+
 
 	/**
 	 * Determines whether the block is a related products block.
