@@ -102,7 +102,6 @@ class ProductButton extends AbstractBlock {
 				array(
 					'state' => array(
 						'woocommerce' => array(
-							'addToCartText' => __( 'Add to cart', 'woo-gutenberg-products-block' ),
 							'inTheCartText' => sprintf(
 								/* translators: %s: product number. */
 								__( '%s in the cart', 'woo-gutenberg-products-block' ),
@@ -118,6 +117,7 @@ class ProductButton extends AbstractBlock {
 					'isLoading'     => false,
 					'numberOfItems' => $number_of_items_in_cart,
 					'productId'     => $product->get_id(),
+					'addToCartText' => null !== $product->add_to_cart_text() ? $product->add_to_cart_text() : __( 'Add to cart', 'woo-gutenberg-products-block' ),
 				),
 			);
 
