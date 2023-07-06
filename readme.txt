@@ -119,7 +119,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Local Pickup - Only show collection address when set. ([9808](https://github.com/woocommerce/woocommerce-blocks/pull/9808))
 - Remove unnecessary white space from Testimonials 3 Columns pattern. ([9786](https://github.com/woocommerce/woocommerce-blocks/pull/9786))
 - Fix customer account block not able to center align. ([9750](https://github.com/woocommerce/woocommerce-blocks/pull/9750))
-- "Product Image": fix inconsistent style between Editor and front end.  ([10092](https://github.com/woocommerce/woocommerce-blocks/pull/10092))
 
 = 10.5.0 - 2023-06-19 =
 
