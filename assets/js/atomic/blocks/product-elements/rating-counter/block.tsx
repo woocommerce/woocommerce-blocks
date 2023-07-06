@@ -10,6 +10,7 @@ import {
 import { useStyleProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import { isNumber, ProductResponseItem } from '@woocommerce/types';
+import { Disabled } from '@wordpress/components';
 
 const getRatingCount = ( product: ProductResponseItem ) => {
 	const count = isNumber( product.review_count )
@@ -22,20 +23,24 @@ const getRatingCount = ( product: ProductResponseItem ) => {
 const ReviewsCount = ( props: { reviews: number } ): JSX.Element => {
 	const { reviews } = props;
 
-	const reviewsCount = sprintf(
-		/* translators: %s is referring to the total of reviews for a product */
-		_n(
-			'(%s customer review)',
-			'(%s customer reviews)',
-			reviews,
-			'woo-gutenberg-products-block'
-		),
-		reviews
-	);
+	const reviewsCount = reviews
+		? sprintf(
+				/* translators: %s is referring to the total of reviews for a product */
+				_n(
+					'(%s customer review)',
+					'(%s customer reviews)',
+					reviews,
+					'woo-gutenberg-products-block'
+				),
+				reviews
+		  )
+		: __( '(X customer reviews)', 'woo-gutenberg-products-block' );
 
 	return (
 		<span className="wc-block-components-product-rating__reviews_count">
-			{ reviewsCount }
+			<Disabled>
+				<a href="/">{ reviewsCount }</a>
+			</Disabled>
 		</span>
 	);
 };
@@ -74,13 +79,8 @@ export const Block = ( props: ProductRatingProps ): JSX.Element | undefined => {
 		return (
 			<div className={ className } style={ styleProps.style }>
 				<div className="wc-block-components-product-rating__container">
-					{ reviews && isDescendentOfSingleProductBlock ? (
+					{ isDescendentOfSingleProductBlock && (
 						<ReviewsCount reviews={ reviews } />
-					) : (
-						__(
-							'(X customer reviews)',
-							'woo-gutenberg-products-block'
-						)
 					) }
 				</div>
 			</div>
