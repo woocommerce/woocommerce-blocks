@@ -46,7 +46,8 @@ class OrderSchema extends AbstractSchema {
 	public function __construct( ExtendSchema $extend, SchemaController $controller ) {
 		parent::__construct( $extend, $controller );
 		$this->item_schema             = $this->controller->get( OrderItemSchema::IDENTIFIER );
-		$this->coupon_schema           = $this->controller->get( CartCouponSchema::IDENTIFIER );
+		$this->coupon_schema           = $this->controller->get( OrderCouponSchema::IDENTIFIER );
+		$this->fee_schema              = $this->controller->get( OrderFeeSchema::IDENTIFIER );
 		$this->shipping_rate_schema    = $this->controller->get( CartShippingRateSchema::IDENTIFIER );
 		$this->shipping_address_schema = $this->controller->get( ShippingAddressSchema::IDENTIFIER );
 		$this->billing_address_schema  = $this->controller->get( BillingAddressSchema::IDENTIFIER );
@@ -265,16 +266,17 @@ class OrderSchema extends AbstractSchema {
 
 		return [
 			'id'                   => $order_id,
+			'status'               => $order->get_status(),
 			'items'                => $this->get_item_responses_from_schema( $this->item_schema, $order->get_items() ),
-			'totals'               => (object) $this->prepare_currency_response( $this->get_totals( $order ) ),
 			'coupons'              => $this->get_item_responses_from_schema( $this->coupon_schema, $order->get_items( 'coupon' ) ),
+			'fees'                 => $this->get_item_responses_from_schema( $this->fee_schema, $order->get_items( 'fee' ) ),
+			'totals'               => (object) $this->prepare_currency_response( $this->get_totals( $order ) ),
 			'shipping_address'     => (object) $this->shipping_address_schema->get_item_response( new \WC_Customer( $order->get_customer_id() ) ),
 			'billing_address'      => (object) $this->billing_address_schema->get_item_response( new \WC_Customer( $order->get_customer_id() ) ),
 			'needs_payment'        => $order->needs_payment(),
 			'needs_shipping'       => $order->needs_shipping_address(),
-			'errors'               => $errors,
 			'payment_requirements' => $this->extend->get_payment_requirements(),
-			'status'               => $order->get_status(),
+			'errors'               => $errors,
 		];
 	}
 
@@ -284,7 +286,7 @@ class OrderSchema extends AbstractSchema {
 	 * @param \WC_Order $order Order instance.
 	 * @return array
 	 */
-	public function get_totals( $order ) {
+	protected function get_totals( $order ) {
 		return [
 			'subtotal'           => $this->prepare_money_response( $order->get_subtotal() ),
 			'total_discount'     => $this->prepare_money_response( $order->get_total_discount() ),
