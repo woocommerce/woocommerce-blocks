@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { createBlock, BlockInstance } from '@wordpress/blocks';
 import { select, dispatch } from '@wordpress/data';
 
@@ -21,15 +20,6 @@ import {
 } from './migration-utils';
 
 const VARIATION_NAME = 'woocommerce/product-query';
-
-const notice = __(
-	'Product Collection block(s) has been reverted with Products block!',
-	'woo-gutenberg-products-block'
-);
-
-const displaySuccessNotice = () => {
-	dispatch( 'core/notices' ).createNotice( 'success', notice );
-};
 
 const mapAttributes = ( attributes ) => {
 	const { query, ...restAttributes } = attributes;
@@ -210,31 +200,10 @@ const replaceProductCollectionBlock = ( clientId: string ) => {
 	return false;
 };
 
-const replaceProductCollectionBlocks = (
-	productCollectionBlockClientIds: string[]
-) => {
-	const results = productCollectionBlockClientIds.map(
-		replaceProductCollectionBlock
-	);
-	return !! results.length && results.every( ( result ) => !! result );
-};
-
-export const replaceProductCollectionWithProducts = (
-	unsubscribe?: () => void
-) => {
+export const replaceProductCollectionWithProducts = () => {
 	const blocks = select( 'core/block-editor' ).getBlocks();
 	const productCollectionBlockClientIds =
 		getProductCollectionBlockClientIds( blocks );
-	const amountOfReplacedBlocks = productCollectionBlockClientIds.length;
 
-	const replaced =
-		amountOfReplacedBlocks &&
-		replaceProductCollectionBlocks( productCollectionBlockClientIds );
-
-	if ( !! replaced ) {
-		displaySuccessNotice();
-		if ( typeof unsubscribe === 'function' ) {
-			unsubscribe();
-		}
-	}
+	productCollectionBlockClientIds.map( replaceProductCollectionBlock );
 };

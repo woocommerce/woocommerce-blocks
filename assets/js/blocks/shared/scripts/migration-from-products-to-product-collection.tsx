@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { createBlock, BlockInstance } from '@wordpress/blocks';
 import { select, dispatch } from '@wordpress/data';
 
@@ -19,15 +18,6 @@ import {
 	type PostTemplateLayout,
 	type PostTemplateLayoutTypes,
 } from './migration-utils';
-
-const notice = __(
-	'Products (Beta) block(s) has been replaced with Product Collection! Learn more.',
-	'woo-gutenberg-products-block'
-);
-
-const displaySuccessNotice = () => {
-	dispatch( 'core/notices' ).createNotice( 'success', notice );
-};
 
 const mapAttributes = ( attributes: Record< string, unknown > ) => {
 	const { query, namespace, ...restAttributes } = attributes;
@@ -224,8 +214,6 @@ export const replaceProductsWithProductCollection = (
 	const replaced = replaceProductsBlocks( productsBlockClientIds );
 
 	if ( replaced ) {
-		// @todo: remove notice before final PR
-		displaySuccessNotice();
 		// @todo: unsubscribe on user reverting migration
 		unsubscribe();
 	}
