@@ -11,8 +11,13 @@ import { select, dispatch } from '@wordpress/data';
 import {
 	getProductCollectionBlockClientIds,
 	checkIfBlockCanBeInserted,
+	postTemplateHasSupportForGridView,
 	type TransformBlock,
 	type IsBlockType,
+	type ProductGridLayout,
+	type ProductGridLayoutTypes,
+	type PostTemplateLayout,
+	type PostTemplateLayoutTypes,
 } from './migration-utils';
 
 const VARIATION_NAME = 'woocommerce/product-query';
@@ -74,12 +79,43 @@ const isPostSummary: IsBlockType = ( { name, attributes } ) =>
 	attributes.__woocommerceNamespace ===
 		'woocommerce/product-collection/product-summary';
 
-const transformProductTemplate: TransformBlock = ( block, innerBlocks ) => {
+const mapLayoutType = (
+	type: ProductGridLayoutTypes
+): PostTemplateLayoutTypes => {
+	if ( type === 'flex' ) {
+		return 'grid';
+	}
+	if ( type === 'list' ) {
+		return 'default';
+	}
+	return 'grid';
+};
+
+const mapLayoutPropertiesFromProductCollectionToPostTemplate = (
+	layout: ProductGridLayout
+): PostTemplateLayout => {
+	const { type, columns } = layout;
+
+	return {
+		type: mapLayoutType( type ),
+		columnCount: columns,
+	};
+};
+
+const transformProductTemplate: TransformBlock = (
+	block,
+	innerBlocks,
+	displayLayout?: ProductGridLayout
+) => {
 	return createBlock(
 		'core/post-template',
 		{
 			className: 'products-block-post-template',
-			layout: { type: 'grid', columnCount: 3 },
+			layout: postTemplateHasSupportForGridView
+				? mapLayoutPropertiesFromProductCollectionToPostTemplate(
+						displayLayout as ProductGridLayout
+				  )
+				: undefined,
 			__woocommerceNamespace:
 				'woocommerce/product-query/product-template',
 			...block.attributes,
@@ -114,7 +150,10 @@ const transformPostSummary: TransformBlock = ( block, innerBlocks ) => {
 	);
 };
 
-const mapInnerBlocks = ( innerBlocks: BlockInstance[] ): BlockInstance[] => {
+const mapInnerBlocks = (
+	innerBlocks: BlockInstance[],
+	displayLayout?: ProductGridLayout
+): BlockInstance[] => {
 	const mappedInnerBlocks = innerBlocks.map( ( innerBlock ) => {
 		const { name, attributes } = innerBlock;
 
@@ -123,7 +162,8 @@ const mapInnerBlocks = ( innerBlocks: BlockInstance[] ): BlockInstance[] => {
 		if ( isProductTemplate( innerBlock ) ) {
 			return transformProductTemplate(
 				innerBlock,
-				mappedInnerInnerBlocks
+				mappedInnerInnerBlocks,
+				displayLayout
 			);
 		}
 
@@ -147,8 +187,17 @@ const replaceProductCollectionBlock = ( clientId: string ) => {
 
 	if ( productCollectionBlock && canBeInserted ) {
 		const { attributes = {}, innerBlocks = [] } = productCollectionBlock;
-		const adjustedAttributes = mapAttributes( attributes );
-		const adjustedInnerBlocks = mapInnerBlocks( innerBlocks );
+		// Starting from GB 16, it's not Query Loop that keeps the layout, but the Post Template block.
+		// We need to account for that and in that case, move the layout properties
+		// from Product Collection either to Query Loop OR to Post Template.
+		const { displayLayout, ...restAttributes } = attributes;
+		const adjustedAttributes = ! postTemplateHasSupportForGridView
+			? mapAttributes( attributes )
+			: mapAttributes( restAttributes );
+		const adjustedInnerBlocks = mapInnerBlocks(
+			innerBlocks,
+			displayLayout
+		);
 
 		const productsBlock = createBlock(
 			'core/query',

@@ -14,6 +14,10 @@ import {
 	postTemplateHasSupportForGridView,
 	type TransformBlock,
 	type IsBlockType,
+	type ProductGridLayout,
+	type ProductGridLayoutTypes,
+	type PostTemplateLayout,
+	type PostTemplateLayoutTypes,
 } from './migration-utils';
 
 const notice = __(
@@ -103,22 +107,9 @@ const transformPostSummary: TransformBlock = ( block, innerBlocks ) => {
 	);
 };
 
-type ProductCollectionLayoutTypes = 'flex' | 'list';
-type PostTemplateLayoutTypes = 'grid' | 'default';
-
-type ProductCollectionLayout = {
-	type: ProductCollectionLayoutTypes;
-	columns: number;
-};
-
-type PostTemplateLayout = {
-	type: PostTemplateLayoutTypes;
-	columnCount: number;
-};
-
 const mapLayoutType = (
 	type: PostTemplateLayoutTypes
-): ProductCollectionLayoutTypes => {
+): ProductGridLayoutTypes => {
 	if ( type === 'grid' ) {
 		return 'flex';
 	}
@@ -130,19 +121,19 @@ const mapLayoutType = (
 
 const mapLayoutPropertiesFromPostTemplateToProductCollection = (
 	layout: PostTemplateLayout
-): ProductCollectionLayout => {
+): ProductGridLayout => {
 	const { type, columnCount } = layout;
 
 	return {
 		type: mapLayoutType( type ),
-		columns: columnCount || 3,
+		columns: columnCount,
 	};
 };
 
 const getLayoutAttribute = (
 	attributes,
 	innerBlocks: BlockInstance[]
-): ProductCollectionLayout => {
+): ProductGridLayout => {
 	// Starting from GB 16, it's not Query Loop that keeps the layout, but the Post Template block.
 	// We need to account for that and in that case, move the layout properties
 	// from Post Template to Product Collection.

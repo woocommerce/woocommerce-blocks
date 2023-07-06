@@ -275,7 +275,14 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 	if ( REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION && ! unsubscribe ) {
 		console.info( 'Subscribed to allow Products block migration' );
 		unsubscribe = subscribe( () => {
-			replaceProductsWithProductCollection( unsubscribe );
+			replaceProductsWithProductCollection( () => {
+				console.info(
+					'Unsubscribed and disallow further Products block migration'
+				);
+				if ( unsubscribe ) {
+					unsubscribe();
+				}
+			} );
 		}, 'core/block-editor' );
 	}
 }
