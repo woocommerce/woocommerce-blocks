@@ -2,21 +2,11 @@
  * External dependencies
  */
 import { expect, test } from '@woocommerce/e2e-playwright-utils';
-import { BlockData } from '@woocommerce/e2e-types';
 
 /**
  * Internal dependencies
  */
-import { handleAddToCartAjaxSetting } from './utils';
-
-const blockData: BlockData = {
-	name: 'woocommerce/product-button',
-	mainClass: '.wc-block-product-button',
-	selectors: {
-		frontend: {},
-		editor: {},
-	},
-};
+import { blockData, handleAddToCartAjaxSetting } from './utils';
 
 test.describe( `${ blockData.name } Block`, () => {
 	test.beforeEach( async ( { frontendUtils, storeApiUtils } ) => {
