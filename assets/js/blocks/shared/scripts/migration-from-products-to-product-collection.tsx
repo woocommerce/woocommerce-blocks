@@ -11,6 +11,7 @@ import { select, dispatch } from '@wordpress/data';
 import {
 	getProductsBlockClientIds,
 	checkIfBlockCanBeInserted,
+	postTemplateHasSupportForGridView,
 	type TransformBlock,
 	type IsBlockType,
 } from './migration-utils';
@@ -25,8 +26,7 @@ const displaySuccessNotice = () => {
 };
 
 const mapAttributes = ( attributes: Record< string, unknown > ) => {
-	const { query, namespace, displayUpgradeNotice, ...restAttributes } =
-		attributes;
+	const { query, namespace, ...restAttributes } = attributes;
 	const {
 		__woocommerceAttributes,
 		__woocommerceStockStatus,
@@ -69,6 +69,7 @@ const isPostSummary: IsBlockType = ( { name, attributes } ) =>
 const transformPostTemplate: TransformBlock = ( block, innerBlocks ) => {
 	const { __woocommerceNamespace, className, layout, ...restAttrributes } =
 		block.attributes;
+
 	return createBlock(
 		'woocommerce/product-template',
 		restAttrributes,
@@ -100,6 +101,58 @@ const transformPostSummary: TransformBlock = ( block, innerBlocks ) => {
 		},
 		innerBlocks
 	);
+};
+
+type ProductCollectionLayoutTypes = 'flex' | 'list';
+type PostTemplateLayoutTypes = 'grid' | 'default';
+
+type ProductCollectionLayout = {
+	type: ProductCollectionLayoutTypes;
+	columns: number;
+};
+
+type PostTemplateLayout = {
+	type: PostTemplateLayoutTypes;
+	columnCount: number;
+};
+
+const mapLayoutType = (
+	type: PostTemplateLayoutTypes
+): ProductCollectionLayoutTypes => {
+	if ( type === 'grid' ) {
+		return 'flex';
+	}
+	if ( type === 'default' ) {
+		return 'list';
+	}
+	return 'flex';
+};
+
+const mapLayoutPropertiesFromPostTemplateToProductCollection = (
+	layout: PostTemplateLayout
+): ProductCollectionLayout => {
+	const { type, columnCount } = layout;
+
+	return {
+		type: mapLayoutType( type ),
+		columns: columnCount || 3,
+	};
+};
+
+const getLayoutAttribute = (
+	attributes,
+	innerBlocks: BlockInstance[]
+): ProductCollectionLayout => {
+	// Starting from GB 16, it's not Query Loop that keeps the layout, but the Post Template block.
+	// We need to account for that and in that case, move the layout properties
+	// from Post Template to Product Collection.
+	const postTemplate = innerBlocks.find( isPostTemplate );
+	const { layout: postTemplateLayout } = postTemplate?.attributes || {};
+	return postTemplateHasSupportForGridView
+		? mapLayoutPropertiesFromPostTemplateToProductCollection(
+				postTemplateLayout
+		  )
+		: attributes.displayLayout;
 };
 
 const mapInnerBlocks = ( innerBlocks: BlockInstance[] ): BlockInstance[] => {
@@ -134,7 +187,11 @@ const replaceProductsBlock = ( clientId: string ) => {
 
 	if ( productsBlock && canBeInserted ) {
 		const { attributes = {}, innerBlocks = [] } = productsBlock;
-		const adjustedAttributes = mapAttributes( attributes );
+		const displayLayout = getLayoutAttribute( attributes, innerBlocks );
+		const adjustedAttributes = mapAttributes( {
+			...attributes,
+			displayLayout,
+		} );
 		const adjustedInnerBlocks = mapInnerBlocks( innerBlocks );
 
 		const productCollectionBlock = createBlock(

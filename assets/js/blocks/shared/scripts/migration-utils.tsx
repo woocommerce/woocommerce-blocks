@@ -1,8 +1,10 @@
 /**
  * External dependencies
  */
+import { getSettingWithCoercion } from '@woocommerce/settings';
 import { type BlockInstance } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
+import { isBoolean } from '@woocommerce/types';
 
 type GetBlocksClientIds = ( blocks: BlockInstance[] ) => string[];
 export type IsBlockType = ( block: BlockInstance ) => boolean;
@@ -58,8 +60,15 @@ const checkIfBlockCanBeInserted = (
 	);
 };
 
+const postTemplateHasSupportForGridView = getSettingWithCoercion(
+	'post_template_has_support_for_grid_view',
+	false,
+	isBoolean
+);
+
 export {
 	getProductsBlockClientIds,
 	getProductCollectionBlockClientIds,
 	checkIfBlockCanBeInserted,
+	postTemplateHasSupportForGridView,
 };
