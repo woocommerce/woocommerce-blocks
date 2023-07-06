@@ -9,6 +9,7 @@ class ProductCollectionPage {
 	private admin: Admin;
 	private editor: Editor;
 	productTemplate!: Locator;
+	products!: Locator;
 	productImages!: Locator;
 	productTitles!: Locator;
 	productPrices!: Locator;
@@ -180,6 +181,9 @@ class ProductCollectionPage {
 		this.productTemplate = await this.page.locator(
 			'.wc-block-product-template'
 		);
+		this.products = await this.page
+			.locator( '.wc-block-product-template .wc-block-product' )
+			.locator( 'visible=true' );
 		this.productImages = await this.page
 			.locator( '[data-type="woocommerce/product-image"]' )
 			.locator( 'visible=true' );
@@ -197,6 +201,9 @@ class ProductCollectionPage {
 	private async initializeLocatorsForFrontend() {
 		this.productTemplate = await this.page.locator(
 			'.wc-block-product-template'
+		);
+		this.products = await this.page.locator(
+			'.wc-block-product-template .wc-block-product'
 		);
 		this.productImages = await this.productTemplate.locator(
 			'[data-block-name="woocommerce/product-image"]'

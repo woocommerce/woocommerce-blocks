@@ -194,4 +194,37 @@ test.describe( 'Product Collection', () => {
 			await expect( pageObject.productTitles ).toHaveCount( 1 );
 		} );
 	} );
+
+	test( 'Responsive -> Block correctly adjusts number of columns on smaller screens', async ( {
+		pageObject,
+	} ) => {
+		await pageObject.publishAndGoToFrontend();
+
+		const firstProduct = pageObject.products.first();
+
+		// In the original viewport size, we expect the product width to be less than the parent width
+		// because we will have more than 1 column
+		let productWidth = await firstProduct.boundingBox();
+		let parentWidth = await (
+			await firstProduct.locator( 'xpath=..' )
+		 ).boundingBox();
+		expect( productWidth?.width ).toBeLessThan(
+			parentWidth?.width as number
+		);
+
+		await pageObject.page.setViewportSize( {
+			height: 667,
+			width: 375,
+		} );
+
+		// In the smaller viewport size, we expect the product width to be (approximately) the same as the parent width
+		// because we will have only 1 column
+		productWidth = await firstProduct.boundingBox();
+		parentWidth = await (
+			await firstProduct.locator( 'xpath=..' )
+		 ).boundingBox();
+		expect( productWidth?.width ).toBeCloseTo(
+			parentWidth?.width as number
+		);
+	} );
 } );
