@@ -128,18 +128,12 @@ class ProductQuery extends AbstractBlock {
 	 * Enqueues the variation styles when rendering the Product Query variation.
 	 *
 	 * @param string $block_content The block content.
-	 * @param array  $parsed_block  The full block, including name and attributes.
+	 * @param array  $block         The full block, including name and attributes.
 	 *
 	 * @return string The block content.
 	 */
-	public function enqueue_styles( string $block_content, array $parsed_block ) {
-		if ( 'core/query' !== $parsed_block['blockName'] ) {
-			return $block_content;
-		}
-
-		$this->parsed_block = $parsed_block;
-
-		if ( self::is_woocommerce_variation( $parsed_block ) ) {
+	public function enqueue_styles( string $block_content, array $block ) {
+		if ( 'core/query' === $block['blockName'] && self::is_woocommerce_variation( $block ) ) {
 			wp_enqueue_style( 'wc-blocks-style-product-query' );
 		}
 
