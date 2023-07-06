@@ -195,6 +195,21 @@ test.describe( 'Product Collection', () => {
 
 			await expect( pageObject.products ).toHaveCount( 1 );
 		} );
+
+		test( 'Products can be filtered based on stock status (in stock, out of stock, or backorder).', async ( {
+			pageObject,
+		} ) => {
+			await pageObject.setFilterComboboxValue( 'Stock status', [
+				'Out of stock',
+			] );
+
+			// TODO There are no products with stock status 'Out of stock' in test data.
+			// await expect( pageObject.products ).toHaveCount( 1 );
+
+			// await pageObject.publishAndGoToFrontend();
+
+			// await expect( pageObject.products ).toHaveCount( 1 );
+		} );
 	} );
 
 	test( 'Responsive -> Block correctly adjusts number of columns on smaller screens', async ( {
