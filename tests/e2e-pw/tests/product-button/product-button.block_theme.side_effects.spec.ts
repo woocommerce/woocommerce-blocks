@@ -24,10 +24,10 @@ test.describe( `${ blockData.name } Block`, async () => {
 	} ) => {
 		await frontendUtils.goToShop();
 		const blocks = await frontendUtils.getBlockByName( blockData.name );
-		const updatedText = await blocks.getByText( 'Buy Now' );
+		const buttonWithNewText = await blocks.getByText( 'Buy Now' ).count();
 
 		const productsDisplayed = 16;
-		expect( await updatedText.count() ).toEqual( productsDisplayed );
+		expect( buttonWithNewText ).toEqual( productsDisplayed );
 	} );
 
 	test.afterAll( async () => {
