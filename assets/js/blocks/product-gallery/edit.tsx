@@ -9,7 +9,10 @@ export const Edit = (): JSX.Element => {
 	return (
 		<div { ...blockProps }>
 			<InnerBlocks
-				allowedBlocks={ [ 'woocommerce/product-gallery-large-image' ] }
+				allowedBlocks={ [
+					'woocommerce/product-gallery-large-image',
+					'woocommerce/product-gallery-next-previous-buttons',
+				] }
 				templateLock={ false }
 			/>
 		</div>

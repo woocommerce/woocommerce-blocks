@@ -1,0 +1,37 @@
+.wp-block-woocommerce-product-gallery-next-previous-buttons {
+	ul.flex-direction-nav {
+		list-style: none;
+		position: relative;
+	}
+
+	a.flex-prev,
+	a.flex-next {
+		visibility: hidden;
+	}
+
+	a.flex-next::after {
+		visibility: visible;
+		content: "\f345";
+		font-family: Dashicons;
+		font-size: 20px;
+		font-weight: bold;
+		position: absolute;
+		right: 20px;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+	}
+
+	a.flex-prev::before {
+		visibility: visible;
+		content: "\f341";
+		font-family: Dashicons;
+		font-size: 20px;
+		font-weight: bold;
+		position: absolute;
+		left: 20px;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+	}
+}
