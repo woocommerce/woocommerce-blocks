@@ -196,19 +196,48 @@ test.describe( 'Product Collection', () => {
 			await expect( pageObject.products ).toHaveCount( 1 );
 		} );
 
-		test( 'Products can be filtered based on stock status (in stock, out of stock, or backorder).', async ( {
+		// TODO There are no products with stock status 'Out of stock' in test data.
+		test.skip( 'Products can be filtered based on stock status (in stock, out of stock, or backorder).', async ( {
 			pageObject,
 		} ) => {
 			await pageObject.setFilterComboboxValue( 'Stock status', [
 				'Out of stock',
 			] );
 
-			// TODO There are no products with stock status 'Out of stock' in test data.
-			// await expect( pageObject.products ).toHaveCount( 1 );
+			await expect( pageObject.products ).toHaveCount( 1 );
 
-			// await pageObject.publishAndGoToFrontend();
+			await pageObject.publishAndGoToFrontend();
 
-			// await expect( pageObject.products ).toHaveCount( 1 );
+			await expect( pageObject.products ).toHaveCount( 1 );
+		} );
+	} );
+
+	test.describe( 'Toolbar settings', () => {
+		test( 'Toolbar -> Items per page, offset & max page to show', async ( {
+			pageObject,
+		} ) => {
+			await pageObject.setDisplaySettings( {
+				itemsPerPage: 3,
+				offset: 0,
+				maxPageToShow: 2,
+			} );
+
+			expect( await pageObject.products ).toHaveCount( 3 );
+
+			await pageObject.setDisplaySettings( {
+				itemsPerPage: 2,
+				offset: 0,
+				maxPageToShow: 2,
+			} );
+			expect( await pageObject.products ).toHaveCount( 2 );
+
+			await pageObject.publishAndGoToFrontend();
+
+			expect( await pageObject.products ).toHaveCount( 2 );
+
+			const paginationNumbers =
+				pageObject.pagination.locator( '.page-numbers' );
+			await expect( paginationNumbers ).toHaveCount( 2 );
 		} );
 	} );
 

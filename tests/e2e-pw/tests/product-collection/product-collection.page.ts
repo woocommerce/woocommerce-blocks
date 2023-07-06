@@ -4,6 +4,10 @@
 import { Locator, Page } from '@playwright/test';
 import { Editor, Admin } from '@wordpress/e2e-test-utils-playwright';
 
+const BLOCK_DATA = {
+	blockName: 'woocommerce/product-collection',
+};
+
 class ProductCollectionPage {
 	private page: Page;
 	private admin: Admin;
@@ -14,6 +18,7 @@ class ProductCollectionPage {
 	productTitles!: Locator;
 	productPrices!: Locator;
 	addToCartButtons!: Locator;
+	pagination!: Locator;
 
 	constructor( {
 		page,
@@ -32,7 +37,7 @@ class ProductCollectionPage {
 	async createNewPostAndInsertBlock() {
 		await this.admin.createNewPost();
 		await this.editor.insertBlock( {
-			name: 'woocommerce/product-collection',
+			name: BLOCK_DATA.blockName,
 		} );
 		await this.refreshLocators( 'editor' );
 	}
@@ -136,6 +141,39 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'editor' );
 	}
 
+	async setDisplaySettings( {
+		itemsPerPage,
+		offset,
+		maxPageToShow,
+	}: {
+		itemsPerPage: number;
+		offset: number;
+		maxPageToShow: number;
+		isOnFrontend?: boolean;
+	} ) {
+		// Select the block, so that toolbar is visible.
+		const block = this.page
+			.locator( `[data-type="${ BLOCK_DATA.blockName }"]` )
+			.first();
+		await this.editor.selectBlocks( block );
+
+		await this.page
+			.getByRole( 'button', { name: 'Display settings' } )
+			.click();
+		await this.page.getByLabel( 'Items per Page' ).click();
+		await this.page
+			.getByLabel( 'Items per Page' )
+			.fill( itemsPerPage.toString() );
+		await this.page.getByLabel( 'Offset' ).click();
+		await this.page.getByLabel( 'Offset' ).fill( offset.toString() );
+		await this.page.getByLabel( 'Max page to show' ).click();
+		await this.page
+			.getByLabel( 'Max page to show' )
+			.fill( maxPageToShow.toString() );
+		await this.page.click( 'body' );
+		await this.refreshLocators( 'editor' );
+	}
+
 	async setProductAttribute( attribute: 'Color' | 'Size', value: string ) {
 		await this.page.waitForLoadState( 'networkidle' );
 		const productAttributesContainer = await this.page.locator(
@@ -206,6 +244,9 @@ class ProductCollectionPage {
 		this.addToCartButtons = await this.page
 			.locator( '[data-type="woocommerce/product-button"]' )
 			.locator( 'visible=true' );
+		this.pagination = await this.page.getByRole( 'document', {
+			name: 'Block: Pagination',
+		} );
 	}
 
 	private async initializeLocatorsForFrontend() {
@@ -227,6 +268,9 @@ class ProductCollectionPage {
 		this.addToCartButtons = await this.productTemplate.locator(
 			'[data-block-name="woocommerce/product-button"]'
 		);
+		this.pagination = await this.page.getByRole( 'navigation', {
+			name: 'Pagination',
+		} );
 	}
 
 	private async waitForProductsToLoad() {
