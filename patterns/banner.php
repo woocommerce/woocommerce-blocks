@@ -8,8 +8,8 @@
 
 <!-- wp:columns {"verticalAlignment":null,"align":"wide","style":{"color":{"background":"#caf0fa"}}} -->
 <div class="wp-block-columns alignwide has-background" style="background-color:#caf0fa">
-	<!-- wp:column {"verticalAlignment":"center","style":{"spacing":{"padding":{"top":"var:preset|spacing|30","right":"var:preset|spacing|60","bottom":"var:preset|spacing|30","left":"var:preset|spacing|60"}}}} -->
-	<div class="wp-block-column is-vertically-aligned-center" style="padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--60)">
+	<!-- wp:column {"verticalAlignment":"center","style":{"spacing":{"padding":{"top":"var:preset|spacing|30","right":"clamp(1.5rem, 5vw, 2rem)","bottom":"var:preset|spacing|30","left":"clamp(1.5rem, 5vw, 2rem)"}}}} -->
+	<div class="wp-block-column is-vertically-aligned-center" style="padding-top:var(--wp--preset--spacing--30);padding-right:clamp(1.5rem, 5vw, 2rem);padding-bottom:var(--wp--preset--spacing--30);padding-left:clamp(1.5rem, 5vw, 2rem)">
 		<!-- wp:paragraph {"style":{"color":{"text":"#005cc9"},"typography":{"fontSize":"18px"},"spacing":{"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}}} -->
 		<p class="has-text-color" style="color:#005cc9;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;font-size:18px"><strong>HOLIDAY SALE</strong> </p>
 		<!-- /wp:paragraph -->
