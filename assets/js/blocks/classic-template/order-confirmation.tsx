@@ -1,11 +1,88 @@
 /**
  * External dependencies
  */
-
+import { createBlock, type BlockInstance } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Internal dependencies
+ */
+import type { OnClickCallbackParameter, InheritedAttributes } from './types';
+
 const isConversionPossible = () => {
-	return false;
+	return true;
+};
+
+const getButtonLabel = () =>
+	__( 'Transform into blocks', 'woo-gutenberg-products-block' );
+
+const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
+	[
+		createBlock(
+			'woocommerce/order-confirmation-status',
+			inheritedAttributes
+		),
+		createBlock(
+			'woocommerce/order-confirmation-summary',
+			inheritedAttributes
+		),
+		createBlock(
+			'woocommerce/order-confirmation-details',
+			inheritedAttributes
+		),
+		createBlock( 'core/columns', inheritedAttributes, [
+			createBlock( 'core/column', inheritedAttributes, [
+				createBlock( 'core/heading', {
+					level: 3,
+					content: __(
+						'Billing Address',
+						'woo-gutenberg-products-block'
+					),
+				} ),
+				createBlock(
+					'woocommerce/order-confirmation-billing-address',
+					inheritedAttributes
+				),
+			] ),
+			createBlock( 'core/column', inheritedAttributes, [
+				createBlock( 'core/heading', {
+					level: 3,
+					content: __(
+						'Shipping Address',
+						'woo-gutenberg-products-block'
+					),
+				} ),
+				createBlock(
+					'woocommerce/order-confirmation-shipping-address',
+					inheritedAttributes
+				),
+			] ),
+		] ),
+	].filter( Boolean ) as BlockInstance[];
+
+const onClickCallback = ( {
+	clientId,
+	attributes,
+	getBlocks,
+	replaceBlock,
+	selectBlock,
+}: OnClickCallbackParameter ) => {
+	replaceBlock( clientId, getBlockifiedTemplate( attributes ) );
+
+	const blocks = getBlocks();
+
+	const groupBlock = blocks.find(
+		( block ) =>
+			block.name === 'core/group' &&
+			block.innerBlocks.some(
+				( innerBlock ) =>
+					innerBlock.name === 'woocommerce/store-notices'
+			)
+	);
+
+	if ( groupBlock ) {
+		selectBlock( groupBlock.clientId );
+	}
 };
 
 const getDescription = () => {
@@ -150,4 +227,10 @@ const getSkeleton = () => {
 	);
 };
 
-export { isConversionPossible, getDescription, getSkeleton };
+const blockifyConfig = {
+	getButtonLabel,
+	onClickCallback,
+	getBlockifiedTemplate,
+};
+
+export { blockifyConfig, isConversionPossible, getDescription, getSkeleton };
