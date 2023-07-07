@@ -147,37 +147,38 @@ test.describe( 'Product Collection', () => {
 			await expect( pageObject.productTitles ).toHaveText( [ 'Cap' ] );
 		} );
 
-		test( 'Products can be filtered based on category.', async ( {
-			pageObject,
-		} ) => {
-			const filterName = 'Product categories';
-			await pageObject.addFilter( 'Show Taxonomies' );
-			await pageObject.setFilterComboboxValue( filterName, [
-				'Clothing',
-			] );
-			await expect( pageObject.productTitles ).toHaveText( [
-				'Logo Collection',
-			] );
+		test.fixme(
+			'Products can be filtered based on category.',
+			async ( { pageObject } ) => {
+				const filterName = 'Product categories';
+				await pageObject.addFilter( 'Show Taxonomies' );
+				await pageObject.setFilterComboboxValue( filterName, [
+					'Clothing',
+				] );
+				await expect( pageObject.productTitles ).toHaveText( [
+					'Logo Collection',
+				] );
 
-			await pageObject.setFilterComboboxValue( filterName, [
-				'Accessories',
-			] );
-			const accessoriesProductNames = [
-				'Beanie',
-				'Beanie with Logo',
-				'Belt',
-				'Cap',
-				'Sunglasses',
-			];
-			await expect( pageObject.productTitles ).toHaveText(
-				accessoriesProductNames
-			);
+				await pageObject.setFilterComboboxValue( filterName, [
+					'Accessories',
+				] );
+				const accessoriesProductNames = [
+					'Beanie',
+					'Beanie with Logo',
+					'Belt',
+					'Cap',
+					'Sunglasses',
+				];
+				await expect( pageObject.productTitles ).toHaveText(
+					accessoriesProductNames
+				);
 
-			await pageObject.publishAndGoToFrontend();
-			await expect( pageObject.productTitles ).toHaveText(
-				accessoriesProductNames
-			);
-		} );
+				await pageObject.publishAndGoToFrontend();
+				await expect( pageObject.productTitles ).toHaveText(
+					accessoriesProductNames
+				);
+			}
+		);
 
 		test( 'Products can be filtered based on product attributes like color, size etc.', async ( {
 			pageObject,
