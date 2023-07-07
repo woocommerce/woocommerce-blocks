@@ -36,9 +36,8 @@
 			"type": "string",
 			"default": ""
 		},
-		"contentAlign": {
-			"type": "string",
-			"default": "center"
+		"contentPosition": {
+			"type": "string"
 		},
 		"dimRatio": {
 			"type": "number",

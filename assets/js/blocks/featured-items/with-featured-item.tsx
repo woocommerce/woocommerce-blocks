@@ -23,6 +23,8 @@ import {
 	dimRatioToClass,
 	getBackgroundImageStyles,
 	getClassPrefixFromName,
+	getPositionClassName,
+	isContentPositionCenter,
 } from './utils';
 
 interface WithFeaturedItemConfig extends GenericBlockUIConfig {
@@ -30,7 +32,7 @@ interface WithFeaturedItemConfig extends GenericBlockUIConfig {
 }
 
 export interface FeaturedItemRequiredAttributes {
-	contentAlign: BlockAlignment;
+	contentPosition: BlockAlignment;
 	dimRatio: number;
 	focalPoint: { x: number; y: number };
 	hasParallax: boolean;
@@ -154,7 +156,7 @@ export const withFeaturedItem =
 
 		const renderItem = () => {
 			const {
-				contentAlign,
+				contentPosition,
 				dimRatio,
 				focalPoint,
 				hasParallax,
@@ -180,10 +182,12 @@ export const withFeaturedItem =
 					'is-not-found': ! item && ! isLoading,
 					'has-background-dim': dimRatio !== 0,
 					'is-repeated': isRepeated,
+					'has-custom-content-position':
+						! isContentPositionCenter( contentPosition ),
 				},
 				dimRatioToClass( dimRatio ),
-				contentAlign !== 'center' && `has-${ contentAlign }-content`,
-				styleProps.className
+				styleProps.className,
+				getPositionClassName( contentPosition )
 			);
 
 			const containerStyle = {
@@ -221,7 +225,7 @@ export const withFeaturedItem =
 					/>
 					<div className={ containerClass } style={ containerStyle }>
 						<div className={ `${ className }__wrapper` }>
-							<div
+							<span
 								className="background-dim__overlay"
 								style={ overlayStyle }
 							/>
@@ -252,40 +256,44 @@ export const withFeaturedItem =
 										style={ backgroundImageStyle }
 									/>
 								) ) }
-							<h2
-								className={ `${ className }__title` }
-								dangerouslySetInnerHTML={ {
-									__html: item.name,
-								} }
-							/>
-							{ ! isEmpty( product?.variation ) && (
-								<h3
-									className={ `${ className }__variation` }
+							<div className={ `${ className }__content` }>
+								<h2
+									className={ `${ className }__title` }
 									dangerouslySetInnerHTML={ {
-										__html: product.variation,
+										__html: item.name,
 									} }
 								/>
-							) }
-							{ showDesc && (
-								<div
-									className={ `${ className }__description` }
-									dangerouslySetInnerHTML={ {
-										__html:
-											category?.description ||
-											product?.short_description,
-									} }
-								/>
-							) }
-							{ showPrice && (
-								<div
-									className={ `${ className }__price` }
-									dangerouslySetInnerHTML={ {
-										__html: product.price_html,
-									} }
-								/>
-							) }
-							<div className={ `${ className }__link` }>
-								{ renderButton() }
+								{ ! isEmpty( product?.variation ) && (
+									<h3
+										className={ `${ className }__variation` }
+										dangerouslySetInnerHTML={ {
+											__html: product.variation,
+										} }
+									/>
+								) }
+								{ showDesc &&
+									( category?.description ||
+										product?.short_description ) && (
+										<div
+											className={ `${ className }__description` }
+											dangerouslySetInnerHTML={ {
+												__html:
+													category?.description ||
+													product?.short_description,
+											} }
+										/>
+									) }
+								{ showPrice && (
+									<div
+										className={ `${ className }__price` }
+										dangerouslySetInnerHTML={ {
+											__html: product.price_html,
+										} }
+									/>
+								) }
+								<div className={ `${ className }__link` }>
+									{ renderButton() }
+								</div>
 							</div>
 						</div>
 					</div>

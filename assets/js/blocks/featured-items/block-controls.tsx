@@ -3,9 +3,9 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
-	AlignmentToolbar,
 	BlockControls as BlockControlsWrapper,
 	MediaReplaceFlow,
+	__experimentalBlockAlignmentMatrixControl as BlockAlignmentMatrixControl,
 } from '@wordpress/block-editor';
 import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
 import { crop } from '@wordpress/icons';
@@ -47,7 +47,7 @@ type WithBlockControlsProps< T extends EditorBlock< T > > =
 	| ( T & WithBlockControlsProductProps< T > );
 
 type BlockControlRequiredAttributes = {
-	contentAlign: BlockAlignment;
+	contentPosition: BlockAlignment;
 	editMode: boolean;
 	mediaId: number;
 	mediaSrc: string;
@@ -56,7 +56,7 @@ type BlockControlRequiredAttributes = {
 interface BlockControlsProps {
 	backgroundImageId: number;
 	backgroundImageSrc: string;
-	contentAlign: BlockAlignment;
+	contentPosition: BlockAlignment;
 	cropLabel: string;
 	editLabel: string;
 	editMode: boolean;
@@ -74,7 +74,7 @@ interface BlockControlsConfiguration extends GenericBlockUIConfig {
 export const BlockControls = ( {
 	backgroundImageId,
 	backgroundImageSrc,
-	contentAlign,
+	contentPosition,
 	cropLabel,
 	editLabel,
 	editMode,
@@ -85,11 +85,17 @@ export const BlockControls = ( {
 }: BlockControlsProps ) => {
 	return (
 		<BlockControlsWrapper>
-			<AlignmentToolbar
-				value={ contentAlign }
-				onChange={ ( nextAlign: BlockAlignment ) => {
-					setAttributes( { contentAlign: nextAlign } );
-				} }
+			<BlockAlignmentMatrixControl
+				label={ __(
+					'Change content position',
+					'woo-gutenberg-products-block'
+				) }
+				value={ contentPosition }
+				onChange={ ( nextPosition ) =>
+					setAttributes( {
+						contentPosition: nextPosition,
+					} )
+				}
 			/>
 			<ToolbarGroup>
 				{ backgroundImageSrc && ! isEditingImage && (
@@ -142,7 +148,7 @@ export const withBlockControls =
 	( props: WithBlockControlsProps< T > ) => {
 		const [ isEditingImage, setIsEditingImage ] = props.useEditingImage;
 		const { attributes, category, name, product, setAttributes } = props;
-		const { contentAlign, editMode, mediaId, mediaSrc } = attributes;
+		const { contentPosition, editMode, mediaId, mediaSrc } = attributes;
 		const item = category || product;
 
 		const { backgroundImageId, backgroundImageSrc } = useBackgroundImage( {
@@ -157,7 +163,7 @@ export const withBlockControls =
 				<BlockControls
 					backgroundImageId={ backgroundImageId }
 					backgroundImageSrc={ backgroundImageSrc }
-					contentAlign={ contentAlign }
+					contentPosition={ contentPosition }
 					cropLabel={ cropLabel }
 					editLabel={ editLabel }
 					editMode={ editMode }

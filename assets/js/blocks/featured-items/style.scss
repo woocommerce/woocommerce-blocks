@@ -51,46 +51,19 @@
 
 @mixin wc-block-featured-item {
 	$block: &;
-
 	@include with-background-dim();
 	@include with-content-selection();
 
-	align-content: center;
-	align-items: center;
 	background-position: center center;
 	background-size: cover;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: center;
 	margin: 0;
 	overflow: hidden;
 	position: relative;
 	width: 100%;
-
-	&.has-left-content {
-		justify-content: flex-start;
-
-		#{$block}__description,
-		#{$block}__price,
-		#{$block}__title,
-		#{$block}__variation {
-			margin-left: 0;
-			text-align: left;
-		}
-	}
-
-	&.has-right-content {
-		justify-content: flex-end;
-
-		#{$block}__description,
-		#{$block}__price,
-		#{$block}__title,
-		#{$block}__variation {
-			margin-right: 0;
-			text-align: right;
-		}
-	}
-
+	align-items: center;
+	justify-content: center;
 	&.is-repeated {
 		background-repeat: repeat;
 		background-size: auto;
@@ -102,7 +75,6 @@
 	&__variation {
 		line-height: 1.25;
 		margin-bottom: 0;
-		text-align: center;
 
 		a,
 		a:hover,
@@ -119,8 +91,21 @@
 	&__variation {
 		color: inherit;
 		width: 100%;
-		padding: 0 48px 16px 48px;
+		padding: 0;
 		z-index: 1;
+	}
+
+	&__price {
+		text-align: center;
+	}
+
+	& &__link {
+		margin-top: 10px;
+	}
+
+	&__content {
+		z-index: 1;
+		position: relative;
 	}
 
 	& &__background-image {
@@ -145,6 +130,9 @@
 	}
 
 	&__description {
+		text-align: center;
+		margin: 10px 0;
+
 		color: inherit;
 
 		p {
@@ -155,6 +143,8 @@
 	& &__title {
 		color: inherit;
 		margin-top: 0;
+		text-align: center;
+		position: relative;
 
 		div {
 			color: inherit;
@@ -165,19 +155,49 @@
 		}
 	}
 
-	&__wrapper {
-		align-content: center;
-		align-items: center;
-		box-sizing: border-box;
-		display: flex;
-		flex-wrap: wrap;
+	// Position: Top
+	&.is-position-top-left {
+		align-items: flex-start;
+		justify-content: flex-start;
+	}
+	&.is-position-top-center {
+		align-items: flex-start;
 		justify-content: center;
-		overflow: hidden;
-		width: 100%;
-		height: 100%;
+	}
+	&.is-position-top-right {
+		align-items: flex-start;
+		justify-content: flex-end;
+	}
+	// Position: Center
+	&.is-position-center-left {
+		align-items: center;
+		justify-content: flex-start;
+	}
+	&.is-position-center-center {
+		align-items: center;
+		justify-content: center;
+	}
+	&.is-position-center-right {
+		align-items: center;
+		justify-content: flex-end;
+	}
+	// Position: Bottom
+	&.is-position-bottom-left {
+		align-items: flex-end;
+		justify-content: flex-start;
+	}
+	&.is-position-bottom-center {
+		align-items: flex-end;
+		justify-content: center;
+	}
+	&.is-position-bottom-right {
+		align-items: flex-end;
+		justify-content: flex-end;
 	}
 
-	.wp-block-button.aligncenter {
-		text-align: center;
+	&__wrapper {
+		box-sizing: border-box;
+		overflow: hidden;
+		padding: 1em;
 	}
 }

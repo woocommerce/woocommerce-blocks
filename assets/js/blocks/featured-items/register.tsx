@@ -95,7 +95,7 @@ export function register(
 	const DEFAULT_EXAMPLE = {
 		attributes: {
 			alt: '',
-			contentAlign: 'center',
+			contentPosition: '',
 			dimRatio: 50,
 			editMode: false,
 			hasParallax: false,
