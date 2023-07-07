@@ -59,11 +59,8 @@ jobs:
       - name: Run Playwright tests
         run: npm run test:e2e-pw
 
-      - name: Stop wp-env
-        run: echo "ciao"
-
       - uses: actions/upload-artifact@v3
-        if: always()
+        if: ${{ failure() }}
         with:
           name: playwright-report
           path: artifacts/test-results
