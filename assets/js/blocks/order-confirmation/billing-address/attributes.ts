@@ -1,17 +1,18 @@
 /**
+ * External dependencies
+ */
+import type { BlockAttributes } from '@wordpress/blocks';
+
+/**
  * Internal dependencies
  */
 import { DEFAULT_TITLE } from './constants';
 
-const attributes = ( {
-	defaultTitle = DEFAULT_TITLE,
-}: {
-	defaultTitle: string;
-} ): Record< string, Record< string, unknown > > => ( {
+const attributes: BlockAttributes = {
 	title: {
 		type: 'string',
-		default: defaultTitle,
+		default: DEFAULT_TITLE,
 	},
-} );
+};
 
 export default attributes;

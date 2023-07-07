@@ -22,7 +22,10 @@ registerBlockType( metadata, {
 			/>
 		),
 	},
-	attributes,
+	attributes: {
+		...metadata.attributes,
+		...attributes,
+	},
 	edit,
 	save() {
 		return null;
