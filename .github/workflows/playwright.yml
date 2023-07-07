@@ -11,8 +11,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - run:
-          sudo apt install zip unzip
+
       - uses: actions/checkout@v3
 
       - name: Setup node version and npm cache
@@ -60,9 +59,12 @@ jobs:
       - name: Run Playwright tests
         run: npm run test:e2e-pw
 
+      - name: Stop wp-env
+        run: echo "ciao"
+
       - uses: actions/upload-artifact@v3
         with:
           name: playwright-report
-          path: tests/e2e-pw/artifacts
+          path: tests/e2e-pw/artifacts/test-results
           if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
