@@ -92,7 +92,7 @@ const Rating = ( props: RatingProps ): JSX.Element => {
 	return (
 		<div
 			className={ classnames(
-				'wc-block-components-product-rating__stars',
+				'wc-block-components-product-rating-stars__stars',
 				`${ parentClassName }__product-rating__stars`
 			) }
 			role="img"
@@ -124,7 +124,7 @@ export const Block = ( props: ProductRatingStarsProps ): JSX.Element | null => {
 
 	const className = classnames(
 		styleProps.className,
-		'wc-block-components-product-rating',
+		'wc-block-components-product-rating-stars',
 		{
 			[ `${ parentClassName }__product-rating` ]: parentClassName,
 			[ `has-text-align-${ textAlign }` ]: textAlign,

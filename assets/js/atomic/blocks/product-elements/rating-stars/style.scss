@@ -1,6 +1,10 @@
-.wc-block-components-product-rating {
+.wc-block-components-product-rating-stars {
 	display: block;
 	line-height: 1;
+
+	&__container {
+		line-height: 0;
+	}
 
 	&__stars {
 		display: inline-block;
@@ -90,7 +94,7 @@
 }
 
 .wp-block-woocommerce-single-product {
-	.wc-block-components-product-rating__stars {
+	.wc-block-components-product-rating-stars__stars {
 		margin: 0;
 	}
 }
@@ -98,7 +102,7 @@
 .wc-block-all-products,
 .wp-block-query {
 	.is-loading {
-		.wc-block-components-product-rating {
+		.wc-block-components-product-rating-stars {
 			@include placeholder();
 			width: 7em;
 		}

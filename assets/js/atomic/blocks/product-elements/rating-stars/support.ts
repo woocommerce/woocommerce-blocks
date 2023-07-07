@@ -21,7 +21,7 @@ export const supports = {
 			fontSize: true,
 			__experimentalSkipSerialization: true,
 		},
-		__experimentalSelector: '.wc-block-components-product-rating',
+		__experimentalSelector: '.wc-block-components-product-rating-stars',
 	} ),
 	...( ! isFeaturePluginBuild() &&
 		typeof __experimentalGetSpacingClassesAndStyles === 'function' && {

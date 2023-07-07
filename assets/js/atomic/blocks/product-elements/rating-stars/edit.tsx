@@ -23,7 +23,7 @@ const Edit = (
 ): JSX.Element => {
 	const { attributes, setAttributes, context } = props;
 	const blockProps = useBlockProps( {
-		className: 'wp-block-woocommerce-product-rating',
+		className: 'wp-block-woocommerce-product-rating-stars',
 	} );
 	const blockAttrs = {
 		...attributes,
