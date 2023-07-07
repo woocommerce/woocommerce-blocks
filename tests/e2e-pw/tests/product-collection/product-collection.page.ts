@@ -4,15 +4,21 @@
 import { Locator, Page } from '@playwright/test';
 import { Editor, Admin } from '@wordpress/e2e-test-utils-playwright';
 
+const BLOCK_DATA = {
+	blockName: 'woocommerce/product-collection',
+};
+
 class ProductCollectionPage {
 	private page: Page;
 	private admin: Admin;
 	private editor: Editor;
 	productTemplate!: Locator;
+	products!: Locator;
 	productImages!: Locator;
 	productTitles!: Locator;
 	productPrices!: Locator;
 	addToCartButtons!: Locator;
+	pagination!: Locator;
 
 	constructor( {
 		page,
@@ -31,7 +37,7 @@ class ProductCollectionPage {
 	async createNewPostAndInsertBlock() {
 		await this.admin.createNewPost();
 		await this.editor.insertBlock( {
-			name: 'woocommerce/product-collection',
+			name: BLOCK_DATA.blockName,
 		} );
 		await this.refreshLocators( 'editor' );
 	}
@@ -44,10 +50,17 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'frontend' );
 	}
 
-	async addFilter( name: 'Show Hand-picked Products' | 'Keyword' ) {
+	async addFilter(
+		name:
+			| 'Show Hand-picked Products'
+			| 'Keyword'
+			| 'Show Taxonomies'
+			| 'Show Product Attributes'
+	) {
 		await this.page
 			.getByRole( 'button', { name: 'Filters options' } )
 			.click();
+		await this.page.waitForTimeout( 500 );
 		await this.page
 			.getByRole( 'menuitemcheckbox', {
 				name,
@@ -91,8 +104,8 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'editor' );
 	}
 
-	async setHandpickedProducts( names: string[] ) {
-		const input = this.page.getByLabel( 'Pick some products' );
+	async setFilterComboboxValue( filterName: string, filterValue: string[] ) {
+		const input = this.page.getByLabel( filterName );
 		await input.click();
 
 		// Clear the input field.
@@ -107,8 +120,8 @@ class ProductCollectionPage {
 			numberOfAlreadySelectedProducts--;
 		}
 
-		// Add new products.
-		for ( const name of names ) {
+		// Add new values.
+		for ( const name of filterValue ) {
 			await input.fill( name );
 			await this.page
 				.getByRole( 'option', { name } )
@@ -128,6 +141,77 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'editor' );
 	}
 
+	async setDisplaySettings( {
+		itemsPerPage,
+		offset,
+		maxPageToShow,
+	}: {
+		itemsPerPage: number;
+		offset: number;
+		maxPageToShow: number;
+		isOnFrontend?: boolean;
+	} ) {
+		// Select the block, so that toolbar is visible.
+		const block = this.page
+			.locator( `[data-type="${ BLOCK_DATA.blockName }"]` )
+			.first();
+		await this.editor.selectBlocks( block );
+
+		await this.page
+			.getByRole( 'button', { name: 'Display settings' } )
+			.click();
+		await this.page.getByLabel( 'Items per Page' ).click();
+		await this.page
+			.getByLabel( 'Items per Page' )
+			.fill( itemsPerPage.toString() );
+		await this.page.getByLabel( 'Offset' ).click();
+		await this.page.getByLabel( 'Offset' ).fill( offset.toString() );
+		await this.page.getByLabel( 'Max page to show' ).click();
+		await this.page
+			.getByLabel( 'Max page to show' )
+			.fill( maxPageToShow.toString() );
+		await this.page.click( 'body' );
+		await this.refreshLocators( 'editor' );
+	}
+
+	async setProductAttribute( attribute: 'Color' | 'Size', value: string ) {
+		await this.page.waitForLoadState( 'networkidle' );
+		const productAttributesContainer = await this.page.locator(
+			'.woocommerce-product-attributes'
+		);
+
+		// Whenever attributes filter is added, it fetched the attributes from the server.
+		// So, we need to wait for the attributes to be fetched.
+		await productAttributesContainer.getByLabel( 'Attributes' ).isEnabled();
+
+		// If value is not visible, then toggle the attribute to make it visible.
+		const isAttributeValueVisible =
+			(
+				await productAttributesContainer
+					.getByLabel( value )
+					.elementHandles()
+			 ).length !== 0;
+		if ( ! isAttributeValueVisible ) {
+			await productAttributesContainer
+				.locator( `li:has-text("${ attribute }")` )
+				.click();
+		}
+
+		// Now, check the value.
+		await productAttributesContainer.getByLabel( value ).check();
+		await this.refreshLocators( 'editor' );
+	}
+
+	async setViewportSize( {
+		width,
+		height,
+	}: {
+		width: number;
+		height: number;
+	} ) {
+		await this.page.setViewportSize( { width, height } );
+	}
+
 	/**
 	 * Private methods to be used by the class.
 	 */
@@ -145,6 +229,9 @@ class ProductCollectionPage {
 		this.productTemplate = await this.page.locator(
 			'.wc-block-product-template'
 		);
+		this.products = await this.page
+			.locator( '.wc-block-product-template .wc-block-product' )
+			.locator( 'visible=true' );
 		this.productImages = await this.page
 			.locator( '[data-type="woocommerce/product-image"]' )
 			.locator( 'visible=true' );
@@ -157,11 +244,17 @@ class ProductCollectionPage {
 		this.addToCartButtons = await this.page
 			.locator( '[data-type="woocommerce/product-button"]' )
 			.locator( 'visible=true' );
+		this.pagination = await this.page.getByRole( 'document', {
+			name: 'Block: Pagination',
+		} );
 	}
 
 	private async initializeLocatorsForFrontend() {
 		this.productTemplate = await this.page.locator(
 			'.wc-block-product-template'
+		);
+		this.products = await this.page.locator(
+			'.wc-block-product-template .wc-block-product'
 		);
 		this.productImages = await this.productTemplate.locator(
 			'[data-block-name="woocommerce/product-image"]'
@@ -175,6 +268,9 @@ class ProductCollectionPage {
 		this.addToCartButtons = await this.productTemplate.locator(
 			'[data-block-name="woocommerce/product-button"]'
 		);
+		this.pagination = await this.page.getByRole( 'navigation', {
+			name: 'Pagination',
+		} );
 	}
 
 	private async waitForProductsToLoad() {
