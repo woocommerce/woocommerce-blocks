@@ -66,6 +66,6 @@ jobs:
         if: always()
         with:
           name: playwright-report
-          path: tests/e2e-pw/artifacts/test-results
+          path: artifacts/test-results
           if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
