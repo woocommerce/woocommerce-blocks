@@ -45,7 +45,7 @@ const ReviewsCount = ( props: { reviews: number } ): JSX.Element => {
 	);
 };
 
-type ProductRatingProps = {
+type ProductRatingCounterProps = {
 	className?: string;
 	textAlign?: string;
 	isDescendentOfSingleProductBlock: boolean;
@@ -55,12 +55,11 @@ type ProductRatingProps = {
 	shouldDisplayMockedReviewsWhenProductHasNoReviews: boolean;
 };
 
-export const Block = ( props: ProductRatingProps ): JSX.Element | undefined => {
-	const {
-		textAlign,
-		isDescendentOfSingleProductBlock,
-		shouldDisplayMockedReviewsWhenProductHasNoReviews,
-	} = props;
+export const Block = (
+	props: ProductRatingCounterProps
+): JSX.Element | undefined => {
+	const { textAlign, shouldDisplayMockedReviewsWhenProductHasNoReviews } =
+		props;
 	const styleProps = useStyleProps( props );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
@@ -68,7 +67,7 @@ export const Block = ( props: ProductRatingProps ): JSX.Element | undefined => {
 
 	const className = classnames(
 		styleProps.className,
-		'wc-block-components-product-rating',
+		'wc-block-components-product-rating-counter',
 		{
 			[ `${ parentClassName }__product-rating` ]: parentClassName,
 			[ `has-text-align-${ textAlign }` ]: textAlign,
@@ -78,10 +77,8 @@ export const Block = ( props: ProductRatingProps ): JSX.Element | undefined => {
 	if ( reviews || shouldDisplayMockedReviewsWhenProductHasNoReviews ) {
 		return (
 			<div className={ className } style={ styleProps.style }>
-				<div className="wc-block-components-product-rating__container">
-					{ isDescendentOfSingleProductBlock && (
-						<ReviewsCount reviews={ reviews } />
-					) }
+				<div className="wc-block-components-product-rating-counter__container">
+					<ReviewsCount reviews={ reviews } />
 				</div>
 			</div>
 		);

@@ -1,8 +1,9 @@
 /**
  * External dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
 import { isExperimentalBuild } from '@woocommerce/block-settings';
+import { BlockConfiguration } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -11,19 +12,25 @@ import metadata from './block.json';
 import edit from './edit';
 import sharedConfig from '../shared/config';
 import { supports } from './support';
-import { BLOCK_ICON } from './constants';
+import { BLOCK_ICON as icon } from './constants';
 
 if ( isExperimentalBuild() ) {
-	registerBlockType( metadata, {
+	const blockConfig: BlockConfiguration = {
 		...sharedConfig,
 		ancestor: [
-			'woocommerce/all-products',
 			'woocommerce/single-product',
 			'core/post-template',
 			'woocommerce/product-template',
 		],
-		icon: { src: BLOCK_ICON },
+		icon: { src: icon },
 		supports,
 		edit,
+	};
+
+	registerBlockSingleProductTemplate( {
+		blockName: 'woocommerce/product-rating-counter',
+		blockMetadata: metadata,
+		blockSettings: blockConfig,
+		isAvailableOnPostEditor: true,
 	} );
 }
