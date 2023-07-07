@@ -88,7 +88,11 @@ class BlockTemplatesController {
 			add_filter(
 				'block_type_metadata_settings',
 				function( $settings, $metadata ) {
-					if ( isset( $metadata['name'], $settings['render_callback'] ) && 'core/template-part' === $metadata['name'] && 'render_block_core_template_part' === $settings['render_callback'] ) {
+					if (
+						isset( $metadata['name'], $settings['render_callback'] ) &&
+						'core/template-part' === $metadata['name'] &&
+						in_array( $settings['render_callback'], [ 'render_block_core_template_part', 'gutenberg_render_block_core_template_part' ], true )
+					) {
 						$settings['render_callback'] = [ $this, 'render_woocommerce_template_part' ];
 					}
 					return $settings;
@@ -113,7 +117,7 @@ class BlockTemplatesController {
 				return do_blocks( $template_part->content );
 			}
 		}
-		return \render_block_core_template_part( $attributes );
+		return function_exists( '\gutenberg_render_block_core_template_part' ) ? \gutenberg_render_block_core_template_part( $attributes ) : \render_block_core_template_part( $attributes );
 	}
 
 	/**
@@ -368,6 +372,15 @@ class BlockTemplatesController {
 								return array_merge( $classes, wc_get_product_class() );
 							}
 						);
+
+						global $product;
+
+						if ( ! $product instanceof \WC_Product ) {
+							$product_id = get_the_ID();
+							if ( $product_id ) {
+								wc_setup_product_data( $product_id );
+							}
+						}
 
 						$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
 						$template->content = $new_content;
