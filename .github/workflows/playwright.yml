@@ -63,4 +63,6 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: playwright-report
-          path: tests/e2e-pw/artifacts/
+          path: tests/e2e-pw/artifacts
+          if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
+
