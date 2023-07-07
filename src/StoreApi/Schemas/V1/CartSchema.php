@@ -381,7 +381,7 @@ class CartSchema extends AbstractSchema {
 			'total_items'        => $this->prepare_money_response( $cart->get_subtotal(), wc_get_price_decimals() ),
 			'total_items_tax'    => $this->prepare_money_response( $cart->get_subtotal_tax(), wc_get_price_decimals() ),
 			'total_fees'         => $this->prepare_money_response( $cart->get_fee_total(), wc_get_price_decimals() ),
-			'total_fee_tax'      => $this->prepare_money_response( $cart->get_fee_tax(), wc_get_price_decimals() ),
+			'total_fees_tax'     => $this->prepare_money_response( $cart->get_fee_tax(), wc_get_price_decimals() ),
 			'total_discount'     => $this->prepare_money_response( $cart->get_discount_total(), wc_get_price_decimals() ),
 			'total_discount_tax' => $this->prepare_money_response( $cart->get_discount_tax(), wc_get_price_decimals() ),
 			'total_shipping'     => $has_calculated_shipping ? $this->prepare_money_response( $cart->get_shipping_total(), wc_get_price_decimals() ) : null,
