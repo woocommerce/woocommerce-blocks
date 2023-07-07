@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4fe89b1f4409e895a62182fa4d6f4eaf",
+    "content-hash": "af92bfc11053efba8da88e07fa74dd81",
     "packages": [
         {
             "name": "automattic/jetpack-autoloader",
@@ -521,16 +521,16 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "1.6.1",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "a8dd186f07ea667c1e3abd2176bfab0ab161ea94"
+                "reference": "13a7fa2642c76c58fa2806ef7f565344c817a191"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/a8dd186f07ea667c1e3abd2176bfab0ab161ea94",
-                "reference": "a8dd186f07ea667c1e3abd2176bfab0ab161ea94",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/13a7fa2642c76c58fa2806ef7f565344c817a191",
+                "reference": "13a7fa2642c76c58fa2806ef7f565344c817a191",
                 "shasum": ""
             },
             "require": {
@@ -549,7 +549,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-main": "1.6.x-dev"
                 }
             },
             "autoload": {
@@ -593,9 +593,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mockery/mockery/issues",
-                "source": "https://github.com/mockery/mockery/tree/1.6.1"
+                "source": "https://github.com/mockery/mockery/tree/1.6.2"
             },
-            "time": "2023-06-05T13:59:03+00:00"
+            "time": "2023-06-07T09:07:52+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -1676,16 +1676,16 @@
         },
         {
             "name": "sebastian/diff",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "14f72dd46eaf2f2293cbe79c93cc0bc43161a211"
+                "reference": "6296a0c086dd0117c1b78b059374d7fcbe7545ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/14f72dd46eaf2f2293cbe79c93cc0bc43161a211",
-                "reference": "14f72dd46eaf2f2293cbe79c93cc0bc43161a211",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/6296a0c086dd0117c1b78b059374d7fcbe7545ae",
+                "reference": "6296a0c086dd0117c1b78b059374d7fcbe7545ae",
                 "shasum": ""
             },
             "require": {
@@ -1730,7 +1730,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/diff/issues",
-                "source": "https://github.com/sebastianbergmann/diff/tree/3.0.3"
+                "source": "https://github.com/sebastianbergmann/diff/tree/3.0.4"
             },
             "funding": [
                 {
@@ -1738,7 +1738,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-11-30T07:59:04+00:00"
+            "time": "2023-05-07T05:30:20+00:00"
         },
         {
             "name": "sebastian/environment",

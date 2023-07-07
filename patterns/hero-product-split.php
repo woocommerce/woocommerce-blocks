@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Hero Product - Split
+ * Title: Hero Product Split
  * Slug: woocommerce-blocks/hero-product-split
  * Categories: WooCommerce
  */
@@ -17,7 +17,7 @@
 		<div class="wp-block-buttons" style="margin-bottom:var(--wp--preset--spacing--40)">
 		<!-- wp:button {"style":{"color":{"text":"#000000","background":"#ffffff"}}} -->
 		<div class="wp-block-button">
-			<a class="wp-block-button__link has-text-color has-background wp-element-button" style="color:#000000;background-color:#ffffff;"><?php esc_html_e( 'Shop now', 'woo-gutenberg-products-block' ); ?></a>
+			<a href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" class="wp-block-button__link has-text-color has-background wp-element-button" style="color:#000000;background-color:#ffffff;"><?php esc_html_e( 'Shop now', 'woo-gutenberg-products-block' ); ?></a>
 		</div>
 		<!-- /wp:button -->
 		</div>
@@ -25,7 +25,7 @@
 	</div>
 
 	<figure class="wp-block-media-text__media">
-		<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/pattern-fashion-clothing-outerwear-wool-scarf.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Woman in red, black, and white plaid hoodie.', 'woo-gutenberg-products-block' ); ?>" />
+		<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/pattern-fashion-clothing-outerwear-wool-scarf.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in a hero section.', 'woo-gutenberg-products-block' ); ?>" />
 	</figure>
 </div>
 <!-- /wp:media-text -->

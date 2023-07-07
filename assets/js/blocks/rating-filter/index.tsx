@@ -12,6 +12,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 import edit from './edit';
 import metadata from './block.json';
 import type { Attributes } from './types';
+import deprecated from './deprecated';
 
 registerBlockType( metadata, {
 	icon: {
@@ -28,22 +29,15 @@ registerBlockType( metadata, {
 	edit,
 	// Save the props to post content.
 	save( { attributes }: { attributes: Attributes } ) {
-		const { className, showCounts } = attributes;
-		const data: Record< string, unknown > = {
-			'data-show-counts': showCounts,
-		};
+		const { className } = attributes;
+
 		return (
 			<div
 				{ ...useBlockProps.save( {
 					className: classNames( 'is-loading', className ),
 				} ) }
-				{ ...data }
-			>
-				<span
-					aria-hidden
-					className="wc-block-product-rating-filter__placeholder"
-				/>
-			</div>
+			/>
 		);
 	},
+	deprecated,
 } );
