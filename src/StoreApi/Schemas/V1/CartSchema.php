@@ -389,7 +389,7 @@ class CartSchema extends AbstractSchema {
 			// Explicitly request context='edit'; default ('view') will render total as markup.
 			'total_price'        => $this->prepare_money_response( $cart->get_total( 'edit' ), wc_get_price_decimals() ),
 			'total_tax'          => $this->prepare_money_response( $cart->get_total_tax(), wc_get_price_decimals() ),
-			'total_lines'        => $this->get_tax_lines( $cart ),
+			'tax_lines'          => $this->get_tax_lines( $cart ),
 		];
 	}
 
