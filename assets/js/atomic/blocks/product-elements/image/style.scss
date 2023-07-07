@@ -2,7 +2,6 @@
 .wc-block-components-product-image {
 	text-decoration: none;
 	display: block;
-	position: relative;
 
 	a {
 		border-radius: inherit;
@@ -60,8 +59,6 @@
 
 .wc-block-components-product-image {
 	margin: 0 0 $gap-small;
-	position: relative;
-	z-index: -1;
 }
 
 .wc-block-product-image__tools-panel .components-input-control {
