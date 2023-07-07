@@ -3,7 +3,6 @@
  * External dependencies
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
-import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
 
 export const supports = {
 	...( isFeaturePluginBuild() && {
@@ -22,10 +21,4 @@ export const supports = {
 		},
 		__experimentalSelector: '.wc-block-components-product-rating-counter',
 	} ),
-	...( ! isFeaturePluginBuild() &&
-		typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
-			spacing: {
-				margin: true,
-			},
-		} ),
 };
