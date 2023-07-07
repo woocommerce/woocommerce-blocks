@@ -17,11 +17,6 @@ import { BLOCK_ICON as icon } from './constants';
 if ( isExperimentalBuild() ) {
 	const blockConfig: BlockConfiguration = {
 		...sharedConfig,
-		ancestor: [
-			'woocommerce/single-product',
-			'core/post-template',
-			'woocommerce/product-template',
-		],
 		icon: { src: icon },
 		supports,
 		edit,

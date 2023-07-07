@@ -1,7 +1,6 @@
 {
 	"name": "woocommerce/product-rating-counter",
 	"version": "1.0.0",
-	"icon": "info",
 	"title": "Product Rating Counter",
 	"description": "Display the review count of a product",
 	"attributes": {
@@ -26,6 +25,11 @@
 			"default": false
 		}
 	},
+	"ancestor": [
+		"woocommerce/single-product",
+		"core/post-template",
+		"woocommerce/product-template"
+	],
 	"usesContext": [ "query", "queryId", "postId" ],
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
