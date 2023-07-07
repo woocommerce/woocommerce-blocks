@@ -13,7 +13,7 @@ import edit from './edit';
 import attributes from './attributes';
 import './style.scss';
 
-registerBlockType( metadata, {
+registerBlockType( 'woocommerce/order-confirmation-billing-address', {
 	icon: {
 		src: (
 			<Icon
