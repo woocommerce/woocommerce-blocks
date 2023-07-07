@@ -81,7 +81,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 10.6.0 - 2023-07-06 =
+= 10.6.0 - 2023-07-07 =
 
 #### Enhancements
 
