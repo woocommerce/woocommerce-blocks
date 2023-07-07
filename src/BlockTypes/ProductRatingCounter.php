@@ -47,7 +47,7 @@ class ProductRatingCounter extends AbstractBlock {
 					'padding'                         => true,
 					'__experimentalSkipSerialization' => true,
 				),
-			'__experimentalSelector' => '.wc-block-components-product-rating',
+			'__experimentalSelector' => '.wc-block-components-product-rating-counter',
 		);
 	}
 
@@ -147,7 +147,6 @@ class ProductRatingCounter extends AbstractBlock {
 
 				if ( 0 < $average_rating || false === $product_permalink ) {
 					/* translators: %s: rating */
-					$label                  = sprintf( __( 'Rated %s out of 5', 'woo-gutenberg-products-block' ), $average_rating );
 					$customer_reviews_count = sprintf(
 					/* translators: %s is referring to the total of reviews for a product */
 						_n(
@@ -165,14 +164,12 @@ class ProductRatingCounter extends AbstractBlock {
 						$customer_reviews_count = '<a class="woocommerce-review-link" rel="nofollow" href="#reviews">' . $customer_reviews_count . '</a>';
 					}
 
-					$reviews_count_html = sprintf( '<span class="wc-block-components-product-rating__reviews_count">%1$s</span>', $customer_reviews_count );
-					$html               = sprintf(
-						'<div class="wc-block-components-product-rating__container">
-							%2$s
+					$html = sprintf(
+						'<div class="wc-block-components-product-rating-counter__container">
+							<span class="wc-block-components-product-rating-counter__reviews_count">%1$s</span>
 						</div>
 						',
-						esc_attr( $label ),
-						$is_descendent_of_single_product_block || $is_descendent_of_single_product_template ? $reviews_count_html : ''
+						$customer_reviews_count
 					);
 				} else {
 					$html = '';
@@ -197,7 +194,7 @@ class ProductRatingCounter extends AbstractBlock {
 			);
 
 			return sprintf(
-				'<div class="wc-block-components-product-rating wc-block-grid__product-rating %1$s %2$s" style="%3$s">
+				'<div class="wc-block-components-product-rating-counter wc-block-grid__product-rating-counter %1$s %2$s" style="%3$s">
 					%4$s
 				</div>',
 				esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
