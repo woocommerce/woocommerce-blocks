@@ -364,6 +364,7 @@ class CartSchema extends AbstractSchema {
 			'items_weight'            => wc_get_weight( $cart->get_cart_contents_weight(), 'g' ),
 			'cross_sells'             => $this->get_item_responses_from_schema( $this->cross_sells_item_schema, $cross_sells ),
 			'errors'                  => $cart_errors,
+			'payment_methods'         => array_values( wp_list_pluck( WC()->payment_gateways->get_available_payment_gateways(), 'id' ) ),
 			self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER ),
 		];
 	}
