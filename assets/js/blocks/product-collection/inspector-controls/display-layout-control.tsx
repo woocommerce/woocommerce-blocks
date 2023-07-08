@@ -32,7 +32,7 @@ const DisplayLayoutControl = (
 		{
 			icon: grid,
 			title: __( 'Grid view', 'woo-gutenberg-products-block' ),
-			onClick: () => setLayout( { type: 'grid', columns } ),
+			onClick: () => setLayout( { type: 'flex', columns } ),
 			isActive: type === 'flex',
 		},
 	];
