@@ -31,6 +31,7 @@ import AttributesControl from './attributes-control';
 import TaxonomyControls from './taxonomy-controls';
 import HandPickedProductsControl from './hand-picked-products-control';
 import AuthorControl from './author-control';
+import { replaceProductCollectionWithProducts } from '../../shared/scripts';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -114,7 +115,14 @@ export const withUpgradeNoticeControls =
 		return (
 			<>
 				<InspectorControls>
-					{ displayUpgradeNotice && <UpgradeNotice { ...props } /> }
+					{ displayUpgradeNotice && (
+						<UpgradeNotice
+							{ ...props }
+							revertMigration={
+								replaceProductCollectionWithProducts
+							}
+						/>
+					) }
 				</InspectorControls>
 				<BlockEdit { ...props } />
 			</>
