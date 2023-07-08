@@ -563,7 +563,8 @@ do_action( 'woocommerce_store_api_cart_update_customer_from_request', \WC_Custom
 
 ### Source
 
--   [StoreApi/Routes/V1/CartUpdateCustomer.php](../../../../src/StoreApi/Routes/V1/CartUpdateCustomer.php)
+ - [StoreApi/Routes/V1/CartUpdateCustomer.php](../../../../src/StoreApi/Routes/V1/CartUpdateCustomer.php)
+ - [StoreApi/Routes/V1/OrderUpdateCustomer.php](../../../../src/StoreApi/Routes/V1/OrderUpdateCustomer.php)
 
 ---
 

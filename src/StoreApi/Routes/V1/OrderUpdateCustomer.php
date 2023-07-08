@@ -1,16 +1,14 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 
-use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\StoreApi\Utilities\UpdateCustomerTrait;
 
 /**
- * CartUpdateCustomer class.
+ * OrderUpdateCustomer class.
  *
- * Updates the customer billing and shipping address and returns an updated cart--things such as taxes may be recalculated.
+ * Updates the customer billing and shipping addresses and returns an updated order--taxes should be recalculated.
  */
-class CartUpdateCustomer extends AbstractCartRoute {
-	use DraftOrderTrait;
+class OrderUpdateCustomer extends AbstractRoute {
 	use UpdateCustomerTrait;
 
 	/**
@@ -18,7 +16,14 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 *
 	 * @var string
 	 */
-	const IDENTIFIER = 'cart-update-customer';
+	const IDENTIFIER = 'order-update-customer';
+
+	/**
+	 * The schema item identifier.
+	 *
+	 * @var string
+	 */
+	const SCHEMA_TYPE = 'order';
 
 	/**
 	 * Get the path of this REST route.
@@ -26,7 +31,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 * @return string
 	 */
 	public function get_path() {
-		return '/cart/update-customer';
+		return '/order/(?P<id>[\d]+)/update-customer';
 	}
 
 	/**
@@ -36,8 +41,9 @@ class CartUpdateCustomer extends AbstractCartRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
-		$cart     = $this->cart_controller->get_cart_instance();
-		$customer = wc()->customer;
+		$order_id = absint( $request['id'] );
+		$order    = wc_get_order( $order_id );
+		$customer = new \WC_Customer( $order->get_customer_id() );
 
 		// Get data from request object and merge with customer object, then sanitize.
 		$billing  = $this->schema->billing_address_schema->sanitize_callback(
@@ -57,16 +63,16 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			'shipping_address'
 		);
 
-		// If the cart does not need shipping, shipping address is forced to match billing address unless defined.
-		if ( ! $cart->needs_shipping() && ! isset( $request['shipping_address'] ) ) {
+		// If the order does not need shipping, shipping address is forced to match billing address unless defined.
+		if ( ! $order->needs_shipping_address() && ! isset( $request['shipping_address'] ) ) {
 			$shipping = $billing;
 		}
 
-		// Run validation and sanitization now that the cart and customer data is loaded.
+		// Run validation and sanitization, now that the order and customer data is loaded.
 		$billing  = $this->schema->billing_address_schema->sanitize_callback( $billing, $request, 'billing_address' );
 		$shipping = $this->schema->shipping_address_schema->sanitize_callback( $shipping, $request, 'shipping_address' );
 
-		// Validate data now everything is clean..
+		// Validate data, now everything is clean.
 		$validation_check = $this->validate_address_params( $request, $billing, $shipping );
 
 		if ( is_wp_error( $validation_check ) ) {
@@ -99,31 +105,20 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			)
 		);
 
-		wc_do_deprecated_action(
-			'woocommerce_blocks_cart_update_customer_from_request',
-			array(
-				$customer,
-				$request,
-			),
-			'7.2.0',
-			'woocommerce_store_api_cart_update_customer_from_request',
-			'This action was deprecated in WooCommerce Blocks version 7.2.0. Please use woocommerce_store_api_cart_update_customer_from_request instead.'
-		);
-
 		/**
 		 * Fires when the Checkout Block/Store API updates a customer from the API request data.
 		 *
-		 * @since 7.2.0
+		 * @since
 		 *
 		 * @param \WC_Customer $customer Customer object.
 		 * @param \WP_REST_Request $request Full details about the request.
 		 */
-		do_action( 'woocommerce_store_api_cart_update_customer_from_request', $customer, $request );
+		do_action( 'woocommerce_store_api_order_update_customer_from_request', $customer, $request );
 
 		$customer->save();
 
-		$this->cart_controller->calculate_totals();
+		$order->calculate_totals();
 
-		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
+		return rest_ensure_response( $this->schema->get_item_response( $order ) );
 	}
 }
