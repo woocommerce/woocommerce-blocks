@@ -4,11 +4,11 @@
 import { useBlockProps, PlainText } from '@wordpress/block-editor';
 import Title from '@woocommerce/base-components/title';
 import type { BlockAttributes } from '@wordpress/blocks';
-import { useCheckoutAddress } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import Block from './block';
 import './style.scss';
 
 const Edit = ( {
@@ -24,20 +24,6 @@ const Edit = ( {
 	const blockProps = useBlockProps( {
 		className: 'wc-block-order-confirmation-billing-address',
 	} );
-
-	const { billingAddress } = useCheckoutAddress();
-	const {
-		address_1: address1,
-		address_2: address2,
-		city,
-		postcode,
-		country,
-		first_name: firstName,
-		last_name: lastName,
-		state,
-		email,
-		phone,
-	} = billingAddress;
 
 	return (
 		<div { ...blockProps }>
@@ -58,28 +44,7 @@ const Edit = ( {
 				</Title>
 			</div>
 
-			<address>
-				{ firstName } { lastName }
-				<br />
-				{ address1 }
-				<br />
-				{ address2 }
-				<br />
-				{ city }
-				<br />
-				{ state }
-				<br />
-				{ postcode }
-				<br />
-				{ country }
-				<br />
-				<br />
-				{ phone }
-				<br />
-				<br />
-				{ email }
-				<br />
-			</address>
+			<Block />
 		</div>
 	);
 };
