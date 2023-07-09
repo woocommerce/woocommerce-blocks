@@ -1,6 +1,10 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 
+use Automattic\WooCommerce\StoreApi\SchemaController;
+use Automattic\WooCommerce\StoreApi\Schemas\v1\AbstractSchema;
+use Automattic\WooCommerce\StoreApi\Utilities\OrderAuthorizationTrait;
+use Automattic\WooCommerce\StoreApi\Utilities\OrderController;
 use Automattic\WooCommerce\StoreApi\Utilities\UpdateCustomerTrait;
 
 /**
@@ -9,7 +13,10 @@ use Automattic\WooCommerce\StoreApi\Utilities\UpdateCustomerTrait;
  * Updates the customer billing and shipping addresses and returns an updated order--taxes should be recalculated.
  */
 class OrderUpdateCustomer extends AbstractRoute {
-	use UpdateCustomerTrait;
+	use OrderAuthorizationTrait;
+	use UpdateCustomerTrait {
+		get_args as protected get_update_customer_args;
+	}
 
 	/**
 	 * The route identifier.
@@ -26,12 +33,46 @@ class OrderUpdateCustomer extends AbstractRoute {
 	const SCHEMA_TYPE = 'order';
 
 	/**
+	 * Order controller class instance.
+	 *
+	 * @var OrderController
+	 */
+	protected $order_controller;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param SchemaController $schema_controller Schema Controller instance.
+	 * @param AbstractSchema   $schema Schema class for this route.
+	 */
+	public function __construct( SchemaController $schema_controller, AbstractSchema $schema ) {
+		parent::__construct( $schema_controller, $schema );
+
+		$this->order_controller = new OrderController();
+	}
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
 	 */
 	public function get_path() {
 		return '/order/(?P<id>[\d]+)/update-customer';
+	}
+
+	/**
+	 * Get method arguments for this REST route.
+	 *
+	 * @return array An array of endpoints.
+	 */
+	public function get_args() {
+		$args = $this->get_update_customer_args();
+
+		foreach ( $args as $index => $arg ) {
+			$args[ $index ]['permission_callback'] = [ $this, 'is_authorized' ];
+		}
+
+		return $args;
 	}
 
 	/**
