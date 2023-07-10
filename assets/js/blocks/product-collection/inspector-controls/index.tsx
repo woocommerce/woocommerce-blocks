@@ -68,7 +68,10 @@ const ProductCollectionInspectorControls = (
 					query={ query }
 				/>
 				{ displayQueryControls ? (
-					<OrderByControl { ...props } />
+					<OrderByControl
+						setAttributes={ props.setAttributes }
+						query={ query }
+					/>
 				) : null }
 			</ToolsPanel>
 

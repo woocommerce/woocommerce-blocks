@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { BlockEditProps } from '@wordpress/blocks';
 import {
 	SelectControl,
 	// @ts-expect-error Using experimental features
@@ -14,11 +13,11 @@ import {
  * Internal dependencies
  */
 import {
-	ProductCollectionAttributes,
 	TProductCollectionOrder,
 	TProductCollectionOrderBy,
+	OrderByControlProps,
 } from '../types';
-import { getDefaultSettings } from '../constants';
+import { getDefaultQuery } from '../constants';
 
 const orderOptions = [
 	{
@@ -47,25 +46,23 @@ const orderOptions = [
 	},
 ];
 
-const OrderByControl = (
-	props: BlockEditProps< ProductCollectionAttributes >
-) => {
-	const { order, orderBy } = props.attributes.query;
-	const defaultSettings = getDefaultSettings( props.attributes );
+const OrderByControl = ( props: OrderByControlProps ) => {
+	const { order, orderBy } = props.query;
+	const { query: defaultQuery } = getDefaultQuery( props.query );
 
 	return (
 		<ToolsPanelItem
 			label={ __( 'Order by', 'woo-gutenberg-products-block' ) }
 			hasValue={ () =>
-				order !== defaultSettings.query?.order ||
-				orderBy !== defaultSettings.query?.orderBy
+				order !== defaultQuery?.order ||
+				orderBy !== defaultQuery?.orderBy
 			}
 			isShownByDefault
 			onDeselect={ () => {
 				props.setAttributes( {
 					query: {
-						...props.attributes.query,
-						...defaultSettings.query,
+						...props.query,
+						...defaultQuery,
 					},
 				} );
 			} }
@@ -78,7 +75,7 @@ const OrderByControl = (
 					const [ newOrderBy, newOrder ] = value.split( '/' );
 					props.setAttributes( {
 						query: {
-							...props.attributes.query,
+							...props.query,
 							order: newOrder as TProductCollectionOrder,
 							orderBy: newOrderBy as TProductCollectionOrderBy,
 						},
