@@ -34,7 +34,7 @@
 			"background": false,
 			"link": true
 		},
-		"interactivity":true,
+		"interactivity": true,
 		"html": false,
 		"typography": {
 			"fontSize": true,
