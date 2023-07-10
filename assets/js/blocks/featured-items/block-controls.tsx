@@ -13,7 +13,6 @@ import { WP_REST_API_Category } from 'wp-types';
 import { ProductResponseItem } from '@woocommerce/types';
 import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 import type { ComponentType, Dispatch, SetStateAction } from 'react';
-import type { BlockAlignment } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -47,7 +46,7 @@ type WithBlockControlsProps< T extends EditorBlock< T > > =
 	| ( T & WithBlockControlsProductProps< T > );
 
 type BlockControlRequiredAttributes = {
-	contentPosition: BlockAlignment;
+	contentPosition: string;
 	editMode: boolean;
 	mediaId: number;
 	mediaSrc: string;
@@ -56,7 +55,7 @@ type BlockControlRequiredAttributes = {
 interface BlockControlsProps {
 	backgroundImageId: number;
 	backgroundImageSrc: string;
-	contentPosition: BlockAlignment;
+	contentPosition: string;
 	cropLabel: string;
 	editLabel: string;
 	editMode: boolean;
@@ -91,7 +90,7 @@ export const BlockControls = ( {
 					'woo-gutenberg-products-block'
 				) }
 				value={ contentPosition }
-				onChange={ ( nextPosition ) =>
+				onChange={ ( nextPosition: string ) =>
 					setAttributes( {
 						contentPosition: nextPosition,
 					} )

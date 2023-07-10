@@ -3,7 +3,6 @@
 /**
  * External dependencies
  */
-import type { BlockAlignment } from '@wordpress/blocks';
 import { ProductResponseItem, isEmpty } from '@woocommerce/types';
 import { Icon, Placeholder, Spinner } from '@wordpress/components';
 import classnames from 'classnames';
@@ -32,7 +31,7 @@ interface WithFeaturedItemConfig extends GenericBlockUIConfig {
 }
 
 export interface FeaturedItemRequiredAttributes {
-	contentPosition: BlockAlignment;
+	contentPosition: string;
 	dimRatio: number;
 	focalPoint: { x: number; y: number };
 	hasParallax: boolean;

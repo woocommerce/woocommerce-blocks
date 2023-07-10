@@ -92,7 +92,21 @@ export function dimRatioToClass( ratio: number ) {
 		: `has-background-dim-${ 10 * Math.round( ratio / 10 ) }`;
 }
 
-const POSITION_CLASSNAMES = {
+type PositionClassnames = {
+	[ key in
+		| 'top left'
+		| 'top center'
+		| 'top right'
+		| 'center left'
+		| 'center center'
+		| 'center'
+		| 'center right'
+		| 'bottom left'
+		| 'bottom center'
+		| 'bottom right' ]: string;
+};
+
+const POSITION_CLASSNAMES: PositionClassnames = {
 	'top left': 'is-position-top-left',
 	'top center': 'is-position-top-center',
 	'top right': 'is-position-top-right',
@@ -111,12 +125,8 @@ const POSITION_CLASSNAMES = {
  * @param {string} contentPosition The current content position.
  * @return {boolean} Whether the contentPosition is center.
  */
-export function isContentPositionCenter( contentPosition ) {
-	return (
-		! contentPosition ||
-		contentPosition === 'center center' ||
-		contentPosition === 'center'
-	);
+export function isContentPositionCenter( contentPosition: string ) {
+	return ! contentPosition || contentPosition === 'center';
 }
 
 /**
@@ -126,11 +136,11 @@ export function isContentPositionCenter( contentPosition ) {
  * @param {string} contentPosition The current content position.
  * @return {string} The className assigned to the contentPosition.
  */
-export function getPositionClassName( contentPosition ) {
+export function getPositionClassName( contentPosition: string ) {
 	/*
 	 * Only render a className if the contentPosition is not center (the default).
 	 */
 	if ( isContentPositionCenter( contentPosition ) ) return '';
 
-	return POSITION_CLASSNAMES[ contentPosition ];
+	return POSITION_CLASSNAMES[ contentPosition as keyof PositionClassnames ];
 }

@@ -90,7 +90,6 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 		$attributes = wp_parse_args( $attributes, $this->defaults );
 
 		$attributes['height'] = $attributes['height'] ?? wc_get_theme_support( 'featured_block::default_height', 500 );
-
 		$image_url = esc_url( $this->get_image_url( $attributes, $item ) );
 
 		$styles  = $this->get_styles( $attributes );
@@ -253,6 +252,21 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 	 * @return string
 	 */
 	public function get_classes( $attributes ) {
+		$position_classnames = array(
+			'top left'      => 'is-position-top-left',
+			'top center'    => 'is-position-top-center',
+			'top right'     => 'is-position-top-right',
+			'center left'   => 'is-position-center-left',
+			'center center' => 'is-position-center-center',
+			'center'        => 'is-position-center-center',
+			'center right'  => 'is-position-center-right',
+			'bottom left'   => 'is-position-bottom-left',
+			'bottom center' => 'is-position-bottom-center',
+			'bottom right'  => 'is-position-bottom-right',
+			'left'          => 'is-position-center-left',
+			'right'         => 'is-position-center-right',
+		);
+
 		$classes = array( 'wc-block-' . $this->block_name );
 
 		if ( isset( $attributes['align'] ) ) {
@@ -267,8 +281,14 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 			}
 		}
 
+		// Legacy content align setting.
 		if ( isset( $attributes['contentAlign'] ) && 'center' !== $attributes['contentAlign'] ) {
-			$classes[] = "has-{$attributes['contentAlign']}-content";
+			$classes[] = "{$position_classnames[ $attributes[ 'contentAlign' ] ] }";
+		}
+
+		if ( isset( $attributes['contentPosition'] ) && 'center center' !== $attributes['contentPosition'] ) {
+			$classes[] = "{$position_classnames[ $attributes[ 'contentPosition' ] ] }";
+			$classes[] = 'has-custom-content-position';
 		}
 
 		if ( isset( $attributes['className'] ) ) {
