@@ -86,24 +86,11 @@ const ProductCollectionInspectorControls = (
 				>
 					<OnSaleControl { ...queryControlProps } />
 					<StockStatusControl { ...queryControlProps } />
-					<HandPickedProductsControl
-						setQueryAttribute={ setQueryAttributeBind }
-						selectedProductIds={
-							query.woocommerceHandPickedProducts
-						}
-					/>
+					<HandPickedProductsControl { ...queryControlProps } />
 					<KeywordControl { ...queryControlProps } />
-					<AttributesControl
-						woocommerceAttributes={
-							query.woocommerceAttributes || []
-						}
-						setQueryAttribute={ setQueryAttributeBind }
-					/>
+					<AttributesControl { ...queryControlProps } />
 					<TaxonomyControls { ...queryControlProps } />
-					<AuthorControl
-						setQueryAttribute={ setQueryAttributeBind }
-						value={ query.author }
-					/>
+					<AuthorControl { ...queryControlProps } />
 				</ToolsPanel>
 			) : null }
 			<ProductCollectionFeedbackPrompt />
