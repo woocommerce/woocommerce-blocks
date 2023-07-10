@@ -26,6 +26,11 @@
 			"default": false
 		}
 	},
+	"ancestor": [
+		"woocommerce/single-product",
+		"core/post-template",
+		"woocommerce/product-template"
+	],
 	"usesContext": [ "query", "queryId", "postId" ],
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
