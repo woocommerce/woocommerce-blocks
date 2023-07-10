@@ -84,13 +84,12 @@ class OrderUpdateCustomer extends AbstractRoute {
 	protected function get_route_post_response( \WP_REST_Request $request ) {
 		$order_id = absint( $request['id'] );
 		$order    = wc_get_order( $order_id );
-		$customer = new \WC_Customer( $order->get_customer_id() );
 
-		// Get data from request object and merge with customer object, then sanitize.
+		// Get data from request object and merge with order customer data, then sanitize.
 		$billing  = $this->schema->billing_address_schema->sanitize_callback(
 			wp_parse_args(
 				$request['billing_address'] ?? [],
-				$this->get_customer_billing_address( $customer )
+				$order->get_address( 'billing' )
 			),
 			$request,
 			'billing_address'
@@ -98,7 +97,7 @@ class OrderUpdateCustomer extends AbstractRoute {
 		$shipping = $this->schema->billing_address_schema->sanitize_callback(
 			wp_parse_args(
 				$request['shipping_address'] ?? [],
-				$this->get_customer_shipping_address( $customer )
+				$order->get_address( 'shipping' )
 			),
 			$request,
 			'shipping_address'
@@ -120,32 +119,6 @@ class OrderUpdateCustomer extends AbstractRoute {
 			return rest_ensure_response( $validation_check );
 		}
 
-		$customer->set_props(
-			array(
-				'billing_first_name'  => $billing['first_name'] ?? null,
-				'billing_last_name'   => $billing['last_name'] ?? null,
-				'billing_company'     => $billing['company'] ?? null,
-				'billing_address_1'   => $billing['address_1'] ?? null,
-				'billing_address_2'   => $billing['address_2'] ?? null,
-				'billing_city'        => $billing['city'] ?? null,
-				'billing_state'       => $billing['state'] ?? null,
-				'billing_postcode'    => $billing['postcode'] ?? null,
-				'billing_country'     => $billing['country'] ?? null,
-				'billing_phone'       => $billing['phone'] ?? null,
-				'billing_email'       => $billing['email'] ?? null,
-				'shipping_first_name' => $shipping['first_name'] ?? null,
-				'shipping_last_name'  => $shipping['last_name'] ?? null,
-				'shipping_company'    => $shipping['company'] ?? null,
-				'shipping_address_1'  => $shipping['address_1'] ?? null,
-				'shipping_address_2'  => $shipping['address_2'] ?? null,
-				'shipping_city'       => $shipping['city'] ?? null,
-				'shipping_state'      => $shipping['state'] ?? null,
-				'shipping_postcode'   => $shipping['postcode'] ?? null,
-				'shipping_country'    => $shipping['country'] ?? null,
-				'shipping_phone'      => $shipping['phone'] ?? null,
-			)
-		);
-
 		/**
 		 * Fires when the Checkout Block/Store API updates a customer from the API request data.
 		 *
@@ -156,8 +129,9 @@ class OrderUpdateCustomer extends AbstractRoute {
 		 */
 		do_action( 'woocommerce_store_api_order_update_customer_from_request', $customer, $request );
 
-		$customer->save();
-
+		$order->set_billing_address( $billing );
+		$order->set_shipping_address( $shipping );
+		$order->save();
 		$order->calculate_totals();
 
 		return rest_ensure_response( $this->schema->get_item_response( $order ) );
