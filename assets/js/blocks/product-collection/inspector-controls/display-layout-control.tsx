@@ -18,7 +18,9 @@ const DisplayLayoutControl = (
 	props: BlockEditProps< ProductCollectionAttributes >
 ) => {
 	const { type, columns } = props.attributes.displayLayout;
-	const setLayout = ( displayLayout: ProductCollectionDisplayLayout ) => {
+	const setDisplayLayout = (
+		displayLayout: ProductCollectionDisplayLayout
+	) => {
 		props.setAttributes( { displayLayout } );
 	};
 
@@ -26,13 +28,13 @@ const DisplayLayoutControl = (
 		{
 			icon: list,
 			title: __( 'List view', 'woo-gutenberg-products-block' ),
-			onClick: () => setLayout( { type: 'list', columns } ),
+			onClick: () => setDisplayLayout( { type: 'list', columns } ),
 			isActive: type === 'list',
 		},
 		{
 			icon: grid,
 			title: __( 'Grid view', 'woo-gutenberg-products-block' ),
-			onClick: () => setLayout( { type: 'flex', columns } ),
+			onClick: () => setDisplayLayout( { type: 'flex', columns } ),
 			isActive: type === 'flex',
 		},
 	];
