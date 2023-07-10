@@ -74,5 +74,9 @@ export type SetAttributes = {
 	setAttributes: ( attrs: Partial< ProductCollectionAttributes > ) => void;
 };
 
+export type SetQueryAttributes = {
+	setQueryAttribute: ( attrs: Partial< ProductCollectionQuery > ) => void;
+};
+
 export type DisplayLayoutControlProps = DisplayLayoutObject & SetAttributes;
-export type QueryControlProps = QueryObject & SetAttributes;
+export type QueryControlProps = QueryObject & SetQueryAttributes;

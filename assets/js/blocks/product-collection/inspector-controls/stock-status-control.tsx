@@ -34,7 +34,7 @@ function getStockStatusIdByLabel( statusLabel: FormTokenField.Value ) {
 }
 
 const StockStatusControl = ( props: QueryControlProps ) => {
-	const { query, setAttributes } = props;
+	const { query, setQueryAttribute } = props;
 
 	return (
 		<ToolsPanelItem
@@ -46,11 +46,8 @@ const StockStatusControl = ( props: QueryControlProps ) => {
 				)
 			}
 			onDeselect={ () => {
-				setAttributes( {
-					query: {
-						...query,
-						woocommerceStockStatus: getDefaultStockStatuses(),
-					},
+				setQueryAttribute( {
+					woocommerceStockStatus: getDefaultStockStatuses(),
 				} );
 			} }
 			isShownByDefault
@@ -62,11 +59,8 @@ const StockStatusControl = ( props: QueryControlProps ) => {
 						.map( getStockStatusIdByLabel )
 						.filter( Boolean ) as string[];
 
-					setAttributes( {
-						query: {
-							...query,
-							woocommerceStockStatus,
-						},
+					setQueryAttribute( {
+						woocommerceStockStatus,
 					} );
 				} }
 				suggestions={ Object.values( STOCK_STATUS_OPTIONS ) }

@@ -17,16 +17,13 @@ import {
 import { QueryControlProps } from '../types';
 
 const KeywordControl = ( props: QueryControlProps ) => {
-	const { query, setAttributes } = props;
+	const { query, setQueryAttribute } = props;
 	const [ querySearch, setQuerySearch ] = useState( query.search );
 
 	const onChangeDebounced = useDebounce( () => {
 		if ( query.search !== querySearch ) {
-			setAttributes( {
-				query: {
-					...query,
-					search: querySearch,
-				},
+			setQueryAttribute( {
+				search: querySearch,
 			} );
 		}
 	}, 250 );

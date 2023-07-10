@@ -15,7 +15,7 @@ import {
 import { QueryControlProps } from '../types';
 
 const OnSaleControl = ( props: QueryControlProps ) => {
-	const { query, setAttributes } = props;
+	const { query, setQueryAttribute } = props;
 
 	return (
 		<ToolsPanelItem
@@ -23,11 +23,8 @@ const OnSaleControl = ( props: QueryControlProps ) => {
 			hasValue={ () => query.woocommerceOnSale === true }
 			isShownByDefault
 			onDeselect={ () => {
-				setAttributes( {
-					query: {
-						...query,
-						woocommerceOnSale: false,
-					},
+				setQueryAttribute( {
+					woocommerceOnSale: false,
 				} );
 			} }
 		>
@@ -38,11 +35,8 @@ const OnSaleControl = ( props: QueryControlProps ) => {
 				) }
 				checked={ query.woocommerceOnSale || false }
 				onChange={ ( woocommerceOnSale ) => {
-					setAttributes( {
-						query: {
-							...query,
-							woocommerceOnSale,
-						},
+					setQueryAttribute( {
+						woocommerceOnSale,
 					} );
 				} }
 			/>

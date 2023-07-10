@@ -47,8 +47,9 @@ const orderOptions = [
 ];
 
 const OrderByControl = ( props: QueryControlProps ) => {
-	const { order, orderBy } = props.query;
-	const { query: defaultQuery } = getDefaultQuery( props.query );
+	const { query, setQueryAttribute } = props;
+	const { order, orderBy } = query;
+	const { query: defaultQuery } = getDefaultQuery( query );
 
 	return (
 		<ToolsPanelItem
@@ -59,12 +60,7 @@ const OrderByControl = ( props: QueryControlProps ) => {
 			}
 			isShownByDefault
 			onDeselect={ () => {
-				props.setAttributes( {
-					query: {
-						...props.query,
-						...defaultQuery,
-					},
-				} );
+				setQueryAttribute( defaultQuery );
 			} }
 		>
 			<SelectControl
@@ -73,12 +69,9 @@ const OrderByControl = ( props: QueryControlProps ) => {
 				label={ __( 'Order by', 'woo-gutenberg-products-block' ) }
 				onChange={ ( value ) => {
 					const [ newOrderBy, newOrder ] = value.split( '/' );
-					props.setAttributes( {
-						query: {
-							...props.query,
-							order: newOrder as TProductCollectionOrder,
-							orderBy: newOrderBy as TProductCollectionOrderBy,
-						},
+					setQueryAttribute( {
+						order: newOrder as TProductCollectionOrder,
+						orderBy: newOrderBy as TProductCollectionOrderBy,
 					} );
 				} }
 			/>
