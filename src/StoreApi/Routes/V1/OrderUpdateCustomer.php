@@ -108,10 +108,6 @@ class OrderUpdateCustomer extends AbstractRoute {
 			$shipping = $billing;
 		}
 
-		// Run validation and sanitization, now that the order and customer data is loaded.
-		$billing  = $this->schema->billing_address_schema->sanitize_callback( $billing, $request, 'billing_address' );
-		$shipping = $this->schema->shipping_address_schema->sanitize_callback( $shipping, $request, 'shipping_address' );
-
 		// Validate data, now everything is clean.
 		$validation_check = $this->validate_address_params( $request, $billing, $shipping );
 
