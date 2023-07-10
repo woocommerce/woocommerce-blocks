@@ -4,6 +4,7 @@
 import type { BlockConfiguration } from '@wordpress/blocks';
 import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import { createBlock } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -13,29 +14,29 @@ import edit from './edit';
 import { BLOCK_ICON as icon } from './constants';
 import metadata from './block.json';
 import { supports } from './support';
-//
-// const deprecatedAttributes = {
-// 	productId: {
-// 		type: 'number',
-// 		default: 0,
-// 	},
-// 	isDescendentOfQueryLoop: {
-// 		type: 'boolean',
-// 		default: false,
-// 	},
-// 	textAlign: {
-// 		type: 'string',
-// 		default: '',
-// 	},
-// 	isDescendentOfSingleProductBlock: {
-// 		type: 'boolean',
-// 		default: false,
-// 	},
-// 	isDescendentOfSingleProductTemplate: {
-// 		type: 'boolean',
-// 		default: false,
-// 	},
-// };
+
+const blockAttributes = {
+	productId: {
+		type: 'number',
+		default: 0,
+	},
+	isDescendentOfQueryLoop: {
+		type: 'boolean',
+		default: false,
+	},
+	textAlign: {
+		type: 'string',
+		default: '',
+	},
+	isDescendentOfSingleProductBlock: {
+		type: 'boolean',
+		default: false,
+	},
+	isDescendentOfSingleProductTemplate: {
+		type: 'boolean',
+		default: false,
+	},
+};
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,
@@ -46,31 +47,43 @@ const blockConfig: BlockConfiguration = {
 		'woocommerce/product-template',
 	],
 	icon: { src: icon },
-	// deprecated: [
-	// 	{
-	// 		attributes: deprecatedAttributes,
-	// 		migrate( attributes, innerBlocks ) {
-	// 			return [
-	// 				null,
-	// 				[
-	// 					createBlock( 'woocommerce/product-rating-stars', {
-	// 						...attributes,
-	// 					} ),
-	// 					createBlock( 'woocommerce/product-rating-counter', {
-	// 						...attributes,
-	// 					} ),
-	// 					...innerBlocks,
-	// 				],
-	// 			];
-	// 		},
-	// 		isEligible: ( attributes, innerBlocks ) => {
-	// 			return ! innerBlocks.length;
-	// 		},
-	// 		save: (): JSX.Element => {
-	// 			return <div { ...useBlockProps.save() }></div>;
-	// 		},
-	// 	},
-	// ],
+	deprecated: [
+		{
+			attributes: blockAttributes,
+			migrate( attributes, innerBlocks ) {
+				return [
+					attributes,
+					[
+						createBlock(
+							'core/group',
+							{
+								layout: { type: 'flex', flexWrap: 'nowrap' },
+								style: { spacing: { blockGap: '10px' } },
+							},
+							[
+								createBlock(
+									'woocommerce/product-rating-stars',
+									{
+										...attributes,
+									}
+								),
+								createBlock(
+									'woocommerce/product-rating-counter',
+									{
+										...attributes,
+									}
+								),
+							]
+						),
+						...innerBlocks,
+					],
+				];
+			},
+			save() {
+				return null;
+			},
+		},
+	],
 	supports,
 	edit,
 	save: () => {
