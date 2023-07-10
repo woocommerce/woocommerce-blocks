@@ -59,7 +59,10 @@ const ProductCollectionInspectorControls = (
 					props.setAttributes( defaultSettings );
 				} }
 			>
-				<ColumnsControl { ...props } />
+				<ColumnsControl
+					displayLayout={ props.attributes.displayLayout }
+					setAttributes={ props.setAttributes }
+				/>
 				<InheritQueryControl
 					setQueryAttribute={ setQueryAttributeBind }
 					query={ query }

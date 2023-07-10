@@ -61,3 +61,14 @@ export type TProductCollectionOrderBy =
 	| 'title'
 	| 'popularity'
 	| 'rating';
+
+export type DisplayLayoutObject = {
+	displayLayout: ProductCollectionDisplayLayout;
+};
+
+export type SetAttributes = {
+	setAttributes: ( attrs: Partial< ProductCollectionAttributes > ) => void;
+};
+
+export type DisplayLayoutControlProps = DisplayLayoutObject & SetAttributes;
+export type ColumnsControlProps = DisplayLayoutObject & SetAttributes;

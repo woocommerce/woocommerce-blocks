@@ -13,6 +13,7 @@ import {
 	TProductCollectionOrderBy,
 	ProductCollectionQuery,
 	ProductCollectionDisplayLayout,
+	DisplayLayoutObject,
 } from './types';
 
 export const STOCK_STATUS_OPTIONS = getSetting< Record< string, string > >(
@@ -64,14 +65,17 @@ export const DEFAULT_ATTRIBUTES: Partial< ProductCollectionAttributes > = {
 export const getDefaultSettings = (
 	currentAttributes: ProductCollectionAttributes
 ): Partial< ProductCollectionAttributes > => ( {
-	displayLayout:
-		DEFAULT_ATTRIBUTES.displayLayout as ProductCollectionDisplayLayout,
 	query: {
 		...currentAttributes.query,
 		orderBy: DEFAULT_QUERY.orderBy as TProductCollectionOrderBy,
 		order: DEFAULT_QUERY.order as TProductCollectionOrder,
 		inherit: DEFAULT_QUERY.inherit,
 	},
+} );
+
+export const getDefaultDisplayLayout = (): DisplayLayoutObject => ( {
+	displayLayout:
+		DEFAULT_ATTRIBUTES.displayLayout as ProductCollectionDisplayLayout,
 } );
 
 export const DEFAULT_FILTERS: Partial< ProductCollectionQuery > = {
