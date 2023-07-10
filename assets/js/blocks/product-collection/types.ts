@@ -62,21 +62,11 @@ export type TProductCollectionOrderBy =
 	| 'popularity'
 	| 'rating';
 
-export type DisplayLayoutObject = {
+export type DisplayLayoutControlProps = {
 	displayLayout: ProductCollectionDisplayLayout;
-};
-
-export type QueryObject = {
-	query: ProductCollectionQuery;
-};
-
-export type SetAttributes = {
 	setAttributes: ( attrs: Partial< ProductCollectionAttributes > ) => void;
 };
-
-export type SetQueryAttributes = {
+export type QueryControlProps = {
+	query: ProductCollectionQuery;
 	setQueryAttribute: ( attrs: Partial< ProductCollectionQuery > ) => void;
 };
-
-export type DisplayLayoutControlProps = DisplayLayoutObject & SetAttributes;
-export type QueryControlProps = QueryObject & SetQueryAttributes;

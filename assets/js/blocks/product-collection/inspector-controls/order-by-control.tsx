@@ -49,7 +49,7 @@ const orderOptions = [
 const OrderByControl = ( props: QueryControlProps ) => {
 	const { query, setQueryAttribute } = props;
 	const { order, orderBy } = query;
-	const { query: defaultQuery } = getDefaultQuery( query );
+	const defaultQuery = getDefaultQuery( query );
 
 	return (
 		<ToolsPanelItem

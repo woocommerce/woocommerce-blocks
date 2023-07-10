@@ -12,14 +12,14 @@ import {
 /**
  * Internal dependencies
  */
-import { ColumnsControlProps } from '../types';
+import { DisplayLayoutControlProps } from '../types';
 import { getDefaultDisplayLayout } from '../constants';
 
-const ColumnsControl = ( props: ColumnsControlProps ) => {
+const ColumnsControl = ( props: DisplayLayoutControlProps ) => {
 	const { type, columns } = props.displayLayout;
 	const showColumnsControl = type === 'flex';
 
-	const { displayLayout: defaultLayout } = getDefaultDisplayLayout();
+	const defaultLayout = getDefaultDisplayLayout();
 
 	return showColumnsControl ? (
 		<ToolsPanelItem

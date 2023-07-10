@@ -13,8 +13,6 @@ import {
 	TProductCollectionOrderBy,
 	ProductCollectionQuery,
 	ProductCollectionDisplayLayout,
-	DisplayLayoutObject,
-	QueryObject,
 } from './types';
 
 export const STOCK_STATUS_OPTIONS = getSetting< Record< string, string > >(
@@ -65,25 +63,21 @@ export const DEFAULT_ATTRIBUTES: Partial< ProductCollectionAttributes > = {
 
 export const getDefaultQuery = (
 	currentQuery: ProductCollectionQuery
-): QueryObject => ( {
-	query: {
-		...currentQuery,
-		orderBy: DEFAULT_QUERY.orderBy as TProductCollectionOrderBy,
-		order: DEFAULT_QUERY.order as TProductCollectionOrder,
-		inherit: DEFAULT_QUERY.inherit,
-	},
+): ProductCollectionQuery => ( {
+	...currentQuery,
+	orderBy: DEFAULT_QUERY.orderBy as TProductCollectionOrderBy,
+	order: DEFAULT_QUERY.order as TProductCollectionOrder,
+	inherit: DEFAULT_QUERY.inherit,
 } );
 
-export const getDefaultDisplayLayout = (): DisplayLayoutObject => ( {
-	displayLayout:
-		DEFAULT_ATTRIBUTES.displayLayout as ProductCollectionDisplayLayout,
-} );
+export const getDefaultDisplayLayout = () =>
+	DEFAULT_ATTRIBUTES.displayLayout as ProductCollectionDisplayLayout;
 
 export const getDefaultSettings = (
 	currentAttributes: ProductCollectionAttributes
 ): Partial< ProductCollectionAttributes > => ( {
-	...getDefaultDisplayLayout(),
-	...getDefaultQuery( currentAttributes.query ),
+	displayLayout: getDefaultDisplayLayout(),
+	query: getDefaultQuery( currentAttributes.query ),
 } );
 
 export const DEFAULT_FILTERS: Partial< ProductCollectionQuery > = {
