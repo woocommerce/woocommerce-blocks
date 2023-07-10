@@ -61,7 +61,7 @@ const productButtonSelectors = {
 				product?.quantity?.toString()
 			);
 		},
-		moreThanOneItem: ( {
+		isThereMoreThanOneItem: ( {
 			context,
 			state,
 		}: {
@@ -89,7 +89,7 @@ const productButtonSelectors = {
 			selectors: any;
 			state: State;
 		} ) => {
-			return selectors.woocommerce.moreThanOneItem( {
+			return selectors.woocommerce.isThereMoreThanOneItem( {
 				context,
 				state,
 			} );
