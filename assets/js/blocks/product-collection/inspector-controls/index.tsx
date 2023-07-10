@@ -100,7 +100,10 @@ const ProductCollectionInspectorControls = (
 							query.woocommerceHandPickedProducts
 						}
 					/>
-					<KeywordControl { ...props } />
+					<KeywordControl
+						setAttributes={ props.setAttributes }
+						query={ query }
+					/>
 					<AttributesControl
 						woocommerceAttributes={
 							query.woocommerceAttributes || []
