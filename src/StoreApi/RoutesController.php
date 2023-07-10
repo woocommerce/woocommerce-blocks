@@ -33,38 +33,38 @@ class RoutesController {
 		$this->schema_controller = $schema_controller;
 		$this->routes            = [
 			'v1' => [
-				Routes\V1\Batch::IDENTIFIER               => Routes\V1\Batch::class,
-				Routes\V1\Cart::IDENTIFIER                => Routes\V1\Cart::class,
-				Routes\V1\CartAddItem::IDENTIFIER         => Routes\V1\CartAddItem::class,
-				Routes\V1\CartApplyCoupon::IDENTIFIER     => Routes\V1\CartApplyCoupon::class,
-				Routes\V1\CartCoupons::IDENTIFIER         => Routes\V1\CartCoupons::class,
-				Routes\V1\CartCouponsByCode::IDENTIFIER   => Routes\V1\CartCouponsByCode::class,
-				Routes\V1\CartExtensions::IDENTIFIER      => Routes\V1\CartExtensions::class,
-				Routes\V1\CartItems::IDENTIFIER           => Routes\V1\CartItems::class,
-				Routes\V1\CartItemsByKey::IDENTIFIER      => Routes\V1\CartItemsByKey::class,
-				Routes\V1\CartRemoveCoupon::IDENTIFIER    => Routes\V1\CartRemoveCoupon::class,
-				Routes\V1\CartRemoveItem::IDENTIFIER      => Routes\V1\CartRemoveItem::class,
+				Routes\V1\Batch::IDENTIFIER              => Routes\V1\Batch::class,
+				Routes\V1\Cart::IDENTIFIER               => Routes\V1\Cart::class,
+				Routes\V1\CartAddItem::IDENTIFIER        => Routes\V1\CartAddItem::class,
+				Routes\V1\CartApplyCoupon::IDENTIFIER    => Routes\V1\CartApplyCoupon::class,
+				Routes\V1\CartCoupons::IDENTIFIER        => Routes\V1\CartCoupons::class,
+				Routes\V1\CartCouponsByCode::IDENTIFIER  => Routes\V1\CartCouponsByCode::class,
+				Routes\V1\CartExtensions::IDENTIFIER     => Routes\V1\CartExtensions::class,
+				Routes\V1\CartItems::IDENTIFIER          => Routes\V1\CartItems::class,
+				Routes\V1\CartItemsByKey::IDENTIFIER     => Routes\V1\CartItemsByKey::class,
+				Routes\V1\CartRemoveCoupon::IDENTIFIER   => Routes\V1\CartRemoveCoupon::class,
+				Routes\V1\CartRemoveItem::IDENTIFIER     => Routes\V1\CartRemoveItem::class,
 				Routes\V1\CartSelectShippingRate::IDENTIFIER => Routes\V1\CartSelectShippingRate::class,
-				Routes\V1\CartUpdateItem::IDENTIFIER      => Routes\V1\CartUpdateItem::class,
-				Routes\V1\CartUpdateCustomer::IDENTIFIER  => Routes\V1\CartUpdateCustomer::class,
-				Routes\V1\OrderUpdateCustomer::IDENTIFIER => Routes\V1\OrderUpdateCustomer::class,
-				Routes\V1\Checkout::IDENTIFIER            => Routes\V1\Checkout::class,
-				Routes\V1\ProductAttributes::IDENTIFIER   => Routes\V1\ProductAttributes::class,
+				Routes\V1\CartUpdateItem::IDENTIFIER     => Routes\V1\CartUpdateItem::class,
+				Routes\V1\CartUpdateCustomer::IDENTIFIER => Routes\V1\CartUpdateCustomer::class,
+				Routes\V1\Checkout::IDENTIFIER           => Routes\V1\Checkout::class,
+				Routes\V1\ProductAttributes::IDENTIFIER  => Routes\V1\ProductAttributes::class,
 				Routes\V1\ProductAttributesById::IDENTIFIER => Routes\V1\ProductAttributesById::class,
 				Routes\V1\ProductAttributeTerms::IDENTIFIER => Routes\V1\ProductAttributeTerms::class,
-				Routes\V1\ProductCategories::IDENTIFIER   => Routes\V1\ProductCategories::class,
+				Routes\V1\ProductCategories::IDENTIFIER  => Routes\V1\ProductCategories::class,
 				Routes\V1\ProductCategoriesById::IDENTIFIER => Routes\V1\ProductCategoriesById::class,
 				Routes\V1\ProductCollectionData::IDENTIFIER => Routes\V1\ProductCollectionData::class,
-				Routes\V1\ProductReviews::IDENTIFIER      => Routes\V1\ProductReviews::class,
-				Routes\V1\ProductTags::IDENTIFIER         => Routes\V1\ProductTags::class,
-				Routes\V1\Products::IDENTIFIER            => Routes\V1\Products::class,
-				Routes\V1\ProductsById::IDENTIFIER        => Routes\V1\ProductsById::class,
-				Routes\V1\ProductsBySlug::IDENTIFIER      => Routes\V1\ProductsBySlug::class,
+				Routes\V1\ProductReviews::IDENTIFIER     => Routes\V1\ProductReviews::class,
+				Routes\V1\ProductTags::IDENTIFIER        => Routes\V1\ProductTags::class,
+				Routes\V1\Products::IDENTIFIER           => Routes\V1\Products::class,
+				Routes\V1\ProductsById::IDENTIFIER       => Routes\V1\ProductsById::class,
+				Routes\V1\ProductsBySlug::IDENTIFIER     => Routes\V1\ProductsBySlug::class,
 			],
 		];
 
 		if ( Package::is_experimental_build() ) {
-			$this->routes['v1'][ Routes\V1\Order::IDENTIFIER ] = Routes\V1\Order::class;
+			$this->routes['v1'][ Routes\V1\Order::IDENTIFIER ]               = Routes\V1\Order::class;
+			$this->routes['v1'][ Routes\V1\OrderUpdateCustomer::IDENTIFIER ] = Routes\V1\OrderUpdateCustomer::class;
 		}
 	}
 
