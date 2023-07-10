@@ -90,6 +90,10 @@ const ProductCollectionInspectorControls = (
 						setAttributes={ props.setAttributes }
 						query={ query }
 					/>
+					<StockStatusControl
+						setAttributes={ props.setAttributes }
+						query={ query }
+					/>
 					<HandPickedProductsControl
 						setQueryAttribute={ setQueryAttributeBind }
 						selectedProductIds={
