@@ -101,6 +101,15 @@ class Cart extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return string[]
+	 */
+	protected function get_block_type_style() {
+		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
+	}
+
+	/**
 	 * Enqueue frontend assets for this block, just in time for rendering.
 	 *
 	 * @param array $attributes  Any attributes that currently are available from the block.
@@ -237,7 +246,14 @@ class Cart extends AbstractBlock {
 	 * Hydrate the cart block with data from the API.
 	 */
 	protected function hydrate_from_api() {
+		// Cache existing notices now, otherwise they are caught by the Cart Controller and converted to exceptions.
+		$old_notices = WC()->session->get( 'wc_notices', array() );
+		wc_clear_notices();
+
 		$this->asset_data_registry->hydrate_api_request( '/wc/store/v1/cart' );
+
+		// Restore notices.
+		WC()->session->set( 'wc_notices', $old_notices );
 	}
 	/**
 	 * Register script and style assets for the block type before it is registered.
