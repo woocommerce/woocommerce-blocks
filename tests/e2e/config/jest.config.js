@@ -35,6 +35,11 @@ module.exports = {
 		// Ignore all the files that have utils in the name
 		'utils',
 	],
-	transformIgnorePatterns: [ 'node_modules/(?!(woocommerce)/)' ],
+	transformIgnorePatterns: [
+		'node_modules/(?!(woocommerce|simple-html-tokenizer|is-plain-obj|memize|@wordpress/a11y|@wordpress/keycodes|@wordpress/shortcode)/)',
+	],
+	transform: {
+		'^.+\\.[jt]sx?$': '<rootDir>/tests/js/jestPreprocess.js',
+	},
 	testMatch: [ '**/?(*.)+(spec|test).[jt]s?(x)' ],
 };
