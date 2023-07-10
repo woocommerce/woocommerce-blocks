@@ -52,6 +52,7 @@ const blockConfig: BlockConfiguration = {
 			attributes: blockAttributes,
 			supports,
 			migrate( attributes, innerBlocks ) {
+				const { style, ...newAttributes } = attributes;
 				return [
 					attributes,
 					[
@@ -65,13 +66,13 @@ const blockConfig: BlockConfiguration = {
 								createBlock(
 									'woocommerce/product-rating-stars',
 									{
-										...attributes,
+										...newAttributes,
 									}
 								),
 								createBlock(
 									'woocommerce/product-rating-counter',
 									{
-										...attributes,
+										...newAttributes,
 									}
 								),
 							]
