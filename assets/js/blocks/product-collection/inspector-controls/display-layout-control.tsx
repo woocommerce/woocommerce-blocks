@@ -2,22 +2,24 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { BlockEditProps } from '@wordpress/blocks';
 import { ToolbarGroup } from '@wordpress/components';
 import { list, grid } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
-import {
-	ProductCollectionAttributes,
-	ProductCollectionDisplayLayout,
-} from '../types';
+import { ProductCollectionDisplayLayout } from '../types';
 
-const DisplayLayoutControl = (
-	props: BlockEditProps< ProductCollectionAttributes >
-) => {
-	const { type, columns } = props.attributes.displayLayout;
+type DisplayLayoutObject = {
+	displayLayout: ProductCollectionDisplayLayout;
+};
+
+type DisplayLayoutControlProps = DisplayLayoutObject & {
+	setAttributes: ( attrs: DisplayLayoutObject ) => void;
+};
+
+const DisplayLayoutControl = ( props: DisplayLayoutControlProps ) => {
+	const { type, columns } = props.displayLayout;
 	const setDisplayLayout = (
 		displayLayout: ProductCollectionDisplayLayout
 	) => {

@@ -45,7 +45,10 @@ const ProductCollectionInspectorControls = (
 	return (
 		<InspectorControls>
 			<BlockControls>
-				<DisplayLayoutControl { ...props } />
+				<DisplayLayoutControl
+					displayLayout={ props.attributes.displayLayout }
+					setAttributes={ props.setAttributes }
+				/>
 			</BlockControls>
 			<ToolsPanel
 				label={ __( 'Settings', 'woo-gutenberg-products-block' ) }
