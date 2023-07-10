@@ -61,7 +61,7 @@ const productButtonSelectors = {
 				product?.quantity?.toString()
 			);
 		},
-		moreThanOneItem: ( {
+		isThereMoreThanOneItem: ( {
 			context,
 			state,
 		}: {
@@ -89,7 +89,7 @@ const productButtonSelectors = {
 			selectors: any;
 			state: State;
 		} ) => {
-			return selectors.woocommerce.moreThanOneItem( {
+			return selectors.woocommerce.isThereMoreThanOneItem( {
 				context,
 				state,
 			} );
@@ -141,7 +141,9 @@ store( {
 					context.woocommerce.numberOfItems++;
 					context.woocommerce.isLoading = false;
 				} catch ( error ) {
-					context.woocommerce.numberOfItems--;
+					// we don't care about errors blocking execution, but will console.error for troubleshooting.
+					// eslint-disable-next-line no-console
+					console.error( error );
 				}
 			},
 		},

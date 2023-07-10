@@ -4,9 +4,6 @@
 import { select, subscribe } from '@wordpress/data';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { updateStore } from '../store';
-/**
- * Internal dependencies
- */
 
 export const syncStoreWithInteractivityState = () => {
 	const store = select( CART_STORE_KEY );
