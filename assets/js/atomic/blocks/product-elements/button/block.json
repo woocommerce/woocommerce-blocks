@@ -59,7 +59,7 @@
 		}
 	],
 	"viewScript": [
-		"wc-product-button-interactivity-frontend",
+		"wc-product-button-interactivity-frontend"
 	],
 	"apiVersion": 2,
 	"$schema": "https://schemas.wp.org/trunk/block.json"
