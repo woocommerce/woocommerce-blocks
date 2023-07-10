@@ -13,7 +13,7 @@ import {
 /**
  * Internal dependencies
  */
-import { StockStatusControlProps } from '../types';
+import { QueryControlProps } from '../types';
 import { STOCK_STATUS_OPTIONS, getDefaultStockStatuses } from '../constants';
 
 /**
@@ -33,7 +33,7 @@ function getStockStatusIdByLabel( statusLabel: FormTokenField.Value ) {
 	)?.[ 0 ];
 }
 
-const StockStatusControl = ( props: StockStatusControlProps ) => {
+const StockStatusControl = ( props: QueryControlProps ) => {
 	const { query, setAttributes } = props;
 
 	return (

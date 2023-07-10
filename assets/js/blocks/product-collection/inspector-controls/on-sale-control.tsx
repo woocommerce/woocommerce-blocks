@@ -12,9 +12,9 @@ import {
 /**
  * Internal dependencies
  */
-import { OnSaleControlProps } from '../types';
+import { QueryControlProps } from '../types';
 
-const OnSaleControl = ( props: OnSaleControlProps ) => {
+const OnSaleControl = ( props: QueryControlProps ) => {
 	const { query, setAttributes } = props;
 
 	return (

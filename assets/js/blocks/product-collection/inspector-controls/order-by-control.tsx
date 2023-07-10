@@ -15,7 +15,7 @@ import {
 import {
 	TProductCollectionOrder,
 	TProductCollectionOrderBy,
-	OrderByControlProps,
+	QueryControlProps,
 } from '../types';
 import { getDefaultQuery } from '../constants';
 
@@ -46,7 +46,7 @@ const orderOptions = [
 	},
 ];
 
-const OrderByControl = ( props: OrderByControlProps ) => {
+const OrderByControl = ( props: QueryControlProps ) => {
 	const { order, orderBy } = props.query;
 	const { query: defaultQuery } = getDefaultQuery( props.query );
 

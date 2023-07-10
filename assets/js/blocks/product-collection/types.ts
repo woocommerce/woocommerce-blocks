@@ -75,8 +75,4 @@ export type SetAttributes = {
 };
 
 export type DisplayLayoutControlProps = DisplayLayoutObject & SetAttributes;
-export type ColumnsControlProps = DisplayLayoutObject & SetAttributes;
-export type OrderByControlProps = QueryObject & SetAttributes;
-export type OnSaleControlProps = QueryObject & SetAttributes;
-export type StockStatusControlProps = QueryObject & SetAttributes;
-export type KeywordControlProps = QueryObject & SetAttributes;
+export type QueryControlProps = QueryObject & SetAttributes;
