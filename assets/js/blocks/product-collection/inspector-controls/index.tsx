@@ -86,8 +86,10 @@ const ProductCollectionInspectorControls = (
 					} }
 					className="wc-block-editor-product-collection-inspector-toolspanel__filters"
 				>
-					<OnSaleControl { ...props } />
-					<StockStatusControl { ...props } />
+					<OnSaleControl
+						setAttributes={ props.setAttributes }
+						query={ query }
+					/>
 					<HandPickedProductsControl
 						setQueryAttribute={ setQueryAttributeBind }
 						selectedProductIds={

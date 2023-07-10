@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { BlockEditProps } from '@wordpress/blocks';
 import {
 	ToggleControl,
 	// @ts-expect-error Using experimental features
@@ -13,13 +12,10 @@ import {
 /**
  * Internal dependencies
  */
-import { ProductCollectionAttributes } from '../types';
-import { setQueryAttribute } from '../utils';
+import { OnSaleControlProps } from '../types';
 
-const OnSaleControl = (
-	props: BlockEditProps< ProductCollectionAttributes >
-) => {
-	const { query } = props.attributes;
+const OnSaleControl = ( props: OnSaleControlProps ) => {
+	const { query, setAttributes } = props;
 
 	return (
 		<ToolsPanelItem
@@ -27,8 +23,11 @@ const OnSaleControl = (
 			hasValue={ () => query.woocommerceOnSale === true }
 			isShownByDefault
 			onDeselect={ () => {
-				setQueryAttribute( props, {
-					woocommerceOnSale: false,
+				setAttributes( {
+					query: {
+						...query,
+						woocommerceOnSale: false,
+					},
 				} );
 			} }
 		>
@@ -39,8 +38,11 @@ const OnSaleControl = (
 				) }
 				checked={ query.woocommerceOnSale || false }
 				onChange={ ( woocommerceOnSale ) => {
-					setQueryAttribute( props, {
-						woocommerceOnSale,
+					setAttributes( {
+						query: {
+							...query,
+							woocommerceOnSale,
+						},
 					} );
 				} }
 			/>
