@@ -50,6 +50,7 @@ const blockConfig: BlockConfiguration = {
 	deprecated: [
 		{
 			attributes: blockAttributes,
+			supports,
 			migrate( attributes, innerBlocks ) {
 				return [
 					attributes,
