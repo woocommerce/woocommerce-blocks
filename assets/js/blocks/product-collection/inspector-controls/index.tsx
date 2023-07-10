@@ -2,9 +2,10 @@
  * External dependencies
  */
 import type { BlockEditProps } from '@wordpress/blocks';
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { useMemo } from '@wordpress/element';
+import { ProductCollectionFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import {
 	// @ts-expect-error Using experimental features
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -27,6 +28,7 @@ import AttributesControl from './attributes-control';
 import TaxonomyControls from './taxonomy-controls';
 import HandPickedProductsControl from './hand-picked-products-control';
 import AuthorControl from './author-control';
+import DisplayLayoutControl from './display-layout-control';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -42,6 +44,12 @@ const ProductCollectionInspectorControls = (
 
 	return (
 		<InspectorControls>
+			<BlockControls>
+				<DisplayLayoutControl
+					displayLayout={ props.attributes.displayLayout }
+					setAttributes={ props.setAttributes }
+				/>
+			</BlockControls>
 			<ToolsPanel
 				label={ __( 'Settings', 'woo-gutenberg-products-block' ) }
 				resetAll={ () => {
@@ -97,6 +105,7 @@ const ProductCollectionInspectorControls = (
 					/>
 				</ToolsPanel>
 			) : null }
+			<ProductCollectionFeedbackPrompt />
 		</InspectorControls>
 	);
 };
