@@ -165,16 +165,16 @@ export const useColorPanelStyles = ( colorTypes: CustomColorsMap ) => {
 		[ clientId ]
 	);
 
-	const classes: string[] = [];
+	const className: string[] = [];
 
 	Object.keys( colorTypes ).forEach( ( colorName ) => {
 		const attribute = attributes?.[ colorName ];
 		if ( attribute && attribute?.color ) {
-			classes.push( `has-${ colorTypes[ colorName ].context }` );
+			className.push( `has-${ colorTypes[ colorName ].context }` );
 		}
 	} );
 
 	return {
-		classes,
+		className,
 	};
 };

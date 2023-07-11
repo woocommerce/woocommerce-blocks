@@ -83,10 +83,10 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 		},
 	};
 
-	const { classes } = useColorPanelStyles( miniCartColorAttributes );
+	const { className } = useColorPanelStyles( miniCartColorAttributes );
 
 	const blockProps = useBlockProps( {
-		className: [ 'wc-block-mini-cart', ...classes ].join( ' ' ),
+		className: [ 'wc-block-mini-cart', ...className ].join( ' ' ),
 	} );
 
 	const isSiteEditor = isSiteEditorPage( select( 'core/edit-site' ) );
