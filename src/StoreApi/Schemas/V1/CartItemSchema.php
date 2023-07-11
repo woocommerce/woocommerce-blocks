@@ -200,6 +200,96 @@ class CartItemSchema extends ProductSchema {
 					],
 				],
 			],
+			'custom_item_data'     => [
+				'description' => __( 'Editable metadata related to the cart item, separated by namespace', 'woo-gutenberg-products-block' ),
+				'type'        => 'array',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+				'items'       => [
+					'description' => __( 'An array containing one entry for each extension adding custom data to the cart items.', 'woo-gutenberg-products-block' ),
+					'type'        => 'object',
+					'context'     => [ 'view', 'edit' ],
+					'readonly'    => true,
+					'properties'  => [
+						'namespace' => [
+							'description' => __( 'Namespace of the extension adding the custom control.', 'woo-gutenberg-products-block' ),
+							'type'        => 'string',
+							'context'     => [ 'view', 'edit' ],
+							'readonly'    => true,
+						],
+						'controls'  => [
+							'type'  => 'array',
+							'items' => [
+								'type' => 'object',
+								'name' => [
+									'name'         => [
+										'description' => __( 'The key of the custom data.', 'woo-gutenberg-products-block' ),
+										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+									'defaultValue' => [
+										'description' => __( 'The default value of the custom data.', 'woo-gutenberg-products-block' ),
+										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+									'value'        => [
+										'description' => __( 'The current value of the custom data.', 'woo-gutenberg-products-block' ),
+										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+									'label'        => [
+										'description' => __( 'The label used for the control, as displayed to the user.', 'woo-gutenberg-products-block' ),
+										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+									'type'         => [
+										'description' => __( 'The type of control used on the front-end. One of "select", "checkbox", or "text".', 'woo-gutenberg-products-block' ),
+										'type'        => 'string',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+									'is_visible'   => [
+										'description' => __( 'Whether the control should be displayed.', 'woo-gutenberg-products-block' ),
+										'type'        => 'boolean',
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+									],
+									'options'      => [
+										'description' => __( 'Options to show when the type is "select".', 'woo-gutenberg-products-block' ),
+										'type'        => 'array',
+										'optional'    => true,
+										'context'     => [ 'view', 'edit' ],
+										'readonly'    => true,
+										'items'       => [
+											'context'    => [ 'view', 'edit' ],
+											'type'       => 'object',
+											'properties' => [
+												'value' => [
+													'description' => __( 'The value of the option in the select box.', 'woo-gutenberg-products-block' ),
+													'type' => 'string',
+													'context' => [ 'view', 'edit' ],
+													'readonly' => true,
+												],
+												'label' => [
+													'description' => __( 'The label to show in the select box. If not supplied, the key will be used', 'woo-gutenberg-products-block' ),
+													'type' => 'string',
+													'context' => [ 'view', 'edit' ],
+													'readonly' => true,
+													'optional' => true,
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
 			'prices'               => [
 				'description' => __( 'Price data for the product in the current line item, including or excluding taxes based on the "display prices during cart and checkout" setting. Provided using the smallest unit of the currency.', 'woo-gutenberg-products-block' ),
 				'type'        => 'object',
