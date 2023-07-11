@@ -59,12 +59,57 @@ final class ExtendSchema {
 	private $payment_requirements = [];
 
 	/**
+	 * Array of custom cart item controls
+	 *
+	 * @var array
+	 */
+	private $custom_cart_item_controls = [];
+
+	/**
 	 * Constructor
 	 *
 	 * @param Formatters $formatters An instance of the formatters class.
 	 */
 	public function __construct( Formatters $formatters ) {
 		$this->formatters = $formatters;
+	}
+
+	/**
+	 * Register a custom data control that may be displayed on cart item.
+	 *
+	 * @param array $args {
+	 *     An array of elements that describe the control.
+	 *
+	 *     @type string $namespace    Required. Plugin namespace.
+	 *     @type string $type         One of "checkbox", "select", or "text".
+	 *     @type string $key          Key of the data. Must be unique in this plugin's namespace.
+	 *     @type string $label        The label to show on the front-end.
+	 *     @type string $defaultValue The initial value.
+	 *     @type array  $options   {
+	 *          The options to show if the type is "select"
+	 *
+	 *          @type string $key The key of the option
+	 *          @type string $label The label to show in the select control, the key will be used if no option is supplied.
+	 *
+	 * @throws \Exception On failure to register.
+	 */
+	public function register_custom_cart_item_control( $args ) {
+		$namespace = $args['namespace'];
+		// Create namespace if it doesn't exist. If it does exist we will append to it.
+		if ( empty( $this->custom_cart_item_controls[ $namespace ] ) ) {
+			$this->custom_cart_item_controls[ $namespace ] = [];
+		}
+		$control_options = [
+			'type'         => $args['type'],
+			'key'          => $args['key'],
+			'label'        => $args['label'],
+			'defaultValue' => $args['defaultValue'],
+		];
+
+		if ( 'select' === $args['type'] ) {
+			$control_options['options'] = $args['options'];
+		}
+		$this->custom_cart_item_controls[ $namespace ][] = $control_options;
 	}
 
 	/**
