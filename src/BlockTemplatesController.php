@@ -295,7 +295,7 @@ class BlockTemplatesController {
 	 * @return array
 	 */
 	public function add_block_templates( $query_result, $query, $template_type ) {
-		if ( ! BlockTemplateUtils::supports_block_templates( 'wp_template_part' === $template_type ) ) {
+		if ( ! BlockTemplateUtils::supports_block_templates( 'wp_template_part' ) ) {
 			return $query_result;
 		}
 
