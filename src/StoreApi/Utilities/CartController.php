@@ -208,6 +208,24 @@ class CartController {
 	}
 
 	/**
+	 * Sets the custom cart item data for a given cart item.
+	 *
+	 * @param string $item_id Cart item id.
+	 * @param array  $data {
+	 *    Custom data to set for the cart item.
+	 *
+	 *    @type string $namespace Namespace for the custom data.
+	 *    @type string $key       Key for the custom data.
+	 *    @type mixed  $value     Value for the custom data.
+	 *
+	 * @return void
+	 */
+	public function set_cart_item_custom_data( $item_id, $data ) {
+		$session_key = $item_id . '_' . $data['namespace'] . '_' . $data['key'];
+		wc()->session->set( $session_key, $data['value'] );
+	}
+
+	/**
 	 * Validate all items in the cart and check for errors.
 	 *
 	 * @throws RouteException Exception if invalid data is detected.
