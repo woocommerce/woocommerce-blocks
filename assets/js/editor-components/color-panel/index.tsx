@@ -13,52 +13,17 @@ import {
 } from '@wordpress/block-editor';
 import { useSelect, useDispatch } from '@wordpress/data';
 
-interface ColorSetting {
-	colorValue: string | undefined;
-	onColorChange: ( value: string ) => void;
-	label: string;
-	resetAllFilter: () => void;
-}
-
-interface ColorAttributes {
-	[ key: string ]: {
-		[ key: string ]: string;
-	};
-}
-
-export interface CustomColorsMap {
-	[ key: string ]: {
-		label: string;
-		context: string;
-	};
-}
-
-export interface ColorPaletteOption {
-	name: string;
-	slug: string;
-	color: string;
-}
-
-export interface GradientPaletteOption {
-	name: string;
-	gradient: string;
-	slug: string;
-}
-
-interface ColorGradientOptionsColorItem {
-	name: string;
-	colors: ColorPaletteOption[];
-}
-
-interface ColorGradientOptionsGradientItem {
-	name: string;
-	gradients: GradientPaletteOption[];
-}
-
-interface ColorGradientOptionsItems {
-	colors: [ ColorGradientOptionsColorItem ];
-	gradients: [ ColorGradientOptionsGradientItem ];
-}
+/**
+ * Internal dependencies
+ */
+import {
+	ColorSetting,
+	ColorAttributes,
+	ColorPaletteOption,
+	GradientPaletteOption,
+	ColorGradientOptionsItems,
+	CustomColorsMap,
+} from './types';
 
 const flattenColors = (
 	colorGradientOptions: ColorGradientOptionsItems
