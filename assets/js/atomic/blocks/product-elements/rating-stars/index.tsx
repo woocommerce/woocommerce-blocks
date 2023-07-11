@@ -17,6 +17,11 @@ import { supports } from './support';
 if ( isExperimentalBuild() ) {
 	const blockConfig: BlockConfiguration = {
 		...sharedConfig,
+		ancestor: [
+			'woocommerce/single-product',
+			'core/post-template',
+			'woocommerce/product-template',
+		],
 		icon: {
 			src: (
 				<Icon
