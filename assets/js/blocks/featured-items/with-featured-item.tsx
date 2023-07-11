@@ -173,15 +173,18 @@ export const withFeaturedItem =
 			} = attributes;
 
 			let position = contentPosition;
+			let legacyAlign = '';
 
 			// Legacy attribute support
-			if ( contentAlign.length > 0 ) {
+			if ( contentAlign.length > 0 && typeof position === 'undefined' ) {
 				if ( contentAlign === 'left' ) {
 					position = 'center left';
+					legacyAlign = 'legacy-left';
 				}
 
 				if ( contentAlign === 'right' ) {
 					position = 'center right';
+					legacyAlign = 'legacy-right';
 				}
 			}
 
@@ -201,7 +204,8 @@ export const withFeaturedItem =
 				},
 				dimRatioToClass( dimRatio ),
 				styleProps.className,
-				getPositionClassName( position )
+				getPositionClassName( position ),
+				legacyAlign
 			);
 
 			const containerStyle = {

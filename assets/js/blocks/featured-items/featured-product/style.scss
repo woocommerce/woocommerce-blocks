@@ -29,4 +29,20 @@
 			line-height: 1.5;
 		}
 	}
+
+	&.legacy-left {
+		.wc-block-featured-product__title,
+		.wc-block-featured-product__description,
+		.wc-block-featured-product__price {
+			text-align: left;
+		}
+	}
+
+	&.legacy-right {
+		.wc-block-featured-product__title,
+		.wc-block-featured-product__description,
+		.wc-block-featured-product__price {
+			text-align: right;
+		}
+	}
 }

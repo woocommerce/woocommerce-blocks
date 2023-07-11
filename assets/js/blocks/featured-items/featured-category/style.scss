@@ -6,4 +6,18 @@
 
 .wc-block-featured-category {
 	@include wc-block-featured-item();
+
+	&.legacy-left {
+		.wc-block-featured-category__title,
+		.wc-block-featured-category__description {
+			text-align: left;
+		}
+	}
+
+	&.legacy-right {
+		.wc-block-featured-category__title,
+		.wc-block-featured-category__description {
+			text-align: right;
+		}
+	}
 }

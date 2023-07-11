@@ -284,6 +284,7 @@ abstract class FeaturedItem extends AbstractDynamicBlock {
 		// Legacy content align setting.
 		if ( isset( $attributes['contentAlign'] ) && 'center' !== $attributes['contentAlign'] ) {
 			$classes[] = "{$position_classnames[ $attributes[ 'contentAlign' ] ] }";
+			$classes[] = "legacy-{$attributes[ 'contentAlign' ]}";
 		}
 
 		if ( isset( $attributes['contentPosition'] ) && 'center center' !== $attributes['contentPosition'] ) {
