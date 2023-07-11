@@ -446,16 +446,11 @@ class BlockTemplateUtils {
 	 */
 	public static function supports_block_templates( $template_type = 'wp_template' ) {
 		if ( 'wp_template_part' === $template_type && ( wc_current_theme_is_fse_theme() || current_theme_supports( 'block-template-parts' ) ) ) {
-				return true;
-		} else {
-			if (
-				! wc_current_theme_is_fse_theme() &&
-				( ! function_exists( 'gutenberg_supports_block_templates' ) || ! gutenberg_supports_block_templates() )
-			) {
-				return false;
-			}
+			return true;
+		} elseif ( 'wp_template' === $template_type && wc_current_theme_is_fse_theme() ) {
 			return true;
 		}
+		return false;
 	}
 
 	/**
