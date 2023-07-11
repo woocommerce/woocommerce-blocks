@@ -12,7 +12,7 @@ import { ProductResponseItem } from '@woocommerce/types';
  */
 import { Block as ProductImage } from '../../../atomic/blocks/product-elements/image/block';
 import { Block as ProductName } from '../../../atomic/blocks/product-elements/title/block';
-import { Block as ProductRating } from '../../../atomic/blocks/product-elements/rating/block';
+import { Block as ProductRating } from '../../../atomic/blocks/product-elements/rating-stars/block';
 import { Block as ProductSaleBadge } from '../../../atomic/blocks/product-elements/sale-badge/block';
 import { Block as ProductPrice } from '../../../atomic/blocks/product-elements/price/block';
 import { Block as ProductButton } from '../../../atomic/blocks/product-elements/button/block';
