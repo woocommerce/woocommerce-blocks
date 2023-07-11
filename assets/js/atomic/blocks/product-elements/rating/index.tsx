@@ -60,7 +60,7 @@ const blockConfig: BlockConfiguration = {
 							'core/group',
 							{
 								layout: { type: 'flex', flexWrap: 'nowrap' },
-								style: { spacing: { blockGap: '10px' } },
+								style: { spacing: { blockGap: '5px' } },
 							},
 							[
 								createBlock(
