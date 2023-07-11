@@ -17,12 +17,14 @@ import Noninteractive from '@woocommerce/base-components/noninteractive';
 import { isSiteEditorPage } from '@woocommerce/utils';
 import type { ReactElement } from 'react';
 import { select } from '@wordpress/data';
-import classNames from 'classnames';
 import { cartOutline, bag, bagAlt } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
-import { ColorPanel } from '@woocommerce/editor-components/color-panel';
-import type { ColorPaletteOption } from '@woocommerce/editor-components/color-panel';
+import {
+	ColorPanel,
+	useColorPanelStyles,
+} from '@woocommerce/editor-components/color-panel';
+import type { ColorPaletteOption } from '@woocommerce/editor-components/color-panel/types';
 
 /**
  * Internal dependencies
@@ -66,24 +68,6 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 		miniCartIcon,
 	} = attributes;
 
-	const className = classNames( {
-		'wc-block-mini-cart': true,
-		'has-price-color': priceColor,
-		'has-icon-color': iconColor,
-		'has-product-count-color': productCountColor,
-	} );
-
-	const blockProps = useBlockProps( { className } );
-
-	const isSiteEditor = isSiteEditorPage( select( 'core/edit-site' ) );
-
-	const templatePartEditUri = getSetting(
-		'templatePartEditUri',
-		''
-	) as string;
-
-	const productCount = 0;
-	const productTotal = 0;
 	const miniCartColorAttributes = {
 		priceColor: {
 			label: __( 'Price', 'woo-gutenberg-products-block' ),
@@ -98,6 +82,22 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 			context: 'product-count-color',
 		},
 	};
+
+	const { classes } = useColorPanelStyles( miniCartColorAttributes );
+
+	const blockProps = useBlockProps( {
+		className: [ 'wc-block-mini-cart', ...classes ].join( ' ' ),
+	} );
+
+	const isSiteEditor = isSiteEditorPage( select( 'core/edit-site' ) );
+
+	const templatePartEditUri = getSetting(
+		'templatePartEditUri',
+		''
+	) as string;
+
+	const productCount = 0;
+	const productTotal = 0;
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>

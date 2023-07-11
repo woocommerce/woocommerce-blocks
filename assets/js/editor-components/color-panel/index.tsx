@@ -153,3 +153,28 @@ export const ColorPanel = ( {
 		)
 	);
 };
+
+export const useColorPanelStyles = ( colorTypes: CustomColorsMap ) => {
+	const { clientId } = useBlockEditContext();
+	const attributes = useSelect(
+		( select ) => {
+			// @ts-ignore @wordpress/block-editor/store types not provided
+			const { getBlockAttributes } = select( blockEditorStore );
+			return getBlockAttributes( clientId ) || {};
+		},
+		[ clientId ]
+	);
+
+	const classes: string[] = [];
+
+	Object.keys( colorTypes ).forEach( ( colorName ) => {
+		const attribute = attributes?.[ colorName ];
+		if ( attribute && attribute?.color ) {
+			classes.push( `has-${ colorTypes[ colorName ].context }` );
+		}
+	} );
+
+	return {
+		classes,
+	};
+};
