@@ -13,11 +13,7 @@ import {
 	useStoreCart,
 } from '@woocommerce/base-context/hooks';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
-import {
-	applyCheckoutFilter,
-	getRegisteredCartItemDataControls,
-	mustContain,
-} from '@woocommerce/blocks-checkout';
+import { applyCheckoutFilter, mustContain } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
 import { forwardRef, useMemo } from '@wordpress/element';
 import type { CartItem } from '@woocommerce/types';
@@ -207,9 +203,10 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 			arg,
 		} );
 
-		const additionalDataControls = getRegisteredCartItemDataControls();
 		const { __internalSetExtensionData: setExtensionData } =
 			useDispatch( CHECKOUT_STORE_KEY );
+
+		const { custom_item_data: customDataControls } = lineItem;
 
 		return (
 			<tr
@@ -359,7 +356,7 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 							) }
 						</div>
 						<div className="wc-block-cart-item__additional-data-controls">
-							{ Object.entries( additionalDataControls ).map(
+							{ Object.entries( customDataControls ).map(
 								( [ namespace, configurations ] ) => {
 									return Object.values( configurations ).map(
 										( control ) => {
