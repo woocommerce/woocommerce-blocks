@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\StoreApi\Utilities\QuantityLimits;
 
@@ -456,6 +457,7 @@ class CartItemSchema extends ProductSchema {
 			'images'               => $this->get_images( $product ),
 			'variation'            => $this->format_variation_data( $cart_item['variation'], $product ),
 			'item_data'            => $this->get_item_data( $cart_item ),
+			'custom_item_data'     => $this->extend->get_custom_cart_item_controls( $cart_item['key'] ),
 			'prices'               => (object) $this->prepare_product_price_response( $product, get_option( 'woocommerce_tax_display_cart' ) ),
 			'totals'               => (object) $this->prepare_currency_response(
 				[
