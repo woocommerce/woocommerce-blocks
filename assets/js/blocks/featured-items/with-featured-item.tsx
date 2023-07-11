@@ -32,6 +32,7 @@ interface WithFeaturedItemConfig extends GenericBlockUIConfig {
 
 export interface FeaturedItemRequiredAttributes {
 	contentPosition: string;
+	contentAlign: string; // Legacy attribute
 	dimRatio: number;
 	focalPoint: { x: number; y: number };
 	hasParallax: boolean;
@@ -156,6 +157,7 @@ export const withFeaturedItem =
 		const renderItem = () => {
 			const {
 				contentPosition,
+				contentAlign, // legacy attribute
 				dimRatio,
 				focalPoint,
 				hasParallax,
@@ -170,6 +172,19 @@ export const withFeaturedItem =
 				textColor,
 			} = attributes;
 
+			let position = contentPosition;
+
+			// Legacy attribute support
+			if ( contentAlign.length > 0 ) {
+				if ( contentAlign === 'left' ) {
+					position = 'center left';
+				}
+
+				if ( contentAlign === 'right' ) {
+					position = 'center right';
+				}
+			}
+
 			const containerClass = classnames(
 				className,
 				{
@@ -182,11 +197,11 @@ export const withFeaturedItem =
 					'has-background-dim': dimRatio !== 0,
 					'is-repeated': isRepeated,
 					'has-custom-content-position':
-						! isContentPositionCenter( contentPosition ),
+						! isContentPositionCenter( position ),
 				},
 				dimRatioToClass( dimRatio ),
 				styleProps.className,
-				getPositionClassName( contentPosition )
+				getPositionClassName( position )
 			);
 
 			const containerStyle = {
