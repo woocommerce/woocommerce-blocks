@@ -15,7 +15,6 @@ import {
 	noticeContexts,
 } from '@woocommerce/base-context';
 import {
-	registerCartItemDataControl,
 	SlotFillProvider,
 	StoreNoticesContainer,
 } from '@woocommerce/blocks-checkout';
@@ -31,32 +30,6 @@ const reloadPage = () => void window.location.reload( true );
 const Cart = ( { children, attributes = {} } ) => {
 	const { cartIsLoading } = useStoreCart();
 	const { hasDarkControls } = attributes;
-
-	/**
-	 * The code in this useEffect would be in an extension.
-	 */
-	useEffect( () => {
-		registerCartItemDataControl( 'wc-blocks/cart-item', {
-			key: 'gift-wrapping',
-			type: 'checkbox',
-			onChange: ( newValue ) => {
-				console.log( 'new value of gift-wrapping', newValue );
-			},
-			isVisible: ( args, cartItem ) => {
-				return !! cartItem;
-			},
-		} );
-		registerCartItemDataControl( 'wc-blocks/cart-item', {
-			key: 'giftMessage',
-			type: 'text',
-			onChange: ( newValue ) => {
-				console.log( 'we will write a message: ', newValue );
-			},
-			isVisible: ( args, cartItem ) => {
-				return !! cartItem;
-			},
-		} );
-	}, [] );
 
 	return (
 		<LoadingMask showSpinner={ true } isLoading={ cartIsLoading }>
