@@ -113,6 +113,33 @@ final class ExtendSchema {
 	}
 
 	/**
+	 * Get the custom cart item controls registered by extensions.
+	 *
+	 * @param string $cart_item_key The cart item key.
+	 *
+	 * @return array
+	 */
+	public function get_custom_cart_item_controls( $cart_item_key ) {
+		$namespaces            = array_keys( $this->custom_cart_item_controls );
+		$controls_for_response = [];
+		foreach ( $namespaces as $namespace ) {
+			$registered_controls = $this->custom_cart_item_controls[ $namespace ];
+			$formatted_controls  = [
+				'namespace' => $namespace,
+				'controls'  => [],
+			];
+			foreach ( $registered_controls as $key => $control ) {
+				$session_key                                     = $cart_item_key . '_' . $namespace . '_' . $control['key'];
+				$formatted_controls['controls'][ $key ]          = $control;
+				$formatted_controls['controls'][ $key ]['value'] = wc()->session->get( $session_key, $control['defaultValue'] );
+			}
+			$controls_for_response[] = $formatted_controls;
+		}
+
+		return $controls_for_response;
+	}
+
+	/**
 	 * Register endpoint data under a specified namespace
 	 *
 	 * @param array $args {
