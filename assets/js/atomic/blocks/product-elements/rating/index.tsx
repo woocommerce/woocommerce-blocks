@@ -14,29 +14,7 @@ import edit from './edit';
 import { BLOCK_ICON as icon } from './constants';
 import metadata from './block.json';
 import { supports } from './support';
-
-const blockAttributes = {
-	productId: {
-		type: 'number',
-		default: 0,
-	},
-	isDescendentOfQueryLoop: {
-		type: 'boolean',
-		default: false,
-	},
-	textAlign: {
-		type: 'string',
-		default: '',
-	},
-	isDescendentOfSingleProductBlock: {
-		type: 'boolean',
-		default: false,
-	},
-	isDescendentOfSingleProductTemplate: {
-		type: 'boolean',
-		default: false,
-	},
-};
+import { blockAttributes } from './attributes';
 
 const blockConfig: BlockConfiguration = {
 	...sharedConfig,
@@ -101,7 +79,7 @@ const blockConfig: BlockConfiguration = {
 
 registerBlockSingleProductTemplate( {
 	blockName: 'woocommerce/product-rating',
-	blockMetadata: metadata,
+	blockMetadata: { ...metadata, ...blockAttributes },
 	blockSettings: blockConfig,
 	isAvailableOnPostEditor: true,
 } );
