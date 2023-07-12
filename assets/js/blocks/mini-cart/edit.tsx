@@ -30,6 +30,7 @@ import type { ColorPaletteOption } from '@woocommerce/editor-components/color-pa
  * Internal dependencies
  */
 import QuantityBadge from './quantity-badge';
+import { defaultColorItem } from './utils/defaults';
 import './editor.scss';
 
 interface Attributes {
@@ -50,12 +51,6 @@ interface Props {
 	setIconColor: ( colorValue: string | undefined ) => void;
 	setProductCountColor: ( colorValue: string | undefined ) => void;
 }
-
-const defaultColorItem = {
-	name: undefined,
-	color: undefined,
-	slug: undefined,
-};
 
 const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 	const {

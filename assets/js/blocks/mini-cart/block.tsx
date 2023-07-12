@@ -41,6 +41,7 @@ import {
 	blockName,
 	attributes as miniCartContentsAttributes,
 } from './mini-cart-contents/attributes';
+import { defaultColorItem } from './utils/defaults';
 
 type Props = BlockAttributes;
 
@@ -58,9 +59,9 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 		miniCartIcon,
 		addToCartBehaviour = 'none',
 		hasHiddenPrice = false,
-		priceColor,
-		iconColor,
-		productCountColor,
+		priceColor = defaultColorItem,
+		iconColor = defaultColorItem,
+		productCountColor = defaultColorItem,
 	} = attributes;
 
 	const {
