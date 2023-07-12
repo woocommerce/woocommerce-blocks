@@ -221,8 +221,8 @@ class CartItemSchema extends ProductSchema {
 						'controls'  => [
 							'type'  => 'array',
 							'items' => [
-								'type' => 'object',
-								'name' => [
+								'type'       => 'object',
+								'properties' => [
 									'name'         => [
 										'description' => __( 'The key of the custom data.', 'woo-gutenberg-products-block' ),
 										'type'        => 'string',
