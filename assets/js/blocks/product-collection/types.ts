@@ -17,7 +17,7 @@ export interface ProductCollectionAttributes {
 }
 
 export interface ProductCollectionDisplayLayout {
-	type: string;
+	type: 'flex' | 'list';
 	columns: number;
 }
 
@@ -61,3 +61,12 @@ export type TProductCollectionOrderBy =
 	| 'title'
 	| 'popularity'
 	| 'rating';
+
+export type DisplayLayoutControlProps = {
+	displayLayout: ProductCollectionDisplayLayout;
+	setAttributes: ( attrs: Partial< ProductCollectionAttributes > ) => void;
+};
+export type QueryControlProps = {
+	query: ProductCollectionQuery;
+	setQueryAttribute: ( attrs: Partial< ProductCollectionQuery > ) => void;
+};
