@@ -322,11 +322,19 @@ class MiniCart extends AbstractBlock {
 
 		$site_url = site_url() ?? wp_guess_url();
 
+		if ( version_compare( get_bloginfo( 'version' ), '6.2.2', '>' ) ) {
+			$before = $wp_scripts->get_inline_script_data( $script->handle, 'before' );
+			$after  = $wp_scripts->get_inline_script_data( $script->handle, 'after' );
+		} else {
+			$before = $wp_scripts->print_inline_script( $script->handle, 'before', false );
+			$after  = $wp_scripts->print_inline_script( $script->handle, 'before', false );
+		}
+
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
 			'src'          => preg_match( '|^(https?:)?//|', $script->src ) ? $script->src : $site_url . $script->src,
 			'version'      => $script->ver,
-			'before'       => $wp_scripts->get_inline_script_data( $script->handle, 'before' ),
-			'after'        => $wp_scripts->get_inline_script_data( $script->handle, 'after' ),
+			'before'       => $before,
+			'after'        => $after,
 			'translations' => $wp_scripts->print_translations( $script->handle, false ),
 		);
 	}
