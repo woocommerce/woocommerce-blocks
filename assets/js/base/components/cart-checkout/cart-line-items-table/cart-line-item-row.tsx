@@ -19,8 +19,6 @@ import { forwardRef, useMemo } from '@wordpress/element';
 import type { CartItem } from '@woocommerce/types';
 import { objectHasProp, Currency } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
-import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
-import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -203,9 +201,6 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 			arg,
 		} );
 
-		const { __internalSetExtensionData: setExtensionData } =
-			useDispatch( CHECKOUT_STORE_KEY );
-
 		const { custom_item_data: customDataControls } = lineItem;
 
 		return (
@@ -356,58 +351,54 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 							) }
 						</div>
 						<div className="wc-block-cart-item__additional-data-controls">
-							{ Object.entries( customDataControls ).map(
-								( [ namespace, configurations ] ) => {
-									return Object.values( configurations ).map(
-										( control ) => {
-											const id = `${ namespace }-${ control.key }`;
-											const onChangeFunction = ( e ) => {
-												const { value: newValue } =
-													e.target;
-												setExtensionData( namespace, {
-													[ control.key ]: newValue,
-												} );
-												control.onChange( newValue );
-											};
-											switch ( control.type ) {
-												case 'checkbox':
-													return (
-														<label htmlFor={ id }>
-															<span>
-																Custom checkbox
-																for{ ' ' }
-																{ control.key }
-															</span>
-															<input
-																type="checkbox"
-																id={ id }
-																onChange={
-																	onChangeFunction
-																}
-															/>
-														</label>
-													);
-												case 'text':
-													return (
-														<label htmlFor={ id }>
-															<span>
-																Custom text
-																input for{ ' ' }
-																{ control.key }
-															</span>
-															<input
-																id={ id }
-																type="text"
-																onChange={
-																	onChangeFunction
-																}
-															/>
-														</label>
-													);
-											}
-											return null;
+							{ customDataControls.map(
+								( { namespace, controls } ) => {
+									return controls.map( ( control ) => {
+										const id = `${ namespace }-${ control.key }`;
+										const onChangeFunction = (
+											e: InputEvent
+										) => {
+											// eslint-disable-next-line no-console
+											console.log(
+												`pushing ${ e } to server, session key will be ${ lineItem.key }_${ namespace }_${ control.key }`
+											);
+										};
+										switch ( control.type ) {
+											case 'checkbox':
+												return (
+													<label htmlFor={ id }>
+														<span>
+															Custom checkbox for{ ' ' }
+															{ control.key }
+														</span>
+														<input
+															type="checkbox"
+															id={ id }
+															onChange={
+																onChangeFunction
+															}
+														/>
+													</label>
+												);
+											case 'text':
+												return (
+													<label htmlFor={ id }>
+														<span>
+															Custom text input
+															for { control.key }
+														</span>
+														<input
+															id={ id }
+															type="text"
+															onChange={
+																onChangeFunction
+															}
+														/>
+													</label>
+												);
 										}
-									);
+										return null;
+									} );
 								}
 							) }
 						</div>
