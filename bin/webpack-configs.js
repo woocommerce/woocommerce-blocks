@@ -753,10 +753,7 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 			path: path.resolve( __dirname, '../build/' ),
 			library: [ 'wc', '__experimentalInteractivity' ],
 			libraryTarget: 'this',
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksJsonp',
+			chunkLoadingGlobal: 'webpackWcBlocksJsonp',
 		},
 		resolve: {
 			alias,
