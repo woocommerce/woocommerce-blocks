@@ -90,15 +90,15 @@ class AddToCartForm extends AbstractBlock {
 			return '';
 		}
 
-		$parsed_attributes = $this->parse_attributes( $attributes );
+		$parsed_attributes                     = $this->parse_attributes( $attributes );
 		$is_descendent_of_single_product_block = $parsed_attributes['isDescendentOfSingleProductBlock'];
-		$product = $this->add_is_descendent_of_single_product_block_hidden_input_to_product_form( $product, $is_descendent_of_single_product_block );
+		$product                               = $this->add_is_descendent_of_single_product_block_hidden_input_to_product_form( $product, $is_descendent_of_single_product_block );
 
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
 		$form = sprintf(
-			'<div class="wp-block-add-to-cart-form product %1$s %2$s" style="%3$s">%4$s</div>',
+			'<div class="wp-block-add-to-cart-form %1$s %2$s" style="%3$s">%4$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			esc_attr( $classes_and_styles['styles'] ),
@@ -124,7 +124,7 @@ class AddToCartForm extends AbstractBlock {
 			'<input type="hidden" name="is-descendent-of-single-product-block" value="%1$s">',
 			$is_descendent_of_single_product_block ? 'true' : 'false'
 		);
-		$regex_pattern = '/<button\s+type="submit"[^>]*>.*?<\/button>/i';
+		$regex_pattern                                      = '/<button\s+type="submit"[^>]*>.*?<\/button>/i';
 
 		preg_match( $regex_pattern, $product, $input_matches );
 
@@ -173,6 +173,15 @@ class AddToCartForm extends AbstractBlock {
 	 * @param string $key Data to get, or default to everything.
 	 */
 	protected function get_block_type_script( $key = null ) {
+		return null;
+	}
+
+	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return null
+	 */
+	protected function get_block_type_style() {
 		return null;
 	}
 

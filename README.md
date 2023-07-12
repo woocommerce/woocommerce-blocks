@@ -4,7 +4,8 @@
 [![View](https://img.shields.io/badge/Project%20Components-brightgreen.svg?style=flat)](https://woocommerce.github.io/woocommerce-blocks/)
 ![JavaScript and CSS Linting](https://github.com/woocommerce/woocommerce-gutenberg-products-block/workflows/JavaScript%20and%20CSS%20Linting/badge.svg?branch=trunk)
 ![PHP Coding Standards](https://github.com/woocommerce/woocommerce-gutenberg-products-block/workflows/PHP%20Coding%20Standards/badge.svg?branch=trunk)
-![Automated tests](https://github.com/woocommerce/woocommerce-gutenberg-products-block/workflows/Automated%20tests/badge.svg?branch=trunk)
+![Unit Tests](https://github.com/woocommerce/woocommerce-blocks/workflows/E2E%20tests/badge.svg?branch=trunk)
+![E2E Tests](https://github.com/woocommerce/woocommerce-blocks/workflows/Unit%20Tests/badge.svg?branch=trunk)
 
 This is the feature plugin for WooCommerce + Gutenberg. This plugin serves as a space to iterate and explore new Blocks and updates to existing blocks for WooCommerce, and how WooCommerce might work with the block editor.
 
@@ -49,7 +50,7 @@ We release a new version of WooCommerce Blocks onto WordPress.org every few week
 
 1. Make sure you have the latest versions of WordPress and WooCommerce on your site.
 2. Get a copy of this plugin using the green "Clone or download" button on the right.
-3. Make sure you're using Node.js v16.
+3. Make sure you're using Node.js v16.15. If you use a Node version management tool such as `nvm` or `n`, you can do so by running `nvm use` or `n auto`, respectively.
 4. `npm install` to install the dependencies.
 5. `composer install` to install core dependencies.
 6. To compile the code, run any of the following commands
