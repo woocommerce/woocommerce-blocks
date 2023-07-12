@@ -31,6 +31,7 @@ import usePriceConstraints from './use-price-constraints';
 import './style.scss';
 import { Attributes } from './types';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
+import { mapRawQueryToUseCollection } from '../filter-utils';
 
 /**
  * Formats filter values into a string for the URL parameters needed for filtering PHP templates.
@@ -102,7 +103,9 @@ const PriceFilterBlock = ( {
 
 	const productsQuery = isEditor
 		? {}
-		: getSettingWithCoercion( 'products_block_query', {}, isObject );
+		: mapRawQueryToUseCollection(
+				getSettingWithCoercion( 'products_block_query', {}, isObject )
+		  );
 
 	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );

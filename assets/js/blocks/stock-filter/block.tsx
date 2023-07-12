@@ -43,6 +43,7 @@ import './style.scss';
 import { formatSlug, getActiveFilters, generateUniqueId } from './utils';
 import { Attributes, DisplayOption, Current } from './types';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
+import { mapRawQueryToUseCollection } from '../filter-utils';
 
 export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
 
@@ -78,7 +79,9 @@ const StockStatusFilterBlock = ( {
 
 	const productQuery = isEditor
 		? []
-		: getSettingWithCoercion( 'products_block_query', {}, isObject );
+		: mapRawQueryToUseCollection(
+				getSettingWithCoercion( 'products_block_query', {}, isObject )
+		  );
 
 	const STOCK_STATUS_OPTIONS: { current: Current } = useRef(
 		getSetting( 'hideOutOfStockItems', false )

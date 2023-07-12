@@ -54,6 +54,7 @@ import {
 import { BlockAttributes, DisplayOption, GetNotice } from './types';
 import CheckboxFilter from './checkbox-filter';
 import { useSetWraperVisibility } from '../filter-wrapper/context';
+import { mapRawQueryToUseCollection } from '../filter-utils';
 
 /**
  * Component displaying an attribute filter.
@@ -92,7 +93,9 @@ const AttributeFilterBlock = ( {
 
 	const productsQuery = isEditor
 		? {}
-		: getSettingWithCoercion( 'products_block_query', {}, isObject );
+		: mapRawQueryToUseCollection(
+				getSettingWithCoercion( 'products_block_query', {}, isObject )
+		  );
 
 	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
