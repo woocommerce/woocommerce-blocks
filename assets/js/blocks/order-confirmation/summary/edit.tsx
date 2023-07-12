@@ -20,7 +20,8 @@ interface Props {
 
 const Edit = ( props: Props ): JSX.Element => {
 	const { attributes, name } = props;
-	const blockProps = useBlockProps( {
+	// Remove style because its handled by the server-side render.
+	const { style, ...blockProps } = useBlockProps( {
 		className: 'wc-block-order-confirmation-summary',
 	} );
 
