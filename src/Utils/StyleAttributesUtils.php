@@ -113,33 +113,49 @@ class StyleAttributesUtils {
 	 * Get class and style for background-color from attributes.
 	 *
 	 * @param array $attributes Block attributes.
-	 *
-	 * @return (array | null)
+	 * @return array
 	 */
 	public static function get_background_color_class_and_style( $attributes ) {
-
-		$background_color = $attributes['backgroundColor'] ?? '';
-
+		$gradient                = $attributes['gradient'] ?? null;
+		$background_color        = $attributes['backgroundColor'] ?? '';
 		$custom_background_color = $attributes['style']['color']['background'] ?? '';
+		$classes                 = [ $gradient ];
+		$styles                  = [];
+		$value                   = null;
 
-		if ( ! $background_color && '' === $custom_background_color ) {
-			return null;
+		if ( $background_color || $custom_background_color || $gradient ) {
+			$classes[] = 'has-background';
 		}
 
 		if ( $background_color ) {
-			return array(
-				'class' => sprintf( 'has-background has-%s-background-color', $background_color ),
-				'style' => null,
-				'value' => self::get_preset_value( $background_color ),
-			);
-		} elseif ( '' !== $custom_background_color ) {
-			return array(
-				'class' => null,
-				'style' => sprintf( 'background-color: %s;', $custom_background_color ),
-				'value' => $custom_background_color,
-			);
+			$classes[] = sprintf( 'has-%s-background-color', $background_color );
+			$value     = self::get_preset_value( $background_color );
 		}
-		return null;
+
+		if ( $custom_background_color ) {
+			$styles[] = sprintf( 'background-color: %s;', $custom_background_color );
+			$value    = $custom_background_color;
+		}
+
+		if ( $gradient ) {
+			$classes[] = sprintf( 'has-%s-gradient-background', $gradient );
+		}
+
+		return array(
+			'class' => self::join_styles( $classes ),
+			'style' => self::join_styles( $styles ),
+			'value' => $value,
+		);
+	}
+
+	/**
+	 * Join classes and styles while removing duplicates and null values.
+	 *
+	 * @param array $rules Array of classes or styles.
+	 * @return array
+	 */
+	protected static function join_styles( $rules ) {
+		return implode( ' ', array_unique( array_filter( $rules ) ) );
 	}
 
 	/**
@@ -613,10 +629,10 @@ class StyleAttributesUtils {
 	 *
 	 * @param array $attributes Block attributes.
 	 * @param array $properties Properties to get classes/styles from.
-	 *
+	 * @param array $exclude Properties to exclude.
 	 * @return array
 	 */
-	public static function get_classes_and_styles_by_attributes( $attributes, $properties = array() ) {
+	public static function get_classes_and_styles_by_attributes( $attributes, $properties = array(), $exclude = array() ) {
 		$classes_and_styles = array(
 			'align'            => self::get_align_class_and_style( $attributes ),
 			'background_color' => self::get_background_color_class_and_style( $attributes ),
@@ -641,6 +657,14 @@ class StyleAttributesUtils {
 		if ( ! empty( $properties ) ) {
 			foreach ( $classes_and_styles as $key => $value ) {
 				if ( ! in_array( $key, $properties, true ) ) {
+					unset( $classes_and_styles[ $key ] );
+				}
+			}
+		}
+
+		if ( ! empty( $exclude ) ) {
+			foreach ( $classes_and_styles as $key => $value ) {
+				if ( in_array( $key, $exclude, true ) ) {
 					unset( $classes_and_styles[ $key ] );
 				}
 			}
