@@ -20,6 +20,7 @@ import {
 	CurrencyResponse,
 	isBoolean,
 	isString,
+	isObject,
 	objectHasProp,
 } from '@woocommerce/types';
 
@@ -99,9 +100,9 @@ const PriceFilterBlock = ( {
 		isBoolean
 	);
 
-	const productIds = isEditor
-		? []
-		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
+	const productsQuery = isEditor
+		? {}
+		: getSettingWithCoercion( 'products_block_query', {}, isObject );
 
 	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
@@ -111,8 +112,7 @@ const PriceFilterBlock = ( {
 	const [ queryState ] = useQueryStateByContext();
 	const { results, isLoading } = useCollectionData( {
 		queryPrices: true,
-		queryState,
-		productIds,
+		queryState: { ...queryState, ...productsQuery },
 		isEditor,
 	} );
 

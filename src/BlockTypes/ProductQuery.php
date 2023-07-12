@@ -157,7 +157,7 @@ class ProductQuery extends AbstractBlock {
 			// Set this so that our product filters can detect if it's a PHP template.
 			$this->asset_data_registry->add( 'has_filterable_products', true, true );
 			$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
-			$this->asset_data_registry->add( 'product_ids', $this->get_products_ids_by_attributes( $parsed_block ), true );
+			$this->asset_data_registry->add( 'products_block_query', $this->get_query_to_store( $parsed_block ), true, true );
 			add_filter(
 				'query_loop_block_query_vars',
 				array( $this, 'build_query' ),
@@ -253,8 +253,8 @@ class ProductQuery extends AbstractBlock {
 	 * @param array $parsed_block The block being rendered.
 	 * @return array
 	 */
-	private function get_products_ids_by_attributes( $parsed_block ) {
-		$query = $this->merge_queries(
+	private function get_query_to_store( $parsed_block ) {
+		return $this->merge_queries(
 			array(
 				'post_type'      => 'product',
 				'post__in'       => array(),
@@ -266,11 +266,6 @@ class ProductQuery extends AbstractBlock {
 			$this->get_queries_by_custom_attributes( $parsed_block ),
 			$this->get_global_query( $parsed_block )
 		);
-
-		$products = new \WP_Query( $query );
-		$post_ids = wp_list_pluck( $products->posts, 'ID' );
-
-		return $post_ids;
 	}
 
 	/**

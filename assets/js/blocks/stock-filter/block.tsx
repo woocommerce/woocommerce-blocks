@@ -26,7 +26,7 @@ import Label from '@woocommerce/base-components/filter-element-label';
 import FormTokenField from '@woocommerce/base-components/form-token-field';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
-import { isBoolean, objectHasProp } from '@woocommerce/types';
+import { isBoolean, isObject, objectHasProp } from '@woocommerce/types';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import {
 	changeUrl,
@@ -76,9 +76,9 @@ const StockStatusFilterBlock = ( {
 		{}
 	);
 
-	const productIds = isEditor
+	const productQuery = isEditor
 		? []
-		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
+		: getSettingWithCoercion( 'products_block_query', {}, isObject );
 
 	const STOCK_STATUS_OPTIONS: { current: Current } = useRef(
 		getSetting( 'hideOutOfStockItems', false )
@@ -110,8 +110,7 @@ const StockStatusFilterBlock = ( {
 	const { results: filteredCounts, isLoading: filteredCountsLoading } =
 		useCollectionData( {
 			queryStock: true,
-			queryState,
-			productIds,
+			queryState: { ...queryState, ...productQuery },
 			isEditor,
 		} );
 

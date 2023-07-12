@@ -150,10 +150,8 @@ class ProductCollection extends AbstractBlock {
 		];
 		$new_array          = array_merge( $frontend_query, $fields_to_override );
 
-		$products    = new \WP_Query( $new_array );
-		$product_ids = wp_list_pluck( $products->posts, 'ID' );
-		// Add the product ids to the asset data registry, so that filter blocks can use it.
-		$this->asset_data_registry->add( 'product_ids', $product_ids, true );
+		$this->asset_data_registry->add( 'products_block_query', $new_array, true, true );
+
 	}
 
 	/**

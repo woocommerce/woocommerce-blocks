@@ -22,6 +22,7 @@ import {
 	isAttributeQueryCollection,
 	isBoolean,
 	isString,
+	isObject,
 	objectHasProp,
 } from '@woocommerce/types';
 import { Icon, chevronDown } from '@wordpress/icons';
@@ -89,9 +90,9 @@ const AttributeFilterBlock = ( {
 		isString
 	);
 
-	const productIds = isEditor
-		? []
-		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
+	const productsQuery = isEditor
+		? {}
+		: getSettingWithCoercion( 'products_block_query', {}, isObject );
 
 	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
@@ -143,8 +144,8 @@ const AttributeFilterBlock = ( {
 			},
 			queryState: {
 				...queryState,
+				...productsQuery,
 			},
-			productIds,
 			isEditor,
 		} );
 
