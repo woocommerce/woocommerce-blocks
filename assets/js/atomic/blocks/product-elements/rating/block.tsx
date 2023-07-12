@@ -124,7 +124,7 @@ const ReviewsCount = ( props: { reviews: number } ): JSX.Element => {
 	);
 };
 
-interface ProductRatingProps {
+type ProductRatingProps = {
 	className?: string;
 	textAlign?: string;
 	isDescendentOfSingleProductBlock: boolean;
@@ -132,9 +132,9 @@ interface ProductRatingProps {
 	postId: number;
 	productId: number;
 	shouldDisplayMockedReviewsWhenProductHasNoReviews: boolean;
-}
+};
 
-export const Block = ( props: ProductRatingProps ): JSX.Element | null => {
+export const Block = ( props: ProductRatingProps ): JSX.Element | undefined => {
 	const {
 		textAlign,
 		isDescendentOfSingleProductBlock,
@@ -168,16 +168,18 @@ export const Block = ( props: ProductRatingProps ): JSX.Element | null => {
 		mockedRatings
 	);
 
-	return (
-		<div className={ className } style={ styleProps.style }>
-			<div className="wc-block-components-product-rating__container">
-				{ content }
-				{ reviews && isDescendentOfSingleProductBlock ? (
-					<ReviewsCount reviews={ reviews } />
-				) : null }
+	if ( reviews || shouldDisplayMockedReviewsWhenProductHasNoReviews ) {
+		return (
+			<div className={ className } style={ styleProps.style }>
+				<div className="wc-block-components-product-rating__container">
+					{ content }
+					{ reviews && isDescendentOfSingleProductBlock ? (
+						<ReviewsCount reviews={ reviews } />
+					) : null }
+				</div>
 			</div>
-		</div>
-	);
+		);
+	}
 };
 
 export default withProductDataContext( Block );
