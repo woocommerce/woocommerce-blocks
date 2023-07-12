@@ -2,7 +2,6 @@ import registerDirectives from './directives';
 import { init } from './router';
 export { store } from './store';
 export { navigate } from './router';
-import './cart/cart-store';
 
 /**
  * Initialize the Interactivity API.
