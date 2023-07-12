@@ -3,15 +3,17 @@
  * External dependencies
  */
 import { useMemo } from '@wordpress/element';
+import { useSelect, useDispatch } from '@wordpress/data';
 import {
 	store as blockEditorStore,
 	getColorClassName,
 	InspectorControls,
 	useBlockEditContext,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
-import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
