@@ -4,6 +4,11 @@
 import { InnerBlocks } from '@wordpress/block-editor';
 import { InnerBlockTemplate } from '@wordpress/blocks';
 
+/**
+ * Internal dependencies
+ */
+import './style.scss';
+
 export const Block = () => {
 	const ALLOWED_BLOCKS = [
 		'woocommerce/product-rating-stars',
