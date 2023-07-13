@@ -1,8 +1,7 @@
 /**
  * External dependencies
  */
-import { BlockConfiguration } from '@wordpress/blocks';
-import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
+import { registerBlockType } from '@wordpress/blocks';
 import { Icon, starFilled } from '@wordpress/icons';
 import { isExperimentalBuild } from '@woocommerce/block-settings';
 
@@ -11,17 +10,10 @@ import { isExperimentalBuild } from '@woocommerce/block-settings';
  */
 import metadata from './block.json';
 import edit from './edit';
-import sharedConfig from '../shared/config';
 import { supports } from './support';
 
 if ( isExperimentalBuild() ) {
-	const blockConfig: BlockConfiguration = {
-		...sharedConfig,
-		ancestor: [
-			'woocommerce/single-product',
-			'core/post-template',
-			'woocommerce/product-template',
-		],
+	registerBlockType( metadata, {
 		icon: {
 			src: (
 				<Icon
@@ -32,12 +24,5 @@ if ( isExperimentalBuild() ) {
 		},
 		supports,
 		edit,
-	};
-
-	registerBlockSingleProductTemplate( {
-		blockName: 'woocommerce/product-rating-stars',
-		blockMetadata: metadata,
-		blockSettings: blockConfig,
-		isAvailableOnPostEditor: true,
 	} );
 }
