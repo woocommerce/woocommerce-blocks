@@ -1,10 +1,13 @@
 /**
  * External dependencies
  */
+import type { ElementType } from 'react';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { useMemo } from '@wordpress/element';
+import { EditorBlock } from '@woocommerce/types';
+import { addFilter } from '@wordpress/hooks';
 import { ProductCollectionFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import {
 	// @ts-expect-error Using experimental features
@@ -16,12 +19,13 @@ import {
  * Internal dependencies
  */
 import { ProductCollectionAttributes } from '../types';
+import { setQueryAttribute } from '../utils';
+import { DEFAULT_FILTERS, getDefaultSettings } from '../constants';
+import UpgradeNotice from './upgrade-notice';
 import ColumnsControl from './columns-control';
 import InheritQueryControl from './inherit-query-control';
 import OrderByControl from './order-by-control';
 import OnSaleControl from './on-sale-control';
-import { setQueryAttribute } from '../utils';
-import { DEFAULT_FILTERS, getDefaultSettings } from '../constants';
 import StockStatusControl from './stock-status-control';
 import KeywordControl from './keyword-control';
 import AttributesControl from './attributes-control';
@@ -29,6 +33,7 @@ import TaxonomyControls from './taxonomy-controls';
 import HandPickedProductsControl from './hand-picked-products-control';
 import AuthorControl from './author-control';
 import DisplayLayoutControl from './display-layout-control';
+import { replaceProductCollectionWithProducts } from '../../shared/scripts';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -42,13 +47,20 @@ const ProductCollectionInspectorControls = (
 		[ props ]
 	);
 
+	const displayControlProps = {
+		setAttributes: props.setAttributes,
+		displayLayout: props.attributes.displayLayout,
+	};
+
+	const queryControlProps = {
+		setQueryAttribute: setQueryAttributeBind,
+		query,
+	};
+
 	return (
 		<InspectorControls>
 			<BlockControls>
-				<DisplayLayoutControl
-					displayLayout={ props.attributes.displayLayout }
-					setAttributes={ props.setAttributes }
-				/>
+				<DisplayLayoutControl { ...displayControlProps } />
 			</BlockControls>
 			<ToolsPanel
 				label={ __( 'Settings', 'woo-gutenberg-products-block' ) }
@@ -59,13 +71,10 @@ const ProductCollectionInspectorControls = (
 					props.setAttributes( defaultSettings );
 				} }
 			>
-				<ColumnsControl { ...props } />
-				<InheritQueryControl
-					setQueryAttribute={ setQueryAttributeBind }
-					query={ query }
-				/>
+				<ColumnsControl { ...displayControlProps } />
+				<InheritQueryControl { ...queryControlProps } />
 				{ displayQueryControls ? (
-					<OrderByControl { ...props } />
+					<OrderByControl { ...queryControlProps } />
 				) : null }
 			</ToolsPanel>
 
@@ -80,29 +89,13 @@ const ProductCollectionInspectorControls = (
 					} }
 					className="wc-block-editor-product-collection-inspector-toolspanel__filters"
 				>
-					<OnSaleControl { ...props } />
-					<StockStatusControl { ...props } />
-					<HandPickedProductsControl
-						setQueryAttribute={ setQueryAttributeBind }
-						selectedProductIds={
-							query.woocommerceHandPickedProducts
-						}
-					/>
-					<KeywordControl { ...props } />
-					<AttributesControl
-						woocommerceAttributes={
-							query.woocommerceAttributes || []
-						}
-						setQueryAttribute={ setQueryAttributeBind }
-					/>
-					<TaxonomyControls
-						setQueryAttribute={ setQueryAttributeBind }
-						query={ query }
-					/>
-					<AuthorControl
-						value={ query.author }
-						setQueryAttribute={ setQueryAttributeBind }
-					/>
+					<OnSaleControl { ...queryControlProps } />
+					<StockStatusControl { ...queryControlProps } />
+					<HandPickedProductsControl { ...queryControlProps } />
+					<KeywordControl { ...queryControlProps } />
+					<AttributesControl { ...queryControlProps } />
+					<TaxonomyControls { ...queryControlProps } />
+					<AuthorControl { ...queryControlProps } />
 				</ToolsPanel>
 			) : null }
 			<ProductCollectionFeedbackPrompt />
@@ -111,3 +104,30 @@ const ProductCollectionInspectorControls = (
 };
 
 export default ProductCollectionInspectorControls;
+
+export const withUpgradeNoticeControls =
+	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
+	( props: BlockEditProps< ProductCollectionAttributes > ) => {
+		const { displayUpgradeNotice } = props.attributes;
+		return (
+			<>
+				<InspectorControls>
+					{ displayUpgradeNotice && (
+						<UpgradeNotice
+							{ ...props }
+							revertMigration={
+								replaceProductCollectionWithProducts
+							}
+						/>
+					) }
+				</InspectorControls>
+				<BlockEdit { ...props } />
+			</>
+		);
+	};
+
+addFilter(
+	'editor.BlockEdit',
+	'woocommerce/product-collection',
+	withUpgradeNoticeControls
+);
