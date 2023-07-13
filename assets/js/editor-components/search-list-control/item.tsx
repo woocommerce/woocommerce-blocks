@@ -171,16 +171,15 @@ export const SearchListItem = ( {
 					{ ...props }
 				></input>
 			) : (
-				<input
-					type="checkbox"
+				<CheckboxControl
 					id={ id }
 					name={ name }
+					className="woocommerce-search-list__item-input"
 					value={ item.value }
 					onChange={ onSelect( item ) }
 					checked={ isSelected }
-					className="woocommerce-search-list__item-input"
 					{ ...props }
-				></input>
+				/>
 			) }
 
 			<ItemLabel item={ item } search={ search } />
