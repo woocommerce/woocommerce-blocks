@@ -10,13 +10,10 @@ import { Icon, starFilled } from '@wordpress/icons';
  */
 import metadata from './block.json';
 import edit from './edit';
-import sharedConfig from '../shared/config';
 import { supports } from './support';
 
 if ( isExperimentalBuild() ) {
 	registerBlockType( metadata, {
-		...sharedConfig,
-		ancestor: [ 'woocommerce/single-product' ],
 		icon: {
 			src: (
 				<Icon
