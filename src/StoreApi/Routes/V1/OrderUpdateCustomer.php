@@ -68,6 +68,7 @@ class OrderUpdateCustomer extends AbstractRoute {
 	public function get_args() {
 		$args = $this->get_update_customer_args();
 
+		// Add authorization check to all order update customer endpoints.
 		foreach ( $args as $index => $arg ) {
 			$args[ $index ]['permission_callback'] = [ $this, 'is_authorized' ];
 		}
