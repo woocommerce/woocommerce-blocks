@@ -32,7 +32,7 @@ trait OrderAuthorizationTrait {
 			}
 			if ( get_current_user_id() === 0 ) {
 				$this->order_controller->validate_order_key( $order_id, $order_key );
-				$this->validate_billing_email( $order_id, $billing_email );
+				$this->validate_billing_email_matches_order( $order_id, $billing_email );
 			}
 		} catch ( RouteException $error ) {
 			return new \WP_Error(
@@ -52,7 +52,7 @@ trait OrderAuthorizationTrait {
 	 * @param integer $order_id Order ID.
 	 * @param string  $billing_email Billing email.
 	 */
-	public function validate_billing_email( $order_id, $billing_email ) {
+	public function validate_billing_email_matches_order( $order_id, $billing_email ) {
 		$order = wc_get_order( $order_id );
 
 		if ( ! $order || ! $billing_email || $order->get_billing_email() !== $billing_email ) {
