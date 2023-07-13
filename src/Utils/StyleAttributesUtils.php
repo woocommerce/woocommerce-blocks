@@ -437,13 +437,13 @@ class StyleAttributesUtils {
 		if ( ! empty( $index_named_link_color ) ) {
 			$parsed_named_link_color = substr( $link_color, $index_named_link_color + 1 );
 			return array(
-				'class' => null,
+				'class' => 'has-link-color',
 				'style' => sprintf( 'color: %s;', self::get_preset_value( $parsed_named_link_color ) ),
 				'value' => self::get_preset_value( $parsed_named_link_color ),
 			);
 		} else {
 			return array(
-				'class' => null,
+				'class' => 'has-link-color',
 				'style' => sprintf( 'color: %s;', $link_color ),
 				'value' => $link_color,
 			);
@@ -659,7 +659,11 @@ class StyleAttributesUtils {
 			function( $item ) {
 				return $item['style'];
 			},
-			$classes_and_styles
+			// Exclude link color styles from parent to avoid conflict with text color.
+			array_diff_key(
+				$classes_and_styles,
+				array_flip( array( 'link_color' ) )
+			)
 		);
 
 		$classes = array_filter( $classes );
