@@ -50,12 +50,14 @@ const NoRating = ( { parentClassName }: { parentClassName: string } ) => {
 	return (
 		<div
 			className={ classnames(
-				'wc-block-components-product-rating__norating-container',
-				`${ parentClassName }-product-rating__norating-container`
+				'wc-block-components-product-rating-stars__norating-container',
+				`${ parentClassName }-product-rating-stars__norating-container`
 			) }
 		>
 			<div
-				className={ 'wc-block-components-product-rating__norating' }
+				className={
+					'wc-block-components-product-rating-stars__norating'
+				}
 				role="img"
 			>
 				<span style={ starStyle } />

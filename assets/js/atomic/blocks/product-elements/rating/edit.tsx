@@ -7,7 +7,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import './editor.scss';
-import { Block } from './block';
+import Block from './block';
 
 const Edit = () => {
 	const blockProps = useBlockProps();

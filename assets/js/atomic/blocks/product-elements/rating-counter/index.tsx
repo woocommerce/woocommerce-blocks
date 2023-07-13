@@ -18,6 +18,7 @@ if ( isExperimentalBuild() ) {
 	const blockConfig: BlockConfiguration = {
 		...sharedConfig,
 		ancestor: [
+			'woocommerce/all-products',
 			'woocommerce/single-product',
 			'core/post-template',
 			'woocommerce/product-template',
