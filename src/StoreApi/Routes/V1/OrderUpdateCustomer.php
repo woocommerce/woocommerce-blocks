@@ -10,7 +10,7 @@ use Automattic\WooCommerce\StoreApi\Utilities\UpdateCustomerTrait;
 /**
  * OrderUpdateCustomer class.
  *
- * Updates the customer billing and shipping addresses and returns an updated order--taxes should be recalculated.
+ * Updates the customer billing and shipping addresses, recalculates the order totals, and returns an updated order.
  */
 class OrderUpdateCustomer extends AbstractRoute {
 	use OrderAuthorizationTrait;
