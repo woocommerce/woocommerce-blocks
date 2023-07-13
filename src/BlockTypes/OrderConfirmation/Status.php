@@ -36,9 +36,10 @@ class Status extends AbstractOrderConfirmationBlock {
 		}
 
 		return sprintf(
-			'<div class="wc-block-%4$s %1$s %2$s">%3$s</div>',
+			'<div class="wc-block-%5$s %1$s %2$s" style="%3$s">%4$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
+			esc_attr( $classes_and_styles['styles'] ),
 			$content,
 			esc_attr( $this->block_name )
 		);
@@ -57,7 +58,7 @@ class Status extends AbstractOrderConfirmationBlock {
 		// Unlike the core handling, this includes some extra messaging for completed orders to the text is appropriate for other order statuses.
 		switch ( $status ) {
 			case 'cancelled':
-				$content .= '<p class="woocommerce-thankyou-order-received">' . wp_kses_post(
+				$content .= '<p>' . wp_kses_post(
 						// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 					apply_filters(
 						'woocommerce_thankyou_order_received_text',
@@ -67,7 +68,7 @@ class Status extends AbstractOrderConfirmationBlock {
 				) . '</p>';
 				break;
 			case 'refunded':
-					$content .= '<p class="woocommerce-thankyou-order-received">' . wp_kses_post(
+					$content .= '<p>' . wp_kses_post(
 						sprintf(
 							// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 							apply_filters(
@@ -81,16 +82,12 @@ class Status extends AbstractOrderConfirmationBlock {
 					) . '</p>';
 				break;
 			case 'completed':
-				$content .= '<p class="woocommerce-thankyou-order-received">' . wp_kses_post(
-					sprintf(
-						// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-						apply_filters(
-							'woocommerce_thankyou_order_received_text',
-							// translators: %s: date and time of the order completion.
-							esc_html__( 'Your order has been processed and was marked complete %s.', 'woo-gutenberg-products-block' ),
-							$order
-						),
-						wc_format_datetime( $order->get_date_completed() )
+				$content .= '<p>' . wp_kses_post(
+					// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+					apply_filters(
+						'woocommerce_thankyou_order_received_text',
+						esc_html__( 'Thank you. Your order has been fulfilled.', 'woo-gutenberg-products-block' ),
+						$order
 					)
 				) . '</p>';
 				break;
@@ -100,18 +97,18 @@ class Status extends AbstractOrderConfirmationBlock {
 				$actions             = '';
 
 				if ( $this->is_current_customer_order( $order ) ) {
-					$actions .= '<a href="' . esc_url( $order->get_checkout_payment_url() ) . '" class="button pay">' . esc_html__( 'Try again', 'woo-gutenberg-products-block' ) . '</a> ';
+					$actions .= '<a href="' . esc_url( $order->get_checkout_payment_url() ) . '" class="button">' . esc_html__( 'Try again', 'woo-gutenberg-products-block' ) . '</a> ';
 				}
 
-				$actions .= '<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="button pay">' . esc_html_e( 'My account', 'woo-gutenberg-products-block' ) . '</a> ';
+				$actions .= '<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="button">' . esc_html__( 'My account', 'woo-gutenberg-products-block' ) . '</a> ';
 
 				$content .= '
-				<p class="woocommerce-thankyou-order-failed">' . $order_received_text . '</p>
-				<p class="woocommerce-thankyou-order-failed-actions">' . $actions . '</p>
+				<p>' . $order_received_text . '</p>
+				<p class="wc-block-order-confirmation-status__actions">' . $actions . '</p>
 			';
 				break;
 			default:
-				$content .= '<p class="woocommerce-thankyou-order-received">' . wp_kses_post(
+				$content .= '<p>' . wp_kses_post(
 					// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 					apply_filters(
 						'woocommerce_thankyou_order_received_text',

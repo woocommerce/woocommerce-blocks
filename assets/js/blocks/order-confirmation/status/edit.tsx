@@ -16,7 +16,7 @@ const Edit = (): JSX.Element => {
 
 	return (
 		<div { ...blockProps }>
-			<p className="woocommerce-thankyou-order-received">
+			<p>
 				{ __(
 					'Thank you. Your order has been received.',
 					'woo-gutenberg-products-block'
