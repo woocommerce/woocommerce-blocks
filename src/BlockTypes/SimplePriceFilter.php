@@ -51,7 +51,7 @@ class SimplePriceFilter extends AbstractBlock {
 		);
 
 		return <<<HTML
-		<div $wrapper_attributes>
+		<div $wrapper_attributes data-wc-interactive>
 			<h3>Filter by price</h3>
 			<div
 				class='range'

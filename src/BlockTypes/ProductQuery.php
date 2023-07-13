@@ -73,6 +73,30 @@ class ProductQuery extends AbstractBlock {
 		);
 		add_filter( 'rest_product_query', array( $this, 'update_rest_query' ), 10, 2 );
 		add_filter( 'rest_product_collection_params', array( $this, 'extend_rest_query_allowed_params' ), 10, 1 );
+		add_filter(
+			'render_block_core/query',
+			array( $this, 'add_navigation_id_directive' ),
+			10,
+			3
+		);
+	}
+
+	public function add_navigation_id_directive( $block_content, $block, $instance ) {
+		if (
+			isset($block['attrs']['namespace']) && 
+			$block['attrs']['namespace'] === 'woocommerce/product-query'
+		) {
+			$p = new \WP_HTML_Tag_Processor( $block_content );
+
+			if ( $p->next_tag( array( 'class' => 'wp-block-query' ))) {
+				$p->set_attribute( 'data-wc-navigation-id', $block['attrs']['queryId'] );
+				$block_content = $p->get_updated_html();
+			} 
+		}
+
+		// Add data-wp-link to the pagination.
+
+		return $block_content;
 	}
 
 	/**

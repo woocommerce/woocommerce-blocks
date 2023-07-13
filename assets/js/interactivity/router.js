@@ -101,11 +101,22 @@ const fetchAssets = async ( document ) => {
 
 // Fetch a new page and convert it to a static virtual DOM.
 const fetchPage = async ( url ) => {
-	const html = await window.fetch( url ).then( ( r ) => r.text() );
-	const dom = new window.DOMParser().parseFromString( html, 'text/html' );
-	if ( ! canDoClientSideNavigation( dom.head ) ) return false;
-	const head = await fetchAssets( dom );
-	return { head, body: toVdom( dom.body ) };
+	let dom;
+	try {
+		const res = await window.fetch( url );
+		if ( res.status !== 200 ) return false;
+		const html = await res.text();
+		dom = new window.DOMParser().parseFromString( html, 'text/html' );
+	} catch ( e ) {
+		return false;
+	}
+	const regions = {};
+	dom.querySelectorAll( '[data-wc-navigation-id]' ).forEach( ( region ) => {
+		const id = region.attributes[ 'data-wc-navigation-id' ];
+		regions[ id ] = toVdom( region );
+	} );
+
+	return { regions };
 };
 
 // Prefetch a page. We store the promise to avoid triggering a second fetch for
@@ -123,8 +134,16 @@ export const navigate = async ( href, { replace = false } = {} ) => {
 	prefetch( url );
 	const page = await pages.get( url );
 	if ( page ) {
-		document.head.replaceChildren( ...page.head );
-		render( page.body, rootFragment );
+		document
+			.querySelectorAll( '[data-wc-navigation-id]' )
+			.forEach( ( region ) => {
+				const id = region.attributes[ 'data-wc-navigation-id' ];
+				const fragment = createRootFragment(
+					region.parentElement,
+					region
+				);
+				render( page.regions[ id ], fragment );
+			} );
 		window.history[ replace ? 'replaceState' : 'pushState' ](
 			{},
 			'',
@@ -150,37 +169,37 @@ window.addEventListener( 'popstate', async () => {
 
 // Initialize the router with the initial DOM.
 export const init = async () => {
-	if ( canDoClientSideNavigation( document.head ) ) {
-		// Create the root fragment to hydrate everything.
-		rootFragment = createRootFragment(
-			document.documentElement,
-			document.body
-		);
-		const body = toVdom( document.body );
-		hydrate( body, rootFragment );
-
-		// Cache the scripts. Has to be called before fetching the assets.
-		[].map.call( document.querySelectorAll( 'script[src]' ), ( script ) => {
-			scripts.set( script.getAttribute( 'src' ), script.textContent );
+	document
+		.querySelectorAll( `[data-${ directivePrefix }-interactive]` )
+		.forEach( ( node ) => {
+			if ( ! hydratedIslands.has( node ) ) {
+				const fragment = createRootFragment( node.parentNode, node );
+				const vdom = toVdom( node );
+				hydrate( vdom, fragment );
+			}
 		} );
 
-		const head = await fetchAssets( document );
-		pages.set(
-			cleanUrl( window.location ),
-			Promise.resolve( { body, head } )
-		);
-	} else {
-		document
-			.querySelectorAll( `[data-${ directivePrefix }-interactive]` )
-			.forEach( ( node ) => {
-				if ( ! hydratedIslands.has( node ) ) {
-					const fragment = createRootFragment(
-						node.parentNode,
-						node
-					);
-					const vdom = toVdom( node );
-					hydrate( vdom, fragment );
-				}
-			} );
-	}
+	// Event handler for all links
+	let onClick = ( e ) => {
+		let link = e.target.closest( 'a' );
+		if (
+			link &&
+			link instanceof HTMLAnchorElement &&
+			link.href &&
+			( ! link.target || link.target === '_self' ) &&
+			link.origin === location.origin &&
+			! link.hasAttribute( 'download' ) &&
+			e.button === 0 && // left clicks only
+			! e.metaKey && // open in new tab (mac)
+			! e.ctrlKey && // open in new tab (windows)
+			! e.altKey && // download
+			! e.shiftKey &&
+			! e.defaultPrevented
+		) {
+			e.preventDefault();
+			navigate( link.href );
+		}
+	};
+
+	document.addEventListener( 'click', onClick );
 };
