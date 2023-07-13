@@ -1,7 +1,16 @@
 .wc-block-order-confirmation-status {
 	margin: $gap 0;
 	p {
-		@include font-size(large);
 		margin: 0;
+	}
+	.wc-block-order-confirmation-status__actions {
+		margin-top: $gap;
+
+		a {
+			margin-right: $gap;
+		}
+		a.has-link-color {
+			color: inherit;
+		}
 	}
 }
