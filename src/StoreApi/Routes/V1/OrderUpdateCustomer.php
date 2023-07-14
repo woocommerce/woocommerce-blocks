@@ -86,6 +86,13 @@ class OrderUpdateCustomer extends AbstractRoute {
 		$order_id = absint( $request['id'] );
 		$order    = wc_get_order( $order_id );
 
+		if ( $order->get_status() !== 'pending' ) {
+			return new \WP_Error(
+				'invalid_order_update_status',
+				__( 'This order is not pending and cannot be updated.', 'woo-gutenberg-products-block' )
+			);
+		}
+
 		// Get data from request object and merge with order customer data, then sanitize.
 		$billing  = $this->schema->billing_address_schema->sanitize_callback(
 			wp_parse_args(
