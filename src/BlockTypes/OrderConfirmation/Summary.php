@@ -45,9 +45,10 @@ class Summary extends AbstractOrderConfirmationBlock {
 		}
 
 		return sprintf(
-			'<div class="wc-block-%4$s %1$s %2$s">%3$s</div>',
+			'<div class="wc-block-%5$s %1$s %2$s" style="%3$s">%4$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
+			esc_attr( $classes_and_styles['styles'] ),
 			$content,
 			esc_attr( $this->block_name )
 		);
