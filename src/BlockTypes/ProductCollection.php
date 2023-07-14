@@ -72,6 +72,13 @@ class ProductCollection extends AbstractBlock {
 			3
 		);
 
+		add_filter(
+			'pre_render_block',
+			array( $this, 'add_support_for_filter_blocks' ),
+			10,
+			2
+		);
+
 		// Update the query for Editor.
 		add_filter( 'rest_product_query', array( $this, 'update_rest_query_in_editor' ), 10, 2 );
 
