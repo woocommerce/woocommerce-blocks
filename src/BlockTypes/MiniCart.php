@@ -322,7 +322,12 @@ class MiniCart extends AbstractBlock {
 
 		$site_url = site_url() ?? wp_guess_url();
 
-		if ( version_compare( get_bloginfo( 'version' ), '6.2.2', '>' ) ) {
+		$current_wp_version = get_bloginfo( 'version' );
+		if ( preg_match( '/^([0-9]+\.[0-9]+)/', $current_wp_version, $matches ) ) {
+			$current_wp_version = (float) $matches[1];
+		}
+
+		if ( version_compare( $current_wp_version, '6.3', '>=' ) ) {
 			$script_before = $wp_scripts->get_inline_script_data( $script->handle, 'before' );
 			$script_after  = $wp_scripts->get_inline_script_data( $script->handle, 'after' );
 		} else {
