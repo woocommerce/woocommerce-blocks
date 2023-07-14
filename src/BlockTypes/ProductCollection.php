@@ -112,6 +112,31 @@ class ProductCollection extends AbstractBlock {
 	}
 
 	/**
+	 * Add support for filter blocks:
+	 * - Price filter block
+	 * - Attributes filter block
+	 * - Rating filter block
+	 * - In stock filter block etc.
+	 *
+	 * @param array $pre_render   The pre-rendered block.
+	 * @param array $parsed_block The parsed block.
+	 */
+	public function add_support_for_filter_blocks( $pre_render, $parsed_block ) {
+		$is_product_collection_block = $parsed_block['attrs']['query']['isProductCollectionBlock'] ?? false;
+
+		if ( ! $is_product_collection_block ) {
+			return;
+		}
+
+		$this->asset_data_registry->add( 'has_filterable_products', true, true );
+		/**
+		 * It enables the page to refresh when a filter is applied, ensuring that the product collection block,
+		 * which is a server-side rendered (SSR) block, retrieves the products that match the filters.
+		 */
+		$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
+	}
+
+	/**
 	 * Return a custom query based on attributes, filters and global WP_Query.
 	 *
 	 * @param WP_Query $query The WordPress Query.

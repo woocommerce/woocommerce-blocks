@@ -7,10 +7,9 @@ import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 export const supports = {
 	...( isFeaturePluginBuild() && {
 		color: {
-			text: true,
+			text: false,
 			background: false,
-			link: false,
-			__experimentalSkipSerialization: true,
+			link: true,
 		},
 		spacing: {
 			margin: true,
@@ -20,6 +19,6 @@ export const supports = {
 			fontSize: true,
 			__experimentalSkipSerialization: true,
 		},
-		__experimentalSelector: '.wc-block-components-product-rating',
+		__experimentalSelector: '.wc-block-components-product-rating-counter',
 	} ),
 };
