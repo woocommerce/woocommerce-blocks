@@ -93,3 +93,13 @@
 	height: auto;
 	min-height: 500px;
 }
+
+/* Site Editor preview */
+.block-editor-block-preview__content-iframe .editor-styles-wrapper {
+	.wp-block-woocommerce-mini-cart-contents,
+	.wp-block-woocommerce-filled-mini-cart-contents-block,
+	.wp-block-woocommerce-empty-mini-cart-contents-block {
+		height: 800px;
+		min-height: none;
+	}
+}
