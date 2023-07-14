@@ -3,10 +3,7 @@
  */
 import { select, subscribe } from '@wordpress/data';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
-import { updateStore } from '../store';
-/**
- * Internal dependencies
- */
+import { rawStore } from '../store';
 
 export const syncStoreWithInteractivityState = () => {
 	const store = select( CART_STORE_KEY );
@@ -15,13 +12,7 @@ export const syncStoreWithInteractivityState = () => {
 		select( CART_STORE_KEY ).hasFinishedResolution( 'getCartData' );
 
 	if ( isResolutionFinished ) {
-		updateStore( {
-			state: {
-				woocommerce: {
-					cart: cartData,
-				},
-			},
-		} );
+		rawStore.state.woocommerce.cart = cartData;
 	}
 };
 

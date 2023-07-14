@@ -15,15 +15,9 @@ export const directive = ( name, cb, { priority = 10 } = {} ) => {
 
 // Resolve the path to some property of the store object.
 const resolve = ( path, ctx ) => {
-	try {
-		let current = { ...store, context: ctx };
-		path.split( '.' ).forEach( ( p ) => ( current = current[ p ] ) );
-		return current;
-	} catch ( error ) {
-		console.error(
-			`There was a problem trying to access \`${ path }\`. Are you sure it is defined?`
-		);
-	}
+	let current = { ...store, context: ctx };
+	path.split( '.' ).forEach( ( p ) => ( current = current[ p ] ) );
+	return current;
 };
 
 // Generate the evaluate function.
