@@ -1,8 +1,8 @@
 {
-	"name": "woocommerce/product-rating-stars",
+	"name": "woocommerce/product-rating-counter",
 	"version": "1.0.0",
-	"title": "Product Rating Stars",
-	"description": "Display the average rating of a product with stars",
+	"title": "Product Rating Counter",
+	"description": "Display the review count of a product",
 	"attributes": {
 		"productId": {
 			"type": "number",
