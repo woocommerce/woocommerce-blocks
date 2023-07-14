@@ -72,6 +72,13 @@ class ProductCollection extends AbstractBlock {
 			3
 		);
 
+		add_filter(
+			'pre_render_block',
+			array( $this, 'add_support_for_filter_blocks' ),
+			10,
+			2
+		);
+
 		// Update the query for Editor.
 		add_filter( 'rest_product_query', array( $this, 'update_rest_query_in_editor' ), 10, 2 );
 
@@ -109,6 +116,31 @@ class ProductCollection extends AbstractBlock {
 				'handpicked_products' => $handpicked_products,
 			)
 		);
+	}
+
+	/**
+	 * Add support for filter blocks:
+	 * - Price filter block
+	 * - Attributes filter block
+	 * - Rating filter block
+	 * - In stock filter block etc.
+	 *
+	 * @param array $pre_render   The pre-rendered block.
+	 * @param array $parsed_block The parsed block.
+	 */
+	public function add_support_for_filter_blocks( $pre_render, $parsed_block ) {
+		$is_product_collection_block = $parsed_block['attrs']['query']['isProductCollectionBlock'] ?? false;
+
+		if ( ! $is_product_collection_block ) {
+			return;
+		}
+
+		$this->asset_data_registry->add( 'has_filterable_products', true, true );
+		/**
+		 * It enables the page to refresh when a filter is applied, ensuring that the product collection block,
+		 * which is a server-side rendered (SSR) block, retrieves the products that match the filters.
+		 */
+		$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
 	}
 
 	/**
