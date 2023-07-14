@@ -4,21 +4,20 @@
 		list-style: none outside;
 		display: flex;
 		flex-direction: row;
-		margin: 0 0 $gap-largest;
+		margin: 0;
 		padding: 0;
 		gap: 1em;
+		flex-wrap: wrap;
 
 		li {
 			flex: 1 1 auto;
 
 			> span {
-				text-transform: uppercase;
-				@include font-size(smaller);
+				@include font-size(small);
 			}
 			> strong {
-				font-weight: bold;
+				font-weight: inherit;
 				display: block;
-				@include font-size(small);
 			}
 		}
 	}
