@@ -64,6 +64,26 @@ class Totals extends AbstractOrderConfirmationBlock {
 	}
 
 	/**
+	 * Enqueue frontend assets for this block, just in time for rendering.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 */
+	protected function enqueue_assets( array $attributes ) {
+		parent::enqueue_assets( $attributes );
+
+		$link_classes_and_styles       = StyleAttributesUtils::get_link_color_class_and_style( $attributes );
+		$link_hover_classes_and_styles = StyleAttributesUtils::get_link_hover_color_class_and_style( $attributes );
+
+		wp_add_inline_style(
+			'wc-blocks-style',
+			'
+			.wc-block-order-confirmation-totals__table a {' . $link_classes_and_styles['style'] . '}
+			.wc-block-order-confirmation-totals__table a:hover, .wc-block-order-confirmation-totals__table a:focus {' . $link_hover_classes_and_styles['style'] . '}
+			'
+		);
+	}
+
+	/**
 	 * This renders the content of the block within the wrapper.
 	 *
 	 * @param \WC_Order $order Order object.
