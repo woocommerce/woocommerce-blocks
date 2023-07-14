@@ -8,6 +8,7 @@ use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
+use Automattic\WooCommerce\Blocks\Utils\Utils;
 
 /**
  * Mini-Cart class.
@@ -322,12 +323,7 @@ class MiniCart extends AbstractBlock {
 
 		$site_url = site_url() ?? wp_guess_url();
 
-		$current_wp_version = get_bloginfo( 'version' );
-		if ( preg_match( '/^([0-9]+\.[0-9]+)/', $current_wp_version, $matches ) ) {
-			$current_wp_version = (float) $matches[1];
-		}
-
-		if ( version_compare( $current_wp_version, '6.3', '>=' ) ) {
+		if ( Utils::wp_version_compare( '6.3', '>=' ) ) {
 			$script_before = $wp_scripts->get_inline_script_data( $script->handle, 'before' );
 			$script_after  = $wp_scripts->get_inline_script_data( $script->handle, 'after' );
 		} else {
