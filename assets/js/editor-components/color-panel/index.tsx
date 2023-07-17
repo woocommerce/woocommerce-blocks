@@ -52,14 +52,15 @@ const getColorObject = (
 	if ( ! colorValue ) {
 		return;
 	}
-	const colorObject = colors?.find( ( color ) => {
-		return color.color === colorValue || color.slug === colorValue;
-	} ) as {
-		color: string;
-		slug?: string | undefined;
-		class?: string | undefined;
-	};
-	if ( ! colorObject.color ) {
+	const colorObject =
+		( colors?.find( ( color ) => {
+			return color.color === colorValue || color.slug === colorValue;
+		} ) as {
+			color: string;
+			slug?: string | undefined;
+			class?: string | undefined;
+		} ) || {};
+	if ( ! colorObject?.color ) {
 		colorObject.color = colorValue;
 	}
 	colorObject.class = getColorClassName( context, colorObject?.slug );
