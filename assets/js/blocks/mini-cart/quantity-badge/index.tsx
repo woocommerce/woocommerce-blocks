@@ -20,8 +20,8 @@ interface Props {
 const QuantityBadge = ( {
 	count,
 	icon,
-	iconColor = { color: undefined },
-	productCountColor = { color: undefined },
+	iconColor,
+	productCountColor,
 }: Props ): JSX.Element => {
 	function getIcon( iconName?: 'cart' | 'bag' | 'bag-alt' ) {
 		switch ( iconName ) {
