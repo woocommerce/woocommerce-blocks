@@ -113,7 +113,7 @@ class BlockTemplatesController {
 	public function register_mini_cart_template_part_area( $default_area_definitions ) {
 		$mini_cart_template_part_area = [
 			'area'        => 'mini-cart',
-			'label'       => 'Mini-Cart',
+			'label'       => __( 'Mini-Cart', 'woo-gutenberg-products-block' ),
 			'description' => 'The Mini-Cart template allows shoppers to see their cart items and provides access to the Cart and Checkout pages.',
 			'icon'        => 'mini-cart',
 			'area_tag'    => 'mini-cart',
