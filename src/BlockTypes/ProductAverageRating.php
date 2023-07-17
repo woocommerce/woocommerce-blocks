@@ -81,7 +81,7 @@ class ProductAverageRating extends AbstractBlock {
 		$post_id = $block->context['postId'];
 		$product = wc_get_product( $post_id );
 
-		if ( ! $product && ! $product->get_review_count() ) {
+		if ( ! $product || ! $product->get_review_count() ) {
 			return '';
 		}
 
