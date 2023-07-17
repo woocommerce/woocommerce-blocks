@@ -66,8 +66,7 @@
 			"default": false
 		},
 		"stockStatus": {
-			"type": "array",
-			"default": [ "instock", "outofstock", "onbackorder" ]
+			"type": "array"
 		},
 		"editMode": {
 			"type": "boolean",
