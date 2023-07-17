@@ -44,6 +44,11 @@ class Totals extends AbstractOrderConfirmationBlock {
 			$classname .= " align{$attributes['align']}";
 		}
 
+		if ( ! empty( $attributes['isPreview'] ) ) {
+			$styles   = $this->get_link_styles( $attributes );
+			$content .= '<style>' . esc_html( $styles ) . '</style>';
+		}
+
 		return sprintf(
 			'<div class="wc-block-%5$s %1$s %2$s" style="%3$s">%4$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
@@ -67,20 +72,29 @@ class Totals extends AbstractOrderConfirmationBlock {
 	 * Enqueue frontend assets for this block, just in time for rendering.
 	 *
 	 * @param array $attributes  Any attributes that currently are available from the block.
+	 * @return string
+	 */
+	protected function get_link_styles( array $attributes ) {
+		$link_classes_and_styles       = StyleAttributesUtils::get_link_color_class_and_style( $attributes );
+		$link_hover_classes_and_styles = StyleAttributesUtils::get_link_hover_color_class_and_style( $attributes );
+
+		return '
+			.wc-block-order-confirmation-totals__table a {' . $link_classes_and_styles['style'] . '}
+			.wc-block-order-confirmation-totals__table a:hover, .wc-block-order-confirmation-totals__table a:focus {' . $link_hover_classes_and_styles['style'] . '}
+		';
+	}
+
+	/**
+	 * Enqueue frontend assets for this block, just in time for rendering.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
 	 */
 	protected function enqueue_assets( array $attributes ) {
 		parent::enqueue_assets( $attributes );
 
-		$link_classes_and_styles       = StyleAttributesUtils::get_link_color_class_and_style( $attributes );
-		$link_hover_classes_and_styles = StyleAttributesUtils::get_link_hover_color_class_and_style( $attributes );
+		$styles = $this->get_link_styles( $attributes );
 
-		wp_add_inline_style(
-			'wc-blocks-style',
-			'
-			.wc-block-order-confirmation-totals__table a {' . $link_classes_and_styles['style'] . '}
-			.wc-block-order-confirmation-totals__table a:hover, .wc-block-order-confirmation-totals__table a:focus {' . $link_hover_classes_and_styles['style'] . '}
-			'
-		);
+		wp_add_inline_style( 'wc-blocks-style', $styles );
 	}
 
 	/**
@@ -103,7 +117,7 @@ class Totals extends AbstractOrderConfirmationBlock {
 				</thead>
 				<tbody>
 					' . $this->get_hook_content( 'woocommerce_order_details_before_order_table_items', [ $order ] ) . '
-					' . $this->render_order_details_table_items( $order ) . '
+					' . $this->render_order_details_table_items( $order, $attributes ) . '
 					' . $this->get_hook_content( 'woocommerce_order_details_after_order_table_items', [ $order ] ) . '
 				</tbody>
 				<tfoot>
@@ -122,9 +136,10 @@ class Totals extends AbstractOrderConfirmationBlock {
 	 * Loosely based on the templates order-details.php and order-details-item.php from core.
 	 *
 	 * @param \WC_Order $order Order object.
+	 * @param array     $attributes Block attributes.
 	 * @return string
 	 */
-	protected function render_order_details_table_items( $order ) {
+	protected function render_order_details_table_items( $order, $attributes ) {
 		$return      = '';
 		$order_items = array_filter(
 			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
@@ -137,7 +152,7 @@ class Totals extends AbstractOrderConfirmationBlock {
 
 		foreach ( $order_items as $item_id => $item ) {
 			$product = $item->get_product();
-			$return .= $this->render_order_details_table_item( $order, $item_id, $item, $product );
+			$return .= $this->render_order_details_table_item( $order, $item_id, $item, $product, $attributes );
 		}
 
 		return $return;
@@ -150,14 +165,21 @@ class Totals extends AbstractOrderConfirmationBlock {
 	 * @param integer           $item_id Item ID.
 	 * @param \WC_Order_Item    $item Item object.
 	 * @param \WC_Product|false $product Product object if it exists.
+	 * @param array             $attributes Block attributes.
 	 * @return string
 	 */
-	protected function render_order_details_table_item( $order, $item_id, $item, $product ) {
+	protected function render_order_details_table_item( $order, $item_id, $item, $product, $attributes ) {
 		$is_visible = $product && $product->is_visible();
 		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 		$row_class = apply_filters( 'woocommerce_order_item_class', 'woocommerce-table__line-item order_item', $item, $order );
 		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 		$product_permalink = apply_filters( 'woocommerce_order_item_permalink', $is_visible ? $product->get_permalink( $item ) : '', $item, $order );
+
+		// Previews enable links.
+		if ( ! empty( $attributes['isPreview'] ) ) {
+			$product_permalink = '#';
+		}
+
 		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 		$item_name    = apply_filters(
 			'woocommerce_order_item_name',
