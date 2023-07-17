@@ -87,7 +87,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 - Updated Essential Header patterns to have no opinionated font sizes. ([10219](https://github.com/woocommerce/woocommerce-blocks/pull/10219))
 - Modernize the block registration for the Mini Cart block. ([10168](https://github.com/woocommerce/woocommerce-blocks/pull/10168))
-- Add new experimental `Product Rating Counter` block. ([10114](https://github.com/woocommerce/woocommerce-blocks/pull/10114))
 - Improve Banner pattern for mobile devices. ([10107](https://github.com/woocommerce/woocommerce-blocks/pull/10107))
 - Bring back user to 1st page when filters are changed. ([9952](https://github.com/woocommerce/woocommerce-blocks/pull/9952))
 - Only load styles required by the blocks rendered on the page. ([9831](https://github.com/woocommerce/woocommerce-blocks/pull/9831))
