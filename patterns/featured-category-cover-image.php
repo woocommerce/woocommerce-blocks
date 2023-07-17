@@ -11,14 +11,14 @@
 	<img class="wp-block-cover__image-background wp-image-1" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased in a featured category section.', 'woo-gutenberg-products-block' ); ?>" src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/wood-leather-fur-shop-jeans-shelf.png', dirname( __FILE__ ) ) ); ?>" style="object-position:0% 0%" data-object-fit="cover" data-object-position="0% 0%"/>
 	<div class="wp-block-cover__inner-container">
 		<!-- wp:heading {"textAlign":"center","style":{"color":{"text":"#ffffff"}}} -->
-		<h2 class="wp-block-heading has-text-align-center has-text-color" style="color:#ffffff;"><strong>
+		<h2 class="wp-block-heading has-text-align-center has-text-color" style="color:#ffffff;">
 		<?php
 		esc_attr_e(
 			'100% natural denim',
 			'woo-gutenberg-products-block'
 		);
 		?>
-		</strong></h2>
+		</h2>
 		<!-- /wp:heading -->
 
 		<!-- wp:paragraph {"align":"center","style":{"color":{"text":"#ffffff"},"spacing":{"margin":{"top":"0px","bottom":"0px"}}}} -->
