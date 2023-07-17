@@ -1,76 +1,49 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import {
-	PanelBody,
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
-	__experimentalToggleGroupControl as ToggleGroupControl,
-} from '@wordpress/components';
-import { Icon } from '@wordpress/icons';
-import {
-	thumbnailsLeft,
-	thumbnailsBottom,
-	thumbnailsRight,
-} from '@woocommerce/icons';
+import { Disabled } from '@wordpress/components';
+import type { BlockEditProps } from '@wordpress/blocks';
+import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 
-export const Edit = (): JSX.Element => {
+/**
+ * Internal dependencies
+ */
+import { BlockSettings } from './block-settings';
+// import { Attributes } from './types';
+
+export const Edit = ( {
+	attributes,
+	setAttributes,
+}: BlockEditProps< Attributes > ) => {
 	const blockProps = useBlockProps( {
 		className: 'wc-block-editor-product-gallery_thumbnails',
 	} );
 
-	return (
-		<div { ...blockProps }>
-			<InspectorControls>
-				<PanelBody
-					title={ __( 'Settings', 'woo-gutenberg-products-block' ) }
-				>
-					<ToggleGroupControl
-						className="wc-block-editor-product-gallery-thumbnails__thumbnails-toggle"
-						isBlock={ true }
-						label={ __(
-							'Thumbnails',
-							'woo-gutenberg-products-block'
-						) }
-						value={ <Icon size={ 32 } icon={ thumbnailsLeft } /> }
-						help={ __(
-							'No thumbnails will be displayed.',
-							'woo-gutenberg-products-block'
-						) }
-					>
-						<ToggleGroupControlOption
-							value={ 'off' }
-							label={ __(
-								'Off',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-						<ToggleGroupControlOption
-							value={ 'left' }
-							label={
-								<Icon size={ 32 } icon={ thumbnailsLeft } />
-							}
-						/>
-						<ToggleGroupControlOption
-							value={ 'bottom' }
-							label={
-								<Icon size={ 32 } icon={ thumbnailsBottom } />
-							}
-						/>
-						<ToggleGroupControlOption
-							value={ 'right' }
-							label={
-								<Icon size={ 32 } icon={ thumbnailsRight } />
-							}
-						/>
-					</ToggleGroupControl>
-				</PanelBody>
-			</InspectorControls>
-		</div>
-	);
-};
+	const Placeholder = () => {
+		return (
+			<div className="wc-block-editor-product-gallery-large-image">
+				<img
+					src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
+					alt="Placeholder"
+				/>
+			</div>
+		);
+	};
 
-export const Save = (): JSX.Element => {
-	return <div { ...useBlockProps.save() }></div>;
+	return (
+		<>
+			<div { ...blockProps }>
+				<InspectorControls>
+					<BlockSettings
+						attributes={ attributes }
+						setAttributes={ setAttributes }
+					/>
+				</InspectorControls>
+				<Disabled>
+					<Placeholder />
+				</Disabled>
+			</div>
+		</>
+	);
 };
