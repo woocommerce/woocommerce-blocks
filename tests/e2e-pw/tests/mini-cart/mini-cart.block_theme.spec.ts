@@ -15,6 +15,10 @@ const blockData: BlockData = {
 	},
 };
 
+const getMiniCartButton = async ( { page } ) => {
+	return await page.getByLabel( '0 items in cart, total price of $0.00' );
+};
+
 test.describe( `${ blockData.name } Block`, () => {
 	test.describe( `standalone`, () => {
 		test.beforeEach( async ( { admin, page, editor } ) => {
@@ -28,17 +32,68 @@ test.describe( `${ blockData.name } Block`, () => {
 		} );
 
 		test( 'should open the empty cart drawer', async ( { page } ) => {
-			const miniCartButton = await page.getByLabel(
-				'0 items in cart, total price of $0.00'
-			);
+			const miniCartButton = await getMiniCartButton( { page } );
 
 			await miniCartButton.click();
 
 			await expect(
-				page
-					.locator( blockData.selectors.frontend.drawer as string )
-					.first()
+				page.locator( blockData.selectors.frontend.drawer ).first()
 			).toHaveText( 'Your cart is currently empty!' );
+		} );
+
+		test( 'should close the drawer when clicking on the close button', async ( {
+			page,
+		} ) => {
+			const miniCartButton = await getMiniCartButton( { page } );
+
+			await miniCartButton.click();
+
+			await expect(
+				page.locator( blockData.selectors.frontend.drawer ).first()
+			).toHaveText( 'Your cart is currently empty!' );
+
+			// Wait for the drawer to fully open.
+			await page.waitForTimeout( 500 );
+
+			const closeButton = await page.getByRole( 'button', {
+				name: 'Close',
+			} );
+			await closeButton.click();
+
+			// Wait for the drawer to fully close.
+			await page.waitForTimeout( 500 );
+
+			expect(
+				await page
+					.locator( blockData.selectors.frontend.drawer )
+					.count()
+			).toEqual( 0 );
+		} );
+
+		test( 'should close the drawer when clicking outside the drawer', async ( {
+			page,
+		} ) => {
+			const miniCartButton = await getMiniCartButton( { page } );
+
+			await miniCartButton.click();
+
+			await expect(
+				page.locator( blockData.selectors.frontend.drawer ).first()
+			).toHaveText( 'Your cart is currently empty!' );
+
+			// Wait for the drawer to fully open.
+			await page.waitForTimeout( 500 );
+
+			await page.mouse.click( 50, 200 );
+
+			// Wait for the drawer to fully close.
+			await page.waitForTimeout( 500 );
+
+			expect(
+				await page
+					.locator( blockData.selectors.frontend.drawer )
+					.count()
+			).toEqual( 0 );
 		} );
 	} );
 
@@ -55,9 +110,7 @@ test.describe( `${ blockData.name } Block`, () => {
 		} );
 
 		test( 'should open the filled cart drawer', async ( { page } ) => {
-			const miniCartButton = await page.getByLabel(
-				'0 items in cart, total price of $0.00'
-			);
+			const miniCartButton = await getMiniCartButton( { page } );
 
 			await page.waitForLoadState( 'networkidle' );
 			await page.click( 'text=Add to cart' );
