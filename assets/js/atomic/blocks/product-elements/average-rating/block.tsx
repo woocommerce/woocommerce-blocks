@@ -4,6 +4,7 @@
 import classnames from 'classnames';
 import { useProductDataContext } from '@woocommerce/shared-context';
 import { useStyleProps } from '@woocommerce/base-hooks';
+import { __ } from '@wordpress/i18n';
 
 type ProductAverageRatingProps = {
 	className?: string;
@@ -29,7 +30,7 @@ export const Block = (
 		<div className={ className } style={ styleProps.style }>
 			{ Number( product.average_rating ) > 0
 				? product.average_rating
-				: 'No ratings' }
+				: __( 'No ratings', 'woo-gutenberg-products-block' ) }
 		</div>
 	);
 };
