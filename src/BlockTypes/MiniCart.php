@@ -8,6 +8,7 @@ use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
+use Automattic\WooCommerce\Blocks\Utils\Utils;
 
 /**
  * Mini-Cart class.
@@ -70,10 +71,7 @@ class MiniCart extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
-		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_wc_settings' ), 1 );
-		// We need this action to run after enqueue_wc_settings() and dequeue_wc_settings(),
-		// otherwise it might incorrectly consider wc_settings script to be enqueued.
-		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 4 );
+		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 2 );
 	}
 
 	/**
@@ -109,6 +107,15 @@ class MiniCart extends AbstractBlock {
 			'dependencies' => [],
 		];
 		return $key ? $script[ $key ] : $script;
+	}
+
+	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return string[]
+	 */
+	protected function get_block_type_style() {
+		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
 	}
 
 	/**
@@ -149,7 +156,7 @@ class MiniCart extends AbstractBlock {
 
 		if (
 			current_user_can( 'edit_theme_options' ) &&
-			wc_current_theme_is_fse_theme()
+			( wc_current_theme_is_fse_theme() || current_theme_supports( 'block-template-parts' ) )
 		) {
 			$theme_slug = BlockTemplateUtils::theme_has_template_part( 'mini-cart' ) ? wp_get_theme()->get_stylesheet() : BlockTemplateUtils::PLUGIN_SLUG;
 
@@ -191,30 +198,6 @@ class MiniCart extends AbstractBlock {
 		 * @since 5.8.0
 		 */
 		do_action( 'woocommerce_blocks_cart_enqueue_data' );
-	}
-
-	/**
-	 * Function to enqueue `wc-settings` script and dequeue it later on so when
-	 * AssetDataRegistry runs, it appears enqueued- This allows the necessary
-	 * data to be printed to the page.
-	 */
-	public function enqueue_wc_settings() {
-		// Return early if another block has already enqueued `wc-settings`.
-		if ( wp_script_is( 'wc-settings', 'enqueued' ) ) {
-			return;
-		}
-		// We are lazy-loading `wc-settings`, but we need to enqueue it here so
-		// AssetDataRegistry knows it's going to load.
-		wp_enqueue_script( 'wc-settings' );
-		// After AssetDataRegistry function runs, we dequeue `wc-settings`.
-		add_action( 'wp_print_footer_scripts', array( $this, 'dequeue_wc_settings' ), 3 );
-	}
-
-	/**
-	 * Function to dequeue `wc-settings` script.
-	 */
-	public function dequeue_wc_settings() {
-		wp_dequeue_script( 'wc-settings' );
 	}
 
 	/**
@@ -340,11 +323,19 @@ class MiniCart extends AbstractBlock {
 
 		$site_url = site_url() ?? wp_guess_url();
 
+		if ( Utils::wp_version_compare( '6.3', '>=' ) ) {
+			$script_before = $wp_scripts->get_inline_script_data( $script->handle, 'before' );
+			$script_after  = $wp_scripts->get_inline_script_data( $script->handle, 'after' );
+		} else {
+			$script_before = $wp_scripts->print_inline_script( $script->handle, 'before', false );
+			$script_after  = $wp_scripts->print_inline_script( $script->handle, 'after', false );
+		}
+
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
 			'src'          => preg_match( '|^(https?:)?//|', $script->src ) ? $script->src : $site_url . $script->src,
 			'version'      => $script->ver,
-			'before'       => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
-			'after'        => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
+			'before'       => $script_before,
+			'after'        => $script_after,
 			'translations' => $wp_scripts->print_translations( $script->handle, false ),
 		);
 	}

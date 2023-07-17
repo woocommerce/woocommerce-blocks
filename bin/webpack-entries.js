@@ -47,6 +47,13 @@ const blocks = {
 	'product-best-sellers': {},
 	'product-category': {},
 	'product-categories': {},
+	'product-gallery': {
+		isExperimental: true,
+	},
+	'product-gallery-large-image': {
+		customDir: 'product-gallery/inner-blocks/product-gallery-large-image',
+		isExperimental: true,
+	},
 	'product-new': {},
 	'product-on-sale': {},
 	'product-query': {
@@ -58,6 +65,12 @@ const blocks = {
 	'product-top-rated': {},
 	'products-by-attribute': {},
 	'rating-filter': {},
+	'product-rating-stars': {
+		isExperimental: true,
+	},
+	'product-rating-counter': {
+		isExperimental: true,
+	},
 	'reviews-by-category': {
 		customDir: 'reviews/reviews-by-category',
 	},
@@ -104,27 +117,20 @@ const getBlockEntries = ( relativePath ) => {
 
 const entries = {
 	styling: {
-		// @wordpress/components styles
-		'custom-select-control-style':
-			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
-		'snackbar-notice-style':
-			'./node_modules/wordpress-components/src/snackbar/style.scss',
-		'combobox-control-style':
-			'./node_modules/wordpress-components/src/combobox-control/style.scss',
-		'form-token-field-style':
-			'./node_modules/wordpress-components/src/form-token-field/style.scss',
+		// Packages styles
+		'packages-style': glob.sync( './packages/**/index.js' ),
 
-		'general-style': glob.sync( './assets/**/*.scss', {
-			ignore: [
-				// Block styles are added below.
-				'./assets/js/blocks/*/*.scss',
-			],
-		} ),
+		// Shared blocks code
+		'wc-blocks': './assets/js/index.js',
 
-		'packages-style': glob.sync( './packages/**/*.scss' ),
-
-		'reviews-style': './assets/js/blocks/reviews/editor.scss',
-		...getBlockEntries( '**/*.scss' ),
+		// Blocks
+		'product-image-gallery':
+			'./assets/js/atomic/blocks/product-elements/product-image-gallery/index.ts',
+		'product-reviews':
+			'./assets/js/atomic/blocks/product-elements/product-reviews/index.tsx',
+		'product-details':
+			'./assets/js/atomic/blocks/product-elements/product-details/index.tsx',
+		...getBlockEntries( '{index,block,frontend}.{t,j}s{,x}' ),
 	},
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
