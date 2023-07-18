@@ -1,26 +1,36 @@
 .wc-block-order-confirmation-totals {
-	.woocommerce-order-details table,
-	.woocommerce-order-details table.shop_table {
+	table {
 		width: 100%;
 		border: 1px solid currentColor;
-		border-bottom: 0;
-
-		thead {
-			text-transform: uppercase;
-		}
-
-		th {
-			font-weight: bold;
-		}
-
+		border-collapse: collapse;
 		th,
 		td {
-			border-style: solid;
-			border-color: currentColor;
-			border-width: 0 0 1px 0;
-			padding: $gap-small;
+			border: 1px solid currentColor;
+			border-right-width: 0;
+			border-left-width: 0;
+			padding: $gap;
 			margin: 0;
 			text-align: left;
+			font-weight: inherit;
+		}
+		thead {
+			font-weight: bold;
+		}
+		.wc-block-order-confirmation-totals__total {
+			font-variant-numeric: tabular-nums;
+			text-align: right;
+		}
+	}
+	table[style*="border-width"] {
+		> *,
+		tr,
+		th,
+		td {
+			border-style: inherit;
+			border-width: inherit;
+			border-color: inherit;
+			border-right-width: 0;
+			border-left-width: 0;
 		}
 	}
 }
