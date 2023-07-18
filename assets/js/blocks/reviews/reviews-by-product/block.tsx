@@ -23,7 +23,7 @@ import {
 	getSharedReviewContentControls,
 	getSharedReviewListControls,
 } from '../edit-utils.js';
-import { ReviewsByProductEditorProps } from './types';
+import type { ReviewsByProductEditorProps, SearchListItemProps } from './types';
 
 const ReviewsByProductEditor = ( {
 	attributes,
@@ -32,9 +32,7 @@ const ReviewsByProductEditor = ( {
 }: ReviewsByProductEditorProps ) => {
 	const { editMode, productId } = attributes;
 
-	const renderProductControlItem = ( args ) => {
-		const { item = 0 } = args;
-
+	const renderProductControlItem = ( args: SearchListItemProps ) => {
 		return (
 			<SearchListItem
 				{ ...args }
@@ -43,21 +41,21 @@ const ReviewsByProductEditor = ( {
 					_n(
 						'%d review',
 						'%d reviews',
-						item.review_count,
+						args.reviewCount,
 						'woo-gutenberg-products-block'
 					),
-					item.review_count
+					args.reviewCount
 				) }
 				aria-label={ sprintf(
 					/* translators: %1$s is the item name, and %2$d is the number of reviews for the item. */
 					_n(
 						'%1$s, has %2$d review',
 						'%1$s, has %2$d reviews',
-						item.review_count,
+						args.reviewCount,
 						'woo-gutenberg-products-block'
 					),
-					item.name,
-					item.review_count
+					args.name,
+					args.reviewCount
 				) }
 			/>
 		);
