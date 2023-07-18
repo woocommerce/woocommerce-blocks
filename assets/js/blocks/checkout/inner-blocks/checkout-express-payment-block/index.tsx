@@ -7,7 +7,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import expressIcon from './icon';
+import expressIcon from '../../../cart-checkout-shared/icon';
 import { Edit, Save } from './edit';
 
 registerBlockType( 'woocommerce/checkout-express-payment-block', {
