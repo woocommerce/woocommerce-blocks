@@ -16,18 +16,18 @@
 				<!-- wp:group {"style":{"spacing":{"margin":{"top":"20px","bottom":"20px"}}},"layout":{"type":"flex","orientation":"vertical"}} -->
 				<div class="wp-block-group" style="margin-top:20px;margin-bottom:20px;">
 					<!-- wp:heading -->
-					<h2 class="wp-block-heading">Endless Tee's</h2>
+					<h2 class="wp-block-heading"><?php esc_attr_e( "Endless Tee's", 'woo-gutenberg-products-block' ); ?></h2>
 					<!-- /wp:heading -->
 
 					<!-- wp:paragraph -->
-					<p>With high-quality materials and expert craftsmanship, our products are built to last and exceed your expectations.</p>
+					<p><?php esc_attr_e( 'With high-quality materials and expert craftsmanship, our products are built to last and exceed your expectations.', 'woo-gutenberg-products-block' ); ?></p>
 					<!-- /wp:paragraph -->
 
 					<!-- wp:buttons -->
 					<div class="wp-block-buttons">
 						<!-- wp:button {"textAlign":"left","style":{"color":{"background":"#ffffff","text":"#000000"}}} -->
 						<div class="wp-block-button has-custom-font-size">
-							<a class="wp-block-button__link has-text-color has-background has-text-align-left wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" style="color:#000000;background-color:#ffffff">Shop now</a>
+							<a class="wp-block-button__link has-text-color has-background has-text-align-left wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" style="color:#000000;background-color:#ffffff"><?php esc_attr_e( 'Shop now', 'woo-gutenberg-products-block' ); ?></a>
 						</div>
 						<!-- /wp:button -->
 					</div>
@@ -46,23 +46,11 @@
 	<!-- wp:column {"verticalAlignment":"center","width":"33.33%"} -->
 	<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:33.33%">
 		<!-- wp:paragraph -->
-		<p><strong>Waterproof Membrane</strong></p>
+		<p><strong><?php esc_attr_e( 'Waterproof Membrane', 'woo-gutenberg-products-block' ); ?></strong></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:paragraph -->
-		<p>Never worry about the weather again. Keep yourself dry, warm, and looking stylish.</p>
-		<!-- /wp:paragraph -->
-
-		<!-- wp:separator {"className":"is-style-wide"} -->
-		<hr class="wp-block-separator has-alpha-channel-opacity is-style-wide" />
-		<!-- /wp:separator -->
-
-		<!-- wp:paragraph -->
-		<p><strong>Expert Craftsmanship</strong></p>
-		<!-- /wp:paragraph -->
-
-		<!-- wp:paragraph -->
-		<p>Our products are made with expert craftsmanship and attention to detail, ensuring that every stitch and seam is perfect.</p>
+		<p><?php esc_attr_e( 'Never worry about the weather again. Keep yourself dry, warm, and looking stylish.', 'woo-gutenberg-products-block' ); ?></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:separator {"className":"is-style-wide"} -->
@@ -70,11 +58,11 @@
 		<!-- /wp:separator -->
 
 		<!-- wp:paragraph -->
-		<p><strong>Durable Fabric</strong></p>
+		<p><strong><?php esc_attr_e( 'Expert Craftsmanship', 'woo-gutenberg-products-block' ); ?></strong></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:paragraph -->
-		<p>We use only the highest-quality materials in our products, ensuring that they look great and last for years to come.</p>
+		<p><?php esc_attr_e( 'Our products are made with expert craftsmanship and attention to detail, ensuring that every stitch and seam is perfect.', 'woo-gutenberg-products-block' ); ?></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:separator {"className":"is-style-wide"} -->
@@ -82,11 +70,23 @@
 		<!-- /wp:separator -->
 
 		<!-- wp:paragraph -->
-		<p><strong>Sustainable Dyes</strong></p>
+		<p><strong><?php esc_attr_e( 'Durable Fabric', 'woo-gutenberg-products-block' ); ?></strong></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:paragraph -->
-		<p>From bold prints and colors to intricate details and textures, our products are a perfect combination of style and function.</p>
+		<p><?php esc_attr_e( 'We use only the highest-quality materials in our products, ensuring that they look great and last for years to come.', 'woo-gutenberg-products-block' ); ?></p>
+		<!-- /wp:paragraph -->
+
+		<!-- wp:separator {"className":"is-style-wide"} -->
+		<hr class="wp-block-separator has-alpha-channel-opacity is-style-wide" />
+		<!-- /wp:separator -->
+
+		<!-- wp:paragraph -->
+		<p><strong><?php esc_attr_e( 'Sustainable Dyes', 'woo-gutenberg-products-block' ); ?></strong></p>
+		<!-- /wp:paragraph -->
+
+		<!-- wp:paragraph -->
+		<p><?php esc_attr_e( 'From bold prints and colors to intricate details and textures, our products are a perfect combination of style and function.', 'woo-gutenberg-products-block' ); ?></p>
 		<!-- /wp:paragraph -->
 	</div>
 	<!-- /wp:column -->
