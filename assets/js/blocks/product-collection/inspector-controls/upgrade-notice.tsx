@@ -3,12 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Notice, Button } from '@wordpress/components';
-import { BlockEditProps } from '@wordpress/blocks';
-
-/**
- * Internal dependencies
- */
-import { ProductCollectionAttributes } from '../types';
+import { useLocalStorageState } from '@woocommerce/base-hooks';
+import { useEffect } from '@wordpress/element';
 
 const FormattedNotice = ( { notice }: { notice: string } ) => {
 	const strongText = 'Product Collection';
@@ -23,12 +19,29 @@ const FormattedNotice = ( { notice }: { notice: string } ) => {
 	);
 };
 
-const UpgradeNotice = (
-	props: BlockEditProps< ProductCollectionAttributes > & {
-		revertMigration: () => void;
-	}
-) => {
-	const { displayUpgradeNotice } = props.attributes;
+type UpgradeNoticeState = 'notseen' | 'seen' | 'reverted';
+type UpgradeNotice = {
+	state: UpgradeNoticeState;
+	id?: string;
+};
+type UpgradeNoticeProps = {
+	clientId: string;
+	isSelected: boolean;
+	revertMigration: () => void;
+};
+const initialUpgradeNoticeState = { state: 'notseen' };
+const UpgradeNotice = ( {
+	clientId,
+	isSelected,
+	revertMigration,
+}: UpgradeNoticeProps ) => {
+	const [ upgradeNoticeState, setUpgradeNoticeState ] =
+		useLocalStorageState< UpgradeNoticeState >(
+			`wc-blocks_upgraded-products-to-product-collection`,
+			initialUpgradeNoticeState
+		);
+
+	const { state, id } = upgradeNoticeState;
 	const notice = __(
 		'Products (Beta) block was upgraded to Product Collection, an updated version with new features and simplified settings.',
 		'woo-gutenberg-products-block'
@@ -39,19 +52,38 @@ const UpgradeNotice = (
 		'woo-gutenberg-products-block'
 	);
 
+	useEffect( () => {
+		if ( state === 'reverted' ) {
+			return revertMigration;
+		}
+
+		return () => {
+			window.localStorage.setItem(
+				`wc-blocks_upgraded-products-to-product-collection`,
+				JSON.stringify( {
+					state: 'seen',
+					id: clientId,
+				} )
+			);
+		};
+	}, [ upgradeNoticeState, clientId, isSelected, state, revertMigration ] );
+
 	const handleRemove = () => {
-		// @todo: this logic needs to be extended to be hidden for all
-		// Product Collection blocks and whole store
-		props.setAttributes( {
-			displayUpgradeNotice: false,
+		setUpgradeNoticeState( {
+			state: 'seen',
+			id: clientId,
 		} );
 	};
 
 	const handleClick = () => {
-		props.revertMigration();
+		setUpgradeNoticeState( {
+			state: 'reverted',
+			id: clientId,
+		} );
 	};
 
-	return displayUpgradeNotice ? (
+	return ( displayUpgradeNotice && state === 'notseen' ) ||
+		( state === 'seen' && clientId === id ) ? (
 		<Notice onRemove={ handleRemove }>
 			<FormattedNotice notice={ notice } />
 			<br />
