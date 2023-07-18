@@ -34,6 +34,8 @@ export interface ValidatedTextInputProps
 	customValidation?:
 		| ( ( inputObject: HTMLInputElement ) => boolean )
 		| undefined;
+	// Custom formatted to format values as they are typed.
+	customFormatter?: ( value: string ) => string;
 	// Whether validation should run when focused - only has an effect when focusOnMount is also true.
 	validateOnMount?: boolean | undefined;
 }

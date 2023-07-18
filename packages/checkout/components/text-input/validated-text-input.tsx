@@ -30,6 +30,7 @@ const ValidatedTextInput = ( {
 	errorMessage: passedErrorMessage = '',
 	value: initialValue = '',
 	customValidation = () => true,
+	customFormatter = ( value ) => value,
 	label,
 	validateOnMount = true,
 	...rest
@@ -138,9 +139,9 @@ const ValidatedTextInput = ( {
 			validateInput( true );
 
 			// Set state.
-			setValue( newValue );
+			setValue( customFormatter( newValue ) );
 		},
-		[ errorIdString, hideValidationError, validateInput ]
+		[ errorIdString, hideValidationError, validateInput, customFormatter ]
 	);
 
 	/**

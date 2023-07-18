@@ -60,7 +60,7 @@ const AddressForm = ( {
 		);
 	}, [ currentFields, fieldConfig, values.country ] );
 
-	// Clear values for hidden fields.
+	// Clear values and validation for fields when fields change.
 	useEffect( () => {
 		addressFormFields.forEach( ( field ) => {
 			if ( field.hidden && values[ field.key ] ) {
@@ -69,18 +69,13 @@ const AddressForm = ( {
 					[ field.key ]: '',
 				} );
 			}
-		} );
-	}, [ addressFormFields, onChange, values ] );
-
-	// Clear postcode validation error if postcode is not required.
-	useEffect( () => {
-		addressFormFields.forEach( ( field ) => {
 			if ( field.key === 'postcode' && field.required === false ) {
 				clearPostcodeValidationError( type );
 			}
 		} );
-	}, [ addressFormFields, type ] );
+	}, [ addressFormFields, onChange, values, type ] );
 
+	// Maybe validate country when other fields change so user is notified that it's required.
 	useEffect( () => {
 		if ( type === 'shipping' ) {
 			validateShippingCountry(
@@ -171,12 +166,15 @@ const AddressForm = ( {
 						onChange={ ( newValue: string ) =>
 							onChange( {
 								...values,
-								[ field.key ]:
-									field.key === 'postcode'
-										? newValue.trimStart().toUpperCase()
-										: newValue,
+								state: newValue,
 							} )
 						}
+						customFormatter={ ( value: string ) => {
+							if ( field.key === 'postcode' ) {
+								return value.trimStart().toUpperCase();
+							}
+							return value;
+						} }
 						customValidation={ ( inputObject: HTMLInputElement ) =>
 							customValidationHandler(
 								inputObject,
