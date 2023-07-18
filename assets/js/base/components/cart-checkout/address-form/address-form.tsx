@@ -14,7 +14,7 @@ import { useEffect, useMemo } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
 import { useShallowEqual } from '@woocommerce/base-hooks';
 import { defaultAddressFields } from '@woocommerce/settings';
-import { useSelect, useDispatch, dispatch } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
@@ -24,6 +24,7 @@ import { AddressFormProps, FieldType, FieldConfig } from './types';
 import prepareAddressFields from './prepare-address-fields';
 import validateShippingCountry from './validate-shipping-country';
 import customValidationHandler from './custom-validation-handler';
+import { clearPostcodeValidationError } from './utils';
 
 const defaultFields = Object.keys(
 	defaultAddressFields
@@ -75,16 +76,10 @@ const AddressForm = ( {
 	useEffect( () => {
 		addressFormFields.forEach( ( field ) => {
 			if ( field.key === 'postcode' && field.required === false ) {
-				const store = dispatch( 'wc/store/validation' );
-
-				if ( type === 'shipping' ) {
-					store.clearValidationError( 'shipping_postcode' );
-				} else {
-					store.clearValidationError( 'billing_postcode' );
-				}
+				clearPostcodeValidationError( type );
 			}
 		} );
-	}, [ addressFormFields, type, clearValidationError ] );
+	}, [ addressFormFields, type ] );
 
 	useEffect( () => {
 		if ( type === 'shipping' ) {
