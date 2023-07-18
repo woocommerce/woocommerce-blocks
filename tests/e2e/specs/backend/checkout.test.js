@@ -154,7 +154,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			describe( 'Company input', () => {
-				const selector = `${ block.class } #shipping-company`;
+				const selector = `${ block.class } #shipping-0-company`;
 
 				it( 'visibility can be toggled', async () => {
 					await expect( 'Company' ).toToggleElement( selector );
@@ -172,7 +172,7 @@ describe( `${ block.name } Block`, () => {
 
 			describe( 'Apartment input', () => {
 				it( 'visibility can be toggled', async () => {
-					const selector = `${ block.class } #shipping-address_2`;
+					const selector = `${ block.class } #shipping-0-address_2`;
 					await expect( 'Apartment, suite, etc.' ).toToggleElement(
 						selector
 					);
@@ -180,7 +180,7 @@ describe( `${ block.name } Block`, () => {
 			} );
 
 			describe( 'Phone input', () => {
-				const selector = `${ block.class } #shipping-phone`;
+				const selector = `${ block.class } #shipping-0-phone`;
 
 				it( 'visibility can be toggled', async () => {
 					await expect( 'Phone' ).toToggleElement( selector );

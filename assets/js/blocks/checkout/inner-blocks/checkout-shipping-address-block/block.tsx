@@ -113,7 +113,6 @@ const Block = ( {
 			<AddressFormWrapperComponent>
 				<StoreNoticesContainer context={ noticeContext } />
 				<AddressForm
-					id="shipping"
 					type="shipping"
 					onChange={ ( values: Partial< ShippingAddress > ) => {
 						setShippingAddress( values );

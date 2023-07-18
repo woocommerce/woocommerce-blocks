@@ -52,6 +52,7 @@ const ShippingCalculatorAddress = ( {
 				fields={ addressFields }
 				onChange={ setAddress }
 				values={ address }
+				type="shipping"
 			/>
 			<Button
 				className="wc-block-components-shipping-calculator-address__button"

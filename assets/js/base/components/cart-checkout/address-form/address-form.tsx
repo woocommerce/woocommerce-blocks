@@ -14,51 +14,30 @@ import { useEffect, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { withInstanceId } from '@wordpress/compose';
 import { useShallowEqual } from '@woocommerce/base-hooks';
-import {
-	AddressField,
-	AddressFields,
-	AddressType,
-	defaultAddressFields,
-	ShippingAddress,
-} from '@woocommerce/settings';
+import { defaultAddressFields } from '@woocommerce/settings';
 import { useSelect, useDispatch, dispatch } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
+import { AddressFormProps, FieldType, FieldConfig } from './types';
 import prepareAddressFields from './prepare-address-fields';
 import validateShippingCountry from './validate-shipping-country';
 
-interface AddressFormProps {
-	// Id for component.
-	id?: string;
-	// Unique id for form.
-	instanceId: string;
-	// Array of fields in form.
-	fields: ( keyof AddressFields )[];
-	// Field configuration for fields in form.
-	fieldConfig?: Record< keyof AddressFields, Partial< AddressField > >;
-	// Called with the new address data when the address form changes.
-	onChange: ( newValue: ShippingAddress ) => void;
-	// Type of form.
-	type?: AddressType;
-	// Values for fields.
-	values: ShippingAddress;
-}
+const defaultFields = Object.keys(
+	defaultAddressFields
+) as unknown as FieldType[];
 
 /**
  * Checkout address form.
  */
 const AddressForm = ( {
-	id = '',
-	fields = Object.keys(
-		defaultAddressFields
-	) as unknown as ( keyof AddressFields )[],
-	fieldConfig = {} as Record< keyof AddressFields, Partial< AddressField > >,
 	instanceId,
-	onChange,
 	type = 'shipping',
+	fields = defaultFields,
+	fieldConfig = {} as FieldConfig,
+	onChange,
 	values,
 }: AddressFormProps ): JSX.Element => {
 	const { setValidationErrors, clearValidationError } =
@@ -128,8 +107,6 @@ const AddressForm = ( {
 		type,
 	] );
 
-	id = id || instanceId;
-
 	/**
 	 * Custom validation handler for fields with field specific handling.
 	 */
@@ -160,7 +137,10 @@ const AddressForm = ( {
 	};
 
 	return (
-		<div id={ id } className="wc-block-components-address-form">
+		<div
+			id={ `${ type }-${ instanceId }` }
+			className="wc-block-components-address-form"
+		>
 			{ addressFormFields.map( ( field ) => {
 				if ( field.hidden ) {
 					return null;
@@ -177,7 +157,7 @@ const AddressForm = ( {
 					return (
 						<Tag
 							key={ field.key }
-							id={ `${ id }-${ field.key }` }
+							id={ `${ type }-${ instanceId }-${ field.key }` }
 							errorId={ errorId }
 							label={
 								field.required
@@ -207,7 +187,7 @@ const AddressForm = ( {
 					return (
 						<Tag
 							key={ field.key }
-							id={ `${ id }-${ field.key }` }
+							id={ `${ type }-${ instanceId }-${ field.key }` }
 							errorId={ errorId }
 							country={ values.country }
 							label={
@@ -232,7 +212,7 @@ const AddressForm = ( {
 				return (
 					<ValidatedTextInput
 						key={ field.key }
-						id={ `${ id }-${ field.key }` }
+						id={ `${ type }-${ instanceId }-${ field.key }` }
 						errorId={ errorId }
 						className={ `wc-block-components-address-form__${ field.key }` }
 						label={
