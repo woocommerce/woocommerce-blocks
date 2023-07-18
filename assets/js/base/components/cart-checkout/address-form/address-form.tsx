@@ -23,43 +23,12 @@ import {
 } from '@woocommerce/settings';
 import { useSelect, useDispatch, dispatch } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
-import { FieldValidationStatus } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import prepareAddressFields from './prepare-address-fields';
-
-// If it's the shipping address form and the user starts entering address
-// values without having set the country first, show an error.
-const validateShippingCountry = (
-	values: ShippingAddress,
-	setValidationErrors: (
-		errors: Record< string, FieldValidationStatus >
-	) => void,
-	clearValidationError: ( error: string ) => void,
-	hasValidationError: boolean
-): void => {
-	const validationErrorId = 'shipping_country';
-	if (
-		! hasValidationError &&
-		! values.country &&
-		( values.city || values.state || values.postcode )
-	) {
-		setValidationErrors( {
-			[ validationErrorId ]: {
-				message: __(
-					'Please select a country to calculate rates.',
-					'woo-gutenberg-products-block'
-				),
-				hidden: false,
-			},
-		} );
-	}
-	if ( hasValidationError && values.country ) {
-		clearValidationError( validationErrorId );
-	}
-};
+import validateShippingCountry from './validate-shipping-country';
 
 interface AddressFormProps {
 	// Id for component.
@@ -70,7 +39,7 @@ interface AddressFormProps {
 	fields: ( keyof AddressFields )[];
 	// Field configuration for fields in form.
 	fieldConfig?: Record< keyof AddressFields, Partial< AddressField > >;
-	// Function to all for an form onChange event.
+	// Called with the new address data when the address form changes.
 	onChange: ( newValue: ShippingAddress ) => void;
 	// Type of form.
 	type?: AddressType;
@@ -92,13 +61,13 @@ const AddressForm = ( {
 	type = 'shipping',
 	values,
 }: AddressFormProps ): JSX.Element => {
-	const validationErrorId = 'shipping_country';
 	const { setValidationErrors, clearValidationError } =
 		useDispatch( VALIDATION_STORE_KEY );
 
 	const countryValidationError = useSelect( ( select ) => {
-		const store = select( VALIDATION_STORE_KEY );
-		return store.getValidationError( validationErrorId );
+		return select( VALIDATION_STORE_KEY ).getValidationError(
+			'shipping_country'
+		);
 	} );
 
 	const currentFields = useShallowEqual( fields );
