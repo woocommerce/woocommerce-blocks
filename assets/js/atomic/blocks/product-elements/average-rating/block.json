@@ -5,8 +5,7 @@
 	"description": "Display the average rating of a product",
 	"attributes": {
 		"textAlign": {
-			"type": "string",
-			"default": ""
+			"type": "string"
 		}
 	},
 	"category": "woocommerce",

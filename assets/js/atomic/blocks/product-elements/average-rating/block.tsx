@@ -5,15 +5,14 @@ import classnames from 'classnames';
 import { useProductDataContext } from '@woocommerce/shared-context';
 import { useStyleProps } from '@woocommerce/base-hooks';
 import { __ } from '@wordpress/i18n';
+import { withProductDataContext } from '@woocommerce/shared-hocs';
 
 type ProductAverageRatingProps = {
 	className?: string;
 	textAlign?: string;
 };
 
-export const Block = (
-	props: ProductAverageRatingProps
-): JSX.Element | undefined => {
+export const Block = ( props: ProductAverageRatingProps ): JSX.Element => {
 	const { textAlign } = props;
 	const styleProps = useStyleProps( props );
 	const { product } = useProductDataContext();
@@ -35,4 +34,4 @@ export const Block = (
 	);
 };
 
-export default Block;
+export default withProductDataContext( Block );
