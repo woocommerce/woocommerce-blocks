@@ -18,6 +18,7 @@ import {
 /**
  * Internal dependencies
  */
+import metadata from '../block.json';
 import { ProductCollectionAttributes } from '../types';
 import { setQueryAttribute } from '../utils';
 import { DEFAULT_FILTERS, getDefaultSettings } from '../constants';
@@ -107,7 +108,7 @@ export default ProductCollectionInspectorControls;
 
 const isProductCollection = (
 	block: EditorBlock< ProductCollectionAttributes >
-) => block.name === 'woocommerce/product-collection';
+) => block.name === metadata.name;
 
 export const withUpgradeNoticeControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
