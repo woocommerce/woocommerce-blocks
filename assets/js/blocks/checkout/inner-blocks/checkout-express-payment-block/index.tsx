@@ -14,7 +14,7 @@ registerBlockType( 'woocommerce/checkout-express-payment-block', {
 	icon: {
 		src: (
 			<Icon
-				style={ { fill: 'none' } }
+				style={ { fill: 'none' } } // this is needed for this particular svg
 				icon={ expressIcon }
 				className="wc-block-editor-components-block-icon"
 			/>
