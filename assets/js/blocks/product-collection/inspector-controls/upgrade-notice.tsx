@@ -19,7 +19,7 @@ const FormattedNotice = ( { notice }: { notice: string } ) => {
 	);
 };
 
-type UpgradeNoticeState = 'notseen' | 'seen' | 'reverted';
+type UpgradeNoticeState = 'notseen' | 'seeing' | 'seen' | 'reverted';
 type UpgradeNotice = {
 	state: UpgradeNoticeState;
 	id?: string;
@@ -53,20 +53,38 @@ const UpgradeNotice = ( {
 	);
 
 	useEffect( () => {
+		if ( state === 'notseen' && isSelected ) {
+			setUpgradeNoticeState( {
+				state: 'seeing',
+				id: clientId,
+			} );
+			return;
+		}
+
+		if ( state === 'seeing' && clientId === id && ! isSelected ) {
+			setUpgradeNoticeState( {
+				state: 'seen',
+				id: clientId,
+			} );
+			return;
+		}
+
+		if ( state === 'seen' ) {
+			return;
+		}
+
 		if ( state === 'reverted' ) {
 			return revertMigration;
 		}
-
-		return () => {
-			window.localStorage.setItem(
-				`wc-blocks_upgraded-products-to-product-collection`,
-				JSON.stringify( {
-					state: 'seen',
-					id: clientId,
-				} )
-			);
-		};
-	}, [ upgradeNoticeState, clientId, isSelected, state, revertMigration ] );
+	}, [
+		id,
+		clientId,
+		isSelected,
+		state,
+		upgradeNoticeState,
+		setUpgradeNoticeState,
+		revertMigration,
+	] );
 
 	const handleRemove = () => {
 		setUpgradeNoticeState( {
@@ -82,8 +100,7 @@ const UpgradeNotice = ( {
 		} );
 	};
 
-	return ( displayUpgradeNotice && state === 'notseen' ) ||
-		( state === 'seen' && clientId === id ) ? (
+	return state === 'notseen' || state === 'seeing' ? (
 		<Notice onRemove={ handleRemove }>
 			<FormattedNotice notice={ notice } />
 			<br />
