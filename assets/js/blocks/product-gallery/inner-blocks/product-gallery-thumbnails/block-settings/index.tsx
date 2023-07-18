@@ -46,7 +46,7 @@ export const BlockSettings = ( {
 	attributes,
 	setAttributes,
 }: ThumbnailSettingProps ) => {
-	const { layout = 'off', numberOfThumbnails = 3 } = attributes;
+	const { layout = 'left', numberOfThumbnails = 3 } = attributes;
 	const maxNumberOfThumbnails = 8;
 	const minNumberOfThumbnails = 2;
 
@@ -58,7 +58,7 @@ export const BlockSettings = ( {
 				<ToggleGroupControl
 					className="wc-block-editor-product-gallery-thumbnails__layout-toggle"
 					isBlock={ true }
-					label={ __( 'Layout', 'woo-gutenberg-products-block' ) }
+					label={ __( 'Thumbnails', 'woo-gutenberg-products-block' ) }
 					value={ layout }
 					help={ layoutHelp[ layout ] }
 					onChange={ ( value: string ) =>
@@ -82,22 +82,24 @@ export const BlockSettings = ( {
 						label={ <Icon size={ 32 } icon={ thumbnailsRight } /> }
 					/>
 				</ToggleGroupControl>
-				<RangeControl
-					label={ __(
-						'Number of Thumbnails',
-						'woo-gutenberg-products-block'
-					) }
-					value={ numberOfThumbnails }
-					onChange={ ( value: number ) =>
-						setAttributes( { numberOfThumbnails: value } )
-					}
-					help={ __(
-						'Choose how many thumbnails (2-8) will display. If more images exist, a “View all” button will display.',
-						'woo-gutenberg-products-block'
-					) }
-					max={ maxNumberOfThumbnails }
-					min={ minNumberOfThumbnails }
-				/>
+				{ layout !== 'off' && (
+					<RangeControl
+						label={ __(
+							'Number of Thumbnails',
+							'woo-gutenberg-products-block'
+						) }
+						value={ numberOfThumbnails }
+						onChange={ ( value: number ) =>
+							setAttributes( { numberOfThumbnails: value } )
+						}
+						help={ __(
+							'Choose how many thumbnails (2-8) will display. If more images exist, a “View all” button will display.',
+							'woo-gutenberg-products-block'
+						) }
+						max={ maxNumberOfThumbnails }
+						min={ minNumberOfThumbnails }
+					/>
+				) }
 			</PanelBody>
 		</InspectorControls>
 	);

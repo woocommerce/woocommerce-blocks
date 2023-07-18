@@ -2,8 +2,19 @@
  * External dependencies
  */
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { InnerBlockTemplate } from '@wordpress/blocks';
 
 export const Edit = (): JSX.Element => {
+	const TEMPLATE: InnerBlockTemplate[] = [
+		[
+			'core/group',
+			{ layout: { type: 'flex' } },
+			[
+				[ 'woocommerce/product-gallery-large-image' ],
+				[ 'woocommerce/product-gallery-thumbnails' ],
+			],
+		],
+	];
 	const blockProps = useBlockProps();
 
 	return (
@@ -13,7 +24,7 @@ export const Edit = (): JSX.Element => {
 					'woocommerce/product-gallery-large-image',
 					'woocommerce/product-gallery-thumbnails',
 				] }
-				templateLock={ false }
+				template={ TEMPLATE }
 			/>
 		</div>
 	);
