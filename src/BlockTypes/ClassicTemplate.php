@@ -54,7 +54,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			foreach ( $styles as $handle => $style ) {
 				wp_enqueue_style(
 					$handle,
-					substr( $style['src'], 0, 2 ) === '//' ? 'https:' . $style['src'] : $style['src'],
+					set_url_scheme( $style['src'] ),
 					$style['deps'],
 					$style['version'],
 					$style['media']
