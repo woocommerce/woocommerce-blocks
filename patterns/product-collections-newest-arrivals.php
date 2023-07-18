@@ -9,23 +9,31 @@
 
 <!-- wp:group {"align":"wide","layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignwide">
-	<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
-	<div class="wp-block-group alignwide">
-		<!-- wp:heading {"level":3} -->
-		<h3 class="wp-block-heading">Our newest arrivals</h3>
-		<!-- /wp:heading -->
-
-		<!-- wp:buttons -->
-		<div class="wp-block-buttons">
-			<!-- wp:button -->
-			<div class="wp-block-button">
-				<a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">More new products</a>
-			</div>
-			<!-- /wp:button -->
+	<!-- wp:columns {"align":"wide"} -->
+	<div class="wp-block-columns alignwide">
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:heading {"level":3} -->
+			<h3 class="wp-block-heading">Our newest arrivals</h3>
+			<!-- /wp:heading -->
 		</div>
-		<!-- /wp:buttons -->
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column">
+			<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"right"}} -->
+			<div class="wp-block-buttons">
+				<!-- wp:button -->
+				<div class="wp-block-button">
+					<a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">More new products</a>
+				</div>
+				<!-- /wp:button -->
+			</div>
+			<!-- /wp:buttons -->
+		</div>
+		<!-- /wp:column -->
 	</div>
-	<!-- /wp:group -->
+	<!-- /wp:columns -->
 
 	<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"nowrap"}} -->
 	<div class="wp-block-group alignwide">
