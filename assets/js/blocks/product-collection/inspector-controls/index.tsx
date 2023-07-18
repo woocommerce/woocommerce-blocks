@@ -105,14 +105,17 @@ const ProductCollectionInspectorControls = (
 
 export default ProductCollectionInspectorControls;
 
+const isProductCollection = (
+	block: EditorBlock< ProductCollectionAttributes >
+) => block.name === 'woocommerce/product-collection';
+
 export const withUpgradeNoticeControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
-	( props: BlockEditProps< ProductCollectionAttributes > ) => {
-		const { displayUpgradeNotice } = props.attributes;
-		return (
+	( props: EditorBlock< ProductCollectionAttributes > ) => {
+		return isProductCollection( props ) ? (
 			<>
 				<InspectorControls>
-					{ displayUpgradeNotice && (
+					{ props.attributes.displayUpgradeNotice && (
 						<UpgradeNotice
 							{ ...props }
 							revertMigration={
@@ -123,6 +126,8 @@ export const withUpgradeNoticeControls =
 				</InspectorControls>
 				<BlockEdit { ...props } />
 			</>
+		) : (
+			<BlockEdit { ...props } />
 		);
 	};
 
