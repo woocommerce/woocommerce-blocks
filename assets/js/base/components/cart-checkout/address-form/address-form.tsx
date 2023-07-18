@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { ValidatedTextInput, isPostcode } from '@woocommerce/blocks-checkout';
+import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
 import {
 	BillingCountryInput,
 	ShippingCountryInput,
@@ -11,7 +11,6 @@ import {
 	ShippingStateInput,
 } from '@woocommerce/base-components/state-input';
 import { useEffect, useMemo } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 import { withInstanceId } from '@wordpress/compose';
 import { useShallowEqual } from '@woocommerce/base-hooks';
 import { defaultAddressFields } from '@woocommerce/settings';
@@ -24,6 +23,7 @@ import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import { AddressFormProps, FieldType, FieldConfig } from './types';
 import prepareAddressFields from './prepare-address-fields';
 import validateShippingCountry from './validate-shipping-country';
+import customValidationHandler from './custom-validation-handler';
 
 const defaultFields = Object.keys(
 	defaultAddressFields
@@ -79,9 +79,7 @@ const AddressForm = ( {
 
 				if ( type === 'shipping' ) {
 					store.clearValidationError( 'shipping_postcode' );
-				}
-
-				if ( type === 'billing' ) {
+				} else {
 					store.clearValidationError( 'billing_postcode' );
 				}
 			}
@@ -107,35 +105,6 @@ const AddressForm = ( {
 		type,
 	] );
 
-	/**
-	 * Custom validation handler for fields with field specific handling.
-	 */
-	const customValidationHandler = (
-		inputObject: HTMLInputElement,
-		field: string,
-		customValues: {
-			country: string;
-		}
-	): boolean => {
-		if (
-			field === 'postcode' &&
-			customValues.country &&
-			! isPostcode( {
-				postcode: inputObject.value,
-				country: customValues.country,
-			} )
-		) {
-			inputObject.setCustomValidity(
-				__(
-					'Please enter a valid postcode',
-					'woo-gutenberg-products-block'
-				)
-			);
-			return false;
-		}
-		return true;
-	};
-
 	return (
 		<div
 			id={ `${ type }-${ instanceId }` }
@@ -146,8 +115,16 @@ const AddressForm = ( {
 					return null;
 				}
 
-				// Create a consistent error ID based on the field key and type
-				const errorId = `${ type }_${ field.key }`;
+				const fieldProps = {
+					id: `${ type }-${ instanceId }-${ field.key }`,
+					errorId: `${ type }_${ field.key }`,
+					label: field.required ? field.label : field.optionalLabel,
+					autoCapitalize: field.autocapitalize,
+					autoComplete: field.autocomplete,
+					errorMessage: field.errorMessage,
+					required: field.required,
+					className: `wc-block-components-address-form__${ field.key }`,
+				};
 
 				if ( field.key === 'country' ) {
 					const Tag =
@@ -157,15 +134,8 @@ const AddressForm = ( {
 					return (
 						<Tag
 							key={ field.key }
-							id={ `${ type }-${ instanceId }-${ field.key }` }
-							errorId={ errorId }
-							label={
-								field.required
-									? field.label
-									: field.optionalLabel
-							}
+							{ ...fieldProps }
 							value={ values.country }
-							autoComplete={ field.autocomplete }
 							onChange={ ( newValue ) =>
 								onChange( {
 									...values,
@@ -173,8 +143,6 @@ const AddressForm = ( {
 									state: '',
 								} )
 							}
-							errorMessage={ field.errorMessage }
-							required={ field.required }
 						/>
 					);
 				}
@@ -187,24 +155,15 @@ const AddressForm = ( {
 					return (
 						<Tag
 							key={ field.key }
-							id={ `${ type }-${ instanceId }-${ field.key }` }
-							errorId={ errorId }
+							{ ...fieldProps }
 							country={ values.country }
-							label={
-								field.required
-									? field.label
-									: field.optionalLabel
-							}
 							value={ values.state }
-							autoComplete={ field.autocomplete }
 							onChange={ ( newValue ) =>
 								onChange( {
 									...values,
 									state: newValue,
 								} )
 							}
-							errorMessage={ field.errorMessage }
-							required={ field.required }
 						/>
 					);
 				}
@@ -212,15 +171,8 @@ const AddressForm = ( {
 				return (
 					<ValidatedTextInput
 						key={ field.key }
-						id={ `${ type }-${ instanceId }-${ field.key }` }
-						errorId={ errorId }
-						className={ `wc-block-components-address-form__${ field.key }` }
-						label={
-							field.required ? field.label : field.optionalLabel
-						}
+						{ ...fieldProps }
 						value={ values[ field.key ] }
-						autoCapitalize={ field.autocapitalize }
-						autoComplete={ field.autocomplete }
 						onChange={ ( newValue: string ) =>
 							onChange( {
 								...values,
@@ -231,16 +183,12 @@ const AddressForm = ( {
 							} )
 						}
 						customValidation={ ( inputObject: HTMLInputElement ) =>
-							field.required || inputObject.value
-								? customValidationHandler(
-										inputObject,
-										field.key,
-										values
-								  )
-								: true
+							customValidationHandler(
+								inputObject,
+								field.key,
+								values
+							)
 						}
-						errorMessage={ field.errorMessage }
-						required={ field.required }
 					/>
 				);
 			} ) }
