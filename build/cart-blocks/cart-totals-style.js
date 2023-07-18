@@ -1,0 +1,1 @@
+(window.webpackWcBlocksJsonp=window.webpackWcBlocksJsonp||[]).push([[30],{921:function(c,e,a){"use strict";a.r(e);var s=a(0),n=a(4),t=a.n(n),l=a(696);a(577);e.default=c=>{let{children:e,className:a=""}=c;return Object(s.createElement)(l.a,{className:t()("wc-block-cart__sidebar",a)},e)}}}]);
