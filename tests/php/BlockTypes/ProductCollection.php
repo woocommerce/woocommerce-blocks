@@ -266,4 +266,253 @@ class ProductCollection extends \WP_UnitTestCase {
 			$fn
 		);
 	}
+
+	/**
+	 * Test merging multiple queries.
+	 */
+	public function test_merging_multiple_queries() {
+		$parsed_block                              = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['orderBy'] = 'rating';
+		$parsed_block['attrs']['query']['woocommerceStockStatus'] = array(
+			'instock',
+			'outofstock',
+		);
+		$parsed_block['attrs']['query']['woocommerceAttributes']  = array(
+			array(
+				'taxonomy' => 'pa_test',
+				'termId'   => 1,
+			),
+			array(
+				'taxonomy' => 'pa_test',
+				'termId'   => 2,
+			),
+		);
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertEquals( 'meta_value_num', $merged_query['orderby'] );
+		$this->assertEquals( '_wc_average_rating', $merged_query['meta_key'] );
+		$this->assertContainsEquals(
+			array(
+				'compare' => 'IN',
+				'key'     => '_stock_status',
+				'value'   => array( 'instock', 'outofstock' ),
+			),
+			$merged_query['meta_query']
+		);
+		$this->assertContainsEquals(
+			array(
+				'taxonomy' => 'pa_test',
+				'field'    => 'term_id',
+				'terms'    => array( 1, 2 ),
+				'operator' => 'IN',
+			),
+			$merged_query['tax_query']
+		);
+	}
+
+	/**
+	 * Test merging filter by max price queries.
+	 */
+	public function test_merging_filter_by_max_price_queries() {
+		set_query_var( 'max_price', 100 );
+
+		$merged_query = $this->initialize_merged_query();
+
+		$this->assertContainsEquals(
+			array(
+				array(
+					'key'     => '_price',
+					'value'   => 100,
+					'compare' => '<',
+					'type'    => 'numeric',
+				),
+				array(),
+				'relation' => 'AND',
+			),
+			$merged_query['meta_query']
+		);
+		set_query_var( 'max_price', '' );
+	}
+
+	/**
+	 * Test merging filter by min price queries.
+	 */
+	public function test_merging_filter_by_min_price_queries() {
+		set_query_var( 'min_price', 20 );
+
+		$merged_query = $this->initialize_merged_query();
+
+		$this->assertContainsEquals(
+			array(
+				array(),
+				array(
+					'key'     => '_price',
+					'value'   => 20,
+					'compare' => '>=',
+					'type'    => 'numeric',
+				),
+				'relation' => 'AND',
+			),
+			$merged_query['meta_query']
+		);
+		set_query_var( 'min_price', '' );
+	}
+
+	/**
+	 * Test merging filter by min and max price queries.
+	 */
+	public function test_merging_filter_by_min_and_max_price_queries() {
+		set_query_var( 'max_price', 100 );
+		set_query_var( 'min_price', 20 );
+
+		$merged_query = $this->initialize_merged_query();
+
+		$this->assertContainsEquals(
+			array(
+				array(
+					'key'     => '_price',
+					'value'   => 100,
+					'compare' => '<',
+					'type'    => 'numeric',
+				),
+				array(
+					'key'     => '_price',
+					'value'   => 20,
+					'compare' => '>=',
+					'type'    => 'numeric',
+				),
+				'relation' => 'AND',
+			),
+			$merged_query['meta_query']
+		);
+
+		set_query_var( 'max_price', '' );
+		set_query_var( 'min_price', '' );
+	}
+
+	/**
+	 * Test merging filter by stock status queries.
+	 */
+	public function test_merging_filter_by_stock_status_queries() {
+		set_query_var( 'filter_stock_status', 'instock' );
+
+		$merged_query = $this->initialize_merged_query();
+
+		$this->assertContainsEquals(
+			array(
+				'operator' => 'IN',
+				'key'      => '_stock_status',
+				'value'    => array( 'instock' ),
+			),
+			$merged_query['meta_query']
+		);
+
+		set_query_var( 'filter_stock_status', '' );
+	}
+
+	/**
+	 * Test merging filter by stock status queries.
+	 */
+	public function test_merging_filter_by_attribute_queries() {
+		// Mock the attribute data.
+		$this->block_instance->set_attributes_filter_query_args(
+			array(
+				array(
+					'filter'     => 'filter_color',
+					'query_type' => 'query_type_color',
+				),
+				array(
+					'filter'     => 'filter_size',
+					'query_type' => 'query_type_size',
+				),
+			)
+		);
+
+		set_query_var( 'filter_color', 'blue' );
+		set_query_var( 'query_type_color', 'or' );
+		set_query_var( 'filter_size', 'xl,xxl' );
+		set_query_var( 'query_type_size', 'and' );
+
+		$merged_query = $this->initialize_merged_query();
+
+		$attribute_tax_query = array();
+
+		foreach ( $merged_query['tax_query'] as $tax_query ) {
+			if ( isset( $tax_query['relation'] ) ) {
+				$attribute_tax_query = $tax_query;
+			}
+		}
+
+		$attribute_tax_query_queries = $attribute_tax_query[0];
+
+		$this->assertEquals( 'AND', $attribute_tax_query['relation'] );
+
+		$this->assertContainsEquals(
+			array(
+				'taxonomy' => 'pa_color',
+				'field'    => 'slug',
+				'terms'    => array( 'blue' ),
+				'operator' => 'IN',
+			),
+			$attribute_tax_query_queries
+		);
+		$this->assertContainsEquals(
+			array(
+				'taxonomy' => 'pa_size',
+				'field'    => 'slug',
+				'terms'    => array( 'xl', 'xxl' ),
+				'operator' => 'AND',
+			),
+			$attribute_tax_query_queries
+		);
+
+		set_query_var( 'filter_color', '' );
+		set_query_var( 'query_type_color', '' );
+		set_query_var( 'filter_size', '' );
+		set_query_var( 'query_type_size', '' );
+	}
+
+	/**
+	 * Test merging multiple filter queries.
+	 */
+	public function test_merging_multiple_filter_queries() {
+		set_query_var( 'max_price', 100 );
+		set_query_var( 'min_price', 20 );
+		set_query_var( 'filter_stock_status', 'instock' );
+
+		$merged_query = $this->initialize_merged_query();
+
+		$this->assertContainsEquals(
+			array(
+				'operator' => 'IN',
+				'key'      => '_stock_status',
+				'value'    => array( 'instock' ),
+			),
+			$merged_query['meta_query']
+		);
+
+		$this->assertContainsEquals(
+			array(
+				array(
+					'key'     => '_price',
+					'value'   => 100,
+					'compare' => '<',
+					'type'    => 'numeric',
+				),
+				array(
+					'key'     => '_price',
+					'value'   => 20,
+					'compare' => '>=',
+					'type'    => 'numeric',
+				),
+				'relation' => 'AND',
+			),
+			$merged_query['meta_query']
+		);
+
+		set_query_var( 'max_price', '' );
+		set_query_var( 'min_price', '' );
+		set_query_var( 'filter_stock_status', '' );
+	}
 }
