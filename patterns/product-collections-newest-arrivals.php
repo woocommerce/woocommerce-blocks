@@ -14,7 +14,8 @@
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:heading {"level":3} -->
-			<h3 class="wp-block-heading">Our newest arrivals</h3>
+
+			<h3 class="wp-block-heading"><?php esc_attr_e( 'Our newest arrivals', 'woo-gutenberg-products-block' ); ?></h3>
 			<!-- /wp:heading -->
 		</div>
 		<!-- /wp:column -->
