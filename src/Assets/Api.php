@@ -93,6 +93,17 @@ class Api {
 	}
 
 	/**
+	 * Generates a hash containing the site url, plugin version and package path.
+	 *
+	 * Moving the plugin, changing the version, or changing the site url will result in a new hash and the cache will be invalidated.
+	 *
+	 * @return string The generated hash.
+	 */
+	private function get_script_data_hash() {
+		return md5( get_option( 'siteurl', '' ) . $this->package->get_version() . $this->package->get_path() );
+	}
+
+	/**
 	 * Initialize and load cached script data from the transient cache.
 	 *
 	 * @return array
