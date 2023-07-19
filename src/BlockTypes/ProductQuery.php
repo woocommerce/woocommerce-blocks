@@ -100,7 +100,10 @@ class ProductQuery extends AbstractBlock {
 
 			// Add `data-wc-navigation-id to the query block.
 			if ( $p->next_tag( array( 'class_name' => 'wp-block-query' ) ) ) {
-				$p->set_attribute( 'data-wc-navigation-id', $block['attrs']['queryId'] );
+				$p->set_attribute(
+					'data-wc-navigation-id',
+					'woo-products-' . $block['attrs']['queryId']
+				);
 				$block_content = $p->get_updated_html();
 			}
 		}
