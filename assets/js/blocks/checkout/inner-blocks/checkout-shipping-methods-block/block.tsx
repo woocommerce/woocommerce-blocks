@@ -56,12 +56,12 @@ const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 	const {
 		shippingRates,
 		needsShipping,
-		isLoadingRates,
 		hasCalculatedShipping,
+		isLoadingRates,
 		isCollectable,
 	} = useShippingData();
 
-	const { shippingAddress } = useCustomerData();
+	const { shippingAddress, isAddressDirty } = useCustomerData();
 
 	const filteredShippingRates = isCollectable
 		? shippingRates.map( ( shippingRatesPackage ) => {
@@ -130,6 +130,7 @@ const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 					collapsible={ false }
 					shippingRates={ filteredShippingRates }
 					isLoadingRates={ isLoadingRates }
+					disabled={ isLoadingRates || isAddressDirty }
 					context="woocommerce/checkout"
 				/>
 			) }

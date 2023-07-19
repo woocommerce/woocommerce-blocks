@@ -116,7 +116,6 @@ export const defaultCartData: StoreCart = {
 	shippingRates: EMPTY_SHIPPING_RATES,
 	isLoadingRates: false,
 	isAddressComplete: false,
-	isAddressDirty: false,
 	cartHasCalculatedShipping: false,
 	paymentMethods: EMPTY_PAYMENT_METHODS,
 	paymentRequirements: EMPTY_PAYMENT_REQUIREMENTS,
@@ -176,7 +175,6 @@ export const useStoreCart = (
 					shippingRates: previewCart.shipping_rates,
 					isLoadingRates: false,
 					isAddressComplete: true,
-					isAddressDirty: false,
 					cartHasCalculatedShipping:
 						previewCart.has_calculated_shipping,
 					paymentRequirements: previewCart.paymentRequirements,
@@ -244,7 +242,6 @@ export const useStoreCart = (
 				shippingRates: cartData.shippingRates,
 				isLoadingRates,
 				isAddressComplete: isAddressComplete( shippingAddress ),
-				isAddressDirty: store.hasDirtyAddress(),
 				cartHasCalculatedShipping: cartData.hasCalculatedShipping,
 				paymentRequirements: cartData.paymentRequirements,
 				receiveCart,

@@ -11,19 +11,23 @@ export interface CustomerDataType {
 	shippingAddress: ShippingAddress;
 	setBillingAddress: ( data: Partial< BillingAddress > ) => void;
 	setShippingAddress: ( data: Partial< ShippingAddress > ) => void;
+	isAddressDirty: boolean;
 }
 
 /**
  * This is a custom hook for syncing customer address data (billing and shipping) with the server.
  */
 export const useCustomerData = (): CustomerDataType => {
-	const { customerData, isInitialized } = useSelect( ( select ) => {
-		const store = select( storeKey );
-		return {
-			customerData: store.getCustomerData(),
-			isInitialized: store.hasFinishedResolution( 'getCartData' ),
-		};
-	} );
+	const { customerData, isInitialized, isAddressDirty } = useSelect(
+		( select ) => {
+			const store = select( storeKey );
+			return {
+				customerData: store.getCustomerData(),
+				isAddressDirty: store.hasDirtyAddress(),
+				isInitialized: store.hasFinishedResolution( 'getCartData' ),
+			};
+		}
+	);
 	const { setShippingAddress, setBillingAddress } = useDispatch( storeKey );
 
 	return {
@@ -32,5 +36,6 @@ export const useCustomerData = (): CustomerDataType => {
 		shippingAddress: customerData.shippingAddress,
 		setBillingAddress,
 		setShippingAddress,
+		isAddressDirty,
 	};
 };
