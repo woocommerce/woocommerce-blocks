@@ -12,6 +12,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 import edit from './edit';
 import metadata from './block.json';
 import { blockAttributes } from './attributes';
+import deprecated from './deprecated';
 
 registerBlockType( metadata, {
 	icon: {
@@ -28,25 +29,12 @@ registerBlockType( metadata, {
 	},
 	edit,
 	save( { attributes } ) {
-		const {
-			className,
-			showInputFields,
-			showFilterButton,
-			heading,
-			headingLevel,
-		} = attributes;
-		const data = {
-			'data-showinputfields': showInputFields,
-			'data-showfilterbutton': showFilterButton,
-			'data-heading': heading,
-			'data-heading-level': headingLevel,
-		};
+		const { className } = attributes;
 		return (
 			<div
 				{ ...useBlockProps.save( {
 					className: classNames( 'is-loading', className ),
 				} ) }
-				{ ...data }
 			>
 				<span
 					aria-hidden
@@ -55,4 +43,5 @@ registerBlockType( metadata, {
 			</div>
 		);
 	},
+	deprecated,
 } );

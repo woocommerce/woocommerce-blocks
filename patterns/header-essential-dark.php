@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: WooCommerce Essential Header | Dark
+ * Title: Essential Header Dark
  * Slug: woocommerce-blocks/header-essential-dark
  * Categories: WooCommerce
  * Block Types: core/template-part/header
@@ -11,15 +11,15 @@
 	<!-- wp:group {"style":{"spacing":{"blockGap":"40px"}},"layout":{"type":"flex","flexWrap":"wrap"}} -->
 	<div class="wp-block-group">
 		<!-- wp:site-logo {"shouldSyncIcon":false} /-->
-		<!-- wp:search {"label":"Search","showLabel":false,"buttonText":"Search","buttonUseIcon":true} /-->
+		<!-- wp:search {"label":"","showLabel":false,"placeholder":"Search products…","buttonText":"Search","buttonUseIcon":true,"query":{"post_type":"product"}} /-->
 		<!-- wp:navigation {"textColor":"background","layout":{"type":"flex","justifyContent":"center"}} /-->
 	</div>
 	<!-- /wp:group -->
 
-	<!-- wp:group {"style":{"spacing":{"blockGap":"8px"},"typography":{"fontSize":"18px"},"layout":{"selfStretch":"fill","flexSize":null}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
-	<div class="wp-block-group" style="font-size:18px">
+	<!-- wp:group {"style":{"spacing":{"blockGap":"8px"},"layout":{"selfStretch":"fill","flexSize":null}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
+	<div class="wp-block-group">
 		<!-- wp:woocommerce/customer-account {"displayStyle":"icon_only","iconStyle":"alt","iconClass":"wc-block-customer-account__account-icon"} /-->
-		<!-- wp:woocommerce/mini-cart {"textColor":"background","style":{"typography":{"fontSize":"14px"}}} /-->
+		<!-- wp:woocommerce/mini-cart {"textColor":"background"} /-->
 	</div>
 	<!-- /wp:group -->
 </div>
