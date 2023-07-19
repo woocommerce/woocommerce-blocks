@@ -9,8 +9,8 @@ import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, useMemo } from '@wordpress/element';
 import { useEntityRecord } from '@wordpress/core-data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
-import { isSiteEditorPage } from '@woocommerce/utils';
 
+// @ts-expect-error: @wordpress/plugin is typed in the newer versions
 // eslint-disable-next-line @woocommerce/dependency-group
 import {
 	registerPlugin,
@@ -140,12 +140,7 @@ let currentTemplateId: string | undefined;
 subscribe( () => {
 	const previousTemplateId = currentTemplateId;
 	const store = select( 'core/edit-site' );
-
-	if ( ! isSiteEditorPage( store ) ) {
-		return;
-	}
-
-	currentTemplateId = store?.getEditedPostId();
+	currentTemplateId = store.getEditedPostId();
 
 	if ( previousTemplateId === currentTemplateId ) {
 		return;

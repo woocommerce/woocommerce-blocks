@@ -3,7 +3,6 @@
  */
 import { useSelect } from '@wordpress/data';
 import { store as WP_BLOCKS_STORE } from '@wordpress/blocks';
-import { isSiteEditorPage } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -80,7 +79,7 @@ export function isWooInheritQueryEnabled(
 export function useAllowedControls(
 	attributes: ProductQueryBlock[ 'attributes' ]
 ) {
-	const editSiteStore = useSelect( 'core/edit-site' );
+	const isSiteEditor = useSelect( 'core/edit-site' ) !== undefined;
 
 	const controls = useSelect(
 		( select ) =>
@@ -91,7 +90,7 @@ export function useAllowedControls(
 		[ attributes ]
 	);
 
-	if ( ! isSiteEditorPage( editSiteStore ) ) {
+	if ( ! isSiteEditor ) {
 		return controls.filter( ( control ) => control !== 'wooInherit' );
 	}
 

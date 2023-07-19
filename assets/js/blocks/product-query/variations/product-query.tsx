@@ -11,7 +11,6 @@ import { stacks } from '@woocommerce/icons';
 import { isWpVersion } from '@woocommerce/settings';
 import { select, subscribe } from '@wordpress/data';
 import { QueryBlockAttributes } from '@woocommerce/blocks/product-query/types';
-import { isSiteEditorPage } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -65,16 +64,20 @@ const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
 };
 
 if ( isWpVersion( '6.1', '>=' ) ) {
-	let currentTemplateId: string | undefined;
-	subscribe( () => {
-		const previousTemplateId = currentTemplateId;
-		const store = select( 'core/edit-site' );
-		currentTemplateId = store?.getEditedPostId();
-		if ( previousTemplateId === currentTemplateId ) {
-			return;
-		}
+	const store = select( 'core/edit-site' );
 
-		if ( isSiteEditorPage( store ) ) {
+	if ( store ) {
+		let currentTemplateId: string | undefined;
+
+		subscribe( () => {
+			const previousTemplateId = currentTemplateId;
+
+			currentTemplateId = store?.getEditedPostId();
+
+			if ( previousTemplateId === currentTemplateId ) {
+				return;
+			}
+
 			const queryAttributes = {
 				...QUERY_DEFAULT_ATTRIBUTES,
 				query: {
@@ -87,14 +90,8 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 			unregisterBlockVariation( QUERY_LOOP_ID, VARIATION_NAME );
 
 			registerProductsBlock( queryAttributes );
-		}
-	}, 'core/edit-site' );
-
-	let isBlockRegistered = false;
-	subscribe( () => {
-		if ( ! isBlockRegistered ) {
-			isBlockRegistered = true;
-			registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
-		}
-	}, 'core/edit-post' );
+		} );
+	} else {
+		registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
+	}
 }
