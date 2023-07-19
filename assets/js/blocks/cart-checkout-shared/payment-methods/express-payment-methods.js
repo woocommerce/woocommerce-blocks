@@ -11,6 +11,8 @@ import {
 	isValidElement,
 	useCallback,
 	useRef,
+	useState,
+	useEffect,
 } from '@wordpress/element';
 import { useEditorContext } from '@woocommerce/base-context';
 import deprecated from '@wordpress/deprecated';
@@ -164,9 +166,37 @@ const ExpressPaymentMethods = () => {
 			</li>
 		);
 
+	const paymentMethodsRef = useRef( null );
+	const [ noButtons, setNoButtons ] = useState( true );
+	useEffect( () => {
+		const ulNode = paymentMethodsRef.current;
+		const config = { childList: true, subtree: true };
+		const callback = function ( mutationsList ) {
+			for ( const mutation of mutationsList ) {
+				console.log( 'mutation', mutation );
+				// Third party has rendered something inside the payment methods
+				if ( mutation.type === 'childList' ) {
+					console.log( 'Some payment methods have been rendered' );
+					setNoButtons( false );
+				}
+			}
+		};
+
+		const observer = new MutationObserver( callback );
+
+		observer.observe( ulNode, config );
+
+		return () => {
+			observer.disconnect();
+		};
+	}, [ paymentMethodsRef.current ] );
+
 	return (
 		<PaymentMethodErrorBoundary isEditor={ isEditor }>
-			<ul className="wc-block-components-express-payment__event-buttons">
+			<ul
+				className="wc-block-components-express-payment__event-buttons"
+				ref={ paymentMethodsRef }
+			>
 				{ content }
 			</ul>
 		</PaymentMethodErrorBoundary>
