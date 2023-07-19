@@ -1,14 +1,18 @@
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 <!-- wp:group {"layout":{"inherit":true,"type":"constrained"}} -->
-<div class="wp-block-group"><!-- wp:woocommerce/cart -->
+<div class="wp-block-group">
+	<!-- wp:heading {"align":"wide"} -->
+	<h2 class="wp-block-heading alignwide">Cart</h2>
+	<!-- /wp:heading -->
+
+	<!-- wp:woocommerce/cart -->
 	<div class="wp-block-woocommerce-cart alignwide is-loading">
 		<!-- wp:woocommerce/filled-cart-block {"align":"wide"} -->
 		<div class="wp-block-woocommerce-filled-cart-block alignwide">
 			<!-- wp:woocommerce/cart-items-block -->
 			<div class="wp-block-woocommerce-cart-items-block">
 				<!-- wp:woocommerce/cart-line-items-block -->
-				<div class="wp-block-woocommerce-cart-line-items-block"></div>
-				<!-- /wp:woocommerce/cart-line-items-block -->
+				<div class="wp-block-woocommerce-cart-line-items-block"></div>				<!-- /wp:woocommerce/cart-line-items-block -->
 
 				<!-- wp:woocommerce/cart-cross-sells-block -->
 				<div class="wp-block-woocommerce-cart-cross-sells-block">
