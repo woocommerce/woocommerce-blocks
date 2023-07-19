@@ -33,6 +33,13 @@ class Api {
 	private $script_data = null;
 
 	/**
+	 * Stores the hash for the script data, made up of the site url, plugin version and package path.
+	 *
+	 * @var string
+	 */
+	private $script_data_hash;
+
+	/**
 	 * Reference to the Package instance
 	 *
 	 * @var Package
@@ -47,6 +54,10 @@ class Api {
 	public function __construct( Package $package ) {
 		$this->package       = $package;
 		$this->disable_cache = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) || ! $this->package->feature()->is_production_environment();
+
+		if ( ! $this->disable_cache ) {
+			$this->script_data_hash = $this->get_script_data_hash();
+		}
 		add_action( 'shutdown', array( $this, 'update_script_data_cache' ), 20 );
 	}
 
