@@ -158,6 +158,7 @@ class Api {
 				array(
 					'script_data' => $this->script_data,
 					'version'     => $this->package->get_version(),
+					'hash'        => $this->script_data_hash,
 				)
 			),
 			DAY_IN_SECONDS * 30
