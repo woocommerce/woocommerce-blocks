@@ -31,5 +31,3 @@ export const isBillingAddress = (
 ): address is BillingAddress => {
 	return isShippingAddress( address ) && objectHasProp( address, 'email' );
 };
-
-export type BillingOrShippingAddress = BillingAddress | ShippingAddress;
