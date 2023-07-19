@@ -18,8 +18,6 @@ export const ShippingRateSelector = (): JSX.Element => {
 			<legend className="screen-reader-text">{ legend }</legend>
 			<ShippingRatesControl
 				className="wc-block-components-totals-shipping__options"
-				shippingRates={ shippingRates }
-				isLoadingRates={ isLoadingRates }
 				noResultsMessage={
 					<>
 						{ isAddressComplete && (
@@ -36,6 +34,8 @@ export const ShippingRateSelector = (): JSX.Element => {
 						) }
 					</>
 				}
+				shippingRates={ shippingRates }
+				isLoadingRates={ isLoadingRates }
 				context="woocommerce/cart"
 			/>
 		</fieldset>
