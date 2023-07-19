@@ -6,6 +6,18 @@ import { directivePrefix } from './constants';
 // The cache of visited and prefetched pages.
 const pages = new Map();
 
+// Keep the same root fragment for each interactive region node.
+const regionRootFragments = new WeakMap();
+const getRegionRootFragment = ( region ) => {
+	if ( ! regionRootFragments.has( region ) ) {
+		regionRootFragments.set(
+			region,
+			createRootFragment( region.parentElement, region )
+		);
+	}
+	return regionRootFragments.get( region );
+};
+
 // Helper to remove domain and hash from the URL. We are only interesting in
 // caching the path and the query.
 const cleanUrl = ( url ) => {
@@ -55,7 +67,7 @@ const renderRegions = ( page ) => {
 	const attrName = `data-${ directivePrefix }-navigation-id`;
 	document.querySelectorAll( `[${ attrName }]` ).forEach( ( region ) => {
 		const id = region.attributes[ attrName ];
-		const fragment = createRootFragment( region.parentElement, region );
+		const fragment = getRegionRootFragment( region );
 		render( page.regions[ id ], fragment );
 	} );
 };
@@ -95,7 +107,7 @@ export const init = async () => {
 		.querySelectorAll( `[data-${ directivePrefix }-interactive]` )
 		.forEach( ( node ) => {
 			if ( ! hydratedIslands.has( node ) ) {
-				const fragment = createRootFragment( node.parentNode, node );
+				const fragment = getRegionRootFragment( node );
 				const vdom = toVdom( node );
 				hydrate( vdom, fragment );
 			}
