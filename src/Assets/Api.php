@@ -40,6 +40,13 @@ class Api {
 	private $script_data_hash;
 
 	/**
+	 * Stores the transient key used to cache the script data. This will change if the site is accessed via HTTPS or HTTP.
+	 *
+	 * @var string
+	 */
+	private $script_data_transient_key = 'woocommerce_blocks_asset_api_script_data';
+
+	/**
 	 * Reference to the Package instance
 	 *
 	 * @var Package
@@ -55,6 +62,11 @@ class Api {
 		$this->package       = $package;
 		$this->disable_cache = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) || ! $this->package->feature()->is_production_environment();
 
+		// If the site is accessed via HTTPS, change the transient key. This is to prevent the script URLs being cached
+		// with the first scheme they are accessed on after cache expiry.
+		if ( is_ssl() ) {
+			$this->script_data_transient_key .= '_ssl';
+		}
 		if ( ! $this->disable_cache ) {
 			$this->script_data_hash = $this->get_script_data_hash();
 		}
