@@ -136,7 +136,7 @@ class Api {
 			return [];
 		}
 
-		$transient_value = json_decode( (string) get_transient( 'woocommerce_blocks_asset_api_script_data' ), true );
+		$transient_value = json_decode( (string) get_transient( $this->script_data_transient_key ), true );
 
 		if ( empty( $transient_value ) || empty( $transient_value['script_data'] ) || empty( $transient_value['version'] ) || $transient_value['version'] !== $this->package->get_version() ) {
 			return [];
@@ -153,7 +153,7 @@ class Api {
 			return;
 		}
 		set_transient(
-			'woocommerce_blocks_asset_api_script_data',
+			$this->script_data_transient_key,
 			wp_json_encode(
 				array(
 					'script_data' => $this->script_data,
