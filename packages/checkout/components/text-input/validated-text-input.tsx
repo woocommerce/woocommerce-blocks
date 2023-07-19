@@ -20,8 +20,6 @@ import { ValidatedTextInputProps } from './types';
 
 /**
  * A text based input which validates the input value.
- *
- * onChange is trigged onBlur to prevent excessive updates to global state.
  */
 const ValidatedTextInput = ( {
 	className,
@@ -33,9 +31,9 @@ const ValidatedTextInput = ( {
 	onChange,
 	showError = true,
 	errorMessage: passedErrorMessage = '',
-	value: initialValue = '',
+	value = '',
 	customValidation = () => true,
-	customFormatter = ( value ) => value,
+	customFormatter = ( newValue: string ) => newValue,
 	label,
 	validateOnMount = true,
 	...rest
@@ -43,11 +41,8 @@ const ValidatedTextInput = ( {
 	// True on mount.
 	const [ isPristine, setIsPristine ] = useState( true );
 
-	// Holds local state so changes can be pushed to the parent component onBlur rather than onChange.
-	const [ value, setValue ] = useState( initialValue );
-
 	// Track incoming value.
-	const previousInitialValue = usePrevious( initialValue );
+	const previousValue = usePrevious( value );
 
 	// Ref for the input element.
 	const inputRef = useRef< HTMLInputElement >( null );
@@ -122,25 +117,14 @@ const ValidatedTextInput = ( {
 	 */
 	useEffect( () => {
 		if (
-			initialValue !== value &&
-			previousInitialValue !== initialValue &&
-			( initialValue || value ) &&
+			previousValue !== value &&
+			( previousValue || value ) &&
 			! hasFocus
 		) {
-			// Set local state with formatted value.
-			setValue( customFormatter( initialValue ) );
-
 			// Validate the input value.
 			validateInput( false );
 		}
-	}, [
-		initialValue,
-		validateInput,
-		customFormatter,
-		value,
-		hasFocus,
-		previousInitialValue,
-	] );
+	}, [ validateInput, customFormatter, value, hasFocus, previousValue ] );
 
 	/**
 	 * When the input changes we trigger background validation and update state.
@@ -153,22 +137,24 @@ const ValidatedTextInput = ( {
 			// Validate the input value.
 			validateInput( true );
 
-			// Set local state with formatted value.
-			setValue( customFormatter( newValue ) );
+			// Push the changes up to the parent component.
+			onChange( customFormatter( newValue ) );
 		},
-		[ hideValidationError, errorIdString, validateInput, customFormatter ]
+		[
+			hideValidationError,
+			errorIdString,
+			validateInput,
+			onChange,
+			customFormatter,
+		]
 	);
 
 	/**
 	 * When the input loses focus, changes are pushed up to the parent component via the onChange prop.
 	 */
 	const onBlurHandler = useCallback( () => {
-		// Validate the input value.
 		validateInput( false );
-
-		// Push the changes up to the parent component.
-		onChange( value );
-	}, [ value, validateInput, onChange ] );
+	}, [ validateInput ] );
 
 	/**
 	 * Validation on mount.
