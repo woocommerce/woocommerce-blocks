@@ -138,12 +138,13 @@ const ExpressPaymentMethods = () => {
 	const content =
 		entries.length > 0 ? (
 			entries.map( ( [ id, paymentMethod ] ) => {
-				const expressPaymentMethod = isEditor
-					? paymentMethod.edit
-					: paymentMethod.content;
-				return isValidElement( expressPaymentMethod ) ? (
-					<li key={ id } id={ `express-payment-method-${ id }` }>
-						{ cloneElement( expressPaymentMethod, {
+				return isValidElement( paymentMethod.content ) ? (
+					<li
+						key={ id }
+						id={ `express-payment-method-${ id }` }
+						style={ { pointerEvents: isEditor ? 'none' : 'auto' } } // disable click in the editor
+					>
+						{ cloneElement( paymentMethod.content, {
 							...paymentMethodInterface,
 							onClick: onExpressPaymentClick( id ),
 							onClose: onExpressPaymentClose,
