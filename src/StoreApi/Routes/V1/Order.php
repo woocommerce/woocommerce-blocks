@@ -5,11 +5,14 @@ use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\Schemas\v1\AbstractSchema;
 use Automattic\WooCommerce\StoreApi\Utilities\OrderController;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
+use Automattic\WooCommerce\StoreApi\Utilities\OrderAuthorizationTrait;
 
 /**
  * Order class.
  */
 class Order extends AbstractRoute {
+	use OrderAuthorizationTrait;
+
 	/**
 	 * The route identifier.
 	 *
@@ -72,35 +75,6 @@ class Order extends AbstractRoute {
 	}
 
 	/**
-	 * Check if authorized to get the order.
-	 *
-	 * @param \WP_REST_Request $request Request object.
-	 * @return boolean|WP_Error
-	 */
-	public function is_authorized( \WP_REST_Request $request ) {
-		$order_id  = absint( $request['id'] );
-		$order_key = wc_clean( wp_unslash( $request->get_param( 'key' ) ) );
-		$user_id   = get_current_user_id();
-		$order     = wc_get_order( $order_id );
-
-		if ( $user_id !== $order->get_user_id() ) {
-			return false;
-		}
-
-		try {
-			$this->order_controller->validate_order_key( $order_id, $order_key );
-		} catch ( RouteException $error ) {
-			return new \WP_Error(
-				$error->getErrorCode(),
-				$error->getMessage(),
-				array( 'status' => $error->getCode() )
-			);
-		}
-
-		return true;
-	}
-
-	/**
 	 * Handle the request and return a valid response for this endpoint.
 	 *
 	 * @param \WP_REST_Request $request Request object.
@@ -108,6 +82,6 @@ class Order extends AbstractRoute {
 	 */
 	protected function get_route_response( \WP_REST_Request $request ) {
 		$order_id = absint( $request['id'] );
-		return rest_ensure_response( $this->schema->get_item_response( $this->order_controller->get_order( $order_id ) ) );
+		return rest_ensure_response( $this->schema->get_item_response( wc_get_order( $order_id ) ) );
 	}
 }

@@ -39,18 +39,6 @@ class OrderController {
 	}
 
 	/**
-	 * Get order.
-	 *
-	 * @throws RouteException Exception if invalid data is detected.
-	 *
-	 * @param integer $order_id Order ID.
-	 * @return \WC_Order A new order object.
-	 */
-	public function get_order( $order_id ) {
-		return wc_get_order( $order_id );
-	}
-
-	/**
 	 * Update an order using data from the current cart.
 	 *
 	 * @param \WC_Order $order The order object to update.
@@ -481,7 +469,7 @@ class OrderController {
 	 * @param string  $order_key Order key.
 	 */
 	public function validate_order_key( $order_id, $order_key ) {
-		$order = $this->get_order( $order_id );
+		$order = wc_get_order( $order_id );
 
 		if ( ! $order || ! $order_key || $order->get_id() !== $order_id || ! hash_equals( $order->get_order_key(), $order_key ) ) {
 			throw new RouteException( 'woocommerce_rest_invalid_order', __( 'Invalid order ID or key provided.', 'woo-gutenberg-products-block' ), 401 );
@@ -510,7 +498,7 @@ class OrderController {
 	 * @param integer $order_id Order ID.
 	 */
 	public function get_failed_order_stock_error( $order_id ) {
-		$order = $this->get_order( $order_id );
+		$order = wc_get_order( $order_id );
 
 		// Ensure order items are still stocked if paying for a failed order. Pending orders do not need this check because stock is held.
 		if ( ! $order->has_status( wc_get_is_pending_statuses() ) ) {
