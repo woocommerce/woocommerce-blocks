@@ -76,6 +76,24 @@ class ProductCollection extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Build a simplified request for testing.
+	 *
+	 * @param bool  $woocommerce_on_sale WooCommerce on sale.
+	 * @param array $woocommerce_attributes WooCommerce attributes.
+	 * @param array $woocommerce_stock_status WooCommerce stock status.
+	 * @return WP_REST_Request
+	 */
+	private function build_request( $woocommerce_on_sale = 'false', $woocommerce_attributes = array(), $woocommerce_stock_status = array() ) {
+		$request = new \WP_REST_Request( 'GET', '/wp/v2/product' );
+		$request->set_param( 'woocommerceOnSale', $woocommerce_on_sale );
+		$request->set_param( 'woocommerceAttributes', $woocommerce_attributes );
+		$request->set_param( 'woocommerceStockStatus', $woocommerce_stock_status );
+		$request->set_param( 'isProductCollectionBlock', true );
+
+		return $request;
+	}
+
+	/**
 	 * Test merging on sale queries.
 	 */
 	public function test_merging_on_sale_queries() {
@@ -514,5 +532,89 @@ class ProductCollection extends \WP_UnitTestCase {
 		set_query_var( 'max_price', '' );
 		set_query_var( 'min_price', '' );
 		set_query_var( 'filter_stock_status', '' );
+	}
+
+	/**
+	 * Test merging multiple filter queries on Editor side
+	 */
+	public function test_updating_rest_query_without_attributes() {
+		$product_visibility_terms  = wc_get_product_visibility_term_ids();
+		$product_visibility_not_in = array( is_search() ? $product_visibility_terms['exclude-from-search'] : $product_visibility_terms['exclude-from-catalog'] );
+
+		$args    = array();
+		$request = $this->build_request();
+
+		$updated_query = $this->block_instance->update_rest_query_in_editor( $args, $request );
+
+		$this->assertContainsEquals(
+			array(
+				'key'     => '_stock_status',
+				'value'   => array(),
+				'compare' => 'IN',
+			),
+			$updated_query['meta_query'],
+		);
+
+		$this->assertEquals(
+			array(
+				array(
+					'taxonomy' => 'product_visibility',
+					'field'    => 'term_taxonomy_id',
+					'terms'    => $product_visibility_not_in,
+					'operator' => 'NOT IN',
+				),
+			),
+			$updated_query['tax_query'],
+		);
+	}
+
+	/**
+	 * Test merging multiple filter queries.
+	 */
+	public function test_updating_rest_query_with_attributes() {
+		$product_visibility_terms  = wc_get_product_visibility_term_ids();
+		$product_visibility_not_in = array( is_search() ? $product_visibility_terms['exclude-from-search'] : $product_visibility_terms['exclude-from-catalog'] );
+
+		$args         = array();
+		$on_sale      = 'true';
+		$attributes   = array(
+			array(
+				'taxonomy' => 'pa_test',
+				'termId'   => 1,
+			),
+		);
+		$stock_status = array( 'instock', 'outofstock' );
+		$request      = $this->build_request( $on_sale, $attributes, $stock_status );
+
+		$updated_query = $this->block_instance->update_rest_query_in_editor( $args, $request );
+
+		$this->assertContainsEquals(
+			array(
+				'key'     => '_stock_status',
+				'value'   => array( 'instock', 'outofstock' ),
+				'compare' => 'IN',
+			),
+			$updated_query['meta_query'],
+		);
+
+		$this->assertContains(
+			array(
+				'taxonomy' => 'product_visibility',
+				'field'    => 'term_taxonomy_id',
+				'terms'    => $product_visibility_not_in,
+				'operator' => 'NOT IN',
+			),
+			$updated_query['tax_query'],
+		);
+
+		$this->assertContains(
+			array(
+				'taxonomy' => 'pa_test',
+				'field'    => 'term_id',
+				'terms'    => array( 1 ),
+				'operator' => 'IN',
+			),
+			$updated_query['tax_query'],
+		);
 	}
 }
