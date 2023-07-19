@@ -80,26 +80,16 @@ const Edit = ( {
 } ): JSX.Element => {
 	const blockProps = useBlockProps();
 	const isDescendentOfQueryLoop = Number.isFinite( context?.queryId );
-	const isDescendentOfSingleProductBlock = Number.isFinite( context?.postId );
 	const { width } = attributes;
 
 	useEffect(
 		() => setAttributes( { isDescendentOfQueryLoop } ),
 		[ setAttributes, isDescendentOfQueryLoop ]
 	);
-
-	useEffect(
-		() => setAttributes( { isDescendentOfSingleProductBlock } ),
-		[ setAttributes, isDescendentOfSingleProductBlock ]
-	);
-
-	const showAlignmentToolbar =
-		isDescendentOfQueryLoop || isDescendentOfSingleProductBlock;
-
 	return (
 		<>
 			<BlockControls>
-				{ showAlignmentToolbar && (
+				{ isDescendentOfQueryLoop && (
 					<AlignmentToolbar
 						value={ attributes.textAlign }
 						onChange={ ( newAlign ) => {
