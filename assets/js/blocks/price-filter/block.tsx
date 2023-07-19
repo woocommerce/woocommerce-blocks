@@ -92,10 +92,6 @@ const PriceFilterBlock = ( attributes: Attributes ) => {
 		isBoolean
 	);
 
-	const productIds = isEditor
-		? []
-		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
-
 	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
 		useState( false );
 
@@ -105,7 +101,6 @@ const PriceFilterBlock = ( attributes: Attributes ) => {
 	const { results, isLoading } = useCollectionData( {
 		queryPrices: true,
 		queryState,
-		productIds,
 		isEditor,
 	} );
 
