@@ -7,7 +7,7 @@
 ?>
 
 <!-- wp:media-text {"align":"full","mediaPosition":"right","mediaType":"image","mediaSizeSlug":"full","imageFill":false} -->
-<div class="wp-block-media-text alignfull has-media-on-the-right is-stacked-on-mobile has-text-color has-background">
+<div class="wp-block-media-text alignfull has-media-on-the-right is-stacked-on-mobile">
 	<div class="wp-block-media-text__content">
 		<!-- wp:heading -->
 		<h2 class="wp-block-heading"><?php esc_html_e( 'Get cozy this fall with knit sweaters', 'woo-gutenberg-products-block' ); ?></h2>
