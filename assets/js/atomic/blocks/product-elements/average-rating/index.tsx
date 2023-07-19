@@ -1,9 +1,9 @@
 /**
  * External dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
-import { Icon, starFilled } from '@wordpress/icons';
 import { isExperimentalBuild } from '@woocommerce/block-settings';
+import { registerBlockType } from '@wordpress/blocks';
+import { Icon, starHalf } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -17,7 +17,7 @@ if ( isExperimentalBuild() ) {
 		icon: {
 			src: (
 				<Icon
-					icon={ starFilled }
+					icon={ starHalf }
 					className="wc-block-editor-components-block-icon"
 				/>
 			),

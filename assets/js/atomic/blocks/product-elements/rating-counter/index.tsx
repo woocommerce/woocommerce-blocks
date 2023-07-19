@@ -1,9 +1,9 @@
 /**
  * External dependencies
  */
+import { isExperimentalBuild } from '@woocommerce/block-settings';
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, starFilled } from '@wordpress/icons';
-import { isExperimentalBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
