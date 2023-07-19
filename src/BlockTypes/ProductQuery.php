@@ -100,7 +100,6 @@ class ProductQuery extends AbstractBlock {
 
 			// Add `data-wc-navigation-id to the query block.
 			if ( $p->next_tag( array( 'class_name' => 'wp-block-query' ) ) ) {
-				$p->set_attribute( 'data-wc-interactive', true );
 				$p->set_attribute( 'data-wc-navigation-id', $block['attrs']['queryId'] );
 				$block_content = $p->get_updated_html();
 			}
@@ -122,6 +121,8 @@ class ProductQuery extends AbstractBlock {
 			$instance->context['queryId'] === $this->parsed_block['attrs']['queryId']
 		) {
 			$p = new \WP_HTML_Tag_Processor( $block_content );
+			$p->next_tag( array( 'class_name' => 'wp-block-query-pagination' ) );
+			$p->set_attribute( 'data-wc-interactive', true );
 
 			while ( $p->next_tag( 'a' ) ) {
 				$p->set_attribute(
