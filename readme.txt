@@ -50,7 +50,7 @@ Use this plugin if you want access to the bleeding edge of available blocks for 
 = Minimum Requirements =
 
 * Latest release versions of WordPress and WooCommerce ([read more here](https://developer.woocommerce.com/?p=9998))
-* PHP version 7.2 or greater (PHP 7.4 or greater is recommended)
+* PHP version 7.3 or greater (PHP 7.4 or greater is recommended)
 * MySQL version 5.6 or greater
 
 Visit the [WooCommerce server requirements documentation](https://docs.woocommerce.com/document/server-requirements/) for a detailed list of server requirements.
@@ -80,6 +80,17 @@ Yes you can! Join in on our [GitHub repository](https://github.com/woocommerce/w
 Release and roadmap notes available on the [WooCommerce Developers Blog](https://woocommerce.wordpress.com/2019/01/15/woocommerce-blocks-1-3-0-release-notes/)
 
 == Changelog ==
+
+= 10.6.1 - 2023-07-17 =
+
+#### Bug Fixes
+
+- Improve performance and fix memory exhaustion errors that could be triggered for stores with a high volume of products using the Products (Beta) or Products Collection blocks. ([#10198](https://github.com/woocommerce/woocommerce-blocks/pull/10198))
+- Fix a visual bug with margins around the Proceed to Checkout button on the Cart block. ([10182](https://github.com/woocommerce/woocommerce-blocks/pull/10182))
+- Fixed formatting for addresses sent to the Store API. ([#10242](https://github.com/woocommerce/woocommerce-blocks/pull/10242))
+
+#### Security
+- Update CORS handling in Store API
 
 = 10.6.0 - 2023-07-07 =
 
@@ -147,6 +158,16 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 - Peer Dependency: Request 2.88.2. ([9827](https://github.com/woocommerce/woocommerce-blocks/pull/9827))
 - Bump fast-xml-parser from 4.0.7 to 4.2.4. ([9818](https://github.com/woocommerce/woocommerce-blocks/pull/9818))
+
+= 10.4.6 - 2023-7-17 =
+
+#### Bug Fixes
+
+- Improve performance and fix memory exhaustion errors that could be triggered for stores with a high volume of products using the Products (Beta) or Products Collection blocks. ([#10198](https://github.com/woocommerce/woocommerce-blocks/pull/10198))
+- Fixed formatting for addresses sent to the Store API. ([#10242](https://github.com/woocommerce/woocommerce-blocks/pull/10242))
+
+#### Security
+- Update CORS handling in Store API
 
 = 10.4.5 - 2023-06-29 =
 
