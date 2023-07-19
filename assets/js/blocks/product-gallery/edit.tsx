@@ -3,8 +3,9 @@
  */
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 import { InnerBlockTemplate } from '@wordpress/blocks';
+import { useEffect } from '@wordpress/element';
 
-export const Edit = (): JSX.Element => {
+export const Edit = ( { clientId, setAttributes } ): JSX.Element => {
 	const TEMPLATE: InnerBlockTemplate[] = [
 		[
 			'core/group',
@@ -15,7 +16,12 @@ export const Edit = (): JSX.Element => {
 			],
 		],
 	];
+
 	const blockProps = useBlockProps();
+
+	useEffect( () => {
+		setAttributes( { clientId } );
+	}, [ clientId ] );
 
 	return (
 		<div { ...blockProps }>

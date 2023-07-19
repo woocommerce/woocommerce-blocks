@@ -7,7 +7,15 @@
     "description": "Display the Thumbnails of a product.",
     "category": "woocommerce",
     "keywords": [ "WooCommerce" ],
-	"usesContext": [ "postId" ],
+	"usesContext": [ "postId", "thumbnailsPosition", "thumbnailsNumberOfThumbnails", "clientId" ],
     "textdomain": "woo-gutenberg-products-block",
-	"ancestor": [ "woocommerce/product-gallery" ]
+	"ancestor": [ "woocommerce/product-gallery" ],
+	"supports": {
+		"spacing": {
+			"margin": true,
+			"__experimentalDefaultControls": {
+				"margin": true
+			}
+		}
+	}
 }

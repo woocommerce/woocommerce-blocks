@@ -17,31 +17,35 @@ import { BlockSettings } from './block-settings';
 export const Edit = ( {
 	attributes,
 	setAttributes,
+	context,
 }: BlockEditProps< Attributes > ) => {
-	const { layout = 'left', numberOfThumbnails = 3 } = attributes;
 	const blockProps = useBlockProps( {
 		className: classNames(
 			'wc-block-editor-product-gallery-thumbnails',
-			`wc-block-editor-product-gallery-thumbnails-${ layout }`
+			`wc-block-editor-product-gallery-thumbnails-${ context.thumbnailsPosition }`
 		),
 	} );
+
+	console.log( context );
 
 	const Placeholder = () => {
 		return (
 			<>
-				{ layout !== 'off' && (
+				{ context.thumbnailsPosition !== 'off' && (
 					<div className="wc-block-editor-product-gallery-thumbnails">
-						{ [ ...Array( numberOfThumbnails ).keys() ].map(
-							( index ) => {
-								return (
-									<img
-										key={ index }
-										src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
-										alt="Placeholder"
-									/>
-								);
-							}
-						) }
+						{ [
+							...Array(
+								context.thumbnailsNumberOfThumbnails
+							).keys(),
+						].map( ( index ) => {
+							return (
+								<img
+									key={ index }
+									src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
+									alt="Placeholder"
+								/>
+							);
+						} ) }
 					</div>
 				) }
 			</>
@@ -55,6 +59,7 @@ export const Edit = ( {
 					<BlockSettings
 						attributes={ attributes }
 						setAttributes={ setAttributes }
+						context={ context }
 					/>
 				</InspectorControls>
 				<Disabled>

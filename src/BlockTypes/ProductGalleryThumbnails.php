@@ -1,8 +1,10 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
+
 /**
- * ProductGalleryThumbnails class.
+ * ProductGalleryLargeImage class.
  */
 class ProductGalleryThumbnails extends AbstractBlock {
 	/**
@@ -37,44 +39,37 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$post_id = $block->context['postId'];
 
-		if ( ! isset( $post_id ) ) {
-			return '';
+		if ( ! empty( $content ) ) {
+			parent::register_block_type_assets();
+			$this->register_chunk_translations( [ $this->block_name ] );
+			return $content;
 		}
 
-		global $product;
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-		$previous_product = $product;
-		$product          = wc_get_product( $post_id );
-		if ( ! $product instanceof \WC_Product ) {
-			$product = $previous_product;
+		$post_id           = $block->context['postId'];
+		$product           = wc_get_product( $post_id );
+		$post_thumbnail_id = $product->get_image_id();
 
-			return '';
+		if ( $product ) {
+			$attachment_ids = $product->get_gallery_image_ids();
+			if ( $attachment_ids && $post_thumbnail_id ) {
+				$html  = '';
+				$html .= wc_get_gallery_image_html( $post_thumbnail_id, true );
+				foreach ( $attachment_ids as $attachment_id ) {
+					$html .= apply_filters( 'woocommerce_single_product_image_thumbnail_html', wc_get_gallery_image_html( $attachment_id ), $attachment_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+				}
+			}
+
+			return sprintf(
+				'<div class="wc-block-components-product-gallery-thumbnails %1$s" style="%2$s">
+					%3$s
+				</div>',
+				esc_attr( $classes_and_styles['classes'] ),
+				esc_attr( $classes_and_styles['styles'] ),
+				$html
+			);
 		}
-
-		if ( class_exists( 'WC_Frontend_Scripts' ) ) {
-			$frontend_scripts = new \WC_Frontend_Scripts();
-			$frontend_scripts::load_scripts();
-		}
-
-		ob_start();
-		woocommerce_show_product_sale_flash();
-		$sale_badge_html = ob_get_clean();
-
-		ob_start();
-		remove_action( 'woocommerce_product_thumbnails', 'woocommerce_show_product_thumbnails', 20 );
-		woocommerce_show_product_images();
-		$product_image_gallery_html = ob_get_clean();
-		add_action( 'woocommerce_product_thumbnails', 'woocommerce_show_product_thumbnails', 20 );
-
-		$product   = $previous_product;
-		$classname = $attributes['className'] ?? '';
-		return sprintf(
-			'<div class="wp-block-woocommerce-product-gallery-thumbnails %1$s">%2$s %3$s</div>',
-			esc_attr( $classname ),
-			$sale_badge_html,
-			$product_image_gallery_html
-		);
 	}
 }

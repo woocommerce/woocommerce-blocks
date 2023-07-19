@@ -3,7 +3,7 @@
  */
 import { SVG } from '@wordpress/primitives';
 
-const thumbnailsLeft = (
+const thumbnailsPositionLeft = (
 	<SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 24" fill="none">
 		<g clipPath="url(#clip0_420_11645)">
 			<path
@@ -42,4 +42,4 @@ const thumbnailsLeft = (
 	</SVG>
 );
 
-export default thumbnailsLeft;
+export default thumbnailsPositionLeft;

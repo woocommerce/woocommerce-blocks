@@ -1,7 +1,10 @@
 /**
  * External dependencies
  */
-import { InspectorControls } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	store as blockEditorStore,
+} from '@wordpress/block-editor';
 import {
 	PanelBody,
 	RangeControl,
@@ -12,18 +15,19 @@ import { __ } from '@wordpress/i18n';
 import type { BlockAttributes } from '@wordpress/blocks';
 import { Icon } from '@wordpress/icons';
 import {
-	thumbnailsLeft,
-	thumbnailsBottom,
-	thumbnailsRight,
+	thumbnailsPositionLeft,
+	thumbnailsPositionBottom,
+	thumbnailsPositionRight,
 } from '@woocommerce/icons';
+import { useDispatch } from '@wordpress/data';
 
 interface ThumbnailSettingProps {
 	attributes: BlockAttributes;
-	layout: string;
+	thumbnailsPosition: string;
 	setAttributes: ( attrs: BlockAttributes ) => void;
 }
 
-const layoutHelp: Record< string, string > = {
+const positionHelp: Record< string, string > = {
 	off: __(
 		'No thumbnails will be displayed.',
 		'woo-gutenberg-products-block'
@@ -42,13 +46,12 @@ const layoutHelp: Record< string, string > = {
 	),
 };
 
-export const BlockSettings = ( {
-	attributes,
-	setAttributes,
-}: ThumbnailSettingProps ) => {
-	const { layout = 'left', numberOfThumbnails = 3 } = attributes;
+export const BlockSettings = ( { context }: ThumbnailSettingProps ) => {
 	const maxNumberOfThumbnails = 8;
 	const minNumberOfThumbnails = 2;
+
+	const { clientId } = context;
+	const { updateBlockAttributes } = useDispatch( blockEditorStore );
 
 	return (
 		<InspectorControls>
@@ -56,13 +59,15 @@ export const BlockSettings = ( {
 				title={ __( 'Settings', 'woo-gutenberg-products-block' ) }
 			>
 				<ToggleGroupControl
-					className="wc-block-editor-product-gallery-thumbnails__layout-toggle"
+					className="wc-block-editor-product-gallery-thumbnails__position-toggle"
 					isBlock={ true }
 					label={ __( 'Thumbnails', 'woo-gutenberg-products-block' ) }
-					value={ layout }
-					help={ layoutHelp[ layout ] }
+					value={ context.thumbnailsPosition }
+					help={ positionHelp[ context.thumbnailsPosition ] }
 					onChange={ ( value: string ) =>
-						setAttributes( { layout: value } )
+						updateBlockAttributes( clientId, {
+							thumbnailsPosition: value,
+						} )
 					}
 				>
 					<ToggleGroupControlOption
@@ -71,26 +76,40 @@ export const BlockSettings = ( {
 					/>
 					<ToggleGroupControlOption
 						value="left"
-						label={ <Icon size={ 32 } icon={ thumbnailsLeft } /> }
+						label={
+							<Icon size={ 32 } icon={ thumbnailsPositionLeft } />
+						}
 					/>
 					<ToggleGroupControlOption
 						value="bottom"
-						label={ <Icon size={ 32 } icon={ thumbnailsBottom } /> }
+						label={
+							<Icon
+								size={ 32 }
+								icon={ thumbnailsPositionBottom }
+							/>
+						}
 					/>
 					<ToggleGroupControlOption
 						value="right"
-						label={ <Icon size={ 32 } icon={ thumbnailsRight } /> }
+						label={
+							<Icon
+								size={ 32 }
+								icon={ thumbnailsPositionRight }
+							/>
+						}
 					/>
 				</ToggleGroupControl>
-				{ layout !== 'off' && (
+				{ context.thumbnailsPosition !== 'off' && (
 					<RangeControl
 						label={ __(
 							'Number of Thumbnails',
 							'woo-gutenberg-products-block'
 						) }
-						value={ numberOfThumbnails }
+						value={ context.thumbnailsNumberOfThumbnails }
 						onChange={ ( value: number ) =>
-							setAttributes( { numberOfThumbnails: value } )
+							updateBlockAttributes( clientId, {
+								thumbnailsNumberOfThumbnails: value,
+							} )
 						}
 						help={ __(
 							'Choose how many thumbnails (2-8) will display. If more images exist, a “View all” button will display.',

@@ -13,5 +13,24 @@
 	"textdomain": "woo-gutenberg-products-block",
 
 	"apiVersion": 2,
-	"$schema": "https://schemas.wp.org/trunk/block.json"
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"providesContext": {
+		"thumbnailsPosition": "thumbnailsPosition",
+		"thumbnailsNumberOfThumbnails": "thumbnailsNumberOfThumbnails",
+		"clientId": "clientId"
+	},
+	"attributes": {
+		"thumbnailsPosition": {
+			"type": "string",
+			"default": "left"
+		},
+		"thumbnailsNumberOfThumbnails": {
+			"type": "number",
+			"default": 3
+		},
+		"clientId": {
+			"type": "string",
+			"default": ""
+		}
+	}
 }
