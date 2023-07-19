@@ -117,44 +117,14 @@ const ValidatedTextInput = ( {
 	 */
 	useEffect( () => {
 		if (
-			previousValue !== value &&
-			( previousValue || value ) &&
+			value !== previousValue &&
+			( value || previousValue ) &&
 			! hasFocus
 		) {
 			// Validate the input value.
 			validateInput( false );
 		}
 	}, [ validateInput, customFormatter, value, hasFocus, previousValue ] );
-
-	/**
-	 * When the input changes we trigger background validation and update state.
-	 */
-	const onChangeHandler = useCallback(
-		( newValue: string ) => {
-			// Hide errors while typing.
-			hideValidationError( errorIdString );
-
-			// Validate the input value.
-			validateInput( true );
-
-			// Push the changes up to the parent component.
-			onChange( customFormatter( newValue ) );
-		},
-		[
-			hideValidationError,
-			errorIdString,
-			validateInput,
-			onChange,
-			customFormatter,
-		]
-	);
-
-	/**
-	 * When the input loses focus, changes are pushed up to the parent component via the onChange prop.
-	 */
-	const onBlurHandler = useCallback( () => {
-		validateInput( false );
-	}, [ validateInput ] );
 
 	/**
 	 * Validation on mount.
@@ -219,8 +189,17 @@ const ValidatedTextInput = ( {
 				)
 			}
 			ref={ inputRef }
-			onChange={ onChangeHandler }
-			onBlur={ onBlurHandler }
+			onChange={ ( newValue ) => {
+				// Hide errors while typing.
+				hideValidationError( errorIdString );
+
+				// Validate the input value.
+				validateInput( true );
+
+				// Push the changes up to the parent component.
+				onChange( customFormatter( newValue ) );
+			} }
+			onBlur={ () => validateInput( false ) }
 			ariaDescribedBy={ describedBy }
 			value={ value }
 			title=""
