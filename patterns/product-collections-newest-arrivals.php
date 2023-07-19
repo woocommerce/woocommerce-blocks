@@ -26,7 +26,9 @@
 			<div class="wp-block-buttons">
 				<!-- wp:button -->
 				<div class="wp-block-button">
-					<a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">More new products</a>
+					<a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">
+						<?php esc_attr_e( 'More new products', 'woo-gutenberg-products-block' ); ?>
+					</a>
 				</div>
 				<!-- /wp:button -->
 			</div>
