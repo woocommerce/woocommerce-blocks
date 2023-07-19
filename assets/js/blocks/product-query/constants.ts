@@ -14,8 +14,7 @@ import { VARIATION_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/pro
 import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
 
 export const AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION = false;
-export const MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION =
-	! AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION && false;
+export const MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION = true;
 
 export const EDIT_ATTRIBUTES_URL =
 	'/wp-admin/edit.php?post_type=product&page=product_attributes';
