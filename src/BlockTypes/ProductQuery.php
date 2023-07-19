@@ -104,6 +104,7 @@ class ProductQuery extends AbstractBlock {
 					'data-wc-navigation-id',
 					'woo-products-' . $block['attrs']['queryId']
 				);
+				$p->set_attribute( 'data-wc-interactive', true );
 				$block_content = $p->get_updated_html();
 			}
 		}
@@ -125,13 +126,30 @@ class ProductQuery extends AbstractBlock {
 		) {
 			$p = new \WP_HTML_Tag_Processor( $block_content );
 			$p->next_tag( array( 'class_name' => 'wp-block-query-pagination' ) );
-			$p->set_attribute( 'data-wc-interactive', true );
 
 			while ( $p->next_tag( 'a' ) ) {
+				$class_attr = $p->get_attribute( 'class' );
+				$class_list = preg_split( '/\s+/', $class_attr );
+
+				$is_previous         = in_array( 'wp-block-query-pagination-previous', $class_list, true );
+				$is_next             = in_array( 'wp-block-query-pagination-next', $class_list, true );
+				$is_previous_or_next = $is_previous || $is_next;
+
+				$navigation_link_payload = array(
+					'prefetch' => $is_previous_or_next,
+					'scroll'   => true,
+				);
+
 				$p->set_attribute(
 					'data-wc-navigation-link',
-					'{"prefetch":true,"scroll":false}'
+					wp_json_encode( $navigation_link_payload )
 				);
+
+				if ( $is_previous ) {
+					$p->set_attribute( 'key', 'pagination-previous' );
+				} elseif ( $is_next ) {
+					$p->set_attribute( 'key', 'pagination-next' );
+				}
 			}
 			$block_content = $p->get_updated_html();
 		}
