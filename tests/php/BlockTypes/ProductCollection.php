@@ -118,4 +118,152 @@ class ProductCollection extends \WP_UnitTestCase {
 			$merged_query['meta_query']
 		);
 	}
+
+	/**
+	 * Test merging default stock queries that should use product visibility
+	 * queries instead of meta query for stock status.
+	 */
+	public function test_merging_default_stock_queries() {
+		$parsed_block = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['woocommerceStockStatus'] = array(
+			'instock',
+			'outofstock',
+			'onbackorder',
+		);
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertEmpty( $merged_query['meta_query'] );
+
+		// Test with hide out of stock items option enabled.
+		$parsed_block = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['woocommerceStockStatus'] = array(
+			'instock',
+			'onbackorder',
+		);
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertEmpty( $merged_query['meta_query'] );
+	}
+
+	/**
+	 * Test merging attribute queries.
+	 */
+	public function test_merging_attribute_queries() {
+		$parsed_block = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['woocommerceAttributes'] = array(
+			array(
+				'taxonomy' => 'pa_test',
+				'termId'   => 1,
+			),
+			array(
+				'taxonomy' => 'pa_test',
+				'termId'   => 2,
+			),
+			array(
+				'taxonomy' => 'pa_another_test',
+				'termId'   => 3,
+			),
+		);
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertContainsEquals(
+			array(
+				'field'    => 'term_id',
+				'terms'    => array( 3 ),
+				'operator' => 'IN',
+				'taxonomy' => 'pa_another_test',
+			),
+			$merged_query['tax_query']
+		);
+
+		$this->assertContainsEquals(
+			array(
+				'taxonomy' => 'pa_test',
+				'field'    => 'term_id',
+				'terms'    => array( 1, 2 ),
+				'operator' => 'IN',
+			),
+			$merged_query['tax_query']
+		);
+	}
+
+	/**
+	 * Test merging order by rating queries.
+	 */
+	public function test_merging_order_by_rating_queries() {
+		$parsed_block                              = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['orderBy'] = 'rating';
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertEquals( 'meta_value_num', $merged_query['orderby'] );
+		$this->assertEquals( '_wc_average_rating', $merged_query['meta_key'] );
+	}
+
+	/**
+	 * Test merging order by popularity queries.
+	 */
+	public function test_merging_order_by_popularity_queries() {
+		$parsed_block                              = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['orderBy'] = 'popularity';
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertEquals( 'meta_value_num', $merged_query['orderby'] );
+		$this->assertEquals( 'total_sales', $merged_query['meta_key'] );
+	}
+
+	/**
+	 * Test product visibility query exist in merged query.
+	 */
+	public function test_product_visibility_query_exist_in_merged_query() {
+		$product_visibility_terms  = wc_get_product_visibility_term_ids();
+		$product_visibility_not_in = array( is_search() ? $product_visibility_terms['exclude-from-search'] : $product_visibility_terms['exclude-from-catalog'] );
+
+		$parsed_block = $this->get_base_parsed_block();
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertContainsEquals(
+			array(
+				'taxonomy' => 'product_visibility',
+				'field'    => 'term_taxonomy_id',
+				'terms'    => $product_visibility_not_in,
+				'operator' => 'NOT IN',
+			),
+			$merged_query['tax_query']
+		);
+
+		$fn = function() {
+			return 'yes';
+		};
+
+		// Test with hide out of stock items option enabled.
+		add_filter(
+			'pre_option_woocommerce_hide_out_of_stock_items',
+			$fn
+		);
+		$product_visibility_not_in[] = $product_visibility_terms['outofstock'];
+
+		$parsed_block = $this->get_base_parsed_block();
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertContainsEquals(
+			array(
+				'taxonomy' => 'product_visibility',
+				'field'    => 'term_taxonomy_id',
+				'terms'    => $product_visibility_not_in,
+				'operator' => 'NOT IN',
+			),
+			$merged_query['tax_query']
+		);
+		remove_filter(
+			'pre_option_woocommerce_hide_out_of_stock_items',
+			$fn
+		);
+	}
 }
