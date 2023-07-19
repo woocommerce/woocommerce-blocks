@@ -18,6 +18,11 @@ import { ValidationInputError } from '../validation-input-error';
 import { getValidityMessageForInput } from '../../utils';
 import { ValidatedTextInputProps } from './types';
 
+/**
+ * A text based input which validates the input value.
+ *
+ * onChange is trigged onBlur to prevent excessive updates to global state.
+ */
 const ValidatedTextInput = ( {
 	className,
 	instanceId,
@@ -122,10 +127,20 @@ const ValidatedTextInput = ( {
 			( initialValue || value ) &&
 			! hasFocus
 		) {
-			setValue( initialValue );
+			// Set local state with formatted value.
+			setValue( customFormatter( initialValue ) );
+
+			// Validate the input value.
 			validateInput( false );
 		}
-	}, [ initialValue, validateInput, value, hasFocus, previousInitialValue ] );
+	}, [
+		initialValue,
+		validateInput,
+		customFormatter,
+		value,
+		hasFocus,
+		previousInitialValue,
+	] );
 
 	/**
 	 * When the input changes we trigger background validation and update state.
@@ -135,19 +150,20 @@ const ValidatedTextInput = ( {
 			// Hide errors while typing.
 			hideValidationError( errorIdString );
 
-			// Revalidate on user input so we know if the value is valid.
+			// Validate the input value.
 			validateInput( true );
 
-			// Set state.
+			// Set local state with formatted value.
 			setValue( customFormatter( newValue ) );
 		},
-		[ errorIdString, hideValidationError, validateInput, customFormatter ]
+		[ hideValidationError, errorIdString, validateInput, customFormatter ]
 	);
 
 	/**
 	 * When the input loses focus, changes are pushed up to the parent component via the onChange prop.
 	 */
 	const onBlurHandler = useCallback( () => {
+		// Validate the input value.
 		validateInput( false );
 
 		// Push the changes up to the parent component.

@@ -11,3 +11,4 @@ export * from './attributes';
 export * from './ratings';
 export * from './stock-status';
 export * from './api-error-response';
+export * from './address';

@@ -4,6 +4,8 @@
 import { Cart, CartResponse } from '@woocommerce/types';
 import { select } from '@wordpress/data';
 import { camelCaseKeys } from '@woocommerce/base-utils';
+import { isEmail } from '@wordpress/url';
+import type { BillingAddress, ShippingAddress } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -35,4 +37,21 @@ export const shippingAddressHasValidationErrors = () => {
 		countryValidationErrors,
 		postcodeValidationErrors,
 	].some( ( entry ) => typeof entry !== 'undefined' );
+};
+
+export const normalizeAddressProp = (
+	key: keyof ( BillingAddress & ShippingAddress ),
+	value: string | number | boolean
+) => {
+	// Skip normalizing for any non string field
+	if ( typeof value !== 'string' ) {
+		return value;
+	}
+	if ( key === 'email' ) {
+		return isEmail( value ) ? value.trim() : '';
+	}
+	if ( key === 'postcode' ) {
+		return value.replace( ' ', '' ).toUpperCase();
+	}
+	return value.trim();
 };
