@@ -96,4 +96,26 @@ class ProductCollection extends \WP_UnitTestCase {
 
 		delete_transient( 'wc_products_onsale' );
 	}
+
+	/**
+	 * Test merging stock status queries.
+	 */
+	public function test_merging_stock_status_queries() {
+		$parsed_block = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['woocommerceStockStatus'] = array(
+			'outofstock',
+			'onbackorder',
+		);
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertContainsEquals(
+			array(
+				'value'   => array( 'outofstock', 'onbackorder' ),
+				'compare' => 'IN',
+				'key'     => '_stock_status',
+			),
+			$merged_query['meta_query']
+		);
+	}
 }
