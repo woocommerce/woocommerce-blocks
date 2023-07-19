@@ -10,9 +10,10 @@ import { totals } from '@woocommerce/icons';
  */
 import metadata from './block.json';
 import edit from './edit';
+import attributes from './attributes';
 import './style.scss';
 
-registerBlockType( metadata, {
+registerBlockType( 'woocommerce/order-confirmation-shipping-address', {
 	icon: {
 		src: (
 			<Icon
@@ -23,6 +24,7 @@ registerBlockType( metadata, {
 	},
 	attributes: {
 		...metadata.attributes,
+		...attributes,
 	},
 	edit,
 	save() {
