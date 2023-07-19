@@ -6,6 +6,11 @@ import { type BlockInstance } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { isBoolean } from '@woocommerce/types';
 
+/**
+ * Internal dependencies
+ */
+import { MIGRATION_STATUS_LS_KEY } from './constants';
+
 type GetBlocksClientIds = ( blocks: BlockInstance[] ) => string[];
 export type IsBlockType = ( block: BlockInstance ) => boolean;
 export type TransformBlock = (
@@ -78,9 +83,30 @@ const postTemplateHasSupportForGridView = getSettingWithCoercion(
 	isBoolean
 );
 
+const getUpgradeStatus = () => {
+	const defaultStatus = {
+		status: 'notseen',
+	};
+	const status = window.localStorage.getItem( MIGRATION_STATUS_LS_KEY );
+	return status ? JSON.parse( status ) : defaultStatus;
+};
+
+const setUpgradeStatus = ( status: string, clientId: string ) => {
+	const newStatus = {
+		status,
+		clientId,
+	};
+	window.localStorage.setItem(
+		MIGRATION_STATUS_LS_KEY,
+		JSON.stringify( newStatus )
+	);
+};
+
 export {
 	getProductsBlockClientIds,
 	getProductCollectionBlockClientIds,
 	checkIfBlockCanBeInserted,
 	postTemplateHasSupportForGridView,
+	getUpgradeStatus,
+	setUpgradeStatus,
 };

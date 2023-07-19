@@ -12,6 +12,7 @@ import {
 	getProductsBlockClientIds,
 	checkIfBlockCanBeInserted,
 	postTemplateHasSupportForGridView,
+	getUpgradeStatus,
 	type TransformBlock,
 	type IsBlockType,
 	type ProductGridLayout,
@@ -216,10 +217,13 @@ export const replaceProductsWithProductCollection = () => {
 
 export let productsReplacementUnsubscribe: ( () => void ) | undefined;
 
+const { status } = getUpgradeStatus();
+
 if ( isWpVersion( '6.1', '>=' ) ) {
 	// @todo Read from local storage. If reverted - don't subscribe
 	if (
 		REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION &&
+		status !== 'reverted' &&
 		! productsReplacementUnsubscribe
 	) {
 		console.info( 'Subscribed to allow Products block migration' );
