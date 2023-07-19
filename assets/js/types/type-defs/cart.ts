@@ -210,6 +210,7 @@ export interface CartMeta {
 	isCartDataStale: boolean;
 	applyingCoupon: string;
 	removingCoupon: string;
+	hasDirtyAddress: boolean;
 }
 export interface ExtensionCartUpdateArgs {
 	data: Record< string, unknown >;

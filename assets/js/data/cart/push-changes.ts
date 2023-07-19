@@ -131,6 +131,7 @@ const updateCustomerData = debounce( (): void => {
 			dirtyProps.billingAddress = [];
 			dirtyProps.shippingAddress = [];
 			removeAllNotices();
+			dispatch( STORE_KEY ).setHasDirtyAddress( false );
 		} )
 		.catch( ( response ) => {
 			processErrorResponse( response );
@@ -138,7 +139,14 @@ const updateCustomerData = debounce( (): void => {
 		.finally( () => {
 			doingPush = false;
 		} );
-}, 1000 );
+}, 3000 );
+
+const hasDirtyProps = (): boolean => {
+	return (
+		dirtyProps.billingAddress.length > 0 ||
+		dirtyProps.shippingAddress.length > 0
+	);
+};
 
 /**
  * After cart has fully initialized, pushes changes to the server when data in the store is changed. Updates to the
@@ -182,10 +190,10 @@ export const pushChanges = (): void => {
 	customerData = newCustomerData;
 
 	// Trigger the update if we have any dirty props.
-	if (
-		dirtyProps.billingAddress.length ||
-		dirtyProps.shippingAddress.length
-	) {
+	if ( hasDirtyProps() ) {
+		if ( ! store.hasDirtyAddress() ) {
+			dispatch( STORE_KEY ).setHasDirtyAddress( true );
+		}
 		updateCustomerData();
 	}
 };

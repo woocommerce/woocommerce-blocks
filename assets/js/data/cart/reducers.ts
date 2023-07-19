@@ -176,7 +176,16 @@ const reducer: Reducer< CartState > = (
 				...state,
 				metaData: {
 					...state.metaData,
-					isCartDataStale: action.isCartDataStale,
+					isCartDataStale: !! action.isCartDataStale,
+				},
+			};
+			break;
+		case types.SET_HAS_DIRTY_ADDRESS:
+			state = {
+				...state,
+				metaData: {
+					...state.metaData,
+					hasDirtyAddress: !! action.hasDirtyAddress,
 				},
 			};
 			break;

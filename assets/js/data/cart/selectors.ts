@@ -116,6 +116,16 @@ export const isCartDataStale = ( state: CartState ): boolean => {
 };
 
 /**
+ * Returns true if cart address has unpushed changes.
+ *
+ * @param {CartState} state The current state.
+ * @return {boolean} True if the cart data is dirty.
+ */
+export const hasDirtyAddress = ( state: CartState ): boolean => {
+	return !! state.metaData.hasDirtyAddress;
+};
+
+/**
  * Retrieves the coupon code currently being applied.
  *
  * @param {CartState} state The current state.

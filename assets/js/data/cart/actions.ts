@@ -160,6 +160,15 @@ export const setIsCartDataStale = ( isCartDataStale = true ) =>
 	} as const );
 
 /**
+ * Returns an action object to mark the address data in the store as dirty (needs push).
+ */
+export const setHasDirtyAddress = ( hasDirtyAddress = true ) =>
+	( {
+		type: types.SET_HAS_DIRTY_ADDRESS,
+		hasDirtyAddress,
+	} as const );
+
+/**
  * Returns an action object used to track when customer data is being updated
  * (billing and/or shipping).
  */
