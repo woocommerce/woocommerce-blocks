@@ -1,10 +1,7 @@
 import { hydrate, render } from 'preact';
 import { toVdom, hydratedIslands } from './vdom';
 import { createRootFragment } from './utils';
-import { csnMetaTagItemprop, directivePrefix } from './constants';
-
-// The root to render the vdom (document.body).
-let rootFragment;
+import { directivePrefix } from './constants';
 
 // The cache of visited and prefetched pages.
 const pages = new Map();
@@ -27,9 +24,17 @@ const fetchPage = async ( url ) => {
 	} catch ( e ) {
 		return false;
 	}
+
+	return regionsToVdom( dom );
+};
+
+// Return an object with VDOM trees of those HTML regions marked with a
+// `navigation-id` directive.
+const regionsToVdom = ( dom ) => {
 	const regions = {};
-	dom.querySelectorAll( '[data-wc-navigation-id]' ).forEach( ( region ) => {
-		const id = region.attributes[ 'data-wc-navigation-id' ];
+	const attrName = `data-${ directivePrefix }-navigation-id`;
+	dom.querySelectorAll( `[${ attrName }]` ).forEach( ( region ) => {
+		const id = region.attributes[ attrName ];
 		regions[ id ] = toVdom( region );
 	} );
 
@@ -47,13 +52,12 @@ export const prefetch = ( url ) => {
 
 // Render all interactive regions contained in the given page.
 const renderRegions = ( page ) => {
-	document
-		.querySelectorAll( '[data-wc-navigation-id]' )
-		.forEach( ( region ) => {
-			const id = region.attributes[ 'data-wc-navigation-id' ];
-			const fragment = createRootFragment( region.parentElement, region );
-			render( page.regions[ id ], fragment );
-		} );
+	const attrName = `data-${ directivePrefix }-navigation-id`;
+	document.querySelectorAll( `[${ attrName }]` ).forEach( ( region ) => {
+		const id = region.attributes[ attrName ];
+		const fragment = createRootFragment( region.parentElement, region );
+		render( page.regions[ id ], fragment );
+	} );
 };
 
 // Navigate to a new page.
@@ -96,4 +100,10 @@ export const init = async () => {
 				hydrate( vdom, fragment );
 			}
 		} );
+
+	// Cache the current regions.
+	pages.set(
+		cleanUrl( window.location ),
+		Promise.resolve( regionsToVdom( document ) )
+	);
 };
