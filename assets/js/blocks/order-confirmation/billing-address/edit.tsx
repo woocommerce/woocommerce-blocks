@@ -31,7 +31,7 @@ const Edit = ( {
 				<Title
 					aria-hidden="true"
 					className="wc-block-components-checkout-step__title"
-					headingLevel="2"
+					headingLevel="3"
 				>
 					<PlainText
 						className={ '' }

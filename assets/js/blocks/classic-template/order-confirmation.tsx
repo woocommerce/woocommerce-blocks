@@ -32,13 +32,6 @@ const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 		),
 		createBlock( 'core/columns', inheritedAttributes, [
 			createBlock( 'core/column', inheritedAttributes, [
-				createBlock( 'core/heading', {
-					level: 3,
-					content: __(
-						'Billing Address',
-						'woo-gutenberg-products-block'
-					),
-				} ),
 				createBlock(
 					'woocommerce/order-confirmation-billing-address',
 					inheritedAttributes
