@@ -141,13 +141,6 @@ const updateCustomerData = debounce( (): void => {
 		} );
 }, 3000 );
 
-const hasDirtyProps = (): boolean => {
-	return (
-		dirtyProps.billingAddress.length > 0 ||
-		dirtyProps.shippingAddress.length > 0
-	);
-};
-
 /**
  * After cart has fully initialized, pushes changes to the server when data in the store is changed. Updates to the
  * server are debounced to prevent excessive requests.
@@ -190,7 +183,10 @@ export const pushChanges = (): void => {
 	customerData = newCustomerData;
 
 	// Trigger the update if we have any dirty props.
-	if ( hasDirtyProps() ) {
+	if (
+		dirtyProps.billingAddress.length > 0 ||
+		dirtyProps.shippingAddress.length > 0
+	) {
 		if ( ! store.hasDirtyAddress() ) {
 			dispatch( STORE_KEY ).setHasDirtyAddress( true );
 		}
