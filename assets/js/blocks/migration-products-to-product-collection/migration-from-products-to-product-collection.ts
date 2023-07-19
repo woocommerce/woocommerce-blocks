@@ -2,7 +2,8 @@
  * External dependencies
  */
 import { createBlock, BlockInstance } from '@wordpress/blocks';
-import { select, dispatch } from '@wordpress/data';
+import { select, dispatch, subscribe } from '@wordpress/data';
+import { isWpVersion } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -18,6 +19,7 @@ import {
 	type PostTemplateLayout,
 	type PostTemplateLayoutTypes,
 } from './migration-utils';
+import { REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION } from './constants';
 
 const mapAttributes = ( attributes: Record< string, unknown > ) => {
 	const { query, namespace, ...restAttributes } = attributes;
@@ -194,9 +196,7 @@ const replaceProductsBlocks = ( productsBlockClientIds: string[] ) => {
 	return !! results.length && results.every( ( result ) => !! result );
 };
 
-export const replaceProductsWithProductCollection = (
-	unsubscribe: () => void
-) => {
+export const replaceProductsWithProductCollection = () => {
 	const queryBlocksCount =
 		select( 'core/block-editor' ).getGlobalBlockCount( 'core/query' );
 	if ( queryBlocksCount === 0 ) {
@@ -211,10 +211,20 @@ export const replaceProductsWithProductCollection = (
 		return;
 	}
 
-	const replaced = replaceProductsBlocks( productsBlockClientIds );
-
-	if ( replaced ) {
-		// @todo: unsubscribe on user reverting migration
-		unsubscribe();
-	}
+	replaceProductsBlocks( productsBlockClientIds );
 };
+
+export let productsReplacementUnsubscribe: ( () => void ) | undefined;
+
+if ( isWpVersion( '6.1', '>=' ) ) {
+	// @todo Read from local storage. If reverted - don't subscribe
+	if (
+		REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION &&
+		! productsReplacementUnsubscribe
+	) {
+		console.info( 'Subscribed to allow Products block migration' );
+		productsReplacementUnsubscribe = subscribe( () => {
+			replaceProductsWithProductCollection();
+		}, 'core/block-editor' );
+	}
+}

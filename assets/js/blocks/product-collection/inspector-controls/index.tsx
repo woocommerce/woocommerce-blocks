@@ -33,7 +33,7 @@ import TaxonomyControls from './taxonomy-controls';
 import HandPickedProductsControl from './hand-picked-products-control';
 import AuthorControl from './author-control';
 import DisplayLayoutControl from './display-layout-control';
-import { replaceProductCollectionWithProducts } from '../../shared/scripts';
+import { replaceProductCollectionWithProducts } from '../../migration-products-to-product-collection';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >

@@ -6,6 +6,11 @@ import { Notice, Button } from '@wordpress/components';
 import { useLocalStorageState } from '@woocommerce/base-hooks';
 import { useEffect } from '@wordpress/element';
 
+/**
+ * Internal dependencies
+ */
+import { productsReplacementUnsubscribe } from '../../migration-products-to-product-collection';
+
 const FormattedNotice = ( { notice }: { notice: string } ) => {
 	const strongText = 'Product Collection';
 	const [ before, after ] = notice.split( strongText );
@@ -74,7 +79,13 @@ const UpgradeNotice = ( {
 		}
 
 		if ( state === 'reverted' ) {
-			return revertMigration;
+			if ( productsReplacementUnsubscribe ) {
+				console.info(
+					'Unsubscribed and disallow further Products block migration'
+				);
+				productsReplacementUnsubscribe();
+			}
+			revertMigration();
 		}
 	}, [
 		id,
