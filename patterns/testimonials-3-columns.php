@@ -11,11 +11,11 @@
 	<!-- wp:column -->
 	<div class="wp-block-column">
 		<!-- wp:paragraph -->
-		<p><strong>Great experience</strong></p>
+		<p><strong><?php esc_attr_e( 'Great experience', 'woo-gutenberg-products-block' ); ?></strong></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:paragraph -->
-		<p>In the end the couch wasn't exactly what I was looking for but my experience with the Burrow team was excellent. First in providing a discount when the couch was delayed, then timely feedback and updates as the…</p>
+		<p><?php esc_attr_e( 'In the end the couch wasn\'t exactly what I was looking for but my experience with the Burrow team was excellent. First in providing a discount when the couch was delayed, then timely feedback and updates as the…', 'woo-gutenberg-products-block' ); ?></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:paragraph -->
@@ -27,11 +27,12 @@
 	<!-- wp:column -->
 	<div class="wp-block-column">
 		<!-- wp:paragraph -->
-		<p><strong>LOVE IT</strong></p>
+
+		<p><strong><?php esc_attr_e( 'LOVE IT', 'woo-gutenberg-products-block' ); ?></strong></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:paragraph -->
-		<p>Great couch. color as advertise. seat is nice and firm. Easy to put together. Versatile. Bought one for my mother in law as well. And she loves hers!</p>
+		<p><?php esc_attr_e( 'Great couch. color as advertise. seat is nice and firm. Easy to put together. Versatile. Bought one for my mother in law as well. And she loves hers!', 'woo-gutenberg-products-block' ); ?></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:paragraph -->
@@ -43,11 +44,11 @@
 	<!-- wp:column -->
 	<div class="wp-block-column">
 		<!-- wp:paragraph -->
-		<p><strong>Awesome couch and great buying experience</strong></p>
+		<p><strong><?php esc_attr_e( 'Awesome couch and great buying experience', 'woo-gutenberg-products-block' ); ?></strong></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:paragraph -->
-		<p>I got the kind sofa. The look and feel is high quality, and I enjoy that it is a medium level of firmness. Assembly took a little longer than I expected, and it came in 4 boxes. I am excited about the time / st…</p>
+		<p><?php esc_attr_e( 'I got the kind sofa. The look and feel is high quality, and I enjoy that it is a medium level of firmness. Assembly took a little longer than I expected, and it came in 4 boxes. I am excited about the time / st…', 'woo-gutenberg-products-block' ); ?></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:paragraph -->
