@@ -32,18 +32,21 @@ class ProductAverageRating extends AbstractBlock {
 		return array(
 			'color'                  =>
 				array(
-					'text'       => true,
-					'background' => true,
-				),
-			'typography'             =>
-				array(
-					'fontSize'                 => true,
-					'__experimentalFontWeight' => true,
+					'text'                            => true,
+					'background'                      => true,
+					'__experimentalSkipSerialization' => true,
 				),
 			'spacing'                =>
 				array(
-					'margin'  => true,
-					'padding' => true,
+					'margin'                          => true,
+					'padding'                         => true,
+					'__experimentalSkipSerialization' => true,
+				),
+			'typography'             =>
+				array(
+					'fontSize'                        => true,
+					'__experimentalFontWeight'        => true,
+					'__experimentalSkipSerialization' => true,
 				),
 			'__experimentalSelector' => '.wc-block-components-product-average-rating',
 		);
