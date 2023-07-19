@@ -8,10 +8,7 @@ import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { TotalsItem } from '@woocommerce/blocks-checkout';
 import type { Currency } from '@woocommerce/price-format';
 import { ShippingVia } from '@woocommerce/base-components/cart-checkout/totals/shipping/shipping-via';
-import {
-	isAddressComplete,
-	isPackageRateCollectable,
-} from '@woocommerce/base-utils';
+import { isPackageRateCollectable } from '@woocommerce/base-utils';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 
@@ -54,7 +51,7 @@ export const TotalsShipping = ( {
 		shippingAddress,
 		cartHasCalculatedShipping,
 		shippingRates,
-		isLoadingRates,
+		isAddressComplete,
 	} = useStoreCart();
 	const totalShippingValue = getTotalShippingValue( values );
 	const hasRates = hasShippingRate( shippingRates ) || totalShippingValue > 0;
@@ -78,7 +75,6 @@ export const TotalsShipping = ( {
 				.flatMap( ( rate ) => rate.name );
 		}
 	);
-	const addressComplete = isAddressComplete( shippingAddress );
 	const shippingMethodsMissing = areShippingMethodsMissing(
 		hasRates,
 		prefersCollection,
@@ -98,7 +94,7 @@ export const TotalsShipping = ( {
 					! shippingMethodsMissing && cartHasCalculatedShipping
 						? // if address is not complete, display the link to add an address.
 						  totalShippingValue
-						: ( ! addressComplete || isCheckout ) && (
+						: ( ! isAddressComplete || isCheckout ) && (
 								<ShippingPlaceholder
 									showCalculator={ showCalculator }
 									isCheckout={ isCheckout }
@@ -114,7 +110,7 @@ export const TotalsShipping = ( {
 				description={
 					( ! shippingMethodsMissing && cartHasCalculatedShipping ) ||
 					// If address is complete, display the shipping address.
-					( addressComplete && ! isCheckout ) ? (
+					( isAddressComplete && ! isCheckout ) ? (
 						<>
 							<ShippingVia
 								selectedShippingRates={ selectedShippingRates }
@@ -146,14 +142,7 @@ export const TotalsShipping = ( {
 			) }
 			{ showRateSelector &&
 				cartHasCalculatedShipping &&
-				! showShippingCalculatorForm && (
-					<ShippingRateSelector
-						hasRates={ hasRates }
-						shippingRates={ shippingRates }
-						isLoadingRates={ isLoadingRates }
-						isAddressComplete={ addressComplete }
-					/>
-				) }
+				! showShippingCalculatorForm && <ShippingRateSelector /> }
 		</div>
 	);
 };

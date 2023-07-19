@@ -45,6 +45,9 @@ export interface ShippingRatesControlProps {
 	// True when rates are being loaded
 	isLoadingRates: boolean;
 
+	// True when the control is disabled.
+	disabled?: boolean;
+
 	// Rendered when there are no packages
 	noResultsMessage: ReactElement;
 

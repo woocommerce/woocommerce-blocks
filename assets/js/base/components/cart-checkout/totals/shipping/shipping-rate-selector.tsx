@@ -2,35 +2,24 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import type { CartResponseShippingRate } from '@woocommerce/types';
 import NoticeBanner from '@woocommerce/base-components/notice-banner';
+import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
 import ShippingRatesControl from '../../shipping-rates-control';
 
-export interface ShippingRateSelectorProps {
-	hasRates: boolean;
-	shippingRates: CartResponseShippingRate[];
-	isLoadingRates: boolean;
-	isAddressComplete: boolean;
-}
-
-export const ShippingRateSelector = ( {
-	hasRates,
-	shippingRates,
-	isLoadingRates,
-	isAddressComplete,
-}: ShippingRateSelectorProps ): JSX.Element => {
-	const legend = hasRates
-		? __( 'Shipping options', 'woo-gutenberg-products-block' )
-		: __( 'Choose a shipping option', 'woo-gutenberg-products-block' );
+export const ShippingRateSelector = (): JSX.Element => {
+	const { isAddressComplete, shippingRates, isLoadingRates } = useStoreCart();
+	const legend = __( 'Shipping options', 'woo-gutenberg-products-block' );
 	return (
 		<fieldset className="wc-block-components-totals-shipping__fieldset">
 			<legend className="screen-reader-text">{ legend }</legend>
 			<ShippingRatesControl
 				className="wc-block-components-totals-shipping__options"
+				shippingRates={ shippingRates }
+				isLoadingRates={ isLoadingRates }
 				noResultsMessage={
 					<>
 						{ isAddressComplete && (
@@ -47,8 +36,6 @@ export const ShippingRateSelector = ( {
 						) }
 					</>
 				}
-				shippingRates={ shippingRates }
-				isLoadingRates={ isLoadingRates }
 				context="woocommerce/cart"
 			/>
 		</fieldset>

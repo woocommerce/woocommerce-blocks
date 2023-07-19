@@ -61,6 +61,7 @@ const Packages = ( {
 const ShippingRatesControl = ( {
 	shippingRates,
 	isLoadingRates,
+	disabled = false,
 	className,
 	collapsible,
 	showItems,
@@ -68,16 +69,6 @@ const ShippingRatesControl = ( {
 	renderOption,
 	context,
 }: ShippingRatesControlProps ): JSX.Element => {
-	useEffect( () => {
-		if ( isLoadingRates ) {
-			return;
-		}
-		speakFoundShippingOptions(
-			getShippingRatesPackageCount( shippingRates ),
-			getShippingRatesRateCount( shippingRates )
-		);
-	}, [ isLoadingRates, shippingRates ] );
-
 	// Prepare props to pass to the ExperimentalOrderShippingPackages slot fill.
 	// We need to pluck out receiveCart.
 	// eslint-disable-next-line no-unused-vars
@@ -98,6 +89,16 @@ const ShippingRatesControl = ( {
 	const { isEditor } = useEditorContext();
 	const { hasSelectedLocalPickup, selectedRates } = useShippingData();
 
+	useEffect( () => {
+		if ( isLoadingRates ) {
+			return;
+		}
+		speakFoundShippingOptions(
+			getShippingRatesPackageCount( shippingRates ),
+			getShippingRatesRateCount( shippingRates )
+		);
+	}, [ isLoadingRates, shippingRates ] );
+
 	// Check if all rates selected are the same.
 	const selectedRateIds = isObject( selectedRates )
 		? ( Object.values( selectedRates ) as string[] )
@@ -108,12 +109,12 @@ const ShippingRatesControl = ( {
 
 	return (
 		<LoadingMask
-			isLoading={ isLoadingRates }
+			isLoading={ isLoadingRates || disabled }
 			screenReaderLabel={ __(
 				'Loading shipping rates…',
 				'woo-gutenberg-products-block'
 			) }
-			showSpinner={ true }
+			showSpinner={ isLoadingRates }
 		>
 			{ hasSelectedLocalPickup &&
 				context === 'woocommerce/cart' &&
