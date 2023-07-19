@@ -280,12 +280,8 @@ addFilter( 'editor.BlockEdit', QUERY_LOOP_ID, withProductQueryControls );
 if ( isWpVersion( '6.1', '>=' ) ) {
 	let unsubscribe: ( () => void ) | undefined;
 	if ( AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION && ! unsubscribe ) {
-		// console.info( 'Subscribed to allow Products block migration' );
 		unsubscribe = subscribe( () => {
 			replaceProductsWithProductCollection( () => {
-				// console.info(
-				// 	'Unsubscribed and disallow further Products block migration'
-				// );
 				if ( unsubscribe ) {
 					unsubscribe();
 				}
