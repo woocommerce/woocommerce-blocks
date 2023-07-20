@@ -37,13 +37,11 @@ const localState = {
 /**
  * Function to dispatch an update to the server. This is debounced.
  */
-const updateCustomerData = debounce( (): void => {
-	if ( ! validateDirtyProps( localState.dirtyProps ) ) {
-		return;
-	}
-
-	if ( localState.doingPush ) {
-		updateCustomerData();
+const updateCustomerData = (): void => {
+	if (
+		! validateDirtyProps( localState.dirtyProps ) ||
+		localState.doingPush
+	) {
 		return;
 	}
 
@@ -76,25 +74,31 @@ const updateCustomerData = debounce( (): void => {
 	dispatch( STORE_KEY )
 		.updateCustomerData( customerDataToUpdate )
 		.then( () => {
-			// Data was successfully pushed to the server. Remove dirty props and notices.
-			localState.dirtyProps.billingAddress = [];
-			localState.dirtyProps.shippingAddress = [];
 			removeAllNotices();
 			dispatch( STORE_KEY ).setHasDirtyAddress( false );
+			localState.dirtyProps.billingAddress = [];
+			localState.dirtyProps.shippingAddress = [];
+			localState.doingPush = false;
 		} )
 		.catch( ( response ) => {
 			processErrorResponse( response );
-		} )
-		.finally( () => {
 			localState.doingPush = false;
 		} );
+};
+
+const debouncedUpdateCustomerData = debounce( () => {
+	if ( localState.doingPush ) {
+		debouncedUpdateCustomerData();
+		return;
+	}
+	updateCustomerData();
 }, 1500 );
 
 /**
  * After cart has fully initialized, pushes changes to the server when data in the store is changed. Updates to the
  * server are debounced to prevent excessive requests.
  */
-export const pushChanges = (): void => {
+export const pushChanges = ( debounced: true ): void => {
 	const store = select( STORE_KEY );
 
 	if ( ! store.hasFinishedResolution( 'getCartData' ) ) {
@@ -139,11 +143,15 @@ export const pushChanges = (): void => {
 		if ( ! store.hasDirtyAddress() ) {
 			dispatch( STORE_KEY ).setHasDirtyAddress( true );
 		}
-		updateCustomerData();
+		if ( debounced ) {
+			debouncedUpdateCustomerData();
+		} else {
+			updateCustomerData();
+		}
 	}
 };
 
 // Cancel the debounced updateCustomerData function and trigger it immediately.
 export const flushChanges = (): void => {
-	updateCustomerData.flush();
+	debouncedUpdateCustomerData.flush();
 };
