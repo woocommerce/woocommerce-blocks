@@ -18,6 +18,7 @@ import {
 /**
  * Internal dependencies
  */
+import metadata from '../block.json';
 import { ProductCollectionAttributes } from '../types';
 import { setQueryAttribute } from '../utils';
 import { DEFAULT_FILTERS, getDefaultSettings } from '../constants';
@@ -105,6 +106,10 @@ const ProductCollectionInspectorControls = (
 
 export default ProductCollectionInspectorControls;
 
+const isProductCollection = (
+	block: EditorBlock< ProductCollectionAttributes >
+) => block.name === metadata.name;
+
 export const withUpgradeNoticeControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
 	( props: BlockEditProps< ProductCollectionAttributes > ) => {
@@ -117,7 +122,7 @@ export const withUpgradeNoticeControls =
 		};
 		// @todo: Implement the logic to display option for manual upgrade.
 		// before enabling automatic upgrade and in case of reverting manual upgrade.
-		return (
+		return isProductCollection( props ) ? (
 			<>
 				<InspectorControls>
 					{ displayUpgradeNotice && (
@@ -126,6 +131,8 @@ export const withUpgradeNoticeControls =
 				</InspectorControls>
 				<BlockEdit { ...props } />
 			</>
+		) : (
+			<BlockEdit { ...props } />
 		);
 	};
 
