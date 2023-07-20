@@ -110,21 +110,6 @@ const isProductCollection = (
 	block: EditorBlock< ProductCollectionAttributes >
 ) => block.name === metadata.name;
 
-const ControlsWithUpgradeNotice = ( props ) => {
-	const { clientId, isSelected } = props;
-	const upgradeNoticeProps = {
-		clientId,
-		isSelected,
-		revertMigration: replaceProductCollectionWithProducts,
-	};
-
-	return (
-		<InspectorControls>
-			{ <UpgradeNotice { ...upgradeNoticeProps } /> }
-		</InspectorControls>
-	);
-};
-
 export const withUpgradeNoticeControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
 	( props: BlockEditProps< ProductCollectionAttributes > ) => {
@@ -137,7 +122,15 @@ export const withUpgradeNoticeControls =
 		return (
 			<>
 				{ displayUpgradeNotice && (
-					<ControlsWithUpgradeNotice { ...props } />
+					<InspectorControls>
+						{
+							<UpgradeNotice
+								revertMigration={
+									replaceProductCollectionWithProducts
+								}
+							/>
+						}
+					</InspectorControls>
 				) }
 				<BlockEdit { ...props } />
 			</>

@@ -3,15 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Notice, Button } from '@wordpress/components';
-import { useLocalStorageState } from '@woocommerce/base-hooks';
 import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import {
-	productsReplacementUnsubscribe,
-	MIGRATION_STATUS_LS_KEY,
+	getUpgradeStatus,
+	setUpgradeStatus,
 } from '../../migration-products-to-product-collection';
 
 const FormattedNotice = ( { notice }: { notice: string } ) => {
@@ -27,29 +26,10 @@ const FormattedNotice = ( { notice }: { notice: string } ) => {
 	);
 };
 
-type UpgradeNoticeState = 'notseen' | 'seeing' | 'seen' | 'reverted';
-type UpgradeNotice = {
-	state: UpgradeNoticeState;
-	clientId?: string;
-};
 type UpgradeNoticeProps = {
-	clientId: string;
-	isSelected: boolean;
 	revertMigration: () => void;
 };
-const initialUpgradeNoticeState = { status: 'notseen' };
-const UpgradeNotice = ( {
-	clientId,
-	isSelected,
-	revertMigration,
-}: UpgradeNoticeProps ) => {
-	const [ upgradeNoticeState, setUpgradeNoticeState ] =
-		useLocalStorageState< UpgradeNoticeState >(
-			MIGRATION_STATUS_LS_KEY,
-			initialUpgradeNoticeState
-		);
-
-	const { status, clientId: statusClientId } = upgradeNoticeState;
+const UpgradeNotice = ( { revertMigration }: UpgradeNoticeProps ) => {
 	const notice = __(
 		'Products (Beta) block was upgraded to Product Collection, an updated version with new features and simplified settings.',
 		'woo-gutenberg-products-block'
@@ -60,70 +40,35 @@ const UpgradeNotice = ( {
 		'woo-gutenberg-products-block'
 	);
 
+	const { status } = getUpgradeStatus();
+
 	useEffect( () => {
-		if ( status === 'notseen' && isSelected ) {
-			setUpgradeNoticeState( {
-				status: 'seeing',
-				clientId,
-			} );
-			return;
-		}
-
-		if (
-			status === 'seeing' &&
-			clientId === statusClientId &&
-			! isSelected
-		) {
-			setUpgradeNoticeState( {
+		return () => {
+			setUpgradeStatus( {
 				status: 'seen',
-				clientId,
 			} );
-			return;
-		}
-
-		if ( status === 'seen' ) {
-			return;
-		}
-
-		if ( status === 'reverted' ) {
-			if ( productsReplacementUnsubscribe ) {
-				console.info(
-					'Unsubscribed and disallow further Products block migration'
-				);
-				productsReplacementUnsubscribe();
-			}
-			revertMigration();
-		}
-	}, [
-		statusClientId,
-		clientId,
-		isSelected,
-		status,
-		upgradeNoticeState,
-		setUpgradeNoticeState,
-		revertMigration,
-	] );
+		};
+	} );
 
 	const handleRemove = () => {
-		setUpgradeNoticeState( {
+		setUpgradeStatus( {
 			status: 'seen',
-			clientId,
 		} );
 	};
 
-	const handleClick = () => {
-		setUpgradeNoticeState( {
+	const handleRevert = () => {
+		setUpgradeStatus( {
 			status: 'reverted',
-			clientId,
 		} );
+		revertMigration();
 	};
 
-	return status === 'notseen' || status === 'seeing' ? (
+	return status === 'notseen' ? (
 		<Notice onRemove={ handleRemove }>
 			<FormattedNotice notice={ notice } />
 			<br />
 			<br />
-			<Button variant="link" onClick={ handleClick }>
+			<Button variant="link" onClick={ handleRevert }>
 				{ buttonLabel }
 			</Button>
 		</Notice>

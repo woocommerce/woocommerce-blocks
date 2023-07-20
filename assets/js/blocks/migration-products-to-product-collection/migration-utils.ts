@@ -29,6 +29,9 @@ export type PostTemplateLayout = {
 	type: PostTemplateLayoutTypes;
 	columnCount: number;
 };
+export type UpgradeNoticeStatus = {
+	status: 'notseen' | 'seen' | 'reverted';
+};
 
 const isProductsBlock: IsBlockType = ( block ) =>
 	block.name === 'core/query' &&
@@ -83,19 +86,16 @@ const postTemplateHasSupportForGridView = getSettingWithCoercion(
 	isBoolean
 );
 
-const getUpgradeStatus = () => {
-	const defaultStatus = {
-		status: 'notseen',
-	};
+const defaultStatus: UpgradeNoticeStatus = {
+	status: 'notseen',
+};
+
+const getUpgradeStatus = (): UpgradeNoticeStatus => {
 	const status = window.localStorage.getItem( MIGRATION_STATUS_LS_KEY );
 	return status ? JSON.parse( status ) : defaultStatus;
 };
 
-const setUpgradeStatus = ( status: string, clientId: string ) => {
-	const newStatus = {
-		status,
-		clientId,
-	};
+const setUpgradeStatus = ( newStatus: UpgradeNoticeStatus ) => {
 	window.localStorage.setItem(
 		MIGRATION_STATUS_LS_KEY,
 		JSON.stringify( newStatus )
