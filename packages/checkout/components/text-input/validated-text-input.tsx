@@ -47,12 +47,6 @@ const ValidatedTextInput = ( {
 	// Ref for the input element.
 	const inputRef = useRef< HTMLInputElement >( null );
 
-	// True when the input ref has focus.
-	const hasFocus =
-		inputRef &&
-		inputRef.current !== null &&
-		inputRef.current?.ownerDocument?.activeElement !== inputRef.current;
-
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
@@ -119,12 +113,14 @@ const ValidatedTextInput = ( {
 		if (
 			value !== previousValue &&
 			( value || previousValue ) &&
-			! hasFocus
+			inputRef &&
+			inputRef.current !== null &&
+			inputRef.current?.ownerDocument?.activeElement !== inputRef.current
 		) {
 			// Validate the input value.
 			validateInput( false );
 		}
-	}, [ validateInput, customFormatter, value, hasFocus, previousValue ] );
+	}, [ validateInput, customFormatter, value, previousValue ] );
 
 	/**
 	 * Validation on mount.
