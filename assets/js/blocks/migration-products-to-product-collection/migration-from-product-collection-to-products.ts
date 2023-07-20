@@ -11,13 +11,15 @@ import {
 	getProductCollectionBlockClientIds,
 	checkIfBlockCanBeInserted,
 	postTemplateHasSupportForGridView,
-	type TransformBlock,
-	type IsBlockType,
-	type ProductGridLayout,
-	type ProductGridLayoutTypes,
-	type PostTemplateLayout,
-	type PostTemplateLayoutTypes,
 } from './migration-utils';
+import type {
+	TransformBlock,
+	IsBlockType,
+	ProductGridLayout,
+	ProductGridLayoutTypes,
+	PostTemplateLayout,
+	PostTemplateLayoutTypes,
+} from './types';
 
 const VARIATION_NAME = 'woocommerce/product-query';
 

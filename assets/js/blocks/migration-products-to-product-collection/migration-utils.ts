@@ -10,28 +10,11 @@ import { isBoolean } from '@woocommerce/types';
  * Internal dependencies
  */
 import { MIGRATION_STATUS_LS_KEY } from './constants';
-
-type GetBlocksClientIds = ( blocks: BlockInstance[] ) => string[];
-export type IsBlockType = ( block: BlockInstance ) => boolean;
-export type TransformBlock = (
-	block: BlockInstance,
-	innerBlock: BlockInstance[]
-) => BlockInstance;
-export type ProductGridLayoutTypes = 'flex' | 'list';
-export type PostTemplateLayoutTypes = 'grid' | 'default';
-
-export type ProductGridLayout = {
-	type: ProductGridLayoutTypes;
-	columns: number;
-};
-
-export type PostTemplateLayout = {
-	type: PostTemplateLayoutTypes;
-	columnCount: number;
-};
-export type UpgradeNoticeStatus = {
-	status: 'notseen' | 'seen' | 'reverted';
-};
+import type {
+	IsBlockType,
+	GetBlocksClientIds,
+	UpgradeNoticeStatus,
+} from './types';
 
 const isProductsBlock: IsBlockType = ( block ) =>
 	block.name === 'core/query' &&

@@ -13,14 +13,16 @@ import {
 	checkIfBlockCanBeInserted,
 	postTemplateHasSupportForGridView,
 	getUpgradeStatus,
-	type TransformBlock,
-	type IsBlockType,
-	type ProductGridLayout,
-	type ProductGridLayoutTypes,
-	type PostTemplateLayout,
-	type PostTemplateLayoutTypes,
 } from './migration-utils';
 import { REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION } from './constants';
+import type {
+	TransformBlock,
+	IsBlockType,
+	ProductGridLayout,
+	ProductGridLayoutTypes,
+	PostTemplateLayout,
+	PostTemplateLayoutTypes,
+} from './types';
 
 const mapAttributes = ( attributes: Record< string, unknown > ) => {
 	const { query, namespace, ...restAttributes } = attributes;
