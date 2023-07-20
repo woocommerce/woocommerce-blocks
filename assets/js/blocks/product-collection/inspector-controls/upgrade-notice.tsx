@@ -32,7 +32,6 @@ type UpgradeNoticeProps = {
 const UpgradeNotice = ( {
 	revertMigration,
 	setUpgradeNoticeStatus,
-	upgradeNoticeStatus,
 }: UpgradeNoticeProps ) => {
 	const notice = __(
 		'Products (Beta) block was upgraded to Product Collection, an updated version with new features and simplified settings.',
@@ -43,8 +42,6 @@ const UpgradeNotice = ( {
 		'Revert to Products (Beta)',
 		'woo-gutenberg-products-block'
 	);
-
-	const { status } = upgradeNoticeStatus;
 
 	useEffect( () => {
 		return () => {
@@ -67,7 +64,7 @@ const UpgradeNotice = ( {
 		revertMigration();
 	};
 
-	return status === 'notseen' ? (
+	return (
 		<Notice onRemove={ handleRemove }>
 			<FormattedNotice notice={ notice } />
 			<br />
@@ -76,7 +73,7 @@ const UpgradeNotice = ( {
 				{ buttonLabel }
 			</Button>
 		</Notice>
-	) : null;
+	);
 };
 
 export default UpgradeNotice;

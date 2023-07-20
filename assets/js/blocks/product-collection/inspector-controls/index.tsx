@@ -110,18 +110,31 @@ const ProductCollectionInspectorControls = (
 
 export default ProductCollectionInspectorControls;
 
-const isProductCollection = (
-	block: EditorBlock< ProductCollectionAttributes >
-) => block.name === metadata.name;
+const isProductCollection = ( blockName: string ) =>
+	blockName === metadata.name;
+
+// Notice should be rendered if:
+// - block is Product Collection
+// - it was migrated from Products block
+// - Notice hasn't been seen by user yet
+const shouldDisplayUpgradeNotice = ( props ) => {
+	const { name, attributes } = props;
+	const { displayUpgradeNotice } = attributes;
+	const { status } = getUpgradeStatus();
+
+	return (
+		isProductCollection( name ) &&
+		displayUpgradeNotice &&
+		status === 'notseen'
+	);
+};
 
 export const withUpgradeNoticeControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
 	( props: BlockEditProps< ProductCollectionAttributes > ) => {
 		// @todo: Implement the logic to display option for manual upgrade.
 		// before enabling automatic upgrade and in case of reverting manual upgrade.
-		const displayUpgradeNotice =
-			isProductCollection( props ) &&
-			props.attributes.displayUpgradeNotice;
+		const displayUpgradeNotice = shouldDisplayUpgradeNotice( props );
 
 		return (
 			<>
@@ -130,7 +143,6 @@ export const withUpgradeNoticeControls =
 						{
 							<UpgradeNotice
 								revertMigration={ revertMigration }
-								upgradeNoticeStatus={ getUpgradeStatus() }
 								setUpgradeNoticeStatus={ setUpgradeStatus }
 							/>
 						}
