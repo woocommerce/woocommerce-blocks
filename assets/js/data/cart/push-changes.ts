@@ -39,9 +39,18 @@ const localState = {
  */
 const updateCustomerData = (): void => {
 	if (
-		! validateDirtyProps( localState.dirtyProps ) ||
-		localState.doingPush
+		localState.doingPush ||
+		! validateDirtyProps( localState.dirtyProps )
 	) {
+		return;
+	}
+
+	if (
+		! localState.dirtyProps.billingAddress.length &&
+		! localState.dirtyProps.shippingAddress.length
+	) {
+		// Address is no longer dirty.
+		dispatch( STORE_KEY ).setHasDirtyAddress( false );
 		return;
 	}
 
@@ -67,6 +76,7 @@ const updateCustomerData = (): void => {
 
 	if ( Object.keys( customerDataToUpdate ).length === 0 ) {
 		localState.doingPush = false;
+		dispatch( STORE_KEY ).setHasDirtyAddress( false );
 		return;
 	}
 
@@ -74,15 +84,15 @@ const updateCustomerData = (): void => {
 	dispatch( STORE_KEY )
 		.updateCustomerData( customerDataToUpdate )
 		.then( () => {
-			removeAllNotices();
-			dispatch( STORE_KEY ).setHasDirtyAddress( false );
+			localState.doingPush = false;
 			localState.dirtyProps.billingAddress = [];
 			localState.dirtyProps.shippingAddress = [];
-			localState.doingPush = false;
+			removeAllNotices();
+			dispatch( STORE_KEY ).setHasDirtyAddress( false );
 		} )
 		.catch( ( response ) => {
-			processErrorResponse( response );
 			localState.doingPush = false;
+			processErrorResponse( response );
 		} );
 };
 
