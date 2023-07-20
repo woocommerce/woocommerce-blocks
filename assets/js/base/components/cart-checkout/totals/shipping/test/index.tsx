@@ -173,6 +173,7 @@ baseContextHooks.useStoreCart.mockReturnValue( {
 	billingAddress: mockPreviewCart.billing_address,
 	cartHasCalculatedShipping: mockPreviewCart.has_calculated_shipping,
 	isLoadingRates: false,
+	isAddressComplete: true,
 } );
 
 describe( 'TotalsShipping', () => {

@@ -2,7 +2,6 @@
  * External dependencies
  */
 import * as wpDataFunctions from '@wordpress/data';
-import { CART_STORE_KEY, VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -54,8 +53,8 @@ jest.mock( '@woocommerce/base-utils', () => ( {
 
 // Mocking processErrorResponse because we don't actually care about processing the error response, we just don't want
 // pushChanges to throw an error.
-jest.mock( '../utils', () => ( {
-	...jest.requireActual( '../utils' ),
+jest.mock( '../../utils', () => ( {
+	...jest.requireActual( '../../utils' ),
 	__esModule: true,
 	processErrorResponse: jest.fn(),
 } ) );
@@ -70,7 +69,7 @@ jest.mock( '../update-payment-methods', () => ( {
 describe( 'pushChanges', () => {
 	beforeEach( () => {
 		wpDataFunctions.select.mockImplementation( ( storeName: string ) => {
-			if ( storeName === CART_STORE_KEY ) {
+			if ( storeName === 'wc/store/cart' ) {
 				return {
 					...jest
 						.requireActual( '@wordpress/data' )
@@ -79,7 +78,7 @@ describe( 'pushChanges', () => {
 					getCustomerData: getCustomerDataMock,
 				};
 			}
-			if ( storeName === VALIDATION_STORE_KEY ) {
+			if ( storeName === 'wc/store/validation' ) {
 				return {
 					...jest
 						.requireActual( '@wordpress/data' )
@@ -90,7 +89,7 @@ describe( 'pushChanges', () => {
 			return jest.requireActual( '@wordpress/data' ).select( storeName );
 		} );
 		wpDataFunctions.dispatch.mockImplementation( ( storeName: string ) => {
-			if ( storeName === CART_STORE_KEY ) {
+			if ( storeName === 'wc/store/cart' ) {
 				return {
 					...jest
 						.requireActual( '@wordpress/data' )

@@ -174,7 +174,7 @@ export const useStoreCart = (
 					extensions: EMPTY_EXTENSIONS,
 					shippingRates: previewCart.shipping_rates,
 					isLoadingRates: false,
-					isAddressComplete: true,
+					isAddressComplete: false,
 					cartHasCalculatedShipping:
 						previewCart.has_calculated_shipping,
 					paymentRequirements: previewCart.paymentRequirements,

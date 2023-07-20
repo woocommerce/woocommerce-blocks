@@ -130,7 +130,7 @@ describe( 'useStoreCart', () => {
 		shippingAddress: mockShippingAddress,
 		shippingRates: [],
 		extensions: {},
-		isAddressComplete: true,
+		isAddressComplete: false,
 		isLoadingRates: false,
 		cartHasCalculatedShipping: true,
 		paymentRequirements: [],
