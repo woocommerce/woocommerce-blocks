@@ -2,6 +2,7 @@
 
 namespace Automattic\WooCommerce\StoreApi;
 
+use Automattic\Jetpack\Constants;
 use Automattic\WooCommerce\StoreApi\Utilities\JsonWebToken;
 use WC_Session;
 
@@ -71,7 +72,7 @@ final class SessionHandler extends WC_Session {
 		global $wpdb;
 
 		// This mimics behaviour from default WC_Session_Handler class. There will be no sessions retrieved while WP setup is due.
-		if ( class_exists( \Automattic\Jetpack\Constants::class ) && \Automattic\Jetpack\Constants::is_defined( 'WP_SETUP_CONFIG' ) ) {
+		if ( Constants::is_defined( 'WP_SETUP_CONFIG' ) ) {
 			return false;
 		}
 
