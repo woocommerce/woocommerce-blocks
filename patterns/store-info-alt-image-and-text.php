@@ -13,8 +13,8 @@
 <!-- /wp:image --></div>
 <!-- /wp:column -->
 
-<!-- wp:column {"width":"50%"} -->
-<div class="wp-block-column" style="flex-basis:50%"><!-- wp:paragraph {"placeholder":"Content…","style":{"typography":{"textTransform":"uppercase"}}} -->
+<!-- wp:column {"verticalAlignment":"center","width":"50%"} -->
+<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:50%"><!-- wp:paragraph {"placeholder":"Content…","style":{"typography":{"textTransform":"uppercase"}}} -->
 <p style="text-transform:uppercase"><?php esc_html_e( 'The goods', 'woo-gutenberg-products-block' ); ?></p>
 <!-- /wp:paragraph -->
 
@@ -47,8 +47,8 @@
 <!-- /wp:columns -->
 
 <!-- wp:columns {"align":"wide"} -->
-<div class="wp-block-columns alignwide"><!-- wp:column {"width":"50%"} -->
-<div class="wp-block-column" style="flex-basis:50%"><!-- wp:paragraph {"placeholder":"Content…","style":{"typography":{"textTransform":"uppercase"}}} -->
+<div class="wp-block-columns alignwide"><!-- wp:column {"verticalAlignment":"center","width":"50%"} -->
+<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:50%"><!-- wp:paragraph {"placeholder":"Content…","style":{"typography":{"textTransform":"uppercase"}}} -->
 <p style="text-transform:uppercase"><?php esc_html_e( 'About us', 'woo-gutenberg-products-block' ); ?></p>
 <!-- /wp:paragraph -->
 
