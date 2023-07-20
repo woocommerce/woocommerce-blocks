@@ -2,6 +2,7 @@
  * External dependencies
  */
 import * as wpDataFunctions from '@wordpress/data';
+import { CART_STORE_KEY, VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -69,7 +70,7 @@ jest.mock( '../update-payment-methods', () => ( {
 describe( 'pushChanges', () => {
 	beforeEach( () => {
 		wpDataFunctions.select.mockImplementation( ( storeName: string ) => {
-			if ( storeName === 'wc/store/cart' ) {
+			if ( storeName === CART_STORE_KEY ) {
 				return {
 					...jest
 						.requireActual( '@wordpress/data' )
@@ -78,18 +79,18 @@ describe( 'pushChanges', () => {
 					getCustomerData: getCustomerDataMock,
 				};
 			}
-			if ( storeName === 'wc/store/validation' ) {
+			if ( storeName === VALIDATION_STORE_KEY ) {
 				return {
 					...jest
 						.requireActual( '@wordpress/data' )
 						.select( storeName ),
-					getValidationError: () => undefined,
+					getValidationError: jest.fn().mockReturnValue( undefined ),
 				};
 			}
 			return jest.requireActual( '@wordpress/data' ).select( storeName );
 		} );
 		wpDataFunctions.dispatch.mockImplementation( ( storeName: string ) => {
-			if ( storeName === 'wc/store/cart' ) {
+			if ( storeName === CART_STORE_KEY ) {
 				return {
 					...jest
 						.requireActual( '@wordpress/data' )
