@@ -110,29 +110,37 @@ const isProductCollection = (
 	block: EditorBlock< ProductCollectionAttributes >
 ) => block.name === metadata.name;
 
+const ControlsWithUpgradeNotice = ( props ) => {
+	const { clientId, isSelected } = props;
+	const upgradeNoticeProps = {
+		clientId,
+		isSelected,
+		revertMigration: replaceProductCollectionWithProducts,
+	};
+
+	return (
+		<InspectorControls>
+			{ <UpgradeNotice { ...upgradeNoticeProps } /> }
+		</InspectorControls>
+	);
+};
+
 export const withUpgradeNoticeControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
 	( props: BlockEditProps< ProductCollectionAttributes > ) => {
-		const { attributes, clientId, isSelected } = props;
-		const { displayUpgradeNotice } = attributes;
-		const upgradeNoticeProps = {
-			clientId,
-			isSelected,
-			revertMigration: replaceProductCollectionWithProducts,
-		};
 		// @todo: Implement the logic to display option for manual upgrade.
 		// before enabling automatic upgrade and in case of reverting manual upgrade.
-		return isProductCollection( props ) ? (
+		const displayUpgradeNotice =
+			isProductCollection( props ) &&
+			props.attributes.displayUpgradeNotice;
+
+		return (
 			<>
-				<InspectorControls>
-					{ displayUpgradeNotice && (
-						<UpgradeNotice { ...upgradeNoticeProps } />
-					) }
-				</InspectorControls>
+				{ displayUpgradeNotice && (
+					<ControlsWithUpgradeNotice { ...props } />
+				) }
 				<BlockEdit { ...props } />
 			</>
-		) : (
-			<BlockEdit { ...props } />
 		);
 	};
 
