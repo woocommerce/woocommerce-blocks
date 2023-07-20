@@ -6,16 +6,12 @@ use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
 use Automattic\WooCommerce\StoreApi\Exceptions\InvalidStockLevelsInCartException;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 use Automattic\WooCommerce\StoreApi\Utilities\OrderAuthorizationTrait;
-use Automattic\WooCommerce\StoreApi\Utilities\CheckoutTrait;
 
 /**
  * CheckoutOrder class.
  */
 class CheckoutOrder extends AbstractCartRoute {
 	use OrderAuthorizationTrait;
-	use CheckoutTrait {
-		get_args as protected get_checkout_order_args;
-	}
 
 	/**
 	 * The route identifier.
@@ -63,14 +59,35 @@ class CheckoutOrder extends AbstractCartRoute {
 	 * @return array An array of endpoints.
 	 */
 	public function get_args() {
-		$args = $this->get_checkout_order_args();
-
-		// Add authorization check to all checkout order endpoints.
-		foreach ( $args as $index => $arg ) {
-			$args[ $index ]['permission_callback'] = [ $this, 'is_authorized' ];
-		}
-
-		return $args;
+		return [
+			[
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'get_response' ],
+				'permission_callback' => [ $this, 'is_authorized' ],
+				'args'                => array_merge(
+					[
+						'payment_data' => [
+							'description' => __( 'Data to pass through to the payment method when processing payment.', 'woo-gutenberg-products-block' ),
+							'type'        => 'array',
+							'items'       => [
+								'type'       => 'object',
+								'properties' => [
+									'key'   => [
+										'type' => 'string',
+									],
+									'value' => [
+										'type' => [ 'string', 'boolean' ],
+									],
+								],
+							],
+						],
+					],
+					$this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE )
+				),
+			],
+			'schema'      => [ $this->schema, 'get_public_item_schema' ],
+			'allow_batch' => [ 'v1' => true ],
+		];
 	}
 
 	/**
@@ -112,13 +129,16 @@ class CheckoutOrder extends AbstractCartRoute {
 	 * @return \WP_REST_Response
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
+		$order_id    = absint( $request['id'] );
+		$this->order = wc_get_order( $order_id );
+
 		/**
 		 * Process request data.
 		 *
 		 * Note: Customer data is persisted from the request first so that OrderController::update_addresses_from_cart
 		 * uses the up to date customer address.
 		 */
-		$this->update_customer_from_request( $request );
+		$this->update_billing_address( $request );
 		$this->update_order_from_request( $request );
 
 		/**
@@ -180,18 +200,20 @@ class CheckoutOrder extends AbstractCartRoute {
 	 *
 	 * @param \WP_REST_Request $request Full details about the request.
 	 */
-	private function update_customer_from_request( \WP_REST_Request $request ) {
+	private function update_billing_address( \WP_REST_Request $request ) {
 		$customer = wc()->customer;
+		$billing  = $request['billing_address'];
+		$shipping = $request['shipping_address'];
 
 		// Billing address is a required field.
-		foreach ( $request['billing_address'] as $key => $value ) {
+		foreach ( $billing as $key => $value ) {
 			if ( is_callable( [ $customer, "set_billing_$key" ] ) ) {
 				$customer->{"set_billing_$key"}( $value );
 			}
 		}
 
 		// If shipping address (optional field) was not provided, set it to the given billing address (required field).
-		$shipping_address_values = $request['shipping_address'] ?? $request['billing_address'];
+		$shipping_address_values = $shipping ?? $billing;
 
 		foreach ( $shipping_address_values as $key => $value ) {
 			if ( is_callable( [ $customer, "set_shipping_$key" ] ) ) {
@@ -212,6 +234,11 @@ class CheckoutOrder extends AbstractCartRoute {
 		do_action( 'woocommerce_store_api_checkout_update_customer_from_request', $customer, $request );
 
 		$customer->save();
+
+		$this->order->set_billing_address( $billing );
+		$this->order->set_shipping_address( $shipping );
+		$this->order->save();
+		$this->order->calculate_totals();
 	}
 
 	/**
