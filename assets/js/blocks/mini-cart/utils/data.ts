@@ -167,9 +167,9 @@ interface MaybeInCompatibleAttributes
 	priceColorValue?: string;
 	iconColorValue?: string;
 	productCountColorValue?: string;
-	priceColor: ColorPaletteOption | string;
-	iconColor: ColorPaletteOption | string;
-	productCountColor: ColorPaletteOption | string;
+	priceColor: Partial< ColorPaletteOption > | string;
+	iconColor: Partial< ColorPaletteOption > | string;
+	productCountColor: Partial< ColorPaletteOption > | string;
 }
 
 export function migrateAttributesToColorPanel(
@@ -177,32 +177,23 @@ export function migrateAttributesToColorPanel(
 ): Attributes {
 	const attrs = { ...attributes };
 
-	if ( attrs.priceColorValue && typeof attrs.priceColor === 'string' ) {
+	if ( attrs.priceColorValue && ! attrs.priceColor ) {
 		attrs.priceColor = {
-			name: attributes.priceColor as string,
 			color: attributes.priceColorValue as string,
-			slug: '',
 		};
 		delete attrs.priceColorValue;
 	}
 
-	if ( attrs.iconColorValue && typeof attrs.iconColor === 'string' ) {
+	if ( attrs.iconColorValue && ! attrs.iconColor ) {
 		attrs.iconColor = {
-			name: attributes.iconColor as string,
 			color: attributes.iconColorValue as string,
-			slug: undefined,
 		};
 		delete attrs.iconColorValue;
 	}
 
-	if (
-		attrs.productCountColorValue &&
-		typeof attrs.productCountColor === 'string'
-	) {
+	if ( attrs.productCountColorValue && ! attrs.productCountColor ) {
 		attrs.productCountColor = {
-			name: attributes.productCountColor as string,
 			color: attributes.productCountColorValue as string,
-			slug: undefined,
 		};
 		delete attrs.productCountColorValue;
 	}

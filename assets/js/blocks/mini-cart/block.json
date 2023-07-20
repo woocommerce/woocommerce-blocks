@@ -44,11 +44,20 @@
 		"priceColor": {
 			"type": "object"
 		},
+		"priceColorValue": {
+			"type": "string"
+		},
 		"iconColor": {
 			"type": "object"
 		},
+		"iconColorValue": {
+			"type": "string"
+		},
 		"productCountColor": {
 			"type": "object"
+		},
+		"productCountColorValue": {
+			"type": "string"
 		}
 	},
 	"apiVersion": 2,
