@@ -35,96 +35,19 @@ const localState = {
 };
 
 /**
- * Function to dispatch an update to the server. This is debounced.
+ * Initializes the customer data cache on the first run.
  */
-const updateCustomerData = (): void => {
-	if (
-		localState.doingPush ||
-		! validateDirtyProps( localState.dirtyProps )
-	) {
-		return;
-	}
-
-	if (
-		! localState.dirtyProps.billingAddress.length &&
-		! localState.dirtyProps.shippingAddress.length
-	) {
-		// Address is no longer dirty.
-		dispatch( STORE_KEY ).setHasDirtyAddress( false );
-		return;
-	}
-
-	// Prevent multiple pushes from happening at the same time.
-	localState.doingPush = true;
-
-	// Find valid data from the list of dirtyProps and prepare to push to the server.
-	const customerDataToUpdate = {} as Partial< BillingAddressShippingAddress >;
-
-	if ( localState.dirtyProps.billingAddress.length ) {
-		customerDataToUpdate.billing_address = pick(
-			localState.customerData.billingAddress,
-			localState.dirtyProps.billingAddress
-		);
-	}
-
-	if ( localState.dirtyProps.shippingAddress.length ) {
-		customerDataToUpdate.shipping_address = pick(
-			localState.customerData.shippingAddress,
-			localState.dirtyProps.shippingAddress
-		);
-	}
-
-	if ( Object.keys( customerDataToUpdate ).length === 0 ) {
-		localState.doingPush = false;
-		dispatch( STORE_KEY ).setHasDirtyAddress( false );
-		return;
-	}
-
-	// If there is customer data to update, push it to the server.
-	dispatch( STORE_KEY )
-		.updateCustomerData( customerDataToUpdate )
-		.then( () => {
-			localState.doingPush = false;
-			localState.dirtyProps.billingAddress = [];
-			localState.dirtyProps.shippingAddress = [];
-			removeAllNotices();
-			dispatch( STORE_KEY ).setHasDirtyAddress( false );
-		} )
-		.catch( ( response ) => {
-			localState.doingPush = false;
-			processErrorResponse( response );
-		} );
+const initialize = () => {
+	localState.customerData = select( STORE_KEY ).getCustomerData();
+	localState.customerDataIsInitialized = true;
 };
 
-const debouncedUpdateCustomerData = debounce( () => {
-	if ( localState.doingPush ) {
-		debouncedUpdateCustomerData();
-		return;
-	}
-	updateCustomerData();
-}, 1500 );
-
 /**
- * After cart has fully initialized, pushes changes to the server when data in the store is changed. Updates to the
- * server are debounced to prevent excessive requests.
+ * Checks customer data against new customer data to get a list of dirty props.
  */
-export const pushChanges = ( debounced: true ): void => {
-	const store = select( STORE_KEY );
-
-	if ( ! store.hasFinishedResolution( 'getCartData' ) ) {
-		return;
-	}
-
+const updateDirtyProps = () => {
 	// Returns all current customer data from the store.
-	const newCustomerData = store.getCustomerData();
-
-	// On first run, this will populate the customerData cache with the current customer data in the store.
-	// This does not need to be pushed to the server because it's already there.
-	if ( ! localState.customerDataIsInitialized ) {
-		localState.customerData = newCustomerData;
-		localState.customerDataIsInitialized = true;
-		return;
-	}
+	const newCustomerData = select( STORE_KEY ).getCustomerData();
 
 	localState.dirtyProps.billingAddress = [
 		...localState.dirtyProps.billingAddress,
@@ -144,20 +67,106 @@ export const pushChanges = ( debounced: true ): void => {
 
 	// Update local cache of customer data so the next time this runs, it can compare against the latest data.
 	localState.customerData = newCustomerData;
+};
 
-	// Trigger the update if we have any dirty props.
-	if (
-		localState.dirtyProps.billingAddress.length ||
-		localState.dirtyProps.shippingAddress.length
-	) {
-		if ( ! store.hasDirtyAddress() ) {
-			dispatch( STORE_KEY ).setHasDirtyAddress( true );
+/**
+ * Function to dispatch an update to the server.
+ */
+const updateCustomerData = (): void => {
+	if ( localState.doingPush ) {
+		return;
+	}
+
+	// Prevent multiple pushes from happening at the same time.
+	localState.doingPush = true;
+
+	// Get updated list of dirty props by comparing customer data.
+	updateDirtyProps();
+
+	// Do we need to push anything?
+	const needsPush =
+		localState.dirtyProps.billingAddress.length > 0 ||
+		localState.dirtyProps.shippingAddress.length > 0;
+
+	if ( ! needsPush ) {
+		if ( select( STORE_KEY ).hasDirtyAddress() ) {
+			dispatch( STORE_KEY ).setHasDirtyAddress( false );
 		}
-		if ( debounced ) {
-			debouncedUpdateCustomerData();
-		} else {
-			updateCustomerData();
-		}
+		localState.doingPush = false;
+		return;
+	}
+
+	if ( ! select( STORE_KEY ).hasDirtyAddress() ) {
+		dispatch( STORE_KEY ).setHasDirtyAddress( true );
+	}
+
+	// Check props are valid, or abort.
+	if ( ! validateDirtyProps( localState.dirtyProps ) ) {
+		localState.doingPush = false;
+		return;
+	}
+
+	// Find valid data from the list of dirtyProps and prepare to push to the server.
+	const customerDataToUpdate = {} as Partial< BillingAddressShippingAddress >;
+
+	if ( localState.dirtyProps.billingAddress.length ) {
+		customerDataToUpdate.billing_address = pick(
+			localState.customerData.billingAddress,
+			localState.dirtyProps.billingAddress
+		);
+	}
+
+	if ( localState.dirtyProps.shippingAddress.length ) {
+		customerDataToUpdate.shipping_address = pick(
+			localState.customerData.shippingAddress,
+			localState.dirtyProps.shippingAddress
+		);
+	}
+
+	dispatch( STORE_KEY )
+		.updateCustomerData( customerDataToUpdate )
+		.then( () => {
+			localState.dirtyProps.billingAddress = [];
+			localState.dirtyProps.shippingAddress = [];
+			localState.doingPush = false;
+			dispatch( STORE_KEY ).setHasDirtyAddress( false );
+			removeAllNotices();
+		} )
+		.catch( ( response ) => {
+			localState.doingPush = false;
+			processErrorResponse( response );
+		} );
+};
+
+/**
+ * Function to dispatch an update to the server. This is debounced.
+ */
+const debouncedUpdateCustomerData = debounce( () => {
+	if ( localState.doingPush ) {
+		debouncedUpdateCustomerData();
+		return;
+	}
+	updateCustomerData();
+}, 1500 );
+
+/**
+ * After cart has fully initialized, pushes changes to the server when data in the store is changed. Updates to the
+ * server are debounced to prevent excessive requests.
+ */
+export const pushChanges = ( debounced = true ): void => {
+	if ( ! select( STORE_KEY ).hasFinishedResolution( 'getCartData' ) ) {
+		return;
+	}
+
+	if ( ! localState.customerDataIsInitialized ) {
+		initialize();
+		return;
+	}
+
+	if ( debounced ) {
+		debouncedUpdateCustomerData();
+	} else {
+		updateCustomerData();
 	}
 };
 
