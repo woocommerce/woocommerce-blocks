@@ -47,6 +47,9 @@ export type BaseAddressKey =
 	| keyof CartBillingAddress
 	| keyof CartShippingAddress;
 
+/**
+ * Normalizes address values before push.
+ */
 export const normalizeAddressProp = (
 	key: BaseAddressKey,
 	value?: string | undefined
@@ -64,6 +67,9 @@ export const normalizeAddressProp = (
 	return value.trim();
 };
 
+/**
+ * Compares two address objects and returns an array of keys that have changed.
+ */
 export const getDirtyKeys = <
 	T extends CartBillingAddress & CartShippingAddress
 >(
@@ -82,4 +88,31 @@ export const getDirtyKeys = <
 			normalizeAddressProp( key, address[ key ] )
 		);
 	} );
+};
+
+/**
+ * Validates dirty props before push.
+ */
+export const validateDirtyProps = ( dirtyProps: {
+	billingAddress: BaseAddressKey[];
+	shippingAddress: BaseAddressKey[];
+} ): boolean => {
+	const validationStore = select( VALIDATION_STORE_KEY );
+
+	const invalidProps = [
+		...dirtyProps.billingAddress.filter( ( key ) => {
+			return (
+				validationStore.getValidationError( 'billing_' + key ) !==
+				undefined
+			);
+		} ),
+		...dirtyProps.shippingAddress.filter( ( key ) => {
+			return (
+				validationStore.getValidationError( 'shipping_' + key ) !==
+				undefined
+			);
+		} ),
+	].filter( Boolean );
+
+	return invalidProps.length === 0;
 };

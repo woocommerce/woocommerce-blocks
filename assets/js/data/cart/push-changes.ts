@@ -13,9 +13,8 @@ import { select, dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import { STORE_KEY } from './constants';
-import { VALIDATION_STORE_KEY } from '../validation';
 import { processErrorResponse } from '../utils';
-import { getDirtyKeys, BaseAddressKey } from './utils';
+import { getDirtyKeys, validateDirtyProps, BaseAddressKey } from './utils';
 
 // This is used to track and cache the local state of push changes.
 const localState = {
@@ -36,34 +35,10 @@ const localState = {
 };
 
 /**
- * Validates dirty props before push.
- */
-const hasValidDirtyProps = () => {
-	const validationStore = select( VALIDATION_STORE_KEY );
-
-	const invalidProps = [
-		...localState.dirtyProps.billingAddress.filter( ( key ) => {
-			return (
-				validationStore.getValidationError( 'billing_' + key ) !==
-				undefined
-			);
-		} ),
-		...localState.dirtyProps.shippingAddress.filter( ( key ) => {
-			return (
-				validationStore.getValidationError( 'shipping_' + key ) !==
-				undefined
-			);
-		} ),
-	].filter( Boolean );
-
-	return invalidProps.length === 0;
-};
-
-/**
  * Function to dispatch an update to the server. This is debounced.
  */
 const updateCustomerData = debounce( (): void => {
-	if ( ! hasValidDirtyProps() ) {
+	if ( ! validateDirtyProps( localState.dirtyProps ) ) {
 		return;
 	}
 
