@@ -34,7 +34,11 @@ import TaxonomyControls from './taxonomy-controls';
 import HandPickedProductsControl from './hand-picked-products-control';
 import AuthorControl from './author-control';
 import DisplayLayoutControl from './display-layout-control';
-import { replaceProductCollectionWithProducts } from '../../migration-products-to-product-collection';
+import {
+	revertMigration,
+	getUpgradeStatus,
+	setUpgradeStatus,
+} from '../../migration-products-to-product-collection';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -125,9 +129,9 @@ export const withUpgradeNoticeControls =
 					<InspectorControls>
 						{
 							<UpgradeNotice
-								revertMigration={
-									replaceProductCollectionWithProducts
-								}
+								revertMigration={ revertMigration }
+								upgradeNoticeStatus={ getUpgradeStatus() }
+								setUpgradeNoticeStatus={ setUpgradeStatus }
 							/>
 						}
 					</InspectorControls>

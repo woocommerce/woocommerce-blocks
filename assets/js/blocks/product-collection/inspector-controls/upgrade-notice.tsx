@@ -8,10 +8,7 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import {
-	getUpgradeStatus,
-	setUpgradeStatus,
-} from '../../migration-products-to-product-collection';
+import { type UpgradeNoticeStatus } from '../../migration-products-to-product-collection';
 
 const FormattedNotice = ( { notice }: { notice: string } ) => {
 	const strongText = 'Product Collection';
@@ -28,8 +25,15 @@ const FormattedNotice = ( { notice }: { notice: string } ) => {
 
 type UpgradeNoticeProps = {
 	revertMigration: () => void;
+	setUpgradeNoticeStatus: ( status: UpgradeNoticeStatus ) => void;
+	upgradeNoticeStatus: UpgradeNoticeStatus;
 };
-const UpgradeNotice = ( { revertMigration }: UpgradeNoticeProps ) => {
+
+const UpgradeNotice = ( {
+	revertMigration,
+	setUpgradeNoticeStatus,
+	upgradeNoticeStatus,
+}: UpgradeNoticeProps ) => {
 	const notice = __(
 		'Products (Beta) block was upgraded to Product Collection, an updated version with new features and simplified settings.',
 		'woo-gutenberg-products-block'
@@ -40,24 +44,24 @@ const UpgradeNotice = ( { revertMigration }: UpgradeNoticeProps ) => {
 		'woo-gutenberg-products-block'
 	);
 
-	const { status } = getUpgradeStatus();
+	const { status } = upgradeNoticeStatus;
 
 	useEffect( () => {
 		return () => {
-			setUpgradeStatus( {
+			setUpgradeNoticeStatus( {
 				status: 'seen',
 			} );
 		};
 	} );
 
 	const handleRemove = () => {
-		setUpgradeStatus( {
+		setUpgradeNoticeStatus( {
 			status: 'seen',
 		} );
 	};
 
 	const handleRevert = () => {
-		setUpgradeStatus( {
+		setUpgradeNoticeStatus( {
 			status: 'reverted',
 		} );
 		revertMigration();

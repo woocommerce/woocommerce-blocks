@@ -219,16 +219,14 @@ export const replaceProductsWithProductCollection = () => {
 
 export let productsReplacementUnsubscribe: ( () => void ) | undefined;
 
-const { status } = getUpgradeStatus();
-
 if ( isWpVersion( '6.1', '>=' ) ) {
-	// @todo Read from local storage. If reverted - don't subscribe
+	const { status } = getUpgradeStatus();
+
 	if (
 		REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION &&
 		status !== 'reverted' &&
 		! productsReplacementUnsubscribe
 	) {
-		console.info( 'Subscribed to allow Products block migration' );
 		productsReplacementUnsubscribe = subscribe( () => {
 			replaceProductsWithProductCollection();
 		}, 'core/block-editor' );
