@@ -5,11 +5,17 @@ use Automattic\WooCommerce\StoreApi\Payments\PaymentContext;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
 use Automattic\WooCommerce\StoreApi\Exceptions\InvalidStockLevelsInCartException;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
+use Automattic\WooCommerce\StoreApi\Utilities\OrderAuthorizationTrait;
+use Automattic\WooCommerce\StoreApi\Utilities\CheckoutTrait;
 
 /**
  * CheckoutOrder class.
  */
 class CheckoutOrder extends AbstractCartRoute {
+	use OrderAuthorizationTrait;
+	use CheckoutTrait {
+		get_args as protected get_checkout_order_args;
+	}
 
 	/**
 	 * The route identifier.
@@ -52,69 +58,19 @@ class CheckoutOrder extends AbstractCartRoute {
 	}
 
 	/**
-	 * Check if authorized to get the order.
-	 *
-	 * @param \WP_REST_Request $request Request object.
-	 * @return boolean|WP_Error
-	 */
-	public function is_authorized( \WP_REST_Request $request ) {
-		$order_id    = absint( $request['id'] );
-		$order_key   = wc_clean( wp_unslash( $request->get_param( 'key' ) ) );
-		$user_id     = get_current_user_id();
-		$this->order = $this->order_controller->get_order( $order_id );
-
-		if ( $user_id !== $this->order->get_user_id() ) {
-			return false;
-		}
-
-		try {
-			$this->order_controller->validate_order_key( $order_id, $order_key );
-		} catch ( RouteException $error ) {
-			return new \WP_Error(
-				$error->getErrorCode(),
-				$error->getMessage(),
-				array( 'status' => $error->getCode() )
-			);
-		}
-
-		return true;
-	}
-
-	/**
 	 * Get method arguments for this REST route.
 	 *
 	 * @return array An array of endpoints.
 	 */
 	public function get_args() {
-		return [
-			[
-				'methods'             => \WP_REST_Server::CREATABLE,
-				'callback'            => [ $this, 'get_response' ],
-				'permission_callback' => [ $this, 'is_authorized' ],
-				'args'                => array_merge(
-					[
-						'payment_data' => [
-							'description' => __( 'Data to pass through to the payment method when processing payment.', 'woo-gutenberg-products-block' ),
-							'type'        => 'array',
-							'items'       => [
-								'type'       => 'object',
-								'properties' => [
-									'key'   => [
-										'type' => 'string',
-									],
-									'value' => [
-										'type' => [ 'string', 'boolean' ],
-									],
-								],
-							],
-						],
-					],
-					$this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE )
-				),
-			],
-			'schema'      => [ $this->schema, 'get_public_item_schema' ],
-			'allow_batch' => [ 'v1' => true ],
-		];
+		$args = $this->get_checkout_order_args();
+
+		// Add authorization check to all checkout order endpoints.
+		foreach ( $args as $index => $arg ) {
+			$args[ $index ]['permission_callback'] = [ $this, 'is_authorized' ];
+		}
+
+		return $args;
 	}
 
 	/**
