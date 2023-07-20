@@ -9,6 +9,7 @@ use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 use Automattic\WooCommerce\Blocks\Utils\Utils;
+use Automattic\WooCommerce\Blocks\Utils\MiniCartUtils;
 
 /**
  * Mini-Cart class.
@@ -72,37 +73,6 @@ class MiniCart extends AbstractBlock {
 		parent::initialize();
 		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
 		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 2 );
-	}
-
-	/**
-	 * Migrate attributes to color panel component format.
-	 *
-	 * @param array $attributes  Any attributes that currently are available from the block.
-	 * @return array Reformatted attributes that are compatible with the color panel component.
-	 */
-	protected function migrate_attributes_to_color_panel( $attributes ) {
-		if ( isset( $attributes['priceColorValue'] ) && ! isset( $attributes['priceColor'] ) ) {
-			$attributes['priceColor'] = array(
-				'color' => $attributes['priceColorValue'],
-			);
-			unset( $attributes['priceColorValue'] );
-		}
-
-		if ( isset( $attributes['iconColorValue'] ) && ! isset( $attributes['iconColor'] ) ) {
-			$attributes['iconColor'] = array(
-				'color' => $attributes['iconColorValue'],
-			);
-			unset( $attributes['iconColorValue'] );
-		}
-
-		if ( isset( $attributes['productCountColorValue'] ) && ! isset( $attributes['productCountColor'] ) ) {
-			$attributes['productCountColor'] = array(
-				'color' => $attributes['productCountColorValue'],
-			);
-			unset( $attributes['productCountColorValue'] );
-		}
-
-		return $attributes;
 	}
 
 	/**
@@ -412,7 +382,7 @@ class MiniCart extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		return $content . $this->get_markup( $this->migrate_attributes_to_color_panel( $attributes ) );
+		return $content . $this->get_markup( MiniCartUtils::migrate_attributes_to_color_panel( $attributes ) );
 	}
 
 	/**
