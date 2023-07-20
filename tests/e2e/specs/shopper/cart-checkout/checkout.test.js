@@ -171,10 +171,7 @@ describe( 'Shopper → Checkout', () => {
 				'thisShouldRemainHereToo@mail.com'
 			);
 
-			await expect( page ).toFill(
-				'input#shipping-0-first_name',
-				'Test'
-			);
+			await expect( page ).toFill( 'input#shipping-first_name', 'Test' );
 
 			const secondEnteredEmail = await page.evaluate( () => {
 				return document.getElementById( 'email' ).value;
@@ -333,31 +330,31 @@ describe( 'Shopper → Checkout', () => {
 				}
 			);
 			await expect( page ).toMatchElement(
-				'#billing-0-first_name ~ .wc-block-components-validation-error p',
+				'#billing-first_name ~ .wc-block-components-validation-error p',
 				{
 					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
-				'#billing-0-last_name ~ .wc-block-components-validation-error p',
+				'#billing-last_name ~ .wc-block-components-validation-error p',
 				{
 					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
-				'#billing-0-address_1 ~ .wc-block-components-validation-error p',
+				'#billing-address_1 ~ .wc-block-components-validation-error p',
 				{
 					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
-				'#billing-0-city ~ .wc-block-components-validation-error p',
+				'#billing-city ~ .wc-block-components-validation-error p',
 				{
 					text: 'Please enter',
 				}
 			);
 			await expect( page ).toMatchElement(
-				'#billing-0-postcode ~ .wc-block-components-validation-error p',
+				'#billing-postcode ~ .wc-block-components-validation-error p',
 				{
 					text: 'Please enter',
 				}

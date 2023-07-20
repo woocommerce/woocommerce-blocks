@@ -96,6 +96,7 @@ const Block = ( {
 		<AddressFormWrapperComponent>
 			<StoreNoticesContainer context={ noticeContext } />
 			<AddressForm
+				id="billing"
 				type="billing"
 				onChange={ ( values: Partial< BillingAddress > ) => {
 					setBillingAddress( values );

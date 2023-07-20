@@ -33,6 +33,7 @@ const defaultFields = Object.keys(
  * Checkout address form.
  */
 const AddressForm = ( {
+	id = '',
 	instanceId,
 	type = 'shipping',
 	fields = defaultFields,
@@ -104,18 +105,17 @@ const AddressForm = ( {
 		type,
 	] );
 
+	id = id || instanceId;
+
 	return (
-		<div
-			id={ `${ type }-${ instanceId }` }
-			className="wc-block-components-address-form"
-		>
+		<div id={ id } className="wc-block-components-address-form">
 			{ addressFormFields.map( ( field ) => {
 				if ( field.hidden ) {
 					return null;
 				}
 
 				const fieldProps = {
-					id: `${ type }-${ instanceId }-${ field.key }`,
+					id: `${ id }-${ field.key }`,
 					errorId: `${ type }_${ field.key }`,
 					label: field.required ? field.label : field.optionalLabel,
 					autoCapitalize: field.autocapitalize,

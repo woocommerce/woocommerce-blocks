@@ -16,6 +16,8 @@ export type FieldConfig = Record<
 export type FieldType = keyof AddressFields;
 
 export interface AddressFormProps {
+	// Id for component.
+	id?: string;
 	// Unique id for form.
 	instanceId: string;
 	// Type of form (billing or shipping).
