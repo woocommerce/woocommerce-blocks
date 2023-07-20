@@ -22,22 +22,22 @@ interface Props {
 	setAttributes: ( attributes: BlockAttributes ) => void;
 }
 
+const TEMPLATE: InnerBlockTemplate[] = [
+	[
+		'core/group',
+		{ layout: { type: 'flex' } },
+		[
+			[ 'woocommerce/product-gallery-large-image' ],
+			[ 'woocommerce/product-gallery-thumbnails' ],
+		],
+	],
+];
+
 export const Edit = ( {
 	clientId,
 	attributes,
 	setAttributes,
 }: Props ): JSX.Element => {
-	const TEMPLATE: InnerBlockTemplate[] = [
-		[
-			'core/group',
-			{ layout: { type: 'flex' } },
-			[
-				[ 'woocommerce/product-gallery-large-image' ],
-				[ 'woocommerce/product-gallery-thumbnails' ],
-			],
-		],
-	];
-
 	const blockProps = useBlockProps();
 
 	useEffect( () => {
@@ -55,7 +55,7 @@ export const Edit = ( {
 
 	// Function to update the layout type
 	const block = select( 'core/block-editor' ).getBlock( clientId );
-	block.innerBlocks.forEach( ( innerBlock ) => {
+	block?.innerBlocks.forEach( ( innerBlock ) => {
 		if ( innerBlock.name === 'core/group' ) {
 			const updatedBlock = {
 				...innerBlock,
