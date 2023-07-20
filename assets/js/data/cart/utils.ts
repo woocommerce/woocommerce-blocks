@@ -1,11 +1,15 @@
 /**
  * External dependencies
  */
-import { Cart, CartResponse } from '@woocommerce/types';
 import { select } from '@wordpress/data';
 import { camelCaseKeys } from '@woocommerce/base-utils';
 import { isEmail } from '@wordpress/url';
-import type { BillingAddress, ShippingAddress } from '@woocommerce/settings';
+import {
+	CartBillingAddress,
+	CartShippingAddress,
+	Cart,
+	CartResponse,
+} from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -39,9 +43,13 @@ export const shippingAddressHasValidationErrors = () => {
 	].some( ( entry ) => typeof entry !== 'undefined' );
 };
 
+export type BaseAddressKey =
+	| keyof CartBillingAddress
+	| keyof CartShippingAddress;
+
 export const normalizeAddressProp = (
-	key: keyof ( BillingAddress & ShippingAddress ),
-	value: string | number | boolean
+	key: BaseAddressKey,
+	value?: string | undefined
 ) => {
 	// Skip normalizing for any non string field
 	if ( typeof value !== 'string' ) {
@@ -54,4 +62,24 @@ export const normalizeAddressProp = (
 		return value.replace( ' ', '' ).toUpperCase();
 	}
 	return value.trim();
+};
+
+export const getDirtyKeys = <
+	T extends CartBillingAddress & CartShippingAddress
+>(
+	// An object containing all previous address information
+	previousAddress: Partial< T >,
+	// An object containing all address information.
+	address: Partial< T >
+): BaseAddressKey[] => {
+	const previousAddressKeys = Object.keys(
+		previousAddress
+	) as BaseAddressKey[];
+
+	return previousAddressKeys.filter( ( key: BaseAddressKey ) => {
+		return (
+			normalizeAddressProp( key, previousAddress[ key ] ) !==
+			normalizeAddressProp( key, address[ key ] )
+		);
+	} );
 };
