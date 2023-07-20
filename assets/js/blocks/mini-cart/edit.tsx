@@ -31,9 +31,10 @@ import type { ColorPaletteOption } from '@woocommerce/editor-components/color-pa
  */
 import QuantityBadge from './quantity-badge';
 import { defaultColorItem } from './utils/defaults';
+import { migrateAttributesToColorPanel } from './utils/data';
 import './editor.scss';
 
-interface Attributes {
+export interface Attributes {
 	miniCartIcon: 'cart' | 'bag' | 'bag-alt';
 	addToCartBehaviour: string;
 	hasHiddenPrice: boolean;
@@ -61,7 +62,7 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 		iconColor = defaultColorItem,
 		productCountColor = defaultColorItem,
 		miniCartIcon,
-	} = attributes;
+	} = migrateAttributesToColorPanel( attributes );
 
 	const miniCartColorAttributes = {
 		priceColor: {

@@ -12,6 +12,12 @@ import {
 	isBoolean,
 } from '@woocommerce/types';
 import { getSettingWithCoercion } from '@woocommerce/settings';
+import type { ColorPaletteOption } from '@woocommerce/editor-components/color-panel/types';
+
+/**
+ * Internal dependencies
+ */
+import { Attributes } from '../edit';
 
 const getPrice = ( totals: CartResponseTotals, showIncludingTax: boolean ) => {
 	const currency = getCurrencyFromPriceResponse( totals );
@@ -152,3 +158,54 @@ export const getMiniCartTotalsFromServer = async (): Promise<
 			return undefined;
 		} );
 };
+
+interface MaybeInCompatibleAttributes
+	extends Omit<
+		Attributes,
+		'priceColor' | 'iconColor' | 'productCountColor'
+	> {
+	priceColorValue?: string;
+	iconColorValue?: string;
+	productCountColorValue?: string;
+	priceColor: ColorPaletteOption | string;
+	iconColor: ColorPaletteOption | string;
+	productCountColor: ColorPaletteOption | string;
+}
+
+export function migrateAttributesToColorPanel(
+	attributes: MaybeInCompatibleAttributes
+): Attributes {
+	const attrs = { ...attributes };
+
+	if ( attrs.priceColorValue && typeof attrs.priceColor === 'string' ) {
+		attrs.priceColor = {
+			name: attributes.priceColor as string,
+			color: attributes.priceColorValue as string,
+			slug: '',
+		};
+		delete attrs.priceColorValue;
+	}
+
+	if ( attrs.iconColorValue && typeof attrs.iconColor === 'string' ) {
+		attrs.iconColor = {
+			name: attributes.iconColor as string,
+			color: attributes.iconColorValue as string,
+			slug: undefined,
+		};
+		delete attrs.iconColorValue;
+	}
+
+	if (
+		attrs.productCountColorValue &&
+		typeof attrs.productCountColor === 'string'
+	) {
+		attrs.productCountColor = {
+			name: attributes.productCountColor as string,
+			color: attributes.productCountColorValue as string,
+			slug: undefined,
+		};
+		delete attrs.productCountColorValue;
+	}
+
+	return <Attributes>attrs;
+}

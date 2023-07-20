@@ -20,7 +20,7 @@ export interface CustomColorsMap {
 
 export interface ColorPaletteOption {
 	name: string;
-	slug: string;
+	slug: string | undefined;
 	color: string;
 }
 

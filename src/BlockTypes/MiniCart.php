@@ -75,6 +75,40 @@ class MiniCart extends AbstractBlock {
 	}
 
 	/**
+	 * Migrate attributes to color panel component format.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 * @return array Reformatted attributes that are compatible with the color panel component.
+	 */
+	protected function migrate_attributes_to_color_panel( $attributes ) {
+		if ( isset( $attributes['priceColorValue'] ) && is_string( $attributes['priceColor'] ) ) {
+			$attributes['priceColor'] = array(
+				'name'  => $attributes['priceColor'],
+				'color' => $attributes['priceColorValue'],
+			);
+			unset( $attributes['priceColorValue'] );
+		}
+
+		if ( isset( $attributes['iconColorValue'] ) && is_string( $attributes['iconColor'] ) ) {
+			$attributes['iconColor'] = array(
+				'name'  => $attributes['iconColor'],
+				'color' => $attributes['iconColorValue'],
+			);
+			unset( $attributes['iconColorValue'] );
+		}
+
+		if ( isset( $attributes['productCountColorValue'] ) && is_string( $attributes['productCountColor'] ) ) {
+			$attributes['productCountColor'] = array(
+				'name'  => $attributes['productCountColor'],
+				'color' => $attributes['productCountColorValue'],
+			);
+			unset( $attributes['productCountColorValue'] );
+		}
+
+		return $attributes;
+	}
+
+	/**
 	 * Get the editor script handle for this block type.
 	 *
 	 * @param string $key Data to get, or default to everything.
@@ -381,7 +415,7 @@ class MiniCart extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		return $content . $this->get_markup( $attributes );
+		return $content . $this->get_markup( $this->migrate_attributes_to_color_panel( $attributes ) );
 	}
 
 	/**
