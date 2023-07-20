@@ -223,11 +223,11 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 	return (
 		<>
 			<InspectorControls>
-				{ MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION ? (
+				{ MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION && (
 					<UpgradeNotice
 						upgradeBlock={ replaceProductsWithProductCollection }
 					/>
-				) : null }
+				) }
 				{ allowedControls?.includes( 'presets' ) && (
 					<PopularPresets { ...props } />
 				) }
