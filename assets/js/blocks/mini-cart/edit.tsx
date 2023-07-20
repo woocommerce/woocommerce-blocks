@@ -20,10 +20,7 @@ import { select } from '@wordpress/data';
 import { cartOutline, bag, bagAlt } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
-import {
-	ColorPanel,
-	useColorPanelStyles,
-} from '@woocommerce/editor-components/color-panel';
+import { ColorPanel } from '@woocommerce/editor-components/color-panel';
 import type { ColorPaletteOption } from '@woocommerce/editor-components/color-panel/types';
 
 /**
@@ -79,10 +76,8 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 		},
 	};
 
-	const { className } = useColorPanelStyles( miniCartColorAttributes );
-
 	const blockProps = useBlockProps( {
-		className: [ 'wc-block-mini-cart', ...className ].join( ' ' ),
+		className: [ 'wc-block-mini-cart' ].join( ' ' ),
 	} );
 
 	const isSiteEditor = isSiteEditorPage( select( 'core/edit-site' ) );
