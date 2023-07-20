@@ -535,6 +535,39 @@ class ProductCollection extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Test merging taxonomies query i.e.
+	 * - Product categories
+	 * - Product tags
+	 */
+	public function test_merging_taxonomies_query() {
+		$parsed_block                               = $this->get_base_parsed_block();
+		$parsed_block['attrs']['query']['taxQuery'] = array(
+			'product_cat' => array( 1, 2 ),
+			'product_tag' => array( 3, 4 ),
+		);
+
+		$merged_query = $this->initialize_merged_query( $parsed_block );
+
+		$this->assertContains(
+			array(
+				'taxonomy'         => 'product_cat',
+				'terms'            => array( 1, 2 ),
+				'include_children' => false,
+			),
+			$merged_query['tax_query']
+		);
+
+		$this->assertContains(
+			array(
+				'taxonomy'         => 'product_tag',
+				'terms'            => array( 3, 4 ),
+				'include_children' => false,
+			),
+			$merged_query['tax_query']
+		);
+	}
+
+	/**
 	 * Test merging multiple filter queries on Editor side
 	 */
 	public function test_updating_rest_query_without_attributes() {
