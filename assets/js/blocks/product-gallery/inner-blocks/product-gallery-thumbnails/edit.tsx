@@ -26,8 +26,6 @@ export const Edit = ( {
 		),
 	} );
 
-	console.log( context );
-
 	const Placeholder = () => {
 		return (
 			<>
