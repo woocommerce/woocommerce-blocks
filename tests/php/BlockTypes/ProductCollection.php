@@ -453,18 +453,24 @@ class ProductCollection extends \WP_UnitTestCase {
 		set_query_var( 'query_type_size', 'and' );
 
 		$merged_query = $this->initialize_merged_query();
+		$tax_queries  = $merged_query['tax_query'];
 
-		$attribute_tax_query = array();
-
-		foreach ( $merged_query['tax_query'] as $tax_query ) {
-			if ( isset( $tax_query['relation'] ) ) {
-				$attribute_tax_query = $tax_query;
+		$and_query = array();
+		foreach ( $tax_queries as $tax_query ) {
+			if ( isset( $tax_query['relation'] ) && 'AND' === $tax_query['relation'] ) {
+				$and_query = $tax_query;
 			}
 		}
 
-		$attribute_tax_query_queries = $attribute_tax_query[0];
+		// Check if the AND query is an array.
+		$this->assertIsArray( $and_query );
 
-		$this->assertEquals( 'AND', $attribute_tax_query['relation'] );
+		$attribute_queries = array();
+		foreach ( $and_query as $and_query_item ) {
+			if ( is_array( $and_query_item ) ) {
+				$attribute_queries = $and_query_item;
+			}
+		}
 
 		$this->assertContainsEquals(
 			array(
@@ -473,8 +479,9 @@ class ProductCollection extends \WP_UnitTestCase {
 				'terms'    => array( 'blue' ),
 				'operator' => 'IN',
 			),
-			$attribute_tax_query_queries
+			$attribute_queries
 		);
+
 		$this->assertContainsEquals(
 			array(
 				'taxonomy' => 'pa_size',
@@ -482,7 +489,7 @@ class ProductCollection extends \WP_UnitTestCase {
 				'terms'    => array( 'xl', 'xxl' ),
 				'operator' => 'AND',
 			),
-			$attribute_tax_query_queries
+			$attribute_queries
 		);
 
 		set_query_var( 'filter_color', '' );
