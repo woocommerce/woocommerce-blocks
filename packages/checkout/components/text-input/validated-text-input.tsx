@@ -117,10 +117,9 @@ const ValidatedTextInput = ( {
 			inputRef.current !== null &&
 			inputRef.current?.ownerDocument?.activeElement !== inputRef.current
 		) {
-			// Validate the input value.
-			validateInput( false );
+			onChange( customFormatter( inputRef.current.value ) );
 		}
-	}, [ validateInput, customFormatter, value, previousValue ] );
+	}, [ validateInput, customFormatter, value, previousValue, onChange ] );
 
 	/**
 	 * Validation on mount.
