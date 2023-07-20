@@ -1,23 +1,4 @@
 .wc-block-order-confirmation-billing-address {
-	// Extra class for specificity to overwrite editor styles.
-	.wc-block-components-title.wc-block-components-title {
-		font-size: var(--wp--preset--font-size--x-large);
-		font-weight: 400;
-		letter-spacing: -0.019rem;
-		line-height: 1.4;
-	}
-
-	// For Twenty Twenty we need to increase specificity a bit more.
-	.theme-twentytwenty {
-		.wc-block-components-title.wc-block-components-title {
-			font-size: var(--wp--preset--font-size--x-large);
-			font-weight: 400;
-			letter-spacing: -0.019rem;
-			line-height: 1.4;
-		}
-	}
-
-
 	address {
 		width: 100% !important;
 		padding: $gap-large;

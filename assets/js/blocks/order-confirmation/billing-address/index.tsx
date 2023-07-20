@@ -8,9 +8,7 @@ import { totals } from '@woocommerce/icons';
 /**
  * Internal dependencies
  */
-import metadata from './block.json';
 import edit from './edit';
-import attributes from './attributes';
 import './style.scss';
 
 registerBlockType( 'woocommerce/order-confirmation-billing-address', {
@@ -21,10 +19,6 @@ registerBlockType( 'woocommerce/order-confirmation-billing-address', {
 				className="wc-block-editor-components-block-icon"
 			/>
 		),
-	},
-	attributes: {
-		...metadata.attributes,
-		...attributes,
 	},
 	edit,
 	save() {
