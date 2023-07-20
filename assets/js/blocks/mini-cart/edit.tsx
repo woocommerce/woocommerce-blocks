@@ -77,7 +77,7 @@ const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 	};
 
 	const blockProps = useBlockProps( {
-		className: [ 'wc-block-mini-cart' ].join( ' ' ),
+		className: 'wc-block-mini-cart',
 	} );
 
 	const isSiteEditor = isSiteEditorPage( select( 'core/edit-site' ) );
