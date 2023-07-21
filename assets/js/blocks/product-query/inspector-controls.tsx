@@ -45,6 +45,8 @@ import { ProductSelector } from './inspector-controls/product-selector';
 import { UpgradeNotice } from './inspector-controls/upgrade-notice';
 import {
 	replaceProductsWithProductCollection,
+	setUpgradeStatus,
+	INITIAL_STATUS_LS_VALUE,
 	MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
 } from '../migration-products-to-product-collection';
 
@@ -220,14 +222,16 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 	const defaultWooQueryParams = useDefaultWooQueryParamsForVariation(
 		props.attributes.namespace
 	);
+	const upgradeBlock = () => {
+		setUpgradeStatus( INITIAL_STATUS_LS_VALUE );
+		replaceProductsWithProductCollection();
+	};
 
 	return (
 		<>
 			<InspectorControls>
 				{ MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION && (
-					<UpgradeNotice
-						upgradeBlock={ replaceProductsWithProductCollection }
-					/>
+					<UpgradeNotice upgradeBlock={ upgradeBlock } />
 				) }
 				{ allowedControls?.includes( 'presets' ) && (
 					<PopularPresets { ...props } />
