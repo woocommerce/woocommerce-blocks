@@ -39,8 +39,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		if ( '' !== $block->context['thumbnailsPosition'] && 'off' !== $block->context['thumbnailsPosition'] ) {
-
+		if ( isset( $block->context['thumbnailsPosition'] ) && '' !== $block->context['thumbnailsPosition'] && 'off' !== $block->context['thumbnailsPosition'] ) {
 			if ( ! empty( $content ) ) {
 				parent::register_block_type_assets();
 				$this->register_chunk_translations( [ $this->block_name ] );
@@ -49,7 +48,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 
 			$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-			$post_id           = $block->context['postId'];
+			$post_id           = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
 			$product           = wc_get_product( $post_id );
 			$post_thumbnail_id = $product->get_image_id();
 
