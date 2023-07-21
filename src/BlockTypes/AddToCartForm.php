@@ -160,7 +160,7 @@ class AddToCartForm extends AbstractBlock {
 	 * @param object $product The product being added to the cart.
 	 * @return string The filtered redirect URL.
 	 */
-	public function add_to_cart_redirect_filter( $url, $product ) {
+	public function add_to_cart_redirect_filter( $url, $product = null ) {
 		// phpcs:ignore
 		if ( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' == $_POST['is-descendent-of-single-product-block'] ) {
 			return wp_validate_redirect( wp_get_referer(), $url );
