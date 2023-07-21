@@ -6,6 +6,8 @@ import { isSiteEditorPage } from '@woocommerce/utils';
 import { usePrevious } from '@woocommerce/base-hooks';
 import { select } from '@wordpress/data';
 import { useMemo } from '@wordpress/element';
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import { isNumber } from '@woocommerce/types';
 import {
 	ToggleControl,
 	// @ts-expect-error Using experimental features
@@ -55,6 +57,12 @@ const InheritQueryControl = ( {
 		return null;
 	}
 
+	const loopShopPerPage = getSettingWithCoercion(
+		'loop_shop_per_page',
+		9,
+		isNumber
+	);
+
 	return (
 		<ToolsPanelItem
 			label={ label }
@@ -80,6 +88,7 @@ const InheritQueryControl = ( {
 						setQueryAttribute( {
 							...DEFAULT_QUERY,
 							inherit: newInherit,
+							perPage: loopShopPerPage,
 						} );
 					} else {
 						// If the inherit is disabled, we want to reset the query to the previous query before the inherit was enabled.
