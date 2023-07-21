@@ -457,7 +457,7 @@ class ProductCollection extends \WP_UnitTestCase {
 
 		$and_query = array();
 		foreach ( $tax_queries as $tax_query ) {
-			if ( isset( $tax_query['relation'] ) && 'AND' == $tax_query['relation'] ) {
+			if ( isset( $tax_query['relation'] ) && 'AND' === $tax_query['relation'] ) {
 				$and_query = $tax_query;
 			}
 		}
@@ -465,20 +465,12 @@ class ProductCollection extends \WP_UnitTestCase {
 		// Check if the AND query is an array.
 		$this->assertIsArray( $and_query );
 
-		echo '\n====================================================================\n';
-		echo var_dump( $and_query );
-		echo '\n====================================================================\n';
-
 		$attribute_queries = array();
 		foreach ( $and_query as $and_query_item ) {
 			if ( is_array( $and_query_item ) ) {
 				$attribute_queries = $and_query_item;
 			}
 		}
-
-		echo '\n====================================================================\n';
-		echo var_dump( $and_query );
-		echo '\n====================================================================\n';
 
 		$this->assertContainsEquals(
 			array(
