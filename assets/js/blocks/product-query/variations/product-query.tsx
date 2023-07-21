@@ -65,11 +65,9 @@ const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
 
 if ( isWpVersion( '6.1', '>=' ) ) {
 	const store = select( 'core/edit-site' );
+	const isTemplate = store?.getEditedPostType() === 'wp_template';
 
-	// Register the Products block with default attributes.
-	registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
-
-	if ( store ) {
+	if ( isTemplate ) {
 		let currentTemplateId: string | undefined;
 
 		subscribe( () => {
@@ -97,5 +95,7 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 
 			registerProductsBlock( queryAttributes );
 		} );
+	} else {
+		registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
 	}
 }
