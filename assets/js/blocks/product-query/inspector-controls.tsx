@@ -42,6 +42,11 @@ import {
 import { AttributesFilter } from './inspector-controls/attributes-filter';
 import { PopularPresets } from './inspector-controls/popular-presets';
 import { ProductSelector } from './inspector-controls/product-selector';
+import { UpgradeNotice } from './inspector-controls/upgrade-notice';
+import {
+	replaceProductsWithProductCollection,
+	MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
+} from '../migration-products-to-product-collection';
 
 import './editor.scss';
 
@@ -219,6 +224,11 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 	return (
 		<>
 			<InspectorControls>
+				{ MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION && (
+					<UpgradeNotice
+						upgradeBlock={ replaceProductsWithProductCollection }
+					/>
+				) }
 				{ allowedControls?.includes( 'presets' ) && (
 					<PopularPresets { ...props } />
 				) }
