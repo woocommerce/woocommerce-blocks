@@ -66,6 +66,9 @@ const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
 if ( isWpVersion( '6.1', '>=' ) ) {
 	const store = select( 'core/edit-site' );
 
+	// Register the Products block with default attributes.
+	registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
+
 	if ( store ) {
 		let currentTemplateId: string | undefined;
 
@@ -74,7 +77,10 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 
 			currentTemplateId = store?.getEditedPostId();
 
-			if ( previousTemplateId === currentTemplateId ) {
+			if (
+				previousTemplateId === currentTemplateId ||
+				typeof currentTemplateId === 'undefined'
+			) {
 				return;
 			}
 
@@ -91,7 +97,5 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 
 			registerProductsBlock( queryAttributes );
 		} );
-	} else {
-		registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
 	}
 }
