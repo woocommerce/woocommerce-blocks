@@ -20,7 +20,6 @@ import {
 import { getSetting } from '@woocommerce/settings';
 import { __, isRTL } from '@wordpress/i18n';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
-import { isSiteEditorPage } from '@woocommerce/utils';
 import type { ReactElement } from 'react';
 import { select } from '@wordpress/data';
 import classNames from 'classnames';
@@ -59,6 +58,7 @@ interface Props {
 const Edit = ( {
 	attributes,
 	setAttributes,
+	context: { postType, postId },
 	clientId,
 	setPriceColor,
 	setIconColor,
@@ -83,7 +83,7 @@ const Edit = ( {
 
 	const blockProps = useBlockProps( { className } );
 
-	const isSiteEditor = isSiteEditorPage( select( 'core/edit-site' ) );
+	const isSiteEditor = postType === undefined || postId === undefined;
 
 	const templatePartEditUri = getSetting(
 		'templatePartEditUri',
