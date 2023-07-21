@@ -138,7 +138,13 @@ class Api {
 
 		$transient_value = json_decode( (string) get_transient( $this->script_data_transient_key ), true );
 
-		if ( json_last_error() !== JSON_ERROR_NONE || empty( $transient_value ) || empty( $transient_value['script_data'] ) || empty( $transient_value['version'] ) || $transient_value['version'] !== $this->package->get_version() ) {
+		if (
+			json_last_error() !== JSON_ERROR_NONE ||
+			empty( $transient_value ) ||
+			empty( $transient_value['script_data'] ) ||
+			empty( $transient_value['version'] ) ||
+			$transient_value['version'] !== $this->package->get_version()
+		) {
 			return [];
 		}
 
