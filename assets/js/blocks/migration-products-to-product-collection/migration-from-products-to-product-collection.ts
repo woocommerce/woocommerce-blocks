@@ -8,13 +8,13 @@ import { isWpVersion } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
+import { AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION } from './constants';
 import {
 	getProductsBlockClientIds,
 	checkIfBlockCanBeInserted,
 	postTemplateHasSupportForGridView,
 	getUpgradeStatus,
 } from './migration-utils';
-import { AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION } from './constants';
 import type {
 	TransformBlock,
 	IsBlockType,

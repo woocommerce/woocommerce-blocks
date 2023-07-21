@@ -216,8 +216,8 @@ export const revertMigration = () => {
 	if ( productsReplacementUnsubscribe ) {
 		productsReplacementUnsubscribe();
 	}
-	replaceProductCollectionWithProducts();
 	setUpgradeStatus( {
 		status: 'reverted',
 	} );
+	replaceProductCollectionWithProducts();
 };

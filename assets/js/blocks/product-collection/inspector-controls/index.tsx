@@ -37,7 +37,6 @@ import DisplayLayoutControl from './display-layout-control';
 import {
 	revertMigration,
 	getUpgradeStatus,
-	setUpgradeStatus,
 } from '../../migration-products-to-product-collection';
 
 const ProductCollectionInspectorControls = (
@@ -113,10 +112,6 @@ export default ProductCollectionInspectorControls;
 const isProductCollection = ( blockName: string ) =>
 	blockName === metadata.name;
 
-// Notice should be rendered if:
-// - block is Product Collection
-// - it was migrated from Products block
-// - Notice hasn't been seen by user yet
 const shouldDisplayUpgradeNotice = ( props ) => {
 	const { attributes } = props;
 	const { displayUpgradeNotice } = attributes;
@@ -132,8 +127,6 @@ export const withUpgradeNoticeControls =
 			return <BlockEdit { ...props } />;
 		}
 
-		// @todo: Implement the logic to display option for manual upgrade.
-		// before enabling automatic upgrade and in case of reverting manual upgrade.
 		const displayUpgradeNotice = shouldDisplayUpgradeNotice( props );
 		return (
 			<>
@@ -142,7 +135,6 @@ export const withUpgradeNoticeControls =
 						{
 							<UpgradeNotice
 								revertMigration={ revertMigration }
-								setUpgradeNoticeStatus={ setUpgradeStatus }
 							/>
 						}
 					</InspectorControls>
