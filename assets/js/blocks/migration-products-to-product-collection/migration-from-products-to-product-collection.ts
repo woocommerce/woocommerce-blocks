@@ -14,7 +14,7 @@ import {
 	postTemplateHasSupportForGridView,
 	getUpgradeStatus,
 } from './migration-utils';
-import { REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION } from './constants';
+import { AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION } from './constants';
 import type {
 	TransformBlock,
 	IsBlockType,
@@ -223,7 +223,7 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 	const { status } = getUpgradeStatus();
 
 	if (
-		REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION &&
+		AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION &&
 		status !== 'reverted' &&
 		! productsReplacementUnsubscribe
 	) {
