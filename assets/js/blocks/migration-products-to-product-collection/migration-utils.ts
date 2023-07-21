@@ -9,7 +9,7 @@ import { isBoolean } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
-import { MIGRATION_STATUS_LS_KEY } from './constants';
+import { MIGRATION_STATUS_LS_KEY, INITIAL_STATUS_LS_VALUE } from './constants';
 import type {
 	IsBlockType,
 	GetBlocksClientIds,
@@ -69,13 +69,9 @@ const postTemplateHasSupportForGridView = getSettingWithCoercion(
 	isBoolean
 );
 
-const defaultStatus: UpgradeNoticeStatus = {
-	status: 'notseen',
-};
-
 const getUpgradeStatus = (): UpgradeNoticeStatus => {
 	const status = window.localStorage.getItem( MIGRATION_STATUS_LS_KEY );
-	return status ? JSON.parse( status ) : defaultStatus;
+	return status ? JSON.parse( status ) : INITIAL_STATUS_LS_VALUE;
 };
 
 const setUpgradeStatus = ( newStatus: UpgradeNoticeStatus ) => {

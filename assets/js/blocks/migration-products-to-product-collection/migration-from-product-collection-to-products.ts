@@ -12,6 +12,7 @@ import {
 	getProductCollectionBlockClientIds,
 	checkIfBlockCanBeInserted,
 	postTemplateHasSupportForGridView,
+	setUpgradeStatus,
 } from './migration-utils';
 import type {
 	TransformBlock,
@@ -216,4 +217,7 @@ export const revertMigration = () => {
 		productsReplacementUnsubscribe();
 	}
 	replaceProductCollectionWithProducts();
+	setUpgradeStatus( {
+		status: 'reverted',
+	} );
 };

@@ -3,12 +3,16 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Notice, Button } from '@wordpress/components';
-import { useEffect } from '@wordpress/element';
+import { useState } from '@wordpress/element';
+// import { useLocalStorageState } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
-import { type UpgradeNoticeStatus } from '../../migration-products-to-product-collection';
+import {
+	type UpgradeNoticeStatus,
+	getUpgradeStatus,
+} from '../../migration-products-to-product-collection';
 
 const FormattedNotice = ( { notice }: { notice: string } ) => {
 	const strongText = 'Product Collection';
@@ -26,13 +30,17 @@ const FormattedNotice = ( { notice }: { notice: string } ) => {
 type UpgradeNoticeProps = {
 	revertMigration: () => void;
 	setUpgradeNoticeStatus: ( status: UpgradeNoticeStatus ) => void;
-	upgradeNoticeStatus: UpgradeNoticeStatus;
+	// clientId: string;
 };
 
 const UpgradeNotice = ( {
 	revertMigration,
 	setUpgradeNoticeStatus,
-}: UpgradeNoticeProps ) => {
+}: // clientId,
+UpgradeNoticeProps ) => {
+	const [ upgradeStatus, setStatus ] = useState( getUpgradeStatus() );
+	const { status } = upgradeStatus;
+
 	const notice = __(
 		'Products (Beta) block was upgraded to Product Collection, an updated version with new features and simplified settings.',
 		'woo-gutenberg-products-block'
@@ -43,28 +51,20 @@ const UpgradeNotice = ( {
 		'woo-gutenberg-products-block'
 	);
 
-	useEffect( () => {
-		return () => {
-			setUpgradeNoticeStatus( {
-				status: 'seen',
-			} );
-		};
-	} );
-
 	const handleRemove = () => {
 		setUpgradeNoticeStatus( {
+			status: 'seen',
+		} );
+		setStatus( {
 			status: 'seen',
 		} );
 	};
 
 	const handleRevert = () => {
-		setUpgradeNoticeStatus( {
-			status: 'reverted',
-		} );
 		revertMigration();
 	};
 
-	return (
+	return status === 'notseen' ? (
 		<Notice onRemove={ handleRemove }>
 			<FormattedNotice notice={ notice } />
 			<br />
@@ -73,7 +73,7 @@ const UpgradeNotice = ( {
 				{ buttonLabel }
 			</Button>
 		</Notice>
-	);
+	) : null;
 };
 
 export default UpgradeNotice;
