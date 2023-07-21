@@ -3,15 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Notice, Button } from '@wordpress/components';
-import { useState } from '@wordpress/element';
-// import { useLocalStorageState } from '@woocommerce/base-hooks';
+import { useLocalStorageState } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
 import {
-	type UpgradeNoticeStatus,
-	getUpgradeStatus,
+	MIGRATION_STATUS_LS_KEY,
+	INITIAL_STATUS_LS_VALUE,
 } from '../../migration-products-to-product-collection';
 
 const FormattedNotice = ( { notice }: { notice: string } ) => {
@@ -29,17 +28,15 @@ const FormattedNotice = ( { notice }: { notice: string } ) => {
 
 type UpgradeNoticeProps = {
 	revertMigration: () => void;
-	setUpgradeNoticeStatus: ( status: UpgradeNoticeStatus ) => void;
-	// clientId: string;
 };
 
-const UpgradeNotice = ( {
-	revertMigration,
-	setUpgradeNoticeStatus,
-}: // clientId,
-UpgradeNoticeProps ) => {
-	const [ upgradeStatus, setStatus ] = useState( getUpgradeStatus() );
-	const { status } = upgradeStatus;
+const UpgradeNotice = ( { revertMigration }: UpgradeNoticeProps ) => {
+	const [ upgradeNoticeStatus, setUpgradeNoticeStatus ] =
+		useLocalStorageState(
+			MIGRATION_STATUS_LS_KEY,
+			INITIAL_STATUS_LS_VALUE
+		);
+	const { status } = upgradeNoticeStatus;
 
 	const notice = __(
 		'Products (Beta) block was upgraded to Product Collection, an updated version with new features and simplified settings.',
@@ -53,9 +50,6 @@ UpgradeNoticeProps ) => {
 
 	const handleRemove = () => {
 		setUpgradeNoticeStatus( {
-			status: 'seen',
-		} );
-		setStatus( {
 			status: 'seen',
 		} );
 	};

@@ -36,6 +36,7 @@ import AuthorControl from './author-control';
 import DisplayLayoutControl from './display-layout-control';
 import {
 	revertMigration,
+	getUpgradeStatus,
 	setUpgradeStatus,
 } from '../../migration-products-to-product-collection';
 
@@ -119,9 +120,9 @@ const isProductCollection = ( blockName: string ) =>
 const shouldDisplayUpgradeNotice = ( props ) => {
 	const { attributes } = props;
 	const { displayUpgradeNotice } = attributes;
-	// const { status } = getUpgradeStatus();
+	const { status } = getUpgradeStatus();
 
-	return displayUpgradeNotice;
+	return displayUpgradeNotice && status === 'notseen';
 };
 
 export const withUpgradeNoticeControls =
