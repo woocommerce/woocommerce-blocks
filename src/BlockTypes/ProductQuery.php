@@ -71,6 +71,12 @@ class ProductQuery extends AbstractBlock {
 			10,
 			2
 		);
+		add_filter(
+			'render_block',
+			array( $this, 'enqueue_styles' ),
+			10,
+			2
+		);
 		add_filter( 'rest_product_query', array( $this, 'update_rest_query' ), 10, 2 );
 		add_filter( 'rest_product_collection_params', array( $this, 'extend_rest_query_allowed_params' ), 10, 1 );
 	}
@@ -119,6 +125,22 @@ class ProductQuery extends AbstractBlock {
 	}
 
 	/**
+	 * Enqueues the variation styles when rendering the Product Query variation.
+	 *
+	 * @param string $block_content The block content.
+	 * @param array  $block         The full block, including name and attributes.
+	 *
+	 * @return string The block content.
+	 */
+	public function enqueue_styles( string $block_content, array $block ) {
+		if ( 'core/query' === $block['blockName'] && self::is_woocommerce_variation( $block ) ) {
+			wp_enqueue_style( 'wc-blocks-style-product-query' );
+		}
+
+		return $block_content;
+	}
+
+	/**
 	 * Update the query for the product query block.
 	 *
 	 * @param string|null $pre_render   The pre-rendered content. Default null.
@@ -135,7 +157,6 @@ class ProductQuery extends AbstractBlock {
 			// Set this so that our product filters can detect if it's a PHP template.
 			$this->asset_data_registry->add( 'has_filterable_products', true, true );
 			$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
-			$this->asset_data_registry->add( 'product_ids', $this->get_products_ids_by_attributes( $parsed_block ), true );
 			add_filter(
 				'query_loop_block_query_vars',
 				array( $this, 'build_query' ),
@@ -222,33 +243,6 @@ class ProductQuery extends AbstractBlock {
 		);
 
 		return $this->filter_query_to_only_include_ids( $merged_query, $handpicked_products );
-	}
-
-	/**
-	 * Return the product ids based on the attributes and global query.
-	 * This is used to allow the filter blocks to render data that matches with variations. More details here: https://github.com/woocommerce/woocommerce-blocks/issues/7245
-	 *
-	 * @param array $parsed_block The block being rendered.
-	 * @return array
-	 */
-	private function get_products_ids_by_attributes( $parsed_block ) {
-		$query = $this->merge_queries(
-			array(
-				'post_type'      => 'product',
-				'post__in'       => array(),
-				'post_status'    => 'publish',
-				'posts_per_page' => -1,
-				'meta_query'     => array(),
-				'tax_query'      => array(),
-			),
-			$this->get_queries_by_custom_attributes( $parsed_block ),
-			$this->get_global_query( $parsed_block )
-		);
-
-		$products = new \WP_Query( $query );
-		$post_ids = wp_list_pluck( $products->posts, 'ID' );
-
-		return $post_ids;
 	}
 
 	/**

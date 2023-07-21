@@ -1,1 +1,1 @@
-export * from './get-block-by-name';
+export * from './FrontendUtils';

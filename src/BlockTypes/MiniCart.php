@@ -8,6 +8,8 @@ use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
+use Automattic\WooCommerce\Blocks\Utils\Utils;
+use Automattic\WooCommerce\Blocks\Utils\MiniCartUtils;
 
 /**
  * Mini-Cart class.
@@ -70,10 +72,7 @@ class MiniCart extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
-		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_wc_settings' ), 1 );
-		// We need this action to run after enqueue_wc_settings() and dequeue_wc_settings(),
-		// otherwise it might incorrectly consider wc_settings script to be enqueued.
-		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 4 );
+		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 2 );
 	}
 
 	/**
@@ -112,6 +111,15 @@ class MiniCart extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return string[]
+	 */
+	protected function get_block_type_style() {
+		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
+	}
+
+	/**
 	 * Extra data passed through from server to client for block.
 	 *
 	 * @param array $attributes  Any attributes that currently are available from the block.
@@ -137,20 +145,6 @@ class MiniCart extends AbstractBlock {
 				$this->tax_label,
 				''
 			);
-
-			$cart_payload = $this->get_cart_payload();
-
-			$this->asset_data_registry->add(
-				'cartTotals',
-				isset( $cart_payload['totals'] ) ? $cart_payload['totals'] : null,
-				null
-			);
-
-			$this->asset_data_registry->add(
-				'cartItemsCount',
-				isset( $cart_payload['items_count'] ) ? $cart_payload['items_count'] : null,
-				null
-			);
 		}
 
 		$this->asset_data_registry->add(
@@ -163,7 +157,7 @@ class MiniCart extends AbstractBlock {
 
 		if (
 			current_user_can( 'edit_theme_options' ) &&
-			wc_current_theme_is_fse_theme()
+			( wc_current_theme_is_fse_theme() || current_theme_supports( 'block-template-parts' ) )
 		) {
 			$theme_slug = BlockTemplateUtils::theme_has_template_part( 'mini-cart' ) ? wp_get_theme()->get_stylesheet() : BlockTemplateUtils::PLUGIN_SLUG;
 
@@ -205,30 +199,6 @@ class MiniCart extends AbstractBlock {
 		 * @since 5.8.0
 		 */
 		do_action( 'woocommerce_blocks_cart_enqueue_data' );
-	}
-
-	/**
-	 * Function to enqueue `wc-settings` script and dequeue it later on so when
-	 * AssetDataRegistry runs, it appears enqueued- This allows the necessary
-	 * data to be printed to the page.
-	 */
-	public function enqueue_wc_settings() {
-		// Return early if another block has already enqueued `wc-settings`.
-		if ( wp_script_is( 'wc-settings', 'enqueued' ) ) {
-			return;
-		}
-		// We are lazy-loading `wc-settings`, but we need to enqueue it here so
-		// AssetDataRegistry knows it's going to load.
-		wp_enqueue_script( 'wc-settings' );
-		// After AssetDataRegistry function runs, we dequeue `wc-settings`.
-		add_action( 'wp_print_footer_scripts', array( $this, 'dequeue_wc_settings' ), 3 );
-	}
-
-	/**
-	 * Function to dequeue `wc-settings` script.
-	 */
-	public function dequeue_wc_settings() {
-		wp_dequeue_script( 'wc-settings' );
 	}
 
 	/**
@@ -354,11 +324,19 @@ class MiniCart extends AbstractBlock {
 
 		$site_url = site_url() ?? wp_guess_url();
 
+		if ( Utils::wp_version_compare( '6.3', '>=' ) ) {
+			$script_before = $wp_scripts->get_inline_script_data( $script->handle, 'before' );
+			$script_after  = $wp_scripts->get_inline_script_data( $script->handle, 'after' );
+		} else {
+			$script_before = $wp_scripts->print_inline_script( $script->handle, 'before', false );
+			$script_after  = $wp_scripts->print_inline_script( $script->handle, 'after', false );
+		}
+
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
 			'src'          => preg_match( '|^(https?:)?//|', $script->src ) ? $script->src : $site_url . $script->src,
 			'version'      => $script->ver,
-			'before'       => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
-			'after'        => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
+			'before'       => $script_before,
+			'after'        => $script_after,
 			'translations' => $wp_scripts->print_translations( $script->handle, false ),
 		);
 	}
@@ -374,7 +352,7 @@ class MiniCart extends AbstractBlock {
 		if ( isset( $attributes['hasHiddenPrice'] ) && false !== $attributes['hasHiddenPrice'] ) {
 			return;
 		}
-		$price_color = array_key_exists( 'priceColorValue', $attributes ) ? $attributes['priceColorValue'] : '';
+		$price_color = array_key_exists( 'priceColor', $attributes ) ? $attributes['priceColor']['color'] : '';
 
 		return '<span class="wc-block-mini-cart__amount" style="color:' . $price_color . ' "></span>' . $this->get_include_tax_label_markup( $attributes );
 	}
@@ -390,7 +368,7 @@ class MiniCart extends AbstractBlock {
 		if ( empty( $this->tax_label ) ) {
 			return '';
 		}
-		$price_color = array_key_exists( 'priceColorValue', $attributes ) ? $attributes['priceColorValue'] : '';
+		$price_color = array_key_exists( 'priceColor', $attributes ) ? $attributes['priceColor']['color'] : '';
 
 		return '<small class="wc-block-mini-cart__tax-label" style="color:' . $price_color . ' " hidden>' . esc_html( $this->tax_label ) . '</small>';
 	}
@@ -404,7 +382,7 @@ class MiniCart extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		return $content . $this->get_markup( $attributes );
+		return $content . $this->get_markup( MiniCartUtils::migrate_attributes_to_color_panel( $attributes ) );
 	}
 
 	/**
@@ -428,8 +406,8 @@ class MiniCart extends AbstractBlock {
 		}
 		$wrapper_styles = $classes_styles['styles'];
 
-		$icon_color          = array_key_exists( 'iconColorValue', $attributes ) ? $attributes['iconColorValue'] : 'currentColor';
-		$product_count_color = array_key_exists( 'productCountColorValue', $attributes ) ? $attributes['productCountColorValue'] : '';
+		$icon_color          = array_key_exists( 'iconColor', $attributes ) ? $attributes['iconColor']['color'] : 'currentColor';
+		$product_count_color = array_key_exists( 'productCountColor', $attributes ) ? $attributes['productCountColor']['color'] : '';
 
 		// Default "Cart" icon.
 		$icon = '<svg class="wc-block-mini-cart__icon" width="32" height="32" viewBox="0 0 32 32" fill="' . $icon_color . '" xmlns="http://www.w3.org/2000/svg">
@@ -560,22 +538,6 @@ class MiniCart extends AbstractBlock {
 			'tax_label'                         => '',
 			'display_cart_prices_including_tax' => false,
 		);
-	}
-
-	/**
-	 * Get Cart Payload.
-	 *
-	 * @return object;
-	 */
-	protected function get_cart_payload() {
-		$notices = wc_get_notices(); // Backup the notices because StoreAPI will remove them.
-		$payload = WC()->api->get_endpoint_data( '/wc/store/cart' );
-
-		if ( ! empty( $notices ) ) {
-			wc_set_notices( $notices ); // Restore the notices.
-		}
-
-		return $payload;
 	}
 
 	/**

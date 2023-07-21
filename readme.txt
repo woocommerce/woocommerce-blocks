@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.2
 Tested up to: 6.2
 Requires PHP: 7.3
-Stable tag: 10.5.0
+Stable tag: 10.7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,7 +50,7 @@ Use this plugin if you want access to the bleeding edge of available blocks for 
 = Minimum Requirements =
 
 * Latest release versions of WordPress and WooCommerce ([read more here](https://developer.woocommerce.com/?p=9998))
-* PHP version 7.2 or greater (PHP 7.4 or greater is recommended)
+* PHP version 7.3 or greater (PHP 7.4 or greater is recommended)
 * MySQL version 5.6 or greater
 
 Visit the [WooCommerce server requirements documentation](https://docs.woocommerce.com/document/server-requirements/) for a detailed list of server requirements.
@@ -81,6 +81,76 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 10.7.0 - 2023-07-17 =
+
+#### Enhancements
+
+- Updated Essential Header patterns to have no opinionated font sizes. ([10219](https://github.com/woocommerce/woocommerce-blocks/pull/10219))
+- Modernize the block registration for the Mini Cart block. ([10168](https://github.com/woocommerce/woocommerce-blocks/pull/10168))
+- Improve Banner pattern for mobile devices. ([10107](https://github.com/woocommerce/woocommerce-blocks/pull/10107))
+- Bring back user to 1st page when filters are changed. ([9952](https://github.com/woocommerce/woocommerce-blocks/pull/9952))
+- Only load styles required by the blocks rendered on the page. ([9831](https://github.com/woocommerce/woocommerce-blocks/pull/9831))
+- Enable WooCommerce custom template part support for classic themes that support block template parts. ([9780](https://github.com/woocommerce/woocommerce-blocks/pull/9780))
+
+#### Bug Fixes
+
+- Prevent Mini-Cart template part preview in Site Editor being too high. ([10204](https://github.com/woocommerce/woocommerce-blocks/pull/10204))
+- Fix some styling issues in the editor placeholder of some blocks. ([10192](https://github.com/woocommerce/woocommerce-blocks/pull/10192))
+- Mini-Cart: Fix the empty cart drawer button styling. ([10169](https://github.com/woocommerce/woocommerce-blocks/pull/10169))
+- Single Product Template > Ensure extensions can't trigger fatal errors on customized single product templates without any post content blocks. ([10128](https://github.com/woocommerce/woocommerce-blocks/pull/10128))
+- Fix image overlapping in mobile in the Editor for the `Discount banner with image`. ([10108](https://github.com/woocommerce/woocommerce-blocks/pull/10108))
+- Fix: Return null or object for ImageAttachmentSchema response. ([9962](https://github.com/woocommerce/woocommerce-blocks/pull/9962))
+
+= 10.6.1 - 2023-07-17 =
+
+#### Bug Fixes
+
+- Improve performance and fix memory exhaustion errors that could be triggered for stores with a high volume of products using the Products (Beta) or Products Collection blocks. ([#10198](https://github.com/woocommerce/woocommerce-blocks/pull/10198))
+- Fix a visual bug with margins around the Proceed to Checkout button on the Cart block. ([10182](https://github.com/woocommerce/woocommerce-blocks/pull/10182))
+- Fixed formatting for addresses sent to the Store API. ([#10242](https://github.com/woocommerce/woocommerce-blocks/pull/10242))
+
+#### Security
+- Update CORS handling in Store API
+
+= 10.6.0 - 2023-07-07 =
+
+#### Enhancements
+
+- Remove attributes data from saving in HTML for Active Filters block. ([10047](https://github.com/woocommerce/woocommerce-blocks/pull/10047))
+- Remove attributes data from saving in HTML for Filter by Price block. ([10039](https://github.com/woocommerce/woocommerce-blocks/pull/10039))
+- Product Image block: Add size settings to change the width, height, and scale. ([10034](https://github.com/woocommerce/woocommerce-blocks/pull/10034))
+- Remove the word ‘beta’ from the compatibility notice. ([10019](https://github.com/woocommerce/woocommerce-blocks/pull/10019))
+- Add new `Discount banner with image` pattern. ([9957](https://github.com/woocommerce/woocommerce-blocks/pull/9957))
+- Add new `Product collection banner` pattern. ([9953](https://github.com/woocommerce/woocommerce-blocks/pull/9953))
+- Add `Small discount banner with image` pattern. ([9947](https://github.com/woocommerce/woocommerce-blocks/pull/9947))
+- Add the new `Banner discount` pattern. ([9936](https://github.com/woocommerce/woocommerce-blocks/pull/9936))
+- Start using the Single Product block for the Hero Product pattern. ([9935](https://github.com/woocommerce/woocommerce-blocks/pull/9935))
+- Shop by price pattern: Update titles and links to filter by price and rating. ([9915](https://github.com/woocommerce/woocommerce-blocks/pull/9915))
+- Update `Hero Product 3 Split` pattern with opinionated button styling and margin adjustments. ([9893](https://github.com/woocommerce/woocommerce-blocks/pull/9893))
+- Update header patterns to use the product search block instead of the WP core search block. ([9890](https://github.com/woocommerce/woocommerce-blocks/pull/9890))
+- Hero Product – Split pattern: Add link to the shop page to the button. ([9879](https://github.com/woocommerce/woocommerce-blocks/pull/9879))
+- Banner pattern: Update colors and improve spacing and centering in small screens. ([9877](https://github.com/woocommerce/woocommerce-blocks/pull/9877))
+- Update `Display product count` option to default to `false` in Filter by Attributes, Filter by Stock and Filter by Rating blocks. ([9833](https://github.com/woocommerce/woocommerce-blocks/pull/9833))
+- Product Rating: Removes unnecessary Product Rating markup in case there are no real or mocked ratings present. ([9822](https://github.com/woocommerce/woocommerce-blocks/pull/9822))
+- Consistent Pattern Titles. ([9814](https://github.com/woocommerce/woocommerce-blocks/pull/9814))
+- Mini Cart: Add color settings for the Price, Icon, and Product Count. ([9647](https://github.com/woocommerce/woocommerce-blocks/pull/9647))
+- Added new Cart, Checkout, Order Confirmation templates and Checkout Header template part to the Site Editor. ([9301](https://github.com/woocommerce/woocommerce-blocks/pull/9301))
+
+#### Bug Fixes
+
+- Prevent prefetched Cart payload causing wrong values with cached Mini-Cart block. ([10029](https://github.com/woocommerce/woocommerce-blocks/pull/10029))
+- Make filter by rating preview consistent with default settings. ([10007](https://github.com/woocommerce/woocommerce-blocks/pull/10007))
+- Fix notice banner links for Legacy notices. ([9996](https://github.com/woocommerce/woocommerce-blocks/pull/9996))
+- Add to Cart with Options block > Remove opinionated styles for the price list on grouped products. ([9988](https://github.com/woocommerce/woocommerce-blocks/pull/9988))
+- Add loading and responsive image attribute to image element of Product Image block. ([9984](https://github.com/woocommerce/woocommerce-blocks/pull/9984))
+- Single Product Template Compatibility Layer: Fix some blocks that don't show on the frontend side in a specific case. ([9982](https://github.com/woocommerce/woocommerce-blocks/pull/9982))
+- Fix: Single Product Block - Ensure the Product Summary and Title blocks are always rendered with the correct context independent of their position in the editor. ([9968](https://github.com/woocommerce/woocommerce-blocks/pull/9968))
+- Ensure saved payment methods do not show if the payment gateway they belong to cannot be used to make payments for the current cart configuration. ([9917](https://github.com/woocommerce/woocommerce-blocks/pull/9917))
+- Featured Products 5-item grid: Fix extra whitespace in small viewports. ([9913](https://github.com/woocommerce/woocommerce-blocks/pull/9913))
+- Local Pickup - Only show collection address when set. ([9808](https://github.com/woocommerce/woocommerce-blocks/pull/9808))
+- Remove unnecessary white space from Testimonials 3 Columns pattern. ([9786](https://github.com/woocommerce/woocommerce-blocks/pull/9786))
+- Fix customer account block not able to center align. ([9750](https://github.com/woocommerce/woocommerce-blocks/pull/9750))
+
 = 10.5.0 - 2023-06-19 =
 
 #### Enhancements
@@ -108,6 +178,26 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 - Peer Dependency: Request 2.88.2. ([9827](https://github.com/woocommerce/woocommerce-blocks/pull/9827))
 - Bump fast-xml-parser from 4.0.7 to 4.2.4. ([9818](https://github.com/woocommerce/woocommerce-blocks/pull/9818))
+
+= 10.4.6 - 2023-7-17 =
+
+#### Bug Fixes
+
+- Improve performance and fix memory exhaustion errors that could be triggered for stores with a high volume of products using the Products (Beta) or Products Collection blocks. ([#10198](https://github.com/woocommerce/woocommerce-blocks/pull/10198))
+- Fixed formatting for addresses sent to the Store API. ([#10242](https://github.com/woocommerce/woocommerce-blocks/pull/10242))
+
+#### Security
+- Update CORS handling in Store API
+
+= 10.4.5 - 2023-06-29 =
+
+#### Bug Fixes
+
+- Product Rating block > Ensure the customer reviews text links to the relevant user reviews within the Single Product block and Single Product template. ([9998](https://github.com/woocommerce/woocommerce-blocks/pull/9998))
+- Fix reviews count not showing for the Product Rating block when inside the Single Product page. ([9995](https://github.com/woocommerce/woocommerce-blocks/pull/9995))
+- Single Product template: Fix variation SKU switching in the blockified template. ([9990](https://github.com/woocommerce/woocommerce-blocks/pull/9990))
+- Single Product template: Fix variation gallery image switching in the blockified template. ([9986](https://github.com/woocommerce/woocommerce-blocks/pull/9986))
+- Single Product Block: avoid to register incompatibility blocks with the Single Product Block on the post/page editor. ([10044](https://github.com/woocommerce/woocommerce-blocks/pull/10044))
 
 = 10.4.4 - 2023-06-22 =
 
