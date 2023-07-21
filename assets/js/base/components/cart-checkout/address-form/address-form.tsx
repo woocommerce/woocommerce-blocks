@@ -14,7 +14,7 @@ import { useEffect, useMemo } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
 import { useShallowEqual } from '@woocommerce/base-hooks';
 import { defaultAddressFields } from '@woocommerce/settings';
-import { useSelect, useDispatch, dispatch } from '@wordpress/data';
+import { useDispatch, dispatch } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
@@ -41,14 +41,7 @@ const AddressForm = ( {
 	type = 'shipping',
 	values,
 }: AddressFormProps ): JSX.Element => {
-	const validationErrorId = 'shipping_country';
-	const { setValidationErrors, clearValidationError } =
-		useDispatch( VALIDATION_STORE_KEY );
-
-	const countryValidationError = useSelect( ( select ) => {
-		const store = select( VALIDATION_STORE_KEY );
-		return store.getValidationError( validationErrorId );
-	} );
+	const { clearValidationError } = useDispatch( VALIDATION_STORE_KEY );
 
 	const currentFields = useShallowEqual( fields );
 
@@ -94,14 +87,7 @@ const AddressForm = ( {
 		if ( type === 'shipping' ) {
 			validateShippingCountry( values );
 		}
-	}, [
-		values,
-		countryValidationError?.message,
-		countryValidationError?.hidden,
-		setValidationErrors,
-		clearValidationError,
-		type,
-	] );
+	}, [ values, type ] );
 
 	id = id || instanceId;
 
