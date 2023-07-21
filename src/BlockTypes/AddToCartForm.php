@@ -144,11 +144,6 @@ class AddToCartForm extends AbstractBlock {
 	 * @param string $message Message to be displayed when product is added to the cart.
 	 */
 	public function add_to_cart_message_html_filter( $message ) {
-		$value = apply_filters(
-			'woocommerce_add_to_cart_redirect',
-			'http://woo.local/cart/'
-		);
-
 		// phpcs:ignore
 		if ( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' === $_POST['is-descendent-of-single-product-block'] ) {
 			return false;
