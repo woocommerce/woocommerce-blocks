@@ -79,7 +79,12 @@ export function isWooInheritQueryEnabled(
 export function useAllowedControls(
 	attributes: ProductQueryBlock[ 'attributes' ]
 ) {
-	const isSiteEditor = useSelect( 'core/edit-site' ) !== undefined;
+	const isTemplate = useSelect( ( select ) => {
+		const store = select( 'core/edit-site' );
+		const editedPostType = store?.getEditedPostType();
+
+		return editedPostType === 'wp_template';
+	}, [] );
 
 	const controls = useSelect(
 		( select ) =>
@@ -90,7 +95,7 @@ export function useAllowedControls(
 		[ attributes ]
 	);
 
-	if ( ! isSiteEditor ) {
+	if ( ! isTemplate ) {
 		return controls.filter( ( control ) => control !== 'wooInherit' );
 	}
 
