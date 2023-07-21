@@ -194,6 +194,7 @@ class ProductQuery extends AbstractBlock {
 		$orderby             = $request->get_param( 'orderby' );
 		$woo_stock_status    = $request->get_param( '__woocommerceStockStatus' );
 		$on_sale             = $request->get_param( '__woocommerceOnSale' ) === 'true';
+		$is_inherit          = $request->get_param( '__woocommerceInherit' ) === 'true';
 
 		$on_sale_query    = $on_sale ? $this->get_on_sale_products_query() : [];
 		$orderby_query    = $orderby ? $this->get_custom_orderby_query( $orderby ) : [];
@@ -201,6 +202,12 @@ class ProductQuery extends AbstractBlock {
 		$stock_query      = is_array( $woo_stock_status ) ? $this->get_stock_status_query( $woo_stock_status ) : [];
 		$visibility_query = is_array( $woo_stock_status ) ? $this->get_product_visibility_query( $stock_query ) : [];
 		$tax_query        = $is_valid_attributes ? $this->merge_tax_queries( $attributes_query, $visibility_query ) : [];
+
+		if ( $is_inherit ) {
+			// The `loop_shop_per_page` filter can be found in WC_Query::product_query().
+			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment, WordPress.WP.PostsPerPage.posts_per_page_posts_per_page
+			$args['posts_per_page'] = apply_filters( 'loop_shop_per_page', wc_get_default_products_per_row() * wc_get_default_product_rows_per_page() );
+		}
 
 		return array_merge( $args, $on_sale_query, $orderby_query, $stock_query, $tax_query );
 	}
