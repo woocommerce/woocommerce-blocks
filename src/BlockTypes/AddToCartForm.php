@@ -29,7 +29,7 @@ class AddToCartForm extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 		add_filter( 'wc_add_to_cart_message_html', array( $this, 'add_to_cart_message_html_filter' ), 10, 2 );
-		add_filter( 'woocommerce_add_to_cart_redirect', array( $this, 'add_to_cart_redirect_filter' ), 10, 2 );
+		add_filter( 'woocommerce_add_to_cart_redirect', array( $this, 'add_to_cart_redirect_filter' ), 10, 1 );
 	}
 
 	/**
@@ -144,6 +144,11 @@ class AddToCartForm extends AbstractBlock {
 	 * @param string $message Message to be displayed when product is added to the cart.
 	 */
 	public function add_to_cart_message_html_filter( $message ) {
+		$value = apply_filters(
+			'woocommerce_add_to_cart_redirect',
+			'http://woo.local/cart/'
+		);
+
 		// phpcs:ignore
 		if ( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' === $_POST['is-descendent-of-single-product-block'] ) {
 			return false;
@@ -160,7 +165,7 @@ class AddToCartForm extends AbstractBlock {
 	 * @param object $product The product being added to the cart.
 	 * @return string The filtered redirect URL.
 	 */
-	public function add_to_cart_redirect_filter( $url, $product = null ) {
+	public function add_to_cart_redirect_filter( $url ) {
 		// phpcs:ignore
 		if ( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' == $_POST['is-descendent-of-single-product-block'] ) {
 			return wp_validate_redirect( wp_get_referer(), $url );
