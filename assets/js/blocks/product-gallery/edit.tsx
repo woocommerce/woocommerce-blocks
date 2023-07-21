@@ -33,6 +33,15 @@ const TEMPLATE: InnerBlockTemplate[] = [
 	],
 ];
 
+function setGroupAttributes( thumbnailsPosition: string ) {
+	switch ( thumbnailsPosition ) {
+		case 'bottom':
+			return { type: 'flex', orientation: 'vertical' };
+		default:
+			return { type: 'flex', flexWrap: 'nowrap' };
+	}
+}
+
 export const Edit = ( {
 	clientId,
 	attributes,
@@ -44,16 +53,6 @@ export const Edit = ( {
 		setAttributes( { clientId } );
 	}, [ clientId, setAttributes ] );
 
-	function setGroupAttributes() {
-		switch ( attributes.thumbnailsPosition ) {
-			case 'bottom':
-				return { type: 'flex', orientation: 'vertical' };
-			default:
-				return { type: 'flex', flexWrap: 'nowrap' };
-		}
-	}
-
-	// Function to update the layout type
 	const block = select( 'core/block-editor' ).getBlock( clientId );
 	block?.innerBlocks.forEach( ( innerBlock ) => {
 		if ( innerBlock.name === 'core/group' ) {
@@ -61,7 +60,7 @@ export const Edit = ( {
 				...innerBlock,
 				attributes: {
 					...innerBlock.attributes,
-					layout: setGroupAttributes(),
+					layout: setGroupAttributes( attributes.thumbnailsPosition ),
 				},
 			};
 			dispatch( 'core/block-editor' ).updateBlock(
