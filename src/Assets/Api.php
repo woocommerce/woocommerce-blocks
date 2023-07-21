@@ -143,7 +143,9 @@ class Api {
 			empty( $transient_value ) ||
 			empty( $transient_value['script_data'] ) ||
 			empty( $transient_value['version'] ) ||
-			$transient_value['version'] !== $this->package->get_version()
+			$transient_value['version'] !== $this->package->get_version() ||
+			empty( $transient_value['hash'] ) ||
+			$transient_value['hash'] !== $this->script_data_hash
 		) {
 			return [];
 		}
