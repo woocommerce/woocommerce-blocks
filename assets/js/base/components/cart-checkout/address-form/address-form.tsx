@@ -173,10 +173,7 @@ const AddressForm = ( {
 						onChange={ ( newValue: string ) =>
 							onChange( {
 								...values,
-								[ field.key ]:
-									field.key === 'postcode'
-										? newValue.trimStart().toUpperCase()
-										: newValue,
+								[ field.key ]: newValue,
 							} )
 						}
 						customFormatter={ ( value: string ) => {
