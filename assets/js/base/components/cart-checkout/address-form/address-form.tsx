@@ -10,12 +10,13 @@ import {
 	BillingStateInput,
 	ShippingStateInput,
 } from '@woocommerce/base-components/state-input';
-import { useEffect, useMemo } from '@wordpress/element';
+import { useEffect, useMemo, useState } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
-import { useShallowEqual } from '@woocommerce/base-hooks';
+import { useShallowEqual, usePrevious } from '@woocommerce/base-hooks';
 import { defaultAddressFields } from '@woocommerce/settings';
-import { useDispatch, dispatch } from '@wordpress/data';
+import { select } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
@@ -30,7 +31,7 @@ const defaultFields = Object.keys(
 ) as unknown as FieldType[];
 
 /**
- * Checkout address form.
+ * Checkout address form. Holds local state while fields are not yet complete.
  */
 const AddressForm = ( {
 	id = '',
@@ -39,48 +40,78 @@ const AddressForm = ( {
 	instanceId,
 	onChange,
 	type = 'shipping',
-	values,
+	values: initialValues,
 }: AddressFormProps ): JSX.Element => {
-	const { clearValidationError } = useDispatch( VALIDATION_STORE_KEY );
+	// Holds local state of the field values.
+	const [ values, setValues ] = useState( initialValues );
+	const previousInitialValues = usePrevious( initialValues );
 
+	// Memoize the address form fields passed in from the parent component.
 	const currentFields = useShallowEqual( fields );
-
 	const addressFormFields = useMemo( () => {
-		return prepareAddressFields(
+		const preparedFields = prepareAddressFields(
 			currentFields,
 			fieldConfig,
 			values.country
 		);
+		return {
+			fields: preparedFields,
+			requiredFields: preparedFields.filter(
+				( field ) => field.required
+			),
+			hiddenFields: preparedFields.filter( ( field ) => field.hidden ),
+		};
 	}, [ currentFields, fieldConfig, values.country ] );
+
+	// Push when all values of required fields are complete.
+	useEffect( () => {
+		if ( ! isShallowEqual( values, initialValues ) ) {
+			// Check required fields have values.
+			const isComplete = addressFormFields.requiredFields.every(
+				( field ) => {
+					return values[ field.key ] !== '';
+				}
+			);
+			if ( ! isComplete ) {
+				return;
+			}
+			// Check if any fields have errors.
+			const hasErrors = addressFormFields.fields.some( ( field ) => {
+				const errorId = `${ type }_${ field.key }`;
+				const validationError =
+					select( VALIDATION_STORE_KEY ).getValidationError(
+						errorId
+					);
+				const hasError = validationError?.message;
+				return !! hasError;
+			} );
+			if ( hasErrors ) {
+				return;
+			}
+			onChange( values );
+		}
+	}, [ values, initialValues, onChange, addressFormFields, type ] );
 
 	// Clear values for hidden fields.
 	useEffect( () => {
-		addressFormFields.forEach( ( field ) => {
-			if ( field.hidden && values[ field.key ] ) {
-				onChange( {
-					...values,
-					[ field.key ]: '',
-				} );
-			}
+		const newValues = { ...values };
+		addressFormFields.hiddenFields.forEach( ( field ) => {
+			newValues[ field.key ] = '';
 		} );
-	}, [ addressFormFields, onChange, values ] );
+		if ( ! isShallowEqual( values, newValues ) ) {
+			setValues( newValues );
+		}
+	}, [ addressFormFields.hiddenFields, onChange, values ] );
 
-	// Clear postcode validation error if postcode is not required.
+	// Sync incoming values with local state.
 	useEffect( () => {
-		addressFormFields.forEach( ( field ) => {
-			if ( field.key === 'postcode' && field.required === false ) {
-				const store = dispatch( 'wc/store/validation' );
-
-				if ( type === 'shipping' ) {
-					store.clearValidationError( 'shipping_postcode' );
-				}
-
-				if ( type === 'billing' ) {
-					store.clearValidationError( 'billing_postcode' );
-				}
-			}
-		} );
-	}, [ addressFormFields, type, clearValidationError ] );
+		if (
+			previousInitialValues &&
+			! isShallowEqual( initialValues, previousInitialValues )
+		) {
+			setValues( initialValues );
+		}
+	}, [ initialValues, previousInitialValues ] );
 
 	// Maybe validate country when other fields change so user is notified that it's required.
 	useEffect( () => {
@@ -93,7 +124,7 @@ const AddressForm = ( {
 
 	return (
 		<div id={ id } className="wc-block-components-address-form">
-			{ addressFormFields.map( ( field ) => {
+			{ addressFormFields.fields.map( ( field ) => {
 				if ( field.hidden ) {
 					return null;
 				}
@@ -120,7 +151,7 @@ const AddressForm = ( {
 							{ ...fieldProps }
 							value={ values.country }
 							onChange={ ( newValue ) =>
-								onChange( {
+								setValues( {
 									...values,
 									country: newValue,
 									state: '',
@@ -142,7 +173,7 @@ const AddressForm = ( {
 							country={ values.country }
 							value={ values.state }
 							onChange={ ( newValue ) =>
-								onChange( {
+								setValues( {
 									...values,
 									state: newValue,
 								} )
@@ -157,7 +188,7 @@ const AddressForm = ( {
 						{ ...fieldProps }
 						value={ values[ field.key ] }
 						onChange={ ( newValue: string ) =>
-							onChange( {
+							setValues( {
 								...values,
 								[ field.key ]: newValue,
 							} )
