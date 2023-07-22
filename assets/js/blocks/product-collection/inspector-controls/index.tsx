@@ -1,10 +1,13 @@
 /**
  * External dependencies
  */
+import type { ElementType } from 'react';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { useMemo } from '@wordpress/element';
+import { EditorBlock } from '@woocommerce/types';
+import { addFilter } from '@wordpress/hooks';
 import { ProductCollectionFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import {
 	// @ts-expect-error Using experimental features
@@ -15,9 +18,11 @@ import {
 /**
  * Internal dependencies
  */
+import metadata from '../block.json';
 import { ProductCollectionAttributes } from '../types';
 import { setQueryAttribute } from '../utils';
 import { DEFAULT_FILTERS, getDefaultSettings } from '../constants';
+import UpgradeNotice from './upgrade-notice';
 import ColumnsControl from './columns-control';
 import InheritQueryControl from './inherit-query-control';
 import OrderByControl from './order-by-control';
@@ -29,6 +34,7 @@ import TaxonomyControls from './taxonomy-controls';
 import HandPickedProductsControl from './hand-picked-products-control';
 import AuthorControl from './author-control';
 import DisplayLayoutControl from './display-layout-control';
+import { replaceProductCollectionWithProducts } from '../../shared/scripts';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -99,3 +105,35 @@ const ProductCollectionInspectorControls = (
 };
 
 export default ProductCollectionInspectorControls;
+
+const isProductCollection = (
+	block: EditorBlock< ProductCollectionAttributes >
+) => block.name === metadata.name;
+
+export const withUpgradeNoticeControls =
+	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
+	( props: EditorBlock< ProductCollectionAttributes > ) => {
+		return isProductCollection( props ) ? (
+			<>
+				<InspectorControls>
+					{ props.attributes.displayUpgradeNotice && (
+						<UpgradeNotice
+							{ ...props }
+							revertMigration={
+								replaceProductCollectionWithProducts
+							}
+						/>
+					) }
+				</InspectorControls>
+				<BlockEdit { ...props } />
+			</>
+		) : (
+			<BlockEdit { ...props } />
+		);
+	};
+
+addFilter(
+	'editor.BlockEdit',
+	'woocommerce/product-collection',
+	withUpgradeNoticeControls
+);
