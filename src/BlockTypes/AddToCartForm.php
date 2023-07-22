@@ -157,7 +157,6 @@ class AddToCartForm extends AbstractBlock {
 	 * is clicked.
 	 *
 	 * @param string $url The URL to redirect to after the product is added to the cart.
-	 * @param object $product The product being added to the cart.
 	 * @return string The filtered redirect URL.
 	 */
 	public function add_to_cart_redirect_filter( $url ) {
