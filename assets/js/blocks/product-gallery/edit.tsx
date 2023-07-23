@@ -113,7 +113,7 @@ export const Edit = ( {
 				}
 			}
 		}
-	}, [ attributes.thumbnailsPosition, clientId ] );
+	}, [ attributes, clientId ] );
 
 	return (
 		<div { ...blockProps }>
@@ -121,7 +121,12 @@ export const Edit = ( {
 				<BlockSettings
 					attributes={ attributes }
 					setAttributes={ setAttributes }
-					context={ attributes }
+					context={ {
+						clientId,
+						thumbnailsPosition: attributes.thumbnailsPosition,
+						thumbnailsNumberOfThumbnails:
+							attributes.thumbnailsNumberOfThumbnails,
+					} }
 				/>
 			</InspectorControls>
 			<InnerBlocks
