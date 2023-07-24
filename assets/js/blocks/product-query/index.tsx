@@ -13,7 +13,7 @@ import { CORE_NAME as PRODUCT_SUMMARY_ID } from './variations/elements/product-s
 import { CORE_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';
 import './inspector-controls';
 import './style.scss';
-import './variations/product-query';
+import { registerProductsBlockWithCorrectAttributes } from './variations/product-query';
 import './variations/related-products';
 
 const EXTENDED_CORE_ELEMENTS = [
@@ -47,4 +47,5 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 		'core/custom-class-name/attribute',
 		registerProductQueryElementsNamespace
 	);
+	registerProductsBlockWithCorrectAttributes();
 }

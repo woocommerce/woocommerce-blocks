@@ -8,7 +8,6 @@ import {
 import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { stacks } from '@woocommerce/icons';
-import { isWpVersion } from '@woocommerce/settings';
 import { select, subscribe } from '@wordpress/data';
 import { QueryBlockAttributes } from '@woocommerce/blocks/product-query/types';
 
@@ -22,7 +21,7 @@ import {
 	QUERY_LOOP_ID,
 } from '../constants';
 
-export const VARIATION_NAME = 'woocommerce/product-query';
+const VARIATION_NAME = 'woocommerce/product-query';
 
 const ARCHIVE_PRODUCT_TEMPLATES = [
 	'woocommerce/woocommerce//archive-product',
@@ -63,39 +62,46 @@ const registerProductsBlock = ( attributes: QueryBlockAttributes ) => {
 	} );
 };
 
-if ( isWpVersion( '6.1', '>=' ) ) {
-	const store = select( 'core/edit-site' );
-	const isTemplate = store?.getEditedPostType() === 'wp_template';
+export const registerProductsBlockWithCorrectAttributes = () => {
+	const QUERY_DEFAULT_ATTRIBUTES_WITH_INHERIT = {
+		...QUERY_DEFAULT_ATTRIBUTES,
+		query: {
+			...QUERY_DEFAULT_ATTRIBUTES.query,
+			inherit: true,
+		},
+	};
+	let previousQueryAttributes: QueryBlockAttributes | null = null;
 
-	if ( isTemplate ) {
-		let currentTemplateId: string | undefined;
+	// Register the Products block with default attributes.
+	registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
 
-		subscribe( () => {
-			const previousTemplateId = currentTemplateId;
+	subscribe( () => {
+		const store = select( 'core/edit-site' );
+		const editedPostType = store?.getEditedPostType();
 
-			currentTemplateId = store?.getEditedPostId();
+		if ( typeof editedPostType === 'undefined' ) {
+			return;
+		}
+
+		let queryAttributes = QUERY_DEFAULT_ATTRIBUTES;
+
+		if ( editedPostType === 'wp_template' ) {
+			const currentTemplateId: string | null =
+				store?.getEditedPostId() || null;
 
 			if (
-				previousTemplateId === currentTemplateId ||
-				typeof currentTemplateId === 'undefined'
+				currentTemplateId &&
+				ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId )
 			) {
-				return;
+				queryAttributes = QUERY_DEFAULT_ATTRIBUTES_WITH_INHERIT;
 			}
+		}
 
-			const queryAttributes = {
-				...QUERY_DEFAULT_ATTRIBUTES,
-				query: {
-					...QUERY_DEFAULT_ATTRIBUTES.query,
-					inherit:
-						ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId ),
-				},
-			};
+		if ( queryAttributes !== previousQueryAttributes ) {
+			previousQueryAttributes = queryAttributes;
 
 			unregisterBlockVariation( QUERY_LOOP_ID, VARIATION_NAME );
-
 			registerProductsBlock( queryAttributes );
-		} );
-	} else {
-		registerProductsBlock( QUERY_DEFAULT_ATTRIBUTES );
-	}
-}
+		}
+	} );
+};
