@@ -140,7 +140,7 @@ let currentTemplateId: string | undefined;
 subscribe( () => {
 	const previousTemplateId = currentTemplateId;
 	const store = select( 'core/edit-site' );
-	currentTemplateId = store.getEditedPostId();
+	currentTemplateId = store?.getEditedPostId();
 
 	if ( previousTemplateId === currentTemplateId ) {
 		return;
