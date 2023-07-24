@@ -18,6 +18,7 @@ import {
 /**
  * Internal dependencies
  */
+import metadata from '../block.json';
 import { ProductCollectionAttributes } from '../types';
 import { setQueryAttribute } from '../utils';
 import { DEFAULT_FILTERS, getDefaultSettings } from '../constants';
@@ -33,6 +34,7 @@ import TaxonomyControls from './taxonomy-controls';
 import HandPickedProductsControl from './hand-picked-products-control';
 import AuthorControl from './author-control';
 import DisplayLayoutControl from './display-layout-control';
+import { replaceProductCollectionWithProducts } from '../../shared/scripts';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -104,17 +106,29 @@ const ProductCollectionInspectorControls = (
 
 export default ProductCollectionInspectorControls;
 
+const isProductCollection = (
+	block: EditorBlock< ProductCollectionAttributes >
+) => block.name === metadata.name;
+
 export const withUpgradeNoticeControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
-	( props: BlockEditProps< ProductCollectionAttributes > ) => {
-		const { displayUpgradeNotice } = props.attributes;
-		return (
+	( props: EditorBlock< ProductCollectionAttributes > ) => {
+		return isProductCollection( props ) ? (
 			<>
 				<InspectorControls>
-					{ displayUpgradeNotice && <UpgradeNotice { ...props } /> }
+					{ props.attributes.displayUpgradeNotice && (
+						<UpgradeNotice
+							{ ...props }
+							revertMigration={
+								replaceProductCollectionWithProducts
+							}
+						/>
+					) }
 				</InspectorControls>
 				<BlockEdit { ...props } />
 			</>
+		) : (
+			<BlockEdit { ...props } />
 		);
 	};
 
