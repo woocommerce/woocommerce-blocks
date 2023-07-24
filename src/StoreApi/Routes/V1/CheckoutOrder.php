@@ -103,7 +103,7 @@ class CheckoutOrder extends AbstractCartRoute {
 		if ( $this->order->get_status() !== 'pending' ) {
 			return new \WP_Error(
 				'invalid_order_update_status',
-				__( 'This order is not pending and cannot be paid for.', 'woo-gutenberg-products-block' )
+				__( 'This order cannot be paid for.', 'woo-gutenberg-products-block' )
 			);
 		}
 
