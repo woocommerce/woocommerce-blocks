@@ -5,13 +5,15 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { store } from '@woocommerce/interactivity';
 import { dispatch } from '@wordpress/data';
 import { Cart } from '@woocommerce/type-defs/cart';
-
+import { createRoot } from '@wordpress/element';
+import NoticeBanner from '@woocommerce/base-components/notice-banner';
 type Context = {
 	woocommerce: {
 		isLoading: boolean;
 		addToCartText: string;
 		productId: number;
 		numberOfItems: number;
+		productPermalink: string;
 	};
 };
 
@@ -141,6 +143,30 @@ store( {
 					context.woocommerce.numberOfItems++;
 					context.woocommerce.isLoading = false;
 				} catch ( error ) {
+					const domNode = document.querySelector(
+						'.wc-block-store-notices'
+					);
+
+					if ( domNode ) {
+						const root = createRoot( domNode );
+
+						root.render(
+							<NoticeBanner
+								status="error"
+								onRemove={ () => root.unmount() }
+							>
+								{ error.message }
+							</NoticeBanner>
+						);
+
+						domNode?.scrollIntoView( {
+							behavior: 'smooth',
+							inline: 'nearest',
+						} );
+					}
+
+					context.woocommerce.isLoading = false;
+
 					// we don't care about errors blocking execution, but will console.error for troubleshooting.
 					// eslint-disable-next-line no-console
 					console.error( error );
