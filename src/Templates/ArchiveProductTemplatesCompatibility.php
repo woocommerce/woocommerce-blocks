@@ -79,9 +79,9 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 			}
 		);
 
-		// We want to inject hooks to the core/post-template block only when the products exist:
+		// We want to inject hooks to the core/post-template or product template block only when the products exist:
 		// https://github.com/woocommerce/woocommerce-blocks/issues/9463.
-		if ( 'core/post-template' === $block_name && ! empty( $block_content ) ) {
+		if ( $this->is_post_or_product_template( $block_name ) && ! empty( $block_content ) ) {
 			$this->restore_default_hooks();
 			$content = sprintf(
 				'%1$s%2$s%3$s',
@@ -93,16 +93,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 			return $content;
 		}
 
-		/**
-		 * The core/post-template has two different block names:
-		 * - core/post-template when the wrapper is rendered.
-		 * - core/null when the loop item is rendered.
-		 */
-		if (
-			'core/null' === $block_name &&
-			isset( $block['attrs']['__woocommerceNamespace'] ) &&
-			'woocommerce/product-query/product-template' === $block['attrs']['__woocommerceNamespace']
-		) {
+		if ( $this->is_null_post_template( $block ) ) {
 			$block_name = self::LOOP_ITEM_ID;
 		}
 
@@ -196,6 +187,21 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 					'woocommerce_output_content_wrapper_end' => 10,
 				),
 			),
+			'woocommerce_before_main_content'         => array(
+				'block_name' => 'woocommerce/product-collection',
+				'position'   => 'before',
+				'hooked'     => array(
+					'woocommerce_output_content_wrapper' => 10,
+					'woocommerce_breadcrumb'             => 20,
+				),
+			),
+			'woocommerce_after_main_content'          => array(
+				'block_name' => 'woocommerce/product-collection',
+				'position'   => 'after',
+				'hooked'     => array(
+					'woocommerce_output_content_wrapper_end' => 10,
+				),
+			),
 			'woocommerce_before_shop_loop_item_title' => array(
 				'block_name' => 'core/post-title',
 				'position'   => 'before',
@@ -258,6 +264,30 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 					'woocommerce_pagination',
 				),
 			),
+			'woocommerce_before_shop_loop'            => array(
+				'block_name'                  => 'woocommerce/product-template',
+				'position'                    => 'before',
+				'hooked'                      => array(
+					'woocommerce_output_all_notices' => 10,
+					'woocommerce_result_count'       => 20,
+					'woocommerce_catalog_ordering'   => 30,
+				),
+				'permanently_removed_actions' => array(
+					'woocommerce_output_all_notices',
+					'woocommerce_result_count',
+					'woocommerce_catalog_ordering',
+				),
+			),
+			'woocommerce_after_shop_loop'             => array(
+				'block_name'                  => 'woocommerce/product-template',
+				'position'                    => 'after',
+				'hooked'                      => array(
+					'woocommerce_pagination' => 10,
+				),
+				'permanently_removed_actions' => array(
+					'woocommerce_pagination',
+				),
+			),
 			'woocommerce_no_products_found'           => array(
 				'block_name'                  => 'core/query-no-results',
 				'position'                    => 'before',
@@ -294,7 +324,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 	 */
 	private function inner_blocks_walker( &$block ) {
 		if (
-			$this->is_products_block_with_inherit_query( $block )
+			$this->is_products_block_with_inherit_query( $block ) || $this->is_product_collection_block_with_inherit_query( $block )
 		) {
 			$this->inject_attribute( $block );
 			$this->remove_default_hooks();
@@ -321,6 +351,46 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 		}
 	}
 
+	/**
+	 * The core/post-template has two different block names:
+	 * - core/post-template when the wrapper is rendered.
+	 * - core/null when the loop item is rendered.
+	 *
+	 * @param array $block Parsed block data.
+	 */
+	private function is_null_post_template( $block ) {
+		$block_name = $block['blockName'];
+		$attributes = $block['attrs'];
+
+		return 'core/null' === $block_name && isset( $attributes['__woocommerceNamespace'] ) && 'woocommerce/product-query/product-template' === $attributes['__woocommerceNamespace'];
+	}
+
+	/**
+	 * Check if block is a Post template
+	 *
+	 * @param string $block_name Block name.
+	 */
+	private function is_post_template( $block_name ) {
+		return 'core/post-template' === $block_name;
+	}
+
+	/**
+	 * Check if block is a Product Template
+	 *
+	 * @param string $block_name Block name.
+	 */
+	private function is_product_template( $block_name ) {
+		return 'woocommerce/product-template' === $block_name;
+	}
+
+	/**
+	 * Check if block is eaither a Post template or Product Template
+	 *
+	 * @param string $block_name Block name.
+	 */
+	private function is_post_or_product_template( $block_name ) {
+		return $this->is_post_template( $block_name ) || $this->is_product_template( $block_name );
+	}
 
 	/**
 	 * Check if the block is a Products block that inherits query from template.
@@ -334,6 +404,18 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 		isset( $block['attrs']['query']['inherit'] ) &&
 		$block['attrs']['query']['inherit'];
 	}
+
+	/**
+	 * Check if the block is a Product Collection block that inherits query from template.
+	 *
+	 * @param array $block Parsed block data.
+	 */
+	private function is_product_collection_block_with_inherit_query( $block ) {
+		return 'woocommerce/product-collection' === $block['blockName'] &&
+		isset( $block['attrs']['query']['inherit'] ) &&
+		$block['attrs']['query']['inherit'];
+	}
+
 
 	/**
 	 * Recursively inject the custom attribute to all nested blocks.
