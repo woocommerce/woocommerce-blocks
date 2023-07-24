@@ -20,8 +20,8 @@ trait OrderAuthorizationTrait {
 	 */
 	public function is_authorized( \WP_REST_Request $request ) {
 		$order_id      = absint( $request['id'] );
-		$order_key     = wc_clean( wp_unslash( $request->get_param( 'key' ) ) );
-		$billing_email = wc_clean( wp_unslash( $request->get_param( 'billing_email' ) ) );
+		$order_key     = sanitize_text_field( wp_unslash( $request->get_param( 'key' ) ) );
+		$billing_email = sanitize_text_field( wp_unslash( $request->get_param( 'billing_email' ) ) );
 
 		try {
 			// In this context, pay_for_order capability checks that the current user ID matches the customer ID stored
