@@ -3,7 +3,7 @@
  */
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { store } from '@woocommerce/interactivity';
-import { dispatch } from '@wordpress/data';
+import { dispatch, select, subscribe } from '@wordpress/data';
 import { Cart } from '@woocommerce/type-defs/cart';
 import { createRoot } from '@wordpress/element';
 import NoticeBanner from '@woocommerce/base-components/notice-banner';
@@ -99,77 +99,99 @@ const productButtonSelectors = {
 	},
 };
 
-// @ts-expect-error: Store function isn't typed.
-store( {
-	selectors: productButtonSelectors,
-	actions: {
-		woocommerce: {
-			addToCart: async ( {
-				context,
-				ref,
-			}: {
-				context: Context;
-				state: State;
-				ref: HTMLElement;
-			} ) => {
-				if ( ! ref.classList.contains( 'ajax_add_to_cart' ) ) {
-					return;
-				}
+store(
+	// @ts-expect-error: Store function isn't typed.
+	{
+		selectors: productButtonSelectors,
+		actions: {
+			woocommerce: {
+				addToCart: async ( {
+					context,
+					ref,
+				}: {
+					context: Context;
+					state: State;
+					ref: HTMLElement;
+				} ) => {
+					if ( ! ref.classList.contains( 'ajax_add_to_cart' ) ) {
+						return;
+					}
 
-				context.woocommerce.isLoading = true;
-				const body = document.body;
+					context.woocommerce.isLoading = true;
+					const body = document.body;
 
-				// Allow 3rd parties to validate and quit early. https://github.com/woocommerce/woocommerce/blob/154dd236499d8a440edf3cde712511b56baa8e45/plugins/woocommerce/client/legacy/js/frontend/add-to-cart.js/#L74-L77
-				const event = new CustomEvent(
-					'should_send_ajax_request.adding_to_cart',
-					{ detail: [ ref ], cancelable: true }
-				);
-				const shouldSendRequest = body.dispatchEvent( event );
-
-				if ( shouldSendRequest === false ) {
-					const ajaxNotSentEvent = new CustomEvent(
-						'ajax_request_not_sent.adding_to_cart',
-						{ detail: [ false, false, ref ] }
+					// Allow 3rd parties to validate and quit early. https://github.com/woocommerce/woocommerce/blob/154dd236499d8a440edf3cde712511b56baa8e45/plugins/woocommerce/client/legacy/js/frontend/add-to-cart.js/#L74-L77
+					const event = new CustomEvent(
+						'should_send_ajax_request.adding_to_cart',
+						{ detail: [ ref ], cancelable: true }
 					);
-					body.dispatchEvent( ajaxNotSentEvent );
-					return true;
-				}
+					const shouldSendRequest = body.dispatchEvent( event );
 
-				try {
-					await dispatch( storeKey ).addItemToCart(
-						context.woocommerce.productId,
-						1
-					);
-					context.woocommerce.numberOfItems++;
-					context.woocommerce.isLoading = false;
-				} catch ( error ) {
-					const domNode = document.querySelector(
-						'.wc-block-store-notices'
-					);
+					if ( shouldSendRequest === false ) {
+						const ajaxNotSentEvent = new CustomEvent(
+							'ajax_request_not_sent.adding_to_cart',
+							{ detail: [ false, false, ref ] }
+						);
+						body.dispatchEvent( ajaxNotSentEvent );
+						return true;
+					}
 
-					const root = createRoot( domNode );
+					try {
+						await dispatch( storeKey ).addItemToCart(
+							context.woocommerce.productId,
+							1
+						);
+						context.woocommerce.numberOfItems++;
+						context.woocommerce.isLoading = false;
+					} catch ( error ) {
+						const domNode = document.querySelector(
+							'.wc-block-store-notices'
+						);
 
-					root.render(
-						<NoticeBanner
-							status="error"
-							onRemove={ () => root.unmount() }
-						>
-							{ error.message }
-						</NoticeBanner>
-					);
+						const root = createRoot( domNode );
 
-					domNode?.scrollIntoView( {
-						behavior: 'smooth',
-						inline: 'nearest',
-					} );
+						root.render(
+							<NoticeBanner
+								status="error"
+								onRemove={ () => root.unmount() }
+							>
+								{ error.message }
+							</NoticeBanner>
+						);
 
-					context.woocommerce.isLoading = false;
+						domNode?.scrollIntoView( {
+							behavior: 'smooth',
+							inline: 'nearest',
+						} );
 
-					// we don't care about errors blocking execution, but will console.error for troubleshooting.
-					// eslint-disable-next-line no-console
-					console.error( error );
-				}
+						context.woocommerce.isLoading = false;
+
+						// we don't care about errors blocking execution, but will console.error for troubleshooting.
+						// eslint-disable-next-line no-console
+						console.error( error );
+					}
+				},
 			},
 		},
 	},
-} );
+	{
+		afterLoad: ( { state } ) => {
+			// Subscribe to changes in Cart data.
+			subscribe( () => {
+				const cartData = select( storeKey ).getCartData();
+				const isResolutionFinished =
+					select( storeKey ).hasFinishedResolution( 'getCartData' );
+
+				if ( isResolutionFinished ) {
+					state.woocommerce.cart = cartData;
+				}
+			}, storeKey );
+
+			// This selector triggers a fetch of the Cart data. It is done in a
+			// `requestIdleCallback` to avoid potential performance issues.
+			requestIdleCallback( () => {
+				select( storeKey ).getCartData();
+			} );
+		},
+	}
+);
