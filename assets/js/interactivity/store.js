@@ -32,12 +32,20 @@ const getSerializedState = () => {
 	return {};
 };
 
+const storeCallbacks = {};
 const rawState = getSerializedState();
 export const rawStore = { state: deepSignal( rawState ) };
 
 if ( typeof window !== 'undefined' ) window.store = rawStore;
 
-export const store = ( { state, ...block } ) => {
+export const store = ( { state, ...block }, callbacks = {} ) => {
 	deepMerge( rawStore, block );
 	deepMerge( rawState, state );
+	Object.entries( callbacks ).forEach( ( [ key, cb ] ) => {
+		( storeCallbacks[ key ] = storeCallbacks[ key ] || [] ).push( cb );
+	} );
+};
+
+export const runStoreCallbacks = ( key ) => {
+	storeCallbacks[ key ]?.forEach( ( cb ) => cb( rawStore ) );
 };
