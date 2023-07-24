@@ -70,7 +70,7 @@
 		<!-- wp:group {"style":{"spacing":{"blockGap":"8px"}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
 		<div class="wp-block-group">
 			<!-- wp:paragraph -->
-			<p>@ 2022</p>
+			<p>@ <?php echo esc_html( gmdate( 'Y' ) ); ?></p>
 			<!-- /wp:paragraph -->
 			<!-- wp:site-title /-->
 		</div>

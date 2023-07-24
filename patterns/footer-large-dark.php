@@ -71,7 +71,7 @@
 		<!-- wp:group {"style":{"spacing":{"blockGap":"8px"},"elements":{"link":{"color":{"text":"var:preset|color|background"}}}},"textColor":"background","layout":{"type":"flex","flexWrap":"nowrap"}} -->
 		<div class="wp-block-group has-background-color has-text-color has-link-color">
 			<!-- wp:paragraph -->
-			<p>@ 2022</p>
+			<p>@ <?php echo esc_html( gmdate( 'Y' ) ); ?></p>
 			<!-- /wp:paragraph -->
 			<!-- wp:site-title /-->
 		</div>
