@@ -13,6 +13,7 @@ import {
 } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import { __, isRTL } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type { ReactElement } from 'react';
 import { cartOutline, bag, bagAlt } from '@woocommerce/icons';
@@ -48,11 +49,7 @@ interface Props {
 	setProductCountColor: ( colorValue: string | undefined ) => void;
 }
 
-const Edit = ( {
-	attributes,
-	setAttributes,
-	context: { postType, postId },
-}: Props ): ReactElement => {
+const Edit = ( { attributes, setAttributes }: Props ): ReactElement => {
 	const {
 		cartAndCheckoutRenderStyle,
 		addToCartBehaviour,
@@ -82,7 +79,12 @@ const Edit = ( {
 		className: 'wc-block-mini-cart',
 	} );
 
-	const isSiteEditor = postType === undefined || postId === undefined;
+	const isTemplate = useSelect( ( select ) => {
+		const store = select( 'core/edit-site' );
+		const editedPostType = store?.getEditedPostType();
+
+		return editedPostType === 'wp_template';
+	}, [] );
 
 	const templatePartEditUri = getSetting(
 		'templatePartEditUri',
@@ -148,7 +150,7 @@ const Edit = ( {
 							}
 						/>
 					</BaseControl>
-					{ isSiteEditor && (
+					{ isTemplate && (
 						<ToggleGroupControl
 							className="wc-block-editor-mini-cart__render-in-cart-and-checkout-toggle"
 							label={ __(

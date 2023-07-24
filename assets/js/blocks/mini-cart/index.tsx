@@ -39,7 +39,6 @@ registerBlockType( metadata, {
 	example: {
 		...metadata.example,
 	},
-	usesContext: [ 'postId', 'postType' ],
 	attributes: {
 		...metadata.attributes,
 	},
