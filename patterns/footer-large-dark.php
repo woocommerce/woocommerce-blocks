@@ -70,15 +70,15 @@
 	<div class="wp-block-group alignfull has-background-color has-text-color" style="padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
 		<!-- wp:group {"style":{"spacing":{"blockGap":"8px"},"elements":{"link":{"color":{"text":"var:preset|color|background"}}}},"textColor":"background","layout":{"type":"flex","flexWrap":"nowrap"}} -->
 		<div class="wp-block-group has-background-color has-text-color has-link-color">
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"12px"}}} -->
-			<p style="font-size:12px">@ 2022</p>
+			<!-- wp:paragraph -->
+			<p>@ 2022</p>
 			<!-- /wp:paragraph -->
-			<!-- wp:site-title {"style":{"typography":{"fontStyle":"normal","fontWeight":"400","fontSize":"12px"}}} /-->
+			<!-- wp:site-title /-->
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:paragraph {"style":{"typography":{"fontSize":"14px"}}} -->
-		<p style="font-size:14px"><em>Built with <a href="https://woocommerce.com/">WooCommerce</a> </em></p>
+		<!-- wp:paragraph -->
+		<p><em>Built with <a href="https://woocommerce.com/">WooCommerce</a> </em></p>
 		<!-- /wp:paragraph -->
 	</div>
 	<!-- /wp:group -->
