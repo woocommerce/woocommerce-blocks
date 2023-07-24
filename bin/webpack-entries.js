@@ -65,15 +65,9 @@ const blocks = {
 	'product-top-rated': {},
 	'products-by-attribute': {},
 	'rating-filter': {},
-	'product-average-rating': {
-		isExperimental: true,
-	},
-	'product-rating-stars': {
-		isExperimental: true,
-	},
-	'product-rating-counter': {
-		isExperimental: true,
-	},
+	'product-average-rating': {},
+	'product-rating-stars': {},
+	'product-rating-counter': {},
 	'reviews-by-category': {
 		customDir: 'reviews/reviews-by-category',
 	},
@@ -133,6 +127,8 @@ const entries = {
 			'./assets/js/atomic/blocks/product-elements/product-reviews/index.tsx',
 		'product-details':
 			'./assets/js/atomic/blocks/product-elements/product-details/index.tsx',
+		'add-to-cart-form':
+			'./assets/js/atomic/blocks/product-elements/add-to-cart-form/index.tsx',
 		...getBlockEntries( '{index,block,frontend}.{t,j}s{,x}' ),
 	},
 	core: {
