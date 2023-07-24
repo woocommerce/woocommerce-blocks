@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import {
+	useInnerBlocksProps,
+	useBlockProps,
+	InnerBlocks,
+} from '@wordpress/block-editor';
 
 export const Edit = (): JSX.Element => {
 	const blockProps = useBlockProps();
@@ -10,16 +14,15 @@ export const Edit = (): JSX.Element => {
 		<div { ...blockProps }>
 			<InnerBlocks
 				allowedBlocks={ [ 'woocommerce/product-gallery-large-image' ] }
-				templateLock={ false }
+				template={ [ [ 'woocommerce/product-gallery-large-image' ] ] }
+				templateLock={ 'all' }
 			/>
 		</div>
 	);
 };
 
-export const Save = (): JSX.Element => {
-	return (
-		<div { ...useBlockProps.save() }>
-			<InnerBlocks.Content />
-		</div>
-	);
+export const Save = () => {
+	const blockProps = useBlockProps.save();
+	const innerBlocksProps = useInnerBlocksProps.save( blockProps );
+	return <div { ...innerBlocksProps } />;
 };

@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "woocommerce/product-gallery-large-image-next-previous",
+    "version": "1.0.0",
+    "title": "Next/Previous Buttons",
+    "description": "aa",
+    "category": "woocommerce",
+    "keywords": [ "WooCommerce" ],
+	"usesContext": [ "postId" ],
+    "textdomain": "woo-gutenberg-products-block",
+	"ancestor": [ "woocommerce/product-gallery-large-image" ],
+	"attributes": {
+		"buttonPosition": {
+			"type": "string",
+			"default": "insideTheImage"
+		}
+	}
+}

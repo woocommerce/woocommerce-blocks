@@ -11,6 +11,7 @@ import { Edit, Save } from './edit';
 import metadata from './block.json';
 import icon from './icon';
 import './inner-blocks/product-gallery-large-image';
+import './inner-blocks/product-gallery-large-image-next-previous';
 
 if ( isExperimentalBuild() ) {
 	registerBlockSingleProductTemplate( {
@@ -20,7 +21,6 @@ if ( isExperimentalBuild() ) {
 			icon,
 			edit: Edit,
 			save: Save,
-			ancestor: [ 'woocommerce/single-product' ],
 		},
 		isAvailableOnPostEditor: true,
 	} );

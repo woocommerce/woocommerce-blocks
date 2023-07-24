@@ -54,6 +54,11 @@ const blocks = {
 		customDir: 'product-gallery/inner-blocks/product-gallery-large-image',
 		isExperimental: true,
 	},
+	'product-gallery-large-image-next-previous': {
+		customDir:
+			'product-gallery/inner-blocks/product-gallery-large-image-next-previous',
+		isExperimental: true,
+	},
 	'product-new': {},
 	'product-on-sale': {},
 	'product-query': {
