@@ -2,7 +2,7 @@
 	"name": "@woocommerce/block-library",
 	"title": "WooCommerce Blocks",
 	"author": "Automattic",
-	"version": "10.7.0-dev",
+	"version": "10.8.0-dev",
 	"description": "WooCommerce blocks for the Gutenberg editor.",
 	"homepage": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/",
 	"keywords": [
@@ -193,7 +193,7 @@
 		"eslint-plugin-woocommerce": "file:bin/eslint-plugin-woocommerce",
 		"eslint-plugin-you-dont-need-lodash-underscore": "6.12.0",
 		"expect-puppeteer": "6.1.1",
-		"fast-xml-parser": "4.2.4",
+		"fast-xml-parser": "4.2.5",
 		"follow-redirects": "1.15.1",
 		"fs-extra": "10.1.0",
 		"gh-pages": "4.0.0",

@@ -8,6 +8,8 @@ use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
+use Automattic\WooCommerce\Blocks\Utils\Utils;
+use Automattic\WooCommerce\Blocks\Utils\MiniCartUtils;
 
 /**
  * Mini-Cart class.
@@ -155,7 +157,7 @@ class MiniCart extends AbstractBlock {
 
 		if (
 			current_user_can( 'edit_theme_options' ) &&
-			wc_current_theme_is_fse_theme()
+			( wc_current_theme_is_fse_theme() || current_theme_supports( 'block-template-parts' ) )
 		) {
 			$theme_slug = BlockTemplateUtils::theme_has_template_part( 'mini-cart' ) ? wp_get_theme()->get_stylesheet() : BlockTemplateUtils::PLUGIN_SLUG;
 
@@ -322,11 +324,19 @@ class MiniCart extends AbstractBlock {
 
 		$site_url = site_url() ?? wp_guess_url();
 
+		if ( Utils::wp_version_compare( '6.3', '>=' ) ) {
+			$script_before = $wp_scripts->get_inline_script_data( $script->handle, 'before' );
+			$script_after  = $wp_scripts->get_inline_script_data( $script->handle, 'after' );
+		} else {
+			$script_before = $wp_scripts->print_inline_script( $script->handle, 'before', false );
+			$script_after  = $wp_scripts->print_inline_script( $script->handle, 'after', false );
+		}
+
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
 			'src'          => preg_match( '|^(https?:)?//|', $script->src ) ? $script->src : $site_url . $script->src,
 			'version'      => $script->ver,
-			'before'       => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
-			'after'        => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
+			'before'       => $script_before,
+			'after'        => $script_after,
 			'translations' => $wp_scripts->print_translations( $script->handle, false ),
 		);
 	}
@@ -342,7 +352,7 @@ class MiniCart extends AbstractBlock {
 		if ( isset( $attributes['hasHiddenPrice'] ) && false !== $attributes['hasHiddenPrice'] ) {
 			return;
 		}
-		$price_color = array_key_exists( 'priceColorValue', $attributes ) ? $attributes['priceColorValue'] : '';
+		$price_color = array_key_exists( 'priceColor', $attributes ) ? $attributes['priceColor']['color'] : '';
 
 		return '<span class="wc-block-mini-cart__amount" style="color:' . $price_color . ' "></span>' . $this->get_include_tax_label_markup( $attributes );
 	}
@@ -358,7 +368,7 @@ class MiniCart extends AbstractBlock {
 		if ( empty( $this->tax_label ) ) {
 			return '';
 		}
-		$price_color = array_key_exists( 'priceColorValue', $attributes ) ? $attributes['priceColorValue'] : '';
+		$price_color = array_key_exists( 'priceColor', $attributes ) ? $attributes['priceColor']['color'] : '';
 
 		return '<small class="wc-block-mini-cart__tax-label" style="color:' . $price_color . ' " hidden>' . esc_html( $this->tax_label ) . '</small>';
 	}
@@ -372,7 +382,7 @@ class MiniCart extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		return $content . $this->get_markup( $attributes );
+		return $content . $this->get_markup( MiniCartUtils::migrate_attributes_to_color_panel( $attributes ) );
 	}
 
 	/**
@@ -396,8 +406,8 @@ class MiniCart extends AbstractBlock {
 		}
 		$wrapper_styles = $classes_styles['styles'];
 
-		$icon_color          = array_key_exists( 'iconColorValue', $attributes ) ? $attributes['iconColorValue'] : 'currentColor';
-		$product_count_color = array_key_exists( 'productCountColorValue', $attributes ) ? $attributes['productCountColorValue'] : '';
+		$icon_color          = array_key_exists( 'iconColor', $attributes ) ? $attributes['iconColor']['color'] : 'currentColor';
+		$product_count_color = array_key_exists( 'productCountColor', $attributes ) ? $attributes['productCountColor']['color'] : '';
 
 		// Default "Cart" icon.
 		$icon = '<svg class="wc-block-mini-cart__icon" width="32" height="32" viewBox="0 0 32 32" fill="' . $icon_color . '" xmlns="http://www.w3.org/2000/svg">
