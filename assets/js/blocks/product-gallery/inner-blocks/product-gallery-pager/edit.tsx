@@ -6,24 +6,23 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { Skeleton } from '@woocommerce/base-components/skeleton';
 import { Tooltip } from '@wordpress/components';
 
+const PagerButton = () => {
+	return <button className="wc-block-product-gallery-pager-button">1</button>;
+};
+
 export const Edit = (): JSX.Element => {
 	const blockProps = useBlockProps( {
-		className: 'wc-block-editor-product-gallery_pager',
+		className: 'wc-block-editor-product-gallery-pager',
 	} );
 
 	return (
 		<div { ...blockProps }>
-			<Tooltip
-				text={ __(
-					'This will display the Pager for the product gallery.',
-					'woo-gutenberg-products-block'
-				) }
-				position="bottom right"
-			>
-				<div className="wc-block-editor-container">
-					<Skeleton numberOfLines={ 1 } />
-				</div>
-			</Tooltip>
+			<ul className="wc-block-editor-product-gallery-pager__pager">
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+			</ul>
 		</div>
 	);
 };

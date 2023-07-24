@@ -1,0 +1,25 @@
+.wc-block-editor-product-gallery-pager {
+
+    
+
+}
+
+.wc-block-editor-product-gallery-pager__pager {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 1em;
+}
+
+.wc-block-editor-product-gallery-pager__pager-item {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.wc-block-editor-product-gallery-pager__pager-item.is-active {
+    background-color: #000;
+}
