@@ -16,14 +16,14 @@
 			<div class="wp-block-cover__inner-container">
 				<!-- wp:paragraph {"align":"center","placeholder":"Write title…","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"fontSize":"large"} -->
 				<p class="has-text-align-center has-text-color has-large-font-size" style="color:#ffffff;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-					<strong>Cupcakes</strong>
+					<strong><?php esc_html_e( 'Cupcakes', 'woo-gutenberg-products-block' ); ?></strong>
 				</p>
 				<!-- /wp:paragraph -->
 				<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
 				<div class="wp-block-buttons"><!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
 					<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size">
 						<a class="wp-block-button__link has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" style="border-style:none;border-width:0px;color:#ffffff;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
-							<strong><span style="text-decoration: underline;">Shop Now</span></strong>
+							<strong><span style="text-decoration: underline;"><?php esc_html_e( 'Shop Now', 'woo-gutenberg-products-block' ); ?></span></strong>
 						</a>
 					</div>
 					<!-- /wp:button -->
@@ -44,7 +44,7 @@
 		<div class="wp-block-cover__inner-container">
 			<!-- wp:paragraph {"align":"center","placeholder":"Write title…","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"fontSize":"large"} -->
 			<p class="has-text-align-center has-text-color has-large-font-size" style="color:#ffffff;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-				<strong>Sweet Danish</strong>
+				<strong><?php esc_html_e( 'Sweet Danish', 'woo-gutenberg-products-block' ); ?></strong>
 			</p>
 			<!-- /wp:paragraph -->
 			<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
@@ -52,7 +52,7 @@
 				<!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
 				<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size">
 					<a class="wp-block-button__link has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" style="border-style:none;border-width:0px;color:#ffffff;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
-						<strong><span style="text-decoration: underline;">Shop Now</span></strong></a>
+						<strong><span style="text-decoration: underline;"><?php esc_html_e( 'Shop Now', 'woo-gutenberg-products-block' ); ?></span></strong></a>
 				</div>
 				<!-- /wp:button -->
 			</div>
@@ -72,7 +72,7 @@
 			<div class="wp-block-cover__inner-container">
 				<!-- wp:paragraph {"align":"center","placeholder":"Write title…","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"fontSize":"large"} -->
 				<p class="has-text-align-center has-text-color has-large-font-size" style="color:#ffffff;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-					<strong>Warm Bread</strong>
+					<strong><?php esc_html_e( 'Warm Bread', 'woo-gutenberg-products-block' ); ?></strong>
 				</p>
 				<!-- /wp:paragraph -->
 				<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
@@ -80,7 +80,7 @@
 					<!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
 					<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size">
 						<a class="wp-block-button__link has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" style="border-style:none;border-width:0px;color:#ffffff;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
-							<strong><span style="text-decoration: underline;">Shop Now</span></strong>
+							<strong><span style="text-decoration: underline;"><?php esc_html_e( 'Shop Now', 'woo-gutenberg-products-block' ); ?></span></strong>
 						</a>
 					</div>
 					<!-- /wp:button -->
