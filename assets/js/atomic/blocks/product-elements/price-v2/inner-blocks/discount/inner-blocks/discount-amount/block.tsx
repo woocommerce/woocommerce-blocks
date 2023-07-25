@@ -43,7 +43,10 @@ const Block = ( {
 		discountType = 'percentage',
 		showDiscount = true,
 	} = attributes;
-	const { isDescendentOfSingleProductTemplate = false } = context || {};
+	const isDescendentOfSingleProductTemplate =
+		( context &&
+			context[ 'woocommerce/isDescendentOfSingleProductTemplate' ] ) ||
+		false;
 	const { className: stylesClassName, style } = useStyleProps( attributes );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	if ( ! showDiscount ) {

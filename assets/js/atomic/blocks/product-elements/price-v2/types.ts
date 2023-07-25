@@ -17,6 +17,8 @@ export interface PriceContext {
 	isDescendentOfSingleProductTemplate: boolean;
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	'woocommerce/withSuperScriptStyle'?: boolean;
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	'woocommerce/isDescendentOfSingleProductTemplate'?: boolean;
 }
 
 export interface PriceAttributes {

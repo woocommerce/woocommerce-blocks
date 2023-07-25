@@ -12,12 +12,19 @@ import { useEffect } from '@wordpress/element';
 import { discountAmountName } from './inner-blocks';
 import { TEMPLATE } from './template';
 
-export const Edit = ( { attributes, setAttributes } ): JSX.Element => {
+export const Edit = ( { attributes, setAttributes, context } ): JSX.Element => {
 	const { style, className } = useStyleProps( attributes );
 	const { product } = useProductDataContext();
 	const originalPrice = product?.prices?.regular_price;
 	const currentPrice = product?.prices?.price;
-	const showPrice = originalPrice && currentPrice !== originalPrice;
+	const isDescendentOfSingleProductTemplate =
+		( context &&
+			context[ 'woocommerce/isDescendentOfSingleProductTemplate' ] ) ||
+		false;
+
+	const showPrice =
+		( originalPrice && currentPrice !== originalPrice ) ||
+		isDescendentOfSingleProductTemplate;
 	useEffect( () => {
 		if ( ! attributes?.style ) {
 			setAttributes( { style: { spacing: { blockGap: '0' } } } );

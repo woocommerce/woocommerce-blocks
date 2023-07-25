@@ -17,16 +17,22 @@ interface Attributes {
 
 type Props = {
 	attributes: Attributes;
-	context?: { isDescendentOfSingleProductTemplate: boolean };
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	context?: { 'woocommerce/isDescendentOfSingleProductTemplate': boolean };
 } & HTMLAttributes< HTMLDivElement >;
 
 const DiscountEdit = ( { attributes, context }: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 	const { product } = useProductDataContext();
-	const { isDescendentOfSingleProductTemplate = false } = context || {};
+	const isDescendentOfSingleProductTemplate =
+		( context &&
+			context[ 'woocommerce/isDescendentOfSingleProductTemplate' ] ) ||
+		false;
 	const originalPrice = product?.prices?.regular_price;
 	const currentPrice = product?.prices?.price;
-	const showPrice = originalPrice && currentPrice !== originalPrice;
+	const showPrice =
+		( originalPrice && currentPrice !== originalPrice ) ||
+		isDescendentOfSingleProductTemplate;
 	const currency = isDescendentOfSingleProductTemplate
 		? getCurrencyFromPriceResponse()
 		: getCurrencyFromPriceResponse( product?.prices );

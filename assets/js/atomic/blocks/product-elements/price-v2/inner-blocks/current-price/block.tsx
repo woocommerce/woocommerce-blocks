@@ -23,7 +23,10 @@ const Block = ( {
 	currency,
 }: Props ): JSX.Element | null => {
 	const { className } = attributes;
-	const { isDescendentOfSingleProductTemplate = false } = context || {};
+	const isDescendentOfSingleProductTemplate =
+		( context &&
+			context[ 'woocommerce/isDescendentOfSingleProductTemplate' ] ) ||
+		false;
 	const { className: stylesClassName, style } = useStyleProps( attributes );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const wrapperClassName = classnames(
