@@ -97,7 +97,8 @@ export const Edit = ( {
 						groupBlock.innerBlocks[ thumbnailsIndex ].clientId;
 
 					if (
-						thumbnailsPosition === 'bottom' ||
+						( thumbnailsPosition === 'bottom' &&
+							thumbnailsIndex !== 0 ) ||
 						thumbnailsPosition === 'right'
 					) {
 						// @ts-expect-error - Ignoring because `moveBlocksDown` is not yet in the type definitions.
