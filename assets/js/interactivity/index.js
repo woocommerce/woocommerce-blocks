@@ -1,6 +1,6 @@
 import registerDirectives from './directives';
 import { init } from './router';
-import { runStoreCallbacks } from './store';
+import { rawStore, afterLoads } from './store';
 
 export { navigate } from './router';
 export { store } from './store';
@@ -11,7 +11,7 @@ export { store } from './store';
 document.addEventListener( 'DOMContentLoaded', async () => {
 	registerDirectives();
 	await init();
-	runStoreCallbacks( 'afterLoad' );
+	afterLoads.forEach( ( afterLoad ) => afterLoad( rawStore ) );
 	// eslint-disable-next-line no-console
 	console.log( 'Interactivity API started' );
 } );
