@@ -155,6 +155,7 @@ const AddressForm = ( {
 									...values,
 									country: newValue,
 									state: '',
+									postcode: '',
 								} )
 							}
 						/>

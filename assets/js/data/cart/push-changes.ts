@@ -8,6 +8,7 @@ import {
 	BillingAddressShippingAddress,
 } from '@woocommerce/types';
 import { select, dispatch } from '@wordpress/data';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
@@ -144,6 +145,9 @@ const debouncedUpdateCustomerData = debounce( () => {
 /**
  * After cart has fully initialized, pushes changes to the server when data in the store is changed. Updates to the
  * server are debounced to prevent excessive requests.
+ *
+ * Any update to the store triggers this, so we do a shallow compare on the important data to know if we really need to
+ * schedule a push.
  */
 export const pushChanges = ( debounced = true ): void => {
 	if ( ! select( STORE_KEY ).hasFinishedResolution( 'getCartData' ) ) {
@@ -152,6 +156,15 @@ export const pushChanges = ( debounced = true ): void => {
 
 	if ( ! localState.customerDataIsInitialized ) {
 		initialize();
+		return;
+	}
+
+	if (
+		isShallowEqual(
+			localState.customerData,
+			select( STORE_KEY ).getCustomerData()
+		)
+	) {
 		return;
 	}
 
