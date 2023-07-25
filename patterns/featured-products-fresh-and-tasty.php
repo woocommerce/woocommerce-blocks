@@ -27,8 +27,8 @@
 				<p class="has-small-font-size"><strong><?php esc_html_e( 'Sweet Organic Lemons', 'woo-gutenberg-products-block' ); ?></strong></p>
 				<!-- /wp:paragraph --></div>
 			<!-- /wp:column -->
-			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
-			<div class="wp-block-column" style="flex-basis:94px">
+			<!-- wp:column {"width":"40%","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained","justifyContent":"right"}} -->
+			<div class="wp-block-column" style="flex-basis:40%">
 				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
 				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $1.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
@@ -55,8 +55,8 @@
 				<p class="has-small-font-size"><strong><?php esc_html_e( 'Fresh Organic Tomatoes', 'woo-gutenberg-products-block' ); ?></strong></p>
 				<!-- /wp:paragraph --></div>
 			<!-- /wp:column -->
-			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
-			<div class="wp-block-column" style="flex-basis:94px">
+			<!-- wp:column {"width":"40%","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained","justifyContent":"right"}} -->
+			<div class="wp-block-column" style="flex-basis:40%">
 				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
 				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $2.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
@@ -85,8 +85,8 @@
 			</div>
 			<!-- /wp:column -->
 
-			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
-			<div class="wp-block-column" style="flex-basis:94px">
+			<!-- wp:column {"width":"40%","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained","justifyContent":"right"}} -->
+			<div class="wp-block-column" style="flex-basis:40%">
 				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
 				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $0.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
@@ -115,8 +115,8 @@
 			</div>
 			<!-- /wp:column -->
 
-			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
-			<div class="wp-block-column" style="flex-basis:94px">
+			<!-- wp:column {"width":"40%","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained","justifyContent":"right"}} -->
+			<div class="wp-block-column" style="flex-basis:40%">
 				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
 				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $1.49', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
