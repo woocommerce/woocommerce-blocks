@@ -13,7 +13,7 @@
 <div class="wp-block-columns alignwide">
 	<!-- wp:column -->
 	<div class="wp-block-column">
-		<!-- wp:image {"id":2267,"sizeSlug":"full","linkDestination":"none"} -->
+		<!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
 		<figure class="wp-block-image size-full">
 			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/sweet-organic-lemons.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased as Sweet organic Lemons.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
@@ -24,7 +24,7 @@
 			<!-- wp:column {"width":"60%","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
 			<div class="wp-block-column" style="flex-basis:60%">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><strong><?php esc_html_e( 'Sweet Organic Lemons', 'woo-gutenberg-products-block' ); ?></strong></p>
+				<p class="has-small-font-size"><?php esc_html_e( 'Sweet Organic Lemons', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph --></div>
 			<!-- /wp:column -->
 			<!-- wp:column {"width":"40%","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained","justifyContent":"right"}} -->
@@ -41,7 +41,7 @@
 
 	<!-- wp:column -->
 	<div class="wp-block-column">
-		<!-- wp:image {"id":2268,"sizeSlug":"full","linkDestination":"none"} -->
+		<!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
 		<figure class="wp-block-image size-full">
 			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/fresh-organic-tomatoes.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased as Fresh Organic Tomatoes.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
@@ -52,7 +52,7 @@
 			<!-- wp:column {"width":"60%","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
 			<div class="wp-block-column" style="flex-basis:60%">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><strong><?php esc_html_e( 'Fresh Organic Tomatoes', 'woo-gutenberg-products-block' ); ?></strong></p>
+				<p class="has-small-font-size"><?php esc_html_e( 'Fresh Organic Tomatoes', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph --></div>
 			<!-- /wp:column -->
 			<!-- wp:column {"width":"40%","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained","justifyContent":"right"}} -->
@@ -69,7 +69,7 @@
 
 	<!-- wp:column -->
 	<div class="wp-block-column">
-		<!-- wp:image {"id":2269,"sizeSlug":"full","linkDestination":"none"} -->
+		<!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
 		<figure class="wp-block-image size-full">
 			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/fresh-lettuce-washed.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased as Fresh Lettuce Washed.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
@@ -80,7 +80,7 @@
 			<!-- wp:column {"width":"60%","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
 			<div class="wp-block-column" style="flex-basis:60%">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><strong><?php esc_html_e( 'Fresh Lettuce (Washed)', 'woo-gutenberg-products-block' ); ?></strong></p>
+				<p class="has-small-font-size"><?php esc_html_e( 'Fresh Lettuce (Washed)', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -99,7 +99,7 @@
 
 	<!-- wp:column -->
 	<div class="wp-block-column">
-		<!-- wp:image {"id":2270,"sizeSlug":"full","linkDestination":"none"} -->
+		<!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
 		<figure class="wp-block-image size-full">
 			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/russet-organic-potatoes.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased as Russet Organic Potatoes.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
@@ -110,7 +110,7 @@
 			<!-- wp:column {"width":"60%","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
 			<div class="wp-block-column" style="flex-basis:60%">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><strong><?php esc_html_e( 'Russet Organic Potatoes', 'woo-gutenberg-products-block' ); ?></strong></p>
+				<p class="has-small-font-size"><?php esc_html_e( 'Russet Organic Potatoes', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
