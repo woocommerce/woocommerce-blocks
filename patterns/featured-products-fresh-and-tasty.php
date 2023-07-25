@@ -6,7 +6,7 @@
  */
 ?>
 <!-- wp:heading {"level":3,"align":"wide"} -->
-<h3 class="wp-block-heading alignwide">Fresh &amp; tasty goods</h3>
+<h3 class="wp-block-heading alignwide"><?php esc_html_e( 'Fresh &amp; tasty goods', 'woo-gutenberg-products-block' ); ?></h3>
 <!-- /wp:heading -->
 
 <!-- wp:columns {"align":"wide"} -->
@@ -24,13 +24,13 @@
 			<!-- wp:column {"width":"180px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:180px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><strong>Sweet Organic Lemons</strong></p>
+				<p class="has-small-font-size"><strong><?php esc_html_e( 'Sweet Organic Lemons', 'woo-gutenberg-products-block' ); ?></strong></p>
 				<!-- /wp:paragraph --></div>
 			<!-- /wp:column -->
 			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:94px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size">from $1.99</p>
+				<p class="has-small-font-size"><?php esc_html_e( 'from $1.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -52,13 +52,13 @@
 			<!-- wp:column {"width":"180px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:180px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><strong>Fresh Organic Tomatoes</strong></p>
+				<p class="has-small-font-size"><strong><?php esc_html_e( 'Fresh Organic Tomatoes', 'woo-gutenberg-products-block' ); ?></strong></p>
 				<!-- /wp:paragraph --></div>
 			<!-- /wp:column -->
 			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:94px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size">from $2.99</p>
+				<p class="has-small-font-size"><?php esc_html_e( 'from $2.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -80,7 +80,7 @@
 			<!-- wp:column {"width":"180px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:180px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><strong>Fresh Lettuce (Washed)</strong></p>
+				<p class="has-small-font-size"><strong><?php esc_html_e( 'Fresh Lettuce (Washed)', 'woo-gutenberg-products-block' ); ?></strong></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -88,7 +88,7 @@
 			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:94px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size">from $0.99</p>
+				<p class="has-small-font-size"><?php esc_html_e( 'from $0.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -110,7 +110,7 @@
 			<!-- wp:column {"width":"180px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:180px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><strong>Russet Organic Potatoes</strong></p>
+				<p class="has-small-font-size"><strong><?php esc_html_e( 'Russet Organic Potatoes', 'woo-gutenberg-products-block' ); ?></strong></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -118,7 +118,7 @@
 			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:94px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size">from $1.49</p>
+				<p class="has-small-font-size"><?php esc_html_e( 'from $1.49', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
