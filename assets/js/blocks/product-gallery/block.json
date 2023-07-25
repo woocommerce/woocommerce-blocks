@@ -11,7 +11,6 @@
 		"align": true,
 		"multiple": false
 	},
-	"usesContext": [ "postId", "postType", "queryId" ],
 	"textdomain": "woo-gutenberg-products-block",
 	"providesContext": {
 		"thumbnailsPosition": "thumbnailsPosition",
