@@ -17,16 +17,11 @@
 				<!-- wp:heading {"level":3} -->
 				<h3 class="wp-block-heading"><?php esc_html_e( 'Cupcakes', 'woo-gutenberg-products-block' ); ?></h3>
 				<!-- /wp:heading -->
-				<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
-				<div class="wp-block-buttons"><!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
-					<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size">
-						<a class="wp-block-button__link has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" style="border-style:none;border-width:0px;color:#ffffff;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
-							<strong><span style="text-decoration: underline;"><?php esc_html_e( 'Shop Now', 'woo-gutenberg-products-block' ); ?></span></strong>
-						</a>
-					</div>
-					<!-- /wp:button -->
-				</div>
-				<!-- /wp:buttons -->
+				<!-- wp:paragraph {"align":"center","style":{"elements":{"link":{"color":{"text":"var:preset|color|base"}}}}} -->
+				<p class="has-text-align-center has-link-color">
+					<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" data-type="link" data-id="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>"><?php esc_html_e( 'Shop Now', 'woo-gutenberg-products-block' ); ?></a>
+				</p>
+				<!-- /wp:paragraph -->
 			</div>
 		</div>
 		<!-- /wp:cover -->
@@ -43,16 +38,11 @@
 			<!-- wp:heading {"level":3} -->
 			<h3 class="wp-block-heading"><?php esc_html_e( 'Sweet Danish', 'woo-gutenberg-products-block' ); ?></h3>
 			<!-- /wp:heading -->
-			<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
-			<div class="wp-block-buttons">
-				<!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
-				<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size">
-					<a class="wp-block-button__link has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" style="border-style:none;border-width:0px;color:#ffffff;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
-						<strong><span style="text-decoration: underline;"><?php esc_html_e( 'Shop Now', 'woo-gutenberg-products-block' ); ?></span></strong></a>
-				</div>
-				<!-- /wp:button -->
-			</div>
-			<!-- /wp:buttons -->
+			<!-- wp:paragraph {"align":"center","style":{"elements":{"link":{"color":{"text":"var:preset|color|base"}}}}} -->
+			<p class="has-text-align-center has-link-color">
+				<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" data-type="link" data-id="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>"><?php esc_html_e( 'Shop Now', 'woo-gutenberg-products-block' ); ?></a>
+			</p>
+			<!-- /wp:paragraph -->
 		</div>
 	</div>
 	<!-- /wp:cover -->
@@ -69,17 +59,11 @@
 				<!-- wp:heading {"level":3} -->
 				<h3 class="wp-block-heading"><?php esc_html_e( 'Warm Bread', 'woo-gutenberg-products-block' ); ?></h3>
 				<!-- /wp:heading -->
-				<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
-				<div class="wp-block-buttons">
-					<!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
-					<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size">
-						<a class="wp-block-button__link has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" style="border-style:none;border-width:0px;color:#ffffff;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
-							<strong><span style="text-decoration: underline;"><?php esc_html_e( 'Shop Now', 'woo-gutenberg-products-block' ); ?></span></strong>
-						</a>
-					</div>
-					<!-- /wp:button -->
-				</div>
-				<!-- /wp:buttons -->
+				<!-- wp:paragraph {"align":"center","style":{"elements":{"link":{"color":{"text":"var:preset|color|base"}}}}} -->
+				<p class="has-text-align-center has-link-color">
+					<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" data-type="link" data-id="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>"><?php esc_html_e( 'Shop Now', 'woo-gutenberg-products-block' ); ?></a>
+				</p>
+				<!-- /wp:paragraph -->
 			</div>
 		</div>
 		<!-- /wp:cover -->
