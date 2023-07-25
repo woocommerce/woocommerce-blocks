@@ -14,11 +14,9 @@
 			<span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span>
 			<img class="wp-block-cover__image-background wp-image-1" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased in featured categories banner. 1 out of 3.', 'woo-gutenberg-products-block' ); ?>" src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/sweet-restaurant-celebration-food-chocolate-cupcake.png', dirname( __FILE__ ) ) ); ?>" data-object-fit="cover"/>
 			<div class="wp-block-cover__inner-container">
-				<!-- wp:paragraph {"align":"center","placeholder":"Write title…","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"fontSize":"large"} -->
-				<p class="has-text-align-center has-text-color has-large-font-size" style="color:#ffffff;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-					<strong><?php esc_html_e( 'Cupcakes', 'woo-gutenberg-products-block' ); ?></strong>
-				</p>
-				<!-- /wp:paragraph -->
+				<!-- wp:heading {"level":3} -->
+				<h3 class="wp-block-heading"><?php esc_html_e( 'Cupcakes', 'woo-gutenberg-products-block' ); ?></h3>
+				<!-- /wp:heading -->
 				<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
 				<div class="wp-block-buttons"><!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
 					<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size">
@@ -42,11 +40,9 @@
 		<span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span>
 		<img class="wp-block-cover__image-background wp-image-1" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased in featured categories banner. 2 out of 3.', 'woo-gutenberg-products-block' ); ?>" src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/dish-meal-food-breakfast-dessert-eat.png', dirname( __FILE__ ) ) ); ?>" style="object-position:50% 50%" data-object-fit="cover" data-object-position="50% 50%"/>
 		<div class="wp-block-cover__inner-container">
-			<!-- wp:paragraph {"align":"center","placeholder":"Write title…","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"fontSize":"large"} -->
-			<p class="has-text-align-center has-text-color has-large-font-size" style="color:#ffffff;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-				<strong><?php esc_html_e( 'Sweet Danish', 'woo-gutenberg-products-block' ); ?></strong>
-			</p>
-			<!-- /wp:paragraph -->
+			<!-- wp:heading {"level":3} -->
+			<h3 class="wp-block-heading"><?php esc_html_e( 'Sweet Danish', 'woo-gutenberg-products-block' ); ?></h3>
+			<!-- /wp:heading -->
 			<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
 			<div class="wp-block-buttons">
 				<!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
@@ -70,11 +66,9 @@
 			<span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span>
 			<img class="wp-block-cover__image-background wp-image-1" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased in featured categories banner. 3 out of 3', 'woo-gutenberg-products-block' ); ?>" src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/dish-food-baking-dessert-bread-bakery.png', dirname( __FILE__ ) ) ); ?>" data-object-fit="cover"/>
 			<div class="wp-block-cover__inner-container">
-				<!-- wp:paragraph {"align":"center","placeholder":"Write title…","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"0","right":"0","bottom":"0","left":"0"}}},"fontSize":"large"} -->
-				<p class="has-text-align-center has-text-color has-large-font-size" style="color:#ffffff;margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-					<strong><?php esc_html_e( 'Warm Bread', 'woo-gutenberg-products-block' ); ?></strong>
-				</p>
-				<!-- /wp:paragraph -->
+				<!-- wp:heading {"level":3} -->
+				<h3 class="wp-block-heading"><?php esc_html_e( 'Warm Bread', 'woo-gutenberg-products-block' ); ?></h3>
+				<!-- /wp:heading -->
 				<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
 				<div class="wp-block-buttons">
 					<!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0px","right":"0px","top":"0px","bottom":"0px"}},"color":{"text":"#ffffff"}},"className":"is-style-outline","fontSize":"small"} -->
