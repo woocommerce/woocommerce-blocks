@@ -78,7 +78,7 @@
 		<!-- /wp:group -->
 
 		<!-- wp:paragraph -->
-		<p><em>Built with <a href="https://woocommerce.com/">WooCommerce</a> </em></p>
+		<p><em><?php esc_html_e( 'Built with', 'woo-gutenberg-products-block' ); ?> <a href="https://woocommerce.com/">WooCommerce</a> </em></p>
 		<!-- /wp:paragraph -->
 	</div>
 	<!-- /wp:group -->
