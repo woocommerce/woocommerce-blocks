@@ -12,7 +12,7 @@ class ProductPriceDiscountAmount extends AbstractBlock {
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'discount-amount';
+	protected $block_name = 'discount';
 
 	/**
 	 * API version name.
@@ -66,7 +66,6 @@ class ProductPriceDiscountAmount extends AbstractBlock {
 	protected function render( $attributes, $content, $block ) {
 		$post_id = $block->context['postId'];
 		$product = wc_get_product( $post_id );
-
 		if ( ! $product || ! $product->is_on_sale() ) {
 			return null;
 		}

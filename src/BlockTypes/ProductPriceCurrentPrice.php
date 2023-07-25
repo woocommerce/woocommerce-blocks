@@ -4,7 +4,7 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
 /**
- * ProducePriceCurrentPrice class.
+ * ProductPriceCurrentPrice class.
  */
 class ProductPriceCurrentPrice extends AbstractBlock {
 	/**
