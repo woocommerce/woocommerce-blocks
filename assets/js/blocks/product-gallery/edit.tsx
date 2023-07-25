@@ -27,8 +27,8 @@ const TEMPLATE: InnerBlockTemplate[] = [
 		'core/group',
 		{ layout: { type: 'flex' } },
 		[
-			[ 'woocommerce/product-gallery-large-image' ],
 			[ 'woocommerce/product-gallery-thumbnails' ],
+			[ 'woocommerce/product-gallery-large-image' ],
 		],
 	],
 ];
@@ -100,11 +100,13 @@ export const Edit = ( {
 						thumbnailsPosition === 'bottom' ||
 						thumbnailsPosition === 'right'
 					) {
+						// @ts-expect-error - Ignoring because `moveBlocksDown` is not yet in the type definitions.
 						dispatch( blockEditorStore ).moveBlocksDown(
 							[ clientIdToMove ],
 							groupBlock.clientId
 						);
 					} else {
+						// @ts-expect-error - Ignoring because `moveBlocksUp` is not yet in the type definitions.
 						dispatch( blockEditorStore ).moveBlocksUp(
 							[ clientIdToMove ],
 							groupBlock.clientId

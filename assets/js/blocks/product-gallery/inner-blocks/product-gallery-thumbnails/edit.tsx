@@ -5,26 +5,20 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { Disabled } from '@wordpress/components';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
-import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
 import { BlockSettings } from './block-settings';
-// import { Attributes } from './types';
+import type { BlockAttributes, Context } from './types';
 
 export const Edit = ( {
 	attributes,
 	setAttributes,
 	context,
-}: BlockEditProps< Attributes > ) => {
-	const blockProps = useBlockProps( {
-		className: classNames(
-			'wc-block-editor-product-gallery-thumbnails',
-			`wc-block-editor-product-gallery-thumbnails-${ context.thumbnailsPosition }`
-		),
-	} );
+}: BlockEditProps< BlockAttributes > & Context ) => {
+	const blockProps = useBlockProps();
 
 	const Placeholder = () => {
 		return (

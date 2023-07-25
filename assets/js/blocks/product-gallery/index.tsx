@@ -17,6 +17,7 @@ import './inner-blocks/product-gallery-thumbnails';
 if ( isExperimentalBuild() ) {
 	registerBlockSingleProductTemplate( {
 		blockName: metadata.name,
+		// @ts-expect-error: `metadata` currently does not have a type definition in WordPress core
 		blockMetadata: metadata,
 		blockSettings: {
 			icon,

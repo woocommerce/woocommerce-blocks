@@ -1,19 +1,18 @@
 {
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
 	"name": "woocommerce/product-gallery",
 	"version": "1.0.0",
 	"title": "Product Gallery",
 	"description": "Showcase your products relevant images and media.",
 	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
 	"supports": {
 		"align": true,
 		"multiple": false
 	},
-	"keywords": [ "WooCommerce" ],
 	"usesContext": [ "postId", "postType", "queryId" ],
 	"textdomain": "woo-gutenberg-products-block",
-
-	"apiVersion": 2,
-	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"providesContext": {
 		"thumbnailsPosition": "thumbnailsPosition",
 		"thumbnailsNumberOfThumbnails": "thumbnailsNumberOfThumbnails",
