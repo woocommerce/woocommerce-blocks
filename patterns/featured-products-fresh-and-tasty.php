@@ -19,8 +19,8 @@
 		</figure>
 		<!-- /wp:image -->
 
-		<!-- wp:columns -->
-		<div class="wp-block-columns">
+		<!-- wp:columns {"isStackedOnMobile":false} -->
+		<div class="wp-block-columns is-not-stacked-on-mobile">
 			<!-- wp:column {"width":"180px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:180px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
@@ -47,8 +47,8 @@
 		</figure>
 		<!-- /wp:image -->
 
-		<!-- wp:columns -->
-		<div class="wp-block-columns">
+		<!-- wp:columns {"isStackedOnMobile":false} -->
+		<div class="wp-block-columns is-not-stacked-on-mobile">
 			<!-- wp:column {"width":"180px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:180px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
@@ -75,8 +75,8 @@
 		</figure>
 		<!-- /wp:image -->
 
-		<!-- wp:columns -->
-		<div class="wp-block-columns">
+		<!-- wp:columns {"isStackedOnMobile":false} -->
+		<div class="wp-block-columns is-not-stacked-on-mobile">
 			<!-- wp:column {"width":"180px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:180px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
@@ -105,8 +105,8 @@
 		</figure>
 		<!-- /wp:image -->
 
-		<!-- wp:columns -->
-		<div class="wp-block-columns">
+		<!-- wp:columns {"isStackedOnMobile":false} -->
+		<div class="wp-block-columns is-not-stacked-on-mobile">
 			<!-- wp:column {"width":"180px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:180px">
 				<!-- wp:paragraph {"fontSize":"small"} -->
