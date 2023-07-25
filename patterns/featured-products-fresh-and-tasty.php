@@ -29,8 +29,8 @@
 			<!-- /wp:column -->
 			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:94px">
-				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><?php esc_html_e( 'from $1.99', 'woo-gutenberg-products-block' ); ?></p>
+				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
+				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $1.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -57,8 +57,8 @@
 			<!-- /wp:column -->
 			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:94px">
-				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><?php esc_html_e( 'from $2.99', 'woo-gutenberg-products-block' ); ?></p>
+				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
+				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $2.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -87,8 +87,8 @@
 
 			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:94px">
-				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><?php esc_html_e( 'from $0.99', 'woo-gutenberg-products-block' ); ?></p>
+				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
+				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $0.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -117,8 +117,8 @@
 
 			<!-- wp:column {"width":"94px","layout":{"type":"default"}} -->
 			<div class="wp-block-column" style="flex-basis:94px">
-				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><?php esc_html_e( 'from $1.49', 'woo-gutenberg-products-block' ); ?></p>
+				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
+				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $1.49', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
