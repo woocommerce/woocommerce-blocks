@@ -13,6 +13,7 @@ import {
 	QUERY_DEFAULT_ATTRIBUTES as productsQueryDefaultAttributes,
 	PRODUCT_QUERY_VARIATION_NAME as productsVariationName,
 } from '@woocommerce/blocks/product-query/constants';
+
 /**
  * Internal dependencies
  */
