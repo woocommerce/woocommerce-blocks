@@ -35,8 +35,8 @@
 
 <!-- wp:column {"style":{"spacing":{"padding":{"top":"0px","right":"0px","bottom":"0px","left":"0px"},"blockGap":"0px"}}} -->
 <div class="wp-block-column" style="padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
-	<!-- wp:cover {"url":"<?php echo esc_url( plugins_url( 'images/pattern-placeholders/dish-meal-food-breakfast-dessert-eat.png', dirname( __FILE__ ) ) ); ?>","id":1,"dimRatio":0,"focalPoint":{"x":0.5,"y":0.5},"contentPosition":"bottom center","style":{"spacing":{"padding":{"bottom":"1.8em","top":"0px","right":"0px","left":"0px"},"blockGap":"0"}},"className":"has-contrast-color has-text-color"} -->
-	<div class="wp-block-cover has-custom-content-position is-position-bottom-center has-contrast-color" style="padding-top:0px;padding-right:0px;padding-bottom:1.8em;padding-left:0px">
+	<!-- wp:cover {"url":"<?php echo esc_url( plugins_url( 'images/pattern-placeholders/dish-meal-food-breakfast-dessert-eat.png', dirname( __FILE__ ) ) ); ?>","id":1,"dimRatio":0,"focalPoint":{"x":0.5,"y":0.5},"contentPosition":"bottom center","isDark":false,"style":{"spacing":{"padding":{"bottom":"1.8em","top":"0px","right":"0px","left":"0px"},"blockGap":"0"}},"className":"has-base-color has-text-color"} -->
+	<div class="wp-block-cover is-light has-custom-content-position is-position-bottom-center has-base-color" style="padding-top:0px;padding-right:0px;padding-bottom:1.8em;padding-left:0px">
 		<span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span>
 		<img class="wp-block-cover__image-background wp-image-1" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased in featured categories banner. 2 out of 3.', 'woo-gutenberg-products-block' ); ?>" src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/dish-meal-food-breakfast-dessert-eat.png', dirname( __FILE__ ) ) ); ?>" style="object-position:50% 50%" data-object-fit="cover" data-object-position="50% 50%"/>
 		<div class="wp-block-cover__inner-container">
