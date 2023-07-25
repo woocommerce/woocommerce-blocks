@@ -24,6 +24,29 @@ type State = {
 	};
 };
 
+const storeNoticeClass = '.wc-block-store-notices';
+
+const createNoticeContainer = () => {
+	const noticeContainer = document.createElement( 'div' );
+	noticeContainer.classList.add( storeNoticeClass.replace( '.', '' ) );
+	return noticeContainer;
+};
+
+const injectNotice = ( domNode: Element, errorMessage: string ) => {
+	const root = createRoot( domNode );
+
+	root.render(
+		<NoticeBanner status="error" onRemove={ () => root.unmount() }>
+			{ errorMessage }
+		</NoticeBanner>
+	);
+
+	domNode?.scrollIntoView( {
+		behavior: 'smooth',
+		inline: 'nearest',
+	} );
+};
+
 const getProductById = ( cartState: Cart, productId: number ) => {
 	return cartState.items.find( ( item ) => item.id === productId );
 };
@@ -143,26 +166,21 @@ store( {
 					context.woocommerce.numberOfItems++;
 					context.woocommerce.isLoading = false;
 				} catch ( error ) {
-					const domNode = document.querySelector(
-						'.wc-block-store-notices'
-					);
+					const storeNoticeBlock =
+						document.querySelector( storeNoticeClass );
+
+					if ( ! storeNoticeBlock ) {
+						document
+							.querySelector( '.entry-content' )
+							?.prepend( createNoticeContainer() );
+					}
+
+					const domNode =
+						storeNoticeBlock ??
+						document.querySelector( storeNoticeClass );
 
 					if ( domNode ) {
-						const root = createRoot( domNode );
-
-						root.render(
-							<NoticeBanner
-								status="error"
-								onRemove={ () => root.unmount() }
-							>
-								{ error.message }
-							</NoticeBanner>
-						);
-
-						domNode?.scrollIntoView( {
-							behavior: 'smooth',
-							inline: 'nearest',
-						} );
+						injectNotice( domNode, error.message );
 					}
 
 					context.woocommerce.isLoading = false;
