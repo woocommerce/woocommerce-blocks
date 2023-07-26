@@ -4,6 +4,12 @@
 	"icon": "info",
 	"title": "Original Price",
 	"description": "Display the original price for the product",
+	"supports": {
+		"color": {
+			"background": true,
+			"text": true
+		}
+	},
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"usesContext": ["woocommerce/withSuperScriptStyle", "woocommerce/isDescendentOfSingleProductTemplate", "postId"],

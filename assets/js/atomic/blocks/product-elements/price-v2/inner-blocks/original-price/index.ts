@@ -17,6 +17,7 @@ const blockConfig = {
 	...metadata,
 	edit,
 	supports: {
+		...metadata.supports,
 		...configuration.supports,
 		context: '',
 	},

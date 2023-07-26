@@ -14,8 +14,11 @@
 			"allowInheriting": false,
 			"default": { "type": "flex" }
 		},
-		"html": false
-
+		"html": false,
+		"color": {
+			"background": true,
+			"text": true
+		}
 	},
 	"apiVersion": 2,
 	"$schema": "https://schemas.wp.org/trunk/block.json"
