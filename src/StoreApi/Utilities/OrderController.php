@@ -3,12 +3,14 @@ namespace Automattic\WooCommerce\StoreApi\Utilities;
 
 use \Exception;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
+use Automattic\WooCommerce\StoreApi\Utilities\OrderAuthorizationTrait;
 
 /**
  * OrderController class.
  * Helper class which creates and syncs orders with the cart.
  */
 class OrderController {
+	use OrderAuthorizationTrait;
 
 	/**
 	 * Create order and set props based on global settings.
@@ -458,6 +460,30 @@ class OrderController {
 					[]
 				);
 			}
+		}
+	}
+
+	/**
+	 * Validate order
+	 *
+	 * @throws RouteException Exception if invalid data is detected.
+	 * @param integer $order_id Order ID.
+	 * @param string  $order_key Order key.
+	 * @param string  $billing_email Billing email.
+	 */
+	public function validate_order( $order_id, $order_key, $billing_email ) {
+		// In this context, pay_for_order capability checks that the current user ID matches the customer ID stored
+		// within the order, or if the order was placed by a guest.
+		// See https://github.com/woocommerce/woocommerce/blob/abcedbefe02f9e89122771100c42ff588da3e8e0/plugins/woocommerce/includes/wc-user-functions.php#L458.
+		if ( ! current_user_can( 'pay_for_order', $order_id ) ) {
+			throw new RouteException( 'woocommerce_rest_invalid_user', __( 'This order belongs to a different customer.', 'woo-gutenberg-products-block' ), 403 );
+		}
+
+		$order          = wc_get_order( $order_id );
+		$is_guest_order = $order->get_customer_id() === 0;
+		if ( $is_guest_order ) {
+			$this->validate_order_key( $order_id, $order_key );
+			$this->validate_billing_email_matches_order( $order_id, $billing_email );
 		}
 	}
 
