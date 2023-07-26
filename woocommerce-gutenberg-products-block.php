@@ -326,15 +326,11 @@ add_action(
 	'woocommerce_before_single_product',
 	function () {
 
-		if ( ! WC()->session ) {
+		if ( ! WC()->session instanceof \WC_Session ) {
 			return;
 		}
 
-		$last_seen_products = WC()->session->get( 'woocommerce_last_seen_products' );
-
-		if ( ! $last_seen_products ) {
-			$last_seen_products = array();
-		}
+		$last_seen_products = WC()->session->get( 'woocommerce_last_seen_products', array() );
 
 		global $post;
 

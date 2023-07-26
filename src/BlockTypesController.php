@@ -182,6 +182,7 @@ final class BlockTypesController {
 			'FeaturedProduct',
 			'FilterWrapper',
 			'HandpickedProducts',
+			'LastSeenProducts',
 			'MiniCart',
 			'StoreNotices',
 			'PriceFilter',
