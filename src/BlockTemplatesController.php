@@ -594,7 +594,7 @@ class BlockTemplatesController {
 
 			$valid_slugs = [ 'single-product' ];
 			if ( 'product' === $post->post_type && $post->post_name ) {
-				$valid_slugs = array_merge( $valid_slugs, [ 'single-product-' . $post->post_name ] );
+				$valid_slugs[] = 'single-product-' . $post->post_name;
 			}
 			$templates = get_block_templates( array( 'slug__in' => $valid_slugs ) );
 
