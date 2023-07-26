@@ -5,13 +5,15 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { store } from '@woocommerce/interactivity';
 import { dispatch } from '@wordpress/data';
 import { Cart } from '@woocommerce/type-defs/cart';
-
+import { createRoot } from '@wordpress/element';
+import NoticeBanner from '@woocommerce/base-components/notice-banner';
 type Context = {
 	woocommerce: {
 		isLoading: boolean;
 		addToCartText: string;
 		productId: number;
 		numberOfItems: number;
+		productPermalink: string;
 	};
 };
 
@@ -20,6 +22,29 @@ type State = {
 		cart: Cart;
 		inTheCartText: string;
 	};
+};
+
+const storeNoticeClass = '.wc-block-store-notices';
+
+const createNoticeContainer = () => {
+	const noticeContainer = document.createElement( 'div' );
+	noticeContainer.classList.add( storeNoticeClass.replace( '.', '' ) );
+	return noticeContainer;
+};
+
+const injectNotice = ( domNode: Element, errorMessage: string ) => {
+	const root = createRoot( domNode );
+
+	root.render(
+		<NoticeBanner status="error" onRemove={ () => root.unmount() }>
+			{ errorMessage }
+		</NoticeBanner>
+	);
+
+	domNode?.scrollIntoView( {
+		behavior: 'smooth',
+		inline: 'nearest',
+	} );
 };
 
 const getProductById = ( cartState: Cart, productId: number ) => {
@@ -141,6 +166,25 @@ store( {
 					context.woocommerce.numberOfItems++;
 					context.woocommerce.isLoading = false;
 				} catch ( error ) {
+					const storeNoticeBlock =
+						document.querySelector( storeNoticeClass );
+
+					if ( ! storeNoticeBlock ) {
+						document
+							.querySelector( '.entry-content' )
+							?.prepend( createNoticeContainer() );
+					}
+
+					const domNode =
+						storeNoticeBlock ??
+						document.querySelector( storeNoticeClass );
+
+					if ( domNode ) {
+						injectNotice( domNode, error.message );
+					}
+
+					context.woocommerce.isLoading = false;
+
 					// we don't care about errors blocking execution, but will console.error for troubleshooting.
 					// eslint-disable-next-line no-console
 					console.error( error );
