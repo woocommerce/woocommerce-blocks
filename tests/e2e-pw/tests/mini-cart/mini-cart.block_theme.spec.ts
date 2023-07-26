@@ -65,7 +65,9 @@ test.describe( `${ blockData.name } Block`, () => {
 			await closeButton?.click();
 
 			// Wait for the drawer to fully close.
-			await page.waitForTimeout( 500 );
+			await page.waitForSelector( blockData.selectors.frontend.drawer, {
+				state: 'detached',
+			} );
 
 			expect(
 				await page
@@ -93,7 +95,9 @@ test.describe( `${ blockData.name } Block`, () => {
 			await page.mouse.click( 50, 200 );
 
 			// Wait for the drawer to fully close.
-			await page.waitForTimeout( 500 );
+			await page.waitForSelector( blockData.selectors.frontend.drawer, {
+				state: 'detached',
+			} );
 
 			expect(
 				await page
