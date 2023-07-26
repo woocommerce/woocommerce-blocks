@@ -4,9 +4,9 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
 /**
- * ProductPriceDiscountAmount class.
+ * ProductPriceDiscount class.
  */
-class ProductPriceDiscountAmount extends AbstractBlock {
+class ProductPriceDiscount extends AbstractBlock {
 	/**
 	 * Block name.
 	 *
@@ -86,6 +86,6 @@ class ProductPriceDiscountAmount extends AbstractBlock {
 			esc_attr( $classname ),
 			esc_attr( $classes_and_styles['styles'] ),
 			$percentage_discount . '%'
-		);
+		) . $content;
 	}
 }

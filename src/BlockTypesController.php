@@ -215,7 +215,7 @@ final class BlockTypesController {
 			'ProductDetails',
 			'SingleProduct',
 			'StockFilter',
-			'ProductPriceDiscountAmount',
+			'ProductPriceDiscount',
 			'ProductPriceCurrentPrice',
 			'ProductPriceOriginalPrice',
 		];
