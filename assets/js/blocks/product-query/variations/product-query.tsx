@@ -75,14 +75,12 @@ if ( isWpVersion( '6.1', '>=' ) ) {
 		}
 
 		if ( isSiteEditorPage( store ) ) {
-			const inherit =
-				ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId );
 			const queryAttributes = {
 				...QUERY_DEFAULT_ATTRIBUTES,
 				query: {
 					...QUERY_DEFAULT_ATTRIBUTES.query,
-					inherit,
-					__woocommerceInherit: inherit,
+					inherit:
+						ARCHIVE_PRODUCT_TEMPLATES.includes( currentTemplateId ),
 				},
 			};
 

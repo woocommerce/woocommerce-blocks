@@ -139,7 +139,6 @@ export const WooInheritToggleControl = (
 				setQueryAttribute( props, {
 					...props.defaultWooQueryParams,
 					inherit,
-					__woocommerceInherit: inherit, // Also use this attribute to ensure the editor query is correct.
 					// Restore the query object value before inherit was enabled.
 					...( inherit === false && {
 						...queryObjectBeforeInheritEnabled,
