@@ -19,44 +19,80 @@ type Context = {
 
 type State = {
 	woocommerce: {
-		cart: Cart;
+		cart: Cart | undefined;
 		inTheCartText: string;
 	};
 };
 
-const getProductById = ( cartState: Cart, productId: number ) => {
-	return cartState.items.find( ( item ) => item.id === productId );
+const getProductById = ( cartState: Cart | undefined, productId: number ) => {
+	return cartState?.items.find( ( item ) => item.id === productId );
 };
+
+let isCartStateFirstLoad = true;
 
 const productButtonSelectors = {
 	woocommerce: {
 		addToCartText: ( {
 			context,
 			state,
+			ref,
 		}: {
 			context: Context;
 			state: State;
+			ref: HTMLElement;
 		} ) => {
-			if ( context.woocommerce.numberOfItems === 0 ) {
-				return context.woocommerce.addToCartText;
-			}
+			const cartState = state.woocommerce.cart;
 
-			if ( ! state.woocommerce.cart ) {
+			// Cart state isn't loaded yet.
+			if ( cartState === undefined ) {
+				if ( context.woocommerce.numberOfItems === 0 ) {
+					return context.woocommerce.addToCartText;
+				}
+
 				return state.woocommerce.inTheCartText.replace(
 					'###',
 					context.woocommerce.numberOfItems.toString()
 				);
 			}
 
-			const cartState = state.woocommerce.cart;
 			const product = getProductById(
 				cartState,
 				context.woocommerce.productId
 			);
 
-			if ( ! product ) {
+			if ( ! product || product.quantity === 0 ) {
 				return context.woocommerce.addToCartText;
 			}
+
+			if ( product.quantity === context.woocommerce.numberOfItems ) {
+				return state.woocommerce.inTheCartText.replace(
+					'###',
+					product?.quantity?.toString()
+				);
+			}
+
+			if ( isCartStateFirstLoad ) {
+				ref.classList.add( 'wc-block-scrollToUp' );
+				ref.addEventListener( 'animationend', ( animate ) => {
+					if ( animate.animationName === 'scrollToUp' ) {
+						ref.textContent =
+							state.woocommerce.inTheCartText.replace(
+								'###',
+								product?.quantity?.toString()
+							);
+						ref.classList.remove( 'wc-block-scrollToUp' );
+						ref.classList.add( 'wc-block-scrollFromDown' );
+					}
+
+					if ( animate.animationName === 'scrollFromDown' ) {
+						ref.classList.remove( 'wc-block-scrollFromDown' );
+						isCartStateFirstLoad = false;
+					}
+				} );
+				return ref.textContent;
+			}
+
+			ref.textContent = '';
 
 			return state.woocommerce.inTheCartText.replace(
 				'###',
