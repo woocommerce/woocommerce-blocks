@@ -330,7 +330,7 @@ add_action(
 			return;
 		}
 
-		$last_seen_products = WC()->session->get( 'wwoocommerce_last_seen_products' ) ?? array();
+		$last_seen_products = WC()->session->get( 'woocommerce_last_seen_products', array() );
 
 		global $post;
 
