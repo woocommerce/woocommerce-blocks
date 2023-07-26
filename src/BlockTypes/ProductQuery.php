@@ -91,6 +91,14 @@ class ProductQuery extends AbstractBlock {
 	protected function enqueue_data( array $attributes = [] ) {
 		parent::enqueue_data( $attributes );
 
+		if ( version_compare( $GLOBALS['wp_version'], '6.2.2', '>' ) ) {
+			$this->asset_data_registry->add(
+				'post_template_has_support_for_grid_view',
+				true
+			);
+			return;
+		}
+
 		$gutenberg_version = '';
 
 		if ( is_plugin_active( 'gutenberg/gutenberg.php' ) ) {
