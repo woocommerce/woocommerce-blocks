@@ -326,7 +326,7 @@ add_action(
 	'woocommerce_before_single_product',
 	function () {
 
-		if ( ! WC()->session ) {
+		if ( ! WC()->session instanceof WC_Session ) {
 			return;
 		}
 
