@@ -10,6 +10,7 @@ const blockData: BlockData = {
 	selectors: {
 		frontend: {
 			drawer: '.wc-block-mini-cart__drawer',
+			drawerCloseButton: 'button[aria-label="Close"]',
 		},
 		editor: {},
 	},
@@ -53,12 +54,15 @@ test.describe( `${ blockData.name } Block`, () => {
 			).toHaveText( 'Your cart is currently empty!' );
 
 			// Wait for the drawer to fully open.
-			await page.waitForTimeout( 500 );
+			await page.waitForSelector(
+				blockData.selectors.frontend.drawerCloseButton
+			);
 
-			const closeButton = await page.getByRole( 'button', {
-				name: 'Close',
-			} );
-			await closeButton.click();
+			const closeButton = await page.$(
+				blockData.selectors.frontend.drawerCloseButton
+			);
+
+			await closeButton?.click();
 
 			// Wait for the drawer to fully close.
 			await page.waitForTimeout( 500 );
@@ -82,7 +86,9 @@ test.describe( `${ blockData.name } Block`, () => {
 			).toHaveText( 'Your cart is currently empty!' );
 
 			// Wait for the drawer to fully open.
-			await page.waitForTimeout( 500 );
+			await page.waitForSelector(
+				blockData.selectors.frontend.drawerCloseButton
+			);
 
 			await page.mouse.click( 50, 200 );
 
