@@ -1,0 +1,17 @@
+{
+	"name": "woocommerce/last-seen-products",
+	"version": "1.0.0",
+	"title": "Last Seen Products",
+	"icon": "product",
+	"description": "Display last seen products.",
+	"category": "woocommerce",
+	"supports": {
+		"align": true,
+		"reusable": false
+	},
+	"keywords": [ "WooCommerce" ],
+	"usesContext": [ "postId", "postType", "queryId" ],
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}
