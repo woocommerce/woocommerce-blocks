@@ -136,8 +136,9 @@ class ProductQuery extends AbstractBlock {
 				$is_previous_or_next = $is_previous || $is_next;
 
 				$navigation_link_payload = array(
-					'prefetch' => $is_previous_or_next,
-					'scroll'   => true,
+					'prefetch'         => $is_previous_or_next,
+					'scroll'           => true,
+					'scrollToSelector' => '[data-wc-navigation-id="woo-products-' . $this->parsed_block['attrs']['queryId'] . '"]',
 				);
 
 				$p->set_attribute(

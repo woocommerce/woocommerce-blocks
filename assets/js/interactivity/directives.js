@@ -173,15 +173,29 @@ export default () => {
 					// Fetch the page (or return it from cache).
 					await navigate( href );
 
+					// Scroll to the element if it's defined.
+					let topPosition = 0;
+					if ( link?.scrollToSelector ) {
+						const element = document.querySelector(
+							link?.scrollToSelector
+						);
+
+						if ( element ) {
+							topPosition =
+								element.getBoundingClientRect().top +
+								window.scrollY;
+						}
+					}
+
 					// Update the scroll, depending on the option. True by default.
 					if ( link?.scroll === 'smooth' ) {
 						window.scrollTo( {
-							top: 0,
+							top: topPosition,
 							left: 0,
 							behavior: 'smooth',
 						} );
 					} else if ( link?.scroll !== false ) {
-						window.scrollTo( 0, 0 );
+						window.scrollTo( 0, topPosition );
 					}
 				};
 			}
