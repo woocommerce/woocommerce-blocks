@@ -18,13 +18,14 @@
 	<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:33.33%">
 		<!-- wp:social-links {"iconColor":"contrast","iconColorValue":"#000000","openInNewTab":true,"style":{"spacing":{"blockGap":{"top":"0"}}},"className":"is-style-logos-only","layout":{"type":"flex","justifyContent":"right","orientation":"horizontal"}} -->
 		<ul class="wp-block-social-links has-icon-color is-style-logos-only">
-			<!-- wp:social-link {"url":"https://twitter.com/","service":"twitter"} /-->
+			<!-- wp:social-link {"url":"<?php echo esc_url( 'https://twitter.com/' ); ?>","service":"twitter"} /-->
 
-			<!-- wp:social-link {"url":"https://www.instagram.com/","service":"instagram"} /-->
+			<!-- wp:social-link {"url":"<?php echo esc_url( 'https://www.instagram.com/' ); ?>","service":"instagram"} /-->
 
-			<!-- wp:social-link {"url":"https://www.facebook.com/","service":"facebook"} /-->
+			<!-- wp:social-link {"url":"<?php echo esc_url( 'https://www.facebook.com/' ); ?>","service":"facebook"} /-->
 
-			<!-- wp:social-link {"url":"https://www.twitch.tv/","service":"twitch"} /--></ul>
+			<!-- wp:social-link {"url":"<?php echo esc_url( 'https://www.twitch.tv/' ); ?>","service":"twitch"} /-->
+		</ul>
 		<!-- /wp:social-links -->
 	</div>
 	<!-- /wp:column -->
