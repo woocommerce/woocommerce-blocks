@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use WP_Query;
+use Automattic\WooCommerce\Blocks\Utils\Utils;
 
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query
@@ -88,7 +89,7 @@ class ProductQuery extends AbstractBlock {
 	 * - https://github.com/woocommerce/woocommerce-blocks/pull/10360
 	 */
 	private function check_if_post_template_has_support_for_grid_view() {
-		if ( version_compare( $GLOBALS['wp_version'], '6.2.2', '>' ) ) {
+		if ( Utils::wp_version_compare( '6.3', '>=' ) ) {
 			return true;
 		}
 
