@@ -257,6 +257,7 @@ class ProductButton extends AbstractBlock {
 				>
 				<span {span_button_directives}> {add_to_cart_text} </span>
 				</{html_element}>
+				{view_cart_html}
 			</div>',
 				array(
 					'{classes}'                => esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
@@ -270,10 +271,32 @@ class ProductButton extends AbstractBlock {
 					'{div_directives}'         => $is_ajax_button ? $div_directives : '',
 					'{button_directives}'      => $is_ajax_button ? $button_directives : '',
 					'{span_button_directives}' => $is_ajax_button ? $span_button_directives : '',
+					'{view_cart_html}'         => $is_ajax_button ? $this->get_view_cart_html() : '',
 				)
 			),
 			$product,
 			$args
+		);
+	}
+
+	/**
+	 * Get the view cart link html.
+	 *
+	 * @return string The view cart html.
+	 */
+	private function get_view_cart_html() {
+		return sprintf(
+			'<span hidden data-wc-bind--hidden="!selectors.woocommerce.isAdded">
+				<a
+					href="%1$s"
+					class="added_to_cart wc_forward"
+					title="%2$s"
+				>
+					%2$s
+				</a>
+			</span>',
+			wc_get_cart_url(),
+			__( 'View cart', 'woo-gutenberg-products-block' )
 		);
 	}
 }

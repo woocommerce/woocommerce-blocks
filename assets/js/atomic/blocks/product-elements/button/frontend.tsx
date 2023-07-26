@@ -14,6 +14,7 @@ type Context = {
 		productId: number;
 		numberOfItems: number;
 		productPermalink: string;
+		displayViewCart: boolean;
 	};
 };
 
@@ -27,7 +28,6 @@ type State = {
 const getProductById = ( cartState: Cart | undefined, productId: number ) => {
 	return cartState?.items.find( ( item ) => item.id === productId );
 };
-
 let isCartStateFirstLoad = true;
 
 const productButtonSelectors = {
@@ -106,7 +106,9 @@ const productButtonSelectors = {
 			context: Context;
 			state: State;
 		} ) => {
-			if ( ! state.woocommerce?.cart ) {
+			const cartState = state.woocommerce.cart;
+
+			if ( cartState === undefined ) {
 				return context.woocommerce.numberOfItems > 0;
 			}
 			const product = getProductById(
@@ -127,10 +129,12 @@ const productButtonSelectors = {
 			selectors: any;
 			state: State;
 		} ) => {
-			return selectors.woocommerce.isThereMoreThanOneItem( {
-				context,
-				state,
-			} );
+			return (
+				selectors.woocommerce.isThereMoreThanOneItem( {
+					context,
+					state,
+				} ) && context.woocommerce.displayViewCart
+			);
 		},
 	},
 };
@@ -179,6 +183,7 @@ store(
 						);
 						context.woocommerce.numberOfItems++;
 						context.woocommerce.isLoading = false;
+						context.woocommerce.displayViewCart = true;
 					} catch ( error ) {
 						const domNode = document.querySelector(
 							'.wc-block-store-notices'
