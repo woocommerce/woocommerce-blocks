@@ -317,3 +317,32 @@ function woocommerce_blocks_interactivity_setup() {
 	}
 }
 add_action( 'plugins_loaded', 'woocommerce_blocks_interactivity_setup' );
+
+/**
+ * Saves last viewed products in session.
+ * Used in Last Seen Products Block.
+ */
+add_action(
+	'woocommerce_before_single_product',
+	function () {
+
+		if ( ! WC()->session ) {
+			return;
+		}
+
+		$last_seen_products = WC()->session->get( 'woocommerce_last_seen_products' );
+
+		if ( ! $last_seen_products ) {
+			$last_seen_products = array();
+		}
+
+		global $post;
+
+		array_unshift( $last_seen_products, $post->ID );
+
+		// Remove duplicates and keep the last 10 seen products.
+		$last_seen_products = array_slice( array_values( array_unique( $last_seen_products ) ), 0, 10 );
+
+		WC()->session->set( 'woocommerce_last_seen_products', $last_seen_products );
+	}
+);
