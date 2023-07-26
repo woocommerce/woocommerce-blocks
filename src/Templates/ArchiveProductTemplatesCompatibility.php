@@ -352,6 +352,30 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 	}
 
 	/**
+	 * Check if block is within the product-query namespace
+	 *
+	 * @param array $block Parsed block data.
+	 */
+	private function is_block_within_namespace( $block ) {
+		$attributes = $block['attrs'];
+
+		return isset( $attributes['__woocommerceNamespace'] ) && 'woocommerce/product-query/product-template' === $attributes['__woocommerceNamespace'];
+	}
+
+	/**
+	 * Check if block has isInherited attribute asigned
+	 *
+	 * @param array $block Parsed block data.
+	 */
+	private function is_block_inherited( $block ) {
+		$attributes = $block['attrs'];
+
+		$outcome = isset( $attributes['isInherited'] ) && 1 === $attributes['isInherited'];
+
+		return $outcome;
+	}
+
+	/**
 	 * The core/post-template has two different block names:
 	 * - core/post-template when the wrapper is rendered.
 	 * - core/null when the loop item is rendered.
@@ -360,9 +384,8 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 	 */
 	private function is_null_post_template( $block ) {
 		$block_name = $block['blockName'];
-		$attributes = $block['attrs'];
 
-		return 'core/null' === $block_name && isset( $attributes['__woocommerceNamespace'] ) && 'woocommerce/product-query/product-template' === $attributes['__woocommerceNamespace'];
+		return 'core/null' === $block_name && ( $this->is_block_inherited( $block ) || $this->is_block_within_namespace( $block ) );
 	}
 
 	/**
