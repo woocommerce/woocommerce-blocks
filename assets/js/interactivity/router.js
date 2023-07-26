@@ -46,7 +46,7 @@ const regionsToVdom = ( dom ) => {
 	const regions = {};
 	const attrName = `data-${ directivePrefix }-navigation-id`;
 	dom.querySelectorAll( `[${ attrName }]` ).forEach( ( region ) => {
-		const id = region.attributes[ attrName ];
+		const id = region.getAttribute( attrName );
 		regions[ id ] = toVdom( region );
 	} );
 
@@ -66,7 +66,7 @@ export const prefetch = ( url ) => {
 const renderRegions = ( page ) => {
 	const attrName = `data-${ directivePrefix }-navigation-id`;
 	document.querySelectorAll( `[${ attrName }]` ).forEach( ( region ) => {
-		const id = region.attributes[ attrName ];
+		const id = region.getAttribute( attrName );
 		const fragment = getRegionRootFragment( region );
 		render( page.regions[ id ], fragment );
 	} );
