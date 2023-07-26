@@ -8,7 +8,7 @@
 	"usesContext": ["woocommerce/isDescendentOfSingleProductTemplate"],
 	"keywords": [ "WooCommerce" ],
 	"textdomain": "woo-gutenberg-products-block",
-	"ancestor": "woocommerce/discount",
+	"ancestor": [ "woocommerce/discount" ],
 	"apiVersion": 2,
 	"$schema": "https://schemas.wp.org/trunk/block.json"
 }

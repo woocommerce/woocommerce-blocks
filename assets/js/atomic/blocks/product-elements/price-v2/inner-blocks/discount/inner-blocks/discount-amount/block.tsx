@@ -10,7 +10,7 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 /**
  * Internal dependencies
  */
-import type { PriceProps } from '../../types';
+import { PriceProps } from '../../../../types';
 
 type Props = PriceProps & HTMLAttributes< HTMLDivElement >;
 
