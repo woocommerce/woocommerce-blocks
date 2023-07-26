@@ -77,7 +77,19 @@
 		<!-- /wp:group -->
 
 		<!-- wp:paragraph -->
-		<p><em><?php esc_html_e( 'Built with', 'woo-gutenberg-products-block' ); ?> <a href="https://woocommerce.com/">WooCommerce</a> </em></p>
+		<p><em>
+			<?php
+			echo wp_kses(
+				sprintf(
+					/* translators: %1$s is a link to WooCommerce.com, %2$s is the name of the plugin. */
+					__( 'Built with <a href="%1$s" target="_blank">%2$s</a>', 'woo-gutenberg-products-block' ),
+					'https://woocommerce.com/',
+					'WooCommerce'
+				),
+				array( 'a' => array_fill_keys( array( 'href', 'target' ), true ) )
+			);
+			?>
+		</em></p>
 		<!-- /wp:paragraph -->
 	</div>
 	<!-- /wp:group -->
