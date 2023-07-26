@@ -106,7 +106,7 @@ const ProductTemplateEdit = ( {
 	const postType = 'product';
 	const loopShopPerPage = getSettingWithCoercion(
 		'loop_shop_per_page',
-		9,
+		12,
 		isNumber
 	);
 	const { products, blocks } = useSelect(

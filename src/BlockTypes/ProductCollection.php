@@ -101,7 +101,6 @@ class ProductCollection extends AbstractBlock {
 		$this->asset_data_registry->add( 'loop_shop_per_page', apply_filters( 'loop_shop_per_page', wc_get_default_products_per_row() * wc_get_default_product_rows_per_page() ), true );
 	}
 
-
 	/**
 	 * Update the query for the product query block in Editor.
 	 *
