@@ -2,7 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\Assets;
 
 use Automattic\WooCommerce\Blocks\Package;
-use  Automattic\WooCommerce\Blocks\Domain\Services\Hydration;
+use Automattic\WooCommerce\Blocks\Domain\Services\Hydration;
 use Exception;
 use InvalidArgumentException;
 
