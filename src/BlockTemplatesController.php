@@ -101,6 +101,34 @@ class BlockTemplatesController {
 				10,
 				2
 			);
+
+			// Prevents shortcodes in templates having their HTML content broken by wpautop.
+			// @see https://core.trac.wordpress.org/ticket/58366 for more info.
+			add_filter(
+				'block_type_metadata_settings',
+				function( $settings, $metadata ) {
+					if (
+						isset( $metadata['name'], $settings['render_callback'] ) &&
+						'core/shortcode' === $metadata['name']
+					) {
+						$settings['original_render_callback'] = $settings['render_callback'];
+						$settings['render_callback']          = function( $attributes, $content ) use ( $settings ) {
+							// The shortcode has already been rendered, so look for the cart/checkout HTML.
+							if ( strstr( $content, 'woocommerce-cart-form' ) || strstr( $content, 'woocommerce-checkout-form' ) ) {
+								// Return early before wpautop runs again.
+								return $content;
+							}
+
+							$render_callback = $settings['original_render_callback'];
+
+							return $render_callback( $attributes, $content );
+						};
+					}
+					return $settings;
+				},
+				10,
+				2
+			);
 		}
 	}
 
