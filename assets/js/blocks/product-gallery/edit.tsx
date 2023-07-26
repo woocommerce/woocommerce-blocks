@@ -7,6 +7,11 @@ import {
 	InnerBlocks,
 } from '@wordpress/block-editor';
 
+/**
+ * Internal dependencies
+ */
+import './editor.scss';
+
 export const Edit = (): JSX.Element => {
 	const blockProps = useBlockProps();
 
