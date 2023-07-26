@@ -13,6 +13,8 @@ import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/produc
 import { VARIATION_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';
 import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
 
+export const PRODUCT_QUERY_VARIATION_NAME = 'woocommerce/product-query';
+
 export const EDIT_ATTRIBUTES_URL =
 	'/wp-admin/edit.php?post_type=product&page=product_attributes';
 
