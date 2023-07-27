@@ -114,10 +114,11 @@ class ProductButton extends AbstractBlock {
 
 			$context = array(
 				'woocommerce' => array(
-					'isLoading'     => false,
-					'numberOfItems' => strval( $number_of_items_in_cart ),
-					'productId'     => $product->get_id(),
-					'addToCartText' => null !== $product->add_to_cart_text() ? $product->add_to_cart_text() : __( 'Add to cart', 'woo-gutenberg-products-block' ),
+					'isLoading'            => false,
+					'numberOfItems'        => $number_of_items_in_cart,
+					'productId'            => $product->get_id(),
+					'addToCartText'        => null !== $product->add_to_cart_text() ? $product->add_to_cart_text() : __( 'Add to cart', 'woo-gutenberg-products-block' ),
+					'initialNumberOfItems' => $number_of_items_in_cart,
 				),
 			);
 
@@ -151,43 +152,55 @@ class ProductButton extends AbstractBlock {
 				data-wc-class--added="selectors.woocommerce.isThereMoreThanOneItem"
 			';
 
-			$span_button_directives = 'data-wc-text="selectors.woocommerce.addToCartText"';
+			$span_button_directives = 'data-wc-text="selectors.woocommerce.addToCartText" data-wc-class--wc-block-slide-out="selectors.woocommerce.shouldSlideOutAnimationStart" " data-wc-class--wc-block-slide-in="selectors.woocommerce.shouldSlideInAnimationStart" data-wc-on--animationend="actions.woocommerce.handleAnimationEnd"';
 
-			if ( WC()->cart->is_empty() ) {
+			if ( isset( WC()->cart ) && WC()->cart->is_empty() ) {
 				$context['woocommerce']['numberOfItems'] = 0;
 				$div_directives                          = 'data-wc-context=\'' . wp_json_encode( $context, JSON_NUMERIC_CHECK ) . '\'';
-				return $this->get_button_template(
-					$text_align_styles_and_classes,
-					$classname,
-					$custom_width_classes,
-					$html_element,
-					$product,
-					$is_added_class,
-					$styles_and_classes,
-					$initial_product_text,
-					$is_ajax_button,
-					$div_directives,
-					$button_directives,
-					$span_button_directives,
-					$args
-				);
+			} else {
+				$this->prevent_cache();
 			}
 
-			$this->prevent_cache();
-
-			return $this->get_button_template(
-				$text_align_styles_and_classes,
-				$classname,
-				$custom_width_classes,
-				$html_element,
+			/**
+			 * Filters the add to cart button class.
+			 *
+			 * @since 8.7.0
+			 *
+			 * @param string $class The class.
+			 */
+			return apply_filters(
+				'woocommerce_loop_add_to_cart_link',
+				strtr(
+					'<div class="wp-block-button wc-block-components-product-button {classes} {custom_classes}"
+						{div_directives}
+					>
+					<{html_element}
+						href="{add_to_cart_url}"
+						class="{button_classes}"
+						style="{button_styles}"
+						{attributes}
+						{button_directives}
+					>
+					<span {span_button_directives}> {add_to_cart_text} </span>
+					</{html_element}>
+					{view_cart_html}
+				</div>',
+					array(
+						'{classes}'                => esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
+						'{custom_classes}'         => esc_attr( $classname . ' ' . $custom_width_classes ),
+						'{html_element}'           => $html_element,
+						'{add_to_cart_url}'        => esc_url( $product->add_to_cart_url() ),
+						'{button_classes}'         => isset( $args['class'] ) ? esc_attr( $args['class'] . ' ' . $is_added_class ) : $is_added_class,
+						'{button_styles}'          => esc_attr( $styles_and_classes['styles'] ),
+						'{attributes}'             => isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
+						'{add_to_cart_text}'       => esc_html( $initial_product_text ),
+						'{div_directives}'         => $is_ajax_button ? $div_directives : '',
+						'{button_directives}'      => $is_ajax_button ? $button_directives : '',
+						'{span_button_directives}' => $is_ajax_button ? $span_button_directives : '',
+						'{view_cart_html}'         => $is_ajax_button ? $this->get_view_cart_html() : '',
+					)
+				),
 				$product,
-				$is_added_class,
-				$styles_and_classes,
-				$initial_product_text,
-				$is_ajax_button,
-				$div_directives,
-				$button_directives,
-				$span_button_directives,
 				$args
 			);
 		}
@@ -214,69 +227,6 @@ class ProductButton extends AbstractBlock {
 	private function prevent_cache() {
 		\WC_Cache_Helper::set_nocache_constants();
 		nocache_headers();
-	}
-
-	/**
-	 * Return the button template.
-	 *
-	 * @param array   $text_align_styles_and_classes The Styles and classes container.
-	 * @param string  $classname The class name.
-	 * @param string  $custom_width_classes The custom width classes.
-	 * @param string  $html_element The html element.
-	 * @param array   $product The product.
-	 * @param string  $is_added_class The added class.
-	 * @param array   $styles_and_classes The styles and classes.
-	 * @param string  $initial_product_text The initial product text.
-	 * @param boolean $is_ajax_button The ajax button.
-	 * @param string  $div_directives The div directives.
-	 * @param string  $button_directives The button directives.
-	 * @param string  $span_button_directives The span button directives.
-	 * @param string  $args The arguments.
-	 * @return string
-	 */
-	private function get_button_template( $text_align_styles_and_classes, $classname, $custom_width_classes, $html_element, $product, $is_added_class, $styles_and_classes, $initial_product_text, $is_ajax_button, $div_directives, $button_directives, $span_button_directives, $args ) {
-		/**
-		 * Filters the add to cart button class.
-		 *
-		 * @since 8.7.0
-		 *
-		 * @param string $class The class.
-		 */
-		return apply_filters(
-			'woocommerce_loop_add_to_cart_link',
-			strtr(
-				'<div class="wp-block-button wc-block-components-product-button {classes} {custom_classes}"
-					{div_directives}
-				>
-				<{html_element}
-					href="{add_to_cart_url}"
-					class="{button_classes}"
-					style="{button_styles}"
-					{attributes}
-					{button_directives}
-				>
-				<span {span_button_directives}> {add_to_cart_text} </span>
-				</{html_element}>
-				{view_cart_html}
-			</div>',
-				array(
-					'{classes}'                => esc_attr( $text_align_styles_and_classes['class'] ?? '' ),
-					'{custom_classes}'         => esc_attr( $classname . ' ' . $custom_width_classes ),
-					'{html_element}'           => $html_element,
-					'{add_to_cart_url}'        => esc_url( $product->add_to_cart_url() ),
-					'{button_classes}'         => isset( $args['class'] ) ? esc_attr( $args['class'] . ' ' . $is_added_class ) : $is_added_class,
-					'{button_styles}'          => esc_attr( $styles_and_classes['styles'] ),
-					'{attributes}'             => isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
-					'{add_to_cart_text}'       => esc_html( $initial_product_text ),
-					'{div_directives}'         => $is_ajax_button ? $div_directives : '',
-					'{button_directives}'      => $is_ajax_button ? $button_directives : '',
-					'{span_button_directives}' => $is_ajax_button ? $span_button_directives : '',
-					'{view_cart_html}'         => $is_ajax_button ? $this->get_view_cart_html() : '',
-				)
-			),
-			$product,
-			$args
-		);
 	}
 
 	/**

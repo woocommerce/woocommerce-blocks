@@ -35,7 +35,7 @@
 		display: none;
 	}
 
-	@keyframes scrollToUp {
+	@keyframes slideOut {
 		from {
 			transform: translateY(0);
 		}
@@ -44,7 +44,7 @@
 		}
 	}
 
-	@keyframes scrollFromDown {
+	@keyframes slideIn {
 		from {
 			transform: translateY(90%);
 			opacity: 0;
@@ -62,14 +62,15 @@
 		white-space: normal;
 		word-break: break-word;
 		width: 150px;
+		overflow: hidden;
 
 		span {
 
-			&.wc-block-scrollToUp {
-				animation: scrollToUp 0.1s linear 1 normal;
+			&.wc-block-slide-out {
+				animation: slideOut 0.1s linear 1 normal;
 			}
-			&.wc-block-scrollFromDown {
-				animation: scrollFromDown 0.1s linear 1 normal;
+			&.wc-block-slide-in {
+				animation: slideIn 0.1s linear 1 normal;
 			}
 		}
 	}

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * External dependencies
  */
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { store } from '@woocommerce/interactivity';
+import { store as interactivityStore } from '@woocommerce/interactivity';
 import { dispatch, select, subscribe } from '@wordpress/data';
 import { Cart } from '@woocommerce/type-defs/cart';
 import { createRoot } from '@wordpress/element';
@@ -15,8 +16,19 @@ type Context = {
 		numberOfItems: number;
 		productPermalink: string;
 		displayViewCart: boolean;
+		initialNumberOfItems: number;
+		firstAnimationFinished: boolean | undefined;
+		shouldStartAnimation: boolean | undefined;
+		animationStatus: AnimationStatus;
 	};
 };
+
+enum AnimationStatus {
+	NOT_STARTED = 'NOT_STARTED',
+	STARTED = 'STARTED',
+	IN_PROGRESS = 'IN_PROGRESS',
+	FINISHED = 'FINISHED',
+}
 
 type State = {
 	woocommerce: {
@@ -28,76 +40,62 @@ type State = {
 const getProductById = ( cartState: Cart | undefined, productId: number ) => {
 	return cartState?.items.find( ( item ) => item.id === productId );
 };
-let isCartStateFirstLoad = true;
+
+const getTextButton = ( {
+	addToCartText,
+	inTheCartText,
+	numberOfItems,
+}: {
+	addToCartText: string;
+	inTheCartText: string;
+	numberOfItems: number;
+} ) => {
+	if ( numberOfItems === 0 ) {
+		return addToCartText;
+	}
+
+	return inTheCartText.replace( '###', numberOfItems.toString() );
+};
 
 const productButtonSelectors = {
 	woocommerce: {
-		addToCartText: ( {
-			context,
-			state,
-			ref,
-		}: {
+		addToCartText: ( store: {
 			context: Context;
 			state: State;
 			ref: HTMLElement;
 		} ) => {
-			const cartState = state.woocommerce.cart;
+			const { context, state, selectors } = store;
 
-			// Cart state isn't loaded yet.
-			if ( cartState === undefined ) {
-				if ( context.woocommerce.numberOfItems === 0 ) {
-					return context.woocommerce.addToCartText;
+			if ( ! selectors.woocommerce.hasCartLoaded( store ) ) {
+				return getTextButton( {
+					addToCartText: context.woocommerce.addToCartText,
+					inTheCartText: state.woocommerce.inTheCartText,
+					numberOfItems: context.woocommerce.initialNumberOfItems,
+				} );
+			}
+
+			if ( selectors.woocommerce.shouldAnimationStart( store ) ) {
+				if ( context.woocommerce.firstAnimationFinished ) {
+					return getTextButton( {
+						addToCartText: context.woocommerce.addToCartText,
+						inTheCartText: state.woocommerce.inTheCartText,
+						numberOfItems:
+							selectors.woocommerce.numberOfItems( store ),
+					} );
 				}
 
-				return state.woocommerce.inTheCartText.replace(
-					'###',
-					context.woocommerce.numberOfItems.toString()
-				);
-			}
-
-			const product = getProductById(
-				cartState,
-				context.woocommerce.productId
-			);
-
-			if ( ! product || product.quantity === 0 ) {
-				return context.woocommerce.addToCartText;
-			}
-
-			if ( product.quantity === context.woocommerce.numberOfItems ) {
-				return state.woocommerce.inTheCartText.replace(
-					'###',
-					product?.quantity?.toString()
-				);
-			}
-
-			if ( isCartStateFirstLoad ) {
-				ref.classList.add( 'wc-block-scrollToUp' );
-				ref.addEventListener( 'animationend', ( animate ) => {
-					if ( animate.animationName === 'scrollToUp' ) {
-						ref.textContent =
-							state.woocommerce.inTheCartText.replace(
-								'###',
-								product?.quantity?.toString()
-							);
-						ref.classList.remove( 'wc-block-scrollToUp' );
-						ref.classList.add( 'wc-block-scrollFromDown' );
-					}
-
-					if ( animate.animationName === 'scrollFromDown' ) {
-						ref.classList.remove( 'wc-block-scrollFromDown' );
-						isCartStateFirstLoad = false;
-					}
+				return getTextButton( {
+					addToCartText: context.woocommerce.addToCartText,
+					inTheCartText: state.woocommerce.inTheCartText,
+					numberOfItems: context.woocommerce.initialNumberOfItems,
 				} );
-				return ref.textContent;
 			}
 
-			ref.textContent = '';
-
-			return state.woocommerce.inTheCartText.replace(
-				'###',
-				product?.quantity?.toString()
-			);
+			return getTextButton( {
+				addToCartText: context.woocommerce.addToCartText,
+				inTheCartText: state.woocommerce.inTheCartText,
+				numberOfItems: selectors.woocommerce.numberOfItems( store ),
+			} );
 		},
 		isThereMoreThanOneItem: ( {
 			context,
@@ -124,8 +122,6 @@ const productButtonSelectors = {
 			state,
 		}: {
 			context: Context;
-			// For now, let's just use any.
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			selectors: any;
 			state: State;
 		} ) => {
@@ -136,10 +132,65 @@ const productButtonSelectors = {
 				} ) && context.woocommerce.displayViewCart
 			);
 		},
+		hasCartLoaded: ( { state }: { state: State } ) => {
+			return state.woocommerce.cart !== undefined;
+		},
+		numberOfItems: ( {
+			state,
+			context,
+		}: {
+			selecotrs: any;
+			state: State;
+			context: Context;
+		} ) => {
+			const product = getProductById(
+				state.woocommerce.cart,
+				context.woocommerce.productId
+			);
+
+			return product?.quantity || 0;
+		},
+
+		shouldAnimationStart: ( store: {
+			context: Context;
+			selectors: any;
+			state: State;
+		} ) => {
+			const { context, selectors } = store;
+			return (
+				selectors.woocommerce.hasCartLoaded( store ) &&
+				context.woocommerce.initialNumberOfItems !==
+					selectors.woocommerce.numberOfItems( store ) &&
+				context.woocommerce.shouldStartAnimation !== false
+			);
+		},
+		shouldSlideOutAnimationStart: ( store: {
+			context: Context;
+			selectors: any;
+			state: State;
+		} ) => {
+			const { context, selectors } = store;
+			return (
+				selectors.woocommerce.shouldAnimationStart( store ) &&
+				context.woocommerce.firstAnimationFinished === undefined
+			);
+		},
+		// eslint-disable-next-line @typescript-eslint/no-shadow
+		shouldSlideInAnimationStart: ( store: {
+			context: Context;
+			selectors: any;
+			state: State;
+		} ) => {
+			const { context, selectors } = store;
+			return (
+				selectors.woocommerce.shouldAnimationStart( store ) &&
+				context.woocommerce.firstAnimationFinished
+			);
+		},
 	},
 };
 
-store(
+interactivityStore(
 	// @ts-expect-error: Store function isn't typed.
 	{
 		selectors: productButtonSelectors,
@@ -176,6 +227,7 @@ store(
 						return true;
 					}
 
+					context.woocommerce.shouldStartAnimation = false;
 					try {
 						await dispatch( storeKey ).addItemToCart(
 							context.woocommerce.productId,
@@ -210,6 +262,17 @@ store(
 						// we don't care about errors blocking execution, but will console.error for troubleshooting.
 						// eslint-disable-next-line no-console
 						console.error( error );
+					}
+				},
+				handleAnimationEnd: ( {
+					event,
+					context,
+				}: {
+					event: AnimationEvent;
+					context: Context;
+				} ) => {
+					if ( event.animationName === 'slideOut' ) {
+						context.woocommerce.firstAnimationFinished = true;
 					}
 				},
 			},
