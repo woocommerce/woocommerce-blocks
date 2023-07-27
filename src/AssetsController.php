@@ -79,12 +79,13 @@ final class AssetsController {
 	 * Register and enqueue assets for exclusive usage within the Site Editor.
 	 */
 	public function register_and_enqueue_site_editor_assets() {
-		$this->api->register_script( 'wc-classic-template-revert-button', 'build/wc-classic-template-revert-button.js', [ 'wp-edit-site', 'wp-data', 'wp-core-data', 'wp-element', 'wp-components', 'wp-i18n', 'wp-block-editor', 'wp-blocks' ] );
+		$this->api->register_script( 'wc-blocks-classic-template-revert-button', 'build/wc-classic-template-revert-button.js', [ 'wp-edit-site', 'wp-data', 'wp-core-data', 'wp-element', 'wp-components', 'wp-i18n', 'wp-block-editor', 'wp-blocks' ] );
+		$this->api->register_style( 'wc-blocks-classic-template-revert-button-style', 'build/wc-classic-template-revert-button.css' );
 
 		$current_screen = get_current_screen();
-
 		if ( $current_screen instanceof \WP_Screen && 'site-editor' === $current_screen->base ) {
-			wp_enqueue_script( 'wc-classic-template-revert-button' );
+			wp_enqueue_script( 'wc-blocks-classic-template-revert-button' );
+			wp_enqueue_style( 'wc-blocks-classic-template-revert-button-style' );
 		}
 	}
 
