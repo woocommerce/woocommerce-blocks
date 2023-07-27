@@ -67,7 +67,7 @@ export const TEMPLATES: TemplateDetails = {
 		),
 		placeholder: PLACEHOLDERS.archiveProduct,
 	},
-	'taxonomy-product_': {
+	'taxonomy-product': {
 		type: TYPES.productTaxonomy,
 		title: __(
 			"WooCommerce Product's Custom Taxonomy Block",
