@@ -130,7 +130,7 @@ const entries = {
 		'add-to-cart-form':
 			'./assets/js/atomic/blocks/product-elements/add-to-cart-form/index.tsx',
 		...getBlockEntries( '{index,block,frontend}.{t,j}s{,x}' ),
-		'wc-blocks-classic-template-revert-button-style':
+		'wc-classic-template-revert-button':
 			'./assets/js/templates/revert-button/style.scss',
 	},
 	core: {
@@ -173,7 +173,7 @@ const entries = {
 			'./assets/js/extensions/shipping-methods/pickup-location/index.js',
 	},
 	editor: {
-		'wc-blocks-classic-template-revert-button':
+		'wc-classic-template-revert-button':
 			'./assets/js/templates/revert-button/index.tsx',
 	},
 };
