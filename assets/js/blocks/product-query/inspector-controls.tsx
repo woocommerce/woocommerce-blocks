@@ -1,11 +1,11 @@
 /**
  * External dependencies
  */
-import type { ElementType } from 'react';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
+import { type ElementType, useEffect } from '@wordpress/element';
 import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { EditorBlock } from '@woocommerce/types';
 import { usePrevious } from '@woocommerce/base-hooks';
@@ -46,6 +46,7 @@ import { UpgradeNotice } from './inspector-controls/upgrade-notice';
 import {
 	replaceProductsWithProductCollection,
 	setUpgradeStatus,
+	triggerAutoUpdate,
 	INITIAL_STATUS_LS_VALUE,
 	MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
 } from '../migration-products-to-product-collection';
@@ -226,6 +227,10 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 		setUpgradeStatus( INITIAL_STATUS_LS_VALUE );
 		replaceProductsWithProductCollection();
 	};
+
+	useEffect( () => {
+		triggerAutoUpdate();
+	} );
 
 	return (
 		<>

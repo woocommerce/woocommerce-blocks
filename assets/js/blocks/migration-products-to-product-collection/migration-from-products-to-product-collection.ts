@@ -218,17 +218,25 @@ export const replaceProductsWithProductCollection = () => {
 };
 
 export let productsReplacementUnsubscribe: ( () => void ) | undefined;
-
-if ( isWpVersion( '6.1', '>=' ) ) {
-	const { status } = getUpgradeStatus();
-
-	if (
-		AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION &&
-		status !== 'reverted' &&
-		! productsReplacementUnsubscribe
-	) {
-		productsReplacementUnsubscribe = subscribe( () => {
-			replaceProductsWithProductCollection();
-		}, 'core/block-editor' );
+export const disableAutoUpdate = () => {
+	// console.log( 'Unsuscribing', productsReplacementUnsubscribe );
+	if ( productsReplacementUnsubscribe ) {
+		productsReplacementUnsubscribe();
 	}
-}
+};
+export const triggerAutoUpdate = () => {
+	if ( isWpVersion( '6.1', '>=' ) ) {
+		const { status } = getUpgradeStatus();
+
+		if (
+			AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION &&
+			status !== 'reverted' &&
+			! productsReplacementUnsubscribe
+		) {
+			// console.log( 'Subscribed', productsReplacementUnsubscribe );
+			productsReplacementUnsubscribe = subscribe( () => {
+				replaceProductsWithProductCollection();
+			}, 'core/block-editor' );
+		}
+	}
+};

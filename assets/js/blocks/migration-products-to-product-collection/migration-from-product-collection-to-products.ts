@@ -7,7 +7,7 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { productsReplacementUnsubscribe } from './migration-from-products-to-product-collection';
+import { disableAutoUpdate } from './migration-from-products-to-product-collection';
 import {
 	getProductCollectionBlockClientIds,
 	checkIfBlockCanBeInserted,
@@ -213,9 +213,7 @@ export const replaceProductCollectionWithProducts = () => {
 };
 
 export const revertMigration = () => {
-	if ( productsReplacementUnsubscribe ) {
-		productsReplacementUnsubscribe();
-	}
+	disableAutoUpdate();
 	setUpgradeStatus( {
 		status: 'reverted',
 	} );
