@@ -75,7 +75,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 		$block_hooks = array_filter(
 			$this->hook_data,
 			function( $hook ) use ( $block_name ) {
-				return $hook['block_name'] === $block_name;
+				return in_array( $block_name, $hook['block_names'], true );
 			}
 		);
 
@@ -97,11 +97,13 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 			$block_name = self::LOOP_ITEM_ID;
 		}
 
-		$supported_blocks = array_map(
-			function( $hook ) {
-				return $hook['block_name'];
-			},
-			array_values( $this->hook_data )
+		$supported_blocks = array_merge(
+			...array_map(
+				function( $hook ) {
+					return $hook['block_names'];
+				},
+				array_values( $this->hook_data )
+			)
 		);
 
 		if ( ! in_array( $block_name, $supported_blocks, true ) ) {
@@ -173,75 +175,60 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 	protected function set_hook_data() {
 		$this->hook_data = array(
 			'woocommerce_before_main_content'         => array(
-				'block_name' => 'core/query',
-				'position'   => 'before',
-				'hooked'     => array(
+				'block_names' => array( 'core/query', 'woocommerce/product-collection' ),
+				'position'    => 'before',
+				'hooked'      => array(
 					'woocommerce_output_content_wrapper' => 10,
 					'woocommerce_breadcrumb'             => 20,
 				),
 			),
 			'woocommerce_after_main_content'          => array(
-				'block_name' => 'core/query',
-				'position'   => 'after',
-				'hooked'     => array(
-					'woocommerce_output_content_wrapper_end' => 10,
-				),
-			),
-			'woocommerce_before_main_content'         => array(
-				'block_name' => 'woocommerce/product-collection',
-				'position'   => 'before',
-				'hooked'     => array(
-					'woocommerce_output_content_wrapper' => 10,
-					'woocommerce_breadcrumb'             => 20,
-				),
-			),
-			'woocommerce_after_main_content'          => array(
-				'block_name' => 'woocommerce/product-collection',
-				'position'   => 'after',
-				'hooked'     => array(
+				'block_names' => array( 'core/query', 'woocommerce/product-collection' ),
+				'position'    => 'after',
+				'hooked'      => array(
 					'woocommerce_output_content_wrapper_end' => 10,
 				),
 			),
 			'woocommerce_before_shop_loop_item_title' => array(
-				'block_name' => 'core/post-title',
-				'position'   => 'before',
-				'hooked'     => array(
+				'block_names' => array( 'core/post-title' ),
+				'position'    => 'before',
+				'hooked'      => array(
 					'woocommerce_show_product_loop_sale_flash' => 10,
 					'woocommerce_template_loop_product_thumbnail' => 10,
 				),
 			),
 			'woocommerce_shop_loop_item_title'        => array(
-				'block_name' => 'core/post-title',
-				'position'   => 'after',
-				'hooked'     => array(
+				'block_names' => array( 'core/post-title' ),
+				'position'    => 'after',
+				'hooked'      => array(
 					'woocommerce_template_loop_product_title' => 10,
 				),
 			),
 			'woocommerce_after_shop_loop_item_title'  => array(
-				'block_name' => 'core/post-title',
-				'position'   => 'after',
-				'hooked'     => array(
+				'block_names' => array( 'core/post-title' ),
+				'position'    => 'after',
+				'hooked'      => array(
 					'woocommerce_template_loop_rating' => 5,
 					'woocommerce_template_loop_price'  => 10,
 				),
 			),
 			'woocommerce_before_shop_loop_item'       => array(
-				'block_name' => self::LOOP_ITEM_ID,
-				'position'   => 'before',
-				'hooked'     => array(
+				'block_names' => array( self::LOOP_ITEM_ID ),
+				'position'    => 'before',
+				'hooked'      => array(
 					'woocommerce_template_loop_product_link_open' => 10,
 				),
 			),
 			'woocommerce_after_shop_loop_item'        => array(
-				'block_name' => self::LOOP_ITEM_ID,
-				'position'   => 'after',
-				'hooked'     => array(
+				'block_names' => array( self::LOOP_ITEM_ID ),
+				'position'    => 'after',
+				'hooked'      => array(
 					'woocommerce_template_loop_product_link_close' => 5,
 					'woocommerce_template_loop_add_to_cart' => 10,
 				),
 			),
 			'woocommerce_before_shop_loop'            => array(
-				'block_name'                  => 'core/post-template',
+				'block_names'                 => array( 'core/post-template', 'woocommerce/product-template' ),
 				'position'                    => 'before',
 				'hooked'                      => array(
 					'woocommerce_output_all_notices' => 10,
@@ -255,31 +242,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 				),
 			),
 			'woocommerce_after_shop_loop'             => array(
-				'block_name'                  => 'core/post-template',
-				'position'                    => 'after',
-				'hooked'                      => array(
-					'woocommerce_pagination' => 10,
-				),
-				'permanently_removed_actions' => array(
-					'woocommerce_pagination',
-				),
-			),
-			'woocommerce_before_shop_loop'            => array(
-				'block_name'                  => 'woocommerce/product-template',
-				'position'                    => 'before',
-				'hooked'                      => array(
-					'woocommerce_output_all_notices' => 10,
-					'woocommerce_result_count'       => 20,
-					'woocommerce_catalog_ordering'   => 30,
-				),
-				'permanently_removed_actions' => array(
-					'woocommerce_output_all_notices',
-					'woocommerce_result_count',
-					'woocommerce_catalog_ordering',
-				),
-			),
-			'woocommerce_after_shop_loop'             => array(
-				'block_name'                  => 'woocommerce/product-template',
+				'block_names'                 => array( 'core/post-template', 'woocommerce/product-template' ),
 				'position'                    => 'after',
 				'hooked'                      => array(
 					'woocommerce_pagination' => 10,
@@ -289,7 +252,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 				),
 			),
 			'woocommerce_no_products_found'           => array(
-				'block_name'                  => 'core/query-no-results',
+				'block_names'                 => array( 'core/query-no-results' ),
 				'position'                    => 'before',
 				'hooked'                      => array(
 					'wc_no_products_found' => 10,
@@ -299,9 +262,9 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 				),
 			),
 			'woocommerce_archive_description'         => array(
-				'block_name' => 'core/term-description',
-				'position'   => 'before',
-				'hooked'     => array(
+				'block_names' => array( 'core/term-description' ),
+				'position'    => 'before',
+				'hooked'      => array(
 					'woocommerce_taxonomy_archive_description' => 10,
 					'woocommerce_product_archive_description'  => 10,
 				),
