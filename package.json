@@ -27,6 +27,7 @@
 		"./assets/js/blocks/filter-wrapper/register-components.ts",
 		"./assets/js/blocks/product-query/variations/**.tsx",
 		"./assets/js/blocks/product-query/index.tsx",
+		"./assets/js/blocks/product-gallery/**.tsx",
 		"./assets/js/blocks/product-gallery/inner-blocks/**/index.tsx",
 		"./assets/js/blocks/product-gallery/inspector-controls.tsx",
 		"./assets/js/templates/revert-button/index.tsx"
