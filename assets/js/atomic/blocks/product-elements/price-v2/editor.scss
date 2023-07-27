@@ -1,0 +1,12 @@
+.wc-block-price-element {
+	.block-editor-inner-blocks {
+		.block-editor-block-list__layout {
+			display: flex;
+
+			.wp-block-woocommerce-original-price,
+			.wp-block-woocommerce-current-price {
+				margin-right: $gap-smaller;
+			}
+		}
+	}
+}

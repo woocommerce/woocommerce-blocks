@@ -36,7 +36,7 @@ const Block = ( {
 		return <ProductPrice className={ wrapperClassName } />;
 	}
 
-	const pricePreview = '3000';
+	const pricePreview = '5000';
 	const priceClassName = classnames( {
 		[ `${ parentClassName }__product-${ priceType }-price__value` ]:
 			parentClassName,

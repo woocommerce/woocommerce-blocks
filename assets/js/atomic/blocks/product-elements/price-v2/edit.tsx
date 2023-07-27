@@ -20,6 +20,7 @@ import {
 	priceDiscount,
 } from './inner-blocks';
 import { TEMPLATE } from './template';
+import './editor.scss';
 
 interface Attributes {
 	isDescendentOfSingleProductBlock: boolean;

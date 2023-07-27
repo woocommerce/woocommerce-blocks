@@ -59,8 +59,8 @@ const Block = ( {
 		[ `${ parentClassName }__product-price_discount` ]: parentClassName,
 	} );
 	// todo: lift all the preview pricing up to the parent block (across all the price inner blocks)
-	const oPrice = isDescendentOfSingleProductTemplate ? '3000' : originalPrice;
-	const cPrice = isDescendentOfSingleProductTemplate ? '5000' : currentPrice;
+	const oPrice = isDescendentOfSingleProductTemplate ? '5000' : originalPrice;
+	const cPrice = isDescendentOfSingleProductTemplate ? '3000' : currentPrice;
 	const DisplayedDiscount =
 		discountType === 'percentage' ? (
 			<span className={ priceClassName }>

@@ -38,6 +38,7 @@ const CurrentPriceEdit = ( { attributes, context }: Props ): JSX.Element => {
 		minPrice: product?.prices?.price_range?.min_amount,
 		maxPrice: product?.prices?.price_range?.max_amount,
 		priceType: 'current',
+		isDescendentOfSingleProductTemplate,
 	};
 	return (
 		<>

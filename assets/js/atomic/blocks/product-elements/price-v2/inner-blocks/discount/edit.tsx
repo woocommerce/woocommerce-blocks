@@ -11,6 +11,7 @@ import { useEffect } from '@wordpress/element';
  */
 import { discountAmountName } from './inner-blocks';
 import { TEMPLATE } from './template';
+import './editor.scss';
 
 export const Edit = ( { attributes, setAttributes, context } ): JSX.Element => {
 	const { style, className } = useStyleProps( attributes );
