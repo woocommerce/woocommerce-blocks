@@ -5,15 +5,18 @@ import {
 	InnerBlocks,
 	InspectorControls,
 	useBlockProps,
-	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { BlockAttributes, InnerBlockTemplate } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
-import { select, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import {
+	moveInnerBlocksToPosition,
+	updateGroupBlockType,
+	getInnerBlocksLockAttributes,
+} from './utils';
 import { BlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
 
 interface Props {
@@ -27,22 +30,17 @@ const TEMPLATE: InnerBlockTemplate[] = [
 		'core/group',
 		{ layout: { type: 'flex' } },
 		[
-			[ 'woocommerce/product-gallery-thumbnails' ],
-			[ 'woocommerce/product-gallery-large-image' ],
+			[
+				'woocommerce/product-gallery-thumbnails',
+				getInnerBlocksLockAttributes( 'lock' ),
+			],
+			[
+				'woocommerce/product-gallery-large-image',
+				getInnerBlocksLockAttributes( 'lock' ),
+			],
 		],
 	],
 ];
-
-function setGroupAttributes( thumbnailsPosition: string ) {
-	switch ( thumbnailsPosition ) {
-		case 'bottom':
-			// Stack
-			return { type: 'flex', orientation: 'vertical' };
-		default:
-			// Row
-			return { type: 'flex', flexWrap: 'nowrap' };
-	}
-}
 
 export const Edit = ( {
 	clientId,
@@ -51,74 +49,16 @@ export const Edit = ( {
 }: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 
+	// Update the Group block type when the thumbnailsPosition attribute changes.
+	updateGroupBlockType( attributes, clientId );
+
 	useEffect( () => {
 		setAttributes( { clientId } );
 	}, [ clientId, setAttributes ] );
 
-	// Update the Group block type when the thumbnailsPosition attribute changes.
-	const block = select( 'core/block-editor' ).getBlock( clientId );
-	block?.innerBlocks.forEach( ( innerBlock ) => {
-		if ( innerBlock.name === 'core/group' ) {
-			const updatedBlock = {
-				...innerBlock,
-				attributes: {
-					...innerBlock.attributes,
-					layout: setGroupAttributes( attributes.thumbnailsPosition ),
-				},
-			};
-			dispatch( 'core/block-editor' ).updateBlock(
-				innerBlock.clientId,
-				updatedBlock
-			);
-		}
-	} );
-
-	// Move the Thumbnails block to the correct above or below the Large Image based on the thumbnailsPosition attribute.
 	useEffect( () => {
-		const parentBlock = select( 'core/block-editor' ).getBlock( clientId );
-
-		if ( parentBlock?.name === 'woocommerce/product-gallery' ) {
-			const groupBlock = parentBlock.innerBlocks.find(
-				( innerBlock ) => innerBlock.name === 'core/group'
-			);
-
-			if ( groupBlock ) {
-				const thumbnailsIndex = groupBlock.innerBlocks.findIndex(
-					( innerBlock ) =>
-						innerBlock.name ===
-						'woocommerce/product-gallery-thumbnails'
-				);
-
-				const largeImageIndex = groupBlock.innerBlocks.findIndex(
-					( innerBlock ) =>
-						innerBlock.name ===
-						'woocommerce/product-gallery-large-image'
-				);
-
-				if ( thumbnailsIndex !== -1 && largeImageIndex !== -1 ) {
-					const { thumbnailsPosition } = attributes;
-					const clientIdToMove =
-						groupBlock.innerBlocks[ thumbnailsIndex ].clientId;
-
-					if (
-						thumbnailsPosition === 'bottom' ||
-						thumbnailsPosition === 'right'
-					) {
-						// @ts-expect-error - Ignoring because `moveBlocksDown` is not yet in the type definitions.
-						dispatch( blockEditorStore ).moveBlocksDown(
-							[ clientIdToMove ],
-							groupBlock.clientId
-						);
-					} else {
-						// @ts-expect-error - Ignoring because `moveBlocksUp` is not yet in the type definitions.
-						dispatch( blockEditorStore ).moveBlocksUp(
-							[ clientIdToMove ],
-							groupBlock.clientId
-						);
-					}
-				}
-			}
-		}
+		// Move the Thumbnails block to the correct above or below the Large Image based on the thumbnailsPosition attribute.
+		moveInnerBlocksToPosition( attributes, clientId );
 	}, [ attributes, clientId ] );
 
 	return (
