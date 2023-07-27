@@ -72,6 +72,10 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 
 		$block_name = $block['blockName'];
 
+		if ( $this->is_null_post_template( $block ) ) {
+			$block_name = self::LOOP_ITEM_ID;
+		}
+
 		$block_hooks = array_filter(
 			$this->hook_data,
 			function( $hook ) use ( $block_name ) {
@@ -91,10 +95,6 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 			);
 			$this->remove_default_hooks();
 			return $content;
-		}
-
-		if ( $this->is_null_post_template( $block ) ) {
-			$block_name = self::LOOP_ITEM_ID;
 		}
 
 		$supported_blocks = array_merge(
