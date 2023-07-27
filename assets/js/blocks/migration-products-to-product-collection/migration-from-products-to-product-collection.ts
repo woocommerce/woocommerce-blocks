@@ -8,12 +8,16 @@ import { isWpVersion } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
-import { AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION } from './constants';
+import {
+	AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
+	INITIAL_STATUS_LS_VALUE,
+} from './constants';
 import {
 	getProductsBlockClientIds,
 	checkIfBlockCanBeInserted,
 	postTemplateHasSupportForGridView,
 	getUpgradeStatus,
+	setUpgradeStatus,
 } from './migration-utils';
 import type {
 	TransformBlock,
@@ -215,6 +219,11 @@ export const replaceProductsWithProductCollection = () => {
 	}
 
 	replaceProductsBlocks( productsBlockClientIds );
+};
+
+export const manualUpdate = () => {
+	setUpgradeStatus( INITIAL_STATUS_LS_VALUE );
+	replaceProductsWithProductCollection();
 };
 
 let unsubscribe: ( () => void ) | undefined;

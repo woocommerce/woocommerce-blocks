@@ -10,9 +10,7 @@ import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedb
 import { EditorBlock, isNumber } from '@woocommerce/types';
 import { usePrevious } from '@woocommerce/base-hooks';
 import {
-	replaceProductsWithProductCollection,
-	setUpgradeStatus,
-	INITIAL_STATUS_LS_VALUE,
+	manualUpdate,
 	MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
 } from '@woocommerce/blocks/migration-products-to-product-collection';
 import { getSettingWithCoercion } from '@woocommerce/settings';
@@ -235,16 +233,12 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 	const defaultWooQueryParams = useDefaultWooQueryParamsForVariation(
 		props.attributes.namespace
 	);
-	const upgradeBlock = () => {
-		setUpgradeStatus( INITIAL_STATUS_LS_VALUE );
-		replaceProductsWithProductCollection();
-	};
 
 	return (
 		<>
 			<InspectorControls>
 				{ MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION && (
-					<UpgradeNotice upgradeBlock={ upgradeBlock } />
+					<UpgradeNotice upgradeBlock={ manualUpdate } />
 				) }
 				{ allowedControls?.includes( 'presets' ) && (
 					<PopularPresets { ...props } />
