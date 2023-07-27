@@ -186,8 +186,16 @@
 			}
 		}
 
+		.woocommerce-search-list__item-input {
+			margin: 0;
+		}
+
 		.woocommerce-search-list__item-input[type="radio"] {
-			margin: 0 $gap-smaller 0 0;
+			margin-right: $gap-smaller;
+		}
+
+		.components-base-control__field {
+			margin: 0;
 		}
 
 		.woocommerce-search-list__item-label {

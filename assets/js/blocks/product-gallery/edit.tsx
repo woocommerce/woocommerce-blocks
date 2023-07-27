@@ -36,8 +36,10 @@ const TEMPLATE: InnerBlockTemplate[] = [
 function setGroupAttributes( thumbnailsPosition: string ) {
 	switch ( thumbnailsPosition ) {
 		case 'bottom':
+			// Stack
 			return { type: 'flex', orientation: 'vertical' };
 		default:
+			// Row
 			return { type: 'flex', flexWrap: 'nowrap' };
 	}
 }
@@ -53,6 +55,7 @@ export const Edit = ( {
 		setAttributes( { clientId } );
 	}, [ clientId, setAttributes ] );
 
+	// Update the Group block type when the thumbnailsPosition attribute changes.
 	const block = select( 'core/block-editor' ).getBlock( clientId );
 	block?.innerBlocks.forEach( ( innerBlock ) => {
 		if ( innerBlock.name === 'core/group' ) {
@@ -70,6 +73,7 @@ export const Edit = ( {
 		}
 	} );
 
+	// Move the Thumbnails block to the correct above or below the Large Image based on the thumbnailsPosition attribute.
 	useEffect( () => {
 		const parentBlock = select( 'core/block-editor' ).getBlock( clientId );
 
@@ -97,8 +101,7 @@ export const Edit = ( {
 						groupBlock.innerBlocks[ thumbnailsIndex ].clientId;
 
 					if (
-						( thumbnailsPosition === 'bottom' &&
-							thumbnailsIndex !== 0 ) ||
+						thumbnailsPosition === 'bottom' ||
 						thumbnailsPosition === 'right'
 					) {
 						// @ts-expect-error - Ignoring because `moveBlocksDown` is not yet in the type definitions.

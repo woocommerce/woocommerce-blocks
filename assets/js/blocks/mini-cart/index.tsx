@@ -33,9 +33,6 @@ registerBlockType( metadata, {
 			/>
 		),
 	},
-	providesContext: {
-		...metadata.providesContext,
-	},
 	supports: {
 		...featurePluginSupport,
 	},
@@ -61,7 +58,7 @@ addFilter(
 				...blockSettings,
 				variations: blockSettings.variations.map(
 					( variation: { name: string } ) => {
-						if ( variation.name === 'instance_mini-cart' ) {
+						if ( variation.name === 'mini-cart' ) {
 							return {
 								...variation,
 								scope: [],

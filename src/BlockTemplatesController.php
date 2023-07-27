@@ -68,6 +68,7 @@ class BlockTemplatesController {
 	 * Initialization method.
 	 */
 	protected function init() {
+		add_filter( 'default_wp_template_part_areas', array( $this, 'register_mini_cart_template_part_area' ), 10, 1 );
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_template', array( $this, 'get_block_template_fallback' ), 10, 3 );
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
@@ -101,6 +102,23 @@ class BlockTemplatesController {
 				2
 			);
 		}
+	}
+
+	/**
+	 * Add Mini-Cart to the default template part areas.
+	 *
+	 * @param array $default_area_definitions An array of supported area objects.
+	 * @return array The supported template part areas including the Mini-Cart one.
+	 */
+	public function register_mini_cart_template_part_area( $default_area_definitions ) {
+		$mini_cart_template_part_area = [
+			'area'        => 'mini-cart',
+			'label'       => __( 'Mini-Cart', 'woo-gutenberg-products-block' ),
+			'description' => __( 'The Mini-Cart template allows shoppers to see their cart items and provides access to the Cart and Checkout pages.', 'woo-gutenberg-products-block' ),
+			'icon'        => 'mini-cart',
+			'area_tag'    => 'mini-cart',
+		];
+		return array_merge( $default_area_definitions, [ $mini_cart_template_part_area ] );
 	}
 
 	/**
@@ -572,7 +590,13 @@ class BlockTemplatesController {
 		if (
 			is_singular( 'product' ) && $this->block_template_is_available( 'single-product' )
 		) {
-			$templates = get_block_templates( array( 'slug__in' => array( 'single-product' ) ) );
+			global $post;
+
+			$valid_slugs = [ 'single-product' ];
+			if ( 'product' === $post->post_type && $post->post_name ) {
+				$valid_slugs[] = 'single-product-' . $post->post_name;
+			}
+			$templates = get_block_templates( array( 'slug__in' => $valid_slugs ) );
 
 			if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
 				add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
