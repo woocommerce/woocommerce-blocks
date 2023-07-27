@@ -95,11 +95,6 @@ export function useAllowedControls(
 		return controls.filter( ( control ) => control !== 'wooInherit' );
 	}
 
-	// console.log( {
-	// 	enabled: isWooInheritQueryEnabled( attributes ),
-	// 	controls,
-	// } );
-
 	return isWooInheritQueryEnabled( attributes )
 		? controls.filter( ( control ) => control === 'wooInherit' )
 		: controls;
