@@ -46,8 +46,8 @@ export const getInnerBlocksLockAttributes = (
 /**
  * Updates block attributes based on provided attributes.
  *
- * @param {BlockAttributes} attributesToUpdate - The new attributes to set on the block.
- * @param {BlockAttributes | undefined} block - The block object to update.
+ * @param {BlockAttributes}             attributesToUpdate - The new attributes to set on the block.
+ * @param {BlockAttributes | undefined} block              - The block object to update.
  */
 export const updateBlockAttributes = (
 	attributesToUpdate: BlockAttributes,
@@ -73,7 +73,7 @@ export const updateBlockAttributes = (
  * Moves inner blocks to a position based on provided attributes.
  *
  * @param {BlockAttributes} attributes - The attributes of the parent block.
- * @param {string} clientId - The clientId of the parent block.
+ * @param {string}          clientId   - The clientId of the parent block.
  */
 export const moveInnerBlocksToPosition = (
 	attributes: BlockAttributes,
@@ -157,7 +157,7 @@ export const moveInnerBlocksToPosition = (
  * Updates the type of group block based on provided attributes.
  *
  * @param {BlockAttributes} attributes - The attributes of the parent block.
- * @param {string} clientId - The clientId of the parent block.
+ * @param {string}          clientId   - The clientId of the parent block.
  */
 export const updateGroupBlockType = (
 	attributes: BlockAttributes,
