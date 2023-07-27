@@ -2,7 +2,13 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useMemo, useEffect, Fragment, useState } from '@wordpress/element';
+import {
+	useMemo,
+	useEffect,
+	Fragment,
+	useState,
+	useRef,
+} from '@wordpress/element';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import {
 	useCheckoutAddress,
@@ -13,6 +19,7 @@ import {
 import {
 	CheckboxControl,
 	StoreNoticesContainer,
+	TextInput,
 } from '@woocommerce/blocks-checkout';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type {
@@ -108,10 +115,98 @@ const Block = ( {
 		? [ noticeContexts.SHIPPING_ADDRESS, noticeContexts.BILLING_ADDRESS ]
 		: [ noticeContexts.SHIPPING_ADDRESS ];
 
+	const addressSearchRef = useRef< HTMLInputElement >( null );
+	const autocompleteRef = useRef( null );
+
+	const [ mapsApiInitialised, setMapsApiInitialised ] = useState( false );
+
+	// Google Places Lookup
+	useEffect( () => {
+		if ( ! window.google.maps.places || mapsApiInitialised ) {
+			return;
+		}
+		autocompleteRef.current = new window.google.maps.places.Autocomplete(
+			addressSearchRef.current
+		);
+		setMapsApiInitialised( true );
+
+		if ( ! autocompleteRef.current ) {
+			return;
+		}
+		autocompleteRef.current.addListener( 'place_changed', async () => {
+			const place = await autocompleteRef.current.getPlace();
+			if ( ! place || ! place.address_components ) {
+				return;
+			}
+			console.log( place );
+			// We have an address, populate the address fields
+
+			// Needs work  - this is England for everything in England
+			const county = place.address_components.find( ( component ) =>
+				component.types.includes( 'administrative_area_level_1' )
+			);
+			const country = place.address_components.find( ( component ) =>
+				component.types.includes( 'country' )
+			);
+			const postalCode = place.address_components.find( ( component ) =>
+				component.types.includes( 'postal_code' )
+			);
+			const town = place.address_components.find(
+				( component ) =>
+					component.types.includes( 'postal_town' ) ||
+					component.types.includes( 'locality' )
+			);
+
+			const houseNumberOrName = place.address_components.find(
+				( component ) =>
+					component.types.includes( 'street_number' ) ||
+					component.types.includes( 'premise' )
+			);
+
+			const street = place.address_components.find( ( component ) =>
+				component.types.includes( 'route' )
+			);
+
+			const address1 =
+				houseNumberOrName && street
+					? `${ houseNumberOrName?.long_name } ${ street?.long_name }`
+					: undefined;
+
+			const address2 = place.address_components.find( ( component ) =>
+				component.types.includes( 'sublocality' )
+			);
+
+			console.log(
+				address1,
+				address2?.long_name,
+				town?.long_name,
+				postalCode?.long_name,
+				county?.long_name,
+				country?.long_name
+			);
+
+			setShippingAddress( {
+				address_1: address1,
+				address_2: address2?.long_name,
+				city: town?.long_name,
+				postcode: postalCode?.long_name,
+				state: county?.long_name,
+				country: country?.short_name,
+			} );
+		} );
+	} );
+
 	return (
 		<>
 			<AddressFormWrapperComponent>
 				<StoreNoticesContainer context={ noticeContext } />
+				<TextInput
+					ref={ addressSearchRef }
+					type="text"
+					placeholder="Search for an address"
+					id="address-search"
+					className="wc-block-components-address-form__address_2"
+				></TextInput>
 				<AddressForm
 					id="shipping"
 					type="shipping"
