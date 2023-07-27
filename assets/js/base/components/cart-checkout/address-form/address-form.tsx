@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { ValidatedTextInput, isPostcode } from '@woocommerce/blocks-checkout';
+import {
+	ValidatedTextInput,
+	isPostcode,
+	TextInput,
+} from '@woocommerce/blocks-checkout';
 import {
 	BillingCountryInput,
 	ShippingCountryInput,
@@ -10,7 +14,7 @@ import {
 	BillingStateInput,
 	ShippingStateInput,
 } from '@woocommerce/base-components/state-input';
-import { useEffect, useMemo } from '@wordpress/element';
+import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { withInstanceId } from '@wordpress/compose';
 import { useShallowEqual } from '@woocommerce/base-hooks';
@@ -159,6 +163,113 @@ const AddressForm = ( {
 		type,
 	] );
 
+	const addressSearchRef = useRef< HTMLInputElement >( null );
+	const autocompleteRef = useRef( null );
+
+	const [ mapsApiInitialised, setMapsApiInitialised ] = useState( false );
+
+	// Google Places Lookup
+	useEffect( () => {
+		if ( ! window.google.maps.places || mapsApiInitialised ) {
+			return;
+		}
+		autocompleteRef.current = new window.google.maps.places.Autocomplete(
+			addressSearchRef.current
+		);
+		setMapsApiInitialised( true );
+
+		if ( ! autocompleteRef.current ) {
+			return;
+		}
+		autocompleteRef.current.addListener( 'place_changed', async () => {
+			const place = await autocompleteRef.current.getPlace();
+			if ( ! place || ! place.address_components ) {
+				return;
+			}
+			console.log( place );
+			// We have an address, populate the address fields
+
+			// Needs work  - this is England for everything in England
+			const county = place.address_components.find( ( component ) =>
+				component.types.includes( 'administrative_area_level_1' )
+			);
+			const country = place.address_components.find( ( component ) =>
+				component.types.includes( 'country' )
+			);
+			const postalCode = place.address_components.find( ( component ) =>
+				component.types.includes( 'postal_code' )
+			);
+			const town = place.address_components.find(
+				( component ) =>
+					component.types.includes( 'postal_town' ) ||
+					component.types.includes( 'locality' )
+			);
+
+			const houseNumberOrName = place.address_components.find(
+				( component ) =>
+					component.types.includes( 'street_number' ) ||
+					component.types.includes( 'premise' )
+			);
+
+			const street = place.address_components.find( ( component ) =>
+				component.types.includes( 'route' )
+			);
+
+			const address1 =
+				houseNumberOrName && street
+					? `${ houseNumberOrName?.long_name } ${ street?.long_name }`
+					: undefined;
+
+			const address2 = place.address_components.find( ( component ) =>
+				component.types.includes( 'sublocality' )
+			);
+
+			console.log(
+				address1,
+				address2?.long_name,
+				town?.long_name,
+				postalCode?.long_name,
+				county?.long_name,
+				country?.long_name
+			);
+
+			function setNativeValue( element, value ) {
+				let lastValue = element.value;
+				element.value = value;
+				let event = new Event( 'input', {
+					target: element,
+					bubbles: true,
+				} );
+				// React 15
+				event.simulated = true;
+				// React 16
+				let tracker = element._valueTracker;
+				if ( tracker ) {
+					tracker.setValue( lastValue );
+				}
+				element.dispatchEvent( event );
+			}
+
+			// Set form fields to these values
+			const address1Input =
+				document.getElementById( 'shipping-address_1' );
+			const address2Input =
+				document.getElementById( 'shipping-address_2' );
+			const cityInput = document.getElementById( 'shipping-city' );
+			const countryInput = document.getElementById( 'shipping-country' );
+			const stateInput = document.getElementById( 'shipping-state' );
+			const postcodeInput =
+				document.getElementById( 'shipping-postcode' );
+
+			setNativeValue( address1Input, address1 );
+			setNativeValue( address2Input, address2?.long_name );
+			setNativeValue( cityInput, town?.long_name );
+			setNativeValue( countryInput, country?.long_name );
+			setNativeValue( stateInput, county?.long_name );
+			setNativeValue( postcodeInput, postalCode?.long_name );
+		} );
+	} );
+
 	id = id || instanceId;
 
 	/**
@@ -192,6 +303,13 @@ const AddressForm = ( {
 
 	return (
 		<div id={ id } className="wc-block-components-address-form">
+			<TextInput
+				ref={ addressSearchRef }
+				type="text"
+				placeholder="Search for an address"
+				id="address-search"
+				className="wc-block-components-address-form__address_2"
+			></TextInput>
 			{ addressFormFields.map( ( field ) => {
 				if ( field.hidden ) {
 					return null;
@@ -272,15 +390,16 @@ const AddressForm = ( {
 						value={ values[ field.key ] }
 						autoCapitalize={ field.autocapitalize }
 						autoComplete={ field.autocomplete }
-						onChange={ ( newValue: string ) =>
+						onChange={ ( newValue: string ) => {
+							console.log( 'changing new value to', newValue );
 							onChange( {
 								...values,
 								[ field.key ]:
 									field.key === 'postcode'
 										? newValue.trimStart().toUpperCase()
 										: newValue,
-							} )
-						}
+							} );
+						} }
 						customValidation={ ( inputObject: HTMLInputElement ) =>
 							field.required || inputObject.value
 								? customValidationHandler(

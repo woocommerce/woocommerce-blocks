@@ -40,6 +40,7 @@ final class AssetsController {
 		add_action( 'admin_body_class', array( $this, 'add_theme_body_class' ), 1 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'update_block_style_dependencies' ), 20 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'update_block_settings_dependencies' ), 100 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'add_places_api_script' ), 100 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'update_block_settings_dependencies' ), 100 );
 	}
 
@@ -74,6 +75,16 @@ final class AssetsController {
 			",
 			'before'
 		);
+	}
+
+	public function add_places_api_script() {
+		// $api_key = get_option( 'woocommerce_google_maps_api_key' );
+		// if ( ! $api_key ) {
+		// 	return;
+		// }
+		// $api_key = esc_attr( $api_key );
+		$script_src = 'https://maps.googleapis.com/maps/api/js?key=' . 'AIzaSyAXAADQPuJ9Kf9PsOLjgJ4t1aOqgyfocN0' . '&libraries=places&callback=initMap';
+		wp_enqueue_script( 'wc-blocks-google-maps', $script_src,  [], null, true );
 	}
 
 	/**
