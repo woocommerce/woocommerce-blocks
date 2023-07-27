@@ -3,12 +3,14 @@
  */
 import { Icon } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
-import { useBlockProps } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
+import { BlockSettings } from './settings';
 import { PagerDotIcon, PagerSelectedDotIcon } from './icons';
+import { BlockAttributes } from './types';
 
 const DigitsPager = (): JSX.Element => {
 	const pagerDigitsItems = Array.from( { length: 4 }, ( _, index ) => {
@@ -56,13 +58,25 @@ const DotsPager = ( props: DotsPagerProps ): JSX.Element => {
 	);
 };
 
-export const Edit = (): JSX.Element => {
+interface EditProps {
+	attributes: BlockAttributes;
+	setAttributes: ( newAttributes: BlockAttributes ) => void;
+}
+
+export const Edit = ( props: EditProps ): JSX.Element => {
+	const { attributes, setAttributes } = props;
 	const blockProps = useBlockProps( {
 		className: 'wc-block-editor-product-gallery-pager',
 	} );
 
 	return (
 		<div { ...blockProps }>
+			<InspectorControls>
+				<BlockSettings
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
+			</InspectorControls>
 			<DotsPager />
 
 			{ /* <DigitsPager /> */ }
