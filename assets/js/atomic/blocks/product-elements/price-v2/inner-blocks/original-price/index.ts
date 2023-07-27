@@ -9,6 +9,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import edit from './edit';
 import sharedConfig from '../../../shared/config';
 import metadata from './block.json';
+import { supports } from '../../supports';
 
 const { ancestor, ...configuration } = sharedConfig;
 
@@ -19,6 +20,7 @@ const blockConfig = {
 	supports: {
 		...metadata.supports,
 		...configuration.supports,
+		...supports,
 		context: '',
 	},
 };
