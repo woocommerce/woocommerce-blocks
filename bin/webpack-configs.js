@@ -674,6 +674,7 @@ const getSiteEditorConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								'@babel/plugin-proposal-optional-chaining',
 							].filter( Boolean ),
 						},
 					},
