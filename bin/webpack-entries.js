@@ -178,4 +178,8 @@ const getEntryConfig = ( type = 'main', exclude = [] ) => {
 
 module.exports = {
 	getEntryConfig,
+
+	externals: {
+		'@wordpress/edit-site': 'wp.editSite',
+	},
 };

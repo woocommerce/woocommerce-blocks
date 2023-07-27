@@ -1,9 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
-use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
-use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry as AssetDataRegistry;
 
 /**
  * AssetsController class.
@@ -41,6 +39,7 @@ final class AssetsController {
 		add_action( 'admin_enqueue_scripts', array( $this, 'update_block_style_dependencies' ), 20 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'update_block_settings_dependencies' ), 100 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'update_block_settings_dependencies' ), 100 );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_site_editor_dependencies' ) );
 	}
 
 	/**
@@ -56,7 +55,7 @@ final class AssetsController {
 		$this->api->register_script( 'wc-blocks-vendors', $this->api->get_block_asset_build_path( 'wc-blocks-vendors' ), [], false );
 		$this->api->register_script( 'wc-blocks-registry', 'build/wc-blocks-registry.js', [], false );
 		$this->api->register_script( 'wc-blocks', $this->api->get_block_asset_build_path( 'wc-blocks' ), [ 'wc-blocks-vendors' ], false );
-		$this->api->register_script( 'wc-blocks-shared-context', 'build/wc-blocks-shared-context.js', [] );
+		$this->api->register_script( 'wc-blocks-shared-context', 'build/wc-blocks-shared-context.js' );
 		$this->api->register_script( 'wc-blocks-shared-hocs', 'build/wc-blocks-shared-hocs.js', [], false );
 
 		// The price package is shared externally so has no blocks prefix.
@@ -77,6 +76,17 @@ final class AssetsController {
 	}
 
 	/**
+	 * Enqueues the block editor assets.
+	 */
+	public function enqueue_site_editor_dependencies() {
+		$current_screen = get_current_screen();
+
+		if ( $current_screen instanceof \WP_Screen && 'site-editor' === $current_screen->base ) {
+			wp_enqueue_script( 'wp-edit-site' );
+		}
+	}
+
+	/**
 	 * Defines resource hints to help speed up the loading of some critical blocks.
 	 *
 	 * These will not impact page loading times negatively because they are loaded once the current page is idle.
@@ -93,7 +103,7 @@ final class AssetsController {
 		// We only need to prefetch when the cart has contents.
 		$cart = wc()->cart;
 
-		if ( ! $cart || ! $cart instanceof \WC_Cart || 0 === $cart->get_cart_contents_count() ) {
+		if ( ! $cart instanceof \WC_Cart || 0 === $cart->get_cart_contents_count() ) {
 			return $urls;
 		}
 
