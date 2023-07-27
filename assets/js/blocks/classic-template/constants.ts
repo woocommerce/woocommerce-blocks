@@ -67,6 +67,7 @@ export const TEMPLATES: TemplateDetails = {
 		),
 		placeholder: PLACEHOLDERS.archiveProduct,
 	},
+	// Since that it is a fallback value, it has to be the last one.
 	'taxonomy-product': {
 		type: TYPES.productTaxonomy,
 		title: __(
