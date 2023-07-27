@@ -117,6 +117,7 @@ const Block = ( {
 
 	const addressSearchRef = useRef< HTMLInputElement >( null );
 	const autocompleteRef = useRef( null );
+	const [ addressSelected, setAddressSelected ] = useState( false );
 
 	const [ mapsApiInitialised, setMapsApiInitialised ] = useState( false );
 
@@ -139,6 +140,7 @@ const Block = ( {
 				return;
 			}
 			console.log( place );
+			setAddressSelected( true );
 			// We have an address, populate the address fields
 
 			// Needs work  - this is England for everything in England
@@ -200,13 +202,6 @@ const Block = ( {
 		<>
 			<AddressFormWrapperComponent>
 				<StoreNoticesContainer context={ noticeContext } />
-				<TextInput
-					ref={ addressSearchRef }
-					type="text"
-					placeholder="Search for an address"
-					id="address-search"
-					className="wc-block-components-address-form__address_2"
-				></TextInput>
 				<AddressForm
 					id="shipping"
 					type="shipping"
@@ -225,6 +220,17 @@ const Block = ( {
 						) as ( keyof AddressFields )[]
 					}
 					fieldConfig={ addressFieldsConfig }
+					autocompleteInput={
+						<TextInput
+							key="shipping-address-search"
+							ref={ addressSearchRef }
+							type="text"
+							placeholder="Search for an address"
+							id="address-search"
+							className="wc-block-components-address-form__address_2"
+						></TextInput>
+					}
+					addressSelected={ addressSelected }
 				/>
 				{ showPhoneField && (
 					<PhoneNumber
