@@ -22,3 +22,5 @@ export { default as thumbUp } from './library/thumb-up';
 export { default as toggle } from './library/toggle';
 export { default as totals } from './library/totals';
 export { default as woo } from './library/woo';
+export { default as dot } from './library/dot';
+export { default as selectedDot } from './library/selected-dot';

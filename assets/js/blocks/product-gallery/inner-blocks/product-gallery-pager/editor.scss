@@ -8,18 +8,15 @@
     display: flex;
     justify-content: center;
     list-style: none;
-    gap: 1em;
+    gap: $gap-small;
 }
 
 .wc-block-editor-product-gallery-pager__pager-item {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    border-radius: 50%;
-    background-color: #ccc;
-    cursor: pointer;
+    @include font-size(regular);
+    color: $gray-600;
 }
 
 .wc-block-editor-product-gallery-pager__pager-item.is-active {
-    background-color: #000;
+    font-weight: bold;
+    color: $black;
 }

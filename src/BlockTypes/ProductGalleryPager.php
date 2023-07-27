@@ -37,44 +37,58 @@ class ProductGalleryPager extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$post_id = $block->context['postId'];
+		$post_id           = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
+		$product           = wc_get_product( $post_id );
+		$classname          = $attributes['className'] ?? '';
+		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
+		$html = $this->render_dots_pager();
 
-		if ( ! isset( $post_id ) ) {
-			return '';
-		}
-
-		global $product;
-
-		$previous_product = $product;
-		$product          = wc_get_product( $post_id );
-		if ( ! $product instanceof \WC_Product ) {
-			$product = $previous_product;
-
-			return '';
-		}
-
-		if ( class_exists( 'WC_Frontend_Scripts' ) ) {
-			$frontend_scripts = new \WC_Frontend_Scripts();
-			$frontend_scripts::load_scripts();
-		}
-
-		ob_start();
-		woocommerce_show_product_sale_flash();
-		$sale_badge_html = ob_get_clean();
-
-		ob_start();
-		remove_action( 'woocommerce_product_thumbnails', 'woocommerce_show_product_thumbnails', 20 );
-		woocommerce_show_product_images();
-		$product_image_gallery_html = ob_get_clean();
-		add_action( 'woocommerce_product_thumbnails', 'woocommerce_show_product_thumbnails', 20 );
-
-		$product   = $previous_product;
-		$classname = $attributes['className'] ?? '';
 		return sprintf(
-			'<div class="wp-block-woocommerce-product-gallery-large-image %1$s">%2$s %3$s</div>',
-			esc_attr( $classname ),
-			$sale_badge_html,
-			$product_image_gallery_html
+			'<div %1$s>
+				%2$s
+			</div>',
+			$wrapper_attributes,
+			$html
+		);
+	}
+
+	private function render_digits_pager( ) {
+		return sprintf(
+			'<ul class="wp-block-woocommerce-product-gallery-pager__pager">
+				<li class="wp-block-woocommerce-product-gallery__pager-item is-active">1</li>
+				<li class="wp-block-woocommerce-product-gallery__pager-item">2</li>
+				<li class="wp-block-woocommerce-product-gallery__pager-item">3</li>
+				<li class="wp-block-woocommerce-product-gallery__pager-item">4</li>
+			</ul>',
+		);
+	}
+
+	private function render_dots_pager( ) {
+		return sprintf(
+			'<ul class="wp-block-woocommerce-product-gallery-pager__pager">
+				<li class="wp-block-woocommerce-product-gallery__pager-item is-active">%1$s</li>
+				<li class="wp-block-woocommerce-product-gallery__pager-item">%2$s</li>
+				<li class="wp-block-woocommerce-product-gallery__pager-item">%2$s</li>
+				<li class="wp-block-woocommerce-product-gallery__pager-item">%2$s</li>
+			</ul>',
+			$this->get_selected_dot_icon(),
+			$this->get_dot_icon(),
+		);
+	}
+
+	private function get_dot_icon( ) {
+		return sprintf(
+			'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<circle cx="6" cy="6" r="6" fill="black" fill-opacity="0.2"/>
+			</svg>',
+		);
+	}
+
+	private function get_selected_dot_icon( ) {
+		return sprintf(
+			'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<circle cx="6" cy="6" r="6" fill="black"/>
+			</svg>',
 		);
 	}
 }
