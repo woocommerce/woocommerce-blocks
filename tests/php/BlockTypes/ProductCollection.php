@@ -70,9 +70,7 @@ class ProductCollection extends \WP_UnitTestCase {
 
 		$query = build_query_vars_from_query_block( $block, 1 );
 
-		$parsed_block['context']['query'] = $parsed_block['attrs']['query'];
-
-		return $this->block_instance->build_frontend_query( $query, $parsed_block, 1 );
+		return $this->block_instance->build_frontend_query( $query, $block, 1 );
 	}
 
 	/**
