@@ -9,9 +9,11 @@ import { select, dispatch } from '@wordpress/data';
  * Generates layout attributes based on the position of thumbnails.
  *
  * @param {string} thumbnailsPosition - The position of thumbnails ('bottom' or other values).
- * @return {Object} - An object representing layout attributes.
+ * @return {{type: string, orientation?: string, flexWrap?: string}} - An object representing layout attributes.
  */
-export function getGroupLayoutAttributes( thumbnailsPosition: string ) {
+export const getGroupLayoutAttributes = (
+	thumbnailsPosition: string
+): { type: string; orientation?: string; flexWrap?: string } => {
 	switch ( thumbnailsPosition ) {
 		case 'bottom':
 			// Stack
@@ -20,15 +22,17 @@ export function getGroupLayoutAttributes( thumbnailsPosition: string ) {
 			// Row
 			return { type: 'flex', flexWrap: 'nowrap' };
 	}
-}
+};
 
 /**
  * Returns inner block lock attributes based on provided action.
  *
  * @param {string} action - The action to take on the inner blocks ('lock' or 'unlock').
- * @return {Object} - An object representing lock attributes for inner blocks.
+ * @return {{lock: {move?: boolean, remove?: boolean}}} - An object representing lock attributes for inner blocks.
  */
-export function getInnerBlocksLockAttributes( action: string ) {
+export const getInnerBlocksLockAttributes = (
+	action: string
+): { lock: { move?: boolean; remove?: boolean } } => {
 	switch ( action ) {
 		case 'lock':
 			return { lock: { move: true, remove: true } };
@@ -37,18 +41,18 @@ export function getInnerBlocksLockAttributes( action: string ) {
 		default:
 			return { lock: {} };
 	}
-}
+};
 
 /**
  * Updates block attributes based on provided attributes.
  *
  * @param {BlockAttributes} attributesToUpdate - The new attributes to set on the block.
- * @param {Object} block - The block object to update.
+ * @param {BlockAttributes | undefined} block - The block object to update.
  */
-export function updateBlockAttributes(
+export const updateBlockAttributes = (
 	attributesToUpdate: BlockAttributes,
 	block: BlockAttributes | undefined
-) {
+): void => {
 	if ( block !== undefined ) {
 		const updatedBlock = {
 			...block,
@@ -63,7 +67,7 @@ export function updateBlockAttributes(
 			updatedBlock
 		);
 	}
-}
+};
 
 /**
  * Moves inner blocks to a position based on provided attributes.
@@ -71,10 +75,10 @@ export function updateBlockAttributes(
  * @param {BlockAttributes} attributes - The attributes of the parent block.
  * @param {string} clientId - The clientId of the parent block.
  */
-export function moveInnerBlocksToPosition(
+export const moveInnerBlocksToPosition = (
 	attributes: BlockAttributes,
 	clientId: string
-) {
+): void => {
 	const parentBlock = select( 'core/block-editor' ).getBlock( clientId );
 
 	if ( parentBlock?.name === 'woocommerce/product-gallery' ) {
@@ -147,7 +151,7 @@ export function moveInnerBlocksToPosition(
 			}
 		}
 	}
-}
+};
 
 /**
  * Updates the type of group block based on provided attributes.
@@ -155,10 +159,10 @@ export function moveInnerBlocksToPosition(
  * @param {BlockAttributes} attributes - The attributes of the parent block.
  * @param {string} clientId - The clientId of the parent block.
  */
-export function updateGroupBlockType(
+export const updateGroupBlockType = (
 	attributes: BlockAttributes,
 	clientId: string
-) {
+): void => {
 	const block = select( 'core/block-editor' ).getBlock( clientId );
 	block?.innerBlocks.forEach( ( innerBlock ) => {
 		if ( innerBlock.name === 'core/group' ) {
@@ -172,4 +176,4 @@ export function updateGroupBlockType(
 			);
 		}
 	} );
-}
+};
