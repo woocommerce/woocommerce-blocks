@@ -4,7 +4,11 @@
 import { Icon } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
-import { dot, selectedDot } from '@woocommerce/icons';
+
+/**
+ * Internal dependencies
+ */
+import { PagerDotIcon, PagerSelectedDotIcon } from './icons';
 
 const DigitsPager = (): JSX.Element => {
 	const pagerDigitsItems = Array.from( { length: 4 }, ( _, index ) => {
@@ -36,7 +40,7 @@ interface DotsPagerProps {
 const DotsPager = ( props: DotsPagerProps ): JSX.Element => {
 	const { iconClass } = props;
 	const pagerDotsItems = Array.from( { length: 4 }, ( _, index ) => {
-		const icon = index === 0 ? selectedDot : dot;
+		const icon = index === 0 ? PagerSelectedDotIcon : PagerDotIcon;
 
 		return (
 			<li key={ index }>
@@ -59,9 +63,9 @@ export const Edit = (): JSX.Element => {
 
 	return (
 		<div { ...blockProps }>
-			{ /* <DotsPager /> */ }
+			<DotsPager />
 
-			<DigitsPager />
+			{ /* <DigitsPager /> */ }
 		</div>
 	);
 };
