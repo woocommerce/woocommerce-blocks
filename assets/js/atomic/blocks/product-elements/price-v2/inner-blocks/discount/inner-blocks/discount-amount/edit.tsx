@@ -25,9 +25,7 @@ const DiscountEdit = ( { attributes, context }: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 	const { product } = useProductDataContext();
 	const isDescendentOfSingleProductTemplate =
-		( context &&
-			context[ 'woocommerce/isDescendentOfSingleProductTemplate' ] ) ||
-		false;
+		context && context[ 'woocommerce/isDescendentOfSingleProductTemplate' ];
 	const originalPrice = product?.prices?.regular_price;
 	const currentPrice = product?.prices?.price;
 	const showPrice =
@@ -42,6 +40,7 @@ const DiscountEdit = ( { attributes, context }: Props ): JSX.Element => {
 		context,
 		originalPrice,
 		currentPrice,
+		isDescendentOfSingleProductTemplate,
 	};
 	return (
 		<>

@@ -20,12 +20,9 @@ const Block = ( {
 	rawPrice,
 	priceType,
 	currency,
+	isDescendentOfSingleProductTemplate,
 }: Props ): JSX.Element | null => {
 	const { className } = attributes;
-	const isDescendentOfSingleProductTemplate =
-		( context &&
-			context[ 'woocommerce/isDescendentOfSingleProductTemplate' ] ) ||
-		false;
 	const { className: stylesClassName, style } = useStyleProps( attributes );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const wrapperClassName = classnames(
@@ -51,7 +48,7 @@ const Block = ( {
 			style={ style }
 			priceClassName={ priceClassName }
 			currency={ currency }
-			withSuperScript={ context[ 'woocommerce/withSuperScriptStyle' ] }
+			withSuperScript={ context?.[ 'woocommerce/withSuperScriptStyle' ] }
 			price={
 				isDescendentOfSingleProductTemplate ? pricePreview : rawPrice
 			}

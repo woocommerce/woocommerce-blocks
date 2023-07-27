@@ -10,7 +10,6 @@ import {
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
 import { useStoreProducts } from '@woocommerce/base-context/hooks';
-import { useStyleProps } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
@@ -156,8 +155,7 @@ const Edit = ( {
 	attributes,
 	...props
 }: Props ): JSX.Element => {
-	const { style, className } = useStyleProps( attributes );
-	const blockProps = useBlockProps( { style, className } );
+	const blockProps = useBlockProps();
 	const withSuperScript = useMemo(
 		() => deriveSuperScriptFromClass( blockProps.className ),
 		[ blockProps.className ]

@@ -1,9 +1,9 @@
 {
-	"$schema": "http://schemas.wp.org/trunk/block.json",
+	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
 	"name": "woocommerce/product-price-v2",
 	"title": "Price",
-	"keywords": "WooCommerce",
+	"keywords": [ "WooCommerce" ],
 	"category": "woocommerce-product-elements",
 	"textdomain": "woo-gutenberg-products-block",
 	"description": "Display the price of a product, including any discounts.",
@@ -14,7 +14,6 @@
 			"default": { "type": "flex" }
 		},
 		"html": false
-
 	},
 	"usesContext": [ "queryId", "postId" ],
 	"providesContext": {

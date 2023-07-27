@@ -31,10 +31,10 @@ const calculateDiscountPercentage = ( originalPrice, currentPrice ) => {
 
 const Block = ( {
 	attributes,
-	context,
 	originalPrice,
 	currentPrice,
 	currency,
+	isDescendentOfSingleProductTemplate,
 }: Props ): JSX.Element | null => {
 	// todo: need to setup discountType and showDiscount as attributes/context
 	// from the parent block.
@@ -43,10 +43,6 @@ const Block = ( {
 		discountType = 'percentage',
 		showDiscount = true,
 	} = attributes;
-	const isDescendentOfSingleProductTemplate =
-		( context &&
-			context[ 'woocommerce/isDescendentOfSingleProductTemplate' ] ) ||
-		false;
 	const { className: stylesClassName, style } = useStyleProps( attributes );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	if ( ! showDiscount ) {

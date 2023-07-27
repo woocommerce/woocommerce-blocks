@@ -21,12 +21,9 @@ const Block = ( {
 	minPrice,
 	maxPrice,
 	currency,
+	isDescendentOfSingleProductTemplate,
 }: Props ): JSX.Element | null => {
 	const { className } = attributes;
-	const isDescendentOfSingleProductTemplate =
-		( context &&
-			context[ 'woocommerce/isDescendentOfSingleProductTemplate' ] ) ||
-		false;
 	const { className: stylesClassName, style } = useStyleProps( attributes );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const wrapperClassName = classnames(

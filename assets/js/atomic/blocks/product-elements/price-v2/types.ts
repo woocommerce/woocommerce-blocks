@@ -33,4 +33,5 @@ export interface PriceProps extends ProductPriceProps {
 	minPrice?: string;
 	maxPrice?: string;
 	priceType: 'original' | 'current';
+	isDescendentOfSingleProductTemplate?: boolean;
 }

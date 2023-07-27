@@ -25,9 +25,7 @@ const CurrentPriceEdit = ( { attributes, context }: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 	const { product } = useProductDataContext();
 	const isDescendentOfSingleProductTemplate =
-		( context &&
-			context[ 'woocommerce/isDescendentOfSingleProductTemplate' ] ) ||
-		false;
+		context && context[ 'woocommerce/isDescendentOfSingleProductTemplate' ];
 	const currentPrice = product?.prices?.price;
 	const currency = isDescendentOfSingleProductTemplate
 		? getCurrencyFromPriceResponse()

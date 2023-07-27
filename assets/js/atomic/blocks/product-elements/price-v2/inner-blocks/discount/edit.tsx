@@ -18,9 +18,7 @@ export const Edit = ( { attributes, setAttributes, context } ): JSX.Element => {
 	const originalPrice = product?.prices?.regular_price;
 	const currentPrice = product?.prices?.price;
 	const isDescendentOfSingleProductTemplate =
-		( context &&
-			context[ 'woocommerce/isDescendentOfSingleProductTemplate' ] ) ||
-		false;
+		context && context[ 'woocommerce/isDescendentOfSingleProductTemplate' ];
 
 	const showPrice =
 		( originalPrice && currentPrice !== originalPrice ) ||
