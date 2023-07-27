@@ -82,6 +82,7 @@ const blocks = {
 	'product-template': {
 		isExperimental: true,
 	},
+	'last-seen-products': {},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,

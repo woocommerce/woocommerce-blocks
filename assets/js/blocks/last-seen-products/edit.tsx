@@ -4,7 +4,7 @@
 import {
 	BLOCK_ATTRIBUTES,
 	INNER_BLOCKS_TEMPLATE,
-} from '@woocommerce/blocks/product-query/variations';
+} from '@woocommerce/blocks/product-query/variations/last-seen-products';
 import {
 	InnerBlocks,
 	InspectorControls,
