@@ -5,11 +5,16 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
-import { type ElementType, useEffect } from '@wordpress/element';
+import { type ElementType } from '@wordpress/element';
 import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { EditorBlock } from '@woocommerce/types';
 import { usePrevious } from '@woocommerce/base-hooks';
-
+import {
+	replaceProductsWithProductCollection,
+	setUpgradeStatus,
+	INITIAL_STATUS_LS_VALUE,
+	MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
+} from '@woocommerce/blocks/migration-products-to-product-collection';
 import {
 	FormTokenField,
 	ToggleControl,
@@ -43,13 +48,6 @@ import { AttributesFilter } from './inspector-controls/attributes-filter';
 import { PopularPresets } from './inspector-controls/popular-presets';
 import { ProductSelector } from './inspector-controls/product-selector';
 import { UpgradeNotice } from './inspector-controls/upgrade-notice';
-import {
-	replaceProductsWithProductCollection,
-	setUpgradeStatus,
-	triggerAutoUpdate,
-	INITIAL_STATUS_LS_VALUE,
-	MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
-} from '../migration-products-to-product-collection';
 
 import './editor.scss';
 
@@ -227,10 +225,6 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 		setUpgradeStatus( INITIAL_STATUS_LS_VALUE );
 		replaceProductsWithProductCollection();
 	};
-
-	useEffect( () => {
-		triggerAutoUpdate();
-	} );
 
 	return (
 		<>

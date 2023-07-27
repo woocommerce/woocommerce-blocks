@@ -217,24 +217,22 @@ export const replaceProductsWithProductCollection = () => {
 	replaceProductsBlocks( productsBlockClientIds );
 };
 
-export let productsReplacementUnsubscribe: ( () => void ) | undefined;
+let unsubscribe: ( () => void ) | undefined;
 export const disableAutoUpdate = () => {
-	// console.log( 'Unsuscribing', productsReplacementUnsubscribe );
-	if ( productsReplacementUnsubscribe ) {
-		productsReplacementUnsubscribe();
+	if ( unsubscribe ) {
+		unsubscribe();
 	}
 };
-export const triggerAutoUpdate = () => {
+export const enableAutoUpdate = () => {
 	if ( isWpVersion( '6.1', '>=' ) ) {
 		const { status } = getUpgradeStatus();
 
 		if (
 			AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION &&
 			status !== 'reverted' &&
-			! productsReplacementUnsubscribe
+			! unsubscribe
 		) {
-			// console.log( 'Subscribed', productsReplacementUnsubscribe );
-			productsReplacementUnsubscribe = subscribe( () => {
+			unsubscribe = subscribe( () => {
 				replaceProductsWithProductCollection();
 			}, 'core/block-editor' );
 		}

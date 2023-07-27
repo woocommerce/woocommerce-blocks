@@ -5,14 +5,10 @@ import { __ } from '@wordpress/i18n';
 import { Notice, Button } from '@wordpress/components';
 import { useLocalStorageState } from '@woocommerce/base-hooks';
 import { createInterpolateElement } from '@wordpress/element';
-
-/**
- * Internal dependencies
- */
 import {
 	MIGRATION_STATUS_LS_KEY,
 	INITIAL_STATUS_LS_VALUE,
-} from '../../migration-products-to-product-collection';
+} from '@woocommerce/blocks/migration-products-to-product-collection';
 
 const notice = createInterpolateElement(
 	__(

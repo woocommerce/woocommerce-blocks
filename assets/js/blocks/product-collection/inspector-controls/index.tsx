@@ -1,14 +1,18 @@
 /**
  * External dependencies
  */
-import type { ElementType } from 'react';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { useMemo } from '@wordpress/element';
+import { type ElementType, useMemo } from '@wordpress/element';
 import { EditorBlock } from '@woocommerce/types';
 import { addFilter } from '@wordpress/hooks';
 import { ProductCollectionFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
+import {
+	enableAutoUpdate,
+	revertMigration,
+	getUpgradeStatus,
+} from '@woocommerce/blocks/migration-products-to-product-collection';
 import {
 	// @ts-expect-error Using experimental features
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -34,10 +38,6 @@ import TaxonomyControls from './taxonomy-controls';
 import HandPickedProductsControl from './hand-picked-products-control';
 import AuthorControl from './author-control';
 import DisplayLayoutControl from './display-layout-control';
-import {
-	revertMigration,
-	getUpgradeStatus,
-} from '../../migration-products-to-product-collection';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -108,6 +108,13 @@ const ProductCollectionInspectorControls = (
 };
 
 export default ProductCollectionInspectorControls;
+
+// Trigger Auto Upgrade of Products only once when module is loaded.
+// This triggers subscription but only if:
+// - auto update is enabled
+// - user haven't reverted the migration
+// - no other subscription is in place
+enableAutoUpdate();
 
 const isProductCollection = ( blockName: string ) =>
 	blockName === metadata.name;
