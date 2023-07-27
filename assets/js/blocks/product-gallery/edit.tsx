@@ -119,7 +119,7 @@ export const Edit = ( {
 				}
 			}
 		}
-	}, [ attributes.thumbnailsPosition, clientId ] );
+	}, [ attributes, clientId ] );
 
 	return (
 		<div { ...blockProps }>
