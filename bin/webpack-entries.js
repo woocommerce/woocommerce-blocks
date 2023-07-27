@@ -170,6 +170,10 @@ const entries = {
 		'wc-shipping-method-pickup-location':
 			'./assets/js/extensions/shipping-methods/pickup-location/index.js',
 	},
+	editor: {
+		'wc-classic-template-revert-button':
+			'./assets/js/templates/revert-button/index.tsx',
+	},
 };
 
 const getEntryConfig = ( type = 'main', exclude = [] ) => {
