@@ -31,6 +31,10 @@ export function getTemplateDetailsBySlug(
 		}
 	}
 
+	if ( parsedTemplate.includes( 'taxonomy-product_' ) ) {
+		templateDetails = templates[ 'taxonomy-product_' ];
+	}
+
 	return templateDetails;
 }
 

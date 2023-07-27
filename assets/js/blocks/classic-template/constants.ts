@@ -67,6 +67,14 @@ export const TEMPLATES: TemplateDetails = {
 		),
 		placeholder: PLACEHOLDERS.archiveProduct,
 	},
+	'taxonomy-product_': {
+		type: TYPES.productTaxonomy,
+		title: __(
+			"WooCommerce Product's Custom Taxonomy Block",
+			'woo-gutenberg-products-block'
+		),
+		placeholder: PLACEHOLDERS.archiveProduct,
+	},
 	'product-search-results': {
 		type: TYPES.productSearchResults,
 		title: __(
