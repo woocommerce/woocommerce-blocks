@@ -66,6 +66,13 @@ class ProductGalleryPager extends AbstractBlock {
 		);
 	}
 
+	/**
+	 * Renders the pager based on the given display mode.
+	 *
+	 * @param string $pager_display_mode The display mode for the pager. Possible values are 'dots', 'digits', and 'off'.
+	 *
+	 * @return string|null The rendered pager HTML, or null if the pager is disabled.
+	 */
 	private function render_pager( $pager_display_mode ) {
 		switch ( $pager_display_mode ) {
 			case 'dots':
@@ -77,20 +84,30 @@ class ProductGalleryPager extends AbstractBlock {
 			default:
 				return $this->render_dots_pager();
 		}
-	} 
+	}
 
-	private function render_digits_pager( ) {
+	/**
+	 * Renders the digits pager HTML.
+	 *
+	 * @return string The rendered digits pager HTML.
+	 */
+	private function render_digits_pager() {
 		return sprintf(
 			'<ul class="wp-block-woocommerce-product-gallery-pager__pager">
 				<li class="wp-block-woocommerce-product-gallery__pager-item is-active">1</li>
 				<li class="wp-block-woocommerce-product-gallery__pager-item">2</li>
 				<li class="wp-block-woocommerce-product-gallery__pager-item">3</li>
 				<li class="wp-block-woocommerce-product-gallery__pager-item">4</li>
-			</ul>',
+			</ul>'
 		);
 	}
 
-	private function render_dots_pager( ) {
+	/**
+	 * Renders the dots pager HTML.
+	 *
+	 * @return string The rendered dots pager HTML.
+	 */
+	private function render_dots_pager() {
 		return sprintf(
 			'<ul class="wp-block-woocommerce-product-gallery-pager__pager">
 				<li class="wp-block-woocommerce-product-gallery__pager-item is-active">%1$s</li>
@@ -98,23 +115,33 @@ class ProductGalleryPager extends AbstractBlock {
 				<li class="wp-block-woocommerce-product-gallery__pager-item">%2$s</li>
 			</ul>',
 			$this->get_selected_dot_icon(),
-			$this->get_dot_icon(),
+			$this->get_dot_icon()
 		);
 	}
 
+	/**
+	 * Returns the dot icon SVG code.
+	 *
+	 * @return string The dot icon SVG code.
+	 */
 	private function get_dot_icon( ) {
 		return sprintf(
 			'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<circle cx="6" cy="6" r="6" fill="black" fill-opacity="0.2"/>
-			</svg>',
+			</svg>'
 		);
 	}
 
+	/**
+	 * Returns the selected dot icon SVG code.
+	 *
+	 * @return string The selected dot icon SVG code.
+	 */
 	private function get_selected_dot_icon( ) {
 		return sprintf(
 			'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<circle cx="6" cy="6" r="6" fill="black"/>
-			</svg>',
+			</svg>'
 		);
 	}
 }
