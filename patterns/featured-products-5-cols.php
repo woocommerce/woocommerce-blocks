@@ -6,10 +6,10 @@
  * Block Types: core/query/woocommerce/product-query
  */
 ?>
-<!-- wp:heading {"textAlign":"center","style":{"typography":{"fontStyle":"normal","fontWeight":"800"},"spacing":{"margin":{"bottom":"var:preset|spacing|40"}}},"fontSize":"x-large"} -->
-<h2 class="wp-block-heading has-text-align-center has-x-large-font-size" style="margin-bottom:var(--wp--preset--spacing--40);font-style:normal;font-weight:800">
-	Shop new arrivals
-</h2>
+<!-- wp:heading {"level":3,"textAlign":"center"} -->
+<h3 class="wp-block-heading has-text-align-center">
+	<?php esc_html_e( 'Shop new arrivals', 'woo-gutenberg-products-block' ); ?>
+</h3>
 <!-- /wp:heading -->
 
 <!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"nowrap"}} -->
@@ -41,7 +41,7 @@
 	<!-- wp:button {"textAlign":"center"} -->
 	<div class="wp-block-button">
 		<a class="wp-block-button__link has-text-align-center wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">
-			Shop All
+			<?php esc_html_e( 'Shop All', 'woo-gutenberg-products-block' ); ?>
 		</a>
 	</div>
 	<!-- /wp:button -->
