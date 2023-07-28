@@ -29,6 +29,21 @@ class ProductGalleryPager extends AbstractBlock {
 	}
 
 	/**
+	 * Get the block's attributes.
+	 *
+	 * @param array $attributes Block attributes. Default empty array.
+	 * @return array  Block attributes merged with defaults.
+	 */
+	private function parse_attributes( $attributes ) {
+		// These should match what's set in JS `registerBlockType`.
+		$defaults = array(
+			'pagerDisplayMode' => 'dots',
+		);
+
+		return wp_parse_args( $attributes, $defaults );
+	}
+
+	/**
 	 * Include and render the block.
 	 *
 	 * @param array    $attributes Block attributes. Default empty array.
@@ -37,11 +52,10 @@ class ProductGalleryPager extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$post_id           = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
-		$product           = wc_get_product( $post_id );
+		$parsed_attributes = $this->parse_attributes( $attributes );
 		$classname          = $attributes['className'] ?? '';
 		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$html = $this->render_dots_pager();
+		$html = $this->render_pager( $parsed_attributes['pagerDisplayMode'] );
 
 		return sprintf(
 			'<div %1$s>
@@ -51,6 +65,19 @@ class ProductGalleryPager extends AbstractBlock {
 			$html
 		);
 	}
+
+	private function render_pager( $pager_display_mode ) {
+		switch ( $pager_display_mode ) {
+			case 'dots':
+				return $this->render_dots_pager();
+			case 'digits':
+				return $this->render_digits_pager();
+			case 'off':
+				return null;
+			default:
+				return $this->render_dots_pager();
+		}
+	} 
 
 	private function render_digits_pager( ) {
 		return sprintf(
@@ -67,7 +94,6 @@ class ProductGalleryPager extends AbstractBlock {
 		return sprintf(
 			'<ul class="wp-block-woocommerce-product-gallery-pager__pager">
 				<li class="wp-block-woocommerce-product-gallery__pager-item is-active">%1$s</li>
-				<li class="wp-block-woocommerce-product-gallery__pager-item">%2$s</li>
 				<li class="wp-block-woocommerce-product-gallery__pager-item">%2$s</li>
 				<li class="wp-block-woocommerce-product-gallery__pager-item">%2$s</li>
 			</ul>',

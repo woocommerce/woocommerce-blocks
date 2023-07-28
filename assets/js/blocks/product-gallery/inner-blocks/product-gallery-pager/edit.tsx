@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { Icon } from '@wordpress/icons';
-import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 
 /**
@@ -10,7 +9,7 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
  */
 import { BlockSettings } from './settings';
 import { PagerDotIcon, PagerSelectedDotIcon } from './icons';
-import { BlockAttributes } from './types';
+import { BlockAttributes, PagerDisplayModes } from './types';
 
 const DigitsPager = (): JSX.Element => {
 	const pagerDigitsItems = Array.from( { length: 4 }, ( _, index ) => {
@@ -41,7 +40,7 @@ interface DotsPagerProps {
 
 const DotsPager = ( props: DotsPagerProps ): JSX.Element => {
 	const { iconClass } = props;
-	const pagerDotsItems = Array.from( { length: 4 }, ( _, index ) => {
+	const pagerDotsItems = Array.from( { length: 3 }, ( _, index ) => {
 		const icon = index === 0 ? PagerSelectedDotIcon : PagerDotIcon;
 
 		return (
@@ -56,6 +55,25 @@ const DotsPager = ( props: DotsPagerProps ): JSX.Element => {
 			{ pagerDotsItems }
 		</ul>
 	);
+};
+
+interface PagerProps {
+	pagerDisplayMode: PagerDisplayModes;
+}
+
+const Pager = ( props: PagerProps ): JSX.Element | null => {
+	const { pagerDisplayMode } = props;
+
+	switch ( pagerDisplayMode ) {
+		case PagerDisplayModes.DOTS:
+			return <DotsPager />;
+		case PagerDisplayModes.DIGITS:
+			return <DigitsPager />;
+		case PagerDisplayModes.OFF:
+			return null;
+		default:
+			return <DotsPager />;
+	}
 };
 
 interface EditProps {
@@ -77,9 +95,8 @@ export const Edit = ( props: EditProps ): JSX.Element => {
 					setAttributes={ setAttributes }
 				/>
 			</InspectorControls>
-			<DotsPager />
 
-			{ /* <DigitsPager /> */ }
+			<Pager pagerDisplayMode={ attributes.pagerDisplayMode } />
 		</div>
 	);
 };

@@ -8,5 +8,11 @@
     "category": "woocommerce",
     "keywords": [ "WooCommerce" ],
     "textdomain": "woo-gutenberg-products-block",
-	"ancestor": [ "woocommerce/product-gallery" ]
+	"ancestor": [ "woocommerce/product-gallery" ],
+    "attributes": {
+		"pagerDisplayMode": {
+			"type": "string",
+			"default": "dots"
+		}
+	}
 }
