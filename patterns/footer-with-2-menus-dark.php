@@ -75,7 +75,7 @@
 				'<a href="https://woocommerce.com/" target="_blank" rel="noreferrer nofollow">WooCommerce</a>'
 			);
 			?>
-		</p>
+		</em></p>
 		<!-- /wp:paragraph -->
 	</div>
 	<!-- /wp:group -->
