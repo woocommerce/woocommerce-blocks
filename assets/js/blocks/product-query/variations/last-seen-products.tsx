@@ -13,12 +13,13 @@ import {
 	INNER_BLOCKS_TEMPLATE,
 	QUERY_DEFAULT_ATTRIBUTES,
 	QUERY_LOOP_ID,
+	DEFAULT_ALLOWED_CONTROLS,
 } from '../constants';
 
 const VARIATION_NAME = 'woocommerce/last-seen-products';
 const LAST_SEEN_PRODUCTS_ATTRIBUTES = {
 	...QUERY_DEFAULT_ATTRIBUTES,
-	allowedControls: [],
+	allowedControls: DEFAULT_ALLOWED_CONTROLS,
 	query: {
 		...QUERY_DEFAULT_ATTRIBUTES.query,
 		__woocommerceStockStatus: 'instock',
@@ -47,6 +48,7 @@ if ( isExperimentalBuild() ) {
 		// https://github.com/WordPress/gutenberg/pull/43632
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
+		allowedControls: [],
 		innerBlocks: [ allowedInnerBlocks ],
 		scope: [ 'block', 'inserter' ],
 	} );
