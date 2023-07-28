@@ -152,7 +152,7 @@ class ProductButton extends AbstractBlock {
 				data-wc-class--added="selectors.woocommerce.isThereMoreThanOneItem"
 			';
 
-			$span_button_directives = 'data-wc-text="selectors.woocommerce.addToCartText" data-wc-class--wc-block-slide-out="selectors.woocommerce.shouldSlideOutAnimationStart" " data-wc-class--wc-block-slide-in="selectors.woocommerce.shouldSlideInAnimationStart" data-wc-on--animationend="actions.woocommerce.handleAnimationEnd"';
+			$span_button_directives = 'data-wc-text="selectors.woocommerce.addToCartText" data-wc-class--wc-block-slide-out="selectors.woocommerce.shouldSlideOutAnimationStart" data-wc-class--wc-block-slide-in="selectors.woocommerce.shouldSlideInAnimationStart" data-wc-on--animationstart="actions.woocommerce.handleAnimationStart" data-wc-on--animationend="actions.woocommerce.handleAnimationEnd"';
 
 			if ( isset( WC()->cart ) && WC()->cart->is_empty() ) {
 				$context['woocommerce']['numberOfItems'] = 0;

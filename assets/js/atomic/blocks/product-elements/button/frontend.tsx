@@ -8,6 +8,7 @@ import { dispatch, select, subscribe } from '@wordpress/data';
 import { Cart } from '@woocommerce/type-defs/cart';
 import { createRoot } from '@wordpress/element';
 import NoticeBanner from '@woocommerce/base-components/notice-banner';
+
 type Context = {
 	woocommerce: {
 		isLoading: boolean;
@@ -17,22 +18,22 @@ type Context = {
 		productPermalink: string;
 		displayViewCart: boolean;
 		initialNumberOfItems: number;
-		firstAnimationFinished: boolean | undefined;
 		shouldStartAnimation: boolean | undefined;
-		animationStatus: AnimationStatus;
+		slideOutStatus: AnimationStatus;
+		slideInStatus: AnimationStatus;
 	};
 };
 
 enum AnimationStatus {
 	NOT_STARTED = 'NOT_STARTED',
 	STARTED = 'STARTED',
-	IN_PROGRESS = 'IN_PROGRESS',
 	FINISHED = 'FINISHED',
 }
 
 type State = {
 	woocommerce: {
 		cart: Cart | undefined;
+		prevCart: Cart | undefined;
 		inTheCartText: string;
 	};
 };
@@ -74,27 +75,28 @@ const productButtonSelectors = {
 				} );
 			}
 
-			if ( selectors.woocommerce.shouldAnimationStart( store ) ) {
-				if ( context.woocommerce.firstAnimationFinished ) {
-					return getTextButton( {
-						addToCartText: context.woocommerce.addToCartText,
-						inTheCartText: state.woocommerce.inTheCartText,
-						numberOfItems:
-							selectors.woocommerce.numberOfItems( store ),
-					} );
-				}
-
+			if (
+				context.woocommerce.slideOutStatus ===
+					AnimationStatus.FINISHED ||
+				context.woocommerce.slideInStatus ===
+					AnimationStatus.FINISHED ||
+				context.woocommerce.slideInStatus === AnimationStatus.STARTED
+			) {
 				return getTextButton( {
 					addToCartText: context.woocommerce.addToCartText,
 					inTheCartText: state.woocommerce.inTheCartText,
-					numberOfItems: context.woocommerce.initialNumberOfItems,
+					numberOfItems: selectors.woocommerce.numberOfItems( store ),
 				} );
 			}
 
 			return getTextButton( {
 				addToCartText: context.woocommerce.addToCartText,
 				inTheCartText: state.woocommerce.inTheCartText,
-				numberOfItems: selectors.woocommerce.numberOfItems( store ),
+				numberOfItems:
+					selectors.woocommerce.numberOfItems( store ) !==
+					context.woocommerce.initialNumberOfItems
+						? context.woocommerce.numberOfItems
+						: context.woocommerce.initialNumberOfItems,
 			} );
 		},
 		isThereMoreThanOneItem: ( {
@@ -150,6 +152,21 @@ const productButtonSelectors = {
 
 			return product?.quantity || 0;
 		},
+		numberOfItemsPrev: ( {
+			state,
+			context,
+		}: {
+			selecotrs: any;
+			state: State;
+			context: Context;
+		} ) => {
+			const product = getProductById(
+				state.woocommerce.prevCart,
+				context.woocommerce.productId
+			);
+
+			return product?.quantity;
+		},
 
 		shouldAnimationStart: ( store: {
 			context: Context;
@@ -157,12 +174,28 @@ const productButtonSelectors = {
 			state: State;
 		} ) => {
 			const { context, selectors } = store;
-			return (
+
+			const isFreshLoad =
 				selectors.woocommerce.hasCartLoaded( store ) &&
 				context.woocommerce.initialNumberOfItems !==
 					selectors.woocommerce.numberOfItems( store ) &&
-				context.woocommerce.shouldStartAnimation !== false
-			);
+				context.woocommerce.numberOfItems !==
+					selectors.woocommerce.numberOfItems( store );
+
+			const isFromCart =
+				selectors.woocommerce.numberOfItemsPrev( store ) !==
+					undefined &&
+				selectors.woocommerce.numberOfItemsPrev( store ) !==
+					selectors.woocommerce.numberOfItems( store ) &&
+				selectors.woocommerce.numberOfItems( store ) !==
+					context.woocommerce.numberOfItems;
+
+			const isFromUserAction =
+				! isFreshLoad &&
+				! isFromCart &&
+				context.woocommerce.shouldStartAnimation === false;
+
+			return ( isFromCart || isFreshLoad ) && ! isFromUserAction;
 		},
 		shouldSlideOutAnimationStart: ( store: {
 			context: Context;
@@ -170,21 +203,23 @@ const productButtonSelectors = {
 			state: State;
 		} ) => {
 			const { context, selectors } = store;
+
 			return (
 				selectors.woocommerce.shouldAnimationStart( store ) &&
-				context.woocommerce.firstAnimationFinished === undefined
+				( context.woocommerce.slideOutStatus ===
+					AnimationStatus.NOT_STARTED ||
+					context.woocommerce.slideOutStatus === undefined ||
+					AnimationStatus.STARTED )
 			);
 		},
-		// eslint-disable-next-line @typescript-eslint/no-shadow
 		shouldSlideInAnimationStart: ( store: {
 			context: Context;
 			selectors: any;
 			state: State;
 		} ) => {
-			const { context, selectors } = store;
+			const { context } = store;
 			return (
-				selectors.woocommerce.shouldAnimationStart( store ) &&
-				context.woocommerce.firstAnimationFinished
+				context.woocommerce.slideOutStatus === AnimationStatus.FINISHED
 			);
 		},
 	},
@@ -233,9 +268,10 @@ interactivityStore(
 							context.woocommerce.productId,
 							1
 						);
-						context.woocommerce.numberOfItems++;
 						context.woocommerce.isLoading = false;
 						context.woocommerce.displayViewCart = true;
+						context.woocommerce.numberOfItems++;
+						context.woocommerce.shouldStartAnimation = undefined;
 					} catch ( error ) {
 						const domNode = document.querySelector(
 							'.wc-block-store-notices'
@@ -264,22 +300,54 @@ interactivityStore(
 						console.error( error );
 					}
 				},
+				handleAnimationStart: ( {
+					context,
+					event,
+				}: {
+					context: Context;
+					event: AnimationEvent;
+				} ) => {
+					if ( event.animationName === 'slideOut' ) {
+						context.woocommerce.slideInStatus =
+							AnimationStatus.NOT_STARTED;
+						context.woocommerce.slideOutStatus =
+							AnimationStatus.STARTED;
+					}
+					if ( event.animationName === 'slideIn' ) {
+						context.woocommerce.slideInStatus =
+							AnimationStatus.STARTED;
+					}
+				},
 				handleAnimationEnd: ( {
 					event,
 					context,
+					state,
 				}: {
 					event: AnimationEvent;
 					context: Context;
+					state: State;
 				} ) => {
 					if ( event.animationName === 'slideOut' ) {
-						context.woocommerce.firstAnimationFinished = true;
+						context.woocommerce.slideOutStatus =
+							AnimationStatus.FINISHED;
+						context.woocommerce.numberOfItems =
+							getProductById(
+								state.woocommerce.cart,
+								context.woocommerce.productId
+							)?.quantity || 0;
+					}
+					if ( event.animationName === 'slideIn' ) {
+						context.woocommerce.slideInStatus =
+							AnimationStatus.FINISHED;
+						context.woocommerce.slideOutStatus =
+							AnimationStatus.NOT_STARTED;
 					}
 				},
 			},
 		},
 	},
 	{
-		afterLoad: ( { state } ) => {
+		afterLoad: ( { state }: { state: State } ) => {
 			// Subscribe to changes in Cart data.
 			subscribe( () => {
 				const cartData = select( storeKey ).getCartData();
@@ -287,6 +355,12 @@ interactivityStore(
 					select( storeKey ).hasFinishedResolution( 'getCartData' );
 
 				if ( isResolutionFinished ) {
+					if (
+						cartData.itemsCount !==
+						state.woocommerce.cart?.itemsCount
+					) {
+						state.woocommerce.prevCart = state.woocommerce.cart;
+					}
 					state.woocommerce.cart = cartData;
 				}
 			}, storeKey );
