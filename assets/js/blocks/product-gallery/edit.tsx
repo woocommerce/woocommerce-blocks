@@ -13,7 +13,11 @@ export const Edit = (): JSX.Element => {
 					'woocommerce/product-gallery-large-image',
 					'woocommerce/product-gallery-pager',
 				] }
-				templateLock={ false }
+				template={ [
+					[ 'woocommerce/product-gallery-large-image' ],
+					[ 'woocommerce/product-gallery-pager' ],
+				] }
+				templateLock={ 'all' }
 			/>
 		</div>
 	);
