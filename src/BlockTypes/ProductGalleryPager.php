@@ -124,7 +124,7 @@ class ProductGalleryPager extends AbstractBlock {
 	 *
 	 * @return string The dot icon SVG code.
 	 */
-	private function get_dot_icon( ) {
+	private function get_dot_icon() {
 		return sprintf(
 			'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<circle cx="6" cy="6" r="6" fill="black" fill-opacity="0.2"/>
@@ -137,7 +137,7 @@ class ProductGalleryPager extends AbstractBlock {
 	 *
 	 * @return string The selected dot icon SVG code.
 	 */
-	private function get_selected_dot_icon( ) {
+	private function get_selected_dot_icon() {
 		return sprintf(
 			'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<circle cx="6" cy="6" r="6" fill="black"/>
