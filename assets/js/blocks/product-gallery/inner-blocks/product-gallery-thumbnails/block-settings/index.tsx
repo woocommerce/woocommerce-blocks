@@ -27,9 +27,16 @@ import {
 	__experimentalToggleGroupControl as ToggleGroupControl,
 } from '@wordpress/components';
 
+enum ThumbnailsPosition {
+	'off' = 'off',
+	'left' = 'left',
+	'bottom' = 'bottom',
+	'right' = 'right',
+}
+
 interface ContextProps {
 	productGalleryClientId: string;
-	thumbnailsPosition: string;
+	thumbnailsPosition: ThumbnailsPosition;
 	thumbnailsNumberOfThumbnails: number;
 }
 
