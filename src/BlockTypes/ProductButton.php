@@ -112,6 +112,8 @@ class ProductButton extends AbstractBlock {
 				)
 			);
 
+			$default_quantity = 1;
+
 			$context = array(
 				'woocommerce' => array(
 					'isLoading'            => false,
@@ -119,6 +121,15 @@ class ProductButton extends AbstractBlock {
 					'productId'            => $product->get_id(),
 					'addToCartText'        => null !== $product->add_to_cart_text() ? $product->add_to_cart_text() : __( 'Add to cart', 'woo-gutenberg-products-block' ),
 					'initialNumberOfItems' => $number_of_items_in_cart,
+					/**
+					* Filters the change the quantity to add to cart.
+					*
+					* @since $VID:$
+					* @param number $default_quantity The default quantity.
+					* @param number $product_id The product id.
+					*/
+					'quantityToAdd'        => apply_filters( 'woocommerce_add_to_cart_quantity', $default_quantity, $product->get_id() ),
+
 				),
 			);
 

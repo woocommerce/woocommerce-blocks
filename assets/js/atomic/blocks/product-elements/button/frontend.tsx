@@ -21,6 +21,7 @@ type Context = {
 		shouldStartAnimation: boolean | undefined;
 		slideOutStatus: AnimationStatus;
 		slideInStatus: AnimationStatus;
+		quantityToAdd: number;
 	};
 };
 
@@ -267,11 +268,13 @@ interactivityStore(
 					try {
 						await dispatch( storeKey ).addItemToCart(
 							context.woocommerce.productId,
-							1
+							context.woocommerce.quantityToAdd
 						);
 						context.woocommerce.isLoading = false;
 						context.woocommerce.displayViewCart = true;
-						context.woocommerce.numberOfItems++;
+						context.woocommerce.numberOfItems =
+							context.woocommerce.numberOfItems +
+							context.woocommerce.quantityToAdd;
 						context.woocommerce.shouldStartAnimation = undefined;
 					} catch ( error ) {
 						const domNode = document.querySelector(
