@@ -28,7 +28,7 @@ import {
 } from '@wordpress/components';
 
 interface ContextProps {
-	clientId: string;
+	productGalleryClientId: string;
 	thumbnailsPosition: string;
 	thumbnailsNumberOfThumbnails: number;
 }
@@ -61,7 +61,7 @@ const positionHelp: Record< string, string > = {
 export const BlockSettings = ( { context }: ThumbnailSettingProps ) => {
 	const maxNumberOfThumbnails = 8;
 	const minNumberOfThumbnails = 2;
-	const { clientId } = context;
+	const { productGalleryClientId } = context;
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore @wordpress/block-editor/store types not provided
 	const { updateBlockAttributes } = useDispatch( blockEditorStore );
@@ -78,7 +78,7 @@ export const BlockSettings = ( { context }: ThumbnailSettingProps ) => {
 					value={ context.thumbnailsPosition }
 					help={ positionHelp[ context.thumbnailsPosition ] }
 					onChange={ ( value: string ) =>
-						updateBlockAttributes( clientId, {
+						updateBlockAttributes( productGalleryClientId, {
 							thumbnailsPosition: value,
 						} )
 					}
@@ -120,7 +120,7 @@ export const BlockSettings = ( { context }: ThumbnailSettingProps ) => {
 						) }
 						value={ context.thumbnailsNumberOfThumbnails }
 						onChange={ ( value: number ) =>
-							updateBlockAttributes( clientId, {
+							updateBlockAttributes( productGalleryClientId, {
 								thumbnailsNumberOfThumbnails: value,
 							} )
 						}

@@ -49,12 +49,14 @@ export const Edit = ( {
 }: Props ): JSX.Element => {
 	const blockProps = useBlockProps();
 
+	useEffect( () => {
+		setAttributes( {
+			productGalleryClientId: clientId,
+		} );
+	}, [ clientId, setAttributes ] );
+
 	// Update the Group block type when the thumbnailsPosition attribute changes.
 	updateGroupBlockType( attributes, clientId );
-
-	useEffect( () => {
-		setAttributes( { clientId } );
-	}, [ clientId, setAttributes ] );
 
 	useEffect( () => {
 		// Move the Thumbnails block to the correct above or below the Large Image based on the thumbnailsPosition attribute.
@@ -68,7 +70,7 @@ export const Edit = ( {
 					attributes={ attributes }
 					setAttributes={ setAttributes }
 					context={ {
-						clientId,
+						productGalleryClientId: clientId,
 						thumbnailsPosition: attributes.thumbnailsPosition,
 						thumbnailsNumberOfThumbnails:
 							attributes.thumbnailsNumberOfThumbnails,

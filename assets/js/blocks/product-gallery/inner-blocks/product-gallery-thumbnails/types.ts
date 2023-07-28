@@ -1,13 +1,13 @@
 export interface BlockAttributes {
 	thumbnailsPosition: string;
 	thumbnailsNumberOfThumbnails: number;
-	clientId: string;
+	productGalleryClientId: string;
 }
 
 export interface Context {
 	context: {
 		thumbnailsPosition: string;
 		thumbnailsNumberOfThumbnails: number;
-		clientId: string;
+		productGalleryClientId: string;
 	};
 }
