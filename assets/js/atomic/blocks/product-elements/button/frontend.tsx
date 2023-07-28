@@ -85,7 +85,8 @@ const productButtonSelectors = {
 				return getTextButton( {
 					addToCartText: context.woocommerce.addToCartText,
 					inTheCartText: state.woocommerce.inTheCartText,
-					numberOfItems: selectors.woocommerce.numberOfItems( store ),
+					numberOfItems:
+						selectors.woocommerce.getNumberOfItems( store ),
 				} );
 			}
 
@@ -93,7 +94,7 @@ const productButtonSelectors = {
 				addToCartText: context.woocommerce.addToCartText,
 				inTheCartText: state.woocommerce.inTheCartText,
 				numberOfItems:
-					selectors.woocommerce.numberOfItems( store ) !==
+					selectors.woocommerce.getNumberOfItems( store ) !==
 					context.woocommerce.initialNumberOfItems
 						? context.woocommerce.numberOfItems
 						: context.woocommerce.initialNumberOfItems,
@@ -137,7 +138,7 @@ const productButtonSelectors = {
 		hasCartLoaded: ( { state }: { state: State } ) => {
 			return state.woocommerce.cart !== undefined;
 		},
-		numberOfItems: ( {
+		getNumberOfItems: ( {
 			state,
 			context,
 		}: {
@@ -152,11 +153,10 @@ const productButtonSelectors = {
 
 			return product?.quantity || 0;
 		},
-		numberOfItemsPrev: ( {
+		getNumberOfItemsPrev: ( {
 			state,
 			context,
 		}: {
-			selecotrs: any;
 			state: State;
 			context: Context;
 		} ) => {
@@ -175,20 +175,21 @@ const productButtonSelectors = {
 		} ) => {
 			const { context, selectors } = store;
 
+			const numberOfItems =
+				selectors.woocommerce.getNumberOfItems( store );
+
+			const prevNumberOfItems =
+				selectors.woocommerce.getNumberOfItemsPrev( store );
+
 			const isFreshLoad =
 				selectors.woocommerce.hasCartLoaded( store ) &&
-				context.woocommerce.initialNumberOfItems !==
-					selectors.woocommerce.numberOfItems( store ) &&
-				context.woocommerce.numberOfItems !==
-					selectors.woocommerce.numberOfItems( store );
+				context.woocommerce.initialNumberOfItems !== numberOfItems &&
+				context.woocommerce.numberOfItems !== numberOfItems;
 
 			const isFromCart =
-				selectors.woocommerce.numberOfItemsPrev( store ) !==
-					undefined &&
-				selectors.woocommerce.numberOfItemsPrev( store ) !==
-					selectors.woocommerce.numberOfItems( store ) &&
-				selectors.woocommerce.numberOfItems( store ) !==
-					context.woocommerce.numberOfItems;
+				prevNumberOfItems !== undefined &&
+				prevNumberOfItems !== numberOfItems &&
+				numberOfItems !== context.woocommerce.numberOfItems;
 
 			const isFromUserAction =
 				! isFreshLoad &&
