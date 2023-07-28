@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use WP_Query;
+use Automattic\WooCommerce\Blocks\Utils\Utils;
 
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_query
@@ -71,8 +72,45 @@ class ProductQuery extends AbstractBlock {
 			10,
 			2
 		);
+		add_filter(
+			'render_block',
+			array( $this, 'enqueue_styles' ),
+			10,
+			2
+		);
 		add_filter( 'rest_product_query', array( $this, 'update_rest_query' ), 10, 2 );
 		add_filter( 'rest_product_collection_params', array( $this, 'extend_rest_query_allowed_params' ), 10, 1 );
+	}
+
+	/**
+	 * Post Template support for grid view was introduced in Gutenberg 16 / WordPress 6.3
+	 * Fixed in:
+	 * - https://github.com/woocommerce/woocommerce-blocks/pull/9916
+	 * - https://github.com/woocommerce/woocommerce-blocks/pull/10360
+	 */
+	private function check_if_post_template_has_support_for_grid_view() {
+		if ( Utils::wp_version_compare( '6.3', '>=' ) ) {
+			return true;
+		}
+
+		if ( is_plugin_active( 'gutenberg/gutenberg.php' ) ) {
+			$gutenberg_version = '';
+
+			if ( defined( 'GUTENBERG_VERSION' ) ) {
+				$gutenberg_version = GUTENBERG_VERSION;
+			}
+
+			if ( ! $gutenberg_version ) {
+				$gutenberg_data    = get_file_data(
+					WP_PLUGIN_DIR . '/gutenberg/gutenberg.php',
+					array( 'Version' => 'Version' )
+				);
+				$gutenberg_version = $gutenberg_data['Version'];
+			}
+			return version_compare( $gutenberg_version, '16.0', '>=' );
+		}
+
+		return false;
 	}
 
 	/**
@@ -85,26 +123,16 @@ class ProductQuery extends AbstractBlock {
 	protected function enqueue_data( array $attributes = [] ) {
 		parent::enqueue_data( $attributes );
 
-		$gutenberg_version = '';
-
-		if ( is_plugin_active( 'gutenberg/gutenberg.php' ) ) {
-			if ( defined( 'GUTENBERG_VERSION' ) ) {
-				$gutenberg_version = GUTENBERG_VERSION;
-			}
-
-			if ( ! $gutenberg_version ) {
-				$gutenberg_data    = get_file_data(
-					WP_PLUGIN_DIR . '/gutenberg/gutenberg.php',
-					array( 'Version' => 'Version' )
-				);
-				$gutenberg_version = $gutenberg_data['Version'];
-			}
-		}
+		$post_template_has_support_for_grid_view = $this->check_if_post_template_has_support_for_grid_view();
 
 		$this->asset_data_registry->add(
 			'post_template_has_support_for_grid_view',
-			version_compare( $gutenberg_version, '16.0', '>=' )
+			$post_template_has_support_for_grid_view
 		);
+
+		// The `loop_shop_per_page` filter can be found in WC_Query::product_query().
+		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+		$this->asset_data_registry->add( 'loop_shop_per_page', apply_filters( 'loop_shop_per_page', wc_get_default_products_per_row() * wc_get_default_product_rows_per_page() ), true );
 	}
 
 	/**
@@ -116,6 +144,22 @@ class ProductQuery extends AbstractBlock {
 	public static function is_woocommerce_variation( $parsed_block ) {
 		return isset( $parsed_block['attrs']['namespace'] )
 		&& substr( $parsed_block['attrs']['namespace'], 0, 11 ) === 'woocommerce';
+	}
+
+	/**
+	 * Enqueues the variation styles when rendering the Product Query variation.
+	 *
+	 * @param string $block_content The block content.
+	 * @param array  $block         The full block, including name and attributes.
+	 *
+	 * @return string The block content.
+	 */
+	public function enqueue_styles( string $block_content, array $block ) {
+		if ( 'core/query' === $block['blockName'] && self::is_woocommerce_variation( $block ) ) {
+			wp_enqueue_style( 'wc-blocks-style-product-query' );
+		}
+
+		return $block_content;
 	}
 
 	/**
@@ -135,7 +179,6 @@ class ProductQuery extends AbstractBlock {
 			// Set this so that our product filters can detect if it's a PHP template.
 			$this->asset_data_registry->add( 'has_filterable_products', true, true );
 			$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
-			$this->asset_data_registry->add( 'product_ids', $this->get_products_ids_by_attributes( $parsed_block ), true );
 			add_filter(
 				'query_loop_block_query_vars',
 				array( $this, 'build_query' ),
@@ -222,33 +265,6 @@ class ProductQuery extends AbstractBlock {
 		);
 
 		return $this->filter_query_to_only_include_ids( $merged_query, $handpicked_products );
-	}
-
-	/**
-	 * Return the product ids based on the attributes and global query.
-	 * This is used to allow the filter blocks to render data that matches with variations. More details here: https://github.com/woocommerce/woocommerce-blocks/issues/7245
-	 *
-	 * @param array $parsed_block The block being rendered.
-	 * @return array
-	 */
-	private function get_products_ids_by_attributes( $parsed_block ) {
-		$query = $this->merge_queries(
-			array(
-				'post_type'      => 'product',
-				'post__in'       => array(),
-				'post_status'    => 'publish',
-				'posts_per_page' => -1,
-				'meta_query'     => array(),
-				'tax_query'      => array(),
-			),
-			$this->get_queries_by_custom_attributes( $parsed_block ),
-			$this->get_global_query( $parsed_block )
-		);
-
-		$products = new \WP_Query( $query );
-		$post_ids = wp_list_pluck( $products->posts, 'ID' );
-
-		return $post_ids;
 	}
 
 	/**

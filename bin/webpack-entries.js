@@ -50,6 +50,10 @@ const blocks = {
 	'product-gallery': {
 		isExperimental: true,
 	},
+	'product-gallery-large-image': {
+		customDir: 'product-gallery/inner-blocks/product-gallery-large-image',
+		isExperimental: true,
+	},
 	'product-new': {},
 	'product-on-sale': {},
 	'product-query': {
@@ -61,9 +65,9 @@ const blocks = {
 	'product-top-rated': {},
 	'products-by-attribute': {},
 	'rating-filter': {},
-	'product-rating-stars': {
-		isExperimental: true,
-	},
+	'product-average-rating': {},
+	'product-rating-stars': {},
+	'product-rating-counter': {},
 	'reviews-by-category': {
 		customDir: 'reviews/reviews-by-category',
 	},
@@ -123,6 +127,8 @@ const entries = {
 			'./assets/js/atomic/blocks/product-elements/product-reviews/index.tsx',
 		'product-details':
 			'./assets/js/atomic/blocks/product-elements/product-details/index.tsx',
+		'add-to-cart-form':
+			'./assets/js/atomic/blocks/product-elements/add-to-cart-form/index.tsx',
 		...getBlockEntries( '{index,block,frontend}.{t,j}s{,x}' ),
 	},
 	core: {

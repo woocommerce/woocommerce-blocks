@@ -50,7 +50,7 @@ We release a new version of WooCommerce Blocks onto WordPress.org every few week
 
 1. Make sure you have the latest versions of WordPress and WooCommerce on your site.
 2. Get a copy of this plugin using the green "Clone or download" button on the right.
-3. Make sure you're using Node.js v16.
+3. Make sure you're using Node.js v16.15. If you use a Node version management tool such as `nvm` or `n`, you can do so by running `nvm use` or `n auto`, respectively.
 4. `npm install` to install the dependencies.
 5. `composer install` to install core dependencies.
 6. To compile the code, run any of the following commands
@@ -72,7 +72,7 @@ To begin contributing to the WooCommerce Blocks plugin, see our [getting started
 Other useful docs to explore:
 
 -   [`InnerBlocks`](https://github.com/WordPress/gutenberg/blob/master/packages/block-editor/src/components/inner-blocks/README.md)
--   [`apiFetch`](https://wordpress.org/gutenberg/handbook/designers-developers/developers/packages/packages-api-fetch/)
+-   [`apiFetch`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-api-fetch/)
 -   [`@wordpress/editor`](https://github.com/WordPress/gutenberg/blob/master/packages/editor/README.md)
 -   [`@wordpress/create-block`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-create-block/)
 

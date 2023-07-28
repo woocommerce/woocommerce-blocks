@@ -68,6 +68,7 @@ class BlockTemplatesController {
 	 * Initialization method.
 	 */
 	protected function init() {
+		add_filter( 'default_wp_template_part_areas', array( $this, 'register_mini_cart_template_part_area' ), 10, 1 );
 		add_action( 'template_redirect', array( $this, 'render_block_template' ) );
 		add_filter( 'pre_get_block_template', array( $this, 'get_block_template_fallback' ), 10, 3 );
 		add_filter( 'pre_get_block_file_template', array( $this, 'get_block_file_template' ), 10, 3 );
@@ -100,7 +101,52 @@ class BlockTemplatesController {
 				10,
 				2
 			);
+
+			// Prevents shortcodes in templates having their HTML content broken by wpautop.
+			// @see https://core.trac.wordpress.org/ticket/58366 for more info.
+			add_filter(
+				'block_type_metadata_settings',
+				function( $settings, $metadata ) {
+					if (
+						isset( $metadata['name'], $settings['render_callback'] ) &&
+						'core/shortcode' === $metadata['name']
+					) {
+						$settings['original_render_callback'] = $settings['render_callback'];
+						$settings['render_callback']          = function( $attributes, $content ) use ( $settings ) {
+							// The shortcode has already been rendered, so look for the cart/checkout HTML.
+							if ( strstr( $content, 'woocommerce-cart-form' ) || strstr( $content, 'woocommerce-checkout-form' ) ) {
+								// Return early before wpautop runs again.
+								return $content;
+							}
+
+							$render_callback = $settings['original_render_callback'];
+
+							return $render_callback( $attributes, $content );
+						};
+					}
+					return $settings;
+				},
+				10,
+				2
+			);
 		}
+	}
+
+	/**
+	 * Add Mini-Cart to the default template part areas.
+	 *
+	 * @param array $default_area_definitions An array of supported area objects.
+	 * @return array The supported template part areas including the Mini-Cart one.
+	 */
+	public function register_mini_cart_template_part_area( $default_area_definitions ) {
+		$mini_cart_template_part_area = [
+			'area'        => 'mini-cart',
+			'label'       => __( 'Mini-Cart', 'woo-gutenberg-products-block' ),
+			'description' => __( 'The Mini-Cart template allows shoppers to see their cart items and provides access to the Cart and Checkout pages.', 'woo-gutenberg-products-block' ),
+			'icon'        => 'mini-cart',
+			'area_tag'    => 'mini-cart',
+		];
+		return array_merge( $default_area_definitions, [ $mini_cart_template_part_area ] );
 	}
 
 	/**
@@ -295,7 +341,7 @@ class BlockTemplatesController {
 	 * @return array
 	 */
 	public function add_block_templates( $query_result, $query, $template_type ) {
-		if ( ! BlockTemplateUtils::supports_block_templates() ) {
+		if ( ! BlockTemplateUtils::supports_block_templates( $template_type ) ) {
 			return $query_result;
 		}
 
@@ -372,6 +418,15 @@ class BlockTemplatesController {
 								return array_merge( $classes, wc_get_product_class() );
 							}
 						);
+
+						global $product;
+
+						if ( ! $product instanceof \WC_Product ) {
+							$product_id = get_the_ID();
+							if ( $product_id ) {
+								wc_setup_product_data( $product_id );
+							}
+						}
 
 						$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
 						$template->content = $new_content;
@@ -563,7 +618,13 @@ class BlockTemplatesController {
 		if (
 			is_singular( 'product' ) && $this->block_template_is_available( 'single-product' )
 		) {
-			$templates = get_block_templates( array( 'slug__in' => array( 'single-product' ) ) );
+			global $post;
+
+			$valid_slugs = [ 'single-product' ];
+			if ( 'product' === $post->post_type && $post->post_name ) {
+				$valid_slugs[] = 'single-product-' . $post->post_name;
+			}
+			$templates = get_block_templates( array( 'slug__in' => $valid_slugs ) );
 
 			if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
 				add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
@@ -724,6 +785,29 @@ class BlockTemplatesController {
 	}
 
 	/**
+	 * Prepare default page template.
+	 *
+	 * @param \WP_Post $page Page object.
+	 * @return string
+	 */
+	protected function get_default_migrate_page_template( $page ) {
+		$default_template_content  = $this->get_block_template_part( 'header' );
+		$default_template_content .= '
+			<!-- wp:group {"layout":{"inherit":true}} -->
+			<div class="wp-block-group">
+				<!-- wp:heading {"level":1} -->
+				<h1 class="wp-block-heading">' . wp_kses_post( $page->post_title ) . '</h1>
+				<!-- /wp:heading -->
+				' . wp_kses_post( $page->post_content ) . '
+			</div>
+			<!-- /wp:group -->
+		';
+		$default_template_content .= $this->get_block_template_part( 'footer' );
+
+		return $default_template_content;
+	}
+
+	/**
 	 * Migrates a page to a template if needed.
 	 *
 	 * @param string   $page_id Page ID.
@@ -735,20 +819,27 @@ class BlockTemplatesController {
 			return;
 		}
 
+		// Use the page template if it exists, which we'll use over our default template if found.
+		$existing_page_template = BlockTemplateUtils::get_block_template( get_stylesheet() . '//page', 'wp_template' );
+
+		if ( $existing_page_template && ! empty( $existing_page_template->content ) ) {
+			// Massage the original content into something we can use. Replace post content with a group block.
+			$pattern          = '/(<!--\s*)wp:post-content(.*?)(\/-->)/';
+			$replacement      = '
+				<!-- wp:group $2 -->
+				<div class="wp-block-group">' . wp_kses_post( $page->post_content ) . '</div>
+				<!-- /wp:group -->
+			';
+			$template_content = preg_replace( $pattern, $replacement, $existing_page_template->content );
+		} else {
+			$template_content = $this->get_default_migrate_page_template( $page );
+		}
+
 		$request = new \WP_REST_Request( 'POST', '/wp/v2/templates/woocommerce/woocommerce//' . $page_id );
 		$request->set_body_params(
 			[
 				'id'      => 'woocommerce/woocommerce//' . $page_id,
-				'content' => $this->get_block_template_part( 'header' ) .
-					'<!-- wp:group {"layout":{"inherit":true}} -->
-					<div class="wp-block-group">
-						<!-- wp:heading {"level":1} -->
-						<h1 class="wp-block-heading">' . wp_kses_post( $page->post_title ) . '</h1>
-						<!-- /wp:heading -->
-						' . wp_kses_post( $page->post_content ) . '
-					</div>
-					<!-- /wp:group -->' .
-					$this->get_block_template_part( 'footer' ),
+				'content' => $template_content,
 			]
 		);
 		rest_get_server()->dispatch( $request );
@@ -763,7 +854,7 @@ class BlockTemplatesController {
 	 * @return string
 	 */
 	protected function get_block_template_part( $part ) {
-		$template_part = get_block_template( get_stylesheet() . '//' . $part, 'wp_template_part' );
+		$template_part = BlockTemplateUtils::get_block_template( get_stylesheet() . '//' . $part, 'wp_template_part' );
 		if ( ! $template_part || empty( $template_part->content ) ) {
 			return '';
 		}
