@@ -104,7 +104,7 @@ class LastSeenProducts extends AbstractBlock {
 			'post_type'      => 'product',
 			'post__in'       => $product_ids,
 			'post_status'    => 'publish',
-			'posts_per_page' => $query['posts_per_page'],
+			'posts_per_page' => 3,
 		);
 	}
 
