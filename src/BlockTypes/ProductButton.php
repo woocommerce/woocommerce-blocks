@@ -116,11 +116,6 @@ class ProductButton extends AbstractBlock {
 
 			$context = array(
 				'woocommerce' => array(
-					'isLoading'            => false,
-					'numberOfItems'        => $number_of_items_in_cart,
-					'productId'            => $product->get_id(),
-					'addToCartText'        => null !== $product->add_to_cart_text() ? $product->add_to_cart_text() : __( 'Add to cart', 'woo-gutenberg-products-block' ),
-					'initialNumberOfItems' => $number_of_items_in_cart,
 					/**
 					* Filters the change the quantity to add to cart.
 					*
@@ -128,8 +123,11 @@ class ProductButton extends AbstractBlock {
 					* @param number $default_quantity The default quantity.
 					* @param number $product_id The product id.
 					*/
-					'quantityToAdd'        => apply_filters( 'woocommerce_add_to_cart_quantity', $default_quantity, $product->get_id() ),
-
+					'quantityToAdd'          => apply_filters( 'woocommerce_add_to_cart_quantity', $default_quantity, $product->get_id() ),
+					'productId'              => $product->get_id(),
+					'addToCartText'          => null !== $product->add_to_cart_text() ? $product->add_to_cart_text() : __( 'Add to cart', 'woo-gutenberg-products-block' ),
+					'temporaryNumberOfItems' => $number_of_items_in_cart,
+					'animationStatus'        => 'IDLE',
 				),
 			);
 
@@ -155,22 +153,27 @@ class ProductButton extends AbstractBlock {
 			if ( isset( $args['attributes']['aria-label'] ) ) {
 				$args['attributes']['aria-label'] = wp_strip_all_tags( $args['attributes']['aria-label'] );
 			}
+			
+			if ( isset( WC()->cart ) && ! WC()->cart->is_empty() ) {
+				$this->prevent_cache();
+			}
 
 			$div_directives    = 'data-wc-context=\'' . wp_json_encode( $context, JSON_NUMERIC_CHECK ) . '\'';
+
 			$button_directives = '
 				data-wc-on--click="actions.woocommerce.addToCart"
 				data-wc-class--loading="context.woocommerce.isLoading"
-				data-wc-class--added="selectors.woocommerce.isThereMoreThanOneItem"
 			';
 
-			$span_button_directives = 'data-wc-text="selectors.woocommerce.addToCartText" data-wc-class--wc-block-slide-out="selectors.woocommerce.shouldSlideOutAnimationStart" data-wc-class--wc-block-slide-in="selectors.woocommerce.shouldSlideInAnimationStart" data-wc-on--animationstart="actions.woocommerce.handleAnimationStart" data-wc-on--animationend="actions.woocommerce.handleAnimationEnd"';
+			$span_button_directives = '
+				data-wc-text="selectors.woocommerce.addToCartText"
+				data-wc-class--wc-block-slide-in="selectors.woocommerce.slideInAnimation"
+				data-wc-class--wc-block-slide-out="selectors.woocommerce.slideOutAnimation"
+				data-wc-effect="effects.woocommerce.startAnimation"
+				data-wc-on--animationend="actions.woocommerce.handleAnimationEnd"
+			';
 
-			if ( isset( WC()->cart ) && WC()->cart->is_empty() ) {
-				$context['woocommerce']['numberOfItems'] = 0;
-				$div_directives                          = 'data-wc-context=\'' . wp_json_encode( $context, JSON_NUMERIC_CHECK ) . '\'';
-			} else {
-				$this->prevent_cache();
-			}
+			
 
 			/**
 			 * Filters the add to cart button class.
@@ -247,7 +250,7 @@ class ProductButton extends AbstractBlock {
 	 */
 	private function get_view_cart_html() {
 		return sprintf(
-			'<span hidden data-wc-bind--hidden="!selectors.woocommerce.isAdded">
+			'<span hidden data-wc-bind--hidden="!selectors.woocommerce.displayViewCart">
 				<a
 					href="%1$s"
 					class="added_to_cart wc_forward"

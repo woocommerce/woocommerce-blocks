@@ -14,29 +14,31 @@ type Context = {
 		isLoading: boolean;
 		addToCartText: string;
 		productId: number;
-		numberOfItems: number;
-		productPermalink: string;
 		displayViewCart: boolean;
-		initialNumberOfItems: number;
-		shouldStartAnimation: boolean | undefined;
-		slideOutStatus: AnimationStatus;
-		slideInStatus: AnimationStatus;
 		quantityToAdd: number;
+		temporaryNumberOfItems: number;
+		animationStatus: AnimationStatus;
 	};
 };
 
 enum AnimationStatus {
-	NOT_STARTED = 'NOT_STARTED',
-	STARTED = 'STARTED',
-	FINISHED = 'FINISHED',
+	IDLE = 'IDLE',
+	SLIDE_OUT = 'SLIDE-OUT',
+	SLIDE_IN = 'SLIDE-IN',
 }
 
 type State = {
 	woocommerce: {
 		cart: Cart | undefined;
-		prevCart: Cart | undefined;
 		inTheCartText: string;
 	};
+};
+
+type Store = {
+	state: State;
+	context: Context;
+	selectors: any;
+	ref: HTMLElement;
 };
 
 const getProductById = ( cartState: Cart | undefined, productId: number ) => {
@@ -55,39 +57,25 @@ const getTextButton = ( {
 	if ( numberOfItems === 0 ) {
 		return addToCartText;
 	}
-
 	return inTheCartText.replace( '###', numberOfItems.toString() );
 };
 
 const productButtonSelectors = {
 	woocommerce: {
-		addToCartText: ( store: {
-			context: Context;
-			state: State;
-			ref: HTMLElement;
-		} ) => {
+		addToCartText: ( store: Store ) => {
 			const { context, state, selectors } = store;
 
-			if ( ! selectors.woocommerce.hasCartLoaded( store ) ) {
-				return getTextButton( {
-					addToCartText: context.woocommerce.addToCartText,
-					inTheCartText: state.woocommerce.inTheCartText,
-					numberOfItems: context.woocommerce.initialNumberOfItems,
-				} );
-			}
-
+			// We use the temporary number of items when there's no animation, or the
+			// second part of the animation hasn't started.
 			if (
-				context.woocommerce.slideOutStatus ===
-					AnimationStatus.FINISHED ||
-				context.woocommerce.slideInStatus ===
-					AnimationStatus.FINISHED ||
-				context.woocommerce.slideInStatus === AnimationStatus.STARTED
+				context.woocommerce.animationStatus === AnimationStatus.IDLE ||
+				context.woocommerce.animationStatus ===
+					AnimationStatus.SLIDE_OUT
 			) {
 				return getTextButton( {
 					addToCartText: context.woocommerce.addToCartText,
 					inTheCartText: state.woocommerce.inTheCartText,
-					numberOfItems:
-						selectors.woocommerce.getNumberOfItems( store ),
+					numberOfItems: context.woocommerce.temporaryNumberOfItems,
 				} );
 			}
 
@@ -95,135 +83,31 @@ const productButtonSelectors = {
 				addToCartText: context.woocommerce.addToCartText,
 				inTheCartText: state.woocommerce.inTheCartText,
 				numberOfItems:
-					selectors.woocommerce.getNumberOfItems( store ) !==
-					context.woocommerce.initialNumberOfItems
-						? context.woocommerce.numberOfItems
-						: context.woocommerce.initialNumberOfItems,
+					selectors.woocommerce.numberOfItemsInTheCart( store ),
 			} );
 		},
-		isThereMoreThanOneItem: ( {
-			context,
-			state,
-		}: {
-			context: Context;
-			state: State;
-		} ) => {
-			const cartState = state.woocommerce.cart;
-
-			if ( cartState === undefined ) {
-				return context.woocommerce.numberOfItems > 0;
+		displayViewCart: ( store: Store ) => {
+			const { context, selectors } = store;
+			if ( ! context.woocommerce.displayViewCart ) return false;
+			if ( ! selectors.woocommerce.hasCartLoaded( store ) ) {
+				return context.woocommerce.temporaryNumberOfItems > 0;
 			}
-			const product = getProductById(
-				state.woocommerce.cart,
-				context.woocommerce.productId
-			);
-
-			return product !== undefined && product.quantity > 0;
-		},
-		isAdded: ( {
-			context,
-			selectors,
-			state,
-		}: {
-			context: Context;
-			selectors: any;
-			state: State;
-		} ) => {
-			return (
-				selectors.woocommerce.isThereMoreThanOneItem( {
-					context,
-					state,
-				} ) && context.woocommerce.displayViewCart
-			);
+			return selectors.woocommerce.numberOfItemsInTheCart( store ) > 0;
 		},
 		hasCartLoaded: ( { state }: { state: State } ) => {
 			return state.woocommerce.cart !== undefined;
 		},
-		getNumberOfItems: ( {
-			state,
-			context,
-		}: {
-			selecotrs: any;
-			state: State;
-			context: Context;
-		} ) => {
+		numberOfItemsInTheCart: ( { state, context }: Store ) => {
 			const product = getProductById(
 				state.woocommerce.cart,
 				context.woocommerce.productId
 			);
-
 			return product?.quantity || 0;
 		},
-		getNumberOfItemsPrev: ( {
-			state,
-			context,
-		}: {
-			state: State;
-			context: Context;
-		} ) => {
-			const product = getProductById(
-				state.woocommerce.prevCart,
-				context.woocommerce.productId
-			);
-
-			return product?.quantity;
-		},
-
-		shouldAnimationStart: ( store: {
-			context: Context;
-			selectors: any;
-			state: State;
-		} ) => {
-			const { context, selectors } = store;
-
-			const numberOfItems =
-				selectors.woocommerce.getNumberOfItems( store );
-
-			const prevNumberOfItems =
-				selectors.woocommerce.getNumberOfItemsPrev( store );
-
-			const isFreshLoad =
-				selectors.woocommerce.hasCartLoaded( store ) &&
-				context.woocommerce.initialNumberOfItems !== numberOfItems &&
-				context.woocommerce.numberOfItems !== numberOfItems;
-
-			const isFromCart =
-				prevNumberOfItems !== undefined &&
-				prevNumberOfItems !== numberOfItems &&
-				numberOfItems !== context.woocommerce.numberOfItems;
-
-			const isFromUserAction =
-				! isFreshLoad &&
-				! isFromCart &&
-				context.woocommerce.shouldStartAnimation === false;
-
-			return ( isFromCart || isFreshLoad ) && ! isFromUserAction;
-		},
-		shouldSlideOutAnimationStart: ( store: {
-			context: Context;
-			selectors: any;
-			state: State;
-		} ) => {
-			const { context, selectors } = store;
-
-			return (
-				selectors.woocommerce.shouldAnimationStart( store ) &&
-				( context.woocommerce.slideOutStatus ===
-					AnimationStatus.NOT_STARTED ||
-					context.woocommerce.slideOutStatus === undefined ||
-					AnimationStatus.STARTED )
-			);
-		},
-		shouldSlideInAnimationStart: ( store: {
-			context: Context;
-			selectors: any;
-			state: State;
-		} ) => {
-			const { context } = store;
-			return (
-				context.woocommerce.slideOutStatus === AnimationStatus.FINISHED
-			);
-		},
+		slideOutAnimation: ( { context }: Store ) =>
+			context.woocommerce.animationStatus === AnimationStatus.SLIDE_OUT,
+		slideInAnimation: ( { context }: Store ) =>
+			context.woocommerce.animationStatus === AnimationStatus.SLIDE_IN,
 	},
 };
 
@@ -233,49 +117,45 @@ interactivityStore(
 		selectors: productButtonSelectors,
 		actions: {
 			woocommerce: {
-				addToCart: async ( {
-					context,
-					ref,
-				}: {
-					context: Context;
-					state: State;
-					ref: HTMLElement;
-				} ) => {
+				addToCart: async ( store: Store ) => {
+					const { context, selectors, ref } = store;
+
 					if ( ! ref.classList.contains( 'ajax_add_to_cart' ) ) {
 						return;
 					}
 
 					context.woocommerce.isLoading = true;
-					const body = document.body;
 
-					// Allow 3rd parties to validate and quit early. https://github.com/woocommerce/woocommerce/blob/154dd236499d8a440edf3cde712511b56baa8e45/plugins/woocommerce/client/legacy/js/frontend/add-to-cart.js/#L74-L77
+					// Allow 3rd parties to validate and quit early.
+					// https://github.com/woocommerce/woocommerce/blob/154dd236499d8a440edf3cde712511b56baa8e45/plugins/woocommerce/client/legacy/js/frontend/add-to-cart.js/#L74-L77
 					const event = new CustomEvent(
 						'should_send_ajax_request.adding_to_cart',
 						{ detail: [ ref ], cancelable: true }
 					);
-					const shouldSendRequest = body.dispatchEvent( event );
+					const shouldSendRequest =
+						document.body.dispatchEvent( event );
 
 					if ( shouldSendRequest === false ) {
 						const ajaxNotSentEvent = new CustomEvent(
 							'ajax_request_not_sent.adding_to_cart',
 							{ detail: [ false, false, ref ] }
 						);
-						body.dispatchEvent( ajaxNotSentEvent );
+						document.body.dispatchEvent( ajaxNotSentEvent );
 						return true;
 					}
 
-					context.woocommerce.shouldStartAnimation = false;
 					try {
 						await dispatch( storeKey ).addItemToCart(
 							context.woocommerce.productId,
 							context.woocommerce.quantityToAdd
 						);
-						context.woocommerce.isLoading = false;
-						context.woocommerce.displayViewCart = true;
-						context.woocommerce.numberOfItems =
-							context.woocommerce.numberOfItems +
-							context.woocommerce.quantityToAdd;
-						context.woocommerce.shouldStartAnimation = undefined;
+
+						// After the cart has been updated, sync the temporary number of
+						// items again.
+						context.woocommerce.temporaryNumberOfItems =
+							selectors.woocommerce.numberOfItemsInTheCart(
+								store
+							);
 					} catch ( error ) {
 						const domNode = document.querySelector(
 							'.wc-block-store-notices'
@@ -297,54 +177,58 @@ interactivityStore(
 							inline: 'nearest',
 						} );
 
-						context.woocommerce.isLoading = false;
-
-						// we don't care about errors blocking execution, but will console.error for troubleshooting.
+						// We don't care about errors blocking execution, but will
+						// console.error for troubleshooting.
 						// eslint-disable-next-line no-console
 						console.error( error );
+					} finally {
+						context.woocommerce.displayViewCart = true;
+						context.woocommerce.isLoading = false;
 					}
 				},
-				handleAnimationStart: ( {
-					context,
-					event,
-				}: {
-					context: Context;
-					event: AnimationEvent;
-				} ) => {
+				handleAnimationEnd: (
+					store: Store & { event: AnimationEvent }
+				) => {
+					const { event, context, selectors } = store;
 					if ( event.animationName === 'slideOut' ) {
-						context.woocommerce.slideInStatus =
-							AnimationStatus.NOT_STARTED;
-						context.woocommerce.slideOutStatus =
-							AnimationStatus.STARTED;
-					}
-					if ( event.animationName === 'slideIn' ) {
-						context.woocommerce.slideInStatus =
-							AnimationStatus.STARTED;
+						// When the first part of the animation (slide-out) ends, we move
+						// to the second part (slide-in).
+						context.woocommerce.animationStatus =
+							AnimationStatus.SLIDE_IN;
+					} else if ( event.animationName === 'slideIn' ) {
+						// When the second part of the animation ends, we update the
+						// temporary number of items to sync it with the cart and reset the
+						// animation status so it can be triggered again.
+						context.woocommerce.temporaryNumberOfItems =
+							selectors.woocommerce.numberOfItemsInTheCart(
+								store
+							);
+						context.woocommerce.animationStatus =
+							AnimationStatus.IDLE;
 					}
 				},
-				handleAnimationEnd: ( {
-					event,
-					context,
-					state,
-				}: {
-					event: AnimationEvent;
-					context: Context;
-					state: State;
-				} ) => {
-					if ( event.animationName === 'slideOut' ) {
-						context.woocommerce.slideOutStatus =
-							AnimationStatus.FINISHED;
-						context.woocommerce.numberOfItems =
-							getProductById(
-								state.woocommerce.cart,
-								context.woocommerce.productId
-							)?.quantity || 0;
-					}
-					if ( event.animationName === 'slideIn' ) {
-						context.woocommerce.slideInStatus =
-							AnimationStatus.FINISHED;
-						context.woocommerce.slideOutStatus =
-							AnimationStatus.NOT_STARTED;
+			},
+		},
+		effects: {
+			woocommerce: {
+				startAnimation: ( store: Store ) => {
+					const { context, selectors } = store;
+					// We start the animation if the cart has loaded, the temporary number
+					// of items is out of sync with the number of items in the cart, the
+					// button is not loading (because that means the user started the
+					// interaction) and the animation hasn't started yet.
+					if (
+						selectors.woocommerce.hasCartLoaded( store ) &&
+						context.woocommerce.temporaryNumberOfItems !==
+							selectors.woocommerce.numberOfItemsInTheCart(
+								store
+							) &&
+						! context.woocommerce.isLoading &&
+						context.woocommerce.animationStatus ===
+							AnimationStatus.IDLE
+					) {
+						context.woocommerce.animationStatus =
+							AnimationStatus.SLIDE_OUT;
 					}
 				},
 			},
@@ -357,14 +241,7 @@ interactivityStore(
 				const cartData = select( storeKey ).getCartData();
 				const isResolutionFinished =
 					select( storeKey ).hasFinishedResolution( 'getCartData' );
-
 				if ( isResolutionFinished ) {
-					if (
-						cartData.itemsCount !==
-						state.woocommerce.cart?.itemsCount
-					) {
-						state.woocommerce.prevCart = state.woocommerce.cart;
-					}
 					state.woocommerce.cart = cartData;
 				}
 			}, storeKey );
