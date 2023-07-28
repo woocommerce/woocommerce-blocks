@@ -27,39 +27,31 @@ import {
 	__experimentalToggleGroupControl as ToggleGroupControl,
 } from '@wordpress/components';
 
-enum ThumbnailsPosition {
-	'off' = 'off',
-	'left' = 'left',
-	'bottom' = 'bottom',
-	'right' = 'right',
-}
-
-interface ContextProps {
-	productGalleryClientId: string;
-	thumbnailsPosition: ThumbnailsPosition;
-	thumbnailsNumberOfThumbnails: number;
-}
+/**
+ * Internal dependencies
+ */
+import { ThumbnailsPosition } from '../constants';
 
 interface ThumbnailSettingProps {
 	attributes: BlockAttributes;
-	context: ContextProps;
+	context: BlockAttributes;
 	setAttributes: ( attrs: BlockAttributes ) => void;
 }
 
-const positionHelp: Record< string, string > = {
-	off: __(
+const positionHelp: Record< ThumbnailsPosition, string > = {
+	[ ThumbnailsPosition.Off ]: __(
 		'No thumbnails will be displayed.',
 		'woo-gutenberg-products-block'
 	),
-	left: __(
+	[ ThumbnailsPosition.Left ]: __(
 		'A strip of small images will appear to the left of the main gallery image.',
 		'woo-gutenberg-products-block'
 	),
-	bottom: __(
+	[ ThumbnailsPosition.Bottom ]: __(
 		'A strip of small images will appear below the main gallery image.',
 		'woo-gutenberg-products-block'
 	),
-	right: __(
+	[ ThumbnailsPosition.Right ]: __(
 		'A strip of small images will appear to the right of the main gallery image.',
 		'woo-gutenberg-products-block'
 	),
@@ -83,7 +75,11 @@ export const BlockSettings = ( { context }: ThumbnailSettingProps ) => {
 					isBlock={ true }
 					label={ __( 'Thumbnails', 'woo-gutenberg-products-block' ) }
 					value={ context.thumbnailsPosition }
-					help={ positionHelp[ context.thumbnailsPosition ] }
+					help={
+						positionHelp[
+							context.thumbnailsPosition as ThumbnailsPosition
+						]
+					}
 					onChange={ ( value: string ) =>
 						updateBlockAttributes( productGalleryClientId, {
 							thumbnailsPosition: value,
@@ -91,17 +87,17 @@ export const BlockSettings = ( { context }: ThumbnailSettingProps ) => {
 					}
 				>
 					<ToggleGroupControlOption
-						value="off"
+						value={ ThumbnailsPosition.Off }
 						label={ __( 'Off', 'woo-gutenberg-products-block' ) }
 					/>
 					<ToggleGroupControlOption
-						value="left"
+						value={ ThumbnailsPosition.Left }
 						label={
 							<Icon size={ 32 } icon={ thumbnailsPositionLeft } />
 						}
 					/>
 					<ToggleGroupControlOption
-						value="bottom"
+						value={ ThumbnailsPosition.Bottom }
 						label={
 							<Icon
 								size={ 32 }
@@ -110,7 +106,7 @@ export const BlockSettings = ( { context }: ThumbnailSettingProps ) => {
 						}
 					/>
 					<ToggleGroupControlOption
-						value="right"
+						value={ ThumbnailsPosition.Right }
 						label={
 							<Icon
 								size={ 32 }
@@ -119,7 +115,7 @@ export const BlockSettings = ( { context }: ThumbnailSettingProps ) => {
 						}
 					/>
 				</ToggleGroupControl>
-				{ context.thumbnailsPosition !== 'off' && (
+				{ context.thumbnailsPosition !== ThumbnailsPosition.Off && (
 					<RangeControl
 						label={ __(
 							'Number of Thumbnails',

@@ -1,12 +1,17 @@
+/**
+ * Internal dependencies
+ */
+import { ThumbnailsPosition } from './constants';
+
 export interface BlockAttributes {
-	thumbnailsPosition: string;
+	thumbnailsPosition: ThumbnailsPosition;
 	thumbnailsNumberOfThumbnails: number;
 	productGalleryClientId: string;
 }
 
 export interface Context {
 	context: {
-		thumbnailsPosition: string;
+		thumbnailsPosition: ThumbnailsPosition;
 		thumbnailsNumberOfThumbnails: number;
 		productGalleryClientId: string;
 	};
