@@ -23,6 +23,7 @@ const LAST_SEEN_PRODUCTS_ATTRIBUTES = {
 	query: {
 		...QUERY_DEFAULT_ATTRIBUTES.query,
 		__woocommerceStockStatus: 'instock',
+		perPage: 3,
 	},
 };
 const allowedInnerBlocks = [ ...INNER_BLOCKS_TEMPLATE[ 0 ] ];
