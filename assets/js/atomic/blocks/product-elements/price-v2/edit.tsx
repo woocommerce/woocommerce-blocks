@@ -14,11 +14,9 @@ import { useStoreProducts } from '@woocommerce/base-context/hooks';
 /**
  * Internal dependencies
  */
-import {
-	originalPriceName,
-	currentPriceName,
-	priceDiscount,
-} from './inner-blocks';
+import { BLOCK_NAME as priceDiscountName } from './inner-blocks/discount';
+import { BLOCK_NAME as originalPriceName } from './inner-blocks/original-price';
+import { BLOCK_NAME as currentPriceName } from './inner-blocks/current-price';
 import { TEMPLATE } from './template';
 import './editor.scss';
 
@@ -141,7 +139,7 @@ const EditBlock = ( {
 					allowedBlocks={ [
 						originalPriceName,
 						currentPriceName,
-						priceDiscount,
+						priceDiscountName,
 					] }
 					// todo add template for initial price layout
 					template={ TEMPLATE }

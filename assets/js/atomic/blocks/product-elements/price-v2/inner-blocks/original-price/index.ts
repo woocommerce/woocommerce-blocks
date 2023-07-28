@@ -10,6 +10,7 @@ import edit from './edit';
 import sharedConfig from '../../../shared/config';
 import metadata from './block.json';
 import { supports } from '../../supports';
+import './style.scss';
 
 const { ancestor, ...configuration } = sharedConfig;
 

@@ -11,6 +11,7 @@ import save from './save';
 import { supports } from './supports';
 import metadata from './block.json';
 import { BLOCK_ICON as icon } from './constants';
+import './inner-blocks';
 
 const blockConfig = {
 	...metadata,
