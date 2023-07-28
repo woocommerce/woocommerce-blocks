@@ -67,7 +67,7 @@
 		span {
 
 			&.wc-block-slide-out {
-				animation: slideOut 0.1s linear 1 normal;
+				animation: slideOut 0.1s linear 1 normal forwards;
 			}
 			&.wc-block-slide-in {
 				animation: slideIn 0.1s linear 1 normal;
