@@ -15,6 +15,7 @@ import './inspector-controls';
 import './style.scss';
 import './variations/product-query';
 import './variations/related-products';
+import './variations/last-seen-products';
 
 const EXTENDED_CORE_ELEMENTS = [
 	PRODUCT_SUMMARY_ID,

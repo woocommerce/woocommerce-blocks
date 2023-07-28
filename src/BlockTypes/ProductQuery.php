@@ -252,7 +252,7 @@ class ProductQuery extends AbstractBlock {
 		);
 
 		$handpicked_products = isset( $parsed_block['attrs']['query']['include'] ) ?
-			$parsed_block['attrs']['query']['include'] : $common_query_values['post__in'];
+			$parsed_block['attrs']['query']['include'] : $query['post__in'];
 
 		$merged_query = $this->merge_queries(
 			$common_query_values,

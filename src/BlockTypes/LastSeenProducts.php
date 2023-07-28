@@ -72,7 +72,9 @@ class LastSeenProducts extends AbstractBlock {
 			return;
 		}
 
-		if ( $this->is_last_seen_products_block( $this->parsed_block ) ) {
+		$this->parsed_block = $parsed_block;
+
+		if ( $this->is_last_seen_products_block( $parsed_block ) ) {
 			// Set this so that our product filters can detect if it's a PHP template.
 			add_filter(
 				'query_loop_block_query_vars',
@@ -91,9 +93,6 @@ class LastSeenProducts extends AbstractBlock {
 	 * @return array
 	 */
 	public function build_query( $query ) {
-		if ( ! $this->is_last_seen_products_block( $this->parsed_block ) ) {
-			return $query;
-		}
 
 		$product_ids = $this->get_last_seen_products_ids( $query['posts_per_page'] );
 		if ( empty( $product_ids ) ) {
@@ -138,7 +137,8 @@ class LastSeenProducts extends AbstractBlock {
 	 * @return bool Whether the block is a last seen products block.
 	 */
 	private function is_last_seen_products_block( $block ) {
-		return ProductQuery::is_woocommerce_variation( $block ) && isset( $block['attrs']['namespace'] ) && ( 'woocommerce/' . $this->block_name ) === $block['attrs']['namespace'];
+
+		return ProductQuery::is_woocommerce_variation( $block ) && ( 'woocommerce/' . $this->block_name ) === $block['attrs']['namespace'];
 	}
 
 	/**
