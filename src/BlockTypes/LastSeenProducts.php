@@ -100,6 +100,7 @@ class LastSeenProducts extends AbstractBlock {
 		}
 
 		return array(
+			'orderby'        => 'post__in',
 			'post_type'      => 'product',
 			'post__in'       => $product_ids,
 			'post_status'    => 'publish',
