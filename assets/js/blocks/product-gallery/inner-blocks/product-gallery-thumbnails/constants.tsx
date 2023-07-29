@@ -1,6 +1,6 @@
 export enum ThumbnailsPosition {
-	'Off' = 'off',
-	'Left' = 'left',
-	'Bottom' = 'bottom',
-	'Right' = 'right',
+	OFF = 'off',
+	LEFT = 'left',
+	BOTTOM = 'bottom',
+	RIGHT = 'right',
 }

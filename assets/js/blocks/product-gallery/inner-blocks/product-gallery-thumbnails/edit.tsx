@@ -24,7 +24,7 @@ export const Edit = ( {
 	const Placeholder = () => {
 		return (
 			<>
-				{ context.thumbnailsPosition !== ThumbnailsPosition.Off && (
+				{ context.thumbnailsPosition !== ThumbnailsPosition.OFF && (
 					<div className="wc-block-editor-product-gallery-thumbnails">
 						{ [
 							...Array(

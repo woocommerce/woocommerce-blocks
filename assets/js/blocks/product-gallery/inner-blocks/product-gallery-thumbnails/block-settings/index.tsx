@@ -33,19 +33,19 @@ import { ThumbnailsPosition } from '../constants';
 import type { ThumbnailsSettingProps } from '../../../types';
 
 const positionHelp: Record< ThumbnailsPosition, string > = {
-	[ ThumbnailsPosition.Off ]: __(
+	[ ThumbnailsPosition.OFF ]: __(
 		'No thumbnails will be displayed.',
 		'woo-gutenberg-products-block'
 	),
-	[ ThumbnailsPosition.Left ]: __(
+	[ ThumbnailsPosition.LEFT ]: __(
 		'A strip of small images will appear to the left of the main gallery image.',
 		'woo-gutenberg-products-block'
 	),
-	[ ThumbnailsPosition.Bottom ]: __(
+	[ ThumbnailsPosition.BOTTOM ]: __(
 		'A strip of small images will appear below the main gallery image.',
 		'woo-gutenberg-products-block'
 	),
-	[ ThumbnailsPosition.Right ]: __(
+	[ ThumbnailsPosition.RIGHT ]: __(
 		'A strip of small images will appear to the right of the main gallery image.',
 		'woo-gutenberg-products-block'
 	),
@@ -81,17 +81,17 @@ export const BlockSettings = ( { context }: ThumbnailsSettingProps ) => {
 					}
 				>
 					<ToggleGroupControlOption
-						value={ ThumbnailsPosition.Off }
+						value={ ThumbnailsPosition.OFF }
 						label={ __( 'Off', 'woo-gutenberg-products-block' ) }
 					/>
 					<ToggleGroupControlOption
-						value={ ThumbnailsPosition.Left }
+						value={ ThumbnailsPosition.LEFT }
 						label={
 							<Icon size={ 32 } icon={ thumbnailsPositionLeft } />
 						}
 					/>
 					<ToggleGroupControlOption
-						value={ ThumbnailsPosition.Bottom }
+						value={ ThumbnailsPosition.BOTTOM }
 						label={
 							<Icon
 								size={ 32 }
@@ -100,7 +100,7 @@ export const BlockSettings = ( { context }: ThumbnailsSettingProps ) => {
 						}
 					/>
 					<ToggleGroupControlOption
-						value={ ThumbnailsPosition.Right }
+						value={ ThumbnailsPosition.RIGHT }
 						label={
 							<Icon
 								size={ 32 }
@@ -109,7 +109,7 @@ export const BlockSettings = ( { context }: ThumbnailsSettingProps ) => {
 						}
 					/>
 				</ToggleGroupControl>
-				{ context.thumbnailsPosition !== ThumbnailsPosition.Off && (
+				{ context.thumbnailsPosition !== ThumbnailsPosition.OFF && (
 					<RangeControl
 						label={ __(
 							'Number of Thumbnails',

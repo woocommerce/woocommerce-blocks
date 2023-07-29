@@ -44,13 +44,14 @@ export const Edit = ( {
 }: BlockEditProps< BlockAttributes > ) => {
 	const blockProps = useBlockProps();
 
+	// Update the Group block type when the thumbnailsPosition attribute changes.
+	updateGroupBlockType( attributes, clientId );
+
 	useEffect( () => {
 		setAttributes( {
 			...attributes,
 			productGalleryClientId: clientId,
 		} );
-		// Update the Group block type when the thumbnailsPosition attribute changes.
-		updateGroupBlockType( attributes, clientId );
 		// Move the Thumbnails block to the correct above or below the Large Image based on the thumbnailsPosition attribute.
 		moveInnerBlocksToPosition( attributes, clientId );
 	}, [ setAttributes, attributes, clientId ] );
