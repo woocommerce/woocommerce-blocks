@@ -96,6 +96,9 @@ test.describe( `${ blockData.name }`, () => {
 			} );
 		} );
 
+		// We can test the left position of thumbnails by cross-checking:
+		// - The Gallery block has the classes "is-layout-flex" and "is-nowrap".
+		// - The Thumbnails block has a lower index than the Large Image block.
 		test( 'Position thumbnails on the left of the large image', async ( {
 			page,
 			editor,
@@ -128,11 +131,27 @@ test.describe( `${ blockData.name }`, () => {
 				)
 				.click();
 
-			const block = await editorUtils.getBlockByName(
+			await page.waitForTimeout( 500 );
+
+			const groupBlock = await editorUtils.getBlockByTypeWithParent(
+				'core/group',
 				'woocommerce/product-gallery'
 			);
 
-			await expect( block ).toHaveScreenshot();
+			const groupBlockClassAttribute = await groupBlock.getAttribute(
+				'class'
+			);
+			expect( groupBlockClassAttribute ).toContain( 'is-layout-flex' );
+			expect( groupBlockClassAttribute ).toContain( 'is-nowrap' );
+
+			const isThumbnailsBlockEarlier =
+				await editorUtils.isBlockEarlierThan(
+					groupBlock,
+					'woocommerce/product-gallery-thumbnails',
+					'woocommerce/product-gallery-large-image'
+				);
+
+			expect( isThumbnailsBlockEarlier ).toBe( true );
 
 			await Promise.all( [
 				editor.saveSiteEditorEntities(),
@@ -145,13 +164,23 @@ test.describe( `${ blockData.name }`, () => {
 				waitUntil: 'networkidle',
 			} );
 
-			const blockFrontend = await frontendUtils.getBlockByName(
-				'woocommerce/product-gallery'
-			);
+			const groupBlockFrontend =
+				await frontendUtils.getBlockByClassWithParent(
+					'wp-block-group',
+					'woocommerce/product-gallery'
+				);
 
-			await expect( blockFrontend ).toHaveScreenshot();
+			const groupBlockFrontendClassAttribute =
+				await groupBlockFrontend.getAttribute( 'class' );
+			expect( groupBlockFrontendClassAttribute ).toContain(
+				'is-layout-flex'
+			);
+			expect( groupBlockFrontendClassAttribute ).toContain( 'is-nowrap' );
 		} );
 
+		// We can test the bottom position of thumbnails by cross-checking:
+		// - The Gallery block has the classes "is-layout-flex" and "is-vertical".
+		// - The Thumbnails block has a higher index than the Large Image block.
 		test( 'Position thumbnails on the bottom of the large image', async ( {
 			page,
 			editor,
@@ -184,11 +213,27 @@ test.describe( `${ blockData.name }`, () => {
 				)
 				.click();
 
-			const block = await editorUtils.getBlockByName(
+			await page.waitForTimeout( 500 );
+
+			const groupBlock = await editorUtils.getBlockByTypeWithParent(
+				'core/group',
 				'woocommerce/product-gallery'
 			);
 
-			await expect( block ).toHaveScreenshot();
+			const groupBlockClassAttribute = await groupBlock.getAttribute(
+				'class'
+			);
+			expect( groupBlockClassAttribute ).toContain( 'is-layout-flex' );
+			expect( groupBlockClassAttribute ).toContain( 'is-vertical' );
+
+			const isThumbnailsBlockEarlier =
+				await editorUtils.isBlockEarlierThan(
+					groupBlock,
+					'woocommerce/product-gallery-thumbnails',
+					'woocommerce/product-gallery-large-image'
+				);
+
+			expect( isThumbnailsBlockEarlier ).toBe( false );
 
 			await Promise.all( [
 				editor.saveSiteEditorEntities(),
@@ -201,13 +246,25 @@ test.describe( `${ blockData.name }`, () => {
 				waitUntil: 'networkidle',
 			} );
 
-			const blockFrontend = await frontendUtils.getBlockByName(
-				'woocommerce/product-gallery'
-			);
+			const groupBlockFrontend =
+				await frontendUtils.getBlockByClassWithParent(
+					'wp-block-group',
+					'woocommerce/product-gallery'
+				);
 
-			await expect( blockFrontend ).toHaveScreenshot();
+			const groupBlockFrontendClassAttribute =
+				await groupBlockFrontend.getAttribute( 'class' );
+			expect( groupBlockFrontendClassAttribute ).toContain(
+				'is-layout-flex'
+			);
+			expect( groupBlockFrontendClassAttribute ).toContain(
+				'is-vertical'
+			);
 		} );
 
+		// We can test the right position of thumbnails by cross-checking:
+		// - The Gallery block has the classes "is-layout-flex" and "is-nowrap".
+		// - The Thumbnails block has a higher index than the Large Image block.
 		test( 'Position thumbnails on the right of the large image', async ( {
 			page,
 			editor,
@@ -240,11 +297,27 @@ test.describe( `${ blockData.name }`, () => {
 				)
 				.click();
 
-			const block = await editorUtils.getBlockByName(
+			await page.waitForTimeout( 500 );
+
+			const groupBlock = await editorUtils.getBlockByTypeWithParent(
+				'core/group',
 				'woocommerce/product-gallery'
 			);
 
-			await expect( block ).toHaveScreenshot();
+			const groupBlockClassAttribute = await groupBlock.getAttribute(
+				'class'
+			);
+			expect( groupBlockClassAttribute ).toContain( 'is-layout-flex' );
+			expect( groupBlockClassAttribute ).toContain( 'is-nowrap' );
+
+			const isThumbnailsBlockEarlier =
+				await editorUtils.isBlockEarlierThan(
+					groupBlock,
+					'woocommerce/product-gallery-thumbnails',
+					'woocommerce/product-gallery-large-image'
+				);
+
+			expect( isThumbnailsBlockEarlier ).toBe( false );
 
 			await Promise.all( [
 				editor.saveSiteEditorEntities(),
@@ -257,11 +330,18 @@ test.describe( `${ blockData.name }`, () => {
 				waitUntil: 'networkidle',
 			} );
 
-			const blockFrontend = await frontendUtils.getBlockByName(
-				'woocommerce/product-gallery'
-			);
+			const groupBlockFrontend =
+				await frontendUtils.getBlockByClassWithParent(
+					'wp-block-group',
+					'woocommerce/product-gallery'
+				);
 
-			await expect( blockFrontend ).toHaveScreenshot();
+			const groupBlockFrontendClassAttribute =
+				await groupBlockFrontend.getAttribute( 'class' );
+			expect( groupBlockFrontendClassAttribute ).toContain(
+				'is-layout-flex'
+			);
+			expect( groupBlockFrontendClassAttribute ).toContain( 'is-nowrap' );
 		} );
 	} );
 } );
