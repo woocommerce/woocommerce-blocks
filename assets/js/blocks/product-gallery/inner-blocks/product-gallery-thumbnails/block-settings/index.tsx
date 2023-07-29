@@ -6,7 +6,6 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import type { BlockAttributes } from '@wordpress/blocks';
 import { Icon } from '@wordpress/icons';
 import {
 	thumbnailsPositionLeft,
@@ -31,12 +30,7 @@ import {
  * Internal dependencies
  */
 import { ThumbnailsPosition } from '../constants';
-
-interface ThumbnailSettingProps {
-	attributes: BlockAttributes;
-	context: BlockAttributes;
-	setAttributes: ( attrs: BlockAttributes ) => void;
-}
+import type { ThumbnailsSettingProps } from '../../../types';
 
 const positionHelp: Record< ThumbnailsPosition, string > = {
 	[ ThumbnailsPosition.Off ]: __(
@@ -57,7 +51,7 @@ const positionHelp: Record< ThumbnailsPosition, string > = {
 	),
 };
 
-export const BlockSettings = ( { context }: ThumbnailSettingProps ) => {
+export const BlockSettings = ( { context }: ThumbnailsSettingProps ) => {
 	const maxNumberOfThumbnails = 8;
 	const minNumberOfThumbnails = 2;
 	const { productGalleryClientId } = context;

@@ -11,7 +11,7 @@ import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
  */
 import './editor.scss';
 import { BlockSettings } from './block-settings';
-import type { BlockAttributes, Context } from './types';
+import type { BlockAttributes, Context } from '../../types';
 import { ThumbnailsPosition } from './constants';
 
 export const Edit = ( {
