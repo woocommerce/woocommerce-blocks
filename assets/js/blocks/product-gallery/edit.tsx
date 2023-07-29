@@ -53,7 +53,7 @@ export const Edit = ( {
 		updateGroupBlockType( attributes, clientId );
 		// Move the Thumbnails block to the correct above or below the Large Image based on the thumbnailsPosition attribute.
 		moveInnerBlocksToPosition( attributes, clientId );
-	}, [ attributes, clientId ] );
+	}, [ setAttributes, attributes, clientId ] );
 
 	return (
 		<div { ...blockProps }>
