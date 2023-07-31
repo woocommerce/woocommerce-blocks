@@ -86,6 +86,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 #### Enhancements
 
 - Updated Product Hero pattern to have no opinionated styles. ([10255](https://github.com/woocommerce/woocommerce-blocks/pull/10255))
+- Only load styles required by the blocks rendered on the page. ([9831](https://github.com/woocommerce/woocommerce-blocks/pull/9831))
 
 #### Bug Fixes
 
