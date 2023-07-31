@@ -27,7 +27,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	 * @return string[]
 	 */
 	protected function get_block_type_uses_context() {
-		return [ 'clientId', 'postId', 'thumbnailsNumberOfThumbnails', 'thumbnailsPosition' ];
+		return [ 'productGalleryClientId', 'postId', 'thumbnailsNumberOfThumbnails', 'thumbnailsPosition' ];
 	}
 
 	/**
@@ -51,13 +51,12 @@ class ProductGalleryThumbnails extends AbstractBlock {
 			$post_id           = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
 			$product           = wc_get_product( $post_id );
 			$post_thumbnail_id = $product->get_image_id();
+			$html              = '';
 
 			if ( $product ) {
 				$attachment_ids = $product->get_gallery_image_ids();
 				if ( $attachment_ids && $post_thumbnail_id ) {
-					$html  = '';
-					$html .= wc_get_gallery_image_html( $post_thumbnail_id, true );
-
+					$html                .= wc_get_gallery_image_html( $post_thumbnail_id, true );
 					$number_of_thumbnails = isset( $block->context['thumbnailsNumberOfThumbnails'] ) ? $block->context['thumbnailsNumberOfThumbnails'] : 3;
 					$thumbnails_count     = 1;
 

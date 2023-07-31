@@ -15,7 +15,7 @@
 	"providesContext": {
 		"thumbnailsPosition": "thumbnailsPosition",
 		"thumbnailsNumberOfThumbnails": "thumbnailsNumberOfThumbnails",
-		"clientId": "clientId"
+		"productGalleryClientId": "productGalleryClientId"
 	},
 	"attributes": {
 		"thumbnailsPosition": {
@@ -26,7 +26,7 @@
 			"type": "number",
 			"default": 3
 		},
-		"clientId": {
+		"productGalleryClientId": {
 			"type": "string",
 			"default": ""
 		}

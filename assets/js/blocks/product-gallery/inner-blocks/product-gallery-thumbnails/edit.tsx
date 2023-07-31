@@ -11,7 +11,8 @@ import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
  */
 import './editor.scss';
 import { BlockSettings } from './block-settings';
-import type { BlockAttributes, Context } from './types';
+import type { BlockAttributes, Context } from '../../types';
+import { ThumbnailsPosition } from './constants';
 
 export const Edit = ( {
 	attributes,
@@ -23,7 +24,7 @@ export const Edit = ( {
 	const Placeholder = () => {
 		return (
 			<>
-				{ context.thumbnailsPosition !== 'off' && (
+				{ context.thumbnailsPosition !== ThumbnailsPosition.OFF && (
 					<div className="wc-block-editor-product-gallery-thumbnails">
 						{ [
 							...Array(

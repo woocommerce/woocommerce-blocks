@@ -6,7 +6,7 @@ import {
 	InspectorControls,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { BlockAttributes, InnerBlockTemplate } from '@wordpress/blocks';
+import { BlockEditProps, InnerBlockTemplate } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
 
 /**
@@ -18,12 +18,7 @@ import {
 	getInnerBlocksLockAttributes,
 } from './utils';
 import { BlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
-
-interface Props {
-	clientId: string;
-	attributes: BlockAttributes;
-	setAttributes: ( attributes: BlockAttributes ) => void;
-}
+import type { BlockAttributes } from './types';
 
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
@@ -46,20 +41,20 @@ export const Edit = ( {
 	clientId,
 	attributes,
 	setAttributes,
-}: Props ): JSX.Element => {
+}: BlockEditProps< BlockAttributes > ) => {
 	const blockProps = useBlockProps();
 
 	// Update the Group block type when the thumbnailsPosition attribute changes.
 	updateGroupBlockType( attributes, clientId );
 
 	useEffect( () => {
-		setAttributes( { clientId } );
-	}, [ clientId, setAttributes ] );
-
-	useEffect( () => {
+		setAttributes( {
+			...attributes,
+			productGalleryClientId: clientId,
+		} );
 		// Move the Thumbnails block to the correct above or below the Large Image based on the thumbnailsPosition attribute.
 		moveInnerBlocksToPosition( attributes, clientId );
-	}, [ attributes, clientId ] );
+	}, [ setAttributes, attributes, clientId ] );
 
 	return (
 		<div { ...blockProps }>
@@ -68,7 +63,7 @@ export const Edit = ( {
 					attributes={ attributes }
 					setAttributes={ setAttributes }
 					context={ {
-						clientId,
+						productGalleryClientId: clientId,
 						thumbnailsPosition: attributes.thumbnailsPosition,
 						thumbnailsNumberOfThumbnails:
 							attributes.thumbnailsNumberOfThumbnails,
