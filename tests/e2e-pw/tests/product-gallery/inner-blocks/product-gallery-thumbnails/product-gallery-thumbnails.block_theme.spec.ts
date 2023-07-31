@@ -176,6 +176,15 @@ test.describe( `${ blockData.name }`, () => {
 				'is-layout-flex'
 			);
 			expect( groupBlockFrontendClassAttribute ).toContain( 'is-nowrap' );
+
+			const isThumbnailsFrontendBlockEarlier =
+				await frontendUtils.isBlockEarlierThan(
+					groupBlockFrontend,
+					'woocommerce/product-gallery-thumbnails',
+					'woocommerce/product-gallery-large-image'
+				);
+
+			expect( isThumbnailsFrontendBlockEarlier ).toBe( true );
 		} );
 
 		// We can test the bottom position of thumbnails by cross-checking:
@@ -260,6 +269,15 @@ test.describe( `${ blockData.name }`, () => {
 			expect( groupBlockFrontendClassAttribute ).toContain(
 				'is-vertical'
 			);
+
+			const isThumbnailsFrontendBlockEarlier =
+				await frontendUtils.isBlockEarlierThan(
+					groupBlockFrontend,
+					'woocommerce/product-gallery-thumbnails',
+					'woocommerce/product-gallery-large-image'
+				);
+
+			expect( isThumbnailsFrontendBlockEarlier ).toBe( false );
 		} );
 
 		// We can test the right position of thumbnails by cross-checking:
@@ -342,6 +360,15 @@ test.describe( `${ blockData.name }`, () => {
 				'is-layout-flex'
 			);
 			expect( groupBlockFrontendClassAttribute ).toContain( 'is-nowrap' );
+
+			const isThumbnailsFrontendBlockEarlier =
+				await frontendUtils.isBlockEarlierThan(
+					groupBlockFrontend,
+					'woocommerce/product-gallery-thumbnails',
+					'woocommerce/product-gallery-large-image'
+				);
+
+			expect( isThumbnailsFrontendBlockEarlier ).toBe( false );
 		} );
 	} );
 } );
