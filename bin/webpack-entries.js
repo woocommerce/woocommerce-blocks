@@ -128,9 +128,21 @@ const entries = {
 		} ),
 
 		'packages-style': glob.sync( './packages/**/*.scss' ),
-
 		'reviews-style': './assets/js/blocks/reviews/editor.scss',
 		...getBlockEntries( '**/*.scss' ),
+		// Blocks
+		'product-image-gallery':
+			'./assets/js/atomic/blocks/product-elements/product-image-gallery/index.ts',
+		'product-reviews':
+			'./assets/js/atomic/blocks/product-elements/product-reviews/index.tsx',
+		'product-details':
+			'./assets/js/atomic/blocks/product-elements/product-details/index.tsx',
+		'add-to-cart-form':
+			'./assets/js/atomic/blocks/product-elements/add-to-cart-form/index.tsx',
+		...getBlockEntries( '{index,block,frontend}.{t,j}s{,x}' ),
+		// Templates
+		'wc-blocks-classic-template-revert-button-style':
+			'./assets/js/templates/revert-button/index.tsx',
 	},
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
@@ -170,6 +182,10 @@ const entries = {
 			'./assets/js/extensions/google-analytics/index.ts',
 		'wc-shipping-method-pickup-location':
 			'./assets/js/extensions/shipping-methods/pickup-location/index.js',
+	},
+	editor: {
+		'wc-blocks-classic-template-revert-button':
+			'./assets/js/templates/revert-button/index.tsx',
 	},
 };
 
