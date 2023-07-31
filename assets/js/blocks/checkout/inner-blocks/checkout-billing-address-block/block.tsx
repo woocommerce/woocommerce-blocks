@@ -21,6 +21,7 @@ import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
  * Internal dependencies
  */
 import PhoneNumber from '../../phone-number';
+import { useAddressAutocomplete } from '../../../../base/hooks/use-address-autocomplete';
 
 const Block = ( {
 	showCompanyField = false,
@@ -91,6 +92,9 @@ const Block = ( {
 	const noticeContext = useBillingAsShipping
 		? [ noticeContexts.BILLING_ADDRESS, noticeContexts.SHIPPING_ADDRESS ]
 		: [ noticeContexts.BILLING_ADDRESS ];
+
+	const addressInput = document.getElementById( 'billing-address_1' );
+	useAddressAutocomplete( addressInput, setBillingAddress );
 
 	return (
 		<AddressFormWrapperComponent>

@@ -91,8 +91,6 @@ const AddressForm = ( {
 	onChange,
 	type = 'shipping',
 	values,
-	autocompleteInput = null,
-	addressSelected = false,
 }: AddressFormProps ): JSX.Element => {
 	const validationErrorId = 'shipping_country';
 	const { setValidationErrors, clearValidationError } =
@@ -260,12 +258,6 @@ const AddressForm = ( {
 							required={ field.required }
 						/>
 					);
-				}
-
-				if ( field.key === 'address_1' ) {
-					if ( autocompleteInput && ! addressSelected ) {
-						return autocompleteInput;
-					}
 				}
 
 				return (
