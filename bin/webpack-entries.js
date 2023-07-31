@@ -110,27 +110,23 @@ const getBlockEntries = ( relativePath ) => {
 
 const entries = {
 	styling: {
-		// @wordpress/components styles
-		'custom-select-control-style':
-			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
-		'snackbar-notice-style':
-			'./node_modules/wordpress-components/src/snackbar/style.scss',
-		'combobox-control-style':
-			'./node_modules/wordpress-components/src/combobox-control/style.scss',
-		'form-token-field-style':
-			'./node_modules/wordpress-components/src/form-token-field/style.scss',
-
-		'general-style': glob.sync( './assets/**/*.scss', {
-			ignore: [
-				// Block styles are added below.
-				'./assets/js/blocks/*/*.scss',
-			],
-		} ),
-
-		'packages-style': glob.sync( './packages/**/*.scss' ),
-
-		'reviews-style': './assets/js/blocks/reviews/editor.scss',
-		...getBlockEntries( '**/*.scss' ),
+		// Packages styles
+		'packages-style': glob.sync( './packages/**/index.js' ),
+		// Shared blocks code
+		'wc-blocks': './assets/js/index.js',
+		// Blocks
+		'product-image-gallery':
+			'./assets/js/atomic/blocks/product-elements/product-image-gallery/index.ts',
+		'product-reviews':
+			'./assets/js/atomic/blocks/product-elements/product-reviews/index.tsx',
+		'product-details':
+			'./assets/js/atomic/blocks/product-elements/product-details/index.tsx',
+		'add-to-cart-form':
+			'./assets/js/atomic/blocks/product-elements/add-to-cart-form/index.tsx',
+		...getBlockEntries( '{index,block,frontend}.{t,j}s{,x}' ),
+		// Templates
+		'wc-blocks-classic-template-revert-button-style':
+			'./assets/js/templates/revert-button/index.tsx',
 	},
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
@@ -170,6 +166,10 @@ const entries = {
 			'./assets/js/extensions/google-analytics/index.ts',
 		'wc-shipping-method-pickup-location':
 			'./assets/js/extensions/shipping-methods/pickup-location/index.js',
+	},
+	editor: {
+		'wc-blocks-classic-template-revert-button':
+			'./assets/js/templates/revert-button/index.tsx',
 	},
 };
 
