@@ -130,8 +130,10 @@ const entries = {
 		'add-to-cart-form':
 			'./assets/js/atomic/blocks/product-elements/add-to-cart-form/index.tsx',
 		...getBlockEntries( '{index,block,frontend}.{t,j}s{,x}' ),
+
+		// Templates
 		'wc-blocks-classic-template-revert-button-style':
-			'./assets/js/templates/revert-button/style.scss',
+			'./assets/js/templates/revert-button/index.tsx',
 	},
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
