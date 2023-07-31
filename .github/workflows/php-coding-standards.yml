@@ -60,6 +60,13 @@ jobs:
             - name: Log PHPCS debug information
               run: phpcs -i
 
+            - id: files
+              uses: jitterbit/get-changed-files@v1
+            - run: |
+                for changed_file in ${{ steps.files.outputs.all }}; do
+                  echo "Do something with this ${changed_file}."
+                done
+
             - name: Get changed files on the PR
               id: changed-files
               uses: lots0logs/gh-action-get-changed-files@2.2.2
