@@ -1,7 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Domain;
 
-use Automattic\WooCommerce\Blocks\Options;
+use Automattic\WooCommerce\Blocks\Options2;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 
 
@@ -70,7 +70,7 @@ class Package {
 	 * @return string
 	 */
 	public function get_version_stored_on_db() {
-		return get_option( Options::WC_BLOCK_VERSION, '' );
+		return get_option( Options2::WC_BLOCK_VERSION, '' );
 	}
 
 	/**
@@ -78,7 +78,7 @@ class Package {
 	 * This is useful during the first installation or after the upgrade process.
 	 */
 	public function set_version_stored_on_db() {
-		update_option( Options::WC_BLOCK_VERSION, $this->get_version() );
+		update_option( Options2::WC_BLOCK_VERSION, $this->get_version() );
 
 	}
 

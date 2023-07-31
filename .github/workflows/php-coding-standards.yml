@@ -76,5 +76,4 @@ jobs:
                 renamed_files=${renamed_files:1:-1}
                 files="$modified_files $added_files $renamed_files"
                 files=${files//,/ }
-                echo files
                 phpcs ${files} -q --report=checkstyle | cs2pr

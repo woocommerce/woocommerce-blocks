@@ -3,7 +3,7 @@
 namespace Automattic\WooCommerce\Blocks\Tests\Utils;
 
 use Automattic\WooCommerce\Blocks\Migration;
-use Automattic\WooCommerce\Blocks\Options;
+use Automattic\WooCommerce\Blocks\Options2;
 use Mockery;
 
 class MigrationTest extends \WP_UnitTestCase {
@@ -11,8 +11,8 @@ class MigrationTest extends \WP_UnitTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		delete_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE );
-		delete_option( Options::WC_BLOCK_VERSION );
+		delete_option( Options2::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE );
+		delete_option( Options2::WC_BLOCK_VERSION );
 	}
 
 	protected function tearDown(): void {
@@ -33,7 +33,7 @@ class MigrationTest extends \WP_UnitTestCase {
 	}
 
 	public function test_migrations_run() {
-		update_option( Options::WC_BLOCK_VERSION, '1.0.0' );
+		update_option( Options2::WC_BLOCK_VERSION, '1.0.0' );
 
 		$mock = Mockery::mock( Migration::class )->makePartial();
 
@@ -54,7 +54,7 @@ class MigrationTest extends \WP_UnitTestCase {
 	}
 
 	public function test_multiple_migrations_run() {
-		update_option( Options::WC_BLOCK_VERSION, '0.0.9' );
+		update_option( Options2::WC_BLOCK_VERSION, '0.0.9' );
 
 		$mock = Mockery::mock( Migration::class )->makePartial();
 
@@ -77,7 +77,7 @@ class MigrationTest extends \WP_UnitTestCase {
 	}
 
 	public function test_skip_migrations() {
-		update_option( Options::WC_BLOCK_VERSION, '2.0.0' );
+		update_option( Options2::WC_BLOCK_VERSION, '2.0.0' );
 
 		$mock = Mockery::mock( Migration::class )->makePartial();
 
