@@ -110,26 +110,10 @@ const getBlockEntries = ( relativePath ) => {
 
 const entries = {
 	styling: {
-		// @wordpress/components styles
-		'custom-select-control-style':
-			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
-		'snackbar-notice-style':
-			'./node_modules/wordpress-components/src/snackbar/style.scss',
-		'combobox-control-style':
-			'./node_modules/wordpress-components/src/combobox-control/style.scss',
-		'form-token-field-style':
-			'./node_modules/wordpress-components/src/form-token-field/style.scss',
-
-		'general-style': glob.sync( './assets/**/*.scss', {
-			ignore: [
-				// Block styles are added below.
-				'./assets/js/blocks/*/*.scss',
-			],
-		} ),
-
-		'packages-style': glob.sync( './packages/**/*.scss' ),
-		'reviews-style': './assets/js/blocks/reviews/editor.scss',
-		...getBlockEntries( '**/*.scss' ),
+		// Packages styles
+		'packages-style': glob.sync( './packages/**/index.js' ),
+		// Shared blocks code
+		'wc-blocks': './assets/js/index.js',
 		// Blocks
 		'product-image-gallery':
 			'./assets/js/atomic/blocks/product-elements/product-image-gallery/index.ts',
