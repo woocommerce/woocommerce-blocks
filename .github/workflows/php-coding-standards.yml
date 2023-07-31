@@ -60,7 +60,7 @@ jobs:
             - name: Log PHPCS debug information
               run: phpcs -i
 
-            - name: Changed files
+            - name: Get changed files on the PR
               id: changed-files
               uses: lots0logs/gh-action-get-changed-files@2.2.2
               with:
@@ -70,5 +70,5 @@ jobs:
               run: |
                 changed_files=${{ steps.changed-files.outputs.all }}
                 changed_files=${changed_files:1:-1}
-                changed_files=${changed_files/,/ }
+                changed_files=${changed_files//,/ }
                 phpcs ${changed_files} -q --report=checkstyle | cs2pr
