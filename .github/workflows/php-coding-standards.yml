@@ -61,7 +61,4 @@ jobs:
               run: phpcs -i
 
             - name: Run PHPCS on all files
-              run: |
-                  phpcs ./src -q --report=checkstyle | cs2pr
-                  exit_code=$?
-                  echo "My Command Exit Code: $exit_code"        
+              run: phpcs ./src -q --report=checkstyle | cs2pr
