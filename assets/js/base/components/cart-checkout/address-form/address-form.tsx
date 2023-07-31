@@ -272,15 +272,15 @@ const AddressForm = ( {
 						value={ values[ field.key ] }
 						autoCapitalize={ field.autocapitalize }
 						autoComplete={ field.autocomplete }
-						onChange={ ( newValue: string ) => {
+						onChange={ ( newValue: string ) =>
 							onChange( {
 								...values,
 								[ field.key ]:
 									field.key === 'postcode'
 										? newValue.trimStart().toUpperCase()
 										: newValue,
-							} );
-						} }
+							} )
+						}
 						customValidation={ ( inputObject: HTMLInputElement ) =>
 							field.required || inputObject.value
 								? customValidationHandler(

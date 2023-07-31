@@ -66,55 +66,31 @@ const TextInput = forwardRef< HTMLInputElement, TextInputProps >(
 					}
 				) }
 			>
-				{ onChange ? (
-					<input
-						type={ type }
-						id={ id }
-						value={ decodeEntities( value ) }
-						ref={ ref }
-						autoCapitalize={ autoCapitalize }
-						autoComplete={ autoComplete }
-						onChange={ ( event ) => {
-							onChange( event.target.value );
-						} }
-						onFocus={ () => setIsActive( true ) }
-						onBlur={ ( event ) => {
-							onBlur( event.target.value );
-							setIsActive( false );
-						} }
-						aria-label={ ariaLabel || label }
-						disabled={ disabled }
-						aria-describedby={
-							!! help && ! ariaDescribedBy
-								? id + '__help'
-								: ariaDescribedBy
-						}
-						required={ required }
-						{ ...rest }
-					/>
-				) : (
-					<input
-						type={ type }
-						id={ id }
-						ref={ ref }
-						autoCapitalize={ autoCapitalize }
-						autoComplete={ autoComplete }
-						onFocus={ () => setIsActive( true ) }
-						onBlur={ ( event ) => {
-							onBlur( event.target.value );
-							setIsActive( false );
-						} }
-						aria-label={ ariaLabel || label }
-						disabled={ disabled }
-						aria-describedby={
-							!! help && ! ariaDescribedBy
-								? id + '__help'
-								: ariaDescribedBy
-						}
-						required={ required }
-						{ ...rest }
-					/>
-				) }
+				<input
+					type={ type }
+					id={ id }
+					value={ decodeEntities( value ) }
+					ref={ ref }
+					autoCapitalize={ autoCapitalize }
+					autoComplete={ autoComplete }
+					onChange={ ( event ) => {
+						onChange( event.target.value );
+					} }
+					onFocus={ () => setIsActive( true ) }
+					onBlur={ ( event ) => {
+						onBlur( event.target.value );
+						setIsActive( false );
+					} }
+					aria-label={ ariaLabel || label }
+					disabled={ disabled }
+					aria-describedby={
+						!! help && ! ariaDescribedBy
+							? id + '__help'
+							: ariaDescribedBy
+					}
+					required={ required }
+					{ ...rest }
+				/>
 				<Label
 					label={ label }
 					screenReaderLabel={ screenReaderLabel || label }
