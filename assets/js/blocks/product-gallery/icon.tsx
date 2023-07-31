@@ -29,7 +29,6 @@ const Icon = () => (
 			stroke="currentColor"
 			strokeWidth="1.5"
 			fill="none"
-			style={ { marginLeft: '1em' } }
 		/>
 	</svg>
 );
