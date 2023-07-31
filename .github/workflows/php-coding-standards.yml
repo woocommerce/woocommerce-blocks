@@ -60,5 +60,15 @@ jobs:
             - name: Log PHPCS debug information
               run: phpcs -i
 
+            - name: Changed files
+              id: files
+              uses: lots0logs/gh-action-get-changed-files@2.2.2
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+
+            - id: set-changed-folders
+              run: |
+                  echo ${{ steps.files.outputs.all }}
+
             - name: Run PHPCS on all files
               run: phpcs ./src -q --report=checkstyle | cs2pr
