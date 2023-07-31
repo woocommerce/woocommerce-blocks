@@ -12,7 +12,7 @@ const Icon = () => (
 		/>
 		<rect
 			x="4"
-			y="14.5"
+			y="15.5"
 			width="5"
 			height="4.5"
 			rx="1"
@@ -22,7 +22,7 @@ const Icon = () => (
 		/>
 		<rect
 			x="11.5"
-			y="14.5"
+			y="15.5"
 			width="5"
 			height="4.5"
 			rx="1"
