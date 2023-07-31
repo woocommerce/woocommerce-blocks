@@ -20,5 +20,5 @@ jobs:
     name: Check [Type] Label
     runs-on: ubuntu-latest
     steps:
-      - if: contains( env.LABELS, '[Type]' ) === false && contains( env.LABELS, 'skip-changelog' ) === false
+      - if: contains( env.LABELS, '[type]' ) == false && contains( env.LABELS, 'skip-changelog' ) == false
         run: exit 1
