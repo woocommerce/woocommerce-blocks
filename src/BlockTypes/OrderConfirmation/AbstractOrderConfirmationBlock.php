@@ -119,7 +119,7 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 		}
 
 		// If the user is logged out, check the order key for validity.
-		if ( $this->allow_guest_checkout() && $this->has_valid_order_key( $order ) ) {
+		if ( $this->allow_guest_checkout() && $this->is_current_customer_order( $order ) && $this->has_valid_order_key( $order ) ) {
 			return $this->order_matches_session( $order ) ? 'full' : 'limited';
 		}
 
@@ -147,13 +147,13 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	}
 
 	/**
-	 * See if the current user has access to sensitive order details.
+	 * See if the current user ID matches the given order customer ID.
 	 *
 	 * @param \WC_Order $order Order object.
 	 * @return boolean
 	 */
 	protected function is_current_customer_order( $order ) {
-		return get_current_user_id() > 0 && $order->get_user_id() === get_current_user_id();
+		return $order->get_user_id() === get_current_user_id();
 	}
 
 	/**
