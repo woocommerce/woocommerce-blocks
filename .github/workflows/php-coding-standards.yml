@@ -61,11 +61,9 @@ jobs:
               run: phpcs -i
 
             - id: files
-              uses: jitterbit/get-changed-files@v1
+              uses: jitterbit/get-changed-files
             - run: |
-                for changed_file in ${{ steps.files.outputs.all }}; do
-                  echo "Do something with this ${changed_file}."
-                done
+                echo ${{ steps.files.outputs.all }}
 
             - name: Get changed files on the PR
               id: changed-files
