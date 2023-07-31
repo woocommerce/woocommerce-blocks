@@ -153,16 +153,17 @@ class ProductButton extends AbstractBlock {
 			if ( isset( $args['attributes']['aria-label'] ) ) {
 				$args['attributes']['aria-label'] = wp_strip_all_tags( $args['attributes']['aria-label'] );
 			}
-			
+
 			if ( isset( WC()->cart ) && ! WC()->cart->is_empty() ) {
 				$this->prevent_cache();
 			}
 
-			$div_directives    = 'data-wc-context=\'' . wp_json_encode( $context, JSON_NUMERIC_CHECK ) . '\'';
+			$div_directives = 'data-wc-context=\'' . wp_json_encode( $context, JSON_NUMERIC_CHECK ) . '\'';
 
 			$button_directives = '
 				data-wc-on--click="actions.woocommerce.addToCart"
 				data-wc-class--loading="context.woocommerce.isLoading"
+				data-wc-class--added="context.woocommerce.isAddedClassVisible"
 			';
 
 			$span_button_directives = '
@@ -172,8 +173,6 @@ class ProductButton extends AbstractBlock {
 				data-wc-effect="effects.woocommerce.startAnimation"
 				data-wc-on--animationend="actions.woocommerce.handleAnimationEnd"
 			';
-
-			
 
 			/**
 			 * Filters the add to cart button class.

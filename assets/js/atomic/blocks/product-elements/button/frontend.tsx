@@ -18,6 +18,7 @@ type Context = {
 		quantityToAdd: number;
 		temporaryNumberOfItems: number;
 		animationStatus: AnimationStatus;
+		isAddedClassVisible: boolean | undefined;
 	};
 };
 
@@ -104,6 +105,9 @@ const productButtonSelectors = {
 			);
 			return product?.quantity || 0;
 		},
+		isAddedClassVisible: ( { context }: Store ) => {
+			return context.woocommerce.isAddedClassVisible;
+		},
 		slideOutAnimation: ( { context }: Store ) =>
 			context.woocommerce.animationStatus === AnimationStatus.SLIDE_OUT,
 		slideInAnimation: ( { context }: Store ) =>
@@ -182,6 +186,7 @@ interactivityStore(
 						// eslint-disable-next-line no-console
 						console.error( error );
 					} finally {
+						context.woocommerce.isAddedClassVisible = true;
 						context.woocommerce.displayViewCart = true;
 						context.woocommerce.isLoading = false;
 					}
