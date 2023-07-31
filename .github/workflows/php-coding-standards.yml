@@ -60,10 +60,20 @@ jobs:
             - name: Log PHPCS debug information
               run: phpcs -i
 
-            - id: files
-              uses: jitterbit/get-changed-files
-            - run: |
-                echo ${{ steps.files.outputs.all }}
+#            - id: files
+#              uses: masesgroup/retrieve-changed-files@v2
+#            - run: |
+#                for changed_file in ${{ steps.files.outputs.all }}; do
+#                  echo "Do something with this ${changed_file}."
+#                done
+
+            - name: Get changed files
+              id: changed
+              run: |
+                  git fetch origin trunk
+                  diff=$(git diff --name-only --diff-filter=AM origin/trunk..HEAD | tr '\n' ' ')
+                  echo $diff
+                  echo "ADDED_MODIFIED=$diff" >> "$GITHUB_OUTPUT"
 
             - name: Get changed files on the PR
               id: changed-files
