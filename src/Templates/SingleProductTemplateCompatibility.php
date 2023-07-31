@@ -235,7 +235,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				'hooked'      => array(),
 			),
 			'woocommerce_share'                         => array(
-				'block_names' => ( 'woocommerce/product-details' ),
+				'block_names' => array( 'woocommerce/product-details' ),
 				'position'    => 'before',
 				'hooked'      => array(),
 			),
