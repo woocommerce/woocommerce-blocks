@@ -27,7 +27,7 @@ class Migration {
 	 * @var array
 	 */
 	public function run_migrations() {
-		$current_db_version = get_option( Options2::WC_BLOCK_VERSION, '' );
+		$current_db_version = get_option( Options::WC_BLOCK_VERSION, '' );
 
 		// This check is necessary because the version was not being set in the database until 10.3.0.
 		// We can remove this check in the next months.
@@ -53,6 +53,6 @@ class Migration {
 	 * Set a flag to indicate if the blockified Product Grid Block should be rendered by default.
 	 */
 	public static function wc_blocks_update_1030_blockified_product_grid_block() {
-		update_option( Options2::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE, wc_bool_to_string( false ) );
+		update_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE, wc_bool_to_string( false ) );
 	}
 }
