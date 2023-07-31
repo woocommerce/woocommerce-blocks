@@ -78,7 +78,7 @@ final class AssetsController {
 	}
 
 	public function add_places_api_script() {
-		$api_key = '';
+		$api_key = ''; // Google Maps API Key. Do not push to repo.
 		$script_src = 'https://maps.googleapis.com/maps/api/js?key=' . $api_key . '&libraries=places&callback=initMap';
 		wp_enqueue_script( 'wc-blocks-google-maps', $script_src,  [], null, true );
 	}
