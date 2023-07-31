@@ -98,6 +98,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 		}
 
 		$supported_blocks = array_merge(
+			[],
 			...array_map(
 				function( $hook ) {
 					return $hook['block_names'];
