@@ -60,36 +60,8 @@ jobs:
             - name: Log PHPCS debug information
               run: phpcs -i
 
-#            - id: files
-#              uses: masesgroup/retrieve-changed-files@v2
-#            - run: |
-#                for changed_file in ${{ steps.files.outputs.all }}; do
-#                  echo "Do something with this ${changed_file}."
-#                done
-
-            - name: Get changed files
-              id: changed
-              run: |
-                  git fetch origin trunk
-                  diff=$(git diff --name-only --diff-filter=AM origin/trunk..HEAD | tr '\n' ' ')
-                  echo $diff
-                  echo "ADDED_MODIFIED=$diff" >> "$GITHUB_OUTPUT"
-
-            - name: Get changed files on the PR
-              id: changed-files
-              uses: lots0logs/gh-action-get-changed-files@2.2.2
-              with:
-                token: ${{ secrets.GITHUB_TOKEN }}
-
             - name: Run PHPCS on all files
               run: |
-                all_files=${{ steps.changed-files.outputs.all }}
-                modified_files=${{ steps.changed-files.outputs.modified }}
-                modified_files=${modified_files:1:-1}
-                added_files=${{ steps.changed-files.outputs.added }}
-                added_files=${added_files:1:-1}
-                renamed_files=${{ steps.changed-files.outputs.renamed }}
-                renamed_files=${renamed_files:1:-1}
-                files="$modified_files $added_files $renamed_files"
-                files=${files//,/ }
-                phpcs ${files} -q --report=checkstyle | cs2pr
+                git fetch origin trunk
+                changes=$(git diff --name-only --diff-filter=AM origin/trunk..HEAD | tr '\n' ' ')
+                phpcs ${changes} -q --report=checkstyle | cs2pr
