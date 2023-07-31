@@ -68,6 +68,7 @@ jobs:
 
             - name: Run PHPCS on all files
               run: |
+                all_files=${{ steps.changed-files.outputs.all }}
                 modified_files=${{ steps.changed-files.outputs.modified }}
                 modified_files=${modified_files:1:-1}
                 added_files=${{ steps.changed-files.outputs.added }}
