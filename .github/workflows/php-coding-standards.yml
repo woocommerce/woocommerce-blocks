@@ -68,7 +68,13 @@ jobs:
 
             - name: Run PHPCS on all files
               run: |
-                changed_files=${{ steps.changed-files.outputs.all }}
-                changed_files=${changed_files:1:-1}
-                changed_files=${changed_files//,/ }
-                phpcs ${changed_files} -q --report=checkstyle | cs2pr
+                modified_files=${{ steps.changed-files.outputs.modified }}
+                modified_files=${modified_files:1:-1}
+                added_files=${{ steps.changed-files.outputs.added }}
+                added_files=${added_files:1:-1}
+                renamed_files=${{ steps.changed-files.outputs.renamed }}
+                renamed_files=${renamed_files:1:-1}
+                files="$modified_files $added_files $renamed_files"
+                files=${files//,/ }
+                echo files
+                phpcs ${files} -q --report=checkstyle | cs2pr
