@@ -17,63 +17,45 @@ class Summary extends AbstractOrderConfirmationBlock {
 	protected $block_name = 'order-confirmation-summary';
 
 	/**
-	 * Render the block.
-	 *
-	 * @param array    $attributes Block attributes.
-	 * @param string   $content Block content.
-	 * @param WP_Block $block Block instance.
-	 *
-	 * @return string | void Rendered block output.
-	 */
-	protected function render( $attributes, $content, $block ) {
-		if ( ! empty( $attributes['isPreview'] ) ) {
-			$order = $this->get_preview_order();
-		} else {
-			$order = $this->get_order();
-
-			if ( ! $this->is_current_customer_order( $order ) ) {
-				$order = null;
-			}
-		}
-
-		$content            = $order ? $this->render_content( $order ) : $this->render_content_fallback();
-		$classname          = $attributes['className'] ?? '';
-		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
-
-		if ( isset( $attributes['align'] ) ) {
-			$classname .= " align{$attributes['align']}";
-		}
-
-		return sprintf(
-			'<div class="wc-block-%5$s %1$s %2$s" style="%3$s">%4$s</div>',
-			esc_attr( $classes_and_styles['classes'] ),
-			esc_attr( $classname ),
-			esc_attr( $classes_and_styles['styles'] ),
-			$content,
-			esc_attr( $this->block_name )
-		);
-	}
-
-	/**
 	 * This renders the content of the block within the wrapper.
 	 *
 	 * @param \WC_Order $order Order object.
+	 * @param string    $permission Permission level for viewing order details.
+	 * @param array     $attributes Block attributes.
 	 * @return string
 	 */
-	protected function render_content( $order ) {
+	protected function render_content( $order, $permission = false, $attributes = [] ) {
+		if ( ! $permission ) {
+			$content = esc_html__( 'Great news! Your order has been received, and a confirmation will be sent to your email address.', 'woo-gutenberg-products-block' );
+
+			if ( wc_get_page_permalink( 'myaccount' ) ) {
+				$content .= ' ' . sprintf(
+					/* translators: 1: opening a link tag 2: closing a link tag */
+					esc_html__( 'Have an account with us? %1$sLog in here to view your order details%2$s.', 'woo-gutenberg-products-block' ),
+					'<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="button">',
+					'</a>'
+				);
+			}
+
+			return wpautop( $content );
+		}
+
+		$content  = '<p>' . esc_html__( 'Great news! Your order has been received, and a confirmation will be sent to your email address. You can find the details of your purchase below.', 'woo-gutenberg-products-block' ) . '</p>';
+		$content .= '<ul class="wc-block-order-confirmation-summary-list">';
+		$content .= $this->render_summary_row( __( 'Order number:', 'woo-gutenberg-products-block' ), $order->get_order_number() );
+		$content .= $this->render_summary_row( __( 'Date:', 'woo-gutenberg-products-block' ), wc_format_datetime( $order->get_date_created() ) );
+		$content .= $this->render_summary_row( __( 'Total:', 'woo-gutenberg-products-block' ), $order->get_formatted_order_total() );
+		if ( 'full' === $permission ) {
+			$content .= $this->render_summary_row( __( 'Email:', 'woo-gutenberg-products-block' ), $order->get_billing_email() );
+			$content .= $this->render_summary_row( __( 'Payment method:', 'woo-gutenberg-products-block' ), $order->get_payment_method_title() );
+		}
+		$content .= '</ul>';
+
 		$this->remove_core_hooks();
-		$content = '
-			<ul>
-				' . $this->render_summary_row( __( 'Order number:', 'woo-gutenberg-products-block' ), $order->get_order_number() ) . '
-				' . $this->render_summary_row( __( 'Date:', 'woo-gutenberg-products-block' ), wc_format_datetime( $order->get_date_created() ) ) . '
-				' . $this->render_summary_row( __( 'Total:', 'woo-gutenberg-products-block' ), $order->get_formatted_order_total() ) . '
-				' . $this->render_summary_row( __( 'Email:', 'woo-gutenberg-products-block' ), $order->get_billing_email() ) . '
-				' . $this->render_summary_row( __( 'Payment method:', 'woo-gutenberg-products-block' ), $order->get_payment_method_title() ) . '
-			</ul>
-			' . $this->get_hook_content( 'woocommerce_thankyou_' . $order->get_payment_method(), [ $order->get_id() ] ) . '
-			' . $this->get_hook_content( 'woocommerce_thankyou', [ $order->get_id() ] ) . '
-		';
-		add_action( 'woocommerce_thankyou', 'woocommerce_order_details_table', 10 );
+		$content .= $this->get_hook_content( 'woocommerce_thankyou_' . $order->get_payment_method(), [ $order->get_id() ] );
+		$content .= $this->get_hook_content( 'woocommerce_thankyou', [ $order->get_id() ] );
+		$this->restore_core_hooks();
+
 		return $content;
 	}
 
@@ -85,7 +67,7 @@ class Summary extends AbstractOrderConfirmationBlock {
 	 * @return string
 	 */
 	protected function render_summary_row( $name, $value ) {
-		return $value ? '<li><span>' . esc_html( $name ) . '</span> <strong>' . wp_kses_post( $value ) . '</strong></li>' : '';
+		return $value ? '<li class="wc-block-order-confirmation-summary-list-item"><span class="wc-block-order-confirmation-summary-list-item__key">' . esc_html( $name ) . '</span> <span class="wc-block-order-confirmation-summary-list-item__value">' . wp_kses_post( $value ) . '</span></li>' : '';
 	}
 
 	/**
@@ -93,5 +75,32 @@ class Summary extends AbstractOrderConfirmationBlock {
 	 */
 	protected function remove_core_hooks() {
 		remove_action( 'woocommerce_thankyou', 'woocommerce_order_details_table', 10 );
+	}
+
+	/**
+	 * Restore core hooks from the thankyou page.
+	 */
+	protected function restore_core_hooks() {
+		add_action( 'woocommerce_thankyou', 'woocommerce_order_details_table', 10 );
+	}
+
+	/**
+	 * This is what gets rendered when the order does not exist.
+	 *
+	 * @return string
+	 */
+	protected function render_content_fallback() {
+		$content = esc_html__( 'If you\'ve placed an order, just give your email a quick check for the confirmation.', 'woo-gutenberg-products-block' );
+
+		if ( wc_get_page_permalink( 'myaccount' ) ) {
+			$content .= ' ' . sprintf(
+				/* translators: 1: opening a link tag 2: closing a link tag */
+				esc_html__( 'Have an account with us? %1$sLog in here to view your order details%2$s.', 'woo-gutenberg-products-block' ),
+				'<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="button">',
+				'</a>'
+			);
+		}
+
+		return wpautop( $content );
 	}
 }
