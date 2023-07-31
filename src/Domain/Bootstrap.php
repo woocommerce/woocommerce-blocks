@@ -6,7 +6,7 @@ use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\AssetsController;
 use Automattic\WooCommerce\Blocks\BlockPatterns;
 use Automattic\WooCommerce\Blocks\BlockTemplatesController;
-use Automattic\WooCommerce\Blocks\BlockTypesController2;
+use Automattic\WooCommerce\Blocks\BlockTypesController;
 use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
 use Automattic\WooCommerce\Blocks\Domain\Services\Notices;
 use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
@@ -131,7 +131,7 @@ class Bootstrap {
 		$this->container->get( Notices::class )->init();
 		$this->container->get( StoreApi::class )->init();
 		$this->container->get( GoogleAnalytics::class );
-		$this->container->get( BlockTypesController2::class );
+		$this->container->get( BlockTypesController::class );
 		$this->container->get( BlockTemplatesController::class );
 		$this->container->get( ProductSearchResultsTemplate::class );
 		$this->container->get( ProductAttributeTemplate::class );
@@ -255,11 +255,11 @@ class Bootstrap {
 			}
 		);
 		$this->container->register(
-			BlockTypesController2::class,
+			BlockTypesController::class,
 			function ( Container $container ) {
 				$asset_api           = $container->get( AssetApi::class );
 				$asset_data_registry = $container->get( AssetDataRegistry::class );
-				return new BlockTypesController2( $asset_api, $asset_data_registry );
+				return new BlockTypesController( $asset_api, $asset_data_registry );
 			}
 		);
 		$this->container->register(

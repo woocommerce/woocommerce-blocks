@@ -16,7 +16,7 @@ use Automattic\WooCommerce\Blocks\BlockTypes\MiniCartContents;
  * @since 5.0.0
  * @internal
  */
-final class BlockTypesController2 {
+final class BlockTypesController {
 
 	/**
 	 * Instance of the asset API.
@@ -229,7 +229,7 @@ final class BlockTypesController2 {
 
 		if ( Package::feature()->is_experimental_build() ) {
 			$block_types[] = 'ProductCollection';
-			$block_types[]  = 'ProductTemplate';
+			$block_types[] = 'ProductTemplate';
 			$block_types[] = 'ProductGallery';
 			$block_types[] = 'ProductGalleryLargeImage';
 		}
