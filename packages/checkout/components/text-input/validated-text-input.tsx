@@ -117,7 +117,11 @@ const ValidatedTextInput = ( {
 			inputRef.current !== null &&
 			inputRef.current?.ownerDocument?.activeElement !== inputRef.current
 		) {
-			onChange( customFormatter( inputRef.current.value ) );
+			const formattedValue = customFormatter( inputRef.current.value );
+
+			if ( formattedValue !== value ) {
+				onChange( formattedValue );
+			}
 		}
 	}, [ validateInput, customFormatter, value, previousValue, onChange ] );
 
@@ -192,7 +196,11 @@ const ValidatedTextInput = ( {
 				validateInput( true );
 
 				// Push the changes up to the parent component.
-				onChange( customFormatter( newValue ) );
+				const formattedValue = customFormatter( newValue );
+
+				if ( formattedValue !== value ) {
+					onChange( formattedValue );
+				}
 			} }
 			onBlur={ () => validateInput( false ) }
 			ariaDescribedBy={ describedBy }
