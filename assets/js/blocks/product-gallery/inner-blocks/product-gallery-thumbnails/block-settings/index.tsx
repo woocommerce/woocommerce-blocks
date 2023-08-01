@@ -30,7 +30,7 @@ import {
  * Internal dependencies
  */
 import { ThumbnailsPosition } from '../constants';
-import type { ThumbnailsSettingProps } from '../../../types';
+import type { ProductGalleryThumbnailsSettingsProps } from '../../../types';
 
 const positionHelp: Record< ThumbnailsPosition, string > = {
 	[ ThumbnailsPosition.OFF ]: __(
@@ -51,12 +51,13 @@ const positionHelp: Record< ThumbnailsPosition, string > = {
 	),
 };
 
-export const BlockSettings = ( { context }: ThumbnailsSettingProps ) => {
+export const ProductGalleryThumbnailsBlockSettings = ( {
+	context,
+}: ProductGalleryThumbnailsSettingsProps ) => {
 	const maxNumberOfThumbnails = 8;
 	const minNumberOfThumbnails = 2;
 	const { productGalleryClientId } = context;
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore @wordpress/block-editor/store types not provided
+	// @ts-expect-error @wordpress/block-editor/store types not provided
 	const { updateBlockAttributes } = useDispatch( blockEditorStore );
 
 	return (
