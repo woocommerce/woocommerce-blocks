@@ -14,17 +14,25 @@ import { useEffect, useMemo, useState } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
 import { useShallowEqual, usePrevious } from '@woocommerce/base-hooks';
 import { defaultAddressFields } from '@woocommerce/settings';
-import { select } from '@wordpress/data';
-import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import isShallowEqual from '@wordpress/is-shallow-equal';
+import { pick } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
-import { AddressFormProps, FieldType, FieldConfig } from './types';
+import {
+	AddressFormProps,
+	FieldType,
+	FieldConfig,
+	AddressFormFields,
+} from './types';
 import prepareAddressFields from './prepare-address-fields';
-import validateShippingCountry from './validate-shipping-country';
-import customValidationHandler from './custom-validation-handler';
+import {
+	validateShippingCountry,
+	customValidationHandler,
+	hasValidationErrors,
+	validateRequiredFields,
+} from './validation';
 
 const defaultFields = Object.keys(
 	defaultAddressFields
@@ -42,13 +50,16 @@ const AddressForm = ( {
 	type = 'shipping',
 	values: initialValues,
 }: AddressFormProps ): JSX.Element => {
-	// Holds local state of the field values.
-	const [ values, setValues ] = useState( initialValues );
+	const currentFields = useShallowEqual( fields );
 	const previousInitialValues = usePrevious( initialValues );
 
+	// Holds local state of the field values. Filters values to include only those in the fields prop.
+	const [ values, setValues ] = useState( () =>
+		pick( initialValues, currentFields )
+	);
+
 	// Memoize the address form fields passed in from the parent component.
-	const currentFields = useShallowEqual( fields );
-	const addressFormFields = useMemo( () => {
+	const addressFormFields = useMemo( (): AddressFormFields => {
 		const preparedFields = prepareAddressFields(
 			currentFields,
 			fieldConfig,
@@ -56,62 +67,44 @@ const AddressForm = ( {
 		);
 		return {
 			fields: preparedFields,
-			requiredFields: preparedFields.filter(
-				( field ) => field.required
-			),
-			hiddenFields: preparedFields.filter( ( field ) => field.hidden ),
+			type,
+			required: preparedFields.filter( ( field ) => field.required ),
+			hidden: preparedFields.filter( ( field ) => field.hidden ),
 		};
-	}, [ currentFields, fieldConfig, values.country ] );
+	}, [ currentFields, fieldConfig, values.country, type ] );
 
-	// Push when all values of required fields are complete.
-	useEffect( () => {
-		if ( ! isShallowEqual( values, initialValues ) ) {
-			// Check required fields have values.
-			const isComplete = addressFormFields.requiredFields.every(
-				( field ) => {
-					return values[ field.key ] !== '';
-				}
-			);
-			if ( ! isComplete ) {
-				return;
-			}
-			// Check if any fields have errors.
-			const hasErrors = addressFormFields.fields.some( ( field ) => {
-				const errorId = `${ type }_${ field.key }`;
-				const validationError =
-					select( VALIDATION_STORE_KEY ).getValidationError(
-						errorId
-					);
-				const hasError = validationError?.message;
-				return !! hasError;
-			} );
-			if ( hasErrors ) {
-				return;
-			}
-			onChange( values );
-		}
-	}, [ values, initialValues, onChange, addressFormFields, type ] );
-
-	// Clear values for hidden fields.
-	useEffect( () => {
-		const newValues = { ...values };
-		addressFormFields.hiddenFields.forEach( ( field ) => {
-			newValues[ field.key ] = '';
-		} );
-		if ( ! isShallowEqual( values, newValues ) ) {
-			setValues( newValues );
-		}
-	}, [ addressFormFields.hiddenFields, onChange, values ] );
-
-	// Sync incoming values with local state.
+	// Sync incoming changed values with local state.
 	useEffect( () => {
 		if (
 			previousInitialValues &&
-			! isShallowEqual( initialValues, previousInitialValues )
+			! isShallowEqual( previousInitialValues, initialValues )
 		) {
 			setValues( initialValues );
 		}
 	}, [ initialValues, previousInitialValues ] );
+
+	// Push to parent when all values of required fields are complete.
+	useEffect( () => {
+		if (
+			validateRequiredFields( values, addressFormFields ) &&
+			! hasValidationErrors( addressFormFields )
+		) {
+			onChange( values );
+		}
+	}, [ values, onChange, addressFormFields ] );
+
+	// Clear values for hidden fields.
+	useEffect( () => {
+		const newValues = {
+			...values,
+			...Object.fromEntries(
+				addressFormFields.hidden.map( ( field ) => [ field.key, '' ] )
+			),
+		};
+		if ( ! isShallowEqual( values, newValues ) ) {
+			setValues( newValues );
+		}
+	}, [ addressFormFields, values ] );
 
 	// Maybe validate country when other fields change so user is notified that it's required.
 	useEffect( () => {
