@@ -57,10 +57,6 @@ const blocks = {
 	'product-gallery-pager': {
 		customDir: 'product-gallery/inner-blocks/product-gallery-pager',
 	},
-	'product-gallery-thumbnails': {
-		customDir: 'product-gallery/inner-blocks/product-gallery-thumbnails',
-		isExperimental: true,
-	},
 	'product-new': {},
 	'product-on-sale': {},
 	'product-query': {
