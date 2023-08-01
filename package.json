@@ -27,8 +27,7 @@
 		"./assets/js/blocks/filter-wrapper/register-components.ts",
 		"./assets/js/blocks/product-query/variations/**.tsx",
 		"./assets/js/blocks/product-query/index.tsx",
-		"./assets/js/blocks/product-query/inspector-controls.tsx",
-		"./assets/js/templates/revert-button/index.tsx"
+		"./assets/js/blocks/product-query/inspector-controls.tsx"
 	],
 	"repository": {
 		"type": "git",
@@ -71,7 +70,7 @@
 		"reformat-files": "prettier --ignore-path .eslintignore --write \"**/*.{js,jsx,json,ts,tsx}\"",
 		"release": "sh ./bin/wordpress-deploy.sh",
 		"rimraf": "./node_modules/rimraf/bin.js",
-		"start": "rimraf build/* && cross-env BABEL_ENV=default CHECK_CIRCULAR_DEPS=true webpack --watch --info-verbosity none",
+		"start": "rimraf build/* && cross-env BABEL_ENV=default CHECK_CIRCULAR_DEPS=true webpack --watch",
 		"storybook": "start-storybook  -c ./storybook -p 6006 --ci",
 		"storybook:build": "BABEL_ENV=development build-storybook  -c ./storybook -o ./storybook/dist",
 		"storybook:deploy": "rimraf ./storybook/dist/* && npm run storybook:build && gh-pages -d ./storybook/dist",
@@ -226,12 +225,12 @@
 		"rimraf": "3.0.2",
 		"sass-loader": "10.1.0",
 		"storybook-addon-react-docgen": "1.2.43",
-		"terser-webpack-plugin": "3.0.3",
+		"terser-webpack-plugin": "4.2.3",
 		"typescript": "4.7.4",
 		"utility-types": "3.10.0",
 		"webpack": "4.44.2",
 		"webpack-bundle-analyzer": "4.5.0",
-		"webpack-cli": "3.3.12",
+		"webpack-cli": "4.10.0",
 		"webpack-rtl-plugin": "2.0.0",
 		"wp-types": "3.61.0",
 		"zenhub-api": "0.2.0"
