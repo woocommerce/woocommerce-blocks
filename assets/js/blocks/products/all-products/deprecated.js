@@ -33,4 +33,29 @@ const v1 = {
 	},
 };
 
-export default [ v1 ];
+const v2 = {
+	save( { attributes } ) {
+		const dataAttributes = {};
+		Object.keys( attributes )
+			.sort()
+			.forEach( ( key ) => {
+				dataAttributes[ key ] = attributes[ key ];
+			} );
+		const data = {
+			'data-attributes': JSON.stringify( dataAttributes ),
+		};
+		return (
+			<div
+				className={ getBlockClassName(
+					'wc-block-all-products',
+					attributes
+				) }
+				{ ...data }
+			>
+				<InnerBlocks.Content />
+			</div>
+		);
+	},
+};
+
+export default [ v1, v2 ];
