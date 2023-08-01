@@ -9,7 +9,8 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
  */
 import { BlockSettings } from './settings';
 import { PagerDotIcon, PagerSelectedDotIcon } from './icons';
-import { BlockAttributes, PagerDisplayModes } from './types';
+import { BlockAttributes } from './types';
+import { PagerDisplayModes } from './constants';
 
 const DigitsPager = (): JSX.Element => {
 	const pagerDigitsItems = Array.from( { length: 4 }, ( _, index ) => {

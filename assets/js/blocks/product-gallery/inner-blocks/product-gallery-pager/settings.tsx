@@ -1,17 +1,24 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - Ignoring because `__experimentalToggleGroupControl` is not yet in the type definitions.
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - Ignoring because `__experimentalToggleGroupControl` is not yet in the type definitions.
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-import { BlockAttributes, PagerDisplayModes } from './types';
+import { BlockAttributes } from './types';
+import { PagerDisplayModes } from './constants';
 import { PagerSettingsDigitsIcon, PagerSettingsDotIcon } from './icons';
 
 const getHelpText = ( pagerDisplayMode: PagerDisplayModes ) => {
