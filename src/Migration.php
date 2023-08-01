@@ -31,7 +31,7 @@ class Migration {
 
 		// This check is necessary because the version was not being set in the database until 10.3.0.
 		// We can remove this check in the next months.
-		if ( ! empty( get_option( 'wc_blocks_db_schema_version', '' ) ) ) {
+		if (! empty( get_option( 'wc_blocks_db_schema_version', '' ) ) ) {
 			$this->wc_blocks_update_1030_blockified_product_grid_block();
 		}
 
