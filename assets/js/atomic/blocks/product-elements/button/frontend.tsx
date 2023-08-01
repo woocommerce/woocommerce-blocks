@@ -105,9 +105,6 @@ const productButtonSelectors = {
 			);
 			return product?.quantity || 0;
 		},
-		isAddedClassVisible: ( { context }: Store ) => {
-			return context.woocommerce.isAddedClassVisible;
-		},
 		slideOutAnimation: ( { context }: Store ) =>
 			context.woocommerce.animationStatus === AnimationStatus.SLIDE_OUT,
 		slideInAnimation: ( { context }: Store ) =>
