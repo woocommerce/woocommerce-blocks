@@ -16,13 +16,9 @@ import { useDispatch } from '@wordpress/data';
 import {
 	PanelBody,
 	RangeControl,
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore - Ignoring because `__experimentalToggleGroupControlOption` is not yet in the type definitions.
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	// @ts-expect-error - Ignoring because `__experimentalToggleGroupControlOption` is not yet in the type definitions.
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore - Ignoring because `__experimentalToggleGroupControl` is not yet in the type definitions.
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	// @ts-expect-error - Ignoring because `__experimentalToggleGroupControl` is not yet in the type definitions.
 	__experimentalToggleGroupControl as ToggleGroupControl,
 } from '@wordpress/components';
 
