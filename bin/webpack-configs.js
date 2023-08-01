@@ -94,7 +94,10 @@ const getCoreConfig = ( options = {} ) => {
 						loader: 'babel-loader',
 						options: {
 							presets: [ '@wordpress/babel-preset-default' ],
-							cacheDirectory: true,
+							plugins: [
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
+							],
 						},
 					},
 				},
@@ -202,6 +205,8 @@ const getMainConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
 							].filter( Boolean ),
 							cacheDirectory: true,
 						},
@@ -343,6 +348,8 @@ const getFrontConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
 							].filter( Boolean ),
 							cacheDirectory: true,
 						},
@@ -441,6 +448,8 @@ const getPaymentsConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
 							].filter( Boolean ),
 							cacheDirectory: true,
 						},
@@ -543,6 +552,8 @@ const getExtensionsConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
 							].filter( Boolean ),
 							cacheDirectory: true,
 						},
@@ -586,6 +597,109 @@ const getExtensionsConfig = ( options = {} ) => {
 			} ),
 			new ProgressBarPlugin(
 				getProgressBarPluginConfig( 'Experimental Extensions' )
+			),
+		],
+		resolve: {
+			...resolve,
+			extensions: [ '.js', '.ts', '.tsx' ],
+		},
+	};
+};
+
+/**
+ * Build config for scripts to be used exclusively within the Site Editor context.
+ *
+ * @param {Object} options Build options.
+ */
+const getSiteEditorConfig = ( options = {} ) => {
+	const { alias, resolvePlugins = [] } = options;
+	const resolve = alias
+		? {
+				alias,
+				plugins: resolvePlugins,
+		  }
+		: {
+				plugins: resolvePlugins,
+		  };
+	return {
+		entry: getEntryConfig( 'editor', options.exclude || [] ),
+		output: {
+			devtoolNamespace: 'wc',
+			path: path.resolve( __dirname, '../build/' ),
+			filename: `[name].js`,
+			jsonpFunction: 'webpackWcBlocksExtensionsMethodExtensionJsonp',
+		},
+		module: {
+			rules: [
+				{
+					test: /\.(j|t)sx?$/,
+					exclude: /node_modules/,
+					use: {
+						loader: 'babel-loader?cacheDirectory',
+						options: {
+							presets: [
+								[
+									'@wordpress/babel-preset-default',
+									{
+										modules: false,
+										targets: {
+											browsers: [
+												'extends @wordpress/browserslist-config',
+											],
+										},
+									},
+								],
+							],
+							plugins: [
+								isProduction
+									? require.resolve(
+											'babel-plugin-transform-react-remove-prop-types'
+									  )
+									: false,
+								'@babel/plugin-proposal-optional-chaining',
+							].filter( Boolean ),
+						},
+					},
+				},
+				{
+					test: /\.s[c|a]ss$/,
+					use: {
+						loader: 'ignore-loader',
+					},
+				},
+			],
+		},
+		optimization: {
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
+			splitChunks: {
+				automaticNameDelimiter: '--',
+			},
+			minimizer: [
+				new TerserPlugin( {
+					cache: true,
+					parallel: true,
+					terserOptions: {
+						output: {
+							comments: /translators:/i,
+						},
+						compress: {
+							passes: 2,
+						},
+						mangle: {
+							reserved: [ '__', '_n', '_nx', '_x' ],
+						},
+					},
+					extractComments: false,
+				} ),
+			],
+		},
+		plugins: [
+			...getSharedPlugins( {
+				bundleAnalyzerReportTitle: 'Site Editor',
+			} ),
+			new ProgressBarPlugin(
+				getProgressBarPluginConfig( 'Site Editor' )
 			),
 		],
 		resolve: {
@@ -670,6 +784,8 @@ const getStylingConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
 							].filter( Boolean ),
 						},
 					},
@@ -793,6 +909,7 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 								// Required until Webpack is updated to ^5.0.0
 								plugins: [
 									'@babel/plugin-proposal-optional-chaining',
+									'@babel/plugin-proposal-class-properties',
 								],
 							},
 						},
@@ -809,6 +926,7 @@ module.exports = {
 	getMainConfig,
 	getPaymentsConfig,
 	getExtensionsConfig,
+	getSiteEditorConfig,
 	getStylingConfig,
 	getInteractivityAPIConfig,
 };
