@@ -18,16 +18,7 @@ class ProductGalleryPager extends AbstractBlock {
 	protected function register_block_type_assets() {
 		return null;
 	}
-
-	/**
-	 *  Register the context
-	 *
-	 * @return string[]
-	 */
-	protected function get_block_type_uses_context() {
-		return [ 'query', 'queryId', 'postId' ];
-	}
-
+	
 	/**
 	 * Get the block's attributes.
 	 *
