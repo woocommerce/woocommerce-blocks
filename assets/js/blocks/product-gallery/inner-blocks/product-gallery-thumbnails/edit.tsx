@@ -10,15 +10,18 @@ import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import './editor.scss';
-import { BlockSettings } from './block-settings';
-import type { BlockAttributes, Context } from '../../types';
+import { ProductGalleryThumbnailsBlockSettings } from './block-settings';
+import type {
+	ProductGalleryThumbnailsBlockAttributes,
+	Context,
+} from '../../types';
 import { ThumbnailsPosition } from './constants';
 
 export const Edit = ( {
 	attributes,
 	setAttributes,
 	context,
-}: BlockEditProps< BlockAttributes > & Context ) => {
+}: BlockEditProps< ProductGalleryThumbnailsBlockAttributes > & Context ) => {
 	const blockProps = useBlockProps();
 
 	const Placeholder = () => {
@@ -49,7 +52,7 @@ export const Edit = ( {
 		<>
 			<div { ...blockProps }>
 				<InspectorControls>
-					<BlockSettings
+					<ProductGalleryThumbnailsBlockSettings
 						attributes={ attributes }
 						setAttributes={ setAttributes }
 						context={ context }
