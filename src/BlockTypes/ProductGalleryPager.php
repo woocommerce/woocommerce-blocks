@@ -43,10 +43,10 @@ class ProductGalleryPager extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$parsed_attributes 	= $this->parse_attributes( $attributes );
+		$parsed_attributes  = $this->parse_attributes( $attributes );
 		$classname          = $attributes['className'] ?? '';
 		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$html 				= $this->render_pager( $parsed_attributes['pagerDisplayMode'] );
+		$html               = $this->render_pager( $parsed_attributes['pagerDisplayMode'] );
 
 		return sprintf(
 			'<div %1$s>
