@@ -29,18 +29,6 @@
 		"productGalleryClientId": {
 			"type": "string",
 			"default": ""
-		},
-		"cropImages": {
-			"type": "boolean",
-			"default": false
-		},
-		"hoverZoom": {
-			"type": "boolean",
-			"default": false
-		},
-		"fullScreenOnClick": {
-			"type": "boolean",
-			"default": false
 		}
 	}
 }

@@ -17,12 +17,8 @@ import {
 	updateGroupBlockType,
 	getInnerBlocksLockAttributes,
 } from './utils';
-import { ProductGalleryThumbnailsBlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
-import { ProductGalleryBlockSettings } from './block-settings/index';
-import type {
-	ProductGalleryThumbnailsBlockAttributes,
-	ProductGalleryBlockAttributes,
-} from './types';
+import { BlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
+import type { BlockAttributes } from './types';
 
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
@@ -45,9 +41,7 @@ export const Edit = ( {
 	clientId,
 	attributes,
 	setAttributes,
-}: BlockEditProps<
-	ProductGalleryThumbnailsBlockAttributes & ProductGalleryBlockAttributes
-> ) => {
+}: BlockEditProps< BlockAttributes > ) => {
 	const blockProps = useBlockProps();
 
 	// Update the Group block type when the thumbnailsPosition attribute changes.
@@ -65,7 +59,7 @@ export const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				<ProductGalleryThumbnailsBlockSettings
+				<BlockSettings
 					attributes={ attributes }
 					setAttributes={ setAttributes }
 					context={ {
@@ -74,12 +68,6 @@ export const Edit = ( {
 						thumbnailsNumberOfThumbnails:
 							attributes.thumbnailsNumberOfThumbnails,
 					} }
-				/>
-			</InspectorControls>
-			<InspectorControls>
-				<ProductGalleryBlockSettings
-					attributes={ attributes }
-					setAttributes={ setAttributes }
 				/>
 			</InspectorControls>
 			<InnerBlocks

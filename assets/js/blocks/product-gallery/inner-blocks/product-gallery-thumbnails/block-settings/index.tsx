@@ -30,7 +30,7 @@ import {
  * Internal dependencies
  */
 import { ThumbnailsPosition } from '../constants';
-import type { ProductGalleryThumbnailsSettingsProps } from '../../../types';
+import type { ThumbnailsSettingProps } from '../../../types';
 
 const positionHelp: Record< ThumbnailsPosition, string > = {
 	[ ThumbnailsPosition.OFF ]: __(
@@ -51,9 +51,7 @@ const positionHelp: Record< ThumbnailsPosition, string > = {
 	),
 };
 
-export const ProductGalleryThumbnailsBlockSettings = ( {
-	context,
-}: ProductGalleryThumbnailsSettingsProps ) => {
+export const BlockSettings = ( { context }: ThumbnailsSettingProps ) => {
 	const maxNumberOfThumbnails = 8;
 	const minNumberOfThumbnails = 2;
 	const { productGalleryClientId } = context;
