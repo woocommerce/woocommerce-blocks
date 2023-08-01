@@ -65,15 +65,9 @@ const blocks = {
 	'product-top-rated': {},
 	'products-by-attribute': {},
 	'rating-filter': {},
-	'product-average-rating': {
-		isExperimental: true,
-	},
-	'product-rating-stars': {
-		isExperimental: true,
-	},
-	'product-rating-counter': {
-		isExperimental: true,
-	},
+	'product-average-rating': {},
+	'product-rating-stars': {},
+	'product-rating-counter': {},
 	'reviews-by-category': {
 		customDir: 'reviews/reviews-by-category',
 	},
@@ -136,6 +130,10 @@ const entries = {
 		'add-to-cart-form':
 			'./assets/js/atomic/blocks/product-elements/add-to-cart-form/index.tsx',
 		...getBlockEntries( '{index,block,frontend}.{t,j}s{,x}' ),
+
+		// Templates
+		'wc-blocks-classic-template-revert-button-style':
+			'./assets/js/templates/revert-button/index.tsx',
 	},
 	core: {
 		wcBlocksRegistry: './assets/js/blocks-registry/index.js',
@@ -175,6 +173,10 @@ const entries = {
 			'./assets/js/extensions/google-analytics/index.ts',
 		'wc-shipping-method-pickup-location':
 			'./assets/js/extensions/shipping-methods/pickup-location/index.js',
+	},
+	editor: {
+		'wc-blocks-classic-template-revert-button':
+			'./assets/js/templates/revert-button/index.tsx',
 	},
 };
 
