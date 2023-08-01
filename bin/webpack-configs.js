@@ -627,7 +627,7 @@ const getSiteEditorConfig = ( options = {} ) => {
 			devtoolNamespace: 'wc',
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name].js`,
-			jsonpFunction: 'webpackWcBlocksExtensionsMethodExtensionJsonp',
+			chunkLoadingGlobal: 'webpackWcBlocksExtensionsMethodExtensionJsonp',
 		},
 		module: {
 			rules: [
