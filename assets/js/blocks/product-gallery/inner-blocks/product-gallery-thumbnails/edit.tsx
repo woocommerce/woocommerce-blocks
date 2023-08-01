@@ -25,27 +25,21 @@ export const Edit = ( {
 	const blockProps = useBlockProps();
 
 	const Placeholder = () => {
-		return (
-			<>
-				{ context.thumbnailsPosition !== ThumbnailsPosition.OFF && (
-					<div className="wc-block-editor-product-gallery-thumbnails">
-						{ [
-							...Array(
-								context.thumbnailsNumberOfThumbnails
-							).keys(),
-						].map( ( index ) => {
-							return (
-								<img
-									key={ index }
-									src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
-									alt="Placeholder"
-								/>
-							);
-						} ) }
-					</div>
-				) }
-			</>
-		);
+		return context.thumbnailsPosition !== ThumbnailsPosition.OFF ? (
+			<div className="wc-block-editor-product-gallery-thumbnails">
+				{ [
+					...Array( context.thumbnailsNumberOfThumbnails ).keys(),
+				].map( ( index ) => {
+					return (
+						<img
+							key={ index }
+							src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
+							alt="Placeholder"
+						/>
+					);
+				} ) }
+			</div>
+		) : null;
 	};
 
 	return (
