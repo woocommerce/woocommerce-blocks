@@ -88,13 +88,13 @@ const PriceFilterBlock = ( {
 } ) => {
 	const setWrapperVisibility = useSetWraperVisibility();
 	const hasFilterableProducts = getSettingWithCoercion(
-		'has_filterable_products',
+		'hasFilterableProducts',
 		false,
 		isBoolean
 	);
 
 	const filteringForPhpTemplate = getSettingWithCoercion(
-		'is_rendering_php_template',
+		'isRenderingPhpTemplate',
 		false,
 		isBoolean
 	);
