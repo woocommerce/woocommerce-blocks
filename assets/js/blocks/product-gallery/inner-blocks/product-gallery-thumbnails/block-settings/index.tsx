@@ -57,8 +57,7 @@ export const ProductGalleryThumbnailsBlockSettings = ( {
 	const maxNumberOfThumbnails = 8;
 	const minNumberOfThumbnails = 2;
 	const { productGalleryClientId } = context;
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore @wordpress/block-editor/store types not provided
+	// @ts-expect-error @wordpress/block-editor/store types not provided
 	const { updateBlockAttributes } = useDispatch( blockEditorStore );
 
 	return (
