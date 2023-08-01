@@ -677,7 +677,6 @@ const getSiteEditorConfig = ( options = {} ) => {
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
