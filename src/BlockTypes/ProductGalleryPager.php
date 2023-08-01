@@ -23,7 +23,7 @@ class ProductGalleryPager extends AbstractBlock {
 	 * Get the block's attributes.
 	 *
 	 * @param array $attributes Block attributes. Default empty array.
-	 * @return array  Block attributes merged with defaults.
+	 * @return array  The block attributes merged with defaults.
 	 */
 	private function parse_attributes( $attributes ) {
 		// These should match what's set in JS `registerBlockType`.
