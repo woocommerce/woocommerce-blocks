@@ -34,6 +34,9 @@ const v1 = {
 };
 
 const v2 = {
+	attributes: Object.assign( {}, attributeDefinitions, {
+		rows: { type: 'number', default: 1 },
+	} ),
 	save( { attributes } ) {
 		const dataAttributes = {};
 		Object.keys( attributes )
@@ -58,4 +61,4 @@ const v2 = {
 	},
 };
 
-export default [ v1, v2 ];
+export default [ v2, v1 ];
