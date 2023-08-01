@@ -237,7 +237,8 @@ interactivityStore(
 		},
 	},
 	{
-		afterLoad: ( { state }: { state: State } ) => {
+		afterLoad: ( store: Store ) => {
+			const { state, selectors } = store;
 			// Subscribe to changes in Cart data.
 			subscribe( () => {
 				const cartData = select( storeKey ).getCartData();
@@ -251,7 +252,9 @@ interactivityStore(
 			// This selector triggers a fetch of the Cart data. It is done in a
 			// `requestIdleCallback` to avoid potential performance issues.
 			requestIdleCallback( () => {
-				select( storeKey ).getCartData();
+				if ( ! selectors.woocommerce.hasCartLoaded( store ) ) {
+					select( storeKey ).getCartData();
+				}
 			} );
 		},
 	}
