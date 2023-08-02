@@ -29,5 +29,5 @@ jobs:
 
       - name: Run markdown-link-check
         run: |
-          find ./docs -path ./docs/internal-developers/testing/releases -prune -o -name "*.md" -print0 | xargs -0 -n1 markdown-link-check
+          find ./docs -path ./docs/internal-developers/testing/releases -prune -o -name "*.md" -print0 | xargs -0 -n1 markdown-link-check -c .github/workflows/check-doc-links-config.json
 
