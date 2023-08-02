@@ -18,7 +18,6 @@ type Context = {
 		quantityToAdd: number;
 		temporaryNumberOfItems: number;
 		animationStatus: AnimationStatus;
-		isAddedClassVisible: boolean | undefined;
 	};
 };
 
@@ -183,7 +182,6 @@ interactivityStore(
 						// eslint-disable-next-line no-console
 						console.error( error );
 					} finally {
-						context.woocommerce.isAddedClassVisible = true;
 						context.woocommerce.displayViewCart = true;
 						context.woocommerce.isLoading = false;
 					}

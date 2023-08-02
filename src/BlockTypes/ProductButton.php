@@ -163,7 +163,6 @@ class ProductButton extends AbstractBlock {
 			$button_directives = '
 				data-wc-on--click="actions.woocommerce.addToCart"
 				data-wc-class--loading="context.woocommerce.isLoading"
-				data-wc-class--added="context.woocommerce.isAddedClassVisible"
 			';
 
 			$span_button_directives = '
