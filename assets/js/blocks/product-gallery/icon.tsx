@@ -11,7 +11,7 @@ const Icon = () => (
 			fill="currentColor"
 		/>
 		<rect
-			x="4"
+			x="4.5"
 			y="15.5"
 			width="5"
 			height="4.5"
@@ -21,7 +21,7 @@ const Icon = () => (
 			fill="none"
 		/>
 		<rect
-			x="11.5"
+			x="12"
 			y="15.5"
 			width="5"
 			height="4.5"
