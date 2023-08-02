@@ -19,6 +19,14 @@ class ProductBestSellers extends AbstractProductGrid {
 	 * @param array $query_args Query args.
 	 */
 	protected function set_block_query_args( &$query_args ) {
-		$query_args['orderby'] = 'popularity';
+		$query_args['meta_key'] = 'total_sales'; // phpcs:ignore WordPress.DB.SlowDBQuery
+		$query_args['orderby']  = 'meta_value_num';
+		$query_args['order']    = 'DESC';
+
+		$this->meta_query[] = array(
+			'key'     => 'total_sales',
+			'value'   => 0,
+			'compare' => '>',
+		);
 	}
 }
