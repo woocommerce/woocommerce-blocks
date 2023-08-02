@@ -36,14 +36,11 @@ test.describe( `${ blockData.name }`, () => {
 		await editorUtils.enterEditMode();
 	} );
 
-	test.afterEach( async ( { requestUtils } ) => {
-		await requestUtils.deleteAllTemplates( 'wp_template' );
-		await requestUtils.deleteAllTemplates( 'wp_template_part' );
-	} );
-
-	test( 'Renders Product Gallery Thumbnails block on the editor side', async ( {
-		editorUtils,
+	test( 'Renders Product Gallery Thumbnails block on the editor and frontend side', async ( {
+		page,
 		editor,
+		editorUtils,
+		frontendUtils,
 	} ) => {
 		await editor.insertBlock( {
 			name: 'woocommerce/product-gallery',
@@ -52,19 +49,23 @@ test.describe( `${ blockData.name }`, () => {
 		const block = await editorUtils.getBlockByName( blockData.name );
 
 		await expect( block ).toBeVisible();
-	} );
 
-	test( 'Renders Product Gallery Thumbnails block on the frontend side', async ( {
-		editorUtils,
-		editor,
-	} ) => {
-		await editor.insertBlock( {
-			name: 'woocommerce/product-gallery',
+		await Promise.all( [
+			editor.saveSiteEditorEntities(),
+			page.waitForResponse( ( response ) =>
+				response.url().includes( 'wp-json/wp/v2/templates/' )
+			),
+		] );
+
+		await page.goto( blockData.productPage, {
+			waitUntil: 'networkidle',
 		} );
 
-		const block = await editorUtils.getBlockByName( blockData.name );
+		const blockFrontend = await frontendUtils.getBlockByName(
+			'woocommerce/product-gallery'
+		);
 
-		await expect( block ).toBeVisible();
+		await expect( blockFrontend ).toBeVisible();
 	} );
 
 	test.describe( `${ blockData.name } Settings`, () => {
