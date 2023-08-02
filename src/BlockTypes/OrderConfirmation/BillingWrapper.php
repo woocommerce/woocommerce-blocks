@@ -47,9 +47,10 @@ class BillingWrapper extends AbstractOrderConfirmationBlock {
 	/**
 	 * This renders the content of the billing wrapper.
 	 *
+	 * @param \WC_Order $order Order object.
 	 * @return string
 	 */
-	protected function render_content() {
+	protected function render_content( $order ) {
 		$heading = esc_html_( 'Billing address', 'woo-gutenberg-products-block' );
 
 		return '
