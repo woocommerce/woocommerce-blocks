@@ -109,7 +109,11 @@ test.describe( 'Compatibility Layer with Product Collection block', () => {
 		test( title, async ( { pageObject } ) => {
 			const hooks = pageObject.locateByTestId( dataTestId );
 			await expect( hooks ).toHaveCount( amount );
-			await expect( hooks ).toHaveText( content );
+			if ( amount > 1 ) {
+				await expect( hooks.first() ).toHaveText( content );
+			} else {
+				await expect( hooks ).toHaveText( content );
+			}
 		} );
 	} );
 
