@@ -164,7 +164,7 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForSelector( selectors.frontend.filter );
 
 			await Promise.all( [
-				page.waitForNavigation(),
+				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
 				page.click( selectors.frontend.filter ),
 			] );
 
@@ -281,7 +281,7 @@ describe( `${ block.name } Block`, () => {
 			await page.waitForSelector( selectors.frontend.filter );
 
 			await Promise.all( [
-				page.waitForNavigation(),
+				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
 				page.click( selectors.frontend.filter ),
 			] );
 
