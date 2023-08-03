@@ -156,9 +156,14 @@ Every release includes specific testing instructions for new features and bug fi
     -   [10.4.3](./1043.md)
     -   [10.4.4](./1044.md)
     -   [10.4.5](./1045.md)
+    -   [10.4.6](./1046.md)
 -   [10.5.0](./1050.md)
 -   [10.6.0](./1060.md)
-
+    -   [10.6.1](./1061.md)
+    -   [10.6.2](./1062.md)
+    -   [10.6.3](./1063.md)
+-   [10.7.0](./1070.md)
+-   [10.8.0](./1080.md)
 
 <!-- FEEDBACK -->
 

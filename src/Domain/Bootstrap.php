@@ -12,6 +12,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\Notices;
 use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Domain\Services\GoogleAnalytics;
+use Automattic\WooCommerce\Blocks\Domain\Services\Hydration;
 use Automattic\WooCommerce\Blocks\InboxNotifications;
 use Automattic\WooCommerce\Blocks\Installer;
 use Automattic\WooCommerce\Blocks\Migration;
@@ -100,11 +101,10 @@ class Bootstrap {
 		$this->register_dependencies();
 		$this->register_payment_methods();
 
-		if ( is_admin() ) {
-			if ( $this->package->get_version() !== $this->package->get_version_stored_on_db() ) {
-				$this->migration->run_migrations();
-				$this->package->set_version_stored_on_db();
-			}
+		// This is just a temporary solution to make sure the migrations are run. We have to refactor this. More details: https://github.com/woocommerce/woocommerce-blocks/issues/10196.
+		if ( $this->package->get_version() !== $this->package->get_version_stored_on_db() ) {
+			$this->migration->run_migrations();
+			$this->package->set_version_stored_on_db();
 		}
 
 		add_action(
@@ -352,6 +352,12 @@ class Bootstrap {
 			Notices::class,
 			function( Container $container ) {
 				return new Notices( $container->get( Package::class ) );
+			}
+		);
+		$this->container->register(
+			Hydration::class,
+			function( Container $container ) {
+				return new Hydration( $container->get( AssetDataRegistry::class ) );
 			}
 		);
 		$this->container->register(
