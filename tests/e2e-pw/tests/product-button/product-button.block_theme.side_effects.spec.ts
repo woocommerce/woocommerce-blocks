@@ -48,7 +48,7 @@ test.describe( `${ blockData.name } Block`, () => {
 			block.click(),
 		] );
 
-		await expect( button ).toHaveText( '1 in the cart' );
+		await expect( button ).toHaveText( '1 in cart' );
 		await expect( await block.getByRole( 'link' ) ).toBeVisible();
 
 		await frontendUtils.goToCheckout();
