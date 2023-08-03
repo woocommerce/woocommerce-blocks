@@ -80,6 +80,7 @@ class BlockTemplatesController {
 
 		if ( wc_current_theme_is_fse_theme() ) {
 			add_action( 'init', array( $this, 'maybe_migrate_content' ) );
+			add_action( 'init', array( $this, 'maybe_update_endpoint_option' ) );
 			add_filter( 'woocommerce_settings_pages', array( $this, 'template_permalink_settings' ) );
 			add_filter( 'pre_update_option', array( $this, 'update_template_permalink' ), 10, 2 );
 			add_action( 'woocommerce_admin_field_permalink', array( SettingsUtils::class, 'permalink_input_field' ) );
@@ -129,6 +130,25 @@ class BlockTemplatesController {
 				10,
 				2
 			);
+		}
+	}
+
+	/**
+	 * Upates the options to reflect correct cart and checkout endpoints.
+	 *
+	 * @return void
+	 */
+	public function maybe_update_endpoint_option() {
+		$cart_page      = CartTemplate::get_placeholder_page();
+		$checkout_page  = CheckoutTemplate::get_placeholder_page();
+		$cart_value     = $cart_page ? $cart_page->post_name : CartTemplate::get_slug();
+		$checkout_value = $checkout_page ? $checkout_page->post_name : CheckoutTemplate::get_slug();
+
+		if ( get_option( 'woocommerce_cart_page_endpoint' ) !== $cart_value ) {
+			update_option( 'woocommerce_cart_page_endpoint', $cart_value );
+		}
+		if ( get_option( 'woocommerce_checkout_page_endpoint' ) !== $checkout_value ) {
+			update_option( 'woocommerce_checkout_page_endpoint', $checkout_value );
 		}
 	}
 
