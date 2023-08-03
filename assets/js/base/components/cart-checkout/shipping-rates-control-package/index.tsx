@@ -12,7 +12,6 @@ import {
 	useStoreEvents,
 } from '@woocommerce/base-context/hooks';
 import { sanitizeHTML } from '@woocommerce/utils';
-import { useDebouncedCallback } from 'use-debounce';
 import type { ReactElement } from 'react';
 
 /**
@@ -31,7 +30,7 @@ export const ShippingRatesControlPackage = ( {
 	collapsible,
 	showItems,
 }: PackageProps ): ReactElement => {
-	const { selectShippingRate } = useShippingData();
+	const { selectShippingRate, isSelectingRate } = useShippingData();
 	const { dispatchCheckoutEvent } = useStoreEvents();
 	const multiplePackages =
 		document.querySelectorAll(
@@ -101,22 +100,29 @@ export const ShippingRatesControlPackage = ( {
 		},
 		[ dispatchCheckoutEvent, packageId, selectShippingRate ]
 	);
-	const debouncedOnSelectRate = useDebouncedCallback( onSelectRate, 1000 );
 	const packageRatesProps = {
 		className,
 		noResultsMessage,
 		rates: packageData.shipping_rates,
-		onSelectRate: debouncedOnSelectRate,
+		onSelectRate,
 		selectedRate: packageData.shipping_rates.find(
 			( rate ) => rate.selected
 		),
 		renderOption,
+		disabled: isSelectingRate,
 	};
 
 	if ( shouldBeCollapsible ) {
 		return (
 			<Panel
-				className="wc-block-components-shipping-rates-control__package"
+				className={ classNames(
+					'wc-block-components-shipping-rates-control__package',
+					className,
+					{
+						'wc-block-components-shipping-rates-control__package--disabled':
+							isSelectingRate,
+					}
+				) }
 				// initialOpen remembers only the first value provided to it, so by the
 				// time we know we have several packages, initialOpen would be hardcoded to true.
 				// If we're rendering a panel, we're more likely rendering several
@@ -133,7 +139,11 @@ export const ShippingRatesControlPackage = ( {
 		<div
 			className={ classNames(
 				'wc-block-components-shipping-rates-control__package',
-				className
+				className,
+				{
+					'wc-block-components-shipping-rates-control__package--disabled':
+						isSelectingRate,
+				}
 			) }
 		>
 			{ header }
