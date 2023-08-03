@@ -44,6 +44,10 @@
 	.wc-block-components-radio-control__description-group {
 		@include font-size(smaller);
 	}
+
+	&--disabled {
+		opacity: 0.5;
+	}
 }
 
 .wc-block-components-shipping-rates-control__package-items {

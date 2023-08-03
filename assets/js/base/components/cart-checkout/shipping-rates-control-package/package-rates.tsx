@@ -20,6 +20,7 @@ interface PackageRates {
 	className?: string;
 	noResultsMessage: JSX.Element;
 	selectedRate: CartShippingPackageShippingRate | undefined;
+	disabled?: boolean;
 }
 
 const PackageRates = ( {
@@ -29,6 +30,7 @@ const PackageRates = ( {
 	rates,
 	renderOption = renderPackageRateOption,
 	selectedRate,
+	disabled = false,
 }: PackageRates ): JSX.Element => {
 	const selectedRateId = selectedRate?.rate_id || '';
 
@@ -70,6 +72,7 @@ const PackageRates = ( {
 					setSelectedOption( value );
 					onSelectRate( value );
 				} }
+				disabled={ disabled }
 				selected={ selectedOption }
 				options={ rates.map( renderOption ) }
 			/>
