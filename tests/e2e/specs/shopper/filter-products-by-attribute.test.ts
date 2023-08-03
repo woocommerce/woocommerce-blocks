@@ -163,8 +163,10 @@ describe( `${ block.name } Block`, () => {
 
 			await page.waitForSelector( selectors.frontend.filter );
 
-			await page.waitForNavigation( { waitUntil: 'networkidle0' } );
-			await page.click( selectors.frontend.filter );
+			await Promise.all( [
+				page.click( selectors.frontend.filter ),
+				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+			] );
 
 			const products = await page.$$(
 				selectors.frontend.classicProductsList
@@ -278,8 +280,10 @@ describe( `${ block.name } Block`, () => {
 
 			await page.waitForSelector( selectors.frontend.filter );
 
-			await page.waitForNavigation( { waitUntil: 'networkidle0' } );
-			await page.click( selectors.frontend.filter );
+			await Promise.all( [
+				page.click( selectors.frontend.filter ),
+				page.waitForNavigation( { waitUntil: 'networkidle0' } ),
+			] );
 
 			const products = await page.$$(
 				selectors.frontend.queryProductsList
