@@ -20,7 +20,6 @@ export class EditorUtils {
 	// todo: Make a PR to @wordpress/e2e-test-utils-playwright to add this method.
 	/**
 	 * Inserts a block after a given client ID.
-	 *
 	 */
 	async insertBlock(
 		blockRepresentation: BlockRepresentation,
@@ -53,6 +52,27 @@ export class EditorUtils {
 					.insertBlock( block, _index, _rootClientId );
 			},
 			{ blockRepresentation, index, rootClientId }
+		);
+	}
+
+	async replaceBlockByBlockName( name: string, nameToInsert: string ) {
+		await this.page.evaluate(
+			( { name: _name, nameToInsert: _nameToInsert } ) => {
+				const blocks = window.wp.data
+					.select( 'core/block-editor' )
+					.getBlocks();
+				const firstMatchingBlock = blocks
+					.flatMap( ( { innerBlocks } ) => innerBlocks )
+					.find(
+						( block: BlockRepresentation ) => block.name === _name
+					);
+				const { clientId } = firstMatchingBlock;
+				const block = window.wp.blocks.createBlock( _nameToInsert );
+				window.wp.data
+					.dispatch( 'core/block-editor' )
+					.replaceBlock( clientId, block );
+			},
+			{ name, nameToInsert }
 		);
 	}
 
