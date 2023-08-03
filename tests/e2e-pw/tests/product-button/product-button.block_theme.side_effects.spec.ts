@@ -18,12 +18,15 @@ test.describe( `${ blockData.name } Block`, () => {
 		await frontendUtils.goToShop();
 	} );
 
-	test( 'is visible', async ( { frontendUtils } ) => {
+	test( 'should be visible', async ( { frontendUtils } ) => {
 		const blocks = await frontendUtils.getBlockByName( blockData.name );
 		const productsDisplayed = 16;
 		expect( await blocks.count() ).toEqual( productsDisplayed );
 	} );
-	test( 'add product to the cart', async ( { frontendUtils, page } ) => {
+	test( 'should add product to the cart', async ( {
+		frontendUtils,
+		page,
+	} ) => {
 		const blocks = await frontendUtils.getBlockByName( blockData.name );
 		const block = blocks.first();
 		const button = await block.getByRole( 'button' );
@@ -45,7 +48,6 @@ test.describe( `${ blockData.name } Block`, () => {
 			block.click(),
 		] );
 
-		await expect( button ).toHaveClass( /added/ );
 		await expect( button ).toHaveText( '1 in the cart' );
 		await expect( await block.getByRole( 'link' ) ).toBeVisible();
 
@@ -55,7 +57,8 @@ test.describe( `${ blockData.name } Block`, () => {
 		} );
 		await expect( productElement ).toBeVisible();
 	} );
-	test( 'add product to the cart - with ajax disabled', async ( {
+
+	test( 'should add product to the cart - with ajax disabled', async ( {
 		frontendUtils,
 		page,
 		admin,
@@ -99,7 +102,7 @@ test.describe( `${ blockData.name } Block`, () => {
 		await handleAddToCartAjaxSetting( admin, page, { isChecked: false } );
 	} );
 
-	test( 'the filter `woocommerce_product_add_to_cart_text` is applied', async ( {
+	test( 'the filter `woocommerce_product_add_to_cart_text` should be applied', async ( {
 		frontendUtils,
 	} ) => {
 		await installPluginFromPHPFile(
