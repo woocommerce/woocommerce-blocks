@@ -7,9 +7,10 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect, subscribe } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
-import { EditorBlock } from '@woocommerce/types';
+import { EditorBlock, isNumber } from '@woocommerce/types';
 import { usePrevious } from '@woocommerce/base-hooks';
-import { isWpVersion } from '@woocommerce/settings';
+import { isWpVersion, getSettingWithCoercion } from '@woocommerce/settings';
+import { ProductQueryBlockQuery } from '@woocommerce/blocks/product-query/types';
 import {
 	FormTokenField,
 	ToggleControl,
@@ -38,11 +39,13 @@ import {
 	QUERY_DEFAULT_ATTRIBUTES,
 	QUERY_LOOP_ID,
 	STOCK_STATUS_OPTIONS,
-	REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
+	AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
+	MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
 } from './constants';
 import { AttributesFilter } from './inspector-controls/attributes-filter';
 import { PopularPresets } from './inspector-controls/popular-presets';
 import { ProductSelector } from './inspector-controls/product-selector';
+import { UpgradeNotice } from './inspector-controls/upgrade-notice';
 import { replaceProductsWithProductCollection } from '../shared/scripts';
 
 import './editor.scss';
@@ -123,6 +126,18 @@ export const WooInheritToggleControl = (
 					: props.attributes.query.inherit || false
 			}
 			onChange={ ( inherit ) => {
+				const inheritQuery: Partial< ProductQueryBlockQuery > = {
+					inherit,
+				};
+
+				if ( inherit ) {
+					inheritQuery.perPage = getSettingWithCoercion(
+						'loop_shop_per_page',
+						12,
+						isNumber
+					);
+				}
+
 				if ( isCustomInheritGlobalQueryImplementationEnabled ) {
 					return setQueryAttribute( props, {
 						...QUERY_DEFAULT_ATTRIBUTES.query,
@@ -136,7 +151,7 @@ export const WooInheritToggleControl = (
 
 				setQueryAttribute( props, {
 					...props.defaultWooQueryParams,
-					inherit,
+					...inheritQuery,
 					// Restore the query object value before inherit was enabled.
 					...( inherit === false && {
 						...queryObjectBeforeInheritEnabled,
@@ -221,6 +236,11 @@ const ProductQueryControls = ( props: ProductQueryBlock ) => {
 	return (
 		<>
 			<InspectorControls>
+				{ MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION && (
+					<UpgradeNotice
+						upgradeBlock={ replaceProductsWithProductCollection }
+					/>
+				) }
 				{ allowedControls?.includes( 'presets' ) && (
 					<PopularPresets { ...props } />
 				) }
@@ -272,13 +292,9 @@ addFilter( 'editor.BlockEdit', QUERY_LOOP_ID, withProductQueryControls );
 
 if ( isWpVersion( '6.1', '>=' ) ) {
 	let unsubscribe: ( () => void ) | undefined;
-	if ( REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION && ! unsubscribe ) {
-		// console.info( 'Subscribed to allow Products block migration' );
+	if ( AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION && ! unsubscribe ) {
 		unsubscribe = subscribe( () => {
 			replaceProductsWithProductCollection( () => {
-				// console.info(
-				// 	'Unsubscribed and disallow further Products block migration'
-				// );
 				if ( unsubscribe ) {
 					unsubscribe();
 				}
