@@ -45,13 +45,23 @@ class ProductButton extends AbstractBlock {
 	 */
 	protected function enqueue_assets( array $attributes ) {
 		parent::enqueue_assets( $attributes );
-		// The block uses Interactivity API, it isn't necessary enqueue the add-to-cart script.
-		add_action(
-			'wp_enqueue_scripts',
-			function() {
-				wp_dequeue_script( 'wc-add-to-cart' );
-			}
-		);
+		if ( wc_current_theme_is_fse_theme() ) {
+			add_action(
+				'wp_enqueue_scripts',
+				array( $this, 'dequeue_add_to_cart_scripts' )
+			);
+		} else {
+			$this->dequeue_add_to_cart_scripts();
+		}
+	}
+
+	/**
+	 * Dequeue the add-to-cart script.
+	 * The block uses Interactivity API, it isn't necessary enqueue the add-to-cart script.
+	 */
+	public function dequeue_add_to_cart_scripts() {
+		wp_dequeue_script( 'wc-add-to-cart' );
+		wp_dequeue_script( 'wc-add-to-cart-variation' );
 	}
 
 	/**
@@ -63,7 +73,7 @@ class ProductButton extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$post_id = $block->context['postId'];
+		$post_id = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
 		$product = wc_get_product( $post_id );
 
 		if ( $product ) {

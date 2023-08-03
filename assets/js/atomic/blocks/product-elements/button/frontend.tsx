@@ -41,6 +41,29 @@ type Store = {
 	ref: HTMLElement;
 };
 
+const storeNoticeClass = '.wc-block-store-notices';
+
+const createNoticeContainer = () => {
+	const noticeContainer = document.createElement( 'div' );
+	noticeContainer.classList.add( storeNoticeClass.replace( '.', '' ) );
+	return noticeContainer;
+};
+
+const injectNotice = ( domNode: Element, errorMessage: string ) => {
+	const root = createRoot( domNode );
+
+	root.render(
+		<NoticeBanner status="error" onRemove={ () => root.unmount() }>
+			{ errorMessage }
+		</NoticeBanner>
+	);
+
+	domNode?.scrollIntoView( {
+		behavior: 'smooth',
+		inline: 'nearest',
+	} );
+};
+
 const getProductById = ( cartState: Cart | undefined, productId: number ) => {
 	return cartState?.items.find( ( item ) => item.id === productId );
 };
@@ -157,25 +180,22 @@ interactivityStore(
 								store
 							);
 					} catch ( error ) {
-						const domNode = document.querySelector(
-							'.wc-block-store-notices'
-						);
+						const storeNoticeBlock =
+							document.querySelector( storeNoticeClass );
 
-						const root = createRoot( domNode );
+						if ( ! storeNoticeBlock ) {
+							document
+								.querySelector( '.entry-content' )
+								?.prepend( createNoticeContainer() );
+						}
 
-						root.render(
-							<NoticeBanner
-								status="error"
-								onRemove={ () => root.unmount() }
-							>
-								{ error.message }
-							</NoticeBanner>
-						);
+						const domNode =
+							storeNoticeBlock ??
+							document.querySelector( storeNoticeClass );
 
-						domNode?.scrollIntoView( {
-							behavior: 'smooth',
-							inline: 'nearest',
-						} );
+						if ( domNode ) {
+							injectNotice( domNode, error.message );
+						}
 
 						// We don't care about errors blocking execution, but will
 						// console.error for troubleshooting.
