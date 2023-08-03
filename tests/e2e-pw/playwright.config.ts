@@ -69,7 +69,7 @@ const config: ExtendedPlaywrightTestConfig = {
 		},
 		{
 			name: 'cartCheckout',
-			testMatch: /cart-block.*/,
+			testMatch: /cart-checkout.*/,
 		},
 	],
 };
