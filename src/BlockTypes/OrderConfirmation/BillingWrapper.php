@@ -3,6 +3,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes\OrderConfirmation;
 
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
+use Automattic\WooCommerce\Blocks\BlockTypes\OrderConfirmation\BillingAddress;
 
 /**
  * BillingWrapper class.
@@ -51,6 +52,10 @@ class BillingWrapper extends AbstractOrderConfirmationBlock {
 	 * @return string
 	 */
 	protected function render_content( $order ) {
+		if ( ! $order->has_billing_address() ) {
+			return '';
+		}
+
 		$heading = esc_html__( 'Billing address', 'woo-gutenberg-products-block' );
 
 		return '
@@ -58,6 +63,7 @@ class BillingWrapper extends AbstractOrderConfirmationBlock {
 				<h2 class="woocommerce-order-details">
 					' . wp_kses_post( $heading ) . '
 				</h2>
+				' . BillingAddress::render_content( $order ) . '
 			</div>
 		';
 	}
