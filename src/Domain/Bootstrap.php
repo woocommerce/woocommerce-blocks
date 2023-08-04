@@ -34,6 +34,7 @@ use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
+use Automattic\WooCommerce\Blocks\Shipping\ShippingAssets;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ArchiveProductTemplatesCompatibility;
 
@@ -119,33 +120,43 @@ class Bootstrap {
 		);
 
 		$is_rest = wc()->is_rest_api_request();
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$is_store_api_request = $is_rest && ! empty( $_SERVER['REQUEST_URI'] ) && ( false !== strpos( $_SERVER['REQUEST_URI'], trailingslashit( rest_get_url_prefix() ) . 'wc/store/' ) );
+
+		// Load and init assets.
+		$this->container->get( StoreApi::class )->init();
+		$this->container->get( PaymentsApi::class )->init();
+		$this->container->get( DraftOrders::class )->init();
+		$this->container->get( CreateAccount::class )->init();
+		$this->container->get( ShippingController::class )->init();
 
 		// Load assets in admin and on the frontend.
 		if ( ! $is_rest ) {
 			$this->add_build_notice();
 			$this->container->get( AssetDataRegistry::class );
-			$this->container->get( Installer::class );
 			$this->container->get( AssetsController::class );
+			$this->container->get( Installer::class )->init();
+			$this->container->get( GoogleAnalytics::class )->init();
+			$this->container->get( ShippingAssets::class )->init();
 		}
-		$this->container->get( DraftOrders::class )->init();
-		$this->container->get( CreateAccount::class )->init();
-		$this->container->get( Notices::class )->init();
-		$this->container->get( StoreApi::class )->init();
-		$this->container->get( GoogleAnalytics::class );
-		$this->container->get( BlockTypesController::class );
-		$this->container->get( BlockTemplatesController::class );
-		$this->container->get( ProductSearchResultsTemplate::class );
-		$this->container->get( ProductAttributeTemplate::class );
-		$this->container->get( CartTemplate::class );
-		$this->container->get( CheckoutTemplate::class );
-		$this->container->get( CheckoutHeaderTemplate::class );
-		$this->container->get( OrderConfirmationTemplate::class );
-		$this->container->get( ClassicTemplatesCompatibility::class );
-		$this->container->get( ArchiveProductTemplatesCompatibility::class )->init();
-		$this->container->get( SingleProductTemplateCompatibility::class )->init();
-		$this->container->get( BlockPatterns::class );
-		$this->container->get( PaymentsApi::class );
-		$this->container->get( ShippingController::class )->init();
+
+		// Load assets unless this is a request specifically for the store API.
+		if ( ! $is_store_api_request ) {
+			// Template related functionality. These won't be loaded for store API requests, but may be loaded for regular rest requests to maintain compatibility with the store editor.
+			$this->container->get( BlockPatterns::class );
+			$this->container->get( BlockTypesController::class );
+			$this->container->get( BlockTemplatesController::class );
+			$this->container->get( ProductSearchResultsTemplate::class );
+			$this->container->get( ProductAttributeTemplate::class );
+			$this->container->get( CartTemplate::class );
+			$this->container->get( CheckoutTemplate::class );
+			$this->container->get( CheckoutHeaderTemplate::class );
+			$this->container->get( OrderConfirmationTemplate::class );
+			$this->container->get( ClassicTemplatesCompatibility::class );
+			$this->container->get( ArchiveProductTemplatesCompatibility::class )->init();
+			$this->container->get( SingleProductTemplateCompatibility::class )->init();
+			$this->container->get( Notices::class )->init();
+		}
 	}
 
 	/**
@@ -411,10 +422,16 @@ class Bootstrap {
 		);
 		$this->container->register(
 			ShippingController::class,
+			function () {
+				return new ShippingController();
+			}
+		);
+		$this->container->register(
+			ShippingAssets::class,
 			function ( $container ) {
 				$asset_api           = $container->get( AssetApi::class );
 				$asset_data_registry = $container->get( AssetDataRegistry::class );
-				return new ShippingController( $asset_api, $asset_data_registry );
+				return new ShippingAssets( $asset_api, $asset_data_registry );
 			}
 		);
 	}

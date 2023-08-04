@@ -114,15 +114,22 @@ abstract class AbstractCartRoute extends AbstractRoute {
 			}
 		}
 
-		if ( is_wp_error( $response ) ) {
-			$response = $this->error_to_response( $response );
-		}
-
+		// For update requests, this will recalculate cart totals and sync draft orders with the current cart.
 		if ( $this->is_update_request( $request ) ) {
 			$this->cart_updated( $request );
 		}
 
-		return $this->add_response_headers( $response );
+		// Format error responses.
+		if ( is_wp_error( $response ) ) {
+			$response = $this->error_to_response( $response );
+		}
+
+		// Format boolean response (true will return the latest cart object).
+		if ( true === $response ) {
+			$response = $this->cart_schema->get_item_response( $this->cart_controller->get_cart_instance() );
+		}
+
+		return $this->add_response_headers( rest_ensure_response( $response ) );
 	}
 
 	/**
@@ -232,7 +239,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		$draft_order = $this->get_draft_order();
 
 		if ( $draft_order ) {
-			$this->order_controller->update_order_from_cart( $draft_order );
+			$this->order_controller->update_order_from_cart( $draft_order, false );
 
 			wc_do_deprecated_action(
 				'woocommerce_blocks_cart_update_order_from_request',
