@@ -51,7 +51,7 @@ class BillingWrapper extends AbstractOrderConfirmationBlock {
 	 * @return string
 	 */
 	protected function render_content( $order ) {
-		$heading = esc_html_( 'Billing address', 'woo-gutenberg-products-block' );
+		$heading = esc_html__( 'Billing address', 'woo-gutenberg-products-block' );
 
 		return '
 			<div class="woocommerce-column woocommerce-column--1 woocommerce-column--billing-address col-1">
