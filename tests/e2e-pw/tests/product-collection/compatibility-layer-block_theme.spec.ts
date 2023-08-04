@@ -100,22 +100,29 @@ test.describe( 'Compatibility Layer with Product Collection block', () => {
 		);
 	} );
 
-	test.beforeEach( async ( { pageObject } ) => {
-		await pageObject.replaceProductsWithProductCollectionInProductCatalog();
-		await pageObject.goToProductCatalogFrontend();
-	} );
+	test.describe(
+		'Product Archive with Product Collection block',
+		async () => {
+			test.beforeEach( async ( { pageObject } ) => {
+				await pageObject.replaceProductsWithProductCollectionInTemplate(
+					'woocommerce/woocommerce//archive-product'
+				);
+				await pageObject.goToProductCatalogFrontend();
+			} );
 
-	scenarios.forEach( ( { title, dataTestId, content, amount } ) => {
-		test( title, async ( { pageObject } ) => {
-			const hooks = pageObject.locateByTestId( dataTestId );
-			await expect( hooks ).toHaveCount( amount );
-			if ( amount > 1 ) {
-				await expect( hooks.first() ).toHaveText( content );
-			} else {
-				await expect( hooks ).toHaveText( content );
-			}
-		} );
-	} );
+			scenarios.forEach( ( { title, dataTestId, content, amount } ) => {
+				test( title, async ( { pageObject } ) => {
+					const hooks = pageObject.locateByTestId( dataTestId );
+					await expect( hooks ).toHaveCount( amount );
+					if ( amount > 1 ) {
+						await expect( hooks.first() ).toHaveText( content );
+					} else {
+						await expect( hooks ).toHaveText( content );
+					}
+				} );
+			} );
+		}
+	);
 
 	test.afterAll( async () => {
 		await uninstallPluginFromPHPFile(

@@ -4,6 +4,7 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateApiUtils, EditorUtils } from '@woocommerce/e2e-utils';
 import { Editor, Admin } from '@wordpress/e2e-test-utils-playwright';
+import { BlockRepresentation } from '@wordpress/e2e-test-utils-playwright/build-types/editor/insert-block';
 
 export const SELECTORS = {
 	productTemplate: '.wc-block-product-template',
@@ -28,6 +29,8 @@ export const SELECTORS = {
 	onSaleControlLabel: 'Show only products on sale',
 	inheritQueryFromTemplateControl:
 		'.wc-block-product-collection__inherit-query-control',
+	productSearchLabel: 'Search',
+	productSearchButton: '.wp-block-search__button wp-element-button',
 };
 
 class ProductCollectionPage {
@@ -81,12 +84,10 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'frontend' );
 	}
 
-	async replaceProductsWithProductCollectionInProductCatalog() {
-		await this.templateApiUtils.revertTemplate(
-			'woocommerce/woocommerce//archive-product'
-		);
+	async replaceProductsWithProductCollectionInTemplate( template: string ) {
+		await this.templateApiUtils.revertTemplate( template );
 		await this.admin.visitSiteEditor( {
-			postId: 'woocommerce/woocommerce//archive-product',
+			postId: template,
 			postType: 'wp_template',
 		} );
 		await this.editorUtils.enterEditMode();
@@ -103,7 +104,11 @@ class ProductCollectionPage {
 		await this.page.goto( `/shop`, { waitUntil: 'networkidle' } );
 	}
 
-	async goToProductCatalogAndInsertBlock() {
+	async goToProductCatalogAndInsertBlock(
+		block: BlockRepresentation = {
+			name: this.BLOCK_NAME,
+		}
+	) {
 		await this.templateApiUtils.revertTemplate(
 			'woocommerce/woocommerce//archive-product'
 		);
@@ -115,10 +120,16 @@ class ProductCollectionPage {
 
 		await this.editor.canvas.click( 'body' );
 
-		await this.editor.insertBlock( {
-			name: this.BLOCK_NAME,
-		} );
+		await this.editor.insertBlock( block );
 		await this.editor.openDocumentSettingsSidebar();
+		await this.editor.saveSiteEditorEntities();
+	}
+
+	async searchProducts( phrase: string ) {
+		await this.page
+			.getByLabel( SELECTORS.productSearchLabel )
+			.fill( phrase );
+		await this.page.locator( SELECTORS.productSearchButton ).click();
 	}
 
 	async addFilter(
