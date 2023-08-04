@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.2
 Tested up to: 6.2
 Requires PHP: 7.3
-Stable tag: 10.6.3
+Stable tag: 10.6.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -81,7 +81,14 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 10.6.3 - 2021-08-2 =
+= 10.6.4 - 2021-08-04 =
+
+#### Bug Fixes
+
+- Classic Template block registration: add defensive type handling. ([10475](https://github.com/woocommerce/woocommerce-blocks/pull/10475))
+- Fixed an issue where modifications to the Cart/Checkout templates made in the site editor would not be visible on the front end. [#10462](https://github.com/woocommerce/woocommerce-blocks/pull/10462)
+
+= 10.6.3 - 2021-08-02 =
 
 #### Bug Fixes
 
