@@ -10,14 +10,8 @@ import { Icon, percent } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import { Attributes } from './types';
+import { ProductOnSaleBlockProps } from './types';
 import { ProductOnSaleInspectorControls } from './inspector-controls';
-
-interface Props {
-	attributes: Attributes;
-	setAttributes: ( attributes: Record< string, unknown > ) => void;
-	name: string;
-}
 
 const EmptyPlaceholder = () => (
 	<Placeholder
@@ -35,8 +29,8 @@ const EmptyPlaceholder = () => (
 /**
  * Component to handle edit mode of "On Sale Products".
  */
-const ProductOnSaleBlock: React.FunctionComponent< Props > = (
-	props: Props
+const ProductOnSaleBlock: React.FunctionComponent< ProductOnSaleBlockProps > = (
+	props: ProductOnSaleBlockProps
 ) => {
 	const { attributes, setAttributes, name } = props;
 

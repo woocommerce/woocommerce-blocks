@@ -23,3 +23,9 @@ export interface Attributes {
 		| 'title'
 		| 'menu_order';
 }
+
+export interface ProductOnSaleBlockProps {
+	attributes: Attributes;
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
+	name: string;
+}

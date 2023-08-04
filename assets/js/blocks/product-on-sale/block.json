@@ -1,0 +1,87 @@
+{
+	"name": "woocommerce/product-on-sale",
+	"title": "On Sale Products",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"description": "Display a grid of products currently on sale.",
+	"supports": {
+		"align": [ "wide", "full" ],
+		"html": false
+	},
+	"attributes": {
+		"columns": {
+			"type": "number",
+			"default": 3
+		},
+		"rows": {
+			"type": "number",
+			"default": 3
+		},
+		"alignButtons": {
+			"type": "boolean",
+			"default": false
+		},
+		"catOperator": {
+			"type": "string",
+			"default": "any"
+		},
+		"categories": {
+			"type": "array",
+			"default": []
+		},
+		"contentVisibility": {
+			"type": "object",
+			"default": {
+				"image": true,
+				"title": true,
+				"price": true,
+				"rating": true,
+				"button": true
+			},
+			"properties": {
+				"image": {
+					"type": "boolean",
+					"image": true
+				},
+				"title": {
+					"type": "boolean",
+					"title": true
+				},
+				"price": {
+					"type": "boolean",
+					"price": true
+				},
+				"rating": {
+					"type": "boolean",
+					"rating": true
+				},
+				"button": {
+					"type": "boolean",
+					"button": true
+				}
+			}
+		},
+		"isPreview": {
+			"type": "boolean",
+			"default": false
+		},
+		"stockStatus": {
+			"type": "array"
+		},
+		"orderby": {
+			"type": "string",
+			"enum": [
+				"date",
+				"popularity",
+				"price_asc",
+				"price_desc",
+				"rating",
+				"title"
+			],
+			"default": "date"
+		}
+	},
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}

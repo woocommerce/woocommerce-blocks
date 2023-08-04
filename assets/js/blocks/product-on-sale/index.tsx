@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { Icon, percent } from '@wordpress/icons';
+
 /**
  * Internal dependencies
  */
@@ -12,8 +13,10 @@ import './editor.scss';
 import sharedAttributes, {
 	sharedAttributeBlockTypes,
 } from '../../utils/shared-attributes';
+import { ProductOnSaleBlockProps } from './types';
+import metadata from './block.json';
 
-registerBlockType( 'woocommerce/product-on-sale', {
+registerBlockType( metadata, {
 	title: __( 'On Sale Products', 'woo-gutenberg-products-block' ),
 	icon: {
 		src: (
@@ -35,14 +38,7 @@ registerBlockType( 'woocommerce/product-on-sale', {
 	},
 	attributes: {
 		...sharedAttributes,
-
-		/**
-		 * How to order the products: 'date', 'popularity', 'price_asc', 'price_desc' 'rating', 'title'.
-		 */
-		orderby: {
-			type: 'string',
-			default: 'date',
-		},
+		...metadata.attributes,
 	},
 	transforms: {
 		from: [
@@ -62,7 +58,7 @@ registerBlockType( 'woocommerce/product-on-sale', {
 	 *
 	 * @param {Object} props Props to pass to block.
 	 */
-	edit( props ) {
+	edit( props: ProductOnSaleBlockProps ) {
 		return <Block { ...props } />;
 	},
 
