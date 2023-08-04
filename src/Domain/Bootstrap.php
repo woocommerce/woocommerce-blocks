@@ -351,10 +351,6 @@ class Bootstrap {
 		$this->container->register(
 			GoogleAnalytics::class,
 			function( Container $container ) {
-				// Require Google Analytics Integration to be activated.
-				if ( ! class_exists( 'WC_Google_Analytics_Integration', false ) ) {
-					return;
-				}
 				$asset_api = $container->get( AssetApi::class );
 				return new GoogleAnalytics( $asset_api );
 			}
