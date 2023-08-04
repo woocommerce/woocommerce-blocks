@@ -124,6 +124,43 @@ test.describe( 'Compatibility Layer with Product Collection block', () => {
 		}
 	);
 
+	test( 'Product Search Results with Product Collection block', async ( {
+		pageObject,
+	} ) => {
+		await pageObject.replaceProductsWithProductCollectionInTemplate(
+			'woocommerce/woocommerce//product-search-results'
+		);
+		await pageObject.goToProductCatalogAndInsertBlock( {
+			name: 'core/search',
+			attributes: {
+				label: 'Search',
+				buttonText: 'Search',
+				query: {
+					post_type: 'product',
+				},
+			},
+		} );
+		await pageObject.goToProductCatalogFrontend();
+		await pageObject.searchProducts( 'asdfasdf' );
+
+		const noProductsHook = pageObject.locateByTestId(
+			'woocommerce_no_products_found'
+		);
+		await expect( noProductsHook ).toHaveCount( 1 );
+		await expect( noProductsHook ).toHaveText(
+			'Hook: woocommerce_no_products_found'
+		);
+
+		const beforeShopLoopHook = pageObject.locateByTestId(
+			'woocommerce_before_shop_loop'
+		);
+		const afterShopLoopHook = pageObject.locateByTestId(
+			'woocommerce_after_shop_loop'
+		);
+		await expect( beforeShopLoopHook ).toHaveCount( 0 );
+		await expect( afterShopLoopHook ).toHaveCount( 0 );
+	} );
+
 	test.afterAll( async () => {
 		await uninstallPluginFromPHPFile(
 			`${ __dirname }/${ compatiblityPluginFileName }`
