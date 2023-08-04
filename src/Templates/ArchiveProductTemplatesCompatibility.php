@@ -47,7 +47,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 			return $parsed_block;
 		}
 
-		array_walk( $parsed_block['innerBlocks'], array( $this, 'inner_blocks_walker' ) );
+		$this->inner_blocks_walker( $parsed_block );
 
 		return $parsed_block;
 	}
@@ -136,6 +136,10 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 			$this->remove_default_hooks();
 
 			return $content;
+		}
+
+		if ( empty( $block_content ) ) {
+			return $block_content;
 		}
 
 		return sprintf(
