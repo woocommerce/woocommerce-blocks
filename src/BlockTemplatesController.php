@@ -822,7 +822,7 @@ class BlockTemplatesController {
 		// Use the page template if it exists, which we'll use over our default template if found.
 		$existing_page_template = BlockTemplateUtils::get_block_template( get_stylesheet() . '//page', 'wp_template' );
 
-		if ( $existing_page_template && ! empty( $existing_page_template->content ) ) {
+		if ( $existing_page_template && ! empty( $existing_page_template->content ) && strstr( $existing_page_template->content, 'wp:post-content' ) ) {
 			// Massage the original content into something we can use. Replace post content with a group block.
 			$pattern          = '/(<!--\s*)wp:post-content(.*?)(\/-->)/';
 			$replacement      = '
