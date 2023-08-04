@@ -124,11 +124,6 @@ abstract class AbstractCartRoute extends AbstractRoute {
 			$response = $this->error_to_response( $response );
 		}
 
-		// Format boolean response (true will return the latest cart object).
-		if ( true === $response ) {
-			$response = $this->cart_schema->get_item_response( $this->cart_controller->get_cart_instance() );
-		}
-
 		return $this->add_response_headers( rest_ensure_response( $response ) );
 	}
 
