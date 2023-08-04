@@ -34,7 +34,6 @@ use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
-use Automattic\WooCommerce\Blocks\Shipping\ShippingAssets;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ArchiveProductTemplatesCompatibility;
 
@@ -419,16 +418,10 @@ class Bootstrap {
 		);
 		$this->container->register(
 			ShippingController::class,
-			function () {
-				return new ShippingController();
-			}
-		);
-		$this->container->register(
-			ShippingAssets::class,
 			function ( $container ) {
 				$asset_api           = $container->get( AssetApi::class );
 				$asset_data_registry = $container->get( AssetDataRegistry::class );
-				return new ShippingAssets( $asset_api, $asset_data_registry );
+				return new ShippingController( $asset_api, $asset_data_registry );
 			}
 		);
 	}
