@@ -7,10 +7,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { Panel } from '@woocommerce/blocks-checkout';
 import Label from '@woocommerce/base-components/label';
 import { useCallback } from '@wordpress/element';
-import {
-	useShippingData,
-	useStoreEvents,
-} from '@woocommerce/base-context/hooks';
+import { useShippingData } from '@woocommerce/base-context/hooks';
 import { sanitizeHTML } from '@woocommerce/utils';
 import type { ReactElement } from 'react';
 
@@ -31,7 +28,6 @@ export const ShippingRatesControlPackage = ( {
 	showItems,
 }: PackageProps ): ReactElement => {
 	const { selectShippingRate, isSelectingRate } = useShippingData();
-	const { dispatchCheckoutEvent } = useStoreEvents();
 	const multiplePackages =
 		document.querySelectorAll(
 			'.wc-block-components-shipping-rates-control__package'
@@ -94,11 +90,8 @@ export const ShippingRatesControlPackage = ( {
 	const onSelectRate = useCallback(
 		( newShippingRateId: string ) => {
 			selectShippingRate( newShippingRateId, packageId );
-			dispatchCheckoutEvent( 'set-selected-shipping-rate', {
-				shippingRateId: newShippingRateId,
-			} );
 		},
-		[ dispatchCheckoutEvent, packageId, selectShippingRate ]
+		[ packageId, selectShippingRate ]
 	);
 	const packageRatesProps = {
 		className,
