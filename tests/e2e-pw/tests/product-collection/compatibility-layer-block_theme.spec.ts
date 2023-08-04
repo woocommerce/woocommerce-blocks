@@ -53,13 +53,13 @@ const scenarios: Scenario[] = [
 		title: 'Before Shop Loop Item',
 		dataTestId: 'woocommerce_before_shop_loop_item',
 		content: 'Hook: woocommerce_before_shop_loop_item',
-		amount: 1,
+		amount: 16,
 	},
 	{
 		title: 'After Shop Loop Item',
 		dataTestId: 'woocommerce_after_shop_loop_item',
 		content: 'Hook: woocommerce_after_shop_loop_item',
-		amount: 1,
+		amount: 16,
 	},
 	{
 		title: 'Before Shop Loop',
