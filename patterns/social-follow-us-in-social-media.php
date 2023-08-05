@@ -16,16 +16,13 @@ if ( 200 === $verticals_response_code ) {
 
 	if ( is_array( $decoded_verticals ) ) {
 		shuffle( $decoded_verticals );
-	} else {
-		$decoded_verticals = array();
-	}
+		foreach ( $decoded_verticals as $decoded_vertical ) {
+			if ( ! isset( $decoded_vertical->guid ) ) {
+				continue;
+			}
 
-	foreach ( $decoded_verticals as $decoded_vertical ) {
-		if ( ! isset( $decoded_vertical->guid ) ) {
-			continue;
+			$image_urls[] = str_replace( 'http://', 'https://', $decoded_vertical->guid );
 		}
-
-		$image_urls[] = str_replace( 'http://', 'https://', $decoded_vertical->guid );
 	}
 }
 ?>
