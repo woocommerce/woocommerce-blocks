@@ -4,6 +4,30 @@
  * Slug: woocommerce-blocks/social-follow-us-in-social-media
  * Categories: WooCommerce
  */
+$vertical_id     = 1720;
+$required_images = 4;
+$verticals_url   = esc_url( 'https://public-api.wordpress.com/wpcom/v2/site-verticals/' . $vertical_id . '/images' );
+$verticals       = wp_remote_get( $verticals_url );
+$image_urls      = array();
+
+$verticals_response_code = wp_remote_retrieve_response_code( $verticals );
+if ( 200 === $verticals_response_code ) {
+	$decoded_verticals = json_decode( wp_remote_retrieve_body( $verticals ) );
+
+	if ( is_array( $decoded_verticals ) ) {
+		shuffle( $decoded_verticals );
+	} else {
+		$decoded_verticals = array();
+	}
+
+	foreach ( $decoded_verticals as $decoded_vertical ) {
+		if ( ! isset( $decoded_vertical->guid ) ) {
+			continue;
+		}
+
+		$image_urls[] = str_replace( 'http://', 'https://', $decoded_vertical->guid );
+	}
+}
 ?>
 <!-- wp:columns {"verticalAlignment":null,"align":"wide"} -->
 <div class="wp-block-columns alignwide">
@@ -38,7 +62,7 @@
 	<div class="wp-block-column">
 		<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
 		<figure class="wp-block-image size-large">
-			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/office.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in an office.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo isset( $image_urls[0] ) ? esc_url( $image_urls[0] ) : esc_url( plugins_url( 'images/pattern-placeholders/office.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in an office.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
 		<!-- /wp:image -->
 	</div>
@@ -48,7 +72,7 @@
 	<div class="wp-block-column">
 		<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
 		<figure class="wp-block-image size-large">
-			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/living-room.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in a living room.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo isset( $image_urls[1] ) ? esc_url( $image_urls[1] ) : esc_url( plugins_url( 'images/pattern-placeholders/living-room.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in a living room.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
 		<!-- /wp:image -->
 	</div>
@@ -58,7 +82,7 @@
 	<div class="wp-block-column">
 		<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
 		<figure class="wp-block-image size-large">
-			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/living-room-sofa.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in a living room with gray sofa.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo isset( $image_urls[2] ) ? esc_url( $image_urls[2] ) : esc_url( plugins_url( 'images/pattern-placeholders/living-room-sofa.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in a living room with gray sofa.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
 		<!-- /wp:image -->
 	</div>
@@ -68,7 +92,7 @@
 	<div class="wp-block-column">
 		<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
 		<figure class="wp-block-image size-large">
-			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/dining-room.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in a dining room.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo isset( $image_urls[3] ) ? esc_url( $image_urls[3] ) : esc_url( plugins_url( 'images/pattern-placeholders/dining-room.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in a dining room.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
 		<!-- /wp:image -->
 	</div>
