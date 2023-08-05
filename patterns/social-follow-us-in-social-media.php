@@ -4,11 +4,13 @@
  * Slug: woocommerce-blocks/social-follow-us-in-social-media
  * Categories: WooCommerce
  */
-$vertical_id     = 1720;
-$required_images = 4;
-$verticals_url   = esc_url( 'https://public-api.wordpress.com/wpcom/v2/site-verticals/' . $vertical_id . '/images' );
-$verticals       = wp_remote_get( $verticals_url );
-$image_urls      = array();
+$vertical_id       = 1720;
+$available_formats = array( 'square', 'landscape', 'portrait' );
+$required_format   = 'landscape';
+$required_images   = 4;
+$verticals_url     = esc_url( 'https://public-api.wordpress.com/wpcom/v2/site-verticals/' . $vertical_id . '/images' );
+$verticals         = wp_remote_get( $verticals_url );
+$image_urls        = array();
 
 $verticals_response_code = wp_remote_retrieve_response_code( $verticals );
 if ( 200 === $verticals_response_code ) {
@@ -18,6 +20,18 @@ if ( 200 === $verticals_response_code ) {
 		shuffle( $decoded_verticals );
 		foreach ( $decoded_verticals as $decoded_vertical ) {
 			if ( ! isset( $decoded_vertical->guid ) ) {
+				continue;
+			}
+
+			if ( ! isset( $decoded_vertical->width ) || ! isset( $decoded_vertical->height ) ) {
+				continue;
+			}
+
+			if ( 'square' === $required_format && $decoded_vertical->width !== $decoded_vertical->height ) {
+				continue;
+			} elseif ( 'landscape' === $required_format && $decoded_vertical->width <= $decoded_vertical->height ) {
+				continue;
+			} elseif ( 'portrait' === $required_format && $decoded_vertical->width >= $decoded_vertical->height ) {
 				continue;
 			}
 
