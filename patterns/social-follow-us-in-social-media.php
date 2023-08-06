@@ -4,6 +4,44 @@
  * Slug: woocommerce-blocks/social-follow-us-in-social-media
  * Categories: WooCommerce
  */
+$onboarding_profile = get_option( 'woocommerce_onboarding_profile', '' );
+
+if ( is_array( $onboarding_profile ) && isset( $onboarding_profile['industry'] ) ) {
+	if ( is_array( $onboarding_profile['industry'] ) ) {
+		$industry_choice = $onboarding_profile['industry'][0];
+	} else {
+		$industry_choice = $onboarding_profile['industry'];
+	}
+} else {
+	$industry_choice = '';
+}
+
+if ( 'clothing_and_accessories' === $industry_choice ) {
+	// @todo - Identify correct vertical ID for clothing and accessories.
+	$vertical_id = 1720;
+} elseif ( 'health_and_beauty' === $industry_choice ) {
+	// @todo - Identify correct vertical ID for health and beauty.
+	$vertical_id = 1721;
+} elseif ( 'food_and_drink' === $industry_choice ) {
+	// @todo - Identify correct vertical ID for food and drink.
+	$vertical_id = 1722;
+} elseif ( 'home_furniture_and_garden' === $industry_choice ) {
+	// @todo - Identify correct vertical ID for home, furniture and garden.
+	$vertical_id = 1723;
+} elseif ( 'education_and_learning' === $industry_choice ) {
+	// @todo - Identify correct vertical ID for education and learning.
+	$vertical_id = 1724;
+} elseif ( 'electronics_and_computers' === $industry_choice ) {
+	// @todo - Identify correct vertical ID for electronics and computers.
+	$vertical_id = 1725;
+} elseif ( 'other' === $industry_choice ) {
+	// @todo - Identify correct vertical ID for other.
+	$vertical_id = 1726;
+} else {
+	// @todo - Identify correct vertical ID for other.
+	$vertical_id = 1720;
+}
+
 $vertical_id       = 1720;
 $available_formats = array( 'square', 'landscape', 'portrait' );
 $required_format   = 'landscape';
