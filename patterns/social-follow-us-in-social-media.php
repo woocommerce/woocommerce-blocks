@@ -34,9 +34,6 @@ if ( 'clothing_and_accessories' === $industry_choice ) {
 } elseif ( 'electronics_and_computers' === $industry_choice ) {
 	// @todo - Identify correct vertical ID for electronics and computers.
 	$vertical_id = 1725;
-} elseif ( 'other' === $industry_choice ) {
-	// @todo - Identify correct vertical ID for other.
-	$vertical_id = 1726;
 } else {
 	// @todo - Identify correct vertical ID for other.
 	$vertical_id = 1720;
