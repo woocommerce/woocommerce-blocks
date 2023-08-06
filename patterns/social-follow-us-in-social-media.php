@@ -5,7 +5,6 @@
  * Categories: WooCommerce
  */
 $onboarding_profile = get_option( 'woocommerce_onboarding_profile', '' );
-
 if ( is_array( $onboarding_profile ) && isset( $onboarding_profile['industry'] ) ) {
 	if ( is_array( $onboarding_profile['industry'] ) ) {
 		$industry_choice = $onboarding_profile['industry'][0];
@@ -38,39 +37,53 @@ if ( 'clothing_and_accessories' === $industry_choice ) {
 	// @todo - Identify correct vertical ID for other.
 	$vertical_id = 1720;
 }
-
+// @todo - stop bypassing the vertical id check as soon as we have identified the desired ones.
 $vertical_id       = 1720;
 $available_formats = array( 'square', 'landscape', 'portrait' );
-$required_format   = 'landscape';
-$required_images   = 4;
-$verticals_url     = esc_url( 'https://public-api.wordpress.com/wpcom/v2/site-verticals/' . $vertical_id . '/images' );
-$verticals         = wp_remote_get( $verticals_url );
-$image_urls        = array();
 
-$verticals_response_code = wp_remote_retrieve_response_code( $verticals );
-if ( 200 === $verticals_response_code ) {
-	$decoded_verticals = json_decode( wp_remote_retrieve_body( $verticals ) );
+$cached_verticals = get_transient( 'woocommerce_blocks_verticals_' . $vertical_id );
+if ( false !== $cached_verticals ) {
+	$image_urls = $cached_verticals;
+} else {
+	$verticals_url   = esc_url( 'https://public-api.wordpress.com/wpcom/v2/site-verticals/' . $vertical_id . '/images' );
+	$verticals       = wp_remote_get( $verticals_url );
+	$required_format = 'square';
+	$required_images = 4;
+	$image_urls      = array();
 
-	if ( is_array( $decoded_verticals ) ) {
-		shuffle( $decoded_verticals );
-		foreach ( $decoded_verticals as $decoded_vertical ) {
-			if ( ! isset( $decoded_vertical->guid ) ) {
-				continue;
+	$verticals_response_code = wp_remote_retrieve_response_code( $verticals );
+	if ( 200 === $verticals_response_code ) {
+		$decoded_verticals = json_decode( wp_remote_retrieve_body( $verticals ) );
+
+		if ( is_array( $decoded_verticals ) ) {
+			shuffle( $decoded_verticals );
+			foreach ( $decoded_verticals as $decoded_vertical ) {
+				if ( count( $image_urls ) >= $required_images ) {
+					break;
+				}
+
+				if ( ! isset( $decoded_vertical->guid ) ) {
+					continue;
+				}
+
+				if ( ! isset( $decoded_vertical->width ) || ! isset( $decoded_vertical->height ) ) {
+					continue;
+				}
+
+				if ( 'square' === $required_format && $decoded_vertical->width !== $decoded_vertical->height ) {
+					continue;
+				} elseif ( 'landscape' === $required_format && $decoded_vertical->width <= $decoded_vertical->height ) {
+					continue;
+				} elseif ( 'portrait' === $required_format && $decoded_vertical->width >= $decoded_vertical->height ) {
+					continue;
+				}
+
+				$image_urls[] = str_replace( 'http://', 'https://', $decoded_vertical->guid );
 			}
+		}
 
-			if ( ! isset( $decoded_vertical->width ) || ! isset( $decoded_vertical->height ) ) {
-				continue;
-			}
-
-			if ( 'square' === $required_format && $decoded_vertical->width !== $decoded_vertical->height ) {
-				continue;
-			} elseif ( 'landscape' === $required_format && $decoded_vertical->width <= $decoded_vertical->height ) {
-				continue;
-			} elseif ( 'portrait' === $required_format && $decoded_vertical->width >= $decoded_vertical->height ) {
-				continue;
-			}
-
-			$image_urls[] = str_replace( 'http://', 'https://', $decoded_vertical->guid );
+		if ( ! empty( $image_urls ) ) {
+			set_transient( 'woocommerce_blocks_verticals_' . $vertical_id, $image_urls, HOUR_IN_SECONDS );
 		}
 	}
 }
