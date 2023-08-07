@@ -17,41 +17,19 @@ class Status extends AbstractOrderConfirmationBlock {
 	protected $block_name = 'order-confirmation-status';
 
 	/**
-	 * Render the block.
-	 *
-	 * @param array    $attributes Block attributes.
-	 * @param string   $content Block content.
-	 * @param WP_Block $block Block instance.
-	 *
-	 * @return string | void Rendered block output.
-	 */
-	protected function render( $attributes, $content, $block ) {
-		$order              = $this->get_order();
-		$content            = $order ? $this->render_content( $order ) : $this->render_content_fallback();
-		$classname          = $attributes['className'] ?? '';
-		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
-
-		if ( isset( $attributes['align'] ) ) {
-			$classname .= " align{$attributes['align']}";
-		}
-
-		return sprintf(
-			'<div class="wc-block-%5$s %1$s %2$s" style="%3$s">%4$s</div>',
-			esc_attr( $classes_and_styles['classes'] ),
-			esc_attr( $classname ),
-			esc_attr( $classes_and_styles['styles'] ),
-			$content,
-			esc_attr( $this->block_name )
-		);
-	}
-
-	/**
 	 * This renders the content of the block within the wrapper.
 	 *
 	 * @param \WC_Order $order Order object.
+	 * @param string    $permission Permission level for viewing order details.
+	 * @param array     $attributes Block attributes.
 	 * @return string
 	 */
-	protected function render_content( $order ) {
+	protected function render_content( $order, $permission = false, $attributes = [] ) {
+		if ( ! $permission ) {
+			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+			return '<p>' . wp_kses_post( apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'woo-gutenberg-products-block' ), null ) ) . '</p>';
+		}
+
 		$content = $this->get_hook_content( 'woocommerce_before_thankyou', [ $order ] );
 		$status  = $order->get_status();
 
@@ -96,11 +74,13 @@ class Status extends AbstractOrderConfirmationBlock {
 				$order_received_text = apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Your order cannot be processed as the originating bank/merchant has declined your transaction. Please attempt your purchase again.', 'woo-gutenberg-products-block' ), null );
 				$actions             = '';
 
-				if ( $this->is_current_customer_order( $order ) ) {
+				if ( 'full' === $permission ) {
 					$actions .= '<a href="' . esc_url( $order->get_checkout_payment_url() ) . '" class="button">' . esc_html__( 'Try again', 'woo-gutenberg-products-block' ) . '</a> ';
 				}
 
-				$actions .= '<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="button">' . esc_html__( 'My account', 'woo-gutenberg-products-block' ) . '</a> ';
+				if ( wc_get_page_permalink( 'myaccount' ) ) {
+					$actions .= '<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="button">' . esc_html__( 'My account', 'woo-gutenberg-products-block' ) . '</a> ';
+				}
 
 				$content .= '
 				<p>' . $order_received_text . '</p>
@@ -129,6 +109,6 @@ class Status extends AbstractOrderConfirmationBlock {
 	 */
 	protected function render_content_fallback() {
 		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-		return '<p class="woocommerce-thankyou-order-received">' . wp_kses_post( apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'woo-gutenberg-products-block' ), null ) ) . '</p>';
+		return '<p>' . esc_html__( 'Please check your email for the order confirmation.', 'woo-gutenberg-products-block' ) . '</p>';
 	}
 }

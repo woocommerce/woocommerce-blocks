@@ -18,10 +18,10 @@ const getButtonLabel = () =>
 
 const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 	[
-		createBlock(
-			'woocommerce/order-confirmation-status',
-			inheritedAttributes
-		),
+		createBlock( 'woocommerce/order-confirmation-status', {
+			...inheritedAttributes,
+			fontSize: 'large',
+		} ),
 		createBlock(
 			'woocommerce/order-confirmation-summary',
 			inheritedAttributes
