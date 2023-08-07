@@ -1,6 +1,6 @@
 # WooCommerce Blocks Playwright End to End Tests
 
-This is the documentation for the new E2E testing setup based on Playwright and wp-env. Over time, these playwright E2E tests should replace the current [Puppeteer E2E tests](../e2e/).
+This is the documentation for the new E2E testing setup based on Playwright and wp-env. Over time, these playwright E2E tests should replace the current [Puppeteer E2E tests](../e2e-jest/).
 
 ## Table of contents <!-- omit in toc -->
 
