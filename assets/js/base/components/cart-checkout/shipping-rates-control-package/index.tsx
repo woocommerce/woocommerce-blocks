@@ -12,7 +12,6 @@ import {
 	useStoreEvents,
 } from '@woocommerce/base-context/hooks';
 import { sanitizeHTML } from '@woocommerce/utils';
-import { useDebouncedCallback } from 'use-debounce';
 import type { ReactElement } from 'react';
 
 /**
@@ -101,12 +100,11 @@ export const ShippingRatesControlPackage = ( {
 		},
 		[ dispatchCheckoutEvent, packageId, selectShippingRate ]
 	);
-	const debouncedOnSelectRate = useDebouncedCallback( onSelectRate, 1000 );
 	const packageRatesProps = {
 		className,
 		noResultsMessage,
 		rates: packageData.shipping_rates,
-		onSelectRate: debouncedOnSelectRate,
+		onSelectRate,
 		selectedRate: packageData.shipping_rates.find(
 			( rate ) => rate.selected
 		),

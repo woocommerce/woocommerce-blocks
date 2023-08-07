@@ -8,8 +8,6 @@ import type {
 	ExtensionCartUpdateArgs,
 	BillingAddressShippingAddress,
 	ApiErrorResponse,
-	CartShippingPackageShippingRate,
-	CartShippingRate,
 } from '@woocommerce/types';
 import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
 import {
@@ -384,26 +382,7 @@ export const changeCartItemQuantity =
  */
 export const selectShippingRate =
 	( rateId: string, packageId: number | null = null ) =>
-	async ( {
-		dispatch,
-		select,
-	}: {
-		dispatch: CartDispatchFromMap;
-		select: CartSelectFromMap;
-	} ) => {
-		const selectedShippingRate = select
-			.getShippingRates()
-			.find(
-				( shippingPackage: CartShippingRate ) =>
-					shippingPackage.package_id === packageId
-			)
-			?.shipping_rates.find(
-				( rate: CartShippingPackageShippingRate ) =>
-					rate.selected === true
-			);
-		if ( selectedShippingRate?.rate_id === rateId ) {
-			return;
-		}
+	async ( { dispatch }: { dispatch: CartDispatchFromMap } ) => {
 		try {
 			dispatch.shippingRatesBeingSelected( true );
 			const { response } = await apiFetchWithHeaders( {
