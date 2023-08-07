@@ -101,6 +101,9 @@ const blocks = {
 	'order-confirmation-shipping-address': {
 		customDir: 'order-confirmation/shipping-address',
 	},
+	'order-confirmation-billing-wrapper': {
+		customDir: 'order-confirmation/billing-wrapper',
+	},
 	'order-confirmation-status': {
 		customDir: 'order-confirmation/status',
 	},

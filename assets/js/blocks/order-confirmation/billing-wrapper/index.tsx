@@ -2,14 +2,15 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
+import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { Icon, mapMarker } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
-import metadata from './block.json';
 import edit from './edit';
-import './style.scss';
+import metadata from './block.json';
+import attributes from './attributes';
 
 registerBlockType( metadata, {
 	icon: {
@@ -20,11 +21,13 @@ registerBlockType( metadata, {
 			/>
 		),
 	},
-	attributes: {
-		...metadata.attributes,
-	},
 	edit,
 	save() {
-		return null;
+		return (
+			<div { ...useBlockProps.save() }>
+				<InnerBlocks.Content />
+			</div>
+		);
 	},
+	attributes,
 } );
