@@ -48,25 +48,25 @@ const config: ExtendedPlaywrightTestConfig = {
 		},
 		{
 			name: 'blockTheme',
-			testMatch: /.*cart-checkout\/.*.block_theme.spec.ts/,
+			testMatch: /.*.block_theme.spec.ts/,
 			dependencies: [ 'blockThemeConfiguration' ],
 		},
-		// {
-		// 	name: 'blockThemeWithGlobalSideEffects',
-		// 	testMatch: /.*.block_theme.side_effects.spec.ts/,
-		// 	dependencies: [ 'blockTheme' ],
-		// 	fullyParallel: false,
-		// },
-		// {
-		// 	name: 'classicThemeConfiguration',
-		// 	testMatch: /block-theme.setup.ts/,
-		// 	dependencies: [ 'blockThemeWithGlobalSideEffects' ],
-		// },
-		// {
-		// 	name: 'classicTheme',
-		// 	testMatch: /.*.classic_theme.spec.ts/,
-		// 	dependencies: [ 'classicThemeConfiguration' ],
-		// },
+		{
+			name: 'blockThemeWithGlobalSideEffects',
+			testMatch: /.*.block_theme.side_effects.spec.ts/,
+			dependencies: [ 'blockTheme' ],
+			fullyParallel: false,
+		},
+		{
+			name: 'classicThemeConfiguration',
+			testMatch: /block-theme.setup.ts/,
+			dependencies: [ 'blockThemeWithGlobalSideEffects' ],
+		},
+		{
+			name: 'classicTheme',
+			testMatch: /.*.classic_theme.spec.ts/,
+			dependencies: [ 'classicThemeConfiguration' ],
+		},
 	],
 };
 
