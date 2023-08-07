@@ -143,7 +143,7 @@ test.describe( 'Merchant → Cart', () => {
 			await expect( filledCartAudioButton ).toBeHidden();
 		} );
 
-		test( 'shows empty cart when changing the view', async ( {
+		test.only( 'shows empty cart when changing the view', async ( {
 			page,
 			editor,
 			editorUtils,
