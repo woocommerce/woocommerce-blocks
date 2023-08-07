@@ -12,6 +12,7 @@ import {
 	enableAutoUpdate,
 	revertMigration,
 	getUpgradeStatus,
+	HOURS_TO_DISPLAY_UPGRADE_NOTICE,
 } from '@woocommerce/blocks/migration-products-to-product-collection';
 import {
 	// @ts-expect-error Using experimental features
@@ -119,9 +120,9 @@ enableAutoUpdate();
 const isProductCollection = ( blockName: string ) =>
 	blockName === metadata.name;
 
-const lessThanDaySinceUpdate = ( t: number ) => {
-	// 1 day = 24h * 60m * 60s * 1000ms
-	const dayFromT = t + 24 * 60 * 60 * 1000;
+const lessThanThresholdSinceUpdate = ( t: number ) => {
+	// Xh * 60m * 60s * 1000ms
+	const dayFromT = t + HOURS_TO_DISPLAY_UPGRADE_NOTICE * 60 * 60 * 1000;
 	return Date.now() < dayFromT;
 };
 
@@ -133,7 +134,7 @@ const shouldDisplayUpgradeNotice = ( props ) => {
 	return (
 		convertedFromProducts &&
 		status === 'notseen' &&
-		lessThanDaySinceUpdate( t )
+		lessThanThresholdSinceUpdate( t )
 	);
 };
 
