@@ -43,7 +43,7 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 		await page.goto( `/?p=${ postId }`, { waitUntil: 'commit' } );
 	} );
 
-	test( 'should show all products', async ( { page, frontendUtils } ) => {
+	test( 'should show all products', async ( { frontendUtils } ) => {
 		const allProductsBlock = await frontendUtils.getBlockByName(
 			'woocommerce/all-products'
 		);
@@ -130,7 +130,7 @@ test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 		);
 	} );
 
-	test( 'should show all products', async ( { page, frontendUtils } ) => {
+	test( 'should show all products', async ( { frontendUtils } ) => {
 		const legacyTemplate = await frontendUtils.getBlockByName(
 			'woocommerce/legacy-template'
 		);
