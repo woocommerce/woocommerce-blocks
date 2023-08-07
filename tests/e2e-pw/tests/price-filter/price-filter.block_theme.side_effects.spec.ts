@@ -143,6 +143,7 @@ test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 		expect( products ).toHaveLength( 16 );
 	} );
 
+	// eslint-disable-next-line playwright/no-skipped-test
 	test.skip( 'should show only products that match the filter', async ( {
 		page,
 		pageUtils,

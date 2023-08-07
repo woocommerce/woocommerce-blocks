@@ -200,6 +200,7 @@ test.describe( 'Product Collection', () => {
 		} );
 
 		// TODO There are no products with stock status 'Out of stock' in test data.
+		// eslint-disable-next-line playwright/no-skipped-test
 		test.skip( 'Products can be filtered based on stock status (in stock, out of stock, or backorder).', async ( {
 			pageObject,
 		} ) => {
