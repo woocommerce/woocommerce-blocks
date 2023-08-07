@@ -53,6 +53,8 @@ class BillingWrapper extends AbstractOrderConfirmationBlock {
 	 * This renders the content of the billing wrapper.
 	 *
 	 * @param \WC_Order $order Order object.
+	 * @param string    $permission Permission level for viewing order details.
+	 * @param array     $attributes Block attributes.
 	 */
-	protected function render_content( $order ) {}
+	protected function render_content( $order, $permission = false, $attributes = [] ) {}
 }
