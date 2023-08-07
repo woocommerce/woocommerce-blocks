@@ -88,7 +88,7 @@ test.describe( 'Merchant → Cart', () => {
 				await editorUtils.getBlockByName( blockData.slug )
 			).not.toHaveCount( 0 );
 
-			// // Select the cart-order-summary-block block and try to insert a block. Check the Table block is available.
+			// Select the cart-order-summary-block block and try to insert a block. Check the Table block is available.
 			await editor.selectBlocks(
 				blockData.selectors.editor.block +
 					' [data-type="woocommerce/cart-order-summary-block"]'
