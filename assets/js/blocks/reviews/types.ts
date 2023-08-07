@@ -14,22 +14,22 @@ export interface PreviewReviews {
 }
 
 export interface Attributes {
-	categoryIds: number[];
-	editMode: boolean;
-	imageType: string;
-	orderby: string;
-	productId: number;
-	reviewsOnLoadMore: number;
-	reviewsOnPageLoad: number;
-	showLoadMore: boolean;
-	showOrderby: boolean;
-	showProductName: boolean;
-	showReviewDate: boolean;
-	showReviewerName: boolean;
-	showReviewImage: boolean;
-	showReviewRating: boolean;
-	showReviewContent: boolean;
-	previewReviews: PreviewReviews[];
+	categoryIds?: number[];
+	editMode?: boolean;
+	imageType?: string;
+	orderby?: string;
+	productId?: number;
+	reviewsOnLoadMore?: number;
+	reviewsOnPageLoad?: number;
+	showLoadMore?: boolean;
+	showOrderby?: boolean;
+	showProductName?: boolean;
+	showReviewDate?: boolean;
+	showReviewerName?: boolean;
+	showReviewImage?: boolean;
+	showReviewRating?: boolean;
+	showReviewContent?: boolean;
+	previewReviews?: PreviewReviews[];
 }
 
 export interface EditorContainerBlockProps {

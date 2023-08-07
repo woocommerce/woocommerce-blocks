@@ -59,7 +59,9 @@ const EditorContainerBlock = ( {
 			<EditorBlock
 				attributes={ attributes }
 				categoryIds={ categoryIds }
-				delayFunction={ ( callback ) => debounce( callback, 400 ) }
+				delayFunction={ ( callback: () => void ) =>
+					debounce( callback, 400 )
+				}
 				noReviewsPlaceholder={ noReviewsPlaceholder }
 				orderby={ orderby }
 				order={ order }
