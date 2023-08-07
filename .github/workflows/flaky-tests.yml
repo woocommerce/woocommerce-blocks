@@ -3,7 +3,6 @@ name: Report Flaky Tests
 on:
     workflow_run:
         workflows: ['E2E tests','Playwright Tests']
-        branches: ['9004-playwright-migration-integrate-the-flaky-e2e-test-reporter']
         types:
             - completed
 
