@@ -2,25 +2,23 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createBlock } from '@wordpress/blocks';
+import { createBlock, BlockInstance } from '@wordpress/blocks';
 import {
 	BlockControls,
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { withDispatch, withSelect } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 import {
 	PanelBody,
-	withSpokenMessages,
 	Placeholder,
 	Button,
 	ToolbarGroup,
 	Disabled,
 	Tip,
 } from '@wordpress/components';
-import { Component } from '@wordpress/element';
-import { compose } from '@wordpress/compose';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from '@wordpress/element';
+import { useDebounce } from '@wordpress/compose';
 import { Icon, grid } from '@wordpress/icons';
 import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
 import {
@@ -31,6 +29,7 @@ import { getBlockMap } from '@woocommerce/atomic-utils';
 import { previewProducts } from '@woocommerce/resource-previews';
 import { getSetting } from '@woocommerce/settings';
 import { blocksConfig } from '@woocommerce/block-settings';
+import { speak } from '@wordpress/a11y';
 
 /**
  * Internal dependencies
@@ -48,51 +47,50 @@ import { getSharedContentControls, getSharedListControls } from '../edit';
 import Block from './block';
 import './editor.scss';
 
-/**
- * Component to handle edit mode of "All Products".
- */
-class Editor extends Component {
-	static propTypes = {
-		/**
-		 * The attributes for this block.
-		 */
-		attributes: PropTypes.object.isRequired,
-		/**
-		 * A callback to update attributes.
-		 */
-		setAttributes: PropTypes.func.isRequired,
-		/**
-		 * From withSpokenMessages.
-		 */
-		debouncedSpeak: PropTypes.func.isRequired,
-	};
+type Attributes = {
+	columns: number;
+	rows: number;
+	alignButtons: boolean;
+	layoutConfig: [ string, object? ][];
+};
 
-	state = {
-		isEditing: false,
-		innerBlocks: [],
-	};
+type Props = {
+	contentVisibility: number;
+	orderby: number;
+	isPreview: number;
+	clientId: string;
+	attributes: Attributes;
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
+};
 
-	blockMap = getBlockMap( 'woocommerce/all-products' );
+export default function Edit( props: Props ): JSX.Element {
+	const [ isEditing, setIsEditing ] = useState< boolean >( false );
+	const [ innerBlocks, setInnerBlocks ] = useState< BlockInstance[] >( [] );
+	const blockMap = getBlockMap( 'woocommerce/all-products' );
 
-	componentDidMount = () => {
-		const { block } = this.props;
-		this.setState( { innerBlocks: block.innerBlocks } );
-	};
+	const { clientId, attributes, setAttributes } = props;
 
-	getTitle = () => {
+	const { columns, rows, alignButtons, layoutConfig } = attributes;
+
+	useEffect( () => {
+		setInnerBlocks( innerBlocks );
+	}, [] );
+
+	const { replaceInnerBlocks } = useDispatch( 'core/block-editor' );
+	const debouncedSpeak = useDebounce( speak );
+
+	const getTitle = (): string => {
 		return __( 'All Products', 'woo-gutenberg-products-block' );
 	};
 
-	getIcon = () => {
+	const getIcon = (): JSX.Element => {
 		return <Icon icon={ grid } />;
 	};
 
-	togglePreview = () => {
-		const { debouncedSpeak } = this.props;
+	const togglePreview = (): void => {
+		setIsEditing( ! isEditing );
 
-		this.setState( { isEditing: ! this.state.isEditing } );
-
-		if ( ! this.state.isEditing ) {
+		if ( ! isEditing ) {
 			debouncedSpeak(
 				__(
 					'Showing All Products block preview.',
@@ -102,10 +100,7 @@ class Editor extends Component {
 		}
 	};
 
-	getInspectorControls = () => {
-		const { attributes, setAttributes } = this.props;
-		const { columns, rows, alignButtons } = attributes;
-
+	const getInspectorControls = (): JSX.Element => {
 		return (
 			<InspectorControls key="inspector">
 				<PanelBody
@@ -120,10 +115,10 @@ class Editor extends Component {
 						rows={ rows }
 						alignButtons={ alignButtons }
 						setAttributes={ setAttributes }
-						minColumns={ getSetting( 'min_columns', 1 ) }
-						maxColumns={ getSetting( 'max_columns', 6 ) }
-						minRows={ getSetting( 'min_rows', 1 ) }
-						maxRows={ getSetting( 'max_rows', 6 ) }
+						minColumns={ getSetting( 'min_columns', 1 ) as number }
+						maxColumns={ getSetting( 'max_columns', 6 ) as number }
+						minRows={ getSetting( 'min_rows', 1 ) as number }
+						maxRows={ getSetting( 'max_rows', 6 ) as number }
 					/>
 				</PanelBody>
 				<PanelBody
@@ -139,9 +134,7 @@ class Editor extends Component {
 		);
 	};
 
-	getBlockControls = () => {
-		const { isEditing } = this.state;
-
+	const getBlockControls = (): JSX.Element => {
 		return (
 			<BlockControls>
 				<ToolbarGroup
@@ -152,7 +145,7 @@ class Editor extends Component {
 								'Edit the layout of each product',
 								'woo-gutenberg-products-block'
 							),
-							onClick: () => this.togglePreview(),
+							onClick: () => togglePreview(),
 							isActive: isEditing,
 						},
 					] }
@@ -161,46 +154,47 @@ class Editor extends Component {
 		);
 	};
 
-	renderEditMode = () => {
+	const renderEditMode = () => {
 		const onDone = () => {
-			const { block, setAttributes } = this.props;
 			setAttributes( {
-				layoutConfig: getProductLayoutConfig( block.innerBlocks ),
+				layoutConfig: getProductLayoutConfig( innerBlocks ),
 			} );
-			this.setState( { innerBlocks: block.innerBlocks } );
-			this.togglePreview();
+			setInnerBlocks( innerBlocks );
+			togglePreview();
 		};
 
 		const onCancel = () => {
-			const { block, replaceInnerBlocks } = this.props;
-			const { innerBlocks } = this.state;
-			replaceInnerBlocks( block.clientId, innerBlocks, false );
-			this.togglePreview();
+			replaceInnerBlocks( clientId, innerBlocks, false );
+			togglePreview();
 		};
 
 		const onReset = () => {
-			const { block, replaceInnerBlocks } = this.props;
-			const newBlocks = [];
-			DEFAULT_PRODUCT_LIST_LAYOUT.map( ( [ name, attributes ] ) => {
-				newBlocks.push( createBlock( name, attributes ) );
+			const newBlocks: BlockInstance[] = [];
+			DEFAULT_PRODUCT_LIST_LAYOUT.map( ( [ name, blockAttributes ] ) => {
+				newBlocks.push( createBlock( name, blockAttributes ) );
 				return true;
 			} );
-			replaceInnerBlocks( block.clientId, newBlocks, false );
-			this.setState( { innerBlocks: block.innerBlocks } );
+			replaceInnerBlocks( clientId, newBlocks, false );
+			setInnerBlocks( innerBlocks );
 		};
 
-		const InnerBlockProps = {
-			template: this.props.attributes.layoutConfig,
+		const InnerBlockProps: {
+			template: [ string, object? ][];
+			templateLock: boolean;
+			allowedBlocks: Array< string >;
+			renderAppender?: undefined | boolean;
+		} = {
+			template: layoutConfig,
 			templateLock: false,
-			allowedBlocks: Object.keys( this.blockMap ),
+			allowedBlocks: Object.keys( blockMap ),
 		};
 
-		if ( this.props.attributes.layoutConfig.length !== 0 ) {
+		if ( layoutConfig.length !== 0 ) {
 			InnerBlockProps.renderAppender = false;
 		}
 
 		return (
-			<Placeholder icon={ this.getIcon() } label={ this.getTitle() }>
+			<Placeholder icon={ getIcon() } label={ getTitle() }>
 				{ __(
 					'Display all products from your store as a grid.',
 					'woo-gutenberg-products-block'
@@ -221,7 +215,9 @@ class Editor extends Component {
 								<li className="wc-block-grid__product">
 									<ProductDataContextProvider
 										product={ previewProducts[ 0 ] }
+										isLoading={ false }
 									>
+										{ /* @ts-expect-error: `InnerBlocks` is a component that is typed in WordPress core*/ }
 										<InnerBlocks { ...InnerBlockProps } />
 									</ProductDataContextProvider>
 								</li>
@@ -263,12 +259,10 @@ class Editor extends Component {
 		);
 	};
 
-	renderViewMode = () => {
-		const { attributes } = this.props;
-		const { layoutConfig } = attributes;
+	const renderViewMode = () => {
 		const hasContent = layoutConfig && layoutConfig.length !== 0;
-		const blockTitle = this.getTitle();
-		const blockIcon = this.getIcon();
+		const blockTitle = getTitle();
+		const blockIcon = getIcon();
 
 		if ( ! hasContent ) {
 			return renderHiddenContentPlaceholder( blockTitle, blockIcon );
@@ -276,48 +270,29 @@ class Editor extends Component {
 
 		return (
 			<Disabled>
+				{ /* @ts-expect-error: `Block` is a component that is typed in WordPress core*/ }
 				<Block attributes={ attributes } />
 			</Disabled>
 		);
 	};
 
-	render = () => {
-		const { attributes } = this.props;
-		const { isEditing } = this.state;
-		const blockTitle = this.getTitle();
-		const blockIcon = this.getIcon();
+	const blockTitle = getTitle();
+	const blockIcon = getIcon();
 
-		if ( blocksConfig.productCount === 0 ) {
-			return renderNoProductsPlaceholder( blockTitle, blockIcon );
-		}
+	if ( blocksConfig.productCount === 0 ) {
+		return renderNoProductsPlaceholder( blockTitle, blockIcon );
+	}
 
-		return (
-			<div
-				className={ getBlockClassName(
-					'wc-block-all-products',
-					attributes
-				) }
-			>
-				{ this.getBlockControls() }
-				{ this.getInspectorControls() }
-				{ isEditing ? this.renderEditMode() : this.renderViewMode() }
-			</div>
-		);
-	};
+	return (
+		<div
+			className={ getBlockClassName(
+				'wc-block-all-products',
+				attributes
+			) }
+		>
+			{ getBlockControls() }
+			{ getInspectorControls() }
+			{ isEditing ? renderEditMode() : renderViewMode() }
+		</div>
+	);
 }
-
-export default compose(
-	withSpokenMessages,
-	withSelect( ( select, { clientId } ) => {
-		const { getBlock } = select( 'core/block-editor' );
-		return {
-			block: getBlock( clientId ),
-		};
-	} ),
-	withDispatch( ( dispatch ) => {
-		const { replaceInnerBlocks } = dispatch( 'core/block-editor' );
-		return {
-			replaceInnerBlocks,
-		};
-	} )
-)( Editor );

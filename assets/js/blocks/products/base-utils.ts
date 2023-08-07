@@ -2,6 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import { BlockInstance } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -12,7 +13,7 @@ import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
 /**
  * The default layout built from the default template.
  */
-export const DEFAULT_PRODUCT_LIST_LAYOUT = [
+export const DEFAULT_PRODUCT_LIST_LAYOUT: [ string, object? ][] = [
 	[ 'woocommerce/product-image', { imageSizing: ImageSizing.THUMBNAIL } ],
 	[ 'woocommerce/product-title' ],
 	[ 'woocommerce/product-price' ],
@@ -25,7 +26,9 @@ export const DEFAULT_PRODUCT_LIST_LAYOUT = [
  *
  * @param {Object[]} innerBlocks Inner block components.
  */
-export const getProductLayoutConfig = ( innerBlocks ) => {
+export const getProductLayoutConfig = (
+	innerBlocks: BlockInstance[]
+): [ string, object? ][] => {
 	if ( ! innerBlocks || innerBlocks.length === 0 ) {
 		return [];
 	}
