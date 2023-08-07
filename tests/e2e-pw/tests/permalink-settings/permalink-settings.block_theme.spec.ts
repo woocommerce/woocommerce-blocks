@@ -65,7 +65,7 @@ test.describe(
 				const cartText = page.getByRole( 'link', {
 					name: 'Proceed to Checkout',
 				} );
-				expect( cartText ).toBeVisible();
+				await expect( cartText ).toBeVisible();
 			} );
 
 			test( 'Changing checkout permalink works', async ( { page } ) => {
@@ -84,7 +84,7 @@ test.describe(
 					waitUntil: 'commit',
 				} );
 				const cartText = page.getByText( 'Place Order' );
-				expect( cartText ).toBeVisible();
+				await expect( cartText ).toBeVisible();
 			} );
 		} );
 	}
