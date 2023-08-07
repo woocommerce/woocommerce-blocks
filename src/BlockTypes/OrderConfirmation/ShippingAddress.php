@@ -17,61 +17,46 @@ class ShippingAddress extends AbstractOrderConfirmationBlock {
 	protected $block_name = 'order-confirmation-shipping-address';
 
 	/**
-	 * Render the block.
-	 *
-	 * @param array    $attributes Block attributes.
-	 * @param string   $content Block content.
-	 * @param WP_Block $block Block instance.
-	 *
-	 * @return string | void Rendered block output.
-	 */
-	protected function render( $attributes, $content, $block ) {
-		$order              = $this->get_order();
-		$content            = $order && $this->is_current_customer_order( $order ) ? $this->render_content( $order ) : $this->render_content_fallback();
-		$classname          = $attributes['className'] ?? '';
-		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
-
-		if ( isset( $attributes['align'] ) ) {
-			$classname .= " align{$attributes['align']}";
-		}
-
-		return sprintf(
-			'<div class="wc-block-%4$s %1$s %2$s">%3$s</div>',
-			esc_attr( $classes_and_styles['classes'] ),
-			esc_attr( $classname ),
-			$content,
-			esc_attr( $this->block_name )
-		);
-	}
-
-	/**
 	 * This renders the content of the block within the wrapper.
 	 *
 	 * @param \WC_Order $order Order object.
+	 * @param string    $permission Permission level for viewing order details.
+	 * @param array     $attributes Block attributes.
 	 * @return string
 	 */
-	protected function render_content( $order ) {
-		$fallback = esc_html__( 'This order has no shipping address.', 'woo-gutenberg-products-block' );
+	protected function render_content( $order, $permission = false, $attributes = [] ) {
+		if ( ! $permission ) {
+			return $this->render_content_fallback();
+		}
+
 		if ( $order->needs_shipping_address() ) {
-			$address = $order->get_formatted_shipping_address( $fallback );
-			$address = $address . ( $order->get_shipping_phone() ? '<p class="woocommerce-customer-details--phone">' . esc_html( $order->get_shipping_phone() ) . '</p>' : '' );
+			if ( 'full' === $permission ) {
+				$address = $order->get_formatted_shipping_address( esc_html__( 'This order has no shipping address.', 'woo-gutenberg-products-block' ) );
+				$address = $address . ( $order->get_shipping_phone() ? '<br><span class="woocommerce-customer-details--phone">' . esc_html( $order->get_shipping_phone() ) . '</span>' : '' );
+			} else {
+				$states  = wc()->countries->get_states( $order->get_shipping_country() );
+				$address = esc_html(
+					sprintf(
+					/* translators: %s location. */
+						__( 'Shipping to %s', 'woo-gutenberg-products-block' ),
+						implode(
+							', ',
+							array_filter(
+								[
+									$order->get_shipping_postcode(),
+									$order->get_shipping_city(),
+									$states[ $order->get_shipping_state() ] ?? $order->get_shipping_state(),
+									wc()->countries->countries[ $order->get_shipping_country() ] ?? $order->get_shipping_country(),
+								]
+							)
+						)
+					)
+				);
+			}
 		} else {
 			$address = esc_html__( 'This order does not require shipping.', 'woo-gutenberg-products-block' );
 		}
 
-		return '
-			<address>
-				' . wp_kses_post( $address ) . '
-			</address>
-		';
-	}
-
-	/**
-	 * This is what gets rendered when the order does not exist.
-	 *
-	 * @return string
-	 */
-	protected function render_content_fallback() {
-		return '-';
+		return '<address>' . wp_kses_post( $address ) . '</address>';
 	}
 }
