@@ -13,6 +13,7 @@ import {
 	revertMigration,
 	getUpgradeStatus,
 	HOURS_TO_DISPLAY_UPGRADE_NOTICE,
+	UPGRADE_NOTICE_DISPLAY_COUNT_THRESHOLD,
 } from '@woocommerce/blocks/migration-products-to-product-collection';
 import {
 	// @ts-expect-error Using experimental features
@@ -126,15 +127,20 @@ const lessThanThresholdSinceUpdate = ( t: number ) => {
 	return Date.now() < dayFromT;
 };
 
+const displayedLessThanThreshold = ( displayCount: number ) => {
+	return displayCount <= UPGRADE_NOTICE_DISPLAY_COUNT_THRESHOLD;
+};
+
 const shouldDisplayUpgradeNotice = ( props ) => {
 	const { attributes } = props;
 	const { convertedFromProducts } = attributes;
-	const { status, t } = getUpgradeStatus();
+	const { status, t, displayCount } = getUpgradeStatus();
 
 	return (
 		convertedFromProducts &&
 		status === 'notseen' &&
-		lessThanThresholdSinceUpdate( t )
+		lessThanThresholdSinceUpdate( t ) &&
+		displayedLessThanThreshold( displayCount )
 	);
 };
 

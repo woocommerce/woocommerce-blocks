@@ -4,7 +4,7 @@
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { type BlockInstance } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
-import { isBoolean } from '@woocommerce/types';
+import { isBoolean, isNumber } from '@woocommerce/types';
 
 /**
  * Internal dependencies
@@ -82,6 +82,17 @@ const setUpgradeStatus = ( newStatus: UpgradeNoticeStatus ) => {
 	);
 };
 
+const incrementUpgradeStatusDisplayCount = () => {
+	const status = getUpgradeStatus();
+	const displayCount = isNumber( status.displayCount )
+		? status.displayCount + 1
+		: 0;
+	setUpgradeStatus( {
+		...status,
+		displayCount,
+	} );
+};
+
 export {
 	getProductsBlockClientIds,
 	getProductCollectionBlockClientIds,
@@ -89,4 +100,5 @@ export {
 	postTemplateHasSupportForGridView,
 	getUpgradeStatus,
 	setUpgradeStatus,
+	incrementUpgradeStatusDisplayCount,
 };
