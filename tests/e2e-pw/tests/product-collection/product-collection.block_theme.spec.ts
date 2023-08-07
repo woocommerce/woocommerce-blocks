@@ -323,9 +323,7 @@ test.describe( 'Product Collection', () => {
 		// In the original viewport size, we expect the product width to be less than the parent width
 		// because we will have more than 1 column
 		let productSize = await firstProduct.boundingBox();
-		let parentSize = await (
-			await firstProduct.locator( 'xpath=..' )
-		 ).boundingBox();
+		let parentSize = await firstProduct.locator( 'xpath=..' ).boundingBox();
 		expect( productSize?.width ).toBeLessThan(
 			parentSize?.width as number
 		);
@@ -338,9 +336,7 @@ test.describe( 'Product Collection', () => {
 		// In the smaller viewport size, we expect the product width to be (approximately) the same as the parent width
 		// because we will have only 1 column
 		productSize = await firstProduct.boundingBox();
-		parentSize = await (
-			await firstProduct.locator( 'xpath=..' )
-		 ).boundingBox();
+		parentSize = await firstProduct.locator( 'xpath=..' ).boundingBox();
 		expect( productSize?.width ).toBeCloseTo( parentSize?.width as number );
 	} );
 } );

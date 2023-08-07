@@ -302,7 +302,7 @@ class ProductCollectionPage {
 	 * Locators
 	 */
 	async locateSidebarSettings() {
-		return await this.page.getByRole( 'region', {
+		return this.page.getByRole( 'region', {
 			name: 'Editor settings',
 		} );
 	}

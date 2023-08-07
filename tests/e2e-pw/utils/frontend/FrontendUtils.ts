@@ -23,7 +23,7 @@ export class FrontendUtils {
 		if ( ! parentBlock ) {
 			throw new Error( `Parent block "${ parentName }" not found.` );
 		}
-		const block = await parentBlock.locator( `.${ blockClass }` );
+		const block = parentBlock.locator( `.${ blockClass }` );
 		return block;
 	}
 
