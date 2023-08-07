@@ -2,7 +2,7 @@ name: Report Flaky Tests
 
 on:
     workflow_run:
-        workflows: ['E2E tests']
+        workflows: ['E2E tests','Playwright Tests']
         types:
             - completed
 

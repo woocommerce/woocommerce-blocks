@@ -29,7 +29,12 @@ const config: ExtendedPlaywrightTestConfig = {
 	retries: CI ? 2 : 0,
 	workers: 1,
 	reporter: process.env.CI
-		? [ [ 'github' ], [ 'list' ], [ 'html' ] ]
+		? [
+				[ 'github' ],
+				[ 'list' ],
+				[ 'html' ],
+				[ './config/flaky-tests-reporter.ts' ],
+		  ]
 		: 'list',
 	maxFailures: E2E_MAX_FAILURES ? Number( E2E_MAX_FAILURES ) : 0,
 	use: {
