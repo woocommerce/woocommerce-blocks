@@ -26,20 +26,20 @@ test.describe( 'Product Collection', () => {
 		pageObject,
 	} ) => {
 		expect( pageObject.productTemplate ).not.toBeNull();
-		expect( pageObject.products ).toHaveCount( 9 );
-		expect( pageObject.productImages ).toHaveCount( 9 );
-		expect( pageObject.productTitles ).toHaveCount( 9 );
-		expect( pageObject.productPrices ).toHaveCount( 9 );
-		expect( pageObject.addToCartButtons ).toHaveCount( 9 );
+		await expect( pageObject.products ).toHaveCount( 9 );
+		await expect( pageObject.productImages ).toHaveCount( 9 );
+		await expect( pageObject.productTitles ).toHaveCount( 9 );
+		await expect( pageObject.productPrices ).toHaveCount( 9 );
+		await expect( pageObject.addToCartButtons ).toHaveCount( 9 );
 
 		await pageObject.publishAndGoToFrontend();
 
 		expect( pageObject.productTemplate ).not.toBeNull();
-		expect( pageObject.products ).toHaveCount( 9 );
-		expect( pageObject.productImages ).toHaveCount( 9 );
-		expect( pageObject.productTitles ).toHaveCount( 9 );
-		expect( pageObject.productPrices ).toHaveCount( 9 );
-		expect( pageObject.addToCartButtons ).toHaveCount( 9 );
+		await expect( pageObject.products ).toHaveCount( 9 );
+		await expect( pageObject.productImages ).toHaveCount( 9 );
+		await expect( pageObject.productTitles ).toHaveCount( 9 );
+		await expect( pageObject.productPrices ).toHaveCount( 9 );
+		await expect( pageObject.addToCartButtons ).toHaveCount( 9 );
 	} );
 
 	test.describe( 'Product Collection Sidebar Settings', () => {
@@ -294,18 +294,18 @@ test.describe( 'Product Collection', () => {
 				maxPageToShow: 2,
 			} );
 
-			expect( await pageObject.products ).toHaveCount( 3 );
+			await expect( await pageObject.products ).toHaveCount( 3 );
 
 			await pageObject.setDisplaySettings( {
 				itemsPerPage: 2,
 				offset: 0,
 				maxPageToShow: 2,
 			} );
-			expect( await pageObject.products ).toHaveCount( 2 );
+			await expect( await pageObject.products ).toHaveCount( 2 );
 
 			await pageObject.publishAndGoToFrontend();
 
-			expect( await pageObject.products ).toHaveCount( 2 );
+			await expect( await pageObject.products ).toHaveCount( 2 );
 
 			const paginationNumbers =
 				pageObject.pagination.locator( '.page-numbers' );
