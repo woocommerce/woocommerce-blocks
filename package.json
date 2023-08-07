@@ -113,7 +113,7 @@
 		"@octokit/graphql": "5.0.5",
 		"@playwright/test": "1.32.3",
 		"@storybook/addon-a11y": "6.5.16",
-		"@storybook/addon-essentials": "6.5.9",
+		"@storybook/addon-essentials": "7.2.1",
 		"@storybook/addon-links": "6.5.9",
 		"@storybook/addon-storysource": "6.5.9",
 		"@storybook/addons": "6.5.9",
