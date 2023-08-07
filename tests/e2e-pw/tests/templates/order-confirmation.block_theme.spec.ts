@@ -8,6 +8,7 @@ const templatePath = 'woocommerce/woocommerce//order-confirmation';
 const templateType = 'wp_template';
 
 test.fixme( 'Test the order confirmation template', async () => {
+	// eslint-disable-next-line playwright/expect-expect
 	test( 'Template can be opened in the site editor', async ( {
 		page,
 		editorUtils,
