@@ -27,8 +27,12 @@ class BillingWrapper extends AbstractOrderConfirmationBlock {
 	 * @return string | void Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$order              = $this->get_order();
-		$content            = $order && $this->is_current_customer_order( $order ) ? $this->render_content( $order ) : '';
+		$order = $this->get_order();
+
+		if ( ! $order || ! $this->is_current_customer_order( $order ) || ! $order->has_billing_address() ) {
+			return '';
+		}
+
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
@@ -49,31 +53,6 @@ class BillingWrapper extends AbstractOrderConfirmationBlock {
 	 * This renders the content of the billing wrapper.
 	 *
 	 * @param \WC_Order $order Order object.
-	 * @return string
 	 */
-	protected function render_content( $order ) {
-		if ( ! $order->has_billing_address() ) {
-			return '';
-		}
-
-		$heading = esc_html__( 'Billing address', 'woo-gutenberg-products-block' );
-
-		return '
-			<div class="woocommerce-column woocommerce-column--1 woocommerce-column--billing-address col-1">
-				<h2 class="woocommerce-order-details">
-					' . wp_kses_post( $heading ) . '
-				</h2>
-				' . BillingAddress::render_content( $order ) . '
-			</div>
-		';
-	}
-
-	/**
-	 * This is what gets rendered when the order does not exist.
-	 *
-	 * @return string
-	 */
-	protected function render_content_fallback() {
-		return '-';
-	}
+	protected function render_content( $order ) {}
 }
