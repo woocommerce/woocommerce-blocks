@@ -132,6 +132,8 @@ test.describe( `${ blockData.name }`, () => {
 				)
 				.click();
 
+			// We should refactor this.
+			// eslint-disable-next-line playwright/no-wait-for-timeout
 			await page.waitForTimeout( 500 );
 
 			const groupBlock = await editorUtils.getBlockByTypeWithParent(
@@ -223,6 +225,8 @@ test.describe( `${ blockData.name }`, () => {
 				)
 				.click();
 
+			// We should refactor this.
+			// eslint-disable-next-line playwright/no-wait-for-timeout
 			await page.waitForTimeout( 500 );
 
 			const groupBlock = await editorUtils.getBlockByTypeWithParent(
@@ -316,6 +320,8 @@ test.describe( `${ blockData.name }`, () => {
 				)
 				.click();
 
+			// We should refactor this.
+			// eslint-disable-next-line playwright/no-wait-for-timeout
 			await page.waitForTimeout( 500 );
 
 			const groupBlock = await editorUtils.getBlockByTypeWithParent(
