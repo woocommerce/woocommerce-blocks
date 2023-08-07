@@ -159,7 +159,7 @@ test.describe( 'Merchant → Cart', () => {
 			// Focus the empty cart button and wait for the tooltip to disappear.
 			await emptyCartButton.focus();
 			await page.waitForTimeout( 5000 );
-			await emptyCartButton.click( { force: true } );
+			await emptyCartButton.dispatchEvent( 'click' );
 			await page.waitForTimeout( 2000 );
 
 			const filledCartBlock = await editorUtils.getBlockByName(
