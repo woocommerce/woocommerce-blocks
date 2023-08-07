@@ -57,11 +57,11 @@ test.describe(
 				} );
 				cartInput.fill( 'updated-cart-permalink' );
 				await page.click( 'button[name="save"]' );
-				await page.waitForLoadState( 'networkidle' );
+				await page.waitForLoadState( 'commit' );
 
 				// Visit the updated page.
 				await page.goto( '/updated-cart-permalink', {
-					waitUntil: 'networkidle',
+					waitUntil: 'commit',
 				} );
 				const cartText = await page.getByRole( 'link', {
 					name: 'Proceed to Checkout',
@@ -78,11 +78,11 @@ test.describe(
 				} );
 				checkoutInput.fill( 'updated-checkout-permalink' );
 				await page.click( 'button[name="save"]' );
-				await page.waitForLoadState( 'networkidle' );
+				await page.waitForLoadState( 'commit' );
 
 				// Visit the updated page.
 				await page.goto( '/updated-checkout-permalink', {
-					waitUntil: 'networkidle',
+					waitUntil: 'commit',
 				} );
 				const cartText = await page.getByText( 'Place Order' );
 				expect( cartText ).toBeVisible();

@@ -73,7 +73,7 @@ class ProductCollectionPage {
 		await this.editor.publishPost();
 		const url = new URL( this.page.url() );
 		const postId = url.searchParams.get( 'post' );
-		await this.page.goto( `/?p=${ postId }`, { waitUntil: 'networkidle' } );
+		await this.page.goto( `/?p=${ postId }`, { waitUntil: 'commit' } );
 		await this.refreshLocators( 'frontend' );
 	}
 
@@ -248,7 +248,7 @@ class ProductCollectionPage {
 	}
 
 	async setProductAttribute( attribute: 'Color' | 'Size', value: string ) {
-		await this.page.waitForLoadState( 'networkidle' );
+		await this.page.waitForLoadState( 'commit' );
 		const sidebarSettings = await this.locateSidebarSettings();
 
 		const productAttributesContainer = await sidebarSettings.locator(
@@ -368,12 +368,12 @@ class ProductCollectionPage {
 	}
 
 	private async waitForProductsToLoad() {
-		await this.page.waitForLoadState( 'networkidle' );
+		await this.page.waitForLoadState( 'commit' );
 		// Wait for the product blocks to be loaded.
 		await this.page.waitForSelector( SELECTORS.product );
 		// Wait for the loading spinner to be detached.
 		await this.page.waitForSelector( '.is-loading', { state: 'detached' } );
-		await this.page.waitForLoadState( 'networkidle' );
+		await this.page.waitForLoadState( 'commit' );
 	}
 }
 

@@ -38,10 +38,10 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 			},
 		} );
 		await editor.publishPost();
-		await page.waitForLoadState( 'networkidle' );
+		await page.waitForLoadState( 'commit' );
 		const url = new URL( page.url() );
 		const postId = url.searchParams.get( 'post' );
-		await page.goto( `/?p=${ postId }`, { waitUntil: 'networkidle' } );
+		await page.goto( `/?p=${ postId }`, { waitUntil: 'commit' } );
 	} );
 
 	test( 'should show all products', async ( { page, frontendUtils } ) => {
@@ -49,7 +49,7 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 			'woocommerce/all-products'
 		);
 
-		await page.waitForLoadState( 'networkidle' );
+		await page.waitForLoadState( 'commit' );
 
 		const img = await allProductsBlock.locator( 'img' ).first();
 
@@ -82,13 +82,13 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 			response.url().includes( blockData.endpointAPI )
 		);
 
-		await page.waitForLoadState( 'networkidle' );
+		await page.waitForLoadState( 'commit' );
 
 		const allProductsBlock = await frontendUtils.getBlockByName(
 			'woocommerce/all-products'
 		);
 
-		await page.waitForLoadState( 'networkidle' );
+		await page.waitForLoadState( 'commit' );
 		const img = await allProductsBlock.locator( 'img' ).first();
 
 		await expect( img ).not.toHaveAttribute(
@@ -127,7 +127,7 @@ test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 			},
 		} );
 		await editor.saveSiteEditorEntities();
-		await page.goto( `/shop`, { waitUntil: 'networkidle' } );
+		await page.goto( `/shop`, { waitUntil: 'commit' } );
 	} );
 
 	test.afterEach( async ( { templateApiUtils } ) => {
@@ -141,7 +141,7 @@ test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 			'woocommerce/legacy-template'
 		);
 
-		await page.waitForLoadState( 'networkidle' );
+		await page.waitForLoadState( 'commit' );
 
 		const products = await legacyTemplate
 			.getByRole( 'list' )

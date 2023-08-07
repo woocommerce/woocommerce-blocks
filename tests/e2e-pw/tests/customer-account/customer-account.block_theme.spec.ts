@@ -19,10 +19,10 @@ const blockData = {
 
 const publishAndVisitPost = async ( { page, editor } ) => {
 	await editor.publishPost();
-	await page.waitForLoadState( 'networkidle' );
+	await page.waitForLoadState( 'commit' );
 	const url = new URL( page.url() );
 	const postId = url.searchParams.get( 'post' );
-	await page.goto( `/?p=${ postId }`, { waitUntil: 'networkidle' } );
+	await page.goto( `/?p=${ postId }`, { waitUntil: 'commit' } );
 };
 
 const selectTextOnlyOption = async ( { page } ) => {

@@ -58,7 +58,7 @@ test.describe( `${ blockData.name }`, () => {
 		] );
 
 		await page.goto( blockData.productPage, {
-			waitUntil: 'networkidle',
+			waitUntil: 'commit',
 		} );
 
 		const blockFrontend = await frontendUtils.getBlockByName(
@@ -93,7 +93,7 @@ test.describe( `${ blockData.name }`, () => {
 			await editor.saveSiteEditorEntities();
 
 			await page.goto( blockData.productPage, {
-				waitUntil: 'networkidle',
+				waitUntil: 'commit',
 			} );
 		} );
 
@@ -162,7 +162,7 @@ test.describe( `${ blockData.name }`, () => {
 			] );
 
 			await page.goto( blockData.productPage, {
-				waitUntil: 'networkidle',
+				waitUntil: 'commit',
 			} );
 
 			const groupBlockFrontend =
@@ -253,7 +253,7 @@ test.describe( `${ blockData.name }`, () => {
 			] );
 
 			await page.goto( blockData.productPage, {
-				waitUntil: 'networkidle',
+				waitUntil: 'commit',
 			} );
 
 			const groupBlockFrontend =
@@ -346,7 +346,7 @@ test.describe( `${ blockData.name }`, () => {
 			] );
 
 			await page.goto( blockData.productPage, {
-				waitUntil: 'networkidle',
+				waitUntil: 'commit',
 			} );
 
 			const groupBlockFrontend =

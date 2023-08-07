@@ -44,14 +44,14 @@ const loginAsCustomer = async ( config: FullConfig ) => {
 	for ( let i = 0; i < customerRetries; i++ ) {
 		try {
 			await customerPage.goto( `/wp-admin`, {
-				waitUntil: 'networkidle',
+				waitUntil: 'commit',
 			} );
 			await customerPage.fill( 'input[name="log"]', customer.username );
 			await customerPage.fill( 'input[name="pwd"]', customer.password );
 			await customerPage.click( 'text=Log In' );
 
 			await customerPage.goto( `/my-account`, {
-				waitUntil: 'networkidle',
+				waitUntil: 'commit',
 			} );
 
 			await customerPage

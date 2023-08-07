@@ -10,7 +10,7 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		await page.goto(
 			'/active-filters-block/?filter_color=blue&query_type_color=or'
 		);
-		await page.waitForLoadState( 'networkidle' );
+		await page.waitForLoadState( 'commit' );
 
 		// Check if the page has loaded successfully.
 		await expect( page.getByText( 'Active Filters block' ) ).toBeVisible();
@@ -33,7 +33,7 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		await page.goto(
 			'/active-filters-block/?filter_color=blue,gray&query_type_color=or'
 		);
-		await page.waitForLoadState( 'networkidle' );
+		await page.waitForLoadState( 'commit' );
 
 		// Check if the page has loaded successfully.
 		await expect( page.getByText( 'Active Filters block' ) ).toBeVisible();
@@ -56,7 +56,7 @@ test.describe( 'Filter by Attributes Block - with All products Block', () => {
 		await page.goto(
 			'/active-filters-block/?filter_color=blue&query_type_color=or&min_price=15&max_price=40'
 		);
-		await page.waitForLoadState( 'networkidle' );
+		await page.waitForLoadState( 'commit' );
 
 		// Check if the page has loaded successfully.
 		await expect( page.getByText( 'Active Filters block' ) ).toBeVisible();

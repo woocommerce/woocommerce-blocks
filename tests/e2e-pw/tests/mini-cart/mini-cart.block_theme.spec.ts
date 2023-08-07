@@ -26,10 +26,10 @@ test.describe( `${ blockData.name } Block`, () => {
 			await admin.createNewPost();
 			await editor.insertBlock( { name: blockData.name } );
 			await editor.publishPost();
-			await page.waitForLoadState( 'networkidle' );
+			await page.waitForLoadState( 'commit' );
 			const url = new URL( page.url() );
 			const postId = url.searchParams.get( 'post' );
-			await page.goto( `/?p=${ postId }`, { waitUntil: 'networkidle' } );
+			await page.goto( `/?p=${ postId }`, { waitUntil: 'commit' } );
 		} );
 
 		test( 'should open the empty cart drawer', async ( { page } ) => {
@@ -113,16 +113,16 @@ test.describe( `${ blockData.name } Block`, () => {
 			await editor.insertBlock( { name: blockData.name } );
 			await editor.insertBlock( { name: 'woocommerce/all-products' } );
 			await editor.publishPost();
-			await page.waitForLoadState( 'networkidle' );
+			await page.waitForLoadState( 'commit' );
 			const url = new URL( page.url() );
 			const postId = url.searchParams.get( 'post' );
-			await page.goto( `/?p=${ postId }`, { waitUntil: 'networkidle' } );
+			await page.goto( `/?p=${ postId }`, { waitUntil: 'commit' } );
 		} );
 
 		test( 'should open the filled cart drawer', async ( { page } ) => {
 			const miniCartButton = await getMiniCartButton( { page } );
 
-			await page.waitForLoadState( 'networkidle' );
+			await page.waitForLoadState( 'commit' );
 			await page.click( 'text=Add to cart' );
 
 			await miniCartButton.click();

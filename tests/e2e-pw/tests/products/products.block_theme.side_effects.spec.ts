@@ -139,7 +139,7 @@ for ( const {
 			} );
 
 			await editor.canvas.click( 'body' );
-			await editor.canvas.waitForLoadState( 'networkidle' );
+			await editor.canvas.waitForLoadState( 'commit' );
 			const block = await editorUtils.getBlockByName( blockData.name );
 			const clientId = ( await block.getAttribute( 'data-block' ) ) ?? '';
 			const parentClientId =
