@@ -46,6 +46,7 @@ tests/cli/vendor
 **/e2e-pw/test-results/
 **/e2e-pw/artifacts/
 /artifacts/
+/playwright-report/
 
 # Logs
 /logs

@@ -30,12 +30,12 @@ const config: ExtendedPlaywrightTestConfig = {
 	workers: 1,
 	reporter: process.env.CI
 		? [ [ 'github' ], [ 'list' ], [ 'html' ] ]
-		: [ [ 'html' ], [ 'list' ] ],
+		: 'list',
 	maxFailures: E2E_MAX_FAILURES ? Number( E2E_MAX_FAILURES ) : 0,
 	use: {
 		baseURL: BASE_URL,
 		screenshot: 'only-on-failure',
-		stateDir: 'tests/e2e-pw/test-results/storage/',
+		stateDir: 'tests/e2e/test-results/storage/',
 		trace: 'retain-on-failure',
 		video: 'on-first-retry',
 		viewport: { width: 1280, height: 720 },

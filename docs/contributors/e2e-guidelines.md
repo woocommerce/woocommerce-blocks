@@ -6,13 +6,13 @@
 -   [Playwright](#playwright)
     -   [Structure](#structure-1)
 
-This living document serves to prescribe coding guidelines specific to the WooCommerce Blocks project E2E tests. For more information on how to run Playwright end-to-end (E2E) tests, please refer to the [dedicated resource](../../tests/e2e-pw/README.md).
+This living document serves to prescribe coding guidelines specific to the WooCommerce Blocks project E2E tests. For more information on how to run Playwright end-to-end (E2E) tests, please refer to the [dedicated resource](../../tests/e2e/README.md).
 
 ## Structure
 
 There are two folders dedicated to E2E tests.
 
-The first folder is named "e2e" and it contains all the E2E tests that were created with the deprecated infrastructure Jest + Puppetter. The "e2e-pw" folder contains all the E2E tests that were created with the current infrastructure: Playwright. These tests are actively maintained and should be used for all new E2E testing.
+The first folder is named "e2e-jest" and it contains all the E2E tests that were created with the deprecated infrastructure Jest + Puppetter. The "e2e" folder contains all the E2E tests that were created with the current infrastructure: Playwright. These tests are actively maintained and should be used for all new E2E testing.
 
 ### Playwright
 

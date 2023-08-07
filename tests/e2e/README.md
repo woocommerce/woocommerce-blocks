@@ -81,7 +81,7 @@ npm run test:e2e -- --debug
 Running a single test:
 
 ```sh
-npm run test:e2e ./tests/e2e-pw/tests/example.spec.ts
+npm run test:e2e ./tests/e2e/tests/example.spec.ts
 ```
 
 To see all options, run the following command:
