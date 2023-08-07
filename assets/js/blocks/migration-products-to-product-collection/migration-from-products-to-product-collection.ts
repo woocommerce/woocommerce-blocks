@@ -222,7 +222,7 @@ export const replaceProductsWithProductCollection = () => {
 };
 
 export const manualUpdate = () => {
-	setUpgradeStatus( INITIAL_STATUS_LS_VALUE );
+	setUpgradeStatus( { ...INITIAL_STATUS_LS_VALUE, t: Date.now() } );
 	replaceProductsWithProductCollection();
 };
 

@@ -35,15 +35,16 @@ type UpgradeNoticeProps = {
 
 const UpgradeNotice = ( { revertMigration }: UpgradeNoticeProps ) => {
 	const [ upgradeNoticeStatus, setUpgradeNoticeStatus ] =
-		useLocalStorageState(
-			MIGRATION_STATUS_LS_KEY,
-			INITIAL_STATUS_LS_VALUE
-		);
+		useLocalStorageState( MIGRATION_STATUS_LS_KEY, {
+			...INITIAL_STATUS_LS_VALUE,
+			t: Date.now(),
+		} );
 	const { status } = upgradeNoticeStatus;
 
 	const handleRemove = () => {
 		setUpgradeNoticeStatus( {
 			status: 'seen',
+			t: Date.now(),
 		} );
 	};
 

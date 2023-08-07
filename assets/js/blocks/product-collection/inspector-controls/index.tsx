@@ -119,12 +119,22 @@ enableAutoUpdate();
 const isProductCollection = ( blockName: string ) =>
 	blockName === metadata.name;
 
+const lessThanDaySinceUpdate = ( t: number ) => {
+	// 1 day = 24h * 60m * 60s * 1000ms
+	const dayFromT = t + 24 * 60 * 60 * 1000;
+	return Date.now() < dayFromT;
+};
+
 const shouldDisplayUpgradeNotice = ( props ) => {
 	const { attributes } = props;
 	const { displayUpgradeNotice } = attributes;
-	const { status } = getUpgradeStatus();
+	const { status, t } = getUpgradeStatus();
 
-	return displayUpgradeNotice && status === 'notseen';
+	return (
+		displayUpgradeNotice &&
+		status === 'notseen' &&
+		lessThanDaySinceUpdate( t )
+	);
 };
 
 export const withUpgradeNoticeControls =

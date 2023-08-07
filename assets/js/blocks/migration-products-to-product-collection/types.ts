@@ -23,4 +23,5 @@ export type PostTemplateLayout = {
 };
 export type UpgradeNoticeStatus = {
 	status: 'notseen' | 'seen' | 'reverted';
+	t: number;
 };
