@@ -20,9 +20,9 @@ The first folder is named "e2e" and it contains all the E2E tests that were crea
 
 There are three Playwright projects configuration:
 
-- blockTheme
-- blockThemeWithGlobalSideEffects
-- classicTheme
+-   blockTheme
+-   blockThemeWithGlobalSideEffects
+-   classicTheme
 
 The blockTheme project runs the tests with the suffix _block_theme_. In this case, the theme is a block theme. The block theme is the default WordPress theme. Currently, it is Twenty-Twenty Three. You should use this configuration if you want test the block with the Site Editor.
 

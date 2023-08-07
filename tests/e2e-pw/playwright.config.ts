@@ -30,7 +30,7 @@ const config: ExtendedPlaywrightTestConfig = {
 	workers: 1,
 	reporter: process.env.CI
 		? [ [ 'github' ], [ 'list' ], [ 'html' ] ]
-		: 'list',
+		: [ [ 'html' ], [ 'list' ] ],
 	maxFailures: E2E_MAX_FAILURES ? Number( E2E_MAX_FAILURES ) : 0,
 	use: {
 		baseURL: BASE_URL,
