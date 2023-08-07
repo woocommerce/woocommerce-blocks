@@ -36,6 +36,6 @@ export interface EditorContainerBlockProps {
 	attributes: Attributes;
 	icon: JSX.Element;
 	name: string;
-	noReviewsPlaceholder: React.ReactNode;
+	noReviewsPlaceholder: React.ElementType;
 	className?: string;
 }
