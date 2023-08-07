@@ -127,11 +127,11 @@ const lessThanDaySinceUpdate = ( t: number ) => {
 
 const shouldDisplayUpgradeNotice = ( props ) => {
 	const { attributes } = props;
-	const { displayUpgradeNotice } = attributes;
+	const { convertedFromProducts } = attributes;
 	const { status, t } = getUpgradeStatus();
 
 	return (
-		displayUpgradeNotice &&
+		convertedFromProducts &&
 		status === 'notseen' &&
 		lessThanDaySinceUpdate( t )
 	);

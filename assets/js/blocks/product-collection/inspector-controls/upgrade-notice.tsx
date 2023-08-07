@@ -7,7 +7,7 @@ import { useLocalStorageState } from '@woocommerce/base-hooks';
 import { createInterpolateElement } from '@wordpress/element';
 import {
 	MIGRATION_STATUS_LS_KEY,
-	INITIAL_STATUS_LS_VALUE,
+	getInitialStatusLSValue,
 } from '@woocommerce/blocks/migration-products-to-product-collection';
 
 const notice = createInterpolateElement(
@@ -35,10 +35,10 @@ type UpgradeNoticeProps = {
 
 const UpgradeNotice = ( { revertMigration }: UpgradeNoticeProps ) => {
 	const [ upgradeNoticeStatus, setUpgradeNoticeStatus ] =
-		useLocalStorageState( MIGRATION_STATUS_LS_KEY, {
-			...INITIAL_STATUS_LS_VALUE,
-			t: Date.now(),
-		} );
+		useLocalStorageState(
+			MIGRATION_STATUS_LS_KEY,
+			getInitialStatusLSValue()
+		);
 	const { status } = upgradeNoticeStatus;
 
 	const handleRemove = () => {
