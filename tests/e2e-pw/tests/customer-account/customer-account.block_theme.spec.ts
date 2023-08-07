@@ -69,7 +69,7 @@ test.describe( `${ blockData.name } Block`, () => {
 		).toBeVisible();
 		await expect(
 			block.locator( blockData.selectors.frontend.icon )
-		).not.toBeVisible();
+		).toBeHidden();
 	} );
 
 	test( 'Icon Options can be set to Icon-only', async ( {
@@ -89,7 +89,7 @@ test.describe( `${ blockData.name } Block`, () => {
 
 		await expect(
 			block.locator( blockData.selectors.frontend.label )
-		).not.toBeVisible();
+		).toBeHidden();
 		await expect(
 			block.locator( blockData.selectors.frontend.icon )
 		).toBeVisible();

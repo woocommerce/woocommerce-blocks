@@ -226,7 +226,7 @@ test.describe( 'Product Collection', () => {
 					sidebarSettings.locator(
 						SELECTORS.inheritQueryFromTemplateControl
 					)
-				).not.toBeVisible();
+				).toBeHidden();
 			} );
 
 			test( 'Inherit query from template should work as expected in Product Catalog template', async ( {

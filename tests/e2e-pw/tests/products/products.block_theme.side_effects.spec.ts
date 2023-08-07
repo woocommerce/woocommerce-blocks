@@ -81,7 +81,7 @@ test.describe( `${ blockData.name } Block `, () => {
 			'Inherit query from template'
 		);
 
-		await expect( advancedFilterOption ).not.toBeVisible();
+		await expect( advancedFilterOption ).toBeHidden();
 		await expect( inheritQueryFromTemplateOption ).toBeVisible();
 	} );
 	test( 'when Inherit Query from template is disabled all the settings that customize the query should be visble', async ( {
