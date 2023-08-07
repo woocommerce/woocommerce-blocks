@@ -57,7 +57,7 @@ test.describe( `${ blockData.name } Block`, () => {
 				blockData.selectors.frontend.drawerCloseButton
 			);
 
-			const closeButton = await page.$(
+			const closeButton = page.locator(
 				blockData.selectors.frontend.drawerCloseButton
 			);
 
