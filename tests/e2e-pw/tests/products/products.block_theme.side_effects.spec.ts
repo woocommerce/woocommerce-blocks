@@ -139,10 +139,11 @@ for ( const {
 			} );
 
 			await editor.canvas.click( 'body' );
-			await editor.canvas.waitForLoadState( 'commit' );
 			const block = await editorUtils.getBlockByName( blockData.name );
+			// eslint-disable-next-line playwright/no-conditional-in-test
 			const clientId = ( await block.getAttribute( 'data-block' ) ) ?? '';
 			const parentClientId =
+				// eslint-disable-next-line playwright/no-conditional-in-test
 				( await editorUtils.getBlockRootClientId( clientId ) ) ?? '';
 			await editor.selectBlocks( block );
 			await editorUtils.insertBlock(
