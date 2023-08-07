@@ -3,6 +3,7 @@ name: Report Flaky Tests
 on:
     workflow_run:
         workflows: ['E2E tests','Playwright Tests']
+        branches: ['9004-playwright-migration-integrate-the-flaky-e2e-test-reporter']
         types:
             - completed
 
@@ -41,7 +42,7 @@ jobs:
               if: ${{ steps.download_artifact.outcome == 'success' }}
               # TODO: We don't have to build the entire project, just the action itself.
               run: npm run build:packages
-              
+
             - name: Report flaky tests
               uses: ./packages/report-flaky-tests
               with:
