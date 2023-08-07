@@ -12,10 +12,10 @@
 		li {
 			flex: 1 1 auto;
 
-			> span {
-				@include font-size(small);
+			> .wc-block-order-confirmation-summary-list-item__key {
+				font-weight: bold;
 			}
-			> strong {
+			> .wc-block-order-confirmation-summary-list-item__value {
 				font-weight: inherit;
 				display: block;
 			}
