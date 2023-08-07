@@ -20,7 +20,7 @@ const blockData: BlockData = {
 };
 
 test.describe( 'Merchant → Cart', () => {
-	const blockSelectorInEditor = blockData.selectors.editor.block as string;
+	const blockSelectorInEditor = blockData.selectors.editor.block;
 
 	test.describe( 'in page editor', () => {
 		test.beforeEach( async ( { editorUtils, admin } ) => {
@@ -140,7 +140,7 @@ test.describe( 'Merchant → Cart', () => {
 					name: 'Audio',
 				}
 			);
-			await expect( filledCartAudioButton ).not.toBeVisible();
+			await expect( filledCartAudioButton ).toBeHidden();
 		} );
 
 		test( 'shows empty cart when changing the view', async ( {
@@ -167,7 +167,7 @@ test.describe( 'Merchant → Cart', () => {
 			const emptyCartBlock = await editorUtils.getBlockByName(
 				'woocommerce/empty-cart-block'
 			);
-			await expect( filledCartBlock ).not.toBeVisible();
+			await expect( filledCartBlock ).toBeHidden();
 			await expect( emptyCartBlock ).toBeVisible();
 			await editor.selectBlocks( blockSelectorInEditor );
 			await page.getByRole( 'button', { name: 'Switch view' } ).click();
@@ -188,7 +188,7 @@ test.describe( 'Merchant → Cart', () => {
 					blockData.selectors.editor.block +
 						' [data-type="woocommerce/empty-cart-block"]'
 				)
-			).not.toBeVisible();
+			).toBeHidden();
 		} );
 	} );
 } );
