@@ -38,7 +38,6 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 			},
 		} );
 		await editor.publishPost();
-		await page.waitForLoadState( 'commit' );
 		const url = new URL( page.url() );
 		const postId = url.searchParams.get( 'post' );
 		await page.goto( `/?p=${ postId }`, { waitUntil: 'commit' } );
@@ -49,9 +48,7 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 			'woocommerce/all-products'
 		);
 
-		await page.waitForLoadState( 'commit' );
-
-		const img = await allProductsBlock.locator( 'img' ).first();
+		const img = allProductsBlock.locator( 'img' ).first();
 
 		await expect( img ).not.toHaveAttribute(
 			'src',
@@ -82,14 +79,11 @@ test.describe( `${ blockData.name } Block - with All products Block`, () => {
 			response.url().includes( blockData.endpointAPI )
 		);
 
-		await page.waitForLoadState( 'commit' );
-
 		const allProductsBlock = await frontendUtils.getBlockByName(
 			'woocommerce/all-products'
 		);
 
-		await page.waitForLoadState( 'commit' );
-		const img = await allProductsBlock.locator( 'img' ).first();
+		const img = allProductsBlock.locator( 'img' ).first();
 
 		await expect( img ).not.toHaveAttribute(
 			'src',
@@ -140,8 +134,6 @@ test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 		const legacyTemplate = await frontendUtils.getBlockByName(
 			'woocommerce/legacy-template'
 		);
-
-		await page.waitForLoadState( 'commit' );
 
 		const products = await legacyTemplate
 			.getByRole( 'list' )

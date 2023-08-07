@@ -57,13 +57,12 @@ test.describe(
 				} );
 				cartInput.fill( 'updated-cart-permalink' );
 				await page.click( 'button[name="save"]' );
-				await page.waitForLoadState( 'commit' );
 
 				// Visit the updated page.
 				await page.goto( '/updated-cart-permalink', {
 					waitUntil: 'commit',
 				} );
-				const cartText = await page.getByRole( 'link', {
+				const cartText = page.getByRole( 'link', {
 					name: 'Proceed to Checkout',
 				} );
 				expect( cartText ).toBeVisible();
@@ -84,7 +83,7 @@ test.describe(
 				await page.goto( '/updated-checkout-permalink', {
 					waitUntil: 'commit',
 				} );
-				const cartText = await page.getByText( 'Place Order' );
+				const cartText = page.getByText( 'Place Order' );
 				expect( cartText ).toBeVisible();
 			} );
 		} );

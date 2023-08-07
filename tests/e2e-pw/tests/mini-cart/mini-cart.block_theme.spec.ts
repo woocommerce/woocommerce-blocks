@@ -17,7 +17,7 @@ const blockData: BlockData = {
 };
 
 const getMiniCartButton = async ( { page } ) => {
-	return await page.getByLabel( '0 items in cart, total price of $0.00' );
+	return page.getByLabel( '0 items in cart, total price of $0.00' );
 };
 
 test.describe( `${ blockData.name } Block`, () => {
@@ -26,7 +26,6 @@ test.describe( `${ blockData.name } Block`, () => {
 			await admin.createNewPost();
 			await editor.insertBlock( { name: blockData.name } );
 			await editor.publishPost();
-			await page.waitForLoadState( 'commit' );
 			const url = new URL( page.url() );
 			const postId = url.searchParams.get( 'post' );
 			await page.goto( `/?p=${ postId }`, { waitUntil: 'commit' } );
@@ -113,7 +112,6 @@ test.describe( `${ blockData.name } Block`, () => {
 			await editor.insertBlock( { name: blockData.name } );
 			await editor.insertBlock( { name: 'woocommerce/all-products' } );
 			await editor.publishPost();
-			await page.waitForLoadState( 'commit' );
 			const url = new URL( page.url() );
 			const postId = url.searchParams.get( 'post' );
 			await page.goto( `/?p=${ postId }`, { waitUntil: 'commit' } );
@@ -122,7 +120,6 @@ test.describe( `${ blockData.name } Block`, () => {
 		test( 'should open the filled cart drawer', async ( { page } ) => {
 			const miniCartButton = await getMiniCartButton( { page } );
 
-			await page.waitForLoadState( 'commit' );
 			await page.click( 'text=Add to cart' );
 
 			await miniCartButton.click();

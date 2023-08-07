@@ -74,10 +74,10 @@ test.describe( `${ blockData.name } Block `, () => {
 
 		await editor.openDocumentSettingsSidebar();
 
-		const advancedFilterOption = await page.getByLabel(
+		const advancedFilterOption = page.getByLabel(
 			'Advanced Filters options'
 		);
-		const inheritQueryFromTemplateOption = await page.getByLabel(
+		const inheritQueryFromTemplateOption = page.getByLabel(
 			'Inherit query from template'
 		);
 
@@ -102,10 +102,10 @@ test.describe( `${ blockData.name } Block `, () => {
 
 		await editor.openDocumentSettingsSidebar();
 
-		const advancedFilterOption = await page.getByLabel(
+		const advancedFilterOption = page.getByLabel(
 			'Advanced Filters options'
 		);
-		const inheritQueryFromTemplateOption = await page.getByLabel(
+		const inheritQueryFromTemplateOption = page.getByLabel(
 			'Inherit query from template'
 		);
 
