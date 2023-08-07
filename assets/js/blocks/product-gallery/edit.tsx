@@ -39,6 +39,10 @@ const TEMPLATE: InnerBlockTemplate[] = [
 			],
 		],
 	],
+	[
+		'woocommerce/product-gallery-pager',
+		getInnerBlocksLockAttributes( 'lock' ),
+	],
 ];
 
 export const Edit = ( {
