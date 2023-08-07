@@ -9,6 +9,7 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
  */
 import edit from './edit';
 import metadata from './block.json';
+import attributes from './attributes';
 
 registerBlockType( metadata, {
 	edit,
@@ -19,4 +20,5 @@ registerBlockType( metadata, {
 			</div>
 		);
 	},
+	attributes,
 } );

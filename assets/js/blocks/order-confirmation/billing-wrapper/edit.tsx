@@ -2,14 +2,16 @@
  * External dependencies
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
-import type { BlockEditProps } from '@wordpress/blocks';
 
-/**
- * Internal dependencies
- */
-import { Attributes } from './types';
-
-const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
+const Edit = ( {
+	attributes,
+	setAttributes,
+}: {
+	attributes: {
+		heading: string;
+	};
+	setAttributes: ( attributes: Record< string, unknown > ) => void;
+} ) => {
 	const blockProps = useBlockProps();
 
 	return (
@@ -19,7 +21,12 @@ const Edit = ( { attributes }: BlockEditProps< Attributes > ) => {
 				template={ [
 					[
 						'core/heading',
-						{ level: 3, content: attributes.heading || '' },
+						{
+							level: 3,
+							content: attributes.heading || '',
+							onChangeContent: ( value: string ) =>
+								setAttributes( { heading: value } ),
+						},
 					],
 					[
 						'woocommerce/order-confirmation-billing-address',
