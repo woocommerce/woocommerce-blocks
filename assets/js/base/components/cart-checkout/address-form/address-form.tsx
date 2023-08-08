@@ -51,6 +51,7 @@ const AddressForm = ( {
 	values: initialValues,
 }: AddressFormProps ): JSX.Element => {
 	const currentFields = useShallowEqual( fields );
+	const currentFieldConfig = useShallowEqual( fieldConfig );
 	const previousInitialValues = usePrevious( initialValues );
 
 	// Holds local state of the field values. Filters values to include only those in the fields prop.
@@ -58,12 +59,15 @@ const AddressForm = ( {
 		pick( initialValues, currentFields )
 	);
 
+	// Keep track of country changes to prevent excessive updates of addressFormFields.
+	const currentCountry = useShallowEqual( values.country );
+
 	// Memoize the address form fields passed in from the parent component.
 	const addressFormFields = useMemo( (): AddressFormFields => {
 		const preparedFields = prepareAddressFields(
 			currentFields,
-			fieldConfig,
-			values.country
+			currentFieldConfig,
+			currentCountry
 		);
 		return {
 			fields: preparedFields,
@@ -71,7 +75,7 @@ const AddressForm = ( {
 			required: preparedFields.filter( ( field ) => field.required ),
 			hidden: preparedFields.filter( ( field ) => field.hidden ),
 		};
-	}, [ currentFields, fieldConfig, values.country, type ] );
+	}, [ currentFields, currentFieldConfig, currentCountry, type ] );
 
 	// Sync incoming changed values with local state.
 	useEffect( () => {
