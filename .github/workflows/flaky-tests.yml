@@ -8,22 +8,15 @@ on:
 
 jobs:
     report-to-issues:
-        name: Report to GitHub issues
+        name: Report to GitHub
+        if: ${{ always() }}
         runs-on: ubuntu-latest
         steps:
             # Checkout defaults to using the branch which triggered the event, which
             # isn't necessarily `trunk` (e.g. in the case of a merge).
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
               with:
-                  repository: WordPress/gutenberg
                   ref: trunk
-                  path: gutenberg
-
-            - name: Use desired version of NodeJS
-              uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
-              with:
-                  node-version-file: './gutenberg/.nvmrc'
-                  cache: npm
 
             - uses: actions/download-artifact@v3
               id: download_artifact
@@ -35,7 +28,7 @@ jobs:
 
             - name: Setup Node.js and install dependencies
               if: ${{ steps.download_artifact.outcome == 'success' }}
-              uses: ./gutenberg/.github/setup-node
+              uses: ./.github/setup-node
 
             - name: Npm build
               if: ${{ steps.download_artifact.outcome == 'success' }}
@@ -43,8 +36,9 @@ jobs:
               run: npm run build:packages
 
             - name: Report flaky tests
-              uses: ./gutenberg/packages/report-flaky-tests
+              if: ${{ steps.download_artifact.outcome == 'success' }}
+              uses: ./packages/report-flaky-tests
               with:
                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
-                  label: 'type: flaky test'
-                  artifact-name-prefix: flaky-tests-report
+                  label: '[Type] Flaky Test'
+                  artifact-path: flaky-tests
