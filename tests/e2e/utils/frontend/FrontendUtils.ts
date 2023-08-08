@@ -32,7 +32,7 @@ export class FrontendUtils {
 			await this.page
 				.getByLabel( `Add “${ itemName }” to your cart` )
 				.click();
-			await this.page.waitForLoadState( 'networkidle' );
+			await this.page.waitForResponse( /add_to_cart/ );
 			return;
 		}
 		await this.page.click( 'text=Add to cart' );
