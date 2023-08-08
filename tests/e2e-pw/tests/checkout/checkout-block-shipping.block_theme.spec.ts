@@ -18,7 +18,7 @@ const test = base.extend< { pageObject: CheckoutPage } >( {
 	},
 } );
 
-test.describe( 'Shopper → Checkout block', () => {
+test.describe( 'Shopper → Checkout block → Shipping', () => {
 	test.beforeAll( async ( { browser } ) => {
 		const page = await browser.newPage();
 		const frontendUtils = new FrontendUtils( page );
