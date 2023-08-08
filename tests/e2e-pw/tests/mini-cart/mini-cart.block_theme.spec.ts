@@ -7,6 +7,7 @@ test.describe( 'test', () => {
 	test( `flaky test`, ( {}, testInfo ) => {
 		if ( testInfo.retry > 0 ) {
 			expect( true ).toBe( true );
+			return;
 		}
 		expect( true ).toBe( false );
 	} );
