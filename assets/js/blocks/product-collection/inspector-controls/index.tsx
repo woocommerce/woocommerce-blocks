@@ -8,10 +8,12 @@ import { type ElementType, useMemo } from '@wordpress/element';
 import { EditorBlock } from '@woocommerce/types';
 import { addFilter } from '@wordpress/hooks';
 import { ProductCollectionFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
+import { subscribe, select } from '@wordpress/data';
 import {
 	enableAutoUpdate,
 	revertMigration,
 	getUpgradeStatus,
+	incrementUpgradeStatusDisplayCount,
 	HOURS_TO_DISPLAY_UPGRADE_NOTICE,
 	UPGRADE_NOTICE_DISPLAY_COUNT_THRESHOLD,
 } from '@woocommerce/blocks/migration-products-to-product-collection';
@@ -117,6 +119,24 @@ export default ProductCollectionInspectorControls;
 // - user haven't reverted the migration
 // - no other subscription is in place
 enableAutoUpdate();
+
+let lastSelectedBlockId: string | null = null;
+
+subscribe( () => {
+	const selectedBlock = select( 'core/block-editor' ).getSelectedBlock();
+
+	if (
+		selectedBlock &&
+		selectedBlock.name === 'woocommerce/product-collection' &&
+		selectedBlock.clientId !== lastSelectedBlockId
+	) {
+		incrementUpgradeStatusDisplayCount();
+	}
+
+	if ( selectedBlock ) {
+		lastSelectedBlockId = selectedBlock.clientId;
+	}
+}, 'core/block-editor' );
 
 const isProductCollection = ( blockName: string ) =>
 	blockName === metadata.name;

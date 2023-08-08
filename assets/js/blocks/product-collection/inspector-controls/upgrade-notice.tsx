@@ -4,11 +4,10 @@
 import { __ } from '@wordpress/i18n';
 import { Notice, Button } from '@wordpress/components';
 import { useLocalStorageState } from '@woocommerce/base-hooks';
-import { createInterpolateElement, useEffect } from '@wordpress/element';
+import { createInterpolateElement } from '@wordpress/element';
 import {
 	MIGRATION_STATUS_LS_KEY,
 	getInitialStatusLSValue,
-	incrementUpgradeStatusDisplayCount,
 } from '@woocommerce/blocks/migration-products-to-product-collection';
 
 const notice = createInterpolateElement(
@@ -52,10 +51,6 @@ const UpgradeNotice = ( { revertMigration }: UpgradeNoticeProps ) => {
 	const handleRevert = () => {
 		revertMigration();
 	};
-
-	useEffect( () => {
-		return incrementUpgradeStatusDisplayCount;
-	} );
 
 	return status === 'notseen' ? (
 		<Notice onRemove={ handleRemove }>
