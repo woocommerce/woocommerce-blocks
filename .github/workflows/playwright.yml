@@ -80,7 +80,15 @@ jobs:
         needs: [PlaywrightE2ETests]
         if: ${{ always() }}
         runs-on: ubuntu-latest
-        steps:
+        steps:                
+            # Checkout defaults to using the branch which triggered the event, which
+            # isn't necessarily `trunk` (e.g. in the case of a merge).
+            - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+              with:
+                repository: 'wordpress/gutenberg'
+                ref: trunk
+
+
             - uses: actions/download-artifact@v3
               id: download_artifact
               # Don't fail the job if there isn't any flaky tests report.
@@ -88,13 +96,6 @@ jobs:
               with:
                   name: flaky-tests-report
                   path: flaky-tests
-                
-            # Checkout defaults to using the branch which triggered the event, which
-            # isn't necessarily `trunk` (e.g. in the case of a merge).
-            - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
-              with:
-                repository: 'wordpress/gutenberg'
-                ref: trunk
 
 
             - name: Setup Node.js and install dependencies
