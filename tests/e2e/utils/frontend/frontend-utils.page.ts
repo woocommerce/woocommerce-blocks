@@ -7,6 +7,7 @@ import { Page } from '@playwright/test';
 /**
  * Internal dependencies
  */
+import { BASE_URL } from '../constants';
 
 export class FrontendUtils {
 	page: Page;
@@ -50,9 +51,26 @@ export class FrontendUtils {
 		} );
 	}
 
-	async goToCheckout() {
-		await this.page.goto( '/checkout', {
-			waitUntil: 'commit',
+	async emptyCart() {
+		this.page.goto( BASE_URL );
+		await this.page.evaluate( () => {
+			const store = window.wp.data.select( 'wc/store/cart' );
+			if ( ! store ) {
+				return new Error(
+					'You must be on a page with data stores before using frontendUtils.emptyCart.'
+				);
+			}
+			const cartData = store.getCartData();
+			if ( ! Array.isArray( cartData?.items ) ) {
+				return new Error(
+					'cartData.items must be an array. If it is not'
+				);
+			}
+			const { removeItemFromCart } =
+				window.wp.data.dispatch( 'wc/store/cart' );
+			cartData.items.forEach( ( item ) =>
+				removeItemFromCart( item.key )
+			);
 		} );
 	}
 
