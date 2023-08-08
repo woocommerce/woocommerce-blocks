@@ -73,8 +73,8 @@
 			<p style="margin-right:var(--wp--preset--spacing--30)"><?php esc_html_e( 'We specialize in limited collections of handmade tableware. We collaborate with restaurants and cafes to create unique items that complement the menu perfectly. Please get in touch if you want to know more about our process and pricing.', 'woo-gutenberg-products-block' ); ?></p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:buttons {"style":{"spacing":{"blockGap":"0"}},"fontSize":"small"} -->
-			<div class="wp-block-buttons has-custom-font-size has-small-font-size">
+			<!-- wp:buttons {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|30"}}},"fontSize":"small"} -->
+			<div class="wp-block-buttons has-custom-font-size has-small-font-size" style="margin-bottom:var(--wp--preset--spacing--30)">
 				<!-- wp:button {"className":"is-style-outline"} -->
 				<div class="wp-block-button is-style-outline">
 					<a class="wp-block-button__link wp-element-button"><?php esc_html_e( 'Learn more', 'woo-gutenberg-products-block' ); ?></a>
