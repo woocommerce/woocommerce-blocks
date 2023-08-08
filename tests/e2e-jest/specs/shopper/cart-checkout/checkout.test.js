@@ -49,62 +49,18 @@ describe( 'Shopper → Checkout', () => {
 		const NORMAL_SHIPPING_NAME = 'Normal Shipping';
 
 		beforeAll( async () => {
-			// Enable local pickup.
-			await visitAdminPage(
-				'admin.php',
-				'page=wc-settings&tab=shipping&section=pickup_location'
-			);
-
-			const localPickupCheckbox = await page.waitForXPath(
-				'//input[@name="local_pickup_enabled"]'
-			);
-			const isCheckboxChecked = await page.evaluate(
-				( checkbox ) => checkbox.checked,
-				localPickupCheckbox
-			);
-
-			if ( isCheckboxChecked === true ) {
-				return;
-			}
-
-			// eslint-disable-next-line jest/no-standalone-expect
-			await expect( page ).toClick( 'label', {
-				text: 'Enable local pickup',
-			} );
-			// eslint-disable-next-line jest/no-standalone-expect
-			await expect( page ).toClick( 'button', {
-				text: 'Save changes',
-			} );
+			await merchant.login();
+			await merchantUtils.enableLocalPickup();
+			await merchantUtils.addLocalPickupLocation();
+			await merchant.logout();
 		} );
+
 		afterAll( async () => {
-			// Disable local pickup.
-			await visitAdminPage(
-				'admin.php',
-				'page=wc-settings&tab=shipping&section=pickup_location'
-			);
-
-			const localPickupCheckbox = await page.waitForXPath(
-				'//input[@name="local_pickup_enabled"]'
-			);
-			const isCheckboxChecked = await page.evaluate(
-				( checkbox ) => checkbox.checked,
-				localPickupCheckbox
-			);
-
-			// Skip this if it's already unchecked.
-			if ( isCheckboxChecked === false ) {
-				return;
-			}
-
-			// eslint-disable-next-line jest/no-standalone-expect
-			await expect( page ).toClick( 'label', {
-				text: 'Enable local pickup',
-			} );
-			// eslint-disable-next-line jest/no-standalone-expect
-			await expect( page ).toClick( 'button', {
-				text: 'Save changes',
-			} );
+			await merchant.login();
+			await merchantUtils.disableLocalPickup();
+			await merchant.logout();
 		} );
+
 		it( 'The shopper can choose a local pickup option', async () => {
 			await shopper.block.emptyCart();
 			await shopper.block.goToShop();
