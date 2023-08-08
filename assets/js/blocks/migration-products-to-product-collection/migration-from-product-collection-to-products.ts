@@ -49,6 +49,10 @@ const mapAttributes = ( attributes ) => {
 		mappedQuery.__woocommerceOnSale = woocommerceOnSale;
 	}
 
+	if ( taxQuery ) {
+		mappedQuery.taxQuery = taxQuery;
+	}
+
 	return {
 		...restAttributes,
 		namespace: VARIATION_NAME,
