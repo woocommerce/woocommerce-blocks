@@ -254,6 +254,7 @@ export const shopper = {
 				...{
 					firstname: 'John',
 					lastname: 'Doe',
+					company: 'Test Company',
 					addressfirstline: '123 Easy Street',
 					addresssecondline: 'Testville',
 					country: 'United States (US)',
@@ -297,8 +298,6 @@ export const shopper = {
 			await expect( page ).toFill( '#billing-postcode', customerBillingDetails.postcode );
 			await expect( page ).toFill( '#billing-phone', customerBillingDetails.phone );
 			await expect( page ).toFill( '#email', customerBillingDetails.email );
-			// Blur active field to trigger customer address update, then wait for requests to finish.
-			await page.evaluate( 'document.activeElement.blur()' );
 			await checkCustomerPushCompleted( 'billing', customerBillingDetails );
 
 		},
@@ -323,8 +322,6 @@ export const shopper = {
 			}
 			await expect( page ).toFill( '#shipping-postcode', customerShippingDetails.postcode );
 			await expect( page ).toFill( '#shipping-phone', customerShippingDetails.phone );
-			// Blur active field to customer address update, then wait for requests to finish.
-			await page.evaluate( 'document.activeElement.blur()' );
 			await checkCustomerPushCompleted( 'shipping', customerShippingDetails );
 		},
 
