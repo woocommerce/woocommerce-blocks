@@ -3,6 +3,7 @@
  */
 import { Page } from '@playwright/test';
 import { expect } from '@woocommerce/e2e-playwright-utils';
+import { BASE_URL } from '@woocommerce/e2e-utils';
 
 export class CheckoutPage {
 	private BLOCK_NAME = 'woocommerce/checkout';
@@ -10,6 +11,15 @@ export class CheckoutPage {
 
 	constructor( { page }: { page: Page } ) {
 		this.page = page;
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	async checkThirdPartyLocalPickupMethodEnabled() {
+		// Check that Woo Collection is enabled.
+		await this.page.goto(
+			`${ BASE_URL }?check_third_party_local_pickup_method`
+		);
+		await expect( this.page.getByText( 'Woo Collection' ) ).toBeVisible();
 	}
 
 	async goToCheckout() {
