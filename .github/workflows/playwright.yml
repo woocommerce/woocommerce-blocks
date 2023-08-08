@@ -53,9 +53,6 @@ jobs:
         run: npx playwright install --with-deps
 
 
-      - name: Load wp-env
-        run: npm run env:start
-
       - name: Run Playwright tests
         run: npm run test:e2e-pw
 
@@ -112,6 +109,6 @@ jobs:
               uses: ./packages/report-flaky-tests
               with:
                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
-                  label: '[Type] Flaky Test'
+                  label: 'type: flaky test'
                   artifact-path: flaky-tests
 
