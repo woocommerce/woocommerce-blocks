@@ -17,6 +17,15 @@ export class EditorUtils {
 		return this.editor.canvas.locator( `[data-type="${ name }"]` );
 	}
 
+	async getBlockByTypeWithParent( name: string, parentName: string ) {
+		const parentBlock = await this.getBlockByName( parentName );
+		if ( ! parentBlock ) {
+			throw new Error( `Parent block "${ parentName }" not found.` );
+		}
+		const block = parentBlock.locator( `[data-type="${ name }"]` );
+		return block;
+	}
+
 	// todo: Make a PR to @wordpress/e2e-test-utils-playwright to add this method.
 	/**
 	 * Inserts a block after a given client ID.
@@ -64,11 +73,104 @@ export class EditorUtils {
 		}, clientId );
 	}
 
+	/**
+	 * Toggles the global inserter.
+	 */
+	async toggleGlobalBlockInserter() {
+		// "Add block" selector is required to make sure performance comparison
+		// doesn't fail on older branches where we still had "Add block" as label.
+		await this.page.click(
+			'.edit-post-header [aria-label="Add block"],' +
+				'.edit-site-header [aria-label="Add block"],' +
+				'.edit-post-header [aria-label="Toggle block inserter"],' +
+				'.edit-site-header [aria-label="Toggle block inserter"],' +
+				'.edit-widgets-header [aria-label="Add block"],' +
+				'.edit-widgets-header [aria-label="Toggle block inserter"],' +
+				'.edit-site-header-edit-mode__inserter-toggle'
+		);
+	}
+
+	/**
+	 * Checks if the global inserter is open.
+	 *
+	 * @return {Promise<boolean>} Whether the inserter is open or not.
+	 */
+	async isGlobalInserterOpen() {
+		return await this.page.evaluate( () => {
+			// "Add block" selector is required to make sure performance comparison
+			// doesn't fail on older branches where we still had "Add block" as
+			// label.
+			return !! document.querySelector(
+				'.edit-post-header [aria-label="Add block"].is-pressed,' +
+					'.edit-site-header-edit-mode [aria-label="Add block"].is-pressed,' +
+					'.edit-post-header [aria-label="Toggle block inserter"].is-pressed,' +
+					'.edit-site-header [aria-label="Toggle block inserter"].is-pressed,' +
+					'.edit-widgets-header [aria-label="Toggle block inserter"].is-pressed,' +
+					'.edit-widgets-header [aria-label="Add block"].is-pressed,' +
+					'.edit-site-header-edit-mode__inserter-toggle.is-pressed'
+			);
+		} );
+	}
+
+	/**
+	 * Opens the global inserter.
+	 */
+	async openGlobalBlockInserter() {
+		if ( ! ( await this.isGlobalInserterOpen() ) ) {
+			await this.toggleGlobalBlockInserter();
+			await this.page.waitForSelector( '.block-editor-inserter__menu' );
+		}
+	}
+
 	async enterEditMode() {
 		await this.editor.page.waitForSelector(
 			'.edit-site-visual-editor__editor-canvas[role="button"]',
 			{ timeout: 3000 }
 		);
 		await this.editor.canvas.click( 'body' );
+	}
+
+	async isBlockEarlierThan< T >(
+		containerBlock: T,
+		firstBlock: string,
+		secondBlock: string
+	) {
+		const container =
+			containerBlock instanceof Function
+				? await containerBlock()
+				: containerBlock;
+
+		if ( ! container ) {
+			throw new Error( 'Container block not found.' );
+		}
+
+		const childBlocks = container.locator( ':scope > .wp-block' );
+
+		let firstBlockIndex = -1;
+		let secondBlockIndex = -1;
+
+		for ( let i = 0; i < ( await childBlocks.count() ); i++ ) {
+			const blockName = await childBlocks
+				.nth( i )
+				.getAttribute( 'data-type' );
+
+			if ( blockName === firstBlock ) {
+				firstBlockIndex = i;
+			}
+
+			if ( blockName === secondBlock ) {
+				secondBlockIndex = i;
+			}
+
+			if ( firstBlockIndex !== -1 && secondBlockIndex !== -1 ) {
+				break;
+			}
+		}
+
+		if ( firstBlockIndex === -1 || secondBlockIndex === -1 ) {
+			throw new Error( 'Both blocks must exist within the editor' );
+		}
+
+		return firstBlockIndex < secondBlockIndex;
 	}
 }
