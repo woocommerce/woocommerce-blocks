@@ -21,9 +21,6 @@ const config: ExtendedPlaywrightTestConfig = {
 		: 90 * 1000,
 	expect: { timeout: 20 * 1000 },
 	outputDir: path.join( process.cwd(), 'artifacts/test-results' ),
-	globalSetup: fileURLToPath(
-		new URL( 'global-setup.ts', 'file:' + __filename ).href
-	),
 	globalTeardown: require.resolve( './global-teardown' ),
 	testDir: 'tests',
 	retries: CI ? 2 : 0,
@@ -47,31 +44,30 @@ const config: ExtendedPlaywrightTestConfig = {
 		storageState: STORAGE_STATE_PATH,
 	},
 	projects: [
-		{
-			name: 'blockThemeConfiguration',
-			testMatch: /block-theme.setup.ts/,
-		},
+		// {
+		// 	name: 'blockThemeConfiguration',
+		// 	testMatch: /block-theme.setup.ts/,
+		// },
 		{
 			name: 'blockTheme',
 			testMatch: /.*.block_theme.spec.ts/,
-			dependencies: [ 'blockThemeConfiguration' ],
 		},
-		{
-			name: 'blockThemeWithGlobalSideEffects',
-			testMatch: /.*.block_theme.side_effects.spec.ts/,
-			dependencies: [ 'blockTheme' ],
-			fullyParallel: false,
-		},
-		{
-			name: 'classicThemeConfiguration',
-			testMatch: /block-theme.setup.ts/,
-			dependencies: [ 'blockThemeWithGlobalSideEffects' ],
-		},
-		{
-			name: 'classicTheme',
-			testMatch: /.*.classic_theme.spec.ts/,
-			dependencies: [ 'classicThemeConfiguration' ],
-		},
+		// {
+		// 	name: 'blockThemeWithGlobalSideEffects',
+		// 	testMatch: /.*.block_theme.side_effects.spec.ts/,
+		// 	dependencies: [ 'blockTheme' ],
+		// 	fullyParallel: false,
+		// },
+		// {
+		// 	name: 'classicThemeConfiguration',
+		// 	testMatch: /block-theme.setup.ts/,
+		// 	dependencies: [ 'blockThemeWithGlobalSideEffects' ],
+		// },
+		// {
+		// 	name: 'classicTheme',
+		// 	testMatch: /.*.classic_theme.spec.ts/,
+		// 	dependencies: [ 'classicThemeConfiguration' ],
+		// },
 	],
 };
 

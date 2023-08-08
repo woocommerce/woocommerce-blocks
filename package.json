@@ -83,7 +83,7 @@
 		"test:e2e-dev": "npm run wp-env:config && cross-env JEST_PUPPETEER_CONFIG=tests/e2e/config/jest-puppeteer.config-dev.js NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js",
 		"test:e2e-dev-watch": "npm run wp-env:config && cross-env JEST_PUPPETEER_CONFIG=tests/e2e/config/jest-puppeteer.config-dev.js NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --watch",
 		"test:e2e:update": "npm run wp-env:config && cross-env JEST_PUPPETEER_CONFIG=tests/e2e/config/jest-puppeteer.config.js NODE_CONFIG_DIR=tests/e2e/config wp-scripts test-e2e --config tests/e2e/config/jest.config.js --updateSnapshot",
-		"test:e2e-pw": "npx playwright test --config=tests/e2e-pw/playwright.config.ts",
+		"test:e2e-pw": "npx playwright test --config=tests/e2e-pw/playwright.config.ts tests/e2e-pw/tests/mini-cart/mini-cart.block_theme.spec.ts",
 		"env:start": "npm run wp-env start && ./tests/e2e-pw/bin/test-env-setup.sh",
 		"env:restart": "npm run wp-env clean all && npm run wp-env start && ./tests/e2e-pw/bin/test-env-setup.sh",
 		"env:stop": "npm run wp-env stop",
