@@ -38,6 +38,12 @@ export class FrontendUtils {
 		await this.page.click( 'text=Add to cart' );
 	}
 
+	async goToCheckout() {
+		await this.page.goto( '/checkout', {
+			waitUntil: 'networkidle',
+		} );
+	}
+
 	async goToShop() {
 		await this.page.goto( '/shop', {
 			waitUntil: 'commit',
