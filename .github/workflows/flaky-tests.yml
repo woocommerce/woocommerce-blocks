@@ -17,6 +17,7 @@ jobs:
               with:
                   repository: WordPress/gutenberg
                   ref: trunk
+                  path: gutenberg
 
             - name: Use desired version of NodeJS
               uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
@@ -34,7 +35,7 @@ jobs:
 
             - name: Setup Node.js and install dependencies
               if: ${{ steps.download_artifact.outcome == 'success' }}
-              uses: ./.github/setup-node
+              uses: gutenberg/.github/setup-node
 
             - name: Npm build
               if: ${{ steps.download_artifact.outcome == 'success' }}
@@ -42,7 +43,7 @@ jobs:
               run: npm run build:packages
 
             - name: Report flaky tests
-              uses: ./packages/report-flaky-tests
+              uses: gutenberg/packages/report-flaky-tests
               with:
                   repo-token: '${{ secrets.GITHUB_TOKEN }}'
                   label: 'type: flaky test'
