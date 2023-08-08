@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-
 import { Page } from '@playwright/test';
 
 /**
  * Internal dependencies
  */
 import { BASE_URL } from '../constants';
+import { selectAndVerifyShippingOption as __selectAndVerifyShippingOption } from './select-and-verify-shipping-option';
 
 export class FrontendUtils {
 	page: Page;
@@ -71,6 +71,17 @@ export class FrontendUtils {
 			cartData.items.forEach( ( item ) =>
 				removeItemFromCart( item.key )
 			);
+		} );
+	}
+
+	async selectAndVerifyShippingOption(
+		shippingName: string,
+		shippingPrice: string
+	) {
+		await __selectAndVerifyShippingOption( {
+			shippingName,
+			shippingPrice,
+			page: this.page,
 		} );
 	}
 
