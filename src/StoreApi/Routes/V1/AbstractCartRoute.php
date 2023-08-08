@@ -234,6 +234,8 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		$draft_order = $this->get_draft_order();
 
 		if ( $draft_order ) {
+			// This does not trigger a recalculation of the cart--endpoints should have already done so before returning
+			// the cart response.
 			$this->order_controller->update_order_from_cart( $draft_order, false );
 
 			wc_do_deprecated_action(
