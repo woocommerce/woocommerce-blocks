@@ -36,11 +36,13 @@ export class CheckoutPage {
 			'.wc-block-components-totals-shipping'
 		);
 
-		const nameCount = await shippingLine.getByText( shippingName ).count();
-		const priceCount = await shippingLine
+		const nameIsVisible = await shippingLine
+			.getByText( shippingName )
+			.isVisible();
+		const priceIsVisible = await shippingLine
 			.getByText( shippingPrice )
-			.count();
-		return nameCount > 0 && priceCount > 0;
+			.isVisible();
+		return nameIsVisible && priceIsVisible;
 	}
 
 	async fillInCheckoutWithTestData( overrideData = {} ) {
