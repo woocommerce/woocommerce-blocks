@@ -131,6 +131,11 @@ const displayedLessThanThreshold = ( displayCount: number ) => {
 	return displayCount <= UPGRADE_NOTICE_DISPLAY_COUNT_THRESHOLD;
 };
 
+// Upgrade Notice should be displayed only if:
+// - block is converted from Products
+// - user haven't acknowledged seeing the notice
+// - less than X hours since the notice was first displayed
+// - notice was displayed less than X times
 const shouldDisplayUpgradeNotice = ( props ) => {
 	const { attributes } = props;
 	const { convertedFromProducts } = attributes;
@@ -144,6 +149,27 @@ const shouldDisplayUpgradeNotice = ( props ) => {
 	);
 };
 
+// Block should be unmarked as converted from Products if:
+// block is converted from Products and either:
+// - user acknowledged seeing the notice
+// - it's more than X hours since the notice was first displayed
+// - notice was displayed more than X times
+// We do that to prevent showing the notice again after Products on
+// other page were updated or local storage was cleared or user
+// switched to another machine/browser etc.
+const shouldBeUnmarkedAsConverted = ( props ) => {
+	const { attributes } = props;
+	const { convertedFromProducts } = attributes;
+	const { status, t, displayCount } = getUpgradeStatus();
+
+	return (
+		convertedFromProducts &&
+		( status === 'seen' ||
+			! lessThanThresholdSinceUpdate( t ) ||
+			! displayedLessThanThreshold( displayCount ) )
+	);
+};
+
 export const withUpgradeNoticeControls =
 	< T extends EditorBlock< T > >( BlockEdit: ElementType ) =>
 	( props: BlockEditProps< ProductCollectionAttributes > ) => {
@@ -152,6 +178,12 @@ export const withUpgradeNoticeControls =
 		}
 
 		const displayUpgradeNotice = shouldDisplayUpgradeNotice( props );
+		const unmarkAsConverted = shouldBeUnmarkedAsConverted( props );
+
+		if ( unmarkAsConverted ) {
+			props.setAttributes( { convertedFromProducts: false } );
+		}
+
 		return (
 			<>
 				{ displayUpgradeNotice && (
