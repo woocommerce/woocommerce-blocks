@@ -48,6 +48,52 @@ export class CheckoutPage {
 		await this.page.waitForURL( /order-received/ );
 	}
 
+	async fillBillingDetails( customerBillingDetails ) {
+		const billingForm = this.page.getByRole( 'group', {
+			name: 'Billing address',
+		} );
+		const companyInputField = billingForm.getByLabel( 'Company' );
+
+		if ( await companyInputField.isVisible() ) {
+			await companyInputField.fill( customerBillingDetails.company );
+		}
+
+		const email = billingForm.getByLabel( 'Email address' );
+		const firstName = billingForm.getByLabel( 'First name' );
+		const lastName = billingForm.getByLabel( 'Last name' );
+		const country = billingForm.getByLabel( 'Country/Region' );
+		const address1 = billingForm.getByLabel( 'Address', { exact: true } );
+		const address2 = billingForm.getByLabel( 'Apartment, suite, etc.' );
+		const city = billingForm.getByLabel( 'City' );
+		const state = billingForm.getByLabel( 'State', { exact: true } );
+		const phone = billingForm.getByLabel( 'Phone' );
+
+		// Using locator here since the label of this form changes depending on the country.
+		const postcode = billingForm.locator( '[autocomplete="postal-code"]' );
+
+		await email.fill( customerBillingDetails.email );
+		await firstName.fill( customerBillingDetails.firstname );
+		await lastName.fill( customerBillingDetails.lastname );
+		await country.fill( customerBillingDetails.country );
+		await address1.fill( customerBillingDetails.addressfirstline );
+		await address2.fill( customerBillingDetails.addresssecondline );
+		await city.fill( customerBillingDetails.city );
+		await phone.fill( customerBillingDetails.phone );
+
+		if ( await state.isVisible() ) {
+			await state.fill( customerBillingDetails.state );
+		}
+		if ( await postcode.isVisible() ) {
+			await postcode.fill( customerBillingDetails.postcode );
+		}
+		// Blur active field to trigger customer address update, then wait for requests to finish.
+		await this.page.evaluate( 'document.activeElement.blur()' );
+		await this.checkCustomerPushCompleted(
+			'billing',
+			customerBillingDetails
+		);
+	}
+
 	async selectAndVerifyShippingOption(
 		shippingName: string,
 		shippingPrice: string
