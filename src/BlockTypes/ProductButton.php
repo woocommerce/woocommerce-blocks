@@ -92,7 +92,6 @@ class ProductButton extends AbstractBlock {
 			$text_align_styles_and_classes = StyleAttributesUtils::get_text_align_class_and_style( $attributes );
 			$classname                     = $attributes['className'] ?? '';
 			$custom_width_classes          = isset( $attributes['width'] ) ? 'has-custom-width wp-block-button__width-' . $attributes['width'] : '';
-			$is_added_class                = $more_than_one_item ? 'added' : '';
 			$html_classes                  = implode(
 				' ',
 				array_filter(
@@ -212,7 +211,7 @@ class ProductButton extends AbstractBlock {
 						'{custom_classes}'         => esc_attr( $classname . ' ' . $custom_width_classes ),
 						'{html_element}'           => $html_element,
 						'{add_to_cart_url}'        => esc_url( $product->add_to_cart_url() ),
-						'{button_classes}'         => isset( $args['class'] ) ? esc_attr( $args['class'] . ' ' . $is_added_class ) : $is_added_class,
+						'{button_classes}'         => isset( $args['class'] ) ? esc_attr( $args['class'] ) : '',
 						'{button_styles}'          => esc_attr( $styles_and_classes['styles'] ),
 						'{attributes}'             => isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '',
 						'{add_to_cart_text}'       => esc_html( $initial_product_text ),
