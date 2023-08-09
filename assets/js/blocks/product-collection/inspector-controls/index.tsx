@@ -123,8 +123,8 @@ const isProductCollection = ( blockName: string ) =>
 
 const lessThanThresholdSinceUpdate = ( t: number ) => {
 	// Xh * 60m * 60s * 1000ms
-	const dayFromT = t + HOURS_TO_DISPLAY_UPGRADE_NOTICE * 60 * 60 * 1000;
-	return Date.now() < dayFromT;
+	const xHoursFromT = t + HOURS_TO_DISPLAY_UPGRADE_NOTICE * 60 * 60 * 1000;
+	return Date.now() < xHoursFromT;
 };
 
 const displayedLessThanThreshold = ( displayCount: number ) => {
