@@ -8,11 +8,6 @@ import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import { isPostcode } from '@woocommerce/blocks-checkout';
 
 /**
- * Internal dependencies
- */
-import { AddressFormFields } from './types';
-
-/**
  * Custom validation handler for fields with field specific handling.
  */
 export const customValidationHandler = (
@@ -78,24 +73,4 @@ export const validateShippingCountry = ( values: ShippingAddress ): void => {
 			validationErrorId
 		);
 	}
-};
-
-export const validateRequiredFields = (
-	values: ShippingAddress,
-	addressFormFields: AddressFormFields
-): boolean => {
-	return addressFormFields.required.every( ( field ) => {
-		return values[ field.key ] !== '';
-	} );
-};
-
-export const hasValidationErrors = (
-	addressFormFields: AddressFormFields
-): boolean => {
-	return addressFormFields.fields.some( ( field ) => {
-		const errorId = `${ addressFormFields.type }_${ field.key }`;
-		const validationError =
-			select( VALIDATION_STORE_KEY ).getValidationError( errorId );
-		return !! validationError?.message;
-	} );
 };
