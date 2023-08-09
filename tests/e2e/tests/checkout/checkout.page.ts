@@ -43,6 +43,45 @@ export class CheckoutPage {
 		return nameCount > 0 && priceCount > 0;
 	}
 
+	async fillInCheckoutWithTestData( overrideData = {} ) {
+		const isShippingOpen = await this.page
+			.getByRole( 'group', {
+				name: 'Shipping address',
+			} )
+			.isVisible();
+
+		const isBillingOpen = await this.page
+			.getByRole( 'group', {
+				name: 'Billing address',
+			} )
+			.isVisible();
+
+		const testData = {
+			...{
+				firstname: 'John',
+				lastname: 'Doe',
+				addressfirstline: '123 Easy Street',
+				addresssecondline: 'Testville',
+				country: 'United States (US)',
+				city: 'New York',
+				state: 'New York',
+				postcode: '90210',
+				email: 'john.doe@test.com',
+				phone: '01234567890',
+			},
+			...overrideData,
+		};
+		await this.page.getByLabel( 'Email address' ).fill( testData.email );
+		if ( isShippingOpen ) {
+			await this.fillShippingDetails( testData );
+		}
+		if ( isBillingOpen ) {
+			await this.fillBillingDetails( testData );
+		}
+		// Blur active field to trigger shipping rates update, then wait for requests to finish.
+		await this.page.evaluate( 'document.activeElement.blur()' );
+	}
+
 	async placeOrder() {
 		await this.page.getByText( 'Place Order', { exact: true } ).click();
 		await this.page.waitForURL( /order-received/ );
