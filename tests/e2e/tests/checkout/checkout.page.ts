@@ -247,17 +247,14 @@ export class CheckoutPage {
 		shippingName: string,
 		shippingPrice: string
 	) {
-		await this.page.waitForSelector(
-			'.wc-block-components-radio-control__label'
-		);
-
+		const shipping = this.page.getByLabel( shippingName );
+		await expect( shipping ).toBeVisible();
 		if (
 			! ( await this.isShippingRateSelected(
 				shippingName,
 				shippingPrice
 			) )
 		) {
-			const shipping = this.page.getByLabel( shippingName );
 			await shipping.click();
 			await this.page.waitForResponse( ( request ) => {
 				const url = request.url();
