@@ -15,7 +15,7 @@ jobs:
       matrix:
         config: [
           { name: Normal, file: playwright.config.ts },
-          { name: 'Side Effects', file: playwright.config.ts },
+          { name: 'Side Effects', file: playwright.side-effects.config.ts },
         ]
     steps:
 
