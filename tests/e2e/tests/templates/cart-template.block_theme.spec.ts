@@ -45,13 +45,16 @@ test.describe( 'Test the cart template', async () => {
 			name: 'core/paragraph',
 			attributes: { content: 'Hello World' },
 		} );
-		await editor.saveSiteEditorEntities();
 
-		// Wait for the response after saving the post because sometimes there's a race condition, and loading the post
-		// shows a version without the newly saved content.
-		await editor.page.waitForResponse( ( response ) =>
-			response.url().includes( permalink )
-		);
+		await Promise.all( [
+			editor.saveSiteEditorEntities(),
+			// Wait for the response after saving the post because sometimes there's a race condition, and loading the post
+			// shows a version without the newly saved content.
+			editor.page.waitForResponse( ( response ) =>
+				response.url().includes( permalink )
+			),
+		] );
+
 		await page.goto( permalink, { waitUntil: 'commit' } );
 
 		await expect( page.getByText( 'Hello World' ).first() ).toBeVisible();
