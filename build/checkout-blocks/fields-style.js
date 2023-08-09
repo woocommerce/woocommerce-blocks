@@ -1,0 +1,1 @@
+(window.webpackWcBlocksJsonp=window.webpackWcBlocksJsonp||[]).push([[47],{926:function(c,e,o){"use strict";o.r(e);var t=o(0),a=o(4),n=o.n(a),s=o(689);e.default=c=>{let{children:e,className:o}=c;return Object(t.createElement)(s.a,{className:n()("wc-block-checkout__main",o)},Object(t.createElement)("form",{className:"wc-block-components-form wc-block-checkout__form"},e))}}}]);
