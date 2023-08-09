@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { ValidatedTextInput, isPostcode } from '@woocommerce/blocks-checkout';
+import {
+	ValidatedTextInput,
+	isPostcode,
+	type ValidatedTextInputHandle,
+} from '@woocommerce/blocks-checkout';
 import {
 	BillingCountryInput,
 	ShippingCountryInput,
@@ -10,7 +14,7 @@ import {
 	BillingStateInput,
 	ShippingStateInput,
 } from '@woocommerce/base-components/state-input';
-import { useEffect, useMemo } from '@wordpress/element';
+import { useEffect, useMemo, useRef } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
 import { useShallowEqual } from '@woocommerce/base-hooks';
 import { defaultAddressFields } from '@woocommerce/settings';
@@ -64,6 +68,11 @@ const AddressForm = ( {
 		};
 	}, [ currentFields, currentFieldConfig, currentCountry, type ] );
 
+	// Stores refs for rendered fields so we can access them later.
+	const fieldsRef = useRef<
+		Record< string, ValidatedTextInputHandle | null >
+	>( {} );
+
 	// Clear values for hidden fields.
 	useEffect( () => {
 		const newValues = {
@@ -83,6 +92,11 @@ const AddressForm = ( {
 			validateShippingCountry( values );
 		}
 	}, [ values, type ] );
+
+	// Changing country may change format for postcodes.
+	useEffect( () => {
+		fieldsRef.current?.postcode?.revalidate();
+	}, [ currentCountry ] );
 
 	id = id || instanceId;
 
@@ -160,6 +174,9 @@ const AddressForm = ( {
 				return (
 					<ValidatedTextInput
 						key={ field.key }
+						ref={ ( el ) =>
+							( fieldsRef.current[ field.key ] = el )
+						}
 						{ ...fieldProps }
 						value={ values[ field.key ] }
 						onChange={ ( newValue: string ) =>
