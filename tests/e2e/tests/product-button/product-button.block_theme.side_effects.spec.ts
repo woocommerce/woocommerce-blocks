@@ -21,7 +21,7 @@ test.describe( `${ blockData.name } Block`, () => {
 	test( 'should be visible', async ( { frontendUtils } ) => {
 		const blocks = await frontendUtils.getBlockByName( blockData.name );
 		const productsDisplayed = 16;
-		expect( await blocks.count() ).toEqual( productsDisplayed );
+		await expect( await blocks ).toHaveCount( productsDisplayed );
 	} );
 	test( 'should add product to the cart', async ( {
 		frontendUtils,
