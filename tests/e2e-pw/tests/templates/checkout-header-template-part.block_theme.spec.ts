@@ -28,8 +28,8 @@ test.describe( 'Test the checkout header template part', async () => {
 		editor,
 		editorUtils,
 	} ) => {
-		// It's necessary to add a product to the cart to be able to go to the checkout page, otherwise
-		// the checkout page will redirect to the /cart page and the checkout header template part won't be loaded.
+		// It's necessary to add a product to the cart to be able to go to the checkout page, otherwise the
+		// checkout page will redirect to /cart and the checkout header template part won't be loaded.
 		await page.goto( '/shop', { waitUntil: 'networkidle' } );
 		await page.click( 'text=Add to cart' );
 
