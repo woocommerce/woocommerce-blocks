@@ -21,28 +21,19 @@ const renderInCheckoutProvider = ( ui, options = {} ) => {
 // Countries used in testing addresses must be in the wcSettings global.
 // See: tests/js/setup-globals.js
 const primaryAddress = {
-	firstName: 'John',
-	lastName: 'Doe',
-	address1: '123 Main St',
 	country: 'United Kingdom',
 	countryKey: 'GB',
 	city: 'London',
 	state: 'Greater London',
-	postcode: 'AB10 2AB',
+	postcode: 'ABCD',
 };
 const secondaryAddress = {
-	firstName: 'John',
-	lastName: 'Doe',
-	address1: '123 Main St',
 	country: 'Austria', // We use Austria because it doesn't have states.
 	countryKey: 'AU',
 	city: 'Vienna',
 	postcode: 'DCBA',
 };
 const tertiaryAddress = {
-	firstName: 'John',
-	lastName: 'Doe',
-	address1: '123 Main St',
 	country: 'Canada', // We use Canada because it has a select for the state.
 	countryKey: 'CA',
 	city: 'Toronto',
@@ -54,14 +45,8 @@ const countryRegExp = /country/i;
 const cityRegExp = /city/i;
 const stateRegExp = /county|province|state/i;
 const postalCodeRegExp = /postal code|postcode|zip/i;
-const address1RegExp = /address/i;
-const firstNameRegExp = /first name/i;
-const lastNameRegExp = /last name/i;
 
 const inputAddress = async ( {
-	firstName = null,
-	lastName = null,
-	address1 = null,
 	country = null,
 	city = null,
 	state = null,
@@ -91,18 +76,6 @@ const inputAddress = async ( {
 	if ( postcode ) {
 		const postcodeInput = screen.getByLabelText( postalCodeRegExp );
 		userEvent.type( postcodeInput, postcode );
-	}
-	if ( address1 ) {
-		const address1Input = screen.getByLabelText( address1RegExp );
-		userEvent.type( address1Input, address1 );
-	}
-	if ( firstName ) {
-		const firstNameInput = screen.getByLabelText( firstNameRegExp );
-		userEvent.type( firstNameInput, firstName );
-	}
-	if ( lastName ) {
-		const lastNameInput = screen.getByLabelText( lastNameRegExp );
-		userEvent.type( lastNameInput, lastName );
 	}
 };
 
