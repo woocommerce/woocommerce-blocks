@@ -9,7 +9,7 @@ import { RequestUtils } from '@wordpress/e2e-test-utils-playwright';
  */
 
 export class StoreApiUtils {
-	requestUtils: RequestUtils;
+	private requestUtils: RequestUtils;
 
 	constructor( requestUtils: RequestUtils ) {
 		this.requestUtils = requestUtils;
