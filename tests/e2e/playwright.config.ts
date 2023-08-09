@@ -50,6 +50,7 @@ const config: ExtendedPlaywrightTestConfig = {
 		{
 			name: 'blockTheme',
 			testMatch: /.*.block_theme.spec.ts/,
+			dependencies: [ 'blockThemeConfiguration' ],
 		},
 		{
 			name: 'classicThemeConfiguration',
@@ -58,6 +59,7 @@ const config: ExtendedPlaywrightTestConfig = {
 		{
 			name: 'classicTheme',
 			testMatch: /.*.classic_theme.spec.ts/,
+			dependencies: [ 'classicThemeConfiguration' ],
 		},
 	],
 };
