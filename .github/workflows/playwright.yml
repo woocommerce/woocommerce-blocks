@@ -64,7 +64,7 @@ jobs:
         run: npm run env:start
 
       - name: Run Playwright tests
-        run: npx playwright test --config=tests/e2e-pw/${{ matrix.config.file}}
+        run: npm run test:e2e -- --config=tests/e2e/${{ matrix.config.file }}
 
       - uses: actions/upload-artifact@v3
         if: ${{ failure() }}
