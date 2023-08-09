@@ -21,6 +21,19 @@ jobs:
 
       - uses: actions/checkout@v3
 
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-modified-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-modified-build-${{ env.cache-name }}-
+            ${{ runner.os }}-modified-build-
+            ${{ runner.os }}-modified-
+
       - name: Setup node version and npm cache
         uses: actions/setup-node@v3
         with:
@@ -28,7 +41,8 @@ jobs:
           cache: 'npm'
 
       - name: Install Node dependencies
-        run: npm ci
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm install --no-optional --no-audit
 
       - name: Build Assets
         run: FORCE_REDUCED_MOTION=true npm run build
@@ -44,7 +58,8 @@ jobs:
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -58,7 +73,6 @@ jobs:
 
       - name: Install Playwright
         run: npx playwright install --with-deps
-
 
       - name: Load wp-env
         run: npm run env:start

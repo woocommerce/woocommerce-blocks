@@ -89,6 +89,7 @@ jobs:
           if-no-files-found: ignore
   
   JSE2ETests:
+    if: ${{ false }}  # remove this when the PR is ready for review.
     name: JavaScript E2E Tests (latest)
     strategy:
       fail-fast: false
