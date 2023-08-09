@@ -162,6 +162,7 @@ Every release includes specific testing instructions for new features and bug fi
     -   [10.6.2](./1062.md)
     -   [10.6.3](./1063.md)
     -   [10.6.4](./1064.md)
+    -   [10.6.5](./1065.md)
 
 
 

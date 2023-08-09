@@ -81,6 +81,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 10.6.5 - 2021-08-09 =
+
+#### Bug Fixes
+
+- Avoid to cache script data in a transiet. ([10509](https://github.com/woocommerce/woocommerce-blocks/pull/10509))
+
 = 10.6.4 - 2021-08-04 =
 
 #### Bug Fixes
