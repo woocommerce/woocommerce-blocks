@@ -133,7 +133,7 @@ export const WooInheritToggleControl = (
 
 				if ( inherit ) {
 					inheritQuery.perPage = getSettingWithCoercion(
-						'loop_shop_per_page',
+						'loopShopPerPage',
 						12,
 						isNumber
 					);
