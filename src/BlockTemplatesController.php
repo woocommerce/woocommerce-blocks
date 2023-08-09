@@ -101,6 +101,34 @@ class BlockTemplatesController {
 				10,
 				2
 			);
+
+			// Prevents shortcodes in templates having their HTML content broken by wpautop.
+			// @see https://core.trac.wordpress.org/ticket/58366 for more info.
+			add_filter(
+				'block_type_metadata_settings',
+				function( $settings, $metadata ) {
+					if (
+						isset( $metadata['name'], $settings['render_callback'] ) &&
+						'core/shortcode' === $metadata['name']
+					) {
+						$settings['original_render_callback'] = $settings['render_callback'];
+						$settings['render_callback']          = function( $attributes, $content ) use ( $settings ) {
+							// The shortcode has already been rendered, so look for the cart/checkout HTML.
+							if ( strstr( $content, 'woocommerce-cart-form' ) || strstr( $content, 'woocommerce-checkout-form' ) ) {
+								// Return early before wpautop runs again.
+								return $content;
+							}
+
+							$render_callback = $settings['original_render_callback'];
+
+							return $render_callback( $attributes, $content );
+						};
+					}
+					return $settings;
+				},
+				10,
+				2
+			);
 		}
 	}
 
@@ -590,7 +618,13 @@ class BlockTemplatesController {
 		if (
 			is_singular( 'product' ) && $this->block_template_is_available( 'single-product' )
 		) {
-			$templates = get_block_templates( array( 'slug__in' => array( 'single-product' ) ) );
+			global $post;
+
+			$valid_slugs = [ 'single-product' ];
+			if ( 'product' === $post->post_type && $post->post_name ) {
+				$valid_slugs[] = 'single-product-' . $post->post_name;
+			}
+			$templates = get_block_templates( array( 'slug__in' => $valid_slugs ) );
 
 			if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
 				add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
@@ -751,6 +785,29 @@ class BlockTemplatesController {
 	}
 
 	/**
+	 * Prepare default page template.
+	 *
+	 * @param \WP_Post $page Page object.
+	 * @return string
+	 */
+	protected function get_default_migrate_page_template( $page ) {
+		$default_template_content  = $this->get_block_template_part( 'header' );
+		$default_template_content .= '
+			<!-- wp:group {"layout":{"inherit":true}} -->
+			<div class="wp-block-group">
+				<!-- wp:heading {"level":1} -->
+				<h1 class="wp-block-heading">' . wp_kses_post( $page->post_title ) . '</h1>
+				<!-- /wp:heading -->
+				' . wp_kses_post( $page->post_content ) . '
+			</div>
+			<!-- /wp:group -->
+		';
+		$default_template_content .= $this->get_block_template_part( 'footer' );
+
+		return $default_template_content;
+	}
+
+	/**
 	 * Migrates a page to a template if needed.
 	 *
 	 * @param string   $page_id Page ID.
@@ -762,24 +819,49 @@ class BlockTemplatesController {
 			return;
 		}
 
-		$request = new \WP_REST_Request( 'POST', '/wp/v2/templates/woocommerce/woocommerce//' . $page_id );
-		$request->set_body_params(
+		// Use the page template if it exists, which we'll use over our default template if found.
+		$existing_page_template = BlockTemplateUtils::get_block_template( get_stylesheet() . '//page', 'wp_template' );
+
+		if ( $existing_page_template && ! empty( $existing_page_template->content ) && strstr( $existing_page_template->content, 'wp:post-content' ) ) {
+			// Massage the original content into something we can use. Replace post content with a group block.
+			$pattern          = '/(<!--\s*)wp:post-content(.*?)(\/-->)/';
+			$replacement      = '
+				<!-- wp:group $2 -->
+				<div class="wp-block-group">' . wp_kses_post( $page->post_content ) . '</div>
+				<!-- /wp:group -->
+			';
+			$template_content = preg_replace( $pattern, $replacement, $existing_page_template->content );
+		} else {
+			$template_content = $this->get_default_migrate_page_template( $page );
+		}
+
+		$new_page_template = BlockTemplateUtils::get_block_template( 'woocommerce/woocommerce//' . $page_id, 'wp_template' );
+
+		// Check template validity--template must exist, and custom template must not be present already.
+		if ( ! $new_page_template || $new_page_template->wp_id ) {
+			update_option( 'has_migrated_' . $page_id, '1' );
+			return;
+		}
+
+		$new_page_template_id = wp_insert_post(
 			[
-				'id'      => 'woocommerce/woocommerce//' . $page_id,
-				'content' => $this->get_block_template_part( 'header' ) .
-					'<!-- wp:group {"layout":{"inherit":true}} -->
-					<div class="wp-block-group">
-						<!-- wp:heading {"level":1} -->
-						<h1 class="wp-block-heading">' . wp_kses_post( $page->post_title ) . '</h1>
-						<!-- /wp:heading -->
-						' . wp_kses_post( $page->post_content ) . '
-					</div>
-					<!-- /wp:group -->' .
-					$this->get_block_template_part( 'footer' ),
-			]
+				'post_name'    => $new_page_template->slug,
+				'post_type'    => 'wp_template',
+				'post_status'  => 'publish',
+				'tax_input'    => array(
+					'wp_theme' => $new_page_template->theme,
+				),
+				'meta_input'   => array(
+					'origin' => $new_page_template->source,
+				),
+				'post_content' => $template_content,
+			],
+			true
 		);
-		rest_get_server()->dispatch( $request );
-		update_option( 'has_migrated_' . $page_id, '1' );
+
+		if ( ! is_wp_error( $new_page_template_id ) ) {
+			update_option( 'has_migrated_' . $page_id, '1' );
+		}
 	}
 
 	/**
@@ -790,7 +872,7 @@ class BlockTemplatesController {
 	 * @return string
 	 */
 	protected function get_block_template_part( $part ) {
-		$template_part = get_block_template( get_stylesheet() . '//' . $part, 'wp_template_part' );
+		$template_part = BlockTemplateUtils::get_block_template( get_stylesheet() . '//' . $part, 'wp_template_part' );
 		if ( ! $template_part || empty( $template_part->content ) ) {
 			return '';
 		}

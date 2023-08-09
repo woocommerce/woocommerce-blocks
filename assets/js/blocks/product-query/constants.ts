@@ -16,6 +16,8 @@ import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
 export const AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION = false;
 export const MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION = false;
 
+export const PRODUCT_QUERY_VARIATION_NAME = 'woocommerce/product-query';
+
 export const EDIT_ATTRIBUTES_URL =
 	'/wp-admin/edit.php?post_type=product&page=product_attributes';
 
@@ -74,7 +76,7 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 
 // This is necessary to fix https://github.com/woocommerce/woocommerce-blocks/issues/9884.
 const postTemplateHasSupportForGridView = getSettingWithCoercion(
-	'post_template_has_support_for_grid_view',
+	'postTemplateHasSupportForGridView',
 	false,
 	isBoolean
 );

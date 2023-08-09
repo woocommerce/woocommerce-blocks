@@ -72,19 +72,19 @@ const AttributeFilterBlock = ( {
 	getNotice?: GetNotice;
 } ) => {
 	const hasFilterableProducts = getSettingWithCoercion(
-		'has_filterable_products',
+		'hasFilterableProducts',
 		false,
 		isBoolean
 	);
 
 	const filteringForPhpTemplate = getSettingWithCoercion(
-		'is_rendering_php_template',
+		'isRenderingPhpTemplate',
 		false,
 		isBoolean
 	);
 
 	const pageUrl = getSettingWithCoercion(
-		'page_url',
+		'pageUrl',
 		window.location.href,
 		isString
 	);
@@ -544,9 +544,6 @@ const AttributeFilterBlock = ( {
 								'single-selection': ! multiple,
 								'is-loading': isLoading,
 							} ) }
-							style={ {
-								borderStyle: 'none',
-							} }
 							suggestions={ displayedOptions
 								.filter(
 									( option ) =>
