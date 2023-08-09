@@ -123,11 +123,9 @@ export class EditorUtils {
 	}
 
 	async enterEditMode() {
-		await this.editor.page.waitForSelector(
-			'.edit-site-visual-editor__editor-canvas[role="button"]',
-			{ timeout: 3000 }
+		await this.editor.page.click(
+			'.edit-site-visual-editor__editor-canvas[role="button"]'
 		);
-		await this.editor.canvas.click( 'body' );
 	}
 
 	async isBlockEarlierThan< T >(
