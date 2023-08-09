@@ -18,6 +18,7 @@ Fixes #
 
 #### Other Checks
 
+- [ ] This PR has either a `[type]` label or a `[skip-changelog]` label.
 - [ ] This PR adds/removes a feature flag & I've updated [this doc](https://github.com/woocommerce/woocommerce-blocks/blob/trunk/docs/internal-developers/blocks/feature-flags-and-experimental-interfaces.md).
 - [ ] This PR adds/removes an experimental interfaces and I've updated [this doc](https://github.com/woocommerce/woocommerce-blocks/blob/trunk/docs/internal-developers/blocks/feature-flags-and-experimental-interfaces.md).
 - [ ] I tagged two reviewers because this PR makes queries to the database or I think it might have some security impact.
@@ -45,7 +46,8 @@ Fixes #
 2.
 3.
 
-* [ ] Do not include in the Testing Notes <!-- Check this box if this PR can't be tested by users (ie: it doesn't include user-facing changes or it can't be tested without manually modifying the code). -->
+* [ ] Do not include in the Testing Notes <!-- Check this box if this PR can't be tested (ie: it makes changes to tests, coding standards, docblocks, etc.). -->
+* [ ] Should be tested by the development team exclusively <!-- Check this box if this PR should be tested by the development team exclusively (ie: it doesn't include user-facing changes or it can't be tested without manually modifying the code). -->
 
 ### WooCommerce Visibility
 
