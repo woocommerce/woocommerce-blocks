@@ -21,8 +21,8 @@
 
 		<!-- wp:columns {"style":{"spacing":{"blockGap":{"top":"0"},"margin":{"top":"5px","bottom":"0"}}}} -->
 		<div class="wp-block-columns" style="margin-top:5px;margin-bottom:0">
-			<!-- wp:column {"width":"67%","style":{"typography":{"fontStyle":"normal","fontWeight":"600"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
-			<div class="wp-block-column" style="font-style:normal;font-weight:600;flex-basis:67%">
+			<!-- wp:column {"width":"67%","style":{"typography":{"fontWeight":"600"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
+			<div class="wp-block-column" style="font-weight:600;flex-basis:67%">
 				<!-- wp:paragraph {"fontSize":"small"} -->
 				<p class="has-small-font-size"><?php esc_html_e( 'Sweet Organic Lemons', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
@@ -51,8 +51,8 @@
 
 		<!-- wp:columns {"style":{"spacing":{"blockGap":{"top":"0"},"margin":{"top":"5px","bottom":"0"}}}} -->
 		<div class="wp-block-columns" style="margin-top:5px;margin-bottom:0">
-			<!-- wp:column {"width":"67%","style":{"typography":{"fontStyle":"normal","fontWeight":"600"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
-			<div class="wp-block-column" style="font-style:normal;font-weight:600;flex-basis:67%">
+			<!-- wp:column {"width":"67%","style":{"typography":{"fontWeight":"600"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
+			<div class="wp-block-column" style="font-weight:600;flex-basis:67%">
 				<!-- wp:paragraph {"fontSize":"small"} -->
 				<p class="has-small-font-size"><?php esc_html_e( 'Fresh Organic Tomatoes', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
@@ -81,8 +81,8 @@
 
 		<!-- wp:columns {"style":{"spacing":{"blockGap":{"top":"0"},"margin":{"top":"5px","bottom":"0"}}}} -->
 		<div class="wp-block-columns" style="margin-top:5px;margin-bottom:0">
-			<!-- wp:column {"width":"67%","style":{"typography":{"fontStyle":"normal","fontWeight":"600"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
-			<div class="wp-block-column" style="font-style:normal;font-weight:600;flex-basis:67%">
+			<!-- wp:column {"width":"67%","style":{"typography":{"fontWeight":"600"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
+			<div class="wp-block-column" style="font-weight:600;flex-basis:67%">
 				<!-- wp:paragraph {"fontSize":"small"} -->
 				<p class="has-small-font-size"><?php esc_html_e( 'Fresh Lettuce (Washed)', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
@@ -111,8 +111,8 @@
 
 		<!-- wp:columns {"style":{"spacing":{"blockGap":{"top":"0"},"margin":{"top":"5px","bottom":"0"}}}} -->
 		<div class="wp-block-columns" style="margin-top:5px;margin-bottom:0">
-			<!-- wp:column {"width":"67%","style":{"typography":{"fontStyle":"normal","fontWeight":"600"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
-			<div class="wp-block-column" style="font-style:normal;font-weight:600;flex-basis:67%">
+			<!-- wp:column {"width":"67%","style":{"typography":{"fontWeight":"600"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
+			<div class="wp-block-column" style="font-weight:600;flex-basis:67%">
 				<!-- wp:paragraph {"fontSize":"small"} -->
 				<p class="has-small-font-size"><?php esc_html_e( 'Russet Organic Potatoes', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
