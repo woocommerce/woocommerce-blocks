@@ -20,8 +20,9 @@ test.describe( `${ blockData.name } Block`, () => {
 
 	test( 'should be visible', async ( { frontendUtils } ) => {
 		const blocks = await frontendUtils.getBlockByName( blockData.name );
-		const productsDisplayed = 16;
-		await expect( await blocks ).toHaveCount( productsDisplayed );
+		await expect( await blocks ).toHaveCount(
+			blockData.selectors.frontend.productsToDisplay
+		);
 	} );
 	test( 'should add product to the cart', async ( {
 		frontendUtils,
@@ -43,13 +44,10 @@ test.describe( `${ blockData.name } Block`, () => {
 			return test.fail( ! productName, 'Product name was not found' );
 		}
 
-		await Promise.all( [
-			block.locator( 'loading' ).waitFor( {
-				state: 'detached',
-			} ),
-			block.click(),
-		] );
-
+		await block.locator( 'loading' ).waitFor( {
+			state: 'detached',
+		} );
+		await block.click();
 		await expect( button ).toHaveText( '1 in cart' );
 		await expect( block.getByRole( 'link' ) ).toBeVisible();
 
@@ -111,8 +109,9 @@ test.describe( `${ blockData.name } Block`, () => {
 		const blocks = await frontendUtils.getBlockByName( blockData.name );
 		const buttonWithNewText = await blocks.getByText( 'Buy Now' ).count();
 
-		const productsDisplayed = 16;
-		expect( buttonWithNewText ).toEqual( productsDisplayed );
+		expect( buttonWithNewText ).toEqual(
+			blockData.selectors.frontend.productsToDisplay
+		);
 	} );
 
 	test.afterAll( async ( { storeApiUtils } ) => {

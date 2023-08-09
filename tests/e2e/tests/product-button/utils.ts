@@ -2,15 +2,16 @@
  * External dependencies
  */
 import { Page } from '@playwright/test';
-import { BlockData } from '@woocommerce/e2e-types';
 import { Admin } from '@wordpress/e2e-test-utils-playwright';
 
-export const blockData: BlockData = {
+export const blockData = {
 	name: 'Product Button',
 	slug: 'woocommerce/product-button',
 	mainClass: '.wc-block-product-button',
 	selectors: {
-		frontend: {},
+		frontend: {
+			productsToDisplay: 16,
+		},
 		editor: {},
 	},
 };
