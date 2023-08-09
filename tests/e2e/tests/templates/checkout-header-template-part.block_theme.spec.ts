@@ -15,7 +15,7 @@ test.afterAll( async ( { requestUtils } ) => {
 test.describe( 'Test the checkout header template part', async () => {
 	test( 'Template can be opened in the site editor', async ( { page } ) => {
 		await page.goto( '/wp-admin/site-editor.php' );
-		await page.getByRole( 'button', { name: /Template Parts/i } ).click();
+		await page.getByRole( 'button', { name: /Patterns/i } ).click();
 		await page.getByRole( 'button', { name: /Checkout Header/i } ).click();
 
 		const editButton = page.getByRole( 'button', { name: /Edit/i } );
