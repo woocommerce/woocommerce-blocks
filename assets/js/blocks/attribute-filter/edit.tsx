@@ -405,8 +405,7 @@ const Edit = ( {
 		);
 	};
 
-	// return Object.keys( ATTRIBUTES ).length === 0 ? (
-	return true ? (
+	return Object.keys( ATTRIBUTES ).length === 0 ? (
 		noAttributesPlaceholder()
 	) : (
 		<div { ...blockProps }>
