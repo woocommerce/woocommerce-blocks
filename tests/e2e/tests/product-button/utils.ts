@@ -6,7 +6,8 @@ import { BlockData } from '@woocommerce/e2e-types';
 import { Admin } from '@wordpress/e2e-test-utils-playwright';
 
 export const blockData: BlockData = {
-	name: 'woocommerce/product-button',
+	name: 'Product Button',
+	slug: 'woocommerce/product-button',
 	mainClass: '.wc-block-product-button',
 	selectors: {
 		frontend: {},
@@ -36,6 +37,4 @@ export const handleAddToCartAjaxSetting = async (
 			name: 'save',
 		} )
 		.click();
-
-	await page.waitForLoadState( 'networkidle' );
 };

@@ -69,6 +69,4 @@
 
 	<!-- Exclude Interactivity API-->
 	<exclude-pattern>./src/Interactivity/*</exclude-pattern>
-	<!-- Exclude PHP snippet to test filters/actions -->
-	<exclude-pattern>./tests/e2e-pw/tests/*</exclude-pattern>
 </ruleset>

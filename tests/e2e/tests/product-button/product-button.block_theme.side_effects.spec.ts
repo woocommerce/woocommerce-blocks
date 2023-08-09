@@ -29,7 +29,7 @@ test.describe( `${ blockData.name } Block`, () => {
 	} ) => {
 		const blocks = await frontendUtils.getBlockByName( blockData.name );
 		const block = blocks.first();
-		const button = await block.getByRole( 'button' );
+		const button = block.getByRole( 'button' );
 
 		const productId = await button.getAttribute( 'data-product_id' );
 
@@ -37,8 +37,10 @@ test.describe( `${ blockData.name } Block`, () => {
 			.locator( `li.post-${ productId } h3` )
 			.textContent();
 
+		// We want to fail the test if the product name is not found.
+		// eslint-disable-next-line playwright/no-conditional-in-test
 		if ( ! productName ) {
-			return test.fail();
+			return test.fail( ! productName, 'Product name was not found' );
 		}
 
 		await Promise.all( [
@@ -49,10 +51,10 @@ test.describe( `${ blockData.name } Block`, () => {
 		] );
 
 		await expect( button ).toHaveText( '1 in cart' );
-		await expect( await block.getByRole( 'link' ) ).toBeVisible();
+		await expect( block.getByRole( 'link' ) ).toBeVisible();
 
 		await frontendUtils.goToCheckout();
-		const productElement = await page.getByText( productName, {
+		const productElement = page.getByText( productName, {
 			exact: true,
 		} );
 		await expect( productElement ).toBeVisible();
@@ -68,7 +70,7 @@ test.describe( `${ blockData.name } Block`, () => {
 
 		const blocks = await frontendUtils.getBlockByName( blockData.name );
 		const block = blocks.first();
-		const button = await block.getByRole( 'link' );
+		const button = block.getByRole( 'link' );
 
 		const productId = await button.getAttribute( 'data-product_id' );
 
@@ -76,20 +78,21 @@ test.describe( `${ blockData.name } Block`, () => {
 			.locator( `li.post-${ productId } h3` )
 			.textContent();
 
+		// We want to fail the test if the product name is not found.
+		// eslint-disable-next-line playwright/no-conditional-in-test
 		if ( ! productName ) {
-			return test.fail();
+			return test.fail( ! productName, 'Product name was not found' );
 		}
 
 		await block.click();
-		await page.waitForLoadState( 'networkidle' );
 
 		await expect(
-			await page.locator( `a[href*="cart=${ productId }"]` )
+			page.locator( `a[href*="cart=${ productId }"]` )
 		).toBeVisible();
 
 		await frontendUtils.goToCheckout();
 
-		const productElement = await page.getByText( productName, {
+		const productElement = page.getByText( productName, {
 			exact: true,
 		} );
 
