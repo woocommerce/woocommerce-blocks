@@ -98,10 +98,6 @@ test.describe( `${ blockData.name } Block`, () => {
 
 		await expect( productElement ).toBeVisible();
 
-		await admin.page.goto(
-			'wp-admin/admin.php?page=wc-settings&tab=products'
-		);
-
 		await handleAddToCartAjaxSetting( admin, page, { isChecked: false } );
 	} );
 
