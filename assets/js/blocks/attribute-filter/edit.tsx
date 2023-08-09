@@ -352,6 +352,7 @@ const Edit = ( {
 				href={ getAdminLink(
 					'edit.php?post_type=product&page=product_attributes'
 				) }
+				target="_top"
 			>
 				{ __( 'Add new attribute', 'woo-gutenberg-products-block' ) +
 					' ' }
@@ -361,6 +362,7 @@ const Edit = ( {
 				className="wc-block-attribute-filter__read_more_button"
 				isTertiary
 				href="https://docs.woocommerce.com/document/managing-product-taxonomies/"
+				target="_top"
 			>
 				{ __( 'Learn more', 'woo-gutenberg-products-block' ) }
 			</Button>
@@ -403,7 +405,8 @@ const Edit = ( {
 		);
 	};
 
-	return Object.keys( ATTRIBUTES ).length === 0 ? (
+	// return Object.keys( ATTRIBUTES ).length === 0 ? (
+	return true ? (
 		noAttributesPlaceholder()
 	) : (
 		<div { ...blockProps }>
