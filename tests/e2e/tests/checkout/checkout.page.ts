@@ -24,7 +24,7 @@ export class CheckoutPage {
 
 	async goToCheckout() {
 		await this.page.goto( '/checkout', {
-			waitUntil: 'networkidle',
+			waitUntil: 'commit',
 		} );
 	}
 
@@ -47,7 +47,6 @@ export class CheckoutPage {
 		shippingName: string,
 		shippingPrice: string
 	) {
-		await this.page.waitForLoadState( 'networkidle' );
 		await this.page.waitForSelector(
 			'.wc-block-components-radio-control__label'
 		);
@@ -58,15 +57,13 @@ export class CheckoutPage {
 				shippingPrice
 			) )
 		) {
-			const shipping = await this.page.getByLabel( shippingName );
+			const shipping = this.page.getByLabel( shippingName );
 			await shipping.click();
 			await this.page.waitForResponse( ( request ) => {
 				const url = request.url();
 				return url.includes( 'wc/store/v1/batch' );
 			} );
 		}
-		await expect(
-			await this.isShippingRateSelected( shippingName, shippingPrice )
-		).toBe( true );
+		return await this.isShippingRateSelected( shippingName, shippingPrice );
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { test as base } from '@woocommerce/e2e-playwright-utils';
+import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
 import { FrontendUtils } from '@woocommerce/e2e-utils';
 
 /**
@@ -37,13 +37,17 @@ test.describe( 'Shopper → Checkout block → Shipping', () => {
 		const FLAT_RATE_SHIPPING_NAME = 'Flat rate shipping';
 		const FLAT_RATE_SHIPPING_PRICE = '$10.00';
 
-		await pageObject.selectAndVerifyShippingOption(
-			FREE_SHIPPING_NAME,
-			FREE_SHIPPING_PRICE
-		);
-		await pageObject.selectAndVerifyShippingOption(
-			FLAT_RATE_SHIPPING_NAME,
-			FLAT_RATE_SHIPPING_PRICE
-		);
+		expect(
+			await pageObject.selectAndVerifyShippingOption(
+				FREE_SHIPPING_NAME,
+				FREE_SHIPPING_PRICE
+			)
+		).toBe( true );
+		expect(
+			await pageObject.selectAndVerifyShippingOption(
+				FLAT_RATE_SHIPPING_NAME,
+				FLAT_RATE_SHIPPING_PRICE
+			)
+		).toBe( true );
 	} );
 } );
