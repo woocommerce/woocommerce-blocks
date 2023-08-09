@@ -43,6 +43,11 @@ export class CheckoutPage {
 		return nameCount > 0 && priceCount > 0;
 	}
 
+	async placeOrder() {
+		await this.page.getByText( 'Place Order', { exact: true } ).click();
+		await this.page.waitForURL( /order-received/ );
+	}
+
 	async selectAndVerifyShippingOption(
 		shippingName: string,
 		shippingPrice: string
