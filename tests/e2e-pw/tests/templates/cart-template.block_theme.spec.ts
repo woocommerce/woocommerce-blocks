@@ -46,6 +46,7 @@ test.describe( 'Test the cart template', async () => {
 			attributes: { content: 'Hello World' },
 		} );
 		await editor.saveSiteEditorEntities();
+		await page.waitForLoadState( 'networkidle' );
 		await page.goto( permalink, { waitUntil: 'networkidle' } );
 
 		await expect( page.getByText( 'Hello World' ).first() ).toBeVisible();
