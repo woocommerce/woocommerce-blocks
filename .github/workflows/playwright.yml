@@ -10,6 +10,13 @@ jobs:
     name: Playwright E2E tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        config: [
+          { name: Normal, file: playwright.config.ts },
+          { name: 'Side Effects', file: playwright.config.ts },
+        ]
     steps:
 
       - uses: actions/checkout@v3
@@ -57,7 +64,7 @@ jobs:
         run: npm run env:start
 
       - name: Run Playwright tests
-        run: npm run test:e2e-pw
+        run: npx playwright test --config=tests/e2e-pw/${{ matrix.config.file}}
 
       - uses: actions/upload-artifact@v3
         if: ${{ failure() }}
