@@ -26,7 +26,6 @@ const config: ExtendedPlaywrightTestConfig = {
 	),
 	globalTeardown: require.resolve( './global-teardown' ),
 	testDir: 'tests',
-	grepInvert: /.*.block_theme.side_effects.spec.ts/,
 	retries: CI ? 2 : 0,
 	workers: 1,
 	reporter: process.env.CI

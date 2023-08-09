@@ -6,11 +6,20 @@ import { defineConfig } from '@playwright/test';
 /**
  * Internal dependencies
  */
-import _config from './playwright.config';
-
-const { grepInvert, projects, ...config } = _config;
+import config from './playwright.config';
 
 export default defineConfig( {
 	...config,
-	grep: /.*.block_theme.side_effects.spec.ts/,
+	fullyParallel: false,
+	projects: [
+		{
+			name: 'blockThemeConfiguration',
+			testMatch: /block-theme.setup.ts/,
+		},
+		{
+			name: 'blockThemeWithGlobalSideEffects',
+			testMatch: /.*.block_theme.side_effects.spec.ts/,
+			dependencies: [ 'blockThemeConfiguration' ],
+		},
+	],
 } );
