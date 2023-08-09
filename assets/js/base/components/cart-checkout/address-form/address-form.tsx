@@ -30,7 +30,8 @@ import {
 	AddressFormFields,
 } from './types';
 import prepareAddressFields from './prepare-address-fields';
-import { validateShippingCountry, customValidationHandler } from './validation';
+import validateShippingCountry from './validate-shipping-country';
+import customValidationHandler from './custom-validation-handler';
 
 const defaultFields = Object.keys(
 	defaultAddressFields
