@@ -123,9 +123,12 @@ export class EditorUtils {
 	}
 
 	async enterEditMode() {
-		await this.editor.page.click(
-			'.edit-site-visual-editor__editor-canvas[role="button"]'
-		);
+		await this.editor.page
+			.getByRole( 'button', {
+				name: 'Edit',
+				exact: true,
+			} )
+			.click();
 	}
 
 	async isBlockEarlierThan< T >(
