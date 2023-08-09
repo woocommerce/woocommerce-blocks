@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
+import { ValidatedTextInput, isPostcode } from '@woocommerce/blocks-checkout';
 import {
 	BillingCountryInput,
 	ShippingCountryInput,
@@ -114,13 +114,24 @@ const AddressForm = ( {
 							key={ field.key }
 							{ ...fieldProps }
 							value={ values.country }
-							onChange={ ( newValue ) =>
-								onChange( {
+							onChange={ ( newCountry ) => {
+								const newValues = {
 									...values,
-									country: newValue,
+									country: newCountry,
 									state: '',
-								} )
-							}
+								};
+								// Country will impact postcode too. Do we need to clear it?
+								if (
+									values.postcode &&
+									! isPostcode( {
+										postcode: values.postcode,
+										country: newCountry,
+									} )
+								) {
+									newValues.postcode = '';
+								}
+								onChange( newValues );
+							} }
 						/>
 					);
 				}
