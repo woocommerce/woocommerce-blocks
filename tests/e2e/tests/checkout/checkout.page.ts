@@ -94,6 +94,50 @@ export class CheckoutPage {
 		);
 	}
 
+	async fillShippingDetails( customerShippingDetails ) {
+		const shippingForm = this.page.getByRole( 'group', {
+			name: 'Shipping address',
+		} );
+		const companyInputField = shippingForm.getByLabel( 'Company' );
+
+		if ( await companyInputField.isVisible() ) {
+			await companyInputField.fill( customerShippingDetails.company );
+		}
+
+		const firstName = shippingForm.getByLabel( 'First name' );
+		const lastName = shippingForm.getByLabel( 'Last name' );
+		const country = shippingForm.getByLabel( 'Country/Region' );
+		const address1 = shippingForm.getByLabel( 'Address', { exact: true } );
+		const address2 = shippingForm.getByLabel( 'Apartment, suite, etc.' );
+		const city = shippingForm.getByLabel( 'City' );
+		const state = shippingForm.getByLabel( 'State', { exact: true } );
+		const phone = shippingForm.getByLabel( 'Phone' );
+
+		// Using locator here since the label of this form changes depending on the country.
+		const postcode = shippingForm.locator( '[autocomplete="postal-code"]' );
+
+		await firstName.fill( customerShippingDetails.firstname );
+		await lastName.fill( customerShippingDetails.lastname );
+		await country.fill( customerShippingDetails.country );
+		await address1.fill( customerShippingDetails.addressfirstline );
+		await address2.fill( customerShippingDetails.addresssecondline );
+		await city.fill( customerShippingDetails.city );
+		await phone.fill( customerShippingDetails.phone );
+
+		if ( await state.isVisible() ) {
+			await state.fill( customerShippingDetails.state );
+		}
+		if ( await postcode.isVisible() ) {
+			await postcode.fill( customerShippingDetails.postcode );
+		}
+		// Blur active field to trigger customer address update, then wait for requests to finish.
+		await this.page.evaluate( 'document.activeElement.blur()' );
+		await this.checkCustomerPushCompleted(
+			'shipping',
+			customerShippingDetails
+		);
+	}
+
 	async selectAndVerifyShippingOption(
 		shippingName: string,
 		shippingPrice: string
