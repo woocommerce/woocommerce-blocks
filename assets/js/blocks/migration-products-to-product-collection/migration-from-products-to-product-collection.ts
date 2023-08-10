@@ -10,7 +10,7 @@ import { isWpVersion } from '@woocommerce/settings';
  */
 import {
 	AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
-	INITIAL_STATUS_LS_VALUE,
+	getInitialStatusLSValue,
 } from './constants';
 import {
 	getProductsBlockClientIds,
@@ -50,7 +50,7 @@ const mapAttributes = ( attributes: Record< string, unknown > ) => {
 			isProductCollectionBlock: true,
 			...restQuery,
 		},
-		displayUpgradeNotice: true,
+		convertedFromProducts: true,
 	};
 };
 
@@ -222,7 +222,7 @@ export const replaceProductsWithProductCollection = () => {
 };
 
 export const manualUpdate = () => {
-	setUpgradeStatus( INITIAL_STATUS_LS_VALUE );
+	setUpgradeStatus( getInitialStatusLSValue() );
 	replaceProductsWithProductCollection();
 };
 

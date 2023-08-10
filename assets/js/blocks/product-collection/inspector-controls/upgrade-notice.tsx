@@ -4,10 +4,15 @@
 import { __ } from '@wordpress/i18n';
 import { Notice, Button } from '@wordpress/components';
 import { useLocalStorageState } from '@woocommerce/base-hooks';
-import { createInterpolateElement } from '@wordpress/element';
+import {
+	createInterpolateElement,
+	useEffect,
+	useRef,
+} from '@wordpress/element';
 import {
 	MIGRATION_STATUS_LS_KEY,
-	INITIAL_STATUS_LS_VALUE,
+	getInitialStatusLSValue,
+	incrementUpgradeStatusDisplayCount,
 } from '@woocommerce/blocks/migration-products-to-product-collection';
 
 const notice = createInterpolateElement(
@@ -37,19 +42,35 @@ const UpgradeNotice = ( { revertMigration }: UpgradeNoticeProps ) => {
 	const [ upgradeNoticeStatus, setUpgradeNoticeStatus ] =
 		useLocalStorageState(
 			MIGRATION_STATUS_LS_KEY,
-			INITIAL_STATUS_LS_VALUE
+			getInitialStatusLSValue()
 		);
+
+	const canCountDisplays = useRef( true );
 	const { status } = upgradeNoticeStatus;
 
 	const handleRemove = () => {
 		setUpgradeNoticeStatus( {
 			status: 'seen',
+			time: Date.now(),
 		} );
 	};
 
 	const handleRevert = () => {
 		revertMigration();
 	};
+
+	// Prevent the possibility to count displays multiple times when the
+	// block is selected and Inspector Controls are re-rendered multiple times.
+	useEffect( () => {
+		const countDisplay = () => {
+			if ( canCountDisplays.current ) {
+				incrementUpgradeStatusDisplayCount();
+				canCountDisplays.current = false;
+			}
+		};
+
+		return countDisplay;
+	}, [ canCountDisplays ] );
 
 	return status === 'notseen' ? (
 		<Notice onRemove={ handleRemove }>
