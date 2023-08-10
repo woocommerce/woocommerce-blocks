@@ -60,9 +60,7 @@ const blocks = {
 	},
 	'product-new': {},
 	'product-on-sale': {},
-	'product-query': {
-		isExperimental: true,
-	},
+	'product-query': {},
 	'product-results-count': {},
 	'product-search': {},
 	'product-tag': {},
