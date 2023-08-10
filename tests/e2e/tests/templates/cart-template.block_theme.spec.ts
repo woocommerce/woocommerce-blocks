@@ -14,10 +14,11 @@ test.describe( 'Test the cart template', async () => {
 	} );
 
 	test( 'Template can be opened in the site editor', async ( {
+		admin,
 		page,
 		editorUtils,
 	} ) => {
-		await page.goto( '/wp-admin/site-editor.php' );
+		await admin.visitAdminPage( 'site-editor.php' );
 		await page.getByRole( 'button', { name: /Templates/i } ).click();
 		await page.getByRole( 'button', { name: /Cart/i } ).click();
 		await editorUtils.enterEditMode();
