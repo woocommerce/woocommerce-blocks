@@ -21,8 +21,8 @@
 -   [woocommerce_blocks_enqueue_checkout_block_scripts_after](#woocommerce_blocks_enqueue_checkout_block_scripts_after)
 -   [woocommerce_blocks_enqueue_checkout_block_scripts_before](#woocommerce_blocks_enqueue_checkout_block_scripts_before)
 -   [woocommerce_blocks_loaded](#woocommerce_blocks_loaded)
--   [woocommerce*blocks*{$this->registry_identifier}\_registration](#woocommerce_blocks_-this--registry_identifier-_registration)
--   [woocommerce_check_cart_items](#-woocommerce_check_cart_items)
+-   [woocommerce_blocks_{$this->registry_identifier}_registration](#woocommerce_blocks_this-registry_identifier_registration)
+-   [woocommerce_check_cart_items](#woocommerce_check_cart_items)
 -   [woocommerce_created_customer](#woocommerce_created_customer)
 -   [woocommerce_no_products_found](#woocommerce_no_products_found)
 -   [woocommerce_register_post](#woocommerce_register_post)
@@ -39,8 +39,8 @@
 -   [woocommerce_store_api_rate_limit_exceeded](#woocommerce_store_api_rate_limit_exceeded)
 -   [woocommerce_store_api_validate_add_to_cart](#woocommerce_store_api_validate_add_to_cart)
 -   [woocommerce_store_api_validate_cart_item](#woocommerce_store_api_validate_cart_item)
--   [woocommerce\_{$product->get_type()}\_add_to_cart](#woocommerce_-product--get_type-_add_to_cart)
--   [{$hook}](#-hook)
+-   [woocommerce_{$product->get_type()}_add_to_cart](#woocommerce_product-get_type_add_to_cart)
+-   [{$hook}](#hook)
 
 ---
 
@@ -319,7 +319,7 @@ do_action( 'woocommerce_blocks_loaded' )
 
 ---
 
-## woocommerce*blocks*{$this->registry_identifier}\_registration
+## woocommerce_blocks_{$this->registry_identifier}_registration
 
 Fires when the IntegrationRegistry is initialized.
 
@@ -771,7 +771,7 @@ do_action( 'woocommerce_store_api_validate_cart_item', \WC_Product $product, arr
 
 ---
 
-## woocommerce\_{$product->get_type()}\_add_to_cart
+## woocommerce_{$product->get_type()}_add_to_cart
 
 Trigger the single product add to cart action for each product type.
 
