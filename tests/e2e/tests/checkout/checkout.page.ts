@@ -110,7 +110,7 @@ export class CheckoutPage {
 		const phone = billingForm.getByLabel( 'Phone' );
 
 		// Using locator here since the label of this form changes depending on the country.
-		const postcode = billingForm.locator( '[autocomplete="postal-code"]' );
+		const postcode = billingForm.locator( '#billing-postcode' );
 
 		await email.fill( customerBillingDetails.email );
 		await firstName.fill( customerBillingDetails.firstname );
@@ -155,7 +155,7 @@ export class CheckoutPage {
 		const phone = shippingForm.getByLabel( 'Phone' );
 
 		// Using locator here since the label of this form changes depending on the country.
-		const postcode = shippingForm.locator( '[autocomplete="postal-code"]' );
+		const postcode = shippingForm.locator( '#shipping-postcode' );
 
 		await firstName.fill( customerShippingDetails.firstname );
 		await lastName.fill( customerShippingDetails.lastname );
