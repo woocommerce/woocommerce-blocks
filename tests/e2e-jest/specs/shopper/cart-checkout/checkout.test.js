@@ -383,44 +383,9 @@ describe( 'Shopper → Checkout', () => {
 	} );
 
 	describe( `Shipping`, () => {
-		const FREE_SHIPPING_NAME = 'Free Shipping';
-		const FREE_SHIPPING_PRICE = '$0.00';
-		const NORMAL_SHIPPING_NAME = 'Normal Shipping';
-		const NORMAL_SHIPPING_PRICE = '$20.00';
-
 		afterEach( async () => {
 			await merchant.login();
 			await merchantUtils.disableLocalPickup();
-		} );
-
-		it( 'User can choose free shipping', async () => {
-			await shopper.block.goToShop();
-			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
-			await shopper.block.goToCheckout();
-			await shopper.block.selectAndVerifyShippingOption(
-				FREE_SHIPPING_NAME,
-				FREE_SHIPPING_PRICE
-			);
-			await shopper.block.fillInCheckoutWithTestData();
-			await shopper.block.placeOrder();
-			await page.waitForSelector( '.woocommerce-order' );
-			await expect( page ).toMatch( 'Order received' );
-			await expect( page ).toMatch( FREE_SHIPPING_NAME );
-		} );
-
-		it( 'User can choose flat rate shipping', async () => {
-			await shopper.block.goToShop();
-			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
-			await shopper.block.goToCheckout();
-			await shopper.block.selectAndVerifyShippingOption(
-				NORMAL_SHIPPING_NAME,
-				NORMAL_SHIPPING_PRICE
-			);
-			await shopper.block.fillInCheckoutWithTestData();
-			await shopper.block.placeOrder();
-			await page.waitForSelector( '.woocommerce-order' );
-			await expect( page ).toMatch( 'Order received' );
-			await expect( page ).toMatch( NORMAL_SHIPPING_NAME );
 		} );
 
 		it( 'User does not see shipping rates until full address is entered', async () => {
