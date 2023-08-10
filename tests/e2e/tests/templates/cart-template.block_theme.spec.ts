@@ -19,16 +19,14 @@ test.describe( 'Test the cart template', async () => {
 		editorUtils,
 	} ) => {
 		await admin.visitAdminPage( 'site-editor.php' );
+		await editorUtils.waitForSiteEditorFinishLoading();
 		await page.getByRole( 'button', { name: /Templates/i } ).click();
 		await page.getByRole( 'button', { name: /Cart/i } ).click();
-		await page.waitForResponse( ( response ) =>
-			response.url().includes( 'wp-json/wc/store/v1/cart' )
-		);
 		await editorUtils.enterEditMode();
 
 		await expect(
 			page
-				.frameLocator( 'iframe' )
+				.frameLocator( 'iframe[title="Editor canvas"i]' )
 				.locator( 'button:has-text("Proceed to checkout")' )
 				.first()
 		).toBeVisible();
