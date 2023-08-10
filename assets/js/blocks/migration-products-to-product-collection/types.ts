@@ -21,8 +21,9 @@ export type PostTemplateLayout = {
 	type: PostTemplateLayoutTypes;
 	columnCount: number;
 };
+export type UpgradeNoticeStatuses = 'notseen' | 'seen' | 'reverted';
 export type UpgradeNoticeStatus = {
-	status: 'notseen' | 'seen' | 'reverted';
-	t: number;
-	displayCount: number;
+	status: UpgradeNoticeStatuses;
+	time: number;
+	displayCount?: number;
 };

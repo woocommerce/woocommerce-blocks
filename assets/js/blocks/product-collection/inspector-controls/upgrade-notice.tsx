@@ -52,7 +52,7 @@ const UpgradeNotice = ( { revertMigration }: UpgradeNoticeProps ) => {
 	const handleRemove = () => {
 		setUpgradeNoticeStatus( {
 			status: 'seen',
-			t: Date.now(),
+			time: Date.now(),
 		} );
 	};
 

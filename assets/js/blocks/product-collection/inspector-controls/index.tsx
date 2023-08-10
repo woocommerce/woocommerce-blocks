@@ -127,7 +127,7 @@ const lessThanThresholdSinceUpdate = ( t: number ) => {
 	return Date.now() < xHoursFromT;
 };
 
-const displayedLessThanThreshold = ( displayCount: number ) => {
+const displayedLessThanThreshold = ( displayCount = 0 ) => {
 	return displayCount <= UPGRADE_NOTICE_DISPLAY_COUNT_THRESHOLD;
 };
 
@@ -139,12 +139,12 @@ const displayedLessThanThreshold = ( displayCount: number ) => {
 const shouldDisplayUpgradeNotice = ( props ) => {
 	const { attributes } = props;
 	const { convertedFromProducts } = attributes;
-	const { status, t, displayCount } = getUpgradeStatus();
+	const { status, time, displayCount } = getUpgradeStatus();
 
 	return (
 		convertedFromProducts &&
 		status === 'notseen' &&
-		lessThanThresholdSinceUpdate( t ) &&
+		lessThanThresholdSinceUpdate( time ) &&
 		displayedLessThanThreshold( displayCount )
 	);
 };
@@ -160,12 +160,12 @@ const shouldDisplayUpgradeNotice = ( props ) => {
 const shouldBeUnmarkedAsConverted = ( props ) => {
 	const { attributes } = props;
 	const { convertedFromProducts } = attributes;
-	const { status, t, displayCount } = getUpgradeStatus();
+	const { status, time, displayCount } = getUpgradeStatus();
 
 	return (
 		convertedFromProducts &&
 		( status === 'seen' ||
-			! lessThanThresholdSinceUpdate( t ) ||
+			! lessThanThresholdSinceUpdate( time ) ||
 			! displayedLessThanThreshold( displayCount ) )
 	);
 };

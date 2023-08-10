@@ -220,7 +220,7 @@ export const revertMigration = () => {
 	disableAutoUpdate();
 	setUpgradeStatus( {
 		status: 'reverted',
-		t: Date.now(),
+		time: Date.now(),
 	} );
 	replaceProductCollectionWithProducts();
 };
