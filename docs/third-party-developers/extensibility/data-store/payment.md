@@ -13,7 +13,7 @@
     -   [getSavedPaymentMethods](#getsavedpaymentmethods)
     -   [getActiveSavedPaymentMethods](#getactivesavedpaymentmethods)
     -   [getShouldSavePaymentMethod](#getshouldsavepaymentmethod)
-    -   [getCurrentStatus](#getcurrentstatus)
+    -   [getCurrentStatus](#deprecated-getcurrentstatus)
     -   [paymentMethodsInitialized](#paymentmethodsinitialized)
     -   [expressPaymentMethodsInitialized](#expresspaymentmethodsinitialized)
 

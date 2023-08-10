@@ -14,7 +14,7 @@
 -   [woocommerce_add_cart_item](#woocommerce_add_cart_item)
 -   [woocommerce_add_cart_item_data](#woocommerce_add_cart_item_data)
 -   [woocommerce_add_to_cart_sold_individually_quantity](#woocommerce_add_to_cart_sold_individually_quantity)
--   [woocommerce_add_to_cart_validation](#-woocommerce_add_to_cart_validation)
+-   [woocommerce_add_to_cart_validation](#woocommerce_add_to_cart_validation)
 -   [woocommerce_adjust_non_base_location_prices](#woocommerce_adjust_non_base_location_prices)
 -   [woocommerce_apply_base_tax_for_local_pickup](#woocommerce_apply_base_tax_for_local_pickup)
 -   [woocommerce_apply_individual_use_coupon](#woocommerce_apply_individual_use_coupon)
@@ -31,14 +31,14 @@
 -   [woocommerce_loop_add_to_cart_link](#woocommerce_loop_add_to_cart_link)
 -   [woocommerce_new_customer_data](#woocommerce_new_customer_data)
 -   [woocommerce_registration_errors](#woocommerce_registration_errors)
--   [woocommerce_shared_settings](#-woocommerce_shared_settings)
+-   [woocommerce_shared_settings](#woocommerce_shared_settings)
 -   [woocommerce_shipping_package_name](#woocommerce_shipping_package_name)
--   [woocommerce*shipping*{$this->id}\_is_available](#woocommerce_shipping_-this--id-_is_available)
+-   [woocommerce_shipping_{$this->id}_is_available](#woocommerce_shipping_this-id_is_available)
 -   [woocommerce_show_page_title](#woocommerce_show_page_title)
 -   [woocommerce_store_api_add_to_cart_data](#woocommerce_store_api_add_to_cart_data)
 -   [woocommerce_store_api_disable_nonce_check](#woocommerce_store_api_disable_nonce_check)
 -   [woocommerce_store_api_product_quantity_limit](#woocommerce_store_api_product_quantity_limit)
--   [woocommerce*store_api_product_quantity*{$value_type}](#woocommerce_store_api_product_quantity_-value_type)
+-   [woocommerce_store_api_product_quantity_{$value_type}](#woocommerce_store_api_product_quantity_value_type)
 -   [woocommerce_store_api_rate_limit_options](#woocommerce_store_api_rate_limit_options)
 -   [woocommerce_variation_option_name](#woocommerce_variation_option_name)
 
@@ -749,7 +749,7 @@ apply_filters( 'woocommerce_shipping_package_name', string $shipping_package_nam
 
 ---
 
-## woocommerce*shipping*{$this->id}\_is_available
+## woocommerce_shipping_{$this->id}_is_available
 
 ```php
 apply_filters( 'woocommerce_shipping_{$this->id}_is_available' )
@@ -864,7 +864,7 @@ apply_filters( 'woocommerce_store_api_product_quantity_limit', integer $quantity
 
 ---
 
-## woocommerce*store_api_product_quantity*{$value_type}
+## woocommerce_store_api_product_quantity_{$value_type}
 
 Filters the quantity minimum for a cart item in Store API. This allows extensions to control the minimum qty of items already within the cart.
 
