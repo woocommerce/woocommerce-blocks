@@ -7,7 +7,7 @@ import { useLocalStorageState } from '@woocommerce/base-hooks';
 import {
 	createInterpolateElement,
 	useEffect,
-	useState,
+	useRef,
 } from '@wordpress/element';
 import {
 	MIGRATION_STATUS_LS_KEY,
@@ -46,7 +46,7 @@ const UpgradeNotice = ( { revertMigration }: UpgradeNoticeProps ) => {
 			getInitialStatusLSValue()
 		);
 
-	const [ canCountDisplays, setCanCountDisplays ] = useState( true );
+	const canCountDisplays = useRef( true );
 	const { status } = upgradeNoticeStatus;
 
 	const handleRemove = () => {
@@ -64,9 +64,9 @@ const UpgradeNotice = ( { revertMigration }: UpgradeNoticeProps ) => {
 	// block is selected and Inspector Controls are re-rendered multiple times.
 	useEffect( () => {
 		const countDisplay = () => {
-			if ( canCountDisplays ) {
+			if ( canCountDisplays.current ) {
 				incrementUpgradeStatusDisplayCount();
-				setCanCountDisplays( false );
+				canCountDisplays.current = false;
 			}
 		};
 
