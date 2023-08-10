@@ -1,1 +1,1 @@
-export * from './StoreApiUtils';
+export * from './store-api-utils.page';
