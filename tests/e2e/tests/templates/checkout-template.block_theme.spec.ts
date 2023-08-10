@@ -36,6 +36,11 @@ test.describe( 'Test the checkout template', async () => {
 		editor,
 		editorUtils,
 	} ) => {
+		// It's necessary to add a product to the cart to be able to go to the checkout page, otherwise the
+		// checkout page will redirect to /cart and the checkout header template part won't be loaded.
+		await page.goto( '/shop', { waitUntil: 'commit' } );
+		await page.click( 'text=Add to cart' );
+
 		await admin.visitSiteEditor( {
 			postId: templatePath,
 			postType: templateType,
