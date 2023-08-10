@@ -41,6 +41,8 @@ class CheckoutTemplate extends AbstractPageTemplate {
 	 * @return boolean
 	 */
 	public function is_active_template() {
-		return is_checkout();
+		global $post;
+		$placeholder = $this->get_placeholder_page();
+		return null !== $placeholder && $post instanceof \WP_Post && $placeholder->post_name === $post->post_name;
 	}
 }
