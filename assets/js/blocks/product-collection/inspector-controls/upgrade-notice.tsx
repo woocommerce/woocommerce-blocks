@@ -35,7 +35,6 @@ const buttonLabel = __(
 );
 
 type UpgradeNoticeProps = {
-	isSelected: boolean;
 	revertMigration: () => void;
 };
 

@@ -190,7 +190,6 @@ export const withUpgradeNoticeControls =
 					<InspectorControls>
 						{
 							<UpgradeNotice
-								isSelected={ props.isSelected }
 								revertMigration={ revertMigration }
 							/>
 						}
