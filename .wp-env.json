@@ -15,7 +15,7 @@
 				"wp-content/plugins/woocommerce-blocks": ".",
 				"wp-content/plugins/woocommerce-gutenberg-products-block": ".",
 				"wp-cli.yml": "./wp-cli.yml",
-				"custom-plugins" : "./tests/e2e-pw/mocks/custom-plugins"
+				"custom-plugins" : "./tests/e2e/mocks/custom-plugins"
 			}
 		}
 	},

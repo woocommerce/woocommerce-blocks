@@ -19,7 +19,7 @@ test.describe( `${ blockData.name } Block`, () => {
 	} );
 
 	test( 'should be visible', async ( { frontendUtils } ) => {
-		const blocks = await frontendUtils.getBlockByName( blockData.name );
+		const blocks = await frontendUtils.getBlockByName( blockData.slug );
 		await expect( await blocks ).toHaveCount(
 			blockData.selectors.frontend.productsToDisplay
 		);
@@ -28,11 +28,12 @@ test.describe( `${ blockData.name } Block`, () => {
 		frontendUtils,
 		page,
 	} ) => {
-		const blocks = await frontendUtils.getBlockByName( blockData.name );
+		const blocks = await frontendUtils.getBlockByName( blockData.slug );
 		const block = blocks.first();
-		const button = block.getByRole( 'button' );
 
-		const productId = await button.getAttribute( 'data-product_id' );
+		const productId = await block
+			.locator( '[data-product_id]' )
+			.getAttribute( 'data-product_id' );
 
 		const productName = await page
 			.locator( `li.post-${ productId } h3` )
@@ -48,7 +49,7 @@ test.describe( `${ blockData.name } Block`, () => {
 			state: 'detached',
 		} );
 		await block.click();
-		await expect( button ).toHaveText( '1 in cart' );
+		await expect( block.getByRole( 'button' ) ).toHaveText( '1 in cart' );
 		await expect( block.getByRole( 'link' ) ).toBeVisible();
 
 		await frontendUtils.goToCheckout();
@@ -63,10 +64,12 @@ test.describe( `${ blockData.name } Block`, () => {
 		page,
 		admin,
 	} ) => {
-		await handleAddToCartAjaxSetting( admin, page, { isChecked: true } );
+		await handleAddToCartAjaxSetting( admin, page, {
+			isChecked: true,
+		} );
 		await frontendUtils.goToShop();
 
-		const blocks = await frontendUtils.getBlockByName( blockData.name );
+		const blocks = await frontendUtils.getBlockByName( blockData.slug );
 		const block = blocks.first();
 		const button = block.getByRole( 'link' );
 
@@ -96,7 +99,9 @@ test.describe( `${ blockData.name } Block`, () => {
 
 		await expect( productElement ).toBeVisible();
 
-		await handleAddToCartAjaxSetting( admin, page, { isChecked: false } );
+		await handleAddToCartAjaxSetting( admin, page, {
+			isChecked: false,
+		} );
 	} );
 
 	test( 'the filter `woocommerce_product_add_to_cart_text` should be applied', async ( {
@@ -106,10 +111,9 @@ test.describe( `${ blockData.name } Block`, () => {
 			`${ __dirname }/update-product-button-text.php`
 		);
 		await frontendUtils.goToShop();
-		const blocks = await frontendUtils.getBlockByName( blockData.name );
-		const buttonWithNewText = await blocks.getByText( 'Buy Now' ).count();
-
-		expect( buttonWithNewText ).toEqual(
+		const blocks = await frontendUtils.getBlockByName( blockData.slug );
+		const buttonWithNewText = blocks.getByText( 'Buy Now' );
+		await expect( buttonWithNewText ).toHaveCount(
 			blockData.selectors.frontend.productsToDisplay
 		);
 	} );
