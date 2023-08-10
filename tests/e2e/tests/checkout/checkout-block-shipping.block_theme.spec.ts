@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
-import { FrontendUtils } from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
@@ -19,12 +18,9 @@ const test = base.extend< { pageObject: CheckoutPage } >( {
 } );
 
 test.describe( 'Shopper → Checkout block → Shipping', () => {
-	test.beforeEach( async ( { browser } ) => {
-		const page = await browser.newPage();
-		const frontendUtils = new FrontendUtils( page );
+	test.beforeEach( async ( { frontendUtils } ) => {
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( 'Beanie' );
-		await page.close();
 	} );
 
 	const FREE_SHIPPING_NAME = 'Free shipping';
