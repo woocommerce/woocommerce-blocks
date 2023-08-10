@@ -4,40 +4,41 @@ $border-radius: 5px;
 .wc-block-components-express-payment {
 	margin: auto;
 	position: relative;
+}
+
+
+.wc-block-components-express-payment__event-buttons {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	text-align: center;
+	> li {
+		margin: 0;
+		width: 100%;
+
+		> img {
+			width: 100%;
+			height: 48px;
+		}
+	}
+}
+
+
+.wc-block-components-express-payment--checkout {
+	/* stylelint-disable-next-line function-calc-no-unspaced-operator */
+	margin-top: calc($border-radius * 3);
 
 	.wc-block-components-express-payment__event-buttons {
 		list-style: none;
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(calc(33% - 10px), 1fr));
 		grid-gap: 10px;
-		box-sizing: border-box;
-		width: 100%;
-		padding: 0;
-		margin: 0;
-		overflow: hidden;
-		text-align: center;
 
-		> li {
-			margin: 0;
-			width: 100%;
-
-			> img {
-				width: 100%;
-				height: 48px;
-			}
-		}
-	}
-
-	@include breakpoint("<782px") {
-		.wc-block-components-express-payment__event-buttons {
+		@include breakpoint("<782px") {
 			grid-template-columns: 1fr;
 		}
 	}
-}
-
-.wc-block-components-express-payment--checkout {
-	/* stylelint-disable-next-line function-calc-no-unspaced-operator */
-	margin-top: calc($border-radius * 3);
 
 	.wc-block-components-express-payment__title-container {
 		display: flex;
