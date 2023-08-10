@@ -20,7 +20,7 @@ test.describe( `${ blockData.name } Block`, () => {
 
 	test( 'should be visible', async ( { frontendUtils } ) => {
 		const blocks = await frontendUtils.getBlockByName( blockData.slug );
-		await expect( await blocks ).toHaveCount(
+		await expect( blocks ).toHaveCount(
 			blockData.selectors.frontend.productsToDisplay
 		);
 	} );
