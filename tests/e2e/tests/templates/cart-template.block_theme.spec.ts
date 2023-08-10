@@ -21,6 +21,9 @@ test.describe( 'Test the cart template', async () => {
 		await admin.visitAdminPage( 'site-editor.php' );
 		await page.getByRole( 'button', { name: /Templates/i } ).click();
 		await page.getByRole( 'button', { name: /Cart/i } ).click();
+		await page.waitForResponse( ( response ) =>
+			response.url().includes( 'wp-json/wc/store/v1/cart' )
+		);
 		await editorUtils.enterEditMode();
 
 		await expect(
