@@ -27,12 +27,25 @@ export class FrontendUtils {
 		return block;
 	}
 
-	async addToCart() {
+	async addToCart( itemName = '' ) {
+		if ( itemName !== '' ) {
+			await this.page
+				.getByLabel( `Add “${ itemName }” to your cart` )
+				.click();
+			await this.page.waitForResponse( /add_to_cart/ );
+			return;
+		}
 		await this.page.click( 'text=Add to cart' );
 	}
 
 	async goToShop() {
 		await this.page.goto( '/shop', {
+			waitUntil: 'commit',
+		} );
+	}
+
+	async goToCheckout() {
+		await this.page.goto( '/checkout', {
 			waitUntil: 'commit',
 		} );
 	}
