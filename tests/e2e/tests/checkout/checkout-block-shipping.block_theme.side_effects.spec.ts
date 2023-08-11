@@ -19,6 +19,7 @@ const test = base.extend< { pageObject: CheckoutPage } >( {
 
 test.describe( 'Shopper → Checkout block → Shipping', () => {
 	test.beforeEach( async ( { frontendUtils } ) => {
+		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( 'Beanie' );
 	} );
