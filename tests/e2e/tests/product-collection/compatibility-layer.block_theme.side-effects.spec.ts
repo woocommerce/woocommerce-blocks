@@ -2,15 +2,16 @@
  * External dependencies
  */
 import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
+import { deleteAllTemplates } from '@wordpress/e2e-test-utils';
+import {
+	installPluginFromPHPFile,
+	uninstallPluginFromPHPFile,
+} from '@woocommerce/e2e-mocks/custom-plugins';
 
 /**
  * Internal dependencies
  */
 import ProductCollectionPage from './product-collection.page';
-import {
-	installPluginFromPHPFile,
-	uninstallPluginFromPHPFile,
-} from '../../mocks/custom-plugins';
 
 type Scenario = {
 	title: string;
@@ -146,5 +147,6 @@ test.describe( 'Compatibility Layer with Product Collection block', () => {
 		await uninstallPluginFromPHPFile(
 			`${ __dirname }/${ compatiblityPluginFileName }`
 		);
+		await deleteAllTemplates( 'wp_template' );
 	} );
 } );
