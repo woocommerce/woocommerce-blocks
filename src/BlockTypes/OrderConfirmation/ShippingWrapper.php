@@ -5,16 +5,16 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes\OrderConfirmation;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
 /**
- * BillingWrapper class.
+ * ShippingWrapper class.
  */
-class BillingWrapper extends AbstractOrderConfirmationBlock {
+class ShippingWrapper extends AbstractOrderConfirmationBlock {
 
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'order-confirmation-billing-wrapper';
+	protected $block_name = 'order-confirmation-shipping-wrapper';
 
 	/**
 	 * Render the block.
@@ -28,7 +28,7 @@ class BillingWrapper extends AbstractOrderConfirmationBlock {
 	protected function render( $attributes, $content, $block ) {
 		$order = $this->get_order();
 
-		if ( ! $order || ! $this->is_current_customer_order( $order ) || ! $order->has_billing_address() ) {
+		if ( ! $order || ! $this->is_current_customer_order( $order ) || ! $order->has_shipping_address() || ! $order->needs_shipping_address() ) {
 			return '';
 		}
 
@@ -49,7 +49,7 @@ class BillingWrapper extends AbstractOrderConfirmationBlock {
 	}
 
 	/**
-	 * This renders the content of the billing wrapper.
+	 * This renders the content of the shipping wrapper.
 	 *
 	 * @param \WC_Order $order Order object.
 	 * @param string    $permission Permission level for viewing order details.
