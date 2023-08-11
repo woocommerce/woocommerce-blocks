@@ -111,12 +111,8 @@ export class CheckoutPage {
 		if ( await postcode.isVisible() ) {
 			await postcode.fill( customerBillingDetails.postcode );
 		}
-		// Blur active field to trigger customer address update, then wait for requests to finish.
+		// Blur active field to trigger customer address update.
 		await this.page.evaluate( 'document.activeElement.blur()' );
-		await this.checkCustomerPushCompleted(
-			'billing',
-			customerBillingDetails
-		);
 	}
 
 	async fillShippingDetails( customerShippingDetails ) {
@@ -155,78 +151,8 @@ export class CheckoutPage {
 		if ( await postcode.isVisible() ) {
 			await postcode.fill( customerShippingDetails.postcode );
 		}
-		// Blur active field to trigger customer address update, then wait for requests to finish.
+		// Blur active field to trigger customer address update.
 		await this.page.evaluate( 'document.activeElement.blur()' );
-		await this.checkCustomerPushCompleted(
-			'shipping',
-			customerShippingDetails
-		);
-	}
-
-	async checkCustomerPushCompleted(
-		shippingOrBilling: 'shipping' | 'billing',
-		addressToCheck
-	) {
-		// Blur active field to trigger customer information update, then wait for requests to finish.
-		await this.page.evaluate( 'document.activeElement.blur()' );
-
-		await this.page.waitForResponse( async ( response ) => {
-			const isBatch = response
-				.url()
-				.includes( '/wp-json/wc/store/v1/batch' );
-			const responseJson = await response.text();
-			const parsedResponse = JSON.parse( responseJson );
-			if ( ! Array.isArray( parsedResponse?.responses ) || ! isBatch ) {
-				return false;
-			}
-
-			const keyToCheck =
-				shippingOrBilling === 'shipping'
-					? 'shipping_address'
-					: 'billing_address';
-
-			return parsedResponse.responses.some( ( singleResponse ) => {
-				const firstname =
-					singleResponse.body[ keyToCheck ].first_name ===
-					addressToCheck.firstname;
-				const lastname =
-					singleResponse.body[ keyToCheck ].last_name ===
-					addressToCheck.lastname;
-				const address1 =
-					singleResponse.body[ keyToCheck ].address_1 ===
-					addressToCheck.addressfirstline;
-				const address2 =
-					singleResponse.body[ keyToCheck ].address_2 ===
-					addressToCheck.addresssecondline;
-				const postcode =
-					singleResponse.body[ keyToCheck ].postcode ===
-					addressToCheck.postcode;
-				const city =
-					singleResponse.body[ keyToCheck ].city ===
-					addressToCheck.city;
-				const phone =
-					singleResponse.body[ keyToCheck ].phone ===
-					addressToCheck.phone;
-				const email =
-					shippingOrBilling === 'billing'
-						? singleResponse.body[ keyToCheck ].email ===
-						  addressToCheck.email
-						: true;
-
-				// Note, we skip checking State and Country here because the value returned by the server is not the same as
-				// what gets input into the form. The server returns the code, but the form accepts the full name.
-				return (
-					firstname &&
-					lastname &&
-					address1 &&
-					address2 &&
-					postcode &&
-					city &&
-					phone &&
-					email
-				);
-			} );
-		} );
 	}
 
 	async selectAndVerifyShippingOption(
