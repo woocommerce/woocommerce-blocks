@@ -81,6 +81,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 10.8.2 - 2023-08-11 =
+
+#### Bug Fixes
+
+- Create wc-all-block-styles chunk with all blocks stylesheet for classic themes. ([10543](https://github.com/woocommerce/woocommerce-blocks/pull/10543))
+
 = 10.8.2 - 2023-08-09 =
 
 #### Bug Fixes
