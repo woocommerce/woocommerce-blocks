@@ -22,6 +22,7 @@ test.describe( 'Shopper → Checkout block → Shipping', () => {
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( 'Beanie' );
+		await frontendUtils.goToCheckout();
 	} );
 
 	const FREE_SHIPPING_NAME = 'Free shipping';
@@ -33,7 +34,6 @@ test.describe( 'Shopper → Checkout block → Shipping', () => {
 		pageObject,
 		page,
 	} ) => {
-		await pageObject.goToCheckout();
 		expect(
 			await pageObject.selectAndVerifyShippingOption(
 				FREE_SHIPPING_NAME,
@@ -49,7 +49,6 @@ test.describe( 'Shopper → Checkout block → Shipping', () => {
 		pageObject,
 		page,
 	} ) => {
-		await pageObject.goToCheckout();
 		expect(
 			await pageObject.selectAndVerifyShippingOption(
 				FLAT_RATE_SHIPPING_NAME,

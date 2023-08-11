@@ -12,12 +12,6 @@ export class CheckoutPage {
 		this.page = page;
 	}
 
-	async goToCheckout() {
-		await this.page.goto( '/checkout', {
-			waitUntil: 'commit',
-		} );
-	}
-
 	async isShippingRateSelected(
 		shippingName: string,
 		shippingPrice: string
