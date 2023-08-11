@@ -16,7 +16,13 @@ interface VariationDetails {
 
 export function registerElementVariation(
 	coreName: string,
-	{ blockDescription, blockIcon, blockTitle, variationName }: VariationDetails
+	{
+		blockDescription,
+		blockIcon,
+		blockTitle,
+		variationName,
+		scope,
+	}: VariationDetails
 ) {
 	registerBlockVariation( coreName, {
 		description: blockDescription,
