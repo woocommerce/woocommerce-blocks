@@ -1,13 +1,14 @@
 {
-	"name": "woocommerce/order-confirmation-billing-wrapper",
+	"name": "woocommerce/order-confirmation-shipping-wrapper",
 	"version": "1.0.0",
-	"title": "Order Confirmation Billing",
-	"description": "Display the order confirmation billing section.",
+	"title": "Order Confirmation Shipping",
+	"description": "Display the order confirmation shipping section.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"attributes": {
 		"heading": {
-			"type": "string"
+			"type": "string",
+			"default": "Shipping"
 		}
 	},
 	"textdomain": "woo-gutenberg-products-block",

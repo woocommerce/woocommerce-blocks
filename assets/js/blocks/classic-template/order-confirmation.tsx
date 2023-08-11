@@ -38,15 +38,8 @@ const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 				),
 			] ),
 			createBlock( 'core/column', inheritedAttributes, [
-				createBlock( 'core/heading', {
-					level: 3,
-					content: __(
-						'Shipping Address',
-						'woo-gutenberg-products-block'
-					),
-				} ),
 				createBlock(
-					'woocommerce/order-confirmation-shipping-address',
+					'woocommerce/order-confirmation-shipping-wrapper',
 					inheritedAttributes
 				),
 			] ),
