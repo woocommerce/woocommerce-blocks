@@ -40,8 +40,7 @@ class Summary extends AbstractOrderConfirmationBlock {
 			return wpautop( $content );
 		}
 
-		$content  = '<p>' . esc_html__( 'Great news! Your order has been received, and a confirmation will be sent to your email address. You can find the details of your purchase below.', 'woo-gutenberg-products-block' ) . '</p>';
-		$content .= '<ul class="wc-block-order-confirmation-summary-list">';
+		$content  = '<ul class="wc-block-order-confirmation-summary-list">';
 		$content .= $this->render_summary_row( __( 'Order number:', 'woo-gutenberg-products-block' ), $order->get_order_number() );
 		$content .= $this->render_summary_row( __( 'Date:', 'woo-gutenberg-products-block' ), wc_format_datetime( $order->get_date_created() ) );
 		$content .= $this->render_summary_row( __( 'Total:', 'woo-gutenberg-products-block' ), $order->get_formatted_order_total() );
