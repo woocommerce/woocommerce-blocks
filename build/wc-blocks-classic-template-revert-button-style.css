@@ -1,0 +1,1 @@
+@keyframes spinner__animation{0%{animation-timing-function:cubic-bezier(.5856,.0703,.4143,.9297);transform:rotate(0deg)}to{transform:rotate(1turn)}}@keyframes loading__animation{to{transform:translateX(100%)}}.wc-block-editor-revert-button-container{display:flex;flex-direction:column;gap:16px}.wc-block-editor-revert-button-container span{color:#757575}
