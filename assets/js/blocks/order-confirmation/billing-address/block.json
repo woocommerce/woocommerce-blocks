@@ -1,13 +1,15 @@
 {
 	"name": "woocommerce/order-confirmation-billing-address",
 	"version": "1.0.0",
-	"title": "Order Confirmation Billing Address",
+	"title": "Billing Address",
 	"description": "Display the order confirmation billing address.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"supports": {
 		"multiple": false,
-		"align": [ "wide", "full" ]
+		"align": [ "wide", "full" ],
+		"inserter": false,
+		"html": false
 	},
 	"attributes": {
 		"align": {
