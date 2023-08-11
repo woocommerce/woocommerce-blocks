@@ -69,7 +69,7 @@ class ProductCollectionPage {
 	}
 
 	async createNewPostAndInsertBlock() {
-		await this.admin.createNewPost();
+		await this.admin.createNewPost( { legacyCanvas: true } );
 		await this.editor.insertBlock( {
 			name: this.BLOCK_NAME,
 		} );
@@ -80,7 +80,7 @@ class ProductCollectionPage {
 		await this.editor.publishPost();
 		const url = new URL( this.page.url() );
 		const postId = url.searchParams.get( 'post' );
-		await this.page.goto( `/?p=${ postId }` );
+		await this.page.goto( `/?p=${ postId }`, { waitUntil: 'commit' } );
 		await this.refreshLocators( 'frontend' );
 	}
 
@@ -341,7 +341,7 @@ class ProductCollectionPage {
 	/**
 	 * Locators
 	 */
-	locateSidebarSettings() {
+	async locateSidebarSettings() {
 		return this.page.getByRole( 'region', {
 			name: 'Editor settings',
 		} );
