@@ -3,11 +3,6 @@
  */
 import { Page } from '@playwright/test';
 
-/**
- * Internal dependencies
- */
-import { BASE_URL } from '../constants';
-
 export class FrontendUtils {
 	page: Page;
 	constructor( page: Page ) {
@@ -32,7 +27,7 @@ export class FrontendUtils {
 			await this.page
 				.getByLabel( `Add “${ itemName }” to your cart` )
 				.click();
-			await this.page.waitForResponse( /add_to_cart/ );
+			await this.page.waitForResponse( /add_to_cart|batch/ );
 			return;
 		}
 		await this.page.click( 'text=Add to cart' );
@@ -45,9 +40,9 @@ export class FrontendUtils {
 	}
 
 	async emptyCart() {
-		this.page.goto( BASE_URL );
+		await this.page.goto( '/cart', { waitUntil: 'domcontentloaded' } );
 		await this.page.evaluate( () => {
-			const store = window.wp.data.select( 'wc/store/cart' );
+			const store = window?.wp?.data?.select( 'wc/store/cart' );
 			if ( ! store ) {
 				return new Error(
 					'You must be on a page with data stores before using frontendUtils.emptyCart.'
@@ -58,6 +53,9 @@ export class FrontendUtils {
 				return new Error(
 					'cartData.items must be an array. If it is not'
 				);
+			}
+			if ( cartData.items.length === 0 ) {
+				return;
 			}
 			const { removeItemFromCart } =
 				window.wp.data.dispatch( 'wc/store/cart' );
