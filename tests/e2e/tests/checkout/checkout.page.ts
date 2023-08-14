@@ -7,6 +7,20 @@ import { expect } from '@woocommerce/e2e-playwright-utils';
 export class CheckoutPage {
 	private BLOCK_NAME = 'woocommerce/checkout';
 	private page: Page;
+	private testData = {
+		...{
+			firstname: 'John',
+			lastname: 'Doe',
+			addressfirstline: '123 Easy Street',
+			addresssecondline: 'Testville',
+			country: 'United States (US)',
+			city: 'New York',
+			state: 'New York',
+			postcode: '90210',
+			email: 'john.doe@test.com',
+			phone: '01234567890',
+		},
+	};
 
 	constructor( { page }: { page: Page } ) {
 		this.page = page;
@@ -42,21 +56,8 @@ export class CheckoutPage {
 			} )
 			.isVisible();
 
-		const testData = {
-			...{
-				firstname: 'John',
-				lastname: 'Doe',
-				addressfirstline: '123 Easy Street',
-				addresssecondline: 'Testville',
-				country: 'United States (US)',
-				city: 'New York',
-				state: 'New York',
-				postcode: '90210',
-				email: 'john.doe@test.com',
-				phone: '01234567890',
-			},
-			...overrideData,
-		};
+		const testData = { ...this.testData, ...overrideData };
+
 		await this.page.getByLabel( 'Email address' ).fill( testData.email );
 		if ( isShippingOpen ) {
 			await this.fillShippingDetails( testData );
