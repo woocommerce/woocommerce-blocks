@@ -11,6 +11,7 @@ import config from './playwright.config';
 export default defineConfig( {
 	...config,
 	fullyParallel: false,
+	workers: 1,
 	projects: [
 		{
 			name: 'blockThemeConfiguration',
