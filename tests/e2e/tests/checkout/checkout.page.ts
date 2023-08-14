@@ -83,7 +83,7 @@ export class CheckoutPage {
 			await companyInputField.fill( customerBillingDetails.company );
 		}
 
-		const email = billingForm.getByLabel( 'Email address' );
+		const email = this.page.getByLabel( 'Email address' );
 		const firstName = billingForm.getByLabel( 'First name' );
 		const lastName = billingForm.getByLabel( 'Last name' );
 		const country = billingForm.getByLabel( 'Country/Region' );
