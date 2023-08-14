@@ -2,7 +2,7 @@
  * External dependencies
  */
 
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 
 /**
  * Internal dependencies
@@ -92,5 +92,11 @@ export class FrontendUtils {
 		}
 
 		return firstBlockIndex < secondBlockIndex;
+	}
+
+	async selectTextInput( locator: Locator ) {
+		await locator.click();
+		await locator.press( 'End' );
+		await locator.press( 'Shift+Home' );
 	}
 }
