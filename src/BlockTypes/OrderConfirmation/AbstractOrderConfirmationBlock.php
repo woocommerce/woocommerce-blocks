@@ -41,7 +41,7 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 			$permission = $this->get_view_order_permissions( $order );
 		}
 
-		$block_content      = $order ? $this->render_content( $order, $permission, $attributes ) : $this->render_content_fallback();
+		$block_content      = $order ? $this->render_content( $order, $permission, $attributes, $content ) : $this->render_content_fallback();
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
@@ -49,14 +49,14 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 			$classname .= " align{$attributes['align']}";
 		}
 
-		return sprintf(
+		return $block_content ? sprintf(
 			'<div class="wc-block-%5$s %1$s %2$s" style="%3$s">%4$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			esc_attr( $classes_and_styles['styles'] ),
 			$block_content,
 			esc_attr( $this->block_name )
-		);
+		) : '';
 	}
 
 	/**
@@ -66,9 +66,10 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	 * @param \WC_Order $order Order object.
 	 * @param string    $permission Permission level for viewing order details.
 	 * @param array     $attributes Block attributes.
+	 * @param string    $content Original block content.
 	 * @return string
 	 */
-	abstract protected function render_content( $order, $permission = false, $attributes = [] );
+	abstract protected function render_content( $order, $permission = false, $attributes = [], $content = '' );
 
 	/**
 	 * This is what gets rendered when the order does not exist. Renders nothing by default, but can be overridden by
