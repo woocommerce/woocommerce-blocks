@@ -172,6 +172,11 @@ export class CheckoutPage {
 				const url = request.url();
 				return url.includes( 'wc/store/v1/batch' );
 			} );
+			await this.page.waitForFunction( () => {
+				return ! window.wp.data
+					.select( 'wc/store/cart' )
+					.isShippingRateBeingSelected();
+			} );
 		}
 		return await this.isShippingRateSelected( shippingName, shippingPrice );
 	}
