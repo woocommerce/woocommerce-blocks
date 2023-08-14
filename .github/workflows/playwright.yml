@@ -11,8 +11,6 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
-      max-parallel: 1
       matrix:
         config: [
           { name: Normal, file: playwright.config.ts },
