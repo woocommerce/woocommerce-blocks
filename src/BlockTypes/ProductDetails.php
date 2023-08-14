@@ -38,8 +38,10 @@ class ProductDetails extends AbstractBlock {
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
 		return sprintf(
-			'<div class="wp-block-woocommerce-product-details %1$s %2$s" style="%3$s">
-				%4$s
+			'<div class="wp-block-woocommerce-product-details %1$s %2$s">
+				<div style="%3$s">
+					%4$s
+				</div>
 			</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
