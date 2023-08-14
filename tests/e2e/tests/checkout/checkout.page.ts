@@ -73,6 +73,47 @@ export class CheckoutPage {
 		await this.page.getByText( 'Place Order', { exact: true } ).click();
 		await this.page.waitForURL( /order-received/ );
 	}
+	async verifyAddressDetails(
+		shippingOrBilling: 'shipping' | 'billing',
+		overrideAddressDetails = {}
+	) {
+		const customerAddressDetails = {
+			...this.testData,
+			...overrideAddressDetails,
+		};
+		const selector = `.woocommerce-column--${ shippingOrBilling }-address`;
+		const addressContainer = this.page.locator( selector );
+		await expect(
+			addressContainer.getByText( customerAddressDetails.firstname )
+		).toBeVisible();
+		await expect(
+			addressContainer.getByText( customerAddressDetails.lastname )
+		).toBeVisible();
+		await expect(
+			addressContainer.getByText(
+				customerAddressDetails.addressfirstline
+			)
+		).toBeVisible();
+		await expect(
+			addressContainer.getByText(
+				customerAddressDetails.addresssecondline
+			)
+		).toBeVisible();
+		await expect(
+			addressContainer.getByText( customerAddressDetails.city )
+		).toBeVisible();
+		await expect(
+			addressContainer.getByText( customerAddressDetails.state )
+		).toBeVisible();
+		await expect(
+			addressContainer.getByText( customerAddressDetails.postcode )
+		).toBeVisible();
+		if ( shippingOrBilling === 'billing' ) {
+			await expect(
+				addressContainer.getByText( customerAddressDetails.phone )
+			).toBeVisible();
+		}
+	}
 
 	async fillBillingDetails( customerBillingDetails ) {
 		const billingForm = this.page.getByRole( 'group', {
