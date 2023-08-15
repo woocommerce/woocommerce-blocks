@@ -769,7 +769,7 @@ class BlockTemplatesController {
 	 */
 	public function maybe_migrate_content() {
 
-		if ( Constants::is_defined( 'WP_SETUP_CONFIG' ) || Constants::is_defined( 'WC_INSTALLING' ) || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
+		if ( ! get_option( 'woocommerce_db_version', false ) || Constants::is_defined( 'WP_SETUP_CONFIG' ) || Constants::is_defined( 'WC_INSTALLING' ) || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 			return;
 		}
 
