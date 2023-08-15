@@ -7,7 +7,7 @@ on:
 jobs:
   PlaywrightE2ETests:
     
-    name: Playwright E2E tests
+    name: Playwright E2E tests - ${{ matrix.config.name }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
     strategy:
