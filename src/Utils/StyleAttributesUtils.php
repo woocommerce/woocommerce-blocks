@@ -659,6 +659,8 @@ class StyleAttributesUtils {
 	/**
 	 * Get classes and styles from attributes.
 	 *
+	 * Excludes link_color and link_hover_color since those should not apply to the container.
+	 *
 	 * @param array $attributes Block attributes.
 	 * @param array $properties Properties to get classes/styles from.
 	 * @param array $exclude Properties to exclude.
@@ -677,8 +679,6 @@ class StyleAttributesUtils {
 			'font_weight'      => self::get_font_weight_class_and_style( $attributes ),
 			'letter_spacing'   => self::get_letter_spacing_class_and_style( $attributes ),
 			'line_height'      => self::get_line_height_class_and_style( $attributes ),
-			'link_color'       => self::get_link_color_class_and_style( $attributes ),
-			'link_hover_color' => self::get_link_hover_color_class_and_style( $attributes ),
 			'margin'           => self::get_margin_class_and_style( $attributes ),
 			'padding'          => self::get_padding_class_and_style( $attributes ),
 			'text_align'       => self::get_text_align_class_and_style( $attributes ),
