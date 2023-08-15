@@ -96,6 +96,9 @@ const blocks = {
 	'order-confirmation-totals': {
 		customDir: 'order-confirmation/totals',
 	},
+	'order-confirmation-downloads-wrapper': {
+		customDir: 'order-confirmation/downloads-wrapper',
+	},
 	'order-confirmation-downloads': {
 		customDir: 'order-confirmation/downloads',
 	},

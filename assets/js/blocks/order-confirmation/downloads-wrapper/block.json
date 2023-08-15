@@ -1,0 +1,21 @@
+{
+	"name": "woocommerce/order-confirmation-downloads-wrapper",
+	"version": "1.0.0",
+	"title": "Order Confirmation Downloads",
+	"description": "Display the downloadale products section.",
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"attributes": {
+		"heading": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"multiple": false,
+		"align": [ "wide", "full" ],
+		"html": false
+	},
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}

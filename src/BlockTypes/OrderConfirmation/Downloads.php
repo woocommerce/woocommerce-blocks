@@ -41,7 +41,7 @@ class Downloads extends AbstractOrderConfirmationBlock {
 			$downloads      = $order ? $order->get_downloadable_items() : [];
 		}
 
-		if ( 'full' !== $permission || ! $show_downloads ) {
+		if ( ! $permission || ! $show_downloads ) {
 			return $this->render_content_fallback();
 		}
 
