@@ -317,3 +317,85 @@ function woocommerce_blocks_interactivity_setup() {
 	}
 }
 add_action( 'plugins_loaded', 'woocommerce_blocks_interactivity_setup' );
+
+
+add_action( 'rest_api_init', 'add_checkout_custom_fields' );
+
+/**
+ * Adds custom checkout fields to the checkout page rest api.
+ */
+function add_checkout_custom_fields() {
+	// Field name to register.
+	$field = 'checkout_custom_fields';
+	register_rest_field(
+		'page',
+		$field,
+		array(
+			'get_callback'    => function ( $object ) use ( $field ) {
+				// Get field as single value from post meta.
+				return get_option( $field, [] );
+			},
+			'update_callback' => function ( $value, $object ) use ( $field ) {
+				// Update the field/meta value.
+				update_option( $field, $value );
+			},
+			'schema'          => array(
+				'type'       => 'object',
+				'properties' => array(
+					'billing'    => array(
+						'type'     => 'array',
+						'elements' => array(
+							'type'       => 'object',
+							'properties' => array(
+								'id'       => 'integer',
+								'label'    => 'string',
+								'required' => 'boolean',
+								'type'     => 'string',
+								'size'     => 'string', //half|full
+								// 'priority' => 'integer',
+							),
+						),
+					),
+					'shipping'   => array(
+						'type'     => 'array',
+						'elements' => array(
+							'type'       => 'object',
+							'properties' => array(
+								'id'       => 'integer',
+								'label'    => 'string',
+								'required' => 'boolean',
+								'type'     => 'string',
+								'size'     => 'string', //half|full
+								// 'priority' => 'integer',
+							),
+						),
+					),
+					'additional' => array(
+						'type'     => 'array',
+						'elements' => array(
+							'type'       => 'object',
+							'properties' => array(
+								'id'       => 'integer',
+								'label'    => 'string',
+								'required' => 'boolean',
+								'type'     => 'string',
+								'size'     => 'string', //half|full
+								// 'priority' => 'integer',
+							),
+						),
+					),
+				),
+				// 'arg_options' => array(
+				// 	'sanitize_callback' => function ( $value ) {
+				// 		// Make the value safe for storage.
+				// 		return sanitize_text_field( $value );
+				// 	},
+				// 	'validate_callback' => function ( $value ) {
+				// 		// Valid if it contains exactly 10 English letters.
+				// 		return (bool) preg_match( '/\A[a-z]{10}\Z/', $value );
+				// 	},
+				// ),
+			),
+		)
+	);
+}
