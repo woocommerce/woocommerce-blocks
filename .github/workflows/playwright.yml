@@ -41,7 +41,7 @@ jobs:
 
       - name: Install Node dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm install --no-optional --no-audit
+        run: npm ci
 
       - name: Build Assets
         run: FORCE_REDUCED_MOTION=true npm run build
