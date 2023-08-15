@@ -5,8 +5,8 @@
  * Categories: WooCommerce
  */
 ?>
-<!-- wp:columns {"align":"wide","style":{"spacing":{"padding":{"right":"20px","left":"20px"}}}} -->
-<div class="wp-block-columns alignwide" style="padding-right:20px;padding-left:20px">
+<!-- wp:columns {"align":"wide","style":{"spacing":{"padding":{"right":"32px","left":"32px"}}}} -->
+<div class="wp-block-columns alignwide" style="padding-right:32px;padding-left:32px">
 	<!-- wp:column {"width":"160px"} -->
 	<div class="wp-block-column" style="flex-basis:160px">
 		<!-- wp:image {"width":164,"className":"is-style-rounded"} -->
@@ -17,7 +17,7 @@
 	</div>
 	<!-- /wp:column -->
 
-	<!-- wp:column {"layout":{"type":"default"}} -->
+	<!-- wp:column {"layout":{"type":"constrained","justifyContent":"left"}} -->
 	<div class="wp-block-column">
 		<!-- wp:paragraph -->
 		<p><strong><?php esc_html_e( 'Great experience', 'woo-gutenberg-products-block' ); ?></strong></p>
