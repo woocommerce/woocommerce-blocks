@@ -132,7 +132,10 @@ test.describe( `${ blockData.name } Block - with PHP classic template`, () => {
 
 		legacyTemplate.waitFor();
 
-		const products = await legacyTemplate.locator( '.product' ).all();
+		const products = await legacyTemplate
+			.getByRole( 'list' )
+			.locator( '.product' )
+			.all();
 
 		expect( products ).toHaveLength( 16 );
 	} );
