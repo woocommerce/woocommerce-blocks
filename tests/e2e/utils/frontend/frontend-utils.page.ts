@@ -1,12 +1,53 @@
 /**
  * External dependencies
  */
-import { Page, Locator } from '@playwright/test';
+import { Page } from '@playwright/test';
 import { RequestUtils } from '@wordpress/e2e-test-utils-playwright';
+import { expect } from '@woocommerce/e2e-playwright-utils';
+
+const {
+	CUSTOMER_USER,
+	CUSTOMER_PASSWORD,
+	CUSTOMER_USER_EMAIL,
+	CUSTOMER_FIRST_NAME,
+	CUSTOMER_LAST_NAME,
+} = process.env;
 
 export class FrontendUtils {
 	page: Page;
 	requestUtils: RequestUtils;
+
+	private customer = {
+		username: CUSTOMER_USER ?? 'customer',
+		password: CUSTOMER_PASSWORD ?? 'password',
+		email:
+			CUSTOMER_USER_EMAIL ?? 'customer@woocommercecoree2etestsuite.com',
+		first_name: CUSTOMER_FIRST_NAME ?? 'Jane',
+		last_name: CUSTOMER_LAST_NAME ?? 'Smith',
+		billing: {
+			us: {
+				first_name: 'Maggie',
+				last_name: 'Simpson',
+				address: '123 Evergreen Terrace',
+				city: 'Springfield',
+				country: 'US',
+				state: 'OR',
+				zip: '97403',
+				phone: '555 555-5555',
+				email: 'customer@example.com',
+			},
+			malta: {
+				first_name: 'Maggie',
+				last_name: 'Simpson',
+				address: '123 Evergreen Terrace',
+				city: 'Valletta',
+				country: 'MT',
+				zip: 'VT 1011',
+				phone: '555 555-5555',
+				email: 'vt-customer@example.com',
+			},
+		},
+	};
 
 	constructor( page: Page, requestUtils: RequestUtils ) {
 		this.page = page;
@@ -176,5 +217,11 @@ export class FrontendUtils {
 		await locator.click();
 		await locator.press( 'End' );
 		await locator.press( 'Shift+Home' );
+	}
+
+	async gotoMyAccount() {
+		await this.page.goto( '/my-account', {
+			waitUntil: 'commit',
+		} );
 	}
 }
