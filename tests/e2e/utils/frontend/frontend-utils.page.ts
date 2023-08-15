@@ -1,15 +1,16 @@
 /**
  * External dependencies
  */
-import { Page, APIRequestContext } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { RequestUtils } from '@wordpress/e2e-test-utils-playwright';
 
 export class FrontendUtils {
 	page: Page;
-	request: APIRequestContext;
+	requestUtils: RequestUtils;
 
-	constructor( page: Page, request: APIRequestContext ) {
+	constructor( page: Page, requestUtils: RequestUtils ) {
 		this.page = page;
-		this.request = request;
+		this.requestUtils = requestUtils;
 	}
 
 	async getBlockByName( name: string ) {
@@ -49,12 +50,14 @@ export class FrontendUtils {
 	}
 
 	async emptyCart() {
-		const cartResponse = await this.request.get( '/wp-json/wc/store/cart' );
+		const cartResponse = await this.requestUtils.request.get(
+			'/wp-json/wc/store/cart'
+		);
 		const nonce = cartResponse.headers()?.nonce;
 		if ( ! nonce ) {
 			throw new Error( 'Could not get cart nonce.' );
 		}
-		const res = await this.request.delete(
+		const res = await this.requestUtils.request.delete(
 			'/wp-json/wc/store/v1/cart/items',
 			{ headers: { nonce } }
 		);
