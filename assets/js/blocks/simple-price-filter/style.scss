@@ -1,0 +1,67 @@
+.wp-block-woocommerce-simple-price-filter {
+	--low: 0%;
+	--high: 100%;
+	--range-color: currentColor;
+
+	.range {
+		position: relative;
+		margin: 15px 0;
+
+		.range-bar {
+			position: relative;
+			height: 4px;
+			background: linear-gradient(90deg, transparent var(--low), var(--range-color) 0, var(--range-color) var(--high), transparent 0) no-repeat 0 100% / 100% 100%;
+
+			&::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: currentColor;
+				opacity: 0.2;
+			}
+		}
+
+		input[type="range"] {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			width: 100%;
+			height: 0;
+			margin: 0;
+			padding: 0;
+
+			&.active {
+				z-index: 10;
+			}
+		}
+
+		input[type="range" i] {
+			color: -internal-light-dark(rgb(16, 16, 16), rgb(255, 255, 255));
+			padding: initial;
+		}
+	}
+
+	.text {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin: 16px 0;
+		gap: 8px;
+
+		input[type="text"] {
+			padding: 8px;
+			margin: 0;
+			width: auto;
+			max-width: 60px;
+			min-width: 0;
+			font-size: 0.875em;
+			border-width: 1px;
+			border-style: solid;
+			border-color: currentColor;
+			border-radius: 4px;
+		}
+	}
+}
