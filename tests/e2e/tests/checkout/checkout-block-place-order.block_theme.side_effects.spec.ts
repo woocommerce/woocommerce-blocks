@@ -19,14 +19,21 @@ const test = base.extend< { pageObject: CheckoutPage } >( {
 } );
 
 test.describe( 'Shopper → Checkout block → Place Order', () => {
-	test.beforeEach( async ( { frontendUtils } ) => {
+	test( 'Guest user can place order', async ( {
+		pageObject,
+		frontendUtils,
+		page,
+	} ) => {
+		// We want to logout if we are logged in.
+		// eslint-disable-next-line playwright/no-conditional-in-test
+		if ( await frontendUtils.isLoggedIn() ) {
+			await frontendUtils.logout();
+		}
+
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await frontendUtils.goToCheckout();
-	} );
-
-	test( 'Guest user can place order', async ( { pageObject, page } ) => {
 		await pageObject.fillInCheckoutWithTestData();
 		await pageObject.placeOrder();
 		await expect(
@@ -36,8 +43,14 @@ test.describe( 'Shopper → Checkout block → Place Order', () => {
 
 	test( 'Logged in user can place an order', async ( {
 		pageObject,
+		frontendUtils,
 		page,
 	} ) => {
+		await frontendUtils.login();
+		await frontendUtils.emptyCart();
+		await frontendUtils.goToShop();
+		await frontendUtils.addToCart( SIMPLE_VIRTUAL_PRODUCT_NAME );
+		await frontendUtils.goToCheckout();
 		await pageObject.fillInCheckoutWithTestData();
 		await pageObject.placeOrder();
 		await expect(
