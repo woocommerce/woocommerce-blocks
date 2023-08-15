@@ -1,12 +1,15 @@
 /**
  * External dependencies
  */
-import { Page } from '@playwright/test';
+import { Page, APIRequestContext } from '@playwright/test';
 
 export class FrontendUtils {
 	page: Page;
-	constructor( page: Page ) {
+	request: APIRequestContext;
+
+	constructor( page: Page, request: APIRequestContext ) {
 		this.page = page;
+		this.request = request;
 	}
 
 	async getBlockByName( name: string ) {
@@ -46,29 +49,20 @@ export class FrontendUtils {
 	}
 
 	async emptyCart() {
-		await this.page.goto( '/cart', { waitUntil: 'domcontentloaded' } );
-		await this.page.evaluate( () => {
-			const store = window?.wp?.data?.select( 'wc/store/cart' );
-			if ( ! store ) {
-				return new Error(
-					'You must be on a page with data stores before using frontendUtils.emptyCart.'
-				);
-			}
-			const cartData = store.getCartData();
-			if ( ! Array.isArray( cartData?.items ) ) {
-				return new Error(
-					'cartData.items must be an array. If it is not'
-				);
-			}
-			if ( cartData.items.length === 0 ) {
-				return;
-			}
-			const { removeItemFromCart } =
-				window.wp.data.dispatch( 'wc/store/cart' );
-			cartData.items.forEach( ( item ) =>
-				removeItemFromCart( item.key )
+		const cartResponse = await this.request.get( '/wp-json/wc/store/cart' );
+		const nonce = cartResponse.headers()?.nonce;
+		if ( ! nonce ) {
+			throw new Error( 'Could not get cart nonce.' );
+		}
+		const res = await this.request.delete(
+			'/wp-json/wc/store/v1/cart/items',
+			{ headers: { nonce } }
+		);
+		if ( ! res.ok() ) {
+			throw new Error(
+				`Got an error response when trying to empty cart. Status code: ${ res.status() }`
 			);
-		} );
+		}
 	}
 
 	async isBlockEarlierThan< T >(
