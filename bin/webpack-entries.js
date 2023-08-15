@@ -54,6 +54,10 @@ const blocks = {
 		customDir: 'product-gallery/inner-blocks/product-gallery-large-image',
 		isExperimental: true,
 	},
+	'product-gallery-thumbnails': {
+		customDir: 'product-gallery/inner-blocks/product-gallery-thumbnails',
+		isExperimental: true,
+	},
 	'product-new': {},
 	'product-on-sale': {},
 	'product-query': {
@@ -114,6 +118,16 @@ const getBlockEntries = ( relativePath ) => {
 
 const entries = {
 	styling: {
+		// @wordpress/components styles
+		'custom-select-control-style':
+			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
+		'snackbar-notice-style':
+			'./node_modules/wordpress-components/src/snackbar/style.scss',
+		'combobox-control-style':
+			'./node_modules/wordpress-components/src/combobox-control/style.scss',
+		'form-token-field-style':
+			'./node_modules/wordpress-components/src/form-token-field/style.scss',
+
 		// Packages styles
 		'packages-style': glob.sync( './packages/**/index.js' ),
 
@@ -157,6 +171,8 @@ const entries = {
 		...getBlockEntries( 'frontend.{t,j}s{,x}' ),
 		'mini-cart-component':
 			'./assets/js/blocks/mini-cart/component-frontend.tsx',
+		'product-button-interactivity':
+			'./assets/js/atomic/blocks/product-elements/button/frontend.tsx',
 	},
 	payments: {
 		'wc-payment-method-cheque':
