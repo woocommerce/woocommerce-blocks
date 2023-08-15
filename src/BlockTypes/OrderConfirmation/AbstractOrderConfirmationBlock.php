@@ -144,6 +144,11 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	 * @return boolean
 	 */
 	protected function email_verification_required( $order ) {
+		// These orders need login.
+		if ( $this->is_customer_order( $order ) ) {
+			return false;
+		}
+
 		// Skip verification if the current user still has the order in their session.
 		if ( $order->get_id() === wc()->session->get( 'store_api_draft_order' ) ) {
 			return false;
