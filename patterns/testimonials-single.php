@@ -7,8 +7,8 @@
 ?>
 <!-- wp:columns {"align":"wide","style":{"spacing":{"padding":{"right":"32px","left":"32px"}}}} -->
 <div class="wp-block-columns alignwide" style="padding-right:32px;padding-left:32px">
-	<!-- wp:column {"width":"160px"} -->
-	<div class="wp-block-column" style="flex-basis:160px">
+	<!-- wp:column {"verticalAlignment":"center","width":"160px"} -->
+	<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:160px">
 		<!-- wp:image {"width":164,"className":"is-style-rounded"} -->
 		<figure class="wp-block-image is-resized is-style-rounded">
 			<img src="https://s.w.org/images/core/5.8/portrait.jpg" alt="<?php esc_attr_e( 'Placeholder image with the avatar of the user who is writing the testimonial.', 'woo-gutenberg-products-block' ); ?>" width="164"/>
