@@ -38,5 +38,9 @@
 			width: em(23px);
 			padding: em($gap-smaller);
 		}
+
+		span.label {
+			padding: em($gap-smaller);
+		}
 	}
 }
