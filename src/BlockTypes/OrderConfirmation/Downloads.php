@@ -17,6 +17,55 @@ class Downloads extends AbstractOrderConfirmationBlock {
 	protected $block_name = 'order-confirmation-downloads';
 
 	/**
+	 * Render the block.
+	 *
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content Block content.
+	 * @param WP_Block $block Block instance.
+	 * @return string | void Rendered block output.
+	 */
+	protected function render( $attributes, $content, $block ) {
+		$render = parent::render( $attributes, $content, $block );
+
+		// Appends inline styles in the editor.
+		if ( ! empty( $attributes['isPreview'] ) ) {
+			$styles  = $this->get_link_styles( $attributes );
+			$render .= '<style>' . esc_html( $styles ) . '</style>';
+		}
+
+		return $render;
+	}
+
+	/**
+	 * Enqueue frontend assets for this block, just in time for rendering.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 * @return string
+	 */
+	protected function get_link_styles( array $attributes ) {
+		$link_classes_and_styles       = StyleAttributesUtils::get_link_color_class_and_style( $attributes );
+		$link_hover_classes_and_styles = StyleAttributesUtils::get_link_hover_color_class_and_style( $attributes );
+
+		return '
+			.wc-block-order-confirmation-downloads__table a {' . $link_classes_and_styles['style'] . '}
+			.wc-block-order-confirmation-downloads__table a:hover, .wc-block-order-confirmation-downloads__table a:focus {' . $link_hover_classes_and_styles['style'] . '}
+		';
+	}
+
+	/**
+	 * Enqueue frontend assets for this block, just in time for rendering.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 */
+	protected function enqueue_assets( array $attributes ) {
+		parent::enqueue_assets( $attributes );
+
+		$styles = $this->get_link_styles( $attributes );
+
+		wp_add_inline_style( 'wc-blocks-style', $styles );
+	}
+
+	/**
 	 * This renders the content of the block within the wrapper.
 	 *
 	 * @param \WC_Order $order Order object.
@@ -45,19 +94,19 @@ class Downloads extends AbstractOrderConfirmationBlock {
 			return $this->render_content_fallback();
 		}
 
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, [ 'border_color', 'border_radius', 'border_width', 'background_color', 'text_color' ] );
+
 		return '
-			<section class="woocommerce-order-downloads">
-				<table class="woocommerce-table woocommerce-table--order-downloads shop_table shop_table_responsive order_details" cellspacing="0">
-					<thead>
-						<tr>
-							' . $this->render_order_downloads_column_headers( $order ) . '
-						</td>
-					</thead>
-					<tbody>
-						' . $this->render_order_downloads( $order, $downloads ) . '
-					</tbody>
-				</table>
-			</section>
+			<table cellspacing="0" class="wc-block-order-confirmation-downloads__table ' . esc_attr( $classes_and_styles['classes'] ) . '" style="' . esc_attr( $classes_and_styles['styles'] ) . '">
+				<thead>
+					<tr>
+						' . $this->render_order_downloads_column_headers( $order ) . '
+					</td>
+				</thead>
+				<tbody>
+					' . $this->render_order_downloads( $order, $downloads ) . '
+				</tbody>
+			</table>
 		';
 	}
 
