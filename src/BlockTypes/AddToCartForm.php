@@ -29,7 +29,7 @@ class AddToCartForm extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 		add_filter( 'wc_add_to_cart_message_html', array( $this, 'add_to_cart_message_html_filter' ), 10, 2 );
-		add_filter( 'woocommerce_add_to_cart_redirect', array( $this, 'add_to_cart_redirect_filter' ), 10, 2 );
+		add_filter( 'woocommerce_add_to_cart_redirect', array( $this, 'add_to_cart_redirect_filter' ), 10, 1 );
 	}
 
 	/**
@@ -90,17 +90,19 @@ class AddToCartForm extends AbstractBlock {
 			return '';
 		}
 
-		$parsed_attributes = $this->parse_attributes( $attributes );
+		$parsed_attributes                     = $this->parse_attributes( $attributes );
 		$is_descendent_of_single_product_block = $parsed_attributes['isDescendentOfSingleProductBlock'];
-		$product = $this->add_is_descendent_of_single_product_block_hidden_input_to_product_form( $product, $is_descendent_of_single_product_block );
+		$product                               = $this->add_is_descendent_of_single_product_block_hidden_input_to_product_form( $product, $is_descendent_of_single_product_block );
 
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
+		$product_classname  = $is_descendent_of_single_product_block ? 'product' : '';
 
 		$form = sprintf(
-			'<div class="wp-block-add-to-cart-form product %1$s %2$s" style="%3$s">%4$s</div>',
+			'<div class="wp-block-add-to-cart-form %1$s %2$s %3$s" style="%4$s">%5$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
+			esc_attr( $product_classname ),
 			esc_attr( $classes_and_styles['styles'] ),
 			$product
 		);
@@ -124,7 +126,7 @@ class AddToCartForm extends AbstractBlock {
 			'<input type="hidden" name="is-descendent-of-single-product-block" value="%1$s">',
 			$is_descendent_of_single_product_block ? 'true' : 'false'
 		);
-		$regex_pattern = '/<button\s+type="submit"[^>]*>.*?<\/button>/i';
+		$regex_pattern                                      = '/<button\s+type="submit"[^>]*>.*?<\/button>/i';
 
 		preg_match( $regex_pattern, $product, $input_matches );
 
@@ -155,10 +157,9 @@ class AddToCartForm extends AbstractBlock {
 	 * is clicked.
 	 *
 	 * @param string $url The URL to redirect to after the product is added to the cart.
-	 * @param object $product The product being added to the cart.
 	 * @return string The filtered redirect URL.
 	 */
-	public function add_to_cart_redirect_filter( $url, $product ) {
+	public function add_to_cart_redirect_filter( $url ) {
 		// phpcs:ignore
 		if ( isset( $_POST['is-descendent-of-single-product-block'] ) && 'true' == $_POST['is-descendent-of-single-product-block'] ) {
 			return wp_validate_redirect( wp_get_referer(), $url );
@@ -174,6 +175,15 @@ class AddToCartForm extends AbstractBlock {
 	 */
 	protected function get_block_type_script( $key = null ) {
 		return null;
+	}
+
+	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return null
+	 */
+	protected function get_block_type_style() {
+		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
 	}
 
 	/**

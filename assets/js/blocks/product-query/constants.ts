@@ -1,10 +1,10 @@
 /**
  * External dependencies
  */
-import { getSetting } from '@woocommerce/settings';
+import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import { objectOmit } from '@woocommerce/utils';
 import type { InnerBlockTemplate } from '@wordpress/blocks';
-
+import { isBoolean } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
@@ -12,6 +12,11 @@ import { QueryBlockAttributes } from './types';
 import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 import { VARIATION_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';
 import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
+
+export const AUTO_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION = false;
+export const MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION = false;
+
+export const PRODUCT_QUERY_VARIATION_NAME = 'woocommerce/product-query';
 
 export const EDIT_ATTRIBUTES_URL =
 	'/wp-admin/edit.php?post_type=product&page=product_attributes';
@@ -69,6 +74,13 @@ export const QUERY_DEFAULT_ATTRIBUTES: QueryBlockAttributes = {
 	},
 };
 
+// This is necessary to fix https://github.com/woocommerce/woocommerce-blocks/issues/9884.
+const postTemplateHasSupportForGridView = getSettingWithCoercion(
+	'postTemplateHasSupportForGridView',
+	false,
+	isBoolean
+);
+
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'core/post-template',
@@ -78,6 +90,9 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 			 * This class is used to add default styles for inner blocks.
 			 */
 			className: 'products-block-post-template',
+			...( postTemplateHasSupportForGridView && {
+				layout: { type: 'grid', columnCount: 3 },
+			} ),
 		},
 		[
 			[

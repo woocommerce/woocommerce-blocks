@@ -60,5 +60,6 @@ jobs:
             - name: Log PHPCS debug information
               run: phpcs -i
 
-            - name: Run PHPCS on all files
-              run: phpcs ./src -q -n --report=checkstyle | cs2pr
+            - name: Run PHPCS on all changed files
+              run: |
+                phpcs ./src -q --report=checkstyle | cs2pr

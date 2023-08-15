@@ -21,9 +21,12 @@ The release pull request has been created! This checklist is a guide to follow f
 -   [ ] Run `npm ci`
 -   [ ] Run `npm run package-plugin:deploy`. This will create a zip of the current branch build locally.
 -   [ ] Create the testing notes for the release.
-    -   [ ] For each pull request that belongs to the current release, grab the `User Facing Testing` notes from the PR's description. Be sure that the `Do not include in the Testing Notes is not flagged` checkbox is unchecked.
-    -   [ ] Add the notes to `docs/internal-developers/testing/releases`
-    -   [ ] Update the `docs/internal-developers/testing/releases/README.md` file index.
+	-   [ ] For each pull request that belongs to the current release, grab the `User Facing Testing` notes from the PR's description.
+        - If a PR has the `Should be tested by the development team exclusively` checkbox checked, create a new section called 'Testing notes for the development team' and copy the `User Facing Testing` notes from the PR to this section.
+        - If a PR has the `Experimental` checkbox checked, do not include it in the testing instructions.
+        - If a PR has the `Do not include in the Testing Notes` checkbox checked, as the description suggests, do not include it in the release instructions.
+-   [ ] Add the notes to `docs/internal-developers/testing/releases`
+-   [ ] Update the `docs/internal-developers/testing/releases/README.md` file index.
 -   [ ] Copy a link to the release zip you created earlier into the testing notes. To generate the link you can upload the zip as an attachment in a GitHub comment and then just copy the path (without publishing the comment).
 -   [ ] Commit and push the testing docs to the release branch.
 -   [ ] Smoke test built release zip using the testing instructions you created:
@@ -74,8 +77,8 @@ This only needs done if the patch release needs to be included in WooCommerce Co
 -   [ ] Create a pull request for updating the package in WooCommerce core (based off of the WooCommerce core release branch this is deployed for).
 
     -   [ ] Set the base branch (the branch that your PR will be merged into) to the correct one. It must be:
-        - `trunk` if the WC Blocks version you are releasing is higher than the one in core (you can find the current WC Blocks version in core in `plugins/woocommerce/composer.json`)
-        - `release/x.y` if the WC Blocks version in core is higher than the one you are releasing (`x.y` must be the version of WC core that will include the version of WC Blocks you are releasing)
+        -   `trunk` if the WC Blocks version you are releasing is higher than the one in core (you can find the current WC Blocks version in core in `plugins/woocommerce/composer.json`)
+        -   `release/x.y` if the WC Blocks version in core is higher than the one you are releasing (`x.y` must be the version of WC core that will include the version of WC Blocks you are releasing)
     -   The content for the pull release can follow [this example](https://github.com/woocommerce/woocommerce/pull/32627).
 
         -   [ ] Increase the version of `woocommerce/woocommerce-blocks` in the `plugins/woocommerce/composer.json` file

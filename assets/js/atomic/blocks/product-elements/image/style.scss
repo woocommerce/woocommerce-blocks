@@ -16,6 +16,7 @@
 		border-radius: inherit;
 		vertical-align: middle;
 		width: 100%;
+		height: auto;
 
 		&[hidden] {
 			display: none;
@@ -59,4 +60,8 @@
 
 .wc-block-components-product-image {
 	margin: 0 0 $gap-small;
+}
+
+.wc-block-product-image__tools-panel .components-input-control {
+	margin-bottom: 8px;
 }

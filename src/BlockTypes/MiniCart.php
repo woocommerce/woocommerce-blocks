@@ -8,6 +8,8 @@ use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
+use Automattic\WooCommerce\Blocks\Utils\Utils;
+use Automattic\WooCommerce\Blocks\Utils\MiniCartUtils;
 
 /**
  * Mini-Cart class.
@@ -70,10 +72,7 @@ class MiniCart extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
-		add_action( 'wp_print_footer_scripts', array( $this, 'enqueue_wc_settings' ), 1 );
-		// We need this action to run after enqueue_wc_settings() and dequeue_wc_settings(),
-		// otherwise it might incorrectly consider wc_settings script to be enqueued.
-		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 4 );
+		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 2 );
 	}
 
 	/**
@@ -112,6 +111,15 @@ class MiniCart extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return string[]
+	 */
+	protected function get_block_type_style() {
+		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
+	}
+
+	/**
 	 * Extra data passed through from server to client for block.
 	 *
 	 * @param array $attributes  Any attributes that currently are available from the block.
@@ -137,20 +145,6 @@ class MiniCart extends AbstractBlock {
 				$this->tax_label,
 				''
 			);
-
-			$cart_payload = $this->get_cart_payload();
-
-			$this->asset_data_registry->add(
-				'cartTotals',
-				isset( $cart_payload['totals'] ) ? $cart_payload['totals'] : null,
-				null
-			);
-
-			$this->asset_data_registry->add(
-				'cartItemsCount',
-				isset( $cart_payload['items_count'] ) ? $cart_payload['items_count'] : null,
-				null
-			);
 		}
 
 		$this->asset_data_registry->add(
@@ -163,7 +157,7 @@ class MiniCart extends AbstractBlock {
 
 		if (
 			current_user_can( 'edit_theme_options' ) &&
-			wc_current_theme_is_fse_theme()
+			( wc_current_theme_is_fse_theme() || current_theme_supports( 'block-template-parts' ) )
 		) {
 			$theme_slug = BlockTemplateUtils::theme_has_template_part( 'mini-cart' ) ? wp_get_theme()->get_stylesheet() : BlockTemplateUtils::PLUGIN_SLUG;
 
@@ -205,30 +199,6 @@ class MiniCart extends AbstractBlock {
 		 * @since 5.8.0
 		 */
 		do_action( 'woocommerce_blocks_cart_enqueue_data' );
-	}
-
-	/**
-	 * Function to enqueue `wc-settings` script and dequeue it later on so when
-	 * AssetDataRegistry runs, it appears enqueued- This allows the necessary
-	 * data to be printed to the page.
-	 */
-	public function enqueue_wc_settings() {
-		// Return early if another block has already enqueued `wc-settings`.
-		if ( wp_script_is( 'wc-settings', 'enqueued' ) ) {
-			return;
-		}
-		// We are lazy-loading `wc-settings`, but we need to enqueue it here so
-		// AssetDataRegistry knows it's going to load.
-		wp_enqueue_script( 'wc-settings' );
-		// After AssetDataRegistry function runs, we dequeue `wc-settings`.
-		add_action( 'wp_print_footer_scripts', array( $this, 'dequeue_wc_settings' ), 3 );
-	}
-
-	/**
-	 * Function to dequeue `wc-settings` script.
-	 */
-	public function dequeue_wc_settings() {
-		wp_dequeue_script( 'wc-settings' );
 	}
 
 	/**
@@ -354,11 +324,19 @@ class MiniCart extends AbstractBlock {
 
 		$site_url = site_url() ?? wp_guess_url();
 
+		if ( Utils::wp_version_compare( '6.3', '>=' ) ) {
+			$script_before = $wp_scripts->get_inline_script_data( $script->handle, 'before' );
+			$script_after  = $wp_scripts->get_inline_script_data( $script->handle, 'after' );
+		} else {
+			$script_before = $wp_scripts->print_inline_script( $script->handle, 'before', false );
+			$script_after  = $wp_scripts->print_inline_script( $script->handle, 'after', false );
+		}
+
 		$this->scripts_to_lazy_load[ $script->handle ] = array(
 			'src'          => preg_match( '|^(https?:)?//|', $script->src ) ? $script->src : $site_url . $script->src,
 			'version'      => $script->ver,
-			'before'       => $wp_scripts->print_inline_script( $script->handle, 'before', false ),
-			'after'        => $wp_scripts->print_inline_script( $script->handle, 'after', false ),
+			'before'       => $script_before,
+			'after'        => $script_after,
 			'translations' => $wp_scripts->print_translations( $script->handle, false ),
 		);
 	}
@@ -374,7 +352,7 @@ class MiniCart extends AbstractBlock {
 		if ( isset( $attributes['hasHiddenPrice'] ) && false !== $attributes['hasHiddenPrice'] ) {
 			return;
 		}
-		$price_color = array_key_exists( 'priceColorValue', $attributes ) ? $attributes['priceColorValue'] : '';
+		$price_color = array_key_exists( 'priceColor', $attributes ) ? $attributes['priceColor']['color'] : '';
 
 		return '<span class="wc-block-mini-cart__amount" style="color:' . $price_color . ' "></span>' . $this->get_include_tax_label_markup( $attributes );
 	}
@@ -390,7 +368,7 @@ class MiniCart extends AbstractBlock {
 		if ( empty( $this->tax_label ) ) {
 			return '';
 		}
-		$price_color = array_key_exists( 'priceColorValue', $attributes ) ? $attributes['priceColorValue'] : '';
+		$price_color = array_key_exists( 'priceColor', $attributes ) ? $attributes['priceColor']['color'] : '';
 
 		return '<small class="wc-block-mini-cart__tax-label" style="color:' . $price_color . ' " hidden>' . esc_html( $this->tax_label ) . '</small>';
 	}
@@ -404,7 +382,7 @@ class MiniCart extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		return $content . $this->get_markup( $attributes );
+		return $content . $this->get_markup( MiniCartUtils::migrate_attributes_to_color_panel( $attributes ) );
 	}
 
 	/**
@@ -428,8 +406,8 @@ class MiniCart extends AbstractBlock {
 		}
 		$wrapper_styles = $classes_styles['styles'];
 
-		$icon_color = array_key_exists( 'iconColorValue', $attributes ) ? $attributes['iconColorValue'] : 'currentColor';
-		$product_count_color = array_key_exists( 'productCountColorValue', $attributes ) ? $attributes['productCountColorValue'] : '';
+		$icon_color          = array_key_exists( 'iconColor', $attributes ) ? $attributes['iconColor']['color'] : 'currentColor';
+		$product_count_color = array_key_exists( 'productCountColor', $attributes ) ? $attributes['productCountColor']['color'] : '';
 
 		// Default "Cart" icon.
 		$icon = '<svg class="wc-block-mini-cart__icon" width="32" height="32" viewBox="0 0 32 32" fill="' . $icon_color . '" xmlns="http://www.w3.org/2000/svg">
@@ -440,13 +418,13 @@ class MiniCart extends AbstractBlock {
 				</svg>';
 
 		if ( isset( $attributes['miniCartIcon'] ) ) {
-			if ( 'bag' == $attributes['miniCartIcon'] ) {
+			if ( 'bag' === $attributes['miniCartIcon'] ) {
 				$icon = '<svg class="wc-block-mini-cart__icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4444 14.2222C12.9354 14.2222 13.3333 14.6202 13.3333 15.1111C13.3333 15.8183 13.6143 16.4966 14.1144 16.9967C14.6145 17.4968 15.2927 17.7778 16 17.7778C16.7072 17.7778 17.3855 17.4968 17.8856 16.9967C18.3857 16.4966 18.6667 15.8183 18.6667 15.1111C18.6667 14.6202 19.0646 14.2222 19.5555 14.2222C20.0465 14.2222 20.4444 14.6202 20.4444 15.1111C20.4444 16.2898 19.9762 17.4203 19.1427 18.2538C18.3092 19.0873 17.1787 19.5555 16 19.5555C14.8212 19.5555 13.6908 19.0873 12.8573 18.2538C12.0238 17.4203 11.5555 16.2898 11.5555 15.1111C11.5555 14.6202 11.9535 14.2222 12.4444 14.2222Z" fill="' . $icon_color . '""/>
 							<path fill-rule="evenodd" clip-rule="evenodd" d="M11.2408 6.68254C11.4307 6.46089 11.7081 6.33333 12 6.33333H20C20.2919 6.33333 20.5693 6.46089 20.7593 6.68254L24.7593 11.3492C25.0134 11.6457 25.0717 12.0631 24.9085 12.4179C24.7453 12.7727 24.3905 13 24 13H8.00001C7.60948 13 7.25469 12.7727 7.0915 12.4179C6.92832 12.0631 6.9866 11.6457 7.24076 11.3492L11.2408 6.68254ZM12.4599 8.33333L10.1742 11H21.8258L19.5401 8.33333H12.4599Z" fill="' . $icon_color . '"/>
 							<path fill-rule="evenodd" clip-rule="evenodd" d="M7 12C7 11.4477 7.44772 11 8 11H24C24.5523 11 25 11.4477 25 12V25.3333C25 25.8856 24.5523 26.3333 24 26.3333H8C7.44772 26.3333 7 25.8856 7 25.3333V12ZM9 13V24.3333H23V13H9Z" fill="' . $icon_color . '"/>
 						</svg>';
-			} elseif ( 'bag-alt' == $attributes['miniCartIcon'] ) {
+			} elseif ( 'bag-alt' === $attributes['miniCartIcon'] ) {
 				$icon = '<svg class="wc-block-mini-cart__icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path fill-rule="evenodd" clip-rule="evenodd" d="M19.5556 12.3333C19.0646 12.3333 18.6667 11.9354 18.6667 11.4444C18.6667 10.7372 18.3857 8.05893 17.8856 7.55883C17.3855 7.05873 16.7073 6.77778 16 6.77778C15.2928 6.77778 14.6145 7.05873 14.1144 7.55883C13.6143 8.05893 13.3333 10.7372 13.3333 11.4444C13.3333 11.9354 12.9354 12.3333 12.4445 12.3333C11.9535 12.3333 11.5556 11.9354 11.5556 11.4444C11.5556 10.2657 12.0238 7.13524 12.8573 6.30175C13.6908 5.46825 14.8213 5 16 5C17.1788 5 18.3092 5.46825 19.1427 6.30175C19.9762 7.13524 20.4445 10.2657 20.4445 11.4444C20.4445 11.9354 20.0465 12.3333 19.5556 12.3333Z" fill="' . $icon_color . '"/>
 							<path fill-rule="evenodd" clip-rule="evenodd" d="M7.5 12C7.5 11.4477 7.94772 11 8.5 11H23.5C24.0523 11 24.5 11.4477 24.5 12V25.3333C24.5 25.8856 24.0523 26.3333 23.5 26.3333H8.5C7.94772 26.3333 7.5 25.8856 7.5 25.3333V12ZM9.5 13V24.3333H22.5V13H9.5Z" fill="' . $icon_color . '" />
@@ -560,22 +538,6 @@ class MiniCart extends AbstractBlock {
 			'tax_label'                         => '',
 			'display_cart_prices_including_tax' => false,
 		);
-	}
-
-	/**
-	 * Get Cart Payload.
-	 *
-	 * @return object;
-	 */
-	protected function get_cart_payload() {
-		$notices = wc_get_notices(); // Backup the notices because StoreAPI will remove them.
-		$payload = WC()->api->get_endpoint_data( '/wc/store/cart' );
-
-		if ( ! empty( $notices ) ) {
-			wc_set_notices( $notices ); // Restore the notices.
-		}
-
-		return $payload;
 	}
 
 	/**

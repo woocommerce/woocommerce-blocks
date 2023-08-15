@@ -27,11 +27,11 @@ class AttributeFilter extends AbstractBlock {
 	}
 
 	/**
-	 * Get the frontend script handle for this block type.
+	 * Get the frontend style handle for this block type.
 	 *
-	 * @param string $key Data to get, or default to everything.
+	 * @return string[]
 	 */
-	protected function get_block_type_script( $key = null ) {
-		return null;
+	protected function get_block_type_style() {
+		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
 	}
 }

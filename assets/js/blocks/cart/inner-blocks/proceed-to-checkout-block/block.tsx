@@ -10,11 +10,12 @@ import { getSetting } from '@woocommerce/settings';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
+import { isErrorResponse } from '@woocommerce/base-context';
+import { useCartEventsContext } from '@woocommerce/base-context/providers';
 
 /**
  * Internal dependencies
  */
-import './style.scss';
 import { defaultButtonLabel } from './constants';
 
 /**
@@ -74,12 +75,22 @@ const Block = ( {
 		arg: { cart },
 	} );
 
+	const { dispatchOnProceedToCheckout } = useCartEventsContext();
+
 	const submitContainerContents = (
 		<Button
 			className="wc-block-cart__submit-button"
 			href={ filteredLink }
 			disabled={ isCalculating }
-			onClick={ () => setShowSpinner( true ) }
+			onClick={ ( e ) => {
+				dispatchOnProceedToCheckout().then( ( observerResponses ) => {
+					if ( observerResponses.some( isErrorResponse ) ) {
+						e.preventDefault();
+						return;
+					}
+					setShowSpinner( true );
+				} );
+			} }
 			showSpinner={ showSpinner }
 		>
 			{ label }

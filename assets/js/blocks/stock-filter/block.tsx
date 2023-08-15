@@ -63,7 +63,7 @@ const StockStatusFilterBlock = ( {
 	const setWrapperVisibility = useSetWraperVisibility();
 
 	const filteringForPhpTemplate = getSettingWithCoercion(
-		'is_rendering_php_template',
+		'isRenderingPhpTemplate',
 		false,
 		isBoolean
 	);
@@ -75,10 +75,6 @@ const StockStatusFilterBlock = ( {
 		'stockStatusOptions',
 		{}
 	);
-
-	const productIds = isEditor
-		? []
-		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
 
 	const STOCK_STATUS_OPTIONS: { current: Current } = useRef(
 		getSetting( 'hideOutOfStockItems', false )
@@ -111,7 +107,6 @@ const StockStatusFilterBlock = ( {
 		useCollectionData( {
 			queryStock: true,
 			queryState,
-			productIds,
 			isEditor,
 		} );
 
@@ -417,7 +412,7 @@ const StockStatusFilterBlock = ( {
 	const isDisabled = ! blockAttributes.isPreview && filteredCountsLoading;
 
 	const hasFilterableProducts = getSettingWithCoercion(
-		'has_filterable_products',
+		'hasFilterableProducts',
 		false,
 		isBoolean
 	);

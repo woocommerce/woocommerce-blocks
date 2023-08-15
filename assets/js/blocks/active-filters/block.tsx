@@ -31,6 +31,7 @@ import {
 	cleanFilterUrl,
 	maybeUrlContainsFilters,
 	urlContainsAttributeFilter,
+	StoreAttributes,
 } from './utils';
 import ActiveAttributeFilters from './active-attribute-filters';
 import FilterPlaceholders from './filter-placeholders';
@@ -58,7 +59,7 @@ const ActiveFiltersBlock = ( {
 	const isMounted = useIsMounted();
 	const componentHasMounted = isMounted();
 	const filteringForPhpTemplate = getSettingWithCoercion(
-		'is_rendering_php_template',
+		'isRenderingPhpTemplate',
 		false,
 		isBoolean
 	);
@@ -84,7 +85,7 @@ const ActiveFiltersBlock = ( {
 		useQueryStateByKey( 'rating' );
 
 	const STOCK_STATUS_OPTIONS = getSetting( 'stockStatusOptions', [] );
-	const STORE_ATTRIBUTES = getSetting( 'attributes', [] );
+	const STORE_ATTRIBUTES: StoreAttributes[] = getSetting( 'attributes', [] );
 	const activeStockStatusFilters = useMemo( () => {
 		if (
 			shouldShowLoadingPlaceholders ||
@@ -322,7 +323,7 @@ const ActiveFiltersBlock = ( {
 	);
 
 	const hasFilterableProducts = getSettingWithCoercion(
-		'has_filterable_products',
+		'hasFilterableProducts',
 		false,
 		isBoolean
 	);

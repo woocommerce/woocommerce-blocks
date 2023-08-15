@@ -1,16 +1,16 @@
 <?php
 /**
- * Title: WooCommerce Large Header
+ * Title: Large Header
  * Slug: woocommerce-blocks/header-large
  * Categories: WooCommerce
  * Block Types: core/template-part/header
  */
 ?>
-<!-- wp:group {"align":"full","style":{"spacing":{"blockGap":"0px","padding":{"top":"1rem","right":"1rem","bottom":"1rem","left":"1rem"}}},"className":"has-link-color","layout":{"type":"default"}} -->
-<div class="wp-block-group alignfull has-link-color" style="padding-top:1rem;padding-right:1rem;padding-bottom:1rem;padding-left:1rem">
+<!-- wp:group {"className":"wc-blocks-header-pattern","align":"full","style":{"spacing":{"blockGap":"0px","padding":{"top":"1rem","right":"1rem","bottom":"1rem","left":"1rem"}}},"className":"has-link-color","layout":{"type":"default"}} -->
+<div class="wc-blocks-header-pattern wp-block-group alignfull has-link-color" style="padding-top:1rem;padding-right:1rem;padding-bottom:1rem;padding-left:1rem">
 	<!-- wp:group {"style":{"spacing":{"blockGap":"1rem"}},"className":"has-small-font-size","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
 	<div class="wp-block-group has-small-font-size">
-		<!-- wp:search {"label":"Search","showLabel":false,"width":100,"widthUnit":"%","buttonText":"Search","buttonUseIcon":true} /-->
+		<!-- wp:search {"label":"","showLabel":false,"placeholder":"Search products…","buttonText":"Search","buttonUseIcon":true,"query":{"post_type":"product"}} /-->
 
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
 		<div class="wp-block-group">

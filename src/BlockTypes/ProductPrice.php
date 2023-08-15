@@ -47,6 +47,15 @@ class ProductPrice extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return null
+	 */
+	protected function get_block_type_style() {
+		return null;
+	}
+
+	/**
 	 * Overwrite parent method to prevent script registration.
 	 *
 	 * It is necessary to register and enqueues assets during the render
@@ -78,7 +87,7 @@ class ProductPrice extends AbstractBlock {
 			return $content;
 		}
 
-		$post_id = $block->context['postId'];
+		$post_id = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
 		$product = wc_get_product( $post_id );
 
 		if ( $product ) {

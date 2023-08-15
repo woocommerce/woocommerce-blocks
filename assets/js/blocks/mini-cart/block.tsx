@@ -15,7 +15,6 @@ import {
 } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import {
-	CartResponseTotals,
 	isBoolean,
 	isString,
 	isCartResponseTotals,
@@ -42,6 +41,7 @@ import {
 	blockName,
 	attributes as miniCartContentsAttributes,
 } from './mini-cart-contents/attributes';
+import { defaultColorItem } from './utils/defaults';
 
 type Props = BlockAttributes;
 
@@ -51,15 +51,17 @@ function getScrollbarWidth() {
 
 const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 	const {
+		initialCartItemsCount,
+		initialCartTotals,
 		isInitiallyOpen = false,
 		colorClassNames,
 		contents = '',
 		miniCartIcon,
 		addToCartBehaviour = 'none',
 		hasHiddenPrice = false,
-		priceColorValue,
-		iconColorValue,
-		productCountColorValue,
+		priceColor = defaultColorItem,
+		iconColor = defaultColorItem,
+		productCountColor = defaultColorItem,
 	} = attributes;
 
 	const {
@@ -68,13 +70,31 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 		cartTotals: cartTotalsFromApi,
 	} = useStoreCart();
 
-	const isFirstLoadingCompleted = useRef( cartIsLoading );
+	const cartIsLoadingForTheFirstTime = useRef( cartIsLoading );
 
 	useEffect( () => {
-		if ( isFirstLoadingCompleted.current && ! cartIsLoading ) {
-			isFirstLoadingCompleted.current = false;
+		if ( cartIsLoadingForTheFirstTime.current && ! cartIsLoading ) {
+			cartIsLoadingForTheFirstTime.current = false;
 		}
-	}, [ cartIsLoading, isFirstLoadingCompleted ] );
+	}, [ cartIsLoading, cartIsLoadingForTheFirstTime ] );
+
+	useEffect( () => {
+		if (
+			! cartIsLoading &&
+			isCartResponseTotals( cartTotalsFromApi ) &&
+			isNumber( cartItemsCountFromApi )
+		) {
+			// Save server data to local storage, so we can re-fetch it faster
+			// on the next page load.
+			localStorage.setItem(
+				'wc-blocks_mini_cart_totals',
+				JSON.stringify( {
+					totals: cartTotalsFromApi,
+					itemsCount: cartItemsCountFromApi,
+				} )
+			);
+		}
+	} );
 
 	const [ isOpen, setIsOpen ] = useState< boolean >( isInitiallyOpen );
 	// We already rendered the HTML drawer placeholder, so we want to skip the
@@ -180,29 +200,19 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 		isBoolean
 	);
 
-	const preFetchedCartTotals =
-		getSettingWithCoercion< CartResponseTotals | null >(
-			'cartTotals',
-			null,
-			isCartResponseTotals
-		);
-
-	const preFetchedCartItemsCount = getSettingWithCoercion< number >(
-		'cartItemsCount',
-		0,
-		isNumber
-	);
-
 	const taxLabel = getSettingWithCoercion( 'taxLabel', '', isString );
 
 	const cartTotals =
-		! isFirstLoadingCompleted.current || preFetchedCartTotals === null
-			? cartTotalsFromApi
-			: preFetchedCartTotals;
+		cartIsLoadingForTheFirstTime.current &&
+		isCartResponseTotals( initialCartTotals )
+			? initialCartTotals
+			: cartTotalsFromApi;
 
-	const cartItemsCount = ! isFirstLoadingCompleted.current
-		? cartItemsCountFromApi
-		: preFetchedCartItemsCount;
+	const cartItemsCount =
+		cartIsLoadingForTheFirstTime.current &&
+		isNumber( initialCartItemsCount )
+			? initialCartItemsCount
+			: cartItemsCountFromApi;
 
 	const subTotal = showIncludingTax
 		? parseInt( cartTotals.total_items, 10 ) +
@@ -250,7 +260,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				{ ! hasHiddenPrice && (
 					<span
 						className="wc-block-mini-cart__amount"
-						style={ { color: priceColorValue } }
+						style={ { color: priceColor.color } }
 					>
 						{ formatPrice(
 							subTotal,
@@ -261,7 +271,7 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				{ taxLabel !== '' && subTotal !== 0 && ! hasHiddenPrice && (
 					<small
 						className="wc-block-mini-cart__tax-label"
-						style={ { color: priceColorValue } }
+						style={ { color: priceColor.color } }
 					>
 						{ taxLabel }
 					</small>
@@ -269,8 +279,8 @@ const MiniCartBlock = ( attributes: Props ): JSX.Element => {
 				<QuantityBadge
 					count={ cartItemsCount }
 					icon={ miniCartIcon }
-					iconColor={ iconColorValue }
-					productCountColor={ productCountColorValue }
+					iconColor={ iconColor }
+					productCountColor={ productCountColor }
 				/>
 			</button>
 			<Drawer

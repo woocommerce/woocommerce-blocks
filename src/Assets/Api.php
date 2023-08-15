@@ -33,6 +33,20 @@ class Api {
 	private $script_data = null;
 
 	/**
+	 * Stores the hash for the script data, made up of the site url, plugin version and package path.
+	 *
+	 * @var string
+	 */
+	private $script_data_hash;
+
+	/**
+	 * Stores the transient key used to cache the script data. This will change if the site is accessed via HTTPS or HTTP.
+	 *
+	 * @var string
+	 */
+	private $script_data_transient_key = 'woocommerce_blocks_asset_api_script_data';
+
+	/**
 	 * Reference to the Package instance
 	 *
 	 * @var Package
@@ -47,6 +61,15 @@ class Api {
 	public function __construct( Package $package ) {
 		$this->package       = $package;
 		$this->disable_cache = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) || ! $this->package->feature()->is_production_environment();
+
+		// If the site is accessed via HTTPS, change the transient key. This is to prevent the script URLs being cached
+		// with the first scheme they are accessed on after cache expiry.
+		if ( is_ssl() ) {
+			$this->script_data_transient_key .= '_ssl';
+		}
+		if ( ! $this->disable_cache ) {
+			$this->script_data_hash = $this->get_script_data_hash();
+		}
 		add_action( 'shutdown', array( $this, 'update_script_data_cache' ), 20 );
 	}
 
@@ -93,6 +116,17 @@ class Api {
 	}
 
 	/**
+	 * Generates a hash containing the site url, plugin version and package path.
+	 *
+	 * Moving the plugin, changing the version, or changing the site url will result in a new hash and the cache will be invalidated.
+	 *
+	 * @return string The generated hash.
+	 */
+	private function get_script_data_hash() {
+		return md5( get_option( 'siteurl', '' ) . $this->package->get_version() . $this->package->get_path() );
+	}
+
+	/**
 	 * Initialize and load cached script data from the transient cache.
 	 *
 	 * @return array
@@ -102,9 +136,17 @@ class Api {
 			return [];
 		}
 
-		$transient_value = json_decode( (string) get_transient( 'woocommerce_blocks_asset_api_script_data' ), true );
+		$transient_value = json_decode( (string) get_transient( $this->script_data_transient_key ), true );
 
-		if ( empty( $transient_value ) || empty( $transient_value['script_data'] ) || empty( $transient_value['version'] ) || $transient_value['version'] !== $this->package->get_version() ) {
+		if (
+			json_last_error() !== JSON_ERROR_NONE ||
+			empty( $transient_value ) ||
+			empty( $transient_value['script_data'] ) ||
+			empty( $transient_value['version'] ) ||
+			$transient_value['version'] !== $this->package->get_version() ||
+			empty( $transient_value['hash'] ) ||
+			$transient_value['hash'] !== $this->script_data_hash
+		) {
 			return [];
 		}
 
@@ -119,11 +161,12 @@ class Api {
 			return;
 		}
 		set_transient(
-			'woocommerce_blocks_asset_api_script_data',
+			$this->script_data_transient_key,
 			wp_json_encode(
 				array(
 					'script_data' => $this->script_data,
 					'version'     => $this->package->get_version(),
+					'hash'        => $this->script_data_hash,
 				)
 			),
 			DAY_IN_SECONDS * 30
@@ -233,17 +276,22 @@ class Api {
 	 * @since 2.5.0
 	 * @since 2.6.0 Change src to be relative source.
 	 *
-	 * @param string $handle       Name of the stylesheet. Should be unique.
-	 * @param string $relative_src Relative source of the stylesheet to the plugin path.
-	 * @param array  $deps         Optional. An array of registered stylesheet handles this stylesheet depends on. Default empty array.
-	 * @param string $media        Optional. The media for which this stylesheet has been defined. Default 'all'. Accepts media types like
-	 *                             'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
+	 * @param string  $handle       Name of the stylesheet. Should be unique.
+	 * @param string  $relative_src Relative source of the stylesheet to the plugin path.
+	 * @param array   $deps         Optional. An array of registered stylesheet handles this stylesheet depends on. Default empty array.
+	 * @param string  $media        Optional. The media for which this stylesheet has been defined. Default 'all'. Accepts media types like
+	 *                              'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
+	 * @param boolean $rtl   Optional. Whether or not to register RTL styles.
 	 */
-	public function register_style( $handle, $relative_src, $deps = [], $media = 'all' ) {
+	public function register_style( $handle, $relative_src, $deps = [], $media = 'all', $rtl = false ) {
 		$filename = str_replace( plugins_url( '/', __DIR__ ), '', $relative_src );
 		$src      = $this->get_asset_url( $relative_src );
 		$ver      = $this->get_file_version( $filename );
 		wp_register_style( $handle, $src, $deps, $ver, $media );
+
+		if ( $rtl ) {
+			wp_style_add_data( $handle, 'rtl', 'replace' );
+		}
 	}
 
 	/**

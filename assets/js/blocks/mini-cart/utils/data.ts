@@ -6,13 +6,43 @@ import {
 	getCurrencyFromPriceResponse,
 	formatPrice,
 } from '@woocommerce/price-format';
-import { CartResponse } from '@woocommerce/types';
+import {
+	CartResponse,
+	CartResponseTotals,
+	isBoolean,
+} from '@woocommerce/types';
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import type { ColorPaletteOption } from '@woocommerce/editor-components/color-panel/types';
 
-export const updateTotals = ( totals: [ string, number ] | undefined ) => {
-	if ( ! totals ) {
+/**
+ * Internal dependencies
+ */
+import { Attributes } from '../edit';
+
+const getPrice = ( totals: CartResponseTotals, showIncludingTax: boolean ) => {
+	const currency = getCurrencyFromPriceResponse( totals );
+
+	const subTotal = showIncludingTax
+		? parseInt( totals.total_items, 10 ) +
+		  parseInt( totals.total_items_tax, 10 )
+		: parseInt( totals.total_items, 10 );
+
+	return formatPrice( subTotal, currency );
+};
+
+export const updateTotals = (
+	cartData: [ CartResponseTotals, number ] | undefined
+) => {
+	if ( ! cartData ) {
 		return;
 	}
-	const [ amount, quantity ] = totals;
+	const [ totals, quantity ] = cartData;
+	const showIncludingTax = getSettingWithCoercion(
+		'displayCartPricesIncludingTax',
+		false,
+		isBoolean
+	);
+	const amount = getPrice( totals, showIncludingTax );
 	const miniCartBlocks = document.querySelectorAll( '.wc-block-mini-cart' );
 	const miniCartQuantities = document.querySelectorAll(
 		'.wc-block-mini-cart__badge'
@@ -55,6 +85,9 @@ export const updateTotals = ( totals: [ string, number ] | undefined ) => {
 						amount
 				  )
 		);
+
+		miniCartBlock.dataset.cartTotals = JSON.stringify( totals );
+		miniCartBlock.dataset.cartItemsCount = quantity.toString();
 	} );
 	miniCartQuantities.forEach( ( miniCartQuantity ) => {
 		if ( quantity > 0 || miniCartQuantity.textContent !== '' ) {
@@ -77,7 +110,7 @@ export const updateTotals = ( totals: [ string, number ] | undefined ) => {
 };
 
 export const getMiniCartTotalsFromLocalStorage = ():
-	| [ string, number ]
+	| [ CartResponseTotals, number ]
 	| undefined => {
 	const rawMiniCartTotals = localStorage.getItem(
 		'wc-blocks_mini_cart_totals'
@@ -85,17 +118,15 @@ export const getMiniCartTotalsFromLocalStorage = ():
 	if ( ! rawMiniCartTotals ) {
 		return undefined;
 	}
-	const miniCartTotals = JSON.parse( rawMiniCartTotals );
-	const currency = getCurrencyFromPriceResponse( miniCartTotals.totals );
-	const formattedPrice = formatPrice(
-		miniCartTotals.totals.total_price,
-		currency
-	);
-	return [ formattedPrice, miniCartTotals.itemsCount ] as [ string, number ];
+	const cartData = JSON.parse( rawMiniCartTotals );
+	return [ cartData.totals, cartData.itemsCount ] as [
+		CartResponseTotals,
+		number
+	];
 };
 
 export const getMiniCartTotalsFromServer = async (): Promise<
-	[ string, number ] | undefined
+	[ CartResponseTotals, number ] | undefined
 > => {
 	return fetch( '/wp-json/wc/store/v1/cart/' )
 		.then( ( response ) => {
@@ -107,11 +138,6 @@ export const getMiniCartTotalsFromServer = async (): Promise<
 			return response.json();
 		} )
 		.then( ( data: CartResponse ) => {
-			const currency = getCurrencyFromPriceResponse( data.totals );
-			const formattedPrice = formatPrice(
-				data.totals.total_price,
-				currency
-			);
 			// Save server data to local storage, so we can re-fetch it faster
 			// on the next page load.
 			localStorage.setItem(
@@ -121,7 +147,10 @@ export const getMiniCartTotalsFromServer = async (): Promise<
 					itemsCount: data.items_count,
 				} )
 			);
-			return [ formattedPrice, data.items_count ] as [ string, number ];
+			return [ data.totals, data.items_count ] as [
+				CartResponseTotals,
+				number
+			];
 		} )
 		.catch( ( error ) => {
 			// eslint-disable-next-line no-console
@@ -129,3 +158,45 @@ export const getMiniCartTotalsFromServer = async (): Promise<
 			return undefined;
 		} );
 };
+
+interface MaybeInCompatibleAttributes
+	extends Omit<
+		Attributes,
+		'priceColor' | 'iconColor' | 'productCountColor'
+	> {
+	priceColorValue?: string;
+	iconColorValue?: string;
+	productCountColorValue?: string;
+	priceColor: Partial< ColorPaletteOption > | string;
+	iconColor: Partial< ColorPaletteOption > | string;
+	productCountColor: Partial< ColorPaletteOption > | string;
+}
+
+export function migrateAttributesToColorPanel(
+	attributes: MaybeInCompatibleAttributes
+): Attributes {
+	const attrs = { ...attributes };
+
+	if ( attrs.priceColorValue && ! attrs.priceColor ) {
+		attrs.priceColor = {
+			color: attributes.priceColorValue as string,
+		};
+		delete attrs.priceColorValue;
+	}
+
+	if ( attrs.iconColorValue && ! attrs.iconColor ) {
+		attrs.iconColor = {
+			color: attributes.iconColorValue as string,
+		};
+		delete attrs.iconColorValue;
+	}
+
+	if ( attrs.productCountColorValue && ! attrs.productCountColor ) {
+		attrs.productCountColor = {
+			color: attributes.productCountColorValue as string,
+		};
+		delete attrs.productCountColorValue;
+	}
+
+	return <Attributes>attrs;
+}
