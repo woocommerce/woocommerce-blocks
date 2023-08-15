@@ -13,8 +13,8 @@ jobs:
     strategy:
       matrix:
         config: [
-          { name: Normal, file: playwright.config.ts },
-          { name: SideEffects, file: playwright.side-effects.config.ts },
+          { name: Normal, file: playwright.config.ts, resultPath: test-results },
+          { name: SideEffects, file: playwright.side-effects.config.ts, resultPath: test-results-side-effects },
         ]
     steps:
 
@@ -84,6 +84,6 @@ jobs:
 
         with:
           name: playwright-report-${{ matrix.config.name }}
-          path: artifacts/test-results
+          path: artifacts/${{ matrix.config.resultPath }}
           if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
