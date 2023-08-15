@@ -765,11 +765,11 @@ class BlockTemplatesController {
 
 	/**
 	 * Migrates page content to templates if needed.
-	 * This is skipped for requests regarding WP/WC setup, to avoid issues with the pages not existing yet.
+	 * This is skipped for requests regarding WP/WC setup and WP-ClI usage, to avoid issues with the pages not existing yet.
 	 */
 	public function maybe_migrate_content() {
 
-		if ( Constants::is_defined( 'WP_SETUP_CONFIG' ) || Constants::is_defined( 'WC_INSTALLING' ) ) {
+		if ( Constants::is_defined( 'WP_SETUP_CONFIG' ) || Constants::is_defined( 'WC_INSTALLING' ) || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 			return;
 		}
 
