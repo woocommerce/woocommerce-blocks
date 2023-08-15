@@ -224,4 +224,32 @@ export class FrontendUtils {
 			waitUntil: 'commit',
 		} );
 	}
+
+	async isLoggedIn() {
+		await this.gotoMyAccount();
+		await expect( this.page ).toHaveTitle( /My account/ );
+		const loginForm = this.page.locator( 'form.woocommerce-form-login' );
+
+		return ! loginForm;
+	}
+
+	async login() {
+		await this.gotoMyAccount();
+		await expect( this.page ).toHaveTitle( /My account/ );
+		await this.page
+			.locator( 'input[name="username"]' )
+			.fill( this.customer.username );
+		await this.page
+			.locator( 'input[name="password"]' )
+			.fill( this.customer.password );
+		await this.page.locator( 'text=Log In' ).click();
+		// eslint-disable-next-line playwright/no-networkidle
+		await this.page.waitForLoadState( 'networkidle' );
+	}
+
+	async logout() {
+		await this.gotoMyAccount();
+		await expect( this.page ).toHaveTitle( /My account/ );
+		await this.page.locator( 'text=Log out' ).click();
+	}
 }
