@@ -54,7 +54,7 @@ wp-env run tests-cli "wp post create \
 	--post_content=\"$post_content\"
 "
 
-post_content=$(cat "${script_dir}/cart.txt" | sed 's/"/\\"/g')
+post_content=$(cat "${script_dir}/pages/cart.html" | sed 's/"/\\"/g')
 post_id=$(wp-env run tests-cli "wp post create \
 	--porcelain \
 	--menu_order=1 \
@@ -66,7 +66,7 @@ post_id=$(wp-env run tests-cli "wp post create \
 ")
 wp-env run tests-cli "wp option update woocommerce_cart_page_id $post_id"
 
-post_content=$(cat "${script_dir}/checkout.txt" | sed 's/"/\\"/g')
+post_content=$(cat "${script_dir}/pages/checkout.html" | sed 's/"/\\"/g')
 post_id=$(wp-env run tests-cli "wp post create \
 	--porcelain \
 	--menu_order=2 \
@@ -78,7 +78,7 @@ post_id=$(wp-env run tests-cli "wp post create \
 ")
 wp-env run tests-cli "wp option update woocommerce_checkout_page_id $post_id"
 
-post_content=$(cat "${script_dir}/my-account.txt" | sed 's/"/\\"/g')
+post_content=$(cat "${script_dir}/pages/my-account.html" | sed 's/"/\\"/g')
 post_id=$(wp-env run tests-cli "wp post create \
 	--porcelain \
 	--menu_order=3 \
@@ -109,151 +109,21 @@ post_id=$(wp-env run tests-cli "wp post create \
 ")
 wp-env run tests-cli "wp option update wp_page_for_privacy_policy $post_id"
 
-post_content=$(cat "${script_dir}/all-reviews.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='All Reviews block' \
-	--post_content=\"$post_content\"
-"
 
-if [ "$pa_color" ] && [ "$pa_size" ]; then
-	post_content=$(cat "${script_dir}/active-filters.txt" | sed 's/"/\\"/g')
+find $script_dir/posts/ -maxdepth 1 -type f -print0 | while read -d $'\0' file; do
+	name=$(basename -s .html $file)
+	title=$(echo $name | tr "-" " ")
+	# bash 4.0+ only. Leaving it here to use when we run this script inside the
+	# container.
+	# title=$(IFS=- read -ra str <<<"$name"; printf '%s' "${str[*]^}")
+	post_content=$(cat "${file}" | sed 's/"/\\"/g')
 	wp-env run tests-cli "wp post create \
 		--post_status=publish \
 		--post_author=1 \
-		--post_title='Active Filters block' \
+		--post_title='${title}' \
 		--post_content=\"$post_content\"
 	"
-fi
-
-post_content=$(cat "${script_dir}/mini-cart.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Mini-Cart block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/product-best-sellers.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Best Selling Products block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/products-by-attribute.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Products by Attribute block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/single-product.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Single Product block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/customer-account.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Customer Account block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/featured-category.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Featured Category block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/featured-product.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Featured Product block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/handpicked-products.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Hand-picked Products block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/product-new.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Newest Products block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/product-on-sale.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='On Sale Products block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/product-category.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Products by Category block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/product-categories.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Product Categories List block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/product-search.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Product Search block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/reviews-by-category.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Reviews by Category block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/reviews-by-product.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Reviews by Product block' \
-	--post_content=\"$post_content\"
-"
-
-post_content=$(cat "${script_dir}/product-top-rated.txt" | sed 's/"/\\"/g')
-wp-env run tests-cli "wp post create \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='Top Rated Products block' \
-	--post_content=\"$post_content\"
-"
+done
 
 ###################################################################################################
 # Set up shipping
