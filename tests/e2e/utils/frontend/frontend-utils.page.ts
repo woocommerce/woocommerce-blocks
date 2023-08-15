@@ -94,6 +94,10 @@ export class FrontendUtils {
 		return firstBlockIndex < secondBlockIndex;
 	}
 
+	/**
+	 * Playwright selectText causes flaky tests when running on local
+	 * development machine. This method is more reliable on both environments.
+	 */
 	async selectTextInput( locator: Locator ) {
 		await locator.click();
 		await locator.press( 'End' );
