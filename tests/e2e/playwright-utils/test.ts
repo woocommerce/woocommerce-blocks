@@ -141,8 +141,8 @@ const test = base.extend<
 	editorUtils: async ( { editor, page }, use ) => {
 		await use( new EditorUtils( editor, page ) );
 	},
-	frontendUtils: async ( { page, request }, use ) => {
-		await use( new FrontendUtils( page, request ) );
+	frontendUtils: async ( { page, requestUtils }, use ) => {
+		await use( new FrontendUtils( page, requestUtils ) );
 	},
 	storeApiUtils: async ( { requestUtils }, use ) => {
 		await use( new StoreApiUtils( requestUtils ) );
