@@ -1,14 +1,18 @@
 /**
  * External dependencies
  */
-import {
-	PanelBody,
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
-} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useDispatch } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
+import {
+	PanelBody,
+	// @ts-expect-error `__experimentalToggleGroupControl` is not yet in the type definitions.
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// @ts-expect-error `__experimentalToggleGroupControlOption` is not yet in the type definitions.
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
