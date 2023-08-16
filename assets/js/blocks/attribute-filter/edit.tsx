@@ -362,7 +362,7 @@ const Edit = ( {
 				className="wc-block-attribute-filter__read_more_button"
 				isTertiary
 				href="https://docs.woocommerce.com/document/managing-product-taxonomies/"
-				target="_top"
+				target="_blank"
 			>
 				{ __( 'Learn more', 'woo-gutenberg-products-block' ) }
 			</Button>

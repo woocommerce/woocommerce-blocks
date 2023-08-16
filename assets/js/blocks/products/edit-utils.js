@@ -31,7 +31,7 @@ export const renderNoProductsPlaceholder = ( blockTitle, blockIcon ) => (
 			className="wc-block-products__read_more_button"
 			isTertiary
 			href="https://docs.woocommerce.com/document/managing-products/"
-			target="_top"
+			target="_blank"
 		>
 			{ __( 'Learn more', 'woo-gutenberg-products-block' ) }
 		</Button>
