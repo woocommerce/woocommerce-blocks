@@ -7,8 +7,8 @@
  */
 ?>
 
-<!-- wp:group {"align":"full","style":{"spacing":{"blockGap":"40px","padding":{"top":"var:preset|spacing|30","right":"var:preset|spacing|30","bottom":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
-<div class="wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)">
+<!-- wp:group {"className":"wc-blocks-footer-pattern","align":"full","style":{"spacing":{"blockGap":"40px","padding":{"top":"var:preset|spacing|30","right":"var:preset|spacing|30","bottom":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
+<div class="wc-blocks-footer-pattern wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)">
 	<!-- wp:columns -->
 	<div class="wp-block-columns are-vertically-aligned-top">
 		<!-- wp:column {"verticalAlignment":"top","width":"70%"} -->
@@ -57,12 +57,13 @@
 					<p class="has-text-align-right">
 						<?php
 						echo sprintf(
-							esc_html(
 							/* translators: Footer powered by text. %1$s being WordPress, %2$s being WooCommerce */
-								__( 'Powered by %1$s with %2$s', 'woo-gutenberg-products-block' )
+							esc_html__(
+								'Powered by %1$s with %2$s',
+								'woo-gutenberg-products-block'
 							),
-							'<a href="https://wordpress.org">WordPress</a>',
-							'<a href="https://woocommerce.com">WooCommerce</a>'
+							'<a href="https://wordpress.org" target="_blank" rel="noreferrer nofollow">WordPress</a>',
+							'<a href="https://woocommerce.com" target="_blank" rel="noreferrer nofollow">WooCommerce</a>'
 						);
 						?>
 					</p>

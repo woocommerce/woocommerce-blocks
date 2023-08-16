@@ -7,8 +7,8 @@
  */
 ?>
 
-<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"32px","right":"4%","bottom":"32px","left":"4%"},"blockGap":"40px"}}} -->
-<div class="wp-block-group alignfull" style="padding-top:32px;padding-right:4%;padding-bottom:32px;padding-left:4%">
+<!-- wp:group {"className":"wc-blocks-footer-pattern","align":"full","style":{"spacing":{"padding":{"top":"32px","right":"4%","bottom":"32px","left":"4%"},"blockGap":"40px"}}} -->
+<div class="wc-blocks-footer-pattern wp-block-group alignfull" style="padding-top:32px;padding-right:4%;padding-bottom:32px;padding-left:4%">
 	<!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":"16px"}}} -->
 	<div class="wp-block-columns alignwide">
 		<!-- wp:column {"width":"45%","style":{"spacing":{"padding":{"right":"50px"}}}} -->
@@ -69,15 +69,23 @@
 	<div class="wp-block-group alignfull" style="padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px">
 		<!-- wp:group {"style":{"spacing":{"blockGap":"8px"}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
 		<div class="wp-block-group">
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"12px"}}} -->
-			<p style="font-size:12px">@ 2022</p>
+			<!-- wp:paragraph -->
+			<p>@ <?php echo esc_html( gmdate( 'Y' ) ); ?></p>
 			<!-- /wp:paragraph -->
-			<!-- wp:site-title {"style":{"typography":{"fontStyle":"normal","fontWeight":"400","fontSize":"12px"}}} /-->
+			<!-- wp:site-title /-->
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:paragraph {"style":{"typography":{"fontSize":"14px"}}} -->
-		<p style="font-size:14px"><em>Built with <a href="https://woocommerce.com/">WooCommerce</a> </em></p>
+		<!-- wp:paragraph -->
+		<p><em>
+			<?php
+			echo sprintf(
+					/* translators: %s WooCommerce link */
+				esc_html__( 'Built with %s', 'woo-gutenberg-products-block' ),
+				'<a href="https://woocommerce.com/" target="_blank" rel="noreferrer nofollow">WooCommerce</a>'
+			);
+			?>
+		</em></p>
 		<!-- /wp:paragraph -->
 	</div>
 	<!-- /wp:group -->

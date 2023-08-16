@@ -20,6 +20,11 @@ const Placeholder = memo( () => {
 	);
 } );
 
+/**
+ * Internal dependencies
+ */
+import './editor.scss';
+
 export const Edit = (): JSX.Element => {
 	const innerBlocksProps = useInnerBlocksProps(
 		{

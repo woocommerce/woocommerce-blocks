@@ -17,6 +17,13 @@ class ProductCollection extends AbstractBlock {
 	protected $block_name = 'product-collection';
 
 	/**
+	 * The Block with its attributes before it gets rendered
+	 *
+	 * @var array
+	 */
+	protected $parsed_block;
+
+	/**
 	 * All query args from WP_Query.
 	 *
 	 * @var array
@@ -84,6 +91,102 @@ class ProductCollection extends AbstractBlock {
 
 		// Extend allowed `collection_params` for the REST API.
 		add_filter( 'rest_product_collection_params', array( $this, 'extend_rest_query_allowed_params' ), 10, 1 );
+
+		// Interactivity API: Add navigation directives to the product collection block.
+		add_filter( 'render_block_woocommerce/product-collection', array( $this, 'add_navigation_id_directive' ), 10, 3 );
+		add_filter( 'render_block_core/query-pagination', array( $this, 'add_navigation_link_directives' ), 10, 3 );
+	}
+
+	/**
+	 * Mark the Product Collection as an interactive region so it can be updated
+	 * during client-side navigation.
+	 *
+	 * @param string    $block_content The block content.
+	 * @param array     $block         The full block, including name and attributes.
+	 * @param \WP_Block $instance      The block instance.
+	 */
+	public function add_navigation_id_directive( $block_content, $block, $instance ) {
+		$is_product_collection_block = $block['attrs']['query']['isProductCollectionBlock'] ?? false;
+		if ( $is_product_collection_block ) {
+			// Enqueue the Interactivity API runtime.
+			wp_enqueue_script( 'wc-interactivity' );
+
+			$p = new \WP_HTML_Tag_Processor( $block_content );
+
+			// Add `data-wc-navigation-id to the query block.
+			if ( $p->next_tag( array( 'class_name' => 'wp-block-woocommerce-product-collection' ) ) ) {
+				$p->set_attribute(
+					'data-wc-navigation-id',
+					'wc-product-collection-' . $this->parsed_block['attrs']['queryId']
+				);
+				$p->set_attribute( 'data-wc-interactive', true );
+				$block_content = $p->get_updated_html();
+			}
+		}
+
+		return $block_content;
+	}
+
+	/**
+	 * Add interactive links to all anchors inside the Query Pagination block.
+	 *
+	 * @param string    $block_content The block content.
+	 * @param array     $block         The full block, including name and attributes.
+	 * @param \WP_Block $instance      The block instance.
+	 */
+	public function add_navigation_link_directives( $block_content, $block, $instance ) {
+		$is_product_collection_block = $instance->context['query']['isProductCollectionBlock'] ?? false;
+
+		if (
+			$is_product_collection_block &&
+			$instance->context['queryId'] === $this->parsed_block['attrs']['queryId']
+		) {
+			$p = new \WP_HTML_Tag_Processor( $block_content );
+			$p->next_tag( array( 'class_name' => 'wp-block-query-pagination' ) );
+
+			while ( $p->next_tag( 'a' ) ) {
+				$class_attr = $p->get_attribute( 'class' );
+				$class_list = preg_split( '/\s+/', $class_attr );
+
+				$is_previous         = in_array( 'wp-block-query-pagination-previous', $class_list, true );
+				$is_next             = in_array( 'wp-block-query-pagination-next', $class_list, true );
+				$is_previous_or_next = $is_previous || $is_next;
+
+				$navigation_link_payload = array(
+					'prefetch' => $is_previous_or_next,
+					'scroll'   => false,
+				);
+
+				$p->set_attribute(
+					'data-wc-navigation-link',
+					wp_json_encode( $navigation_link_payload )
+				);
+
+				if ( $is_previous ) {
+					$p->set_attribute( 'key', 'pagination-previous' );
+				} elseif ( $is_next ) {
+					$p->set_attribute( 'key', 'pagination-next' );
+				}
+			}
+			$block_content = $p->get_updated_html();
+		}
+
+		return $block_content;
+	}
+
+	/**
+	 * Extra data passed through from server to client for block.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 *                           Note, this will be empty in the editor context when the block is
+	 *                           not in the post content on editor load.
+	 */
+	protected function enqueue_data( array $attributes = [] ) {
+		parent::enqueue_data( $attributes );
+
+		// The `loop_shop_per_page` filter can be found in WC_Query::product_query().
+		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+		$this->asset_data_registry->add( 'loopShopPerPage', apply_filters( 'loop_shop_per_page', wc_get_default_products_per_row() * wc_get_default_product_rows_per_page() ), true );
 	}
 
 	/**
@@ -135,12 +238,14 @@ class ProductCollection extends AbstractBlock {
 			return;
 		}
 
-		$this->asset_data_registry->add( 'has_filterable_products', true, true );
+		$this->parsed_block = $parsed_block;
+
+		$this->asset_data_registry->add( 'hasFilterableProducts', true, true );
 		/**
 		 * It enables the page to refresh when a filter is applied, ensuring that the product collection block,
 		 * which is a server-side rendered (SSR) block, retrieves the products that match the filters.
 		 */
-		$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
+		$this->asset_data_registry->add( 'isRenderingPhpTemplate', true, true );
 	}
 
 	/**
