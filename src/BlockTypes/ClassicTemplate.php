@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
+use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 use WC_Shortcode_Checkout;
 use WC_Frontend_Scripts;
@@ -91,6 +92,10 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			return $this->render_order_received();
 		}
 
+		if ( CheckoutTemplate::get_slug() === $attributes['template'] ) {
+			return $this->render_checkout();
+		}
+
 		if ( is_product() ) {
 			return $this->render_single_product();
 		}
@@ -144,6 +149,23 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			get_block_wrapper_attributes(), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			esc_html__( 'Order confirmation', 'woo-gutenberg-products-block' )
 		);
+
+		WC_Shortcode_Checkout::output( array() );
+
+		echo '</div>';
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Render method for rendering the checkout shortcode.
+	 *
+	 * @return string Rendered block type output.
+	 */
+	protected function render_checkout() {
+		ob_start();
+
+		echo '<div class="wp-block-group">';
 
 		WC_Shortcode_Checkout::output( array() );
 
