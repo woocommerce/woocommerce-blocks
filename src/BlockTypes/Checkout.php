@@ -133,14 +133,14 @@ class Checkout extends AbstractBlock {
 	 */
 	protected function render( $attributes, $content, $block ) {
 
-		// Dequeue the core scripts when rendering this block.
-		add_action( 'wp_enqueue_scripts', array( $this, 'dequeue_woocommerce_core_scripts' ) );
-
 		if ( $this->is_checkout_endpoint() ) {
 			// Note: Currently the block only takes care of the main checkout form -- if an endpoint is set, refer to the
 			// legacy shortcode instead and do not render block.
 			return wc_current_theme_is_fse_theme() ? do_shortcode( '[woocommerce_checkout]' ) : '[woocommerce_checkout]';
 		}
+
+		// Dequeue the core scripts when rendering this block.
+		add_action( 'wp_enqueue_scripts', array( $this, 'dequeue_woocommerce_core_scripts' ) );
 
 		/**
 		 * We need to check if $content has any templates from prior iterations of the block, in order to update to the latest iteration.
