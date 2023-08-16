@@ -773,22 +773,12 @@ class BlockTemplatesController {
 			return;
 		}
 
-		if ( ! $this->has_migrated_page( 'cart' ) ) {
+		if ( ! CartTemplate::has_migrated_page() ) {
 			$this->migrate_page( 'cart', CartTemplate::get_placeholder_page() );
 		}
-		if ( ! $this->has_migrated_page( 'checkout' ) ) {
+		if ( ! CheckoutTemplate::has_migrated_page() ) {
 			$this->migrate_page( 'checkout', CheckoutTemplate::get_placeholder_page() );
 		}
-	}
-
-	/**
-	 * Check if a page has been migrated to a template.
-	 *
-	 * @param string $page_id Page ID.
-	 * @return boolean
-	 */
-	protected function has_migrated_page( $page_id ) {
-		return (bool) get_option( 'has_migrated_' . $page_id, false );
 	}
 
 	/**

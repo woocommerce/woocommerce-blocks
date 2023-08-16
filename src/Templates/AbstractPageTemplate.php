@@ -107,4 +107,13 @@ abstract class AbstractPageTemplate {
 		}
 		return $title;
 	}
+
+	/**
+	 * Check if a page has been migrated to a template.
+	 *
+	 * @return boolean
+	 */
+	public static function has_migrated_page() {
+		return (bool) get_option( 'has_migrated_' . static::get_slug(), false );
+	}
 }
