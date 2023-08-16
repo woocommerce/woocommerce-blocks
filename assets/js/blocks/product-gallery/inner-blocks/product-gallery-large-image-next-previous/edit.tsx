@@ -7,22 +7,16 @@ import { useMemo } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { BlockSettings } from './settings';
-import { BlockAttributes } from './types';
 import { NextButton, PrevButton } from './icons';
 import './editor.scss';
+import { ProductGalleryNextPreviousBlockSettings } from './settings';
+import { Context } from '../../types';
 
-export const Edit = ( {
-	attributes,
-	setAttributes,
-}: {
-	attributes: BlockAttributes;
-	setAttributes: ( newAttributes: BlockAttributes ) => void;
-} ): JSX.Element => {
+export const Edit = ( { context }: { context: Context } ): JSX.Element => {
 	const blockProps = useBlockProps();
 
 	const suffixClass = useMemo( () => {
-		switch ( attributes.buttonPosition ) {
+		switch ( context.nextPreviousButtonsPosition ) {
 			case 'insideTheImage':
 				return 'inside-image';
 			case 'outsideTheImage':
@@ -32,7 +26,7 @@ export const Edit = ( {
 			default:
 				return 'off';
 		}
-	}, [ attributes.buttonPosition ] );
+	}, [ context.nextPreviousButtonsPosition ] );
 
 	return (
 		<div
@@ -43,10 +37,7 @@ export const Edit = ( {
 			} }
 		>
 			<InspectorControls>
-				<BlockSettings
-					attributes={ attributes }
-					setAttributes={ setAttributes }
-				/>
+				<ProductGalleryNextPreviousBlockSettings context={ context } />
 			</InspectorControls>
 			<div
 				className={ `wc-block-product-gallery-large-image-next-previous-container` }

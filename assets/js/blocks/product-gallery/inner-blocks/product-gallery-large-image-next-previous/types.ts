@@ -4,6 +4,6 @@ export enum NextPreviousButtonSettingValues {
 	outsideTheImage = 'outsideTheImage',
 }
 
-export type BlockAttributes = {
-	buttonPosition: NextPreviousButtonSettingValues;
+export type ProductGalleryNextPreviousBlockAttributes = {
+	nextPreviousButtonsPosition: NextPreviousButtonSettingValues;
 };

@@ -21,7 +21,9 @@ export const Edit = ( {
 	attributes,
 	setAttributes,
 	context,
-}: BlockEditProps< ProductGalleryThumbnailsBlockAttributes > & Context ) => {
+}: BlockEditProps< ProductGalleryThumbnailsBlockAttributes > & {
+	context: Context;
+} ) => {
 	const blockProps = useBlockProps();
 
 	const Placeholder = () => {
