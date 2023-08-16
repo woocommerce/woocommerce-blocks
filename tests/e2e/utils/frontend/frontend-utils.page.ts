@@ -192,7 +192,9 @@ export class FrontendUtils {
 
 	async isLoggedIn() {
 		await this.gotoMyAccount();
-		await expect( this.page ).toHaveTitle( /My account/ );
+		await expect(
+			this.page.getByRole( 'heading', { name: 'My account' } )
+		).toBeVisible();
 		const loginForm = this.page.locator( 'form.woocommerce-form-login' );
 
 		return ! loginForm;
