@@ -9,7 +9,7 @@ wp site empty --yes
 bash $script_dir/attributes.sh
 
 # Run all scripts in parallel at maximum 10 at a time
-find $script_dir/paragraph/*.sh -maxdepth 1 -type f | xargs -P10 -n1 bash
+find $script_dir/parallel/*.sh -maxdepth 1 -type f | xargs -P10 -n1 bash
 
 # Run rewrite script last to ensure all posts are created before running it
 bash $script_dir/rewrite.sh
