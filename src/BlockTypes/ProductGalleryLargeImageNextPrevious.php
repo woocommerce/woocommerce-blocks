@@ -25,17 +25,17 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 	 * @return string[]
 	 */
 	protected function get_block_type_uses_context() {
-		return [ 'query', 'queryId', 'postId' ];
+		return [ 'nextPreviousButtonsPosition', 'productGalleryClientId' ];
 	}
 
 	/**
 	 *  Return class suffix
 	 *
-	 * @param array $attributes Block attributes.
+	 * @param array $context Block context.
 	 * @return string
 	 */
-	private function get_class_suffix( $attributes ) {
-		switch ( $attributes['buttonPosition'] ) {
+	private function get_class_suffix( $context ) {
+		switch ( $context['nextPreviousButtonsPosition'] ) {
 			case 'insideTheImage':
 				return 'inside-image';
 			case 'outsideTheImage':
@@ -55,6 +55,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+		$context     = $block->context;
 		$prev_button = sprintf(
 			'
 			<svg class="wc-block-product-gallery-large-image-next-previous-left--%1$s" xmlns="http://www.w3.org/2000/svg" width="49" height="48" viewBox="0 0 49 48" fill="none">
@@ -71,7 +72,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 			</filter>
 			</defs>
 			</svg>',
-			$this->get_class_suffix( $attributes )
+			$this->get_class_suffix( $context )
 		);
 
 		$next_button = sprintf(
@@ -91,7 +92,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 			</defs>
 			</svg>
 		',
-			$this->get_class_suffix( $attributes )
+			$this->get_class_suffix( $context )
 		);
 
 		return strtr(

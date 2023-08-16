@@ -1,18 +1,25 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
+import { useDispatch } from '@wordpress/data';
+import { store as blockEditorStore } from '@wordpress/block-editor';
 import {
 	PanelBody,
+	// @ts-expect-error `__experimentalToggleGroupControl` is not yet in the type definitions.
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
+	// @ts-expect-error `__experimentalToggleGroupControlOption` is not yet in the type definitions.
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-import { BlockAttributes, NextPreviousButtonSettingValues } from './types';
+import { NextPreviousButtonSettingValues } from './types';
 import { InsideTheImage, OutsideTheImage } from './icons';
+import { Context } from '../../types';
 
 const NextPreviousButtonIcons = {
 	[ NextPreviousButtonSettingValues.insideTheImage ]: <InsideTheImage />,
@@ -44,13 +51,14 @@ const getHelpText = ( buttonPosition: NextPreviousButtonSettingValues ) => {
 	}
 };
 
-export const BlockSettings = ( {
-	attributes,
-	setAttributes,
+export const ProductGalleryNextPreviousBlockSettings = ( {
+	context,
 }: {
-	attributes: BlockAttributes;
-	setAttributes: ( newAttributes: BlockAttributes ) => void;
+	context: Context;
 } ) => {
+	const { productGalleryClientId, nextPreviousButtonsPosition } = context;
+	// @ts-expect-error @wordpress/block-editor/store types not provided
+	const { updateBlockAttributes } = useDispatch( blockEditorStore );
 	return (
 		<PanelBody
 			className="wc-block-editor-product-gallery-large-image-next-previous-settings"
@@ -61,12 +69,12 @@ export const BlockSettings = ( {
 					width: '100%',
 				} }
 				onChange={ ( value: NextPreviousButtonSettingValues ) =>
-					setAttributes( {
-						buttonPosition: value,
+					updateBlockAttributes( productGalleryClientId, {
+						nextPreviousButtonsPosition: value,
 					} )
 				}
-				help={ getHelpText( attributes.buttonPosition ) }
-				value={ attributes.buttonPosition }
+				help={ getHelpText( nextPreviousButtonsPosition ) }
+				value={ nextPreviousButtonsPosition }
 			>
 				<ToggleGroupControlOption
 					value={ NextPreviousButtonSettingValues.off }

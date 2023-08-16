@@ -15,7 +15,8 @@
 	"providesContext": {
 		"thumbnailsPosition": "thumbnailsPosition",
 		"thumbnailsNumberOfThumbnails": "thumbnailsNumberOfThumbnails",
-		"productGalleryClientId": "productGalleryClientId"
+		"productGalleryClientId": "productGalleryClientId",
+		"nextPreviousButtonsPosition": "nextPreviousButtonsPosition"
 	},
 	"attributes": {
 		"thumbnailsPosition": {
@@ -41,6 +42,10 @@
 		"fullScreenOnClick": {
 			"type": "boolean",
 			"default": false
+		},
+		"nextPreviousButtonsPosition":{
+			"type": "string",
+			"default": "insideTheImage"
 		}
 	}
 }

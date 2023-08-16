@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import { ProductGalleryNextPreviousBlockAttributes } from './inner-blocks/product-gallery-large-image-next-previous/types';
 import { ThumbnailsPosition } from './inner-blocks/product-gallery-thumbnails/constants';
 
 export interface ProductGalleryBlockAttributes {
@@ -36,10 +37,8 @@ export interface ProductGalleryThumbnailsSettingsProps {
 	context: ProductGalleryThumbnailsBlockAttributes;
 }
 
-export interface Context {
-	context: {
-		thumbnailsPosition: ThumbnailsPosition;
-		thumbnailsNumberOfThumbnails: number;
-		productGalleryClientId: string;
-	};
-}
+export type Context = {
+	thumbnailsPosition: ThumbnailsPosition;
+	thumbnailsNumberOfThumbnails: number;
+	productGalleryClientId: string;
+} & ProductGalleryNextPreviousBlockAttributes;

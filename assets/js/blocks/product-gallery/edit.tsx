@@ -24,6 +24,8 @@ import type {
 	ProductGalleryThumbnailsBlockAttributes,
 	ProductGalleryBlockAttributes,
 } from './types';
+import { ProductGalleryNextPreviousBlockSettings } from './inner-blocks/product-gallery-large-image-next-previous/settings';
+import { ProductGalleryNextPreviousBlockAttributes } from './inner-blocks/product-gallery-large-image-next-previous/types';
 
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
@@ -47,7 +49,9 @@ export const Edit = ( {
 	attributes,
 	setAttributes,
 }: BlockEditProps<
-	ProductGalleryThumbnailsBlockAttributes & ProductGalleryBlockAttributes
+	ProductGalleryThumbnailsBlockAttributes &
+		ProductGalleryBlockAttributes &
+		ProductGalleryNextPreviousBlockAttributes
 > ) => {
 	const blockProps = useBlockProps();
 
@@ -81,6 +85,14 @@ export const Edit = ( {
 				<ProductGalleryBlockSettings
 					attributes={ attributes }
 					setAttributes={ setAttributes }
+				/>
+			</InspectorControls>
+			<InspectorControls>
+				<ProductGalleryNextPreviousBlockSettings
+					context={ {
+						...attributes,
+						productGalleryClientId: clientId,
+					} }
 				/>
 			</InspectorControls>
 			<InnerBlocks

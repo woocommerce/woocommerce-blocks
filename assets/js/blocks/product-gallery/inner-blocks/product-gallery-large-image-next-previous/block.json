@@ -7,13 +7,7 @@
     "description": "Dispaly next and previous buttons.",
     "category": "woocommerce",
     "keywords": [ "WooCommerce" ],
-	"usesContext": [ "postId" ],
+	"usesContext": [ "nextPreviousButtonsPosition", "productGalleryClientId" ],
     "textdomain": "woo-gutenberg-products-block",
-	"ancestor": [ "woocommerce/product-gallery-large-image" ],
-	"attributes": {
-		"buttonPosition": {
-			"type": "string",
-			"default": "insideTheImage"
-		}
-	}
+	"ancestor": [ "woocommerce/product-gallery-large-image" ]
 }
