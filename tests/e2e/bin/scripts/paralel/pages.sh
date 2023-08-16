@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd ../pages && pwd)"
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd ../../pages && pwd)"
 
 wp post create \
 	--menu_order=0 \
