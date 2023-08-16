@@ -42,7 +42,7 @@ class CheckoutTemplate extends AbstractPageTemplate {
 	 */
 	public function is_active_template() {
 
-		if ( self::has_migrated_page() ) {
+		if ( ! self::has_migrated_page() ) {
 			return false;
 		}
 
