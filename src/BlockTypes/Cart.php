@@ -160,7 +160,7 @@ class Cart extends AbstractBlock {
 	 */
 	protected function render( $attributes, $content, $block ) {
 		// Dequeue the core scripts when rendering this block.
-		add_action( 'wp_enqueue_scripts', array( $this, 'dequeue_woocommerce_core_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'dequeue_woocommerce_core_scripts' ), 20 );
 
 		/**
 		 * We need to check if $content has any templates from prior iterations of the block, in order to update to the latest iteration.
