@@ -195,12 +195,19 @@ export class FrontendUtils {
 		await expect(
 			this.page.getByRole( 'heading', { name: 'My account' } )
 		).toBeVisible();
-		const loginForm = this.page.locator( 'form.woocommerce-form-login' );
+		const isLoginFormVisible = await this.page
+			.locator( 'form.woocommerce-form-login' )
+			.isVisible();
 
-		return ! loginForm;
+		return ! isLoginFormVisible;
 	}
 
 	async login() {
+		const isLoggedIn = await this.isLoggedIn();
+		if ( isLoggedIn ) {
+			return;
+		}
+
 		await this.gotoMyAccount();
 		await expect(
 			this.page.getByRole( 'heading', { name: 'My account' } )
@@ -221,6 +228,14 @@ export class FrontendUtils {
 		await expect(
 			this.page.getByRole( 'heading', { name: 'My account' } )
 		).toBeVisible();
-		await this.page.locator( 'text=Log out' ).click();
+		// await this.page.locator( 'text=Log out' ).click();
+		await this.page
+			.getByRole( 'list' )
+			.filter( {
+				hasText:
+					'Dashboard Orders Downloads Addresses Account details Log out',
+			} )
+			.getByRole( 'link', { name: 'Log out' } )
+			.click();
 	}
 }
