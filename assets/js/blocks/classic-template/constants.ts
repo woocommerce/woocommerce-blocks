@@ -23,6 +23,7 @@ export const PLACEHOLDERS = {
 	singleProduct: 'single-product',
 	archiveProduct: 'archive-product',
 	orderConfirmation: 'fallback',
+	checkout: 'checkout',
 	checkoutHeader: 'checkout-header',
 };
 
@@ -92,7 +93,7 @@ export const TEMPLATES: TemplateDetails = {
 	checkout: {
 		type: TYPES.checkout,
 		title: __( 'Checkout Block', 'woo-gutenberg-products-block' ),
-		placeholder: 'checkout',
+		placeholder: PLACEHOLDERS.checkout,
 	},
 	'checkout-header': {
 		type: TYPES.checkoutHeader,
