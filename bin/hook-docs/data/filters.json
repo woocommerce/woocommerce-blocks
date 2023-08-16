@@ -283,8 +283,7 @@
                 "tags": [
                     {
                         "name": "since",
-                        "content": "$VID:$",
-                        "description": "$VID:$"
+                        "content": "10.9.0"
                     },
                     {
                         "name": "param",
