@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
+import { EditorUtils, FrontendUtils } from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
@@ -15,10 +16,20 @@ const blockData = {
 	selectors: {
 		frontend: {},
 		editor: {
-			leftArrow:
-				'.wc-block-product-gallery-large-image-next-previous-left--off',
-			rightArrow:
-				'.wc-block-product-gallery-large-image-next-previous-right--off',
+			leftArrow: {
+				off: '.wc-block-product-gallery-large-image-next-previous-left--off',
+				insideTheImage:
+					'.wc-block-product-gallery-large-image-next-previous-left--inside-image',
+				outsideTheImage:
+					'.wc-block-product-gallery-large-image-next-previous-left--outside-image',
+			},
+			rightArrow: {
+				off: '.wc-block-product-gallery-large-image-next-previous-right--off',
+				insideTheImage:
+					'.wc-block-product-gallery-large-image-next-previous-right--inside-image',
+				outsideTheImage:
+					'.wc-block-product-gallery-large-image-next-previous-right--outside-image',
+			},
 			noArrowsOption: 'button[data-value=off]',
 			outsideTheImageOption: 'button[data-value=outsideTheImage]',
 			insideTheImageOption: 'button[data-value=insideTheImage]',
@@ -26,6 +37,35 @@ const blockData = {
 	},
 	slug: 'single-product',
 	productPage: '/product/album/',
+};
+
+const getBoundingClientRect = async ( {
+	frontendUtils,
+	editorUtils,
+	leftArrowSelector,
+	rightArrowSelector,
+	isFrontend,
+}: {
+	frontendUtils: FrontendUtils;
+	editorUtils: EditorUtils;
+	leftArrowSelector: string;
+	rightArrowSelector: string;
+	isFrontend: boolean;
+} ) => {
+	const page = isFrontend ? frontendUtils.page : editorUtils.editor.canvas;
+	return {
+		leftArrow: await page
+			.locator( leftArrowSelector )
+			.evaluate( ( el ) => el.getBoundingClientRect() ),
+		rightArrow: await page
+			.locator( rightArrowSelector )
+			.evaluate( ( el ) => el.getBoundingClientRect() ),
+		gallery: await (
+			await ( isFrontend ? frontendUtils : editorUtils ).getBlockByName(
+				'woocommerce/product-gallery-large-image'
+			)
+		 ).evaluate( ( el ) => el.getBoundingClientRect() ),
+	};
 };
 
 test.describe( `${ blockData.name }`, () => {
@@ -101,11 +141,11 @@ test.describe( `${ blockData.name }`, () => {
 			} );
 
 			const leftArrow = await page
-				.locator( blockData.selectors.editor.leftArrow )
+				.locator( blockData.selectors.editor.leftArrow.off )
 				.isVisible();
 
 			const rightArrow = await page
-				.locator( blockData.selectors.editor.rightArrow )
+				.locator( blockData.selectors.editor.rightArrow.off )
 				.isVisible();
 
 			expect( leftArrow ).toBe( false );
@@ -144,11 +184,23 @@ test.describe( `${ blockData.name }`, () => {
 				.locator( blockData.selectors.editor.outsideTheImageOption )
 				.click();
 
-			const block = await editorUtils.getBlockByName(
-				'woocommerce/product-gallery'
+			const editorBoundingClientRect = await getBoundingClientRect( {
+				frontendUtils,
+				editorUtils,
+				leftArrowSelector:
+					blockData.selectors.editor.leftArrow.outsideTheImage,
+				rightArrowSelector:
+					blockData.selectors.editor.rightArrow.outsideTheImage,
+				isFrontend: false,
+			} );
+
+			expect( editorBoundingClientRect.leftArrow.left ).toBeLessThan(
+				editorBoundingClientRect.gallery.left
 			);
 
-			await expect( block ).toHaveScreenshot();
+			expect( editorBoundingClientRect.rightArrow.right ).toBeGreaterThan(
+				editorBoundingClientRect.gallery.right
+			);
 
 			await Promise.all( [
 				editor.saveSiteEditorEntities(),
@@ -161,11 +213,23 @@ test.describe( `${ blockData.name }`, () => {
 				waitUntil: 'commit',
 			} );
 
-			const blockFrontend = await frontendUtils.getBlockByName(
-				'woocommerce/product-gallery'
+			const frontendBoundingClientRect = await getBoundingClientRect( {
+				frontendUtils,
+				editorUtils,
+				leftArrowSelector:
+					blockData.selectors.editor.leftArrow.outsideTheImage,
+				rightArrowSelector:
+					blockData.selectors.editor.rightArrow.outsideTheImage,
+				isFrontend: true,
+			} );
+
+			expect( frontendBoundingClientRect.leftArrow.left ).toBeLessThan(
+				frontendBoundingClientRect.gallery.left
 			);
 
-			await expect( blockFrontend ).toHaveScreenshot();
+			expect(
+				frontendBoundingClientRect.rightArrow.right
+			).toBeGreaterThan( frontendBoundingClientRect.gallery.right );
 		} );
 
 		test( 'Show button inside of the image', async ( {
@@ -200,11 +264,23 @@ test.describe( `${ blockData.name }`, () => {
 				.locator( blockData.selectors.editor.insideTheImageOption )
 				.click();
 
-			const block = await editorUtils.getBlockByName(
-				'woocommerce/product-gallery'
+			const editorBoundingClientRect = await getBoundingClientRect( {
+				frontendUtils,
+				editorUtils,
+				leftArrowSelector:
+					blockData.selectors.editor.leftArrow.insideTheImage,
+				rightArrowSelector:
+					blockData.selectors.editor.rightArrow.insideTheImage,
+				isFrontend: false,
+			} );
+
+			expect( editorBoundingClientRect.leftArrow.left ).toBeGreaterThan(
+				editorBoundingClientRect.gallery.left
 			);
 
-			await expect( block ).toHaveScreenshot();
+			expect( editorBoundingClientRect.rightArrow.right ).toBeLessThan(
+				editorBoundingClientRect.gallery.right
+			);
 
 			await Promise.all( [
 				editor.saveSiteEditorEntities(),
@@ -217,11 +293,23 @@ test.describe( `${ blockData.name }`, () => {
 				waitUntil: 'commit',
 			} );
 
-			const blockFrontend = await frontendUtils.getBlockByName(
-				'woocommerce/product-gallery'
+			const frontendBoundingClientRect = await getBoundingClientRect( {
+				frontendUtils,
+				editorUtils,
+				leftArrowSelector:
+					blockData.selectors.editor.leftArrow.insideTheImage,
+				rightArrowSelector:
+					blockData.selectors.editor.rightArrow.insideTheImage,
+				isFrontend: true,
+			} );
+
+			expect( frontendBoundingClientRect.leftArrow.left ).toBeGreaterThan(
+				frontendBoundingClientRect.gallery.left
 			);
 
-			await expect( blockFrontend ).toHaveScreenshot();
+			expect( frontendBoundingClientRect.rightArrow.right ).toBeLessThan(
+				frontendBoundingClientRect.gallery.right
+			);
 		} );
 	} );
 } );
