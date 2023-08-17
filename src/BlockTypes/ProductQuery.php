@@ -80,33 +80,6 @@ class ProductQuery extends AbstractBlock {
 		);
 		add_filter( 'rest_product_query', array( $this, 'update_rest_query' ), 10, 2 );
 		add_filter( 'rest_product_collection_params', array( $this, 'extend_rest_query_allowed_params' ), 10, 1 );
-
-		// If we don't mark the block as interactive, then interactive blocks won't work inside it
-		// For example, Product button won't work as it uses Interactivity API.
-		// add_filter( 'render_block_core/query', array( $this, 'mark_block_as_interactive' ), 10, 2 );
-	}
-
-	/**
-	 * Mark the Product Query as an interactive region so that interactive elements
-	 * can work inside it.
-	 *
-	 * @param string $block_content The block content.
-	 * @param array  $block         The full block, including name and attributes.
-	 */
-	public function mark_block_as_interactive( $block_content, $block ) {
-		if ( self::is_woocommerce_variation( $block ) ) {
-			// Enqueue the Interactivity API runtime.
-			wp_enqueue_script( 'wc-interactivity' );
-
-			$p = new \WP_HTML_Tag_Processor( $block_content );
-
-			if ( $p->next_tag( array( 'class_name' => 'wp-block-query' ) ) ) {
-				$p->set_attribute( 'data-wc-interactive', true );
-				$block_content = $p->get_updated_html();
-			}
-		}
-
-		return $block_content;
 	}
 
 	/**
