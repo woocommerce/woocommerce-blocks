@@ -817,7 +817,7 @@ class BlockTemplatesController {
 		// Use the page template if it exists, which we'll use over our default template if found.
 		$page_template    = BlockTemplateMigrationUtils::get_page_template( $page );
 		$default_template = BlockTemplateMigrationUtils::get_default_template( $page );
-		$template_content = $page_template ? $page_template : $default_template;
+		$template_content = $page_template ?: $default_template;
 
 		// If at this point we have no content to migrate, bail.
 		if ( ! $template_content ) {
