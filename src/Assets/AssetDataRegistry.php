@@ -147,7 +147,7 @@ class AssetDataRegistry {
 					'type'        => 'warning',
 					'dismissible' => false,
 					'content'     => __(
-						'Your store is currently using a block theme and the Checkout template. Any changes made to the content of this page will not be reflected in your store. If you need to modify edit your checkout page, please use the Site Editor.',
+						'Your store is currently using a block theme and the Checkout template. Any changes made to the content of this page will not be reflected in your store. If you need to edit your checkout, please use the Site Editor.',
 						'woo-gutenberg-products-block'
 					),
 					'actions'     => [
