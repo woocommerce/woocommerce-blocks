@@ -9,7 +9,38 @@
 		"multiple": false,
 		"align": [ "wide", "full" ],
 		"inserter": false,
-		"html": false
+		"html": false,
+		"color": {
+			"text": true,
+			"background": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"width": true,
+			"style": true,
+			"__experimentalDefaultControls": {
+				"width": true,
+				"color": true
+			}
+		}
 	},
 	"attributes": {
 		"align": {
