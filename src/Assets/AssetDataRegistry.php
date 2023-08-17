@@ -126,7 +126,7 @@ class AssetDataRegistry {
 					'type'        => 'warning',
 					'dismissible' => false,
 					'content'     => __(
-						'Your store is currently using a block theme and the Cart template. Any changes made to the content of this page will not be reflected in your store. If you need to modify edit your cart page, please use the Site Editor.',
+						'Your store is currently using a block theme and the Cart template. Any changes made to the content of this page will not be reflected in your store. If you need to edit your cart, please use the Site Editor.',
 						'woo-gutenberg-products-block'
 					),
 					'actions'     => [
