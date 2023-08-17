@@ -83,7 +83,7 @@ class ProductQuery extends AbstractBlock {
 
 		// If we don't mark the block as interactive, then interactive blocks won't work inside it
 		// For example, Product button won't work as it uses Interactivity API.
-		add_filter( 'render_block_core/query', array( $this, 'mark_block_as_interactive' ), 10, 2 );
+		// add_filter( 'render_block_core/query', array( $this, 'mark_block_as_interactive' ), 10, 2 );
 	}
 
 	/**
