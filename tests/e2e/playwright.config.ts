@@ -32,7 +32,8 @@ const config: ExtendedPlaywrightTestConfig = {
 		? [ [ 'github' ], [ 'list' ], [ 'html' ] ]
 		: 'list',
 	maxFailures: E2E_MAX_FAILURES ? Number( E2E_MAX_FAILURES ) : 0,
-	snapshotPathTemplate: '{testDir}/__screenshots__/{testFilePath}/{arg}{ext}',
+	snapshotPathTemplate:
+		'{testDir}/{testFileDir}/__screenshots__/{arg}{testName}{ext}',
 	use: {
 		baseURL: BASE_URL,
 		screenshot: 'only-on-failure',
