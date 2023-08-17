@@ -72,7 +72,21 @@ class MiniCart extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
+		add_action( 'wp_loaded', array( $this, 'register_auto_insert' ) );
 		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 2 );
+	}
+
+	/**
+	 * Auto-insert the Mini cart block after the navigation block.
+	 *
+	 * Since this is still an experimental feature within Gutenberg, this feature is enabled exclusively in the feature plugin.
+	 */
+	public function register_auto_insert() {
+		if ( ! function_exists( 'gutenberg_register_auto_inserted_block' ) || ! WC_BLOCKS_IS_FEATURE_PLUGIN ) {
+			return;
+		}
+
+		gutenberg_register_auto_inserted_block( 'woocommerce/mini-cart', 'after', 'core/navigation' );
 	}
 
 	/**
