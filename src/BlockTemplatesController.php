@@ -767,65 +767,11 @@ class BlockTemplatesController {
 	 * Migrates page content to templates if needed.
 	 */
 	public function maybe_migrate_content() {
-		if ( ! $this->has_migrated_page( 'cart' ) ) {
-			$this->migrate_page( 'cart', CartTemplate::get_placeholder_page() );
+		if ( ! BlockTemplateMigrationUtils::has_migrated_page( 'cart' ) ) {
+			BlockTemplateMigrationUtils::migrate_page( 'cart', CartTemplate::get_placeholder_page() );
 		}
-		if ( ! $this->has_migrated_page( 'checkout' ) ) {
-			$this->migrate_page( 'checkout', CheckoutTemplate::get_placeholder_page() );
-		}
-	}
-
-	/**
-	 * Check if a page has been migrated to a template.
-	 *
-	 * @param string $page_id Page ID.
-	 * @return boolean
-	 */
-	protected function has_migrated_page( $page_id ) {
-		return (bool) get_option( 'has_migrated_' . $page_id, false );
-	}
-
-	/**
-	 * Stores an option to indicate that a template has been migrated.
-	 *
-	 * @param string $page_id Page ID.
-	 */
-	public function set_has_migrated_page( $page_id ) {
-		update_option( 'has_migrated_' . $page_id, 1 );
-	}
-
-	/**
-	 * Migrates a page to a template if needed.
-	 *
-	 * @param string   $template_slug Template slug.
-	 * @param \WP_Post $page Page object.
-	 */
-	protected function migrate_page( $template_slug, $page ) {
-		// Get the block template for this page. If it exists, we won't migrate because the user already has custom content.
-		$block_template = BlockTemplateUtils::get_block_template( 'woocommerce/woocommerce//' . $template_slug, 'wp_template' );
-
-		// If we were unable to get the block template, bail. Try again later.
-		if ( ! $block_template ) {
-			return;
-		}
-
-		// If a custom template is present already, no need to migrate.
-		if ( $block_template->wp_id ) {
-			return $this->set_has_migrated_page( $template_slug );
-		}
-
-		// Use the page template if it exists, which we'll use over our default template if found.
-		$page_template    = BlockTemplateMigrationUtils::get_page_template( $page );
-		$default_template = BlockTemplateMigrationUtils::get_default_template( $page );
-		$template_content = $page_template ?: $default_template;
-
-		// If at this point we have no content to migrate, bail.
-		if ( ! $template_content ) {
-			return $this->set_has_migrated_page( $template_slug );
-		}
-
-		if ( BlockTemplateMigrationUtils::create_custom_template( $block_template, $template_content ) ) {
-			return $this->set_has_migrated_page( $template_slug );
+		if ( ! BlockTemplateMigrationUtils::has_migrated_page( 'checkout' ) ) {
+			BlockTemplateMigrationUtils::migrate_page( 'checkout', CheckoutTemplate::get_placeholder_page() );
 		}
 	}
 
