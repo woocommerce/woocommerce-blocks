@@ -97,7 +97,73 @@ class AssetDataRegistry {
 			'wcVersion'          => defined( 'WC_VERSION' ) ? WC_VERSION : '',
 			'wpLoginUrl'         => wp_login_url(),
 			'wpVersion'          => get_bloginfo( 'version' ),
+			'editorNotices'      => $this->get_editor_notices(),
 		];
+	}
+
+	/**
+	 * Inject notices into the client to be rendered in the editor.
+	 */
+	protected function get_editor_notices() {
+		$notices = [];
+
+		if ( ! is_admin() ) {
+			return $notices;
+		}
+
+		$screen          = get_current_screen();
+		$is_block_editor = $screen && $screen->is_block_editor();
+
+		if ( wc_current_theme_is_fse_theme() && $is_block_editor ) {
+			global $post;
+
+			$cart_page     = wc_get_page_id( 'cart' );
+			$checkout_page = wc_get_page_id( 'checkout' );
+
+			if ( $post && $post->ID === $cart_page ) {
+				$notices[] = [
+					'id'          => 'cart-page-notice',
+					'type'        => 'warning',
+					'dismissible' => false,
+					'content'     => __(
+						'Your store is currently using a block theme and the Cart template. Any changes made to the content of this page will not be reflected in your store. If you need to modify edit your cart page, please use the Site Editor.',
+						'woo-gutenberg-products-block'
+					),
+					'actions'     => [
+						[
+							'url'   => admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2Fcart' ),
+							'label' => __(
+								'Edit the Cart Template',
+								'woo-gutenberg-products-block'
+							),
+						],
+					],
+				];
+			}
+
+			if ( $post && $post->ID === $checkout_page ) {
+				$notices[] = [
+					'id'          => 'checkout-page-notice',
+					'type'        => 'warning',
+					'dismissible' => false,
+					'content'     => __(
+						'Your store is currently using a block theme and the Checkout template. Any changes made to the content of this page will not be reflected in your store. If you need to modify edit your checkout page, please use the Site Editor.',
+						'woo-gutenberg-products-block'
+					),
+					'actions'     => [
+						[
+							'url'   => admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2Fcheckout' ),
+							'label' => __(
+								'Edit the Checkout Template',
+								'woo-gutenberg-products-block'
+							),
+						],
+					],
+				];
+			}
+		}
+
+		return $notices;
 	}
 
 	/**

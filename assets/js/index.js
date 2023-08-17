@@ -5,6 +5,8 @@ import { getCategories, setCategories } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { woo } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
+import { dispatch } from '@wordpress/data';
+import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -39,3 +41,16 @@ setCategories( [
 		),
 	},
 ] );
+
+// Gets editor notices injected into the client and dispatches them to the store.
+const editorNotices = getSetting( 'editorNotices' );
+
+if ( editorNotices ) {
+	editorNotices.forEach( ( notice ) => {
+		dispatch( 'core/notices' ).createNotice( notice.type, notice.content, {
+			id: notice.id || null,
+			isDismissible: notice.dismissible || false,
+			actions: notice.actions || null,
+		} );
+	} );
+}
