@@ -1,0 +1,1 @@
+(window.webpackWcBlocksJsonp=window.webpackWcBlocksJsonp||[]).push([[25],{931:function(c,s,e){"use strict";e.r(s);var n=e(0),t=e(56);s.default=({children:c,className:s=""})=>{const{crossSellsProducts:e,cartIsLoading:a}=Object(t.a)();return a||e.length<1?null:Object(n.createElement)("div",{className:s},c)}}}]);
