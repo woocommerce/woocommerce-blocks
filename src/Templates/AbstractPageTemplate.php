@@ -23,7 +23,6 @@ abstract class AbstractPageTemplate {
 	 */
 	protected function init() {
 		add_filter( 'page_template_hierarchy', array( $this, 'page_template_hierarchy' ), 1 );
-		add_action( 'current_screen', array( $this, 'page_template_editor_redirect' ) );
 		add_filter( 'pre_get_document_title', array( $this, 'page_template_title' ) );
 	}
 
@@ -78,21 +77,6 @@ abstract class AbstractPageTemplate {
 			array_unshift( $templates, $this->get_slug() );
 		}
 		return $templates;
-	}
-
-	/**
-	 * Redirect the edit page screen to the template editor.
-	 *
-	 * @param \WP_Screen $current_screen Current screen information.
-	 */
-	public function page_template_editor_redirect( \WP_Screen $current_screen ) {
-		$page         = $this->get_placeholder_page();
-		$edit_page_id = 'page' === $current_screen->id && ! empty( $_GET['post'] ) ? absint( $_GET['post'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
-		if ( $page && $edit_page_id === $page->ID ) {
-			wp_safe_redirect( $this->get_edit_template_url() );
-			exit;
-		}
 	}
 
 	/**
