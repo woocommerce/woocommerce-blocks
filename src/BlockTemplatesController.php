@@ -769,7 +769,7 @@ class BlockTemplatesController {
 	 */
 	public function maybe_migrate_content() {
 
-		if ( ! get_option( 'woocommerce_db_version', false ) || Constants::is_defined( 'WP_SETUP_CONFIG' ) || Constants::is_defined( 'WC_INSTALLING' ) || Constants::is_defined( 'WP_CLI' ) ) {
+		if ( wp_is_maintenance_mode() || ! get_option( 'woocommerce_db_version', false ) || Constants::is_defined( 'WP_SETUP_CONFIG' ) || Constants::is_defined( 'WC_INSTALLING' ) || Constants::is_defined( 'WP_CLI' ) ) {
 			return;
 		}
 
@@ -812,7 +812,7 @@ class BlockTemplatesController {
 	 */
 	protected function migrate_page( $page_id, $page ) {
 		if ( ! $page || empty( $page->post_content ) ) {
-			update_option( 'has_migrated_' . $page_id, '1' );
+			update_option( 'has_migrated_' . $page_id, 'no-content' );
 			return;
 		}
 
@@ -836,7 +836,7 @@ class BlockTemplatesController {
 
 		// Check template validity--template must exist, and custom template must not be present already.
 		if ( ! $new_page_template || $new_page_template->wp_id ) {
-			update_option( 'has_migrated_' . $page_id, '1' );
+			update_option( 'has_migrated_' . $page_id, 'no-template' );
 			return;
 		}
 
@@ -857,7 +857,7 @@ class BlockTemplatesController {
 		);
 
 		if ( ! is_wp_error( $new_page_template_id ) ) {
-			update_option( 'has_migrated_' . $page_id, '1' );
+			update_option( 'has_migrated_' . $page_id, 'success' );
 		}
 	}
 
