@@ -900,6 +900,7 @@ class BlockTemplatesController {
 					'desc_tip' => __( 'This is the URL to the checkout page.', 'woo-gutenberg-products-block' ),
 					'id'       => 'woocommerce_checkout_page_endpoint',
 					'type'     => 'permalink',
+					'value'    => $checkout_page ? $checkout_page->post_name : get_option( 'woocommerce_checkout_page_endpoint' ),
 					'default'  => $checkout_page ? $checkout_page->post_name : CheckoutTemplate::get_slug(),
 					'autoload' => false,
 				];
@@ -917,6 +918,7 @@ class BlockTemplatesController {
 					'desc_tip' => __( 'This is the URL to the cart page.', 'woo-gutenberg-products-block' ),
 					'id'       => 'woocommerce_cart_page_endpoint',
 					'type'     => 'permalink',
+					'value'    => $cart_page ? $cart_page->post_name : get_option( 'woocommerce_cart_page_endpoint' ),
 					'default'  => $cart_page ? $cart_page->post_name : CartTemplate::get_slug(),
 					'autoload' => false,
 				];
