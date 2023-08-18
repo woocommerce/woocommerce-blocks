@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Templates;
 
+use Automattic\WooCommerce\Blocks\Utils\BlockTemplateMigrationUtils;
+
 /**
  * CartTemplate class.
  *
@@ -33,7 +35,7 @@ class CartTemplate extends AbstractPageTemplate {
 	 */
 	protected function is_active_template() {
 
-		if ( ! self::has_migrated_page() ) {
+		if ( ! BlockTemplateMigrationUtils::has_migrated_page( 'cart' ) ) {
 			return false;
 		}
 

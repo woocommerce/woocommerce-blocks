@@ -768,6 +768,7 @@ class BlockTemplatesController {
 	 * Migrates page content to templates if needed.
 	 */
 	public function maybe_migrate_content() {
+		// Postpone migration in these cases.
 		if ( wp_is_maintenance_mode() || ! get_option( 'woocommerce_db_version', false ) || Constants::is_defined( 'WP_SETUP_CONFIG' ) || Constants::is_defined( 'WC_INSTALLING' ) || Constants::is_defined( 'WP_CLI' ) ) {
 			return;
 		}
