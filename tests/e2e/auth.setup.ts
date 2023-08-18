@@ -28,7 +28,6 @@ setup( 'authenticate as admin', async ( { page } ) => {
 		await page.waitForURL( '/my-account/' );
 	}
 
-	// Alternatively, you can wait until the page reaches a state where all cookies are set.
 	await expect(
 		page
 			.getByRole( 'list' )
@@ -62,7 +61,6 @@ setup( 'authenticate as customer', async ( { page } ) => {
 		await page.waitForURL( '/my-account/' );
 	}
 
-	// Alternatively, you can wait until the page reaches a state where all cookies are set.
 	await expect(
 		page
 			.getByRole( 'list' )
@@ -100,7 +98,6 @@ setup( 'authenticate as guest', async ( { page } ) => {
 		await page.waitForURL( '/my-account/' );
 	}
 
-	// Alternatively, you can wait until the page reaches a state where all cookies are set.
 	await expect(
 		page.getByLabel( 'Username or email address' )
 	).toBeVisible();
