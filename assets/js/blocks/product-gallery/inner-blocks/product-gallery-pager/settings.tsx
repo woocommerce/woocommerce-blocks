@@ -1,6 +1,8 @@
 /**
  * External dependencies
  */
+import { store as blockEditorStore } from '@wordpress/block-editor';
+import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
@@ -17,9 +19,9 @@ import {
 /**
  * Internal dependencies
  */
-import { BlockAttributes } from './types';
 import { PagerDisplayModes } from './constants';
 import { PagerSettingsDigitsIcon, PagerSettingsDotIcon } from './icons';
+import { ProductGalleryPagerContext } from '../../types';
 
 const getHelpText = ( pagerDisplayMode: PagerDisplayModes ) => {
 	switch ( pagerDisplayMode ) {
@@ -46,13 +48,15 @@ const getHelpText = ( pagerDisplayMode: PagerDisplayModes ) => {
 	}
 };
 
-export const BlockSettings = ( {
-	attributes,
-	setAttributes,
+export const ProductGalleryPagerBlockSettings = ( {
+	context,
 }: {
-	attributes: BlockAttributes;
-	setAttributes: ( newAttributes: BlockAttributes ) => void;
+	context: ProductGalleryPagerContext;
 } ) => {
+	const { productGalleryClientId, pagerDisplayMode } = context;
+	// @ts-expect-error @wordpress/block-editor/store types not provided
+	const { updateBlockAttributes } = useDispatch( blockEditorStore );
+
 	return (
 		<PanelBody
 			className="wc-block-editor-product-gallery-large-image-next-previous-settings"
@@ -62,13 +66,13 @@ export const BlockSettings = ( {
 				style={ {
 					width: '100%',
 				} }
-				onChange={ ( value: PagerDisplayModes ) =>
-					setAttributes( {
+				onChange={ ( value: PagerDisplayModes ) => {
+					updateBlockAttributes( productGalleryClientId, {
 						pagerDisplayMode: value,
-					} )
-				}
-				help={ getHelpText( attributes.pagerDisplayMode ) }
-				value={ attributes.pagerDisplayMode }
+					} );
+				} }
+				help={ getHelpText( pagerDisplayMode ) }
+				value={ pagerDisplayMode }
 			>
 				<ToggleGroupControlOption
 					value={ PagerDisplayModes.OFF }

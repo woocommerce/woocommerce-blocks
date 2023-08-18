@@ -18,11 +18,9 @@ import {
 	getInnerBlocksLockAttributes,
 } from './utils';
 import { ProductGalleryThumbnailsBlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
+import { ProductGalleryPagerBlockSettings } from './inner-blocks/product-gallery-pager/settings';
 import { ProductGalleryBlockSettings } from './block-settings/index';
-import type {
-	ProductGalleryThumbnailsBlockAttributes,
-	ProductGalleryBlockAttributes,
-} from './types';
+import type { ProductGalleryAttributes } from './types';
 
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
@@ -49,9 +47,7 @@ export const Edit = ( {
 	clientId,
 	attributes,
 	setAttributes,
-}: BlockEditProps<
-	ProductGalleryThumbnailsBlockAttributes & ProductGalleryBlockAttributes
-> ) => {
+}: BlockEditProps< ProductGalleryAttributes > ) => {
 	const blockProps = useBlockProps();
 
 	// Update the Group block type when the thumbnailsPosition attribute changes.
@@ -69,6 +65,12 @@ export const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<ProductGalleryPagerBlockSettings
+					context={ {
+						productGalleryClientId: clientId,
+						pagerDisplayMode: attributes.pagerDisplayMode,
+					} }
+				/>
 				<ProductGalleryThumbnailsBlockSettings
 					attributes={ attributes }
 					setAttributes={ setAttributes }

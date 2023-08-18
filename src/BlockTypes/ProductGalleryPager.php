@@ -20,18 +20,12 @@ class ProductGalleryPager extends AbstractBlock {
 	}
 
 	/**
-	 * Get the block's attributes.
+	 *  Register the context
 	 *
-	 * @param array $attributes Block attributes. Default empty array.
-	 * @return array  The block attributes merged with defaults.
+	 * @return string[]
 	 */
-	private function parse_attributes( $attributes ) {
-		// These should match what's set in JS `registerBlockType`.
-		$defaults = array(
-			'pagerDisplayMode' => 'dots',
-		);
-
-		return wp_parse_args( $attributes, $defaults );
+	protected function get_block_type_uses_context() {
+		return [ 'productGalleryClientId', 'pagerDisplayMode' ];
 	}
 
 	/**
@@ -43,10 +37,10 @@ class ProductGalleryPager extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$parsed_attributes  = $this->parse_attributes( $attributes );
+		$pager_display_mode = isset( $block->context['pagerDisplayMode'] ) ? $block->context['pagerDisplayMode'] : '';
 		$classname          = $attributes['className'] ?? '';
 		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$html               = $this->render_pager( $parsed_attributes['pagerDisplayMode'] );
+		$html               = $this->render_pager( $pager_display_mode );
 
 		return sprintf(
 			'<div %1$s>
