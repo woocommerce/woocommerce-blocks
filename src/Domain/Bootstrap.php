@@ -257,7 +257,6 @@ class Bootstrap {
 
 	}
 
-
 	/**
 	 * Register core dependencies with the container.
 	 */
