@@ -15,7 +15,7 @@ class CheckoutTemplate extends AbstractPageTemplate {
 	 * @return string
 	 */
 	public static function get_slug() {
-		return 'checkout';
+		return 'page-checkout';
 	}
 
 	/**

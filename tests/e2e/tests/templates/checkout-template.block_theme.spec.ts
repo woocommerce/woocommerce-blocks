@@ -4,7 +4,7 @@
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
 
 const permalink = '/checkout';
-const templatePath = 'woocommerce/woocommerce//checkout';
+const templatePath = 'woocommerce/woocommerce//page-checkout';
 const templateType = 'wp_template';
 
 test.describe( 'Test the checkout template', async () => {
