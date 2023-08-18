@@ -252,7 +252,7 @@ class Bootstrap {
 	 * @param bool $enabled Current filter value.
 	 * @return bool True if _also_ the `WP_HTML_Tag_Processor` class was found.
 	 */
-	protected function has_wp_html_tag_processor( $enabled ) {
+	public function has_wp_html_tag_processor( $enabled ) {
 		return $enabled && class_exists( 'WP_HTML_Tag_Processor' );
 
 	}
