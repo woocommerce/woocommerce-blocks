@@ -41,7 +41,7 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 			$permission = $this->get_view_order_permissions( $order );
 		}
 
-		$block_content      = $order ? $this->render_content( $order, $permission, $attributes ) : $this->render_content_fallback();
+		$block_content      = $order ? $this->render_content( $order, $permission, $attributes, $content ) : $this->render_content_fallback();
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
@@ -49,14 +49,14 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 			$classname .= " align{$attributes['align']}";
 		}
 
-		return sprintf(
+		return $block_content ? sprintf(
 			'<div class="wc-block-%5$s %1$s %2$s" style="%3$s">%4$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			esc_attr( $classes_and_styles['styles'] ),
 			$block_content,
 			esc_attr( $this->block_name )
-		);
+		) : '';
 	}
 
 	/**
@@ -66,9 +66,10 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	 * @param \WC_Order $order Order object.
 	 * @param string    $permission Permission level for viewing order details.
 	 * @param array     $attributes Block attributes.
+	 * @param string    $content Original block content.
 	 * @return string
 	 */
-	abstract protected function render_content( $order, $permission = false, $attributes = [] );
+	abstract protected function render_content( $order, $permission = false, $attributes = [], $content = '' );
 
 	/**
 	 * This is what gets rendered when the order does not exist. Renders nothing by default, but can be overridden by
@@ -113,16 +114,17 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 			return false;
 		}
 
-		if ( is_user_logged_in() ) {
-			// If logged in, check the user owns the order.
+		// For customers with accounts, verify the order belongs to the current user or disallow access.
+		if ( $this->is_customer_order( $order ) ) {
 			return $this->is_current_customer_order( $order ) ? 'full' : false;
 		}
 
-		// If the user is logged out, check the order key for validity.
-		if ( $this->allow_guest_checkout() && $this->is_current_customer_order( $order ) && $this->has_valid_order_key( $order ) ) {
-			return $this->order_matches_session( $order ) ? 'full' : 'limited';
+		// For guests, verify the order key is valid and matches the session.
+		if ( $this->allow_guest_checkout() && $this->has_valid_order_key( $order ) ) {
+			return $this->email_verification_required( $order ) ? false : 'limited';
 		}
 
+		// If we reached this point, disallow access.
 		return false;
 	}
 
@@ -133,6 +135,80 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	 */
 	protected function allow_guest_checkout() {
 		return 'yes' === get_option( 'woocommerce_enable_guest_checkout' );
+	}
+
+	/**
+	 * See if we need to verify the email address before showing the order details.
+	 *
+	 * @param \WC_Order $order Order object.
+	 * @return boolean
+	 */
+	protected function email_verification_required( $order ) {
+		// These orders need login.
+		if ( $this->is_customer_order( $order ) ) {
+			return false;
+		}
+
+		// Skip verification if the current user still has the order in their session.
+		if ( $order->get_id() === wc()->session->get( 'store_api_draft_order' ) ) {
+			return false;
+		}
+
+		/**
+		 * Controls the grace period within which we do not require any sort of email verification step before rendering
+		 * the 'order received' or 'order pay' pages.
+		 *
+		 * @see \WC_Shortcode_Checkout::order_received()
+		 * @since $VID:$
+		 * @param int      $grace_period Time in seconds after an order is placed before email verification may be required.
+		 * @param \WC_Order $order        The order for which this grace period is being assessed.
+		 * @param string   $context      Indicates the context in which we might verify the email address. Typically 'order-pay' or 'order-received'.
+		 */
+		$verification_grace_period = (int) apply_filters( 'woocommerce_order_email_verification_grace_period', 10 * MINUTE_IN_SECONDS, $order, 'order-received' );
+		$date_created              = $order->get_date_created();
+
+		// We do not need to verify the email address if we are within the grace period immediately following order creation.
+		if ( is_a( $date_created, WC_DateTime::class ) && time() - $date_created->getTimestamp() <= $verification_grace_period ) {
+			return false;
+		}
+
+		$session       = wc()->session;
+		$session_email = '';
+		$session_order = 0;
+
+		if ( is_a( $session, \WC_Session::class ) ) {
+			$customer      = $session->get( 'customer' );
+			$session_email = is_array( $customer ) && isset( $customer['email'] ) ? sanitize_email( $customer['email'] ) : '';
+			$session_order = (int) $session->get( 'store_api_draft_order' );
+		}
+
+		// We do not need to verify the email address if the user still has the order in session.
+		if ( $order->get_id() === $session_order ) {
+			return false;
+		}
+
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		if ( ! empty( $_POST ) && ! wp_verify_nonce( $_POST['check_submission'] ?? '', 'wc_verify_email' ) ) {
+			return true;
+		}
+
+		$session_email_match  = $session_email === $order->get_billing_email();
+		$supplied_email_match = isset( $_POST['email'] ) && sanitize_email( wp_unslash( $_POST['email'] ) ?? '' ) === $order->get_billing_email();
+
+		// If we cannot match the order with the current user, the user should verify their email address.
+		$email_verification_required = ! $session_email_match && ! $supplied_email_match;
+
+		/**
+		 * Provides an opportunity to override the (potential) requirement for shoppers to verify their email address
+		 * before we show information such as the order summary, or order payment page.
+		 *
+		 * @see \WC_Shortcode_Checkout::order_received()
+		 * @since $VID:$
+		 * @param bool     $email_verification_required If email verification is required.
+		 * @param WC_Order $order                       The relevant order.
+		 * @param string   $context                     The context under which we are performing this check.
+		 */
+		return (bool) apply_filters( 'woocommerce_order_email_verification_required', $email_verification_required, $order, 'order-received' );
 	}
 
 	/**
@@ -147,23 +223,25 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	}
 
 	/**
-	 * See if the current user ID matches the given order customer ID.
+	 * See if the current order came from a guest or a logged in customer.
+	 *
+	 * @param \WC_Order $order Order object.
+	 * @return boolean
+	 */
+	protected function is_customer_order( $order ) {
+		return 0 < $order->get_user_id();
+	}
+
+	/**
+	 * See if the current logged in user ID matches the given order customer ID.
+	 *
+	 * Returns false for logged-out customers.
 	 *
 	 * @param \WC_Order $order Order object.
 	 * @return boolean
 	 */
 	protected function is_current_customer_order( $order ) {
-		return $order->get_user_id() === get_current_user_id();
-	}
-
-	/**
-	 * See if the order matches the current session.
-	 *
-	 * @param \WC_Order $order Order object.
-	 * @return boolean
-	 */
-	protected function order_matches_session( $order ) {
-		return $order->get_id() === wc()->session->get( 'store_api_draft_order' );
+		return $this->is_customer_order( $order ) && $order->get_user_id() === get_current_user_id();
 	}
 
 	/**

@@ -22,9 +22,10 @@ class Downloads extends AbstractOrderConfirmationBlock {
 	 * @param \WC_Order $order Order object.
 	 * @param string    $permission Permission level for viewing order details.
 	 * @param array     $attributes Block attributes.
+	 * @param string    $content Original block content.
 	 * @return string
 	 */
-	protected function render_content( $order, $permission = false, $attributes = [] ) {
+	protected function render_content( $order, $permission = false, $attributes = [], $content = '' ) {
 		if ( ! empty( $attributes['isPreview'] ) ) {
 			$show_downloads = true;
 			$downloads      = [
