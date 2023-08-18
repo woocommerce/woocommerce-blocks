@@ -22,11 +22,17 @@ export default defineConfig( {
 			name: 'blockThemeConfiguration',
 			testDir: '.',
 			testMatch: /block-theme.setup.ts/,
+			dependencies: [ 'authSetup' ],
 		},
 		{
 			name: 'blockThemeWithGlobalSideEffects',
 			testMatch: /.*.block_theme.side_effects.spec.ts/,
-			dependencies: [ 'blockThemeConfiguration' ],
+			dependencies: [ 'blockThemeConfiguration', 'authSetup' ],
+		},
+		{
+			name: 'authSetup',
+			testDir: '.',
+			testMatch: /auth.setup.ts/,
 		},
 	],
 } );
