@@ -57,7 +57,6 @@ test.describe( 'Shopper → Checkout block → Place Order → Customer', () => 
 		frontendUtils,
 		page,
 	} ) => {
-		// await frontendUtils.login();
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
