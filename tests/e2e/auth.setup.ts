@@ -39,8 +39,6 @@ setup( 'authenticate as admin', async ( { page } ) => {
 			.getByRole( 'link', { name: 'Log out' } )
 	).toBeVisible();
 
-	// End of authentication steps.
-
 	await page.context().storageState( { path: adminFile } );
 } );
 
