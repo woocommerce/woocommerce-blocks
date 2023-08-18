@@ -29,6 +29,15 @@ class CheckoutTemplate extends AbstractPageTemplate {
 	}
 
 	/**
+	 * Should return the title of the page.
+	 *
+	 * @return string
+	 */
+	public static function get_template_title() {
+		return '';
+	}
+
+	/**
 	 * True when viewing the checkout page or checkout endpoint.
 	 *
 	 * @return boolean
