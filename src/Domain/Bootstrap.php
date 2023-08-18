@@ -235,7 +235,7 @@ class Bootstrap {
 	 * Load and set up the Interactivity API if enabled.
 	 */
 	protected function load_interactivity_api() {
-	// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 		$is_enabled = apply_filters(
 			'woocommerce_blocks_enable_interactivity_api',
 			true
