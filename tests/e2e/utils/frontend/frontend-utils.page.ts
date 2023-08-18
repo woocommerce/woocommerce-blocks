@@ -3,12 +3,6 @@
  */
 import { Page, Locator } from '@playwright/test';
 import { RequestUtils } from '@wordpress/e2e-test-utils-playwright';
-import { expect } from '@woocommerce/e2e-playwright-utils';
-
-/**
- * Internal dependencies
- */
-import { customer } from '../../test-data/data/data';
 
 export class FrontendUtils {
 	page: Page;
@@ -188,54 +182,5 @@ export class FrontendUtils {
 		await this.page.goto( '/my-account', {
 			waitUntil: 'commit',
 		} );
-	}
-
-	async isLoggedIn() {
-		await this.gotoMyAccount();
-		await expect(
-			this.page.getByRole( 'heading', { name: 'My account' } )
-		).toBeVisible();
-		const isLoginFormVisible = await this.page
-			.locator( 'form.woocommerce-form-login' )
-			.isVisible();
-
-		return ! isLoginFormVisible;
-	}
-
-	async login() {
-		const isLoggedIn = await this.isLoggedIn();
-		if ( isLoggedIn ) {
-			return;
-		}
-
-		await this.gotoMyAccount();
-		await expect(
-			this.page.getByRole( 'heading', { name: 'My account' } )
-		).toBeVisible();
-		await this.page
-			.locator( 'input[name="username"]' )
-			.fill( customer.username );
-		await this.page
-			.locator( 'input[name="password"]' )
-			.fill( customer.password );
-		await this.page.locator( 'text=Log In' ).click();
-		// eslint-disable-next-line playwright/no-networkidle
-		await this.page.waitForLoadState( 'networkidle' );
-	}
-
-	async logout() {
-		await this.gotoMyAccount();
-		await expect(
-			this.page.getByRole( 'heading', { name: 'My account' } )
-		).toBeVisible();
-		// await this.page.locator( 'text=Log out' ).click();
-		await this.page
-			.getByRole( 'list' )
-			.filter( {
-				hasText:
-					'Dashboard Orders Downloads Addresses Account details Log out',
-			} )
-			.getByRole( 'link', { name: 'Log out' } )
-			.click();
 	}
 }
