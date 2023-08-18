@@ -11,7 +11,6 @@ import { customer, admin } from './test-data/data/data';
 const adminFile = 'playwright/.auth/admin.json';
 
 setup( 'authenticate as admin', async ( { page } ) => {
-	// Authentication steps.
 	await page.goto( '/my-account' );
 	const isLoggedOut = await page
 		.getByLabel( 'Username or email address' )
@@ -44,7 +43,6 @@ setup( 'authenticate as admin', async ( { page } ) => {
 const customerFile = 'playwright/.auth/customer.json';
 
 setup( 'authenticate as customer', async ( { page } ) => {
-	// Authentication steps.
 	await page.goto( '/my-account' );
 	const isLoggedOut = await page
 		.getByLabel( 'Username or email address' )
@@ -77,7 +75,6 @@ setup( 'authenticate as customer', async ( { page } ) => {
 const guestFile = 'playwright/.auth/guest.json';
 
 setup( 'authenticate as guest', async ( { page } ) => {
-	// Authentication steps.
 	await page.goto( '/my-account' );
 	const isLoggedOut = await page
 		.getByLabel( 'Username or email address' )
