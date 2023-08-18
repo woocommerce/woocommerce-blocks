@@ -50,12 +50,12 @@ const onClickCallback = ( {
 };
 
 const getTitle = () => {
-	return __( 'Checkout Shortcode', 'woo-gutenberg-products-block' );
+	return __( 'Classic Checkout Page', 'woo-gutenberg-products-block' );
 };
 
 const getDescription = () => {
 	return __(
-		'This block represents the classic shortcode used to display the checkout. The actual rendered shortcode may appear different from this placeholder.',
+		'This block represents the classic checkout page used to display the checkout. The actual rendered content may appear different from this placeholder.',
 		'woo-gutenberg-products-block'
 	);
 };

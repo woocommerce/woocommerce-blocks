@@ -92,7 +92,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			return $this->render_order_received();
 		}
 
-		if ( CheckoutTemplate::get_slug() === $attributes['template'] ) {
+		if ( CheckoutTemplate::get_slug() === $attributes['template'] || 'checkout' === $attributes['template'] ) {
 			return $this->render_checkout();
 		}
 
@@ -163,6 +163,15 @@ class ClassicTemplate extends AbstractDynamicBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render_checkout() {
+		global $post;
+
+		// If we're viewing the page and it has content, render that instead to maintain backwards compatibility.
+		if ( $post && $post->post_content ) {
+			// Best way to do this?
+			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+			return apply_filters( 'the_content', $post->post_content );
+		}
+
 		ob_start();
 
 		echo '<div class="wp-block-group">';
