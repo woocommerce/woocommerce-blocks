@@ -22,22 +22,62 @@ class Summary extends AbstractOrderConfirmationBlock {
 	 * @param \WC_Order $order Order object.
 	 * @param string    $permission Permission level for viewing order details.
 	 * @param array     $attributes Block attributes.
+	 * @param string    $content Original block content.
 	 * @return string
 	 */
-	protected function render_content( $order, $permission = false, $attributes = [] ) {
+	protected function render_content( $order, $permission = false, $attributes = [], $content = '' ) {
 		if ( ! $permission ) {
-			$content = esc_html__( 'Great news! Your order has been received, and a confirmation will be sent to your email address.', 'woo-gutenberg-products-block' );
+			$verification_required = $this->email_verification_required( $order );
+			$my_account_page       = wc_get_page_permalink( 'myaccount' );
 
-			if ( wc_get_page_permalink( 'myaccount' ) ) {
+			$content  = '<p>';
+			$content .= esc_html__( 'Great news! Your order has been received, and a confirmation will be sent to your email address.', 'woo-gutenberg-products-block' );
+
+			if ( $my_account_page ) {
 				$content .= ' ' . sprintf(
 					/* translators: 1: opening a link tag 2: closing a link tag */
-					esc_html__( 'Have an account with us? %1$sLog in here to view your order details%2$s.', 'woo-gutenberg-products-block' ),
-					'<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="button">',
+					esc_html__( 'Have an account with us? %1$sLog in here%2$s to view your order.', 'woo-gutenberg-products-block' ),
+					'<a href="' . esc_url( $my_account_page ) . '" class="button">',
 					'</a>'
 				);
 			}
 
-			return wpautop( $content );
+			if ( $verification_required ) {
+				$content .= ' ' . esc_html__( 'Alternatively, confirm the email address linked to the order below.', 'woo-gutenberg-products-block' );
+			}
+
+			$content .= '</p>';
+
+			// Verification step.
+			if ( $verification_required ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
+				$check_submission_notice = ! empty( $_POST ) ? wc_print_notice( esc_html__( 'We were unable to verify the email address you provided. Please try again.', 'woo-gutenberg-products-block' ), 'error', [], true ) : '';
+
+				$content .=
+					sprintf( '<form action="%s" method="post" class="woocommerce-form woocommerce-verify-email">', esc_url( $order->get_checkout_order_received_url() ) ) .
+					$check_submission_notice .
+					sprintf(
+						'<p class="form-row verify-email">
+							<label for="%1$s">%2$s</label>
+							<input type="email" name="email" id="%1$s" autocomplete="email" class="input-text" />
+						</p>',
+						esc_attr( 'verify-email' ),
+						esc_html__( 'Email address', 'woo-gutenberg-products-block' ) . '&nbsp;<span class="required">*</span>'
+					) .
+					sprintf(
+						'<p class="form-row login-submit">
+							<input type="submit" name="wp-submit" id="%1$s" class="button button-primary %4$s" value="%2$s" />
+							%3$s
+						</p>',
+						esc_attr( 'verify-email-submit' ),
+						esc_html__( 'Confirm email and view order', 'woo-gutenberg-products-block' ),
+						wp_nonce_field( 'wc_verify_email', 'check_submission', true, false ),
+						esc_attr( wc_wp_theme_get_element_class_name( 'button' ) )
+					) .
+					'</form>';
+			}
+
+			return $content;
 		}
 
 		$content  = '<ul class="wc-block-order-confirmation-summary-list">';

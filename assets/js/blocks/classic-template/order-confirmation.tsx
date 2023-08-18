@@ -33,13 +33,13 @@ const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 		createBlock( 'core/columns', inheritedAttributes, [
 			createBlock( 'core/column', inheritedAttributes, [
 				createBlock(
-					'woocommerce/order-confirmation-billing-wrapper',
+					'woocommerce/order-confirmation-shipping-wrapper',
 					inheritedAttributes
 				),
 			] ),
 			createBlock( 'core/column', inheritedAttributes, [
 				createBlock(
-					'woocommerce/order-confirmation-shipping-wrapper',
+					'woocommerce/order-confirmation-billing-wrapper',
 					inheritedAttributes
 				),
 			] ),

@@ -22,9 +22,10 @@ class Status extends AbstractOrderConfirmationBlock {
 	 * @param \WC_Order $order Order object.
 	 * @param string    $permission Permission level for viewing order details.
 	 * @param array     $attributes Block attributes.
+	 * @param string    $content Original block content.
 	 * @return string
 	 */
-	protected function render_content( $order, $permission = false, $attributes = [] ) {
+	protected function render_content( $order, $permission = false, $attributes = [], $content = '' ) {
 		if ( ! $permission ) {
 			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 			return '<p>' . wp_kses_post( apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'woo-gutenberg-products-block' ), null ) ) . '</p>';
