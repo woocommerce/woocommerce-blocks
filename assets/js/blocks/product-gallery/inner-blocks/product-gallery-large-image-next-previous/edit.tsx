@@ -3,6 +3,7 @@
  */
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { useMemo } from '@wordpress/element';
+import { BlockAttributes } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -12,8 +13,35 @@ import './editor.scss';
 import { ProductGalleryNextPreviousBlockSettings } from './settings';
 import { Context } from '../../types';
 
-export const Edit = ( { context }: { context: Context } ): JSX.Element => {
-	const blockProps = useBlockProps();
+const getAlignmentStyle = ( alignment: string ): string => {
+	switch ( alignment ) {
+		case 'top':
+			return 'flex-start';
+		case 'center':
+			return 'center';
+		case 'bottom':
+			return 'flex-end';
+		default:
+			return 'flex-end';
+	}
+};
+
+export const Edit = ( {
+	attributes,
+	context,
+}: {
+	attributes: BlockAttributes;
+	context: Context;
+} ): JSX.Element => {
+	const blockProps = useBlockProps( {
+		style: {
+			width: '100%',
+			height: '100%',
+			alignItems: getAlignmentStyle(
+				attributes.layout.verticalAlignment
+			),
+		},
+	} );
 
 	const suffixClass = useMemo( () => {
 		switch ( context.nextPreviousButtonsPosition ) {
@@ -29,13 +57,7 @@ export const Edit = ( { context }: { context: Context } ): JSX.Element => {
 	}, [ context.nextPreviousButtonsPosition ] );
 
 	return (
-		<div
-			{ ...blockProps }
-			style={ {
-				width: '100%',
-				height: '100px',
-			} }
-		>
+		<div { ...blockProps }>
 			<InspectorControls>
 				<ProductGalleryNextPreviousBlockSettings context={ context } />
 			</InspectorControls>

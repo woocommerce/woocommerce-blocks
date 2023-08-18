@@ -1,13 +1,8 @@
-.wp-block-woocommerce-product-gallery-large-image-next-previous {
-	position: absolute !important;
-}
-
 .wc-block-product-gallery-large-image-next-previous-container {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	width: 100%;
 	position: absolute;
-	bottom: 0;
 	height: 65px;
 }

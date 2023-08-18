@@ -9,5 +9,16 @@
     "keywords": [ "WooCommerce" ],
 	"usesContext": [ "nextPreviousButtonsPosition", "productGalleryClientId" ],
     "textdomain": "woo-gutenberg-products-block",
+	"supports": {
+		"layout": {
+			"default": {
+				"type": "flex"
+			},
+			"allowVerticalAlignment": true,
+			"allowJustification": false,
+			"allowOrientation": false,
+			"allowInheriting": false
+		}
+	},
 	"ancestor": [ "woocommerce/product-gallery-large-image" ]
 }
