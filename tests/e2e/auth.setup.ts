@@ -13,14 +13,23 @@ const adminFile = 'playwright/.auth/admin.json';
 setup( 'authenticate as admin', async ( { page } ) => {
 	// Authentication steps.
 	await page.goto( '/my-account' );
-	await page.getByLabel( 'Username or email address' ).fill( admin.username );
-	await page.getByLabel( 'Password' ).fill( admin.password );
-	await page.getByRole( 'button', { name: 'Log in' } ).click();
-	// Wait until the page receives the cookies.
-	//
-	// Sometimes login flow sets cookies in the process of several redirects.
-	// Wait for the final URL to ensure that the cookies are actually set.
-	await page.waitForURL( '/my-account/' );
+	const isLoggedOut = await page
+		.getByLabel( 'Username or email address' )
+		.isVisible();
+
+	if ( isLoggedOut ) {
+		await page
+			.getByLabel( 'Username or email address' )
+			.fill( admin.username );
+		await page.getByLabel( 'Password' ).fill( admin.password );
+		await page.getByRole( 'button', { name: 'Log in' } ).click();
+		// Wait until the page receives the cookies.
+		//
+		// Sometimes login flow sets cookies in the process of several redirects.
+		// Wait for the final URL to ensure that the cookies are actually set.
+		await page.waitForURL( '/my-account/' );
+	}
+
 	// Alternatively, you can wait until the page reaches a state where all cookies are set.
 	await expect(
 		page
@@ -42,16 +51,23 @@ const customerFile = 'playwright/.auth/customer.json';
 setup( 'authenticate as customer', async ( { page } ) => {
 	// Authentication steps.
 	await page.goto( '/my-account' );
-	await page
+	const isLoggedOut = await page
 		.getByLabel( 'Username or email address' )
-		.fill( customer.username );
-	await page.getByLabel( 'Password' ).fill( customer.password );
-	await page.getByRole( 'button', { name: 'Log in' } ).click();
-	// Wait until the page receives the cookies.
-	//
-	// Sometimes login flow sets cookies in the process of several redirects.
-	// Wait for the final URL to ensure that the cookies are actually set.
-	await page.waitForURL( '/my-account/' );
+		.isVisible();
+
+	if ( isLoggedOut ) {
+		await page
+			.getByLabel( 'Username or email address' )
+			.fill( customer.username );
+		await page.getByLabel( 'Password' ).fill( customer.password );
+		await page.getByRole( 'button', { name: 'Log in' } ).click();
+		// Wait until the page receives the cookies.
+		//
+		// Sometimes login flow sets cookies in the process of several redirects.
+		// Wait for the final URL to ensure that the cookies are actually set.
+		await page.waitForURL( '/my-account/' );
+	}
+
 	// Alternatively, you can wait until the page reaches a state where all cookies are set.
 	await expect(
 		page
@@ -73,11 +89,11 @@ const guestFile = 'playwright/.auth/guest.json';
 setup( 'authenticate as guest', async ( { page } ) => {
 	// Authentication steps.
 	await page.goto( '/my-account' );
-	const isloggedOut = await page
+	const isLoggedOut = await page
 		.getByLabel( 'Username or email address' )
 		.isVisible();
 
-	if ( ! isloggedOut ) {
+	if ( ! isLoggedOut ) {
 		await page
 			.getByRole( 'list' )
 			.filter( {
@@ -86,12 +102,14 @@ setup( 'authenticate as guest', async ( { page } ) => {
 			} )
 			.getByRole( 'link', { name: 'Log out' } )
 			.click();
+
+		// Wait until the page receives the cookies.
+		//
+		// Sometimes login flow sets cookies in the process of several redirects.
+		// Wait for the final URL to ensure that the cookies are actually set.
+		await page.waitForURL( '/my-account/' );
 	}
-	// Wait until the page receives the cookies.
-	//
-	// Sometimes login flow sets cookies in the process of several redirects.
-	// Wait for the final URL to ensure that the cookies are actually set.
-	await page.waitForURL( '/my-account/' );
+
 	// Alternatively, you can wait until the page reaches a state where all cookies are set.
 	await expect(
 		page.getByLabel( 'Username or email address' )
