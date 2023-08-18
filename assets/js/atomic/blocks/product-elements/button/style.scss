@@ -55,6 +55,14 @@
 		}
 	}
 
+	&.align-left {
+		justify-content: left;
+	}
+
+	&.align-right {
+		justify-content: right;
+	}
+
 	.wc-block-components-product-button__button {
 		border-style: none;
 		display: inline-flex;
