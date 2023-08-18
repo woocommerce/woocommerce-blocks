@@ -18,6 +18,7 @@ test.describe( 'Merchant → Cart', () => {
 				.fill( 'woocommerce/cart' );
 			const cartButton = editorUtils.page.getByRole( 'option', {
 				name: 'Cart',
+				exact: true,
 			} );
 			await expect( cartButton ).toBeHidden();
 		} );
