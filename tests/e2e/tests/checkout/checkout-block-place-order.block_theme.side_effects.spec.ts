@@ -23,7 +23,7 @@ const test = base.extend< { pageObject: CheckoutPage } >( {
 	},
 } );
 
-test.describe( 'Shopper → Checkout block → Place Order → customer', () => {
+test.describe( 'Shopper → Checkout block → Place Order → Guest', () => {
 	test.use( { storageState: guestFile } );
 
 	test( 'Guest user can place order', async ( {
@@ -49,7 +49,7 @@ test.describe( 'Shopper → Checkout block → Place Order → customer', () => 
 	} );
 } );
 
-test.describe( 'Shopper → Checkout block → Place Order → guest', () => {
+test.describe( 'Shopper → Checkout block → Place Order → Customer', () => {
 	test.use( { storageState: customerFile } );
 
 	test( 'Logged in user can place an order', async ( {
