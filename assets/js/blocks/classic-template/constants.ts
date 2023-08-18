@@ -90,7 +90,7 @@ export const TEMPLATES: TemplateDetails = {
 		title: __( 'WooCommerce Cart Block', 'woo-gutenberg-products-block' ),
 		placeholder: 'cart',
 	},
-	checkout: {
+	'page-checkout': {
 		type: TYPES.checkout,
 		title: __( 'Checkout Block', 'woo-gutenberg-products-block' ),
 		placeholder: PLACEHOLDERS.checkout,
