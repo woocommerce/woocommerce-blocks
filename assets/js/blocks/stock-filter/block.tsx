@@ -91,6 +91,9 @@ const StockStatusFilterBlock = ( {
 	const [ displayedOptions, setDisplayedOptions ] = useState(
 		blockAttributes.isPreview ? previewOptions : []
 	);
+	const [ displayedOptionsLoading, setDisplayedOptionsLoading ] =
+		useState( true );
+
 	// Filter added to handle if there are slugs without a corresponding name defined.
 	const [ initialOptions ] = useState(
 		Object.entries( STOCK_STATUS_OPTIONS.current )
@@ -189,6 +192,7 @@ const StockStatusFilterBlock = ( {
 			} )
 			.filter( ( option ): option is DisplayOption => !! option );
 
+		setDisplayedOptionsLoading( false );
 		setDisplayedOptions( newOptions );
 		setRemountKey( generateUniqueId() );
 	}, [
@@ -399,7 +403,11 @@ const StockStatusFilterBlock = ( {
 		}
 	};
 
-	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
+	if (
+		! filteredCountsLoading &&
+		! displayedOptionsLoading &&
+		displayedOptions.length === 0
+	) {
 		setWrapperVisibility( false );
 		return null;
 	}
