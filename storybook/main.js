@@ -11,9 +11,11 @@ module.exports = {
 		'storybook-addon-react-docgen',
 		'@storybook/addon-postcss',
 	],
+	framework: '@storybook/react',
 	features: {
 		babelModeV7: true,
 		emotionAlias: false,
+		storyStoreV7: true,
 	},
 	core: {
 		builder: 'webpack5',
