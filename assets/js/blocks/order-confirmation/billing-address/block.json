@@ -40,6 +40,14 @@
 				"width": true,
 				"color": true
 			}
+		},
+		"spacing": {
+			"padding": true,
+			"margin": true,
+			"__experimentalDefaultControls": {
+				"margin": false,
+				"padding": false
+			}
 		}
 	},
 	"attributes": {
