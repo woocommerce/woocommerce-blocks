@@ -100,6 +100,12 @@ class Bootstrap {
 	protected function init() {
 		$this->register_dependencies();
 		$this->register_payment_methods();
+		add_filter(
+			'woocommerce_blocks_enable_interactivity_api',
+			array( $this, 'has_wp_html_tag_processor' ),
+			999
+		);
+		$this->load_interactivity_api();
 
 		// This is just a temporary solution to make sure the migrations are run. We have to refactor this. More details: https://github.com/woocommerce/woocommerce-blocks/issues/10196.
 		if ( $this->package->get_version() !== $this->package->get_version_stored_on_db() ) {
@@ -224,6 +230,33 @@ class Bootstrap {
 			}
 		);
 	}
+
+	/**
+	 * Load and set up the Interactivity API if enabled.
+	 */
+	protected function load_interactivity_api() {
+	// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
+		$is_enabled = apply_filters(
+			'woocommerce_blocks_enable_interactivity_api',
+			true
+		);
+
+		if ( $is_enabled ) {
+			require_once __DIR__ . '/../Interactivity/load.php';
+		}
+	}
+	/**
+	 * Disable the Interactivity API if the required `WP_HTML_Tag_Processor` class
+	 * doesn't exist, regardless of whether it was enabled manually.
+	 *
+	 * @param bool $enabled Current filter value.
+	 * @return bool True if _also_ the `WP_HTML_Tag_Processor` class was found.
+	 */
+	protected function has_wp_html_tag_processor( $enabled ) {
+		return $enabled && class_exists( 'WP_HTML_Tag_Processor' );
+
+	}
+
 
 	/**
 	 * Register core dependencies with the container.
