@@ -15,7 +15,7 @@
 
 <!-- wp:post-title {"textAlign":"left","level":3,"isLink":true,"style":{"spacing":{"margin":{"bottom":"0.75rem","top":"0"}},"typography":{"lineHeight":"1"}},"fontSize":"small","__woocommerceNamespace":"woocommerce/product-collection/product-title"} /-->
 
-<!-- wp:woocommerce/product-button {"width":50,"isDescendentOfQueryLoop":true,"style":{"typography":{"fontSize":"0.8rem"}}} /-->
+<!-- wp:woocommerce/product-button {"textAlign":"left","width":50,"isDescendentOfQueryLoop":true,"style":{"typography":{"fontSize":"0.8rem"}}} /-->
 <!-- /wp:woocommerce/product-template -->
 
 <!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->
