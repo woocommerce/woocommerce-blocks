@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
+import { customerFile, guestFile } from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
@@ -23,7 +24,7 @@ const test = base.extend< { pageObject: CheckoutPage } >( {
 } );
 
 test.describe( 'Shopper → Checkout block → Place Order → customer', () => {
-	test.use( { storageState: 'playwright/.auth/customer.json' } );
+	test.use( { storageState: guestFile } );
 
 	test( 'Guest user can place order', async ( {
 		pageObject,
@@ -49,7 +50,7 @@ test.describe( 'Shopper → Checkout block → Place Order → customer', () => 
 } );
 
 test.describe( 'Shopper → Checkout block → Place Order → guest', () => {
-	test.use( { storageState: 'playwright/.auth/guest.json' } );
+	test.use( { storageState: customerFile } );
 
 	test( 'Logged in user can place an order', async ( {
 		pageObject,

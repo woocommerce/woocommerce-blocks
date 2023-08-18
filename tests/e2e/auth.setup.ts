@@ -2,13 +2,12 @@
  * External dependencies
  */
 import { test as setup, expect } from '@woocommerce/e2e-playwright-utils';
+import { adminFile, customerFile, guestFile } from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
  */
 import { customer, admin } from './test-data/data/data';
-
-const adminFile = 'playwright/.auth/admin.json';
 
 setup( 'authenticate as admin', async ( { page } ) => {
 	await page.goto( '/my-account' );
@@ -40,8 +39,6 @@ setup( 'authenticate as admin', async ( { page } ) => {
 	await page.context().storageState( { path: adminFile } );
 } );
 
-const customerFile = 'playwright/.auth/customer.json';
-
 setup( 'authenticate as customer', async ( { page } ) => {
 	await page.goto( '/my-account' );
 	const isLoggedOut = await page
@@ -71,8 +68,6 @@ setup( 'authenticate as customer', async ( { page } ) => {
 
 	await page.context().storageState( { path: customerFile } );
 } );
-
-const guestFile = 'playwright/.auth/guest.json';
 
 setup( 'authenticate as guest', async ( { page } ) => {
 	await page.goto( '/my-account' );
