@@ -12,6 +12,7 @@ const blockData: BlockData = {
 		editor: {
 			block: '.wp-block-woocommerce-cart',
 			insertButton: "//button//span[text()='Cart']",
+			shippingBlock: '.wp-block-woocommerce-shipping-calculator',
 		},
 		frontend: {
 			block: '.wp-block-woocommerce-cart',
@@ -184,6 +185,24 @@ test.describe( 'Merchant → Cart', () => {
 					blockData.selectors.editor.block +
 						' [data-type="woocommerce/empty-cart-block"]'
 				)
+			).toBeHidden();
+
+			await editor.selectBlocks(
+				await editorUtils.getBlockByName(
+					'woocommerce/cart-order-summary-shipping-block'
+				)
+			);
+			await editor.openDocumentSettingsSidebar();
+			const shippingLabel = editorUtils.page.getByLabel(
+				'Shipping calculator'
+			);
+			await shippingLabel.check();
+			await expect(
+				editor.canvas.getByText( 'Change address' )
+			).toBeVisible();
+			await shippingLabel.uncheck();
+			await expect(
+				editor.canvas.getByText( 'Change address' )
 			).toBeHidden();
 		} );
 	} );
