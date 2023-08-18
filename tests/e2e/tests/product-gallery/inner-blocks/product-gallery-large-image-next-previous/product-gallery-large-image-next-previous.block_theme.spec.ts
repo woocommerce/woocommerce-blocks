@@ -98,14 +98,26 @@ test.describe( `${ blockData.name }`, () => {
 	} );
 
 	test( 'Renders Next/Previous Button block on the frontend side', async ( {
+		admin,
 		editorUtils,
+		frontendUtils,
 		editor,
+		page,
 	} ) => {
-		await editor.insertBlock( {
-			name: 'woocommerce/product-gallery',
+		await addBlock( admin, editor, editorUtils );
+
+		await Promise.all( [
+			editor.saveSiteEditorEntities(),
+			page.waitForResponse( ( response ) =>
+				response.url().includes( 'wp-json/wp/v2/templates/' )
+			),
+		] );
+
+		await page.goto( blockData.productPage, {
+			waitUntil: 'commit',
 		} );
 
-		const block = await editorUtils.getBlockByName( blockData.name );
+		const block = await frontendUtils.getBlockByName( blockData.name );
 
 		await expect( block ).toBeVisible();
 	} );
