@@ -285,11 +285,3 @@ function woocommerce_blocks_plugin_outdated_notice() {
 }
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
-
-/**
- * Disable the Interactivity API if the required `WP_HTML_Tag_Processor` class
- * doesn't exist, regardless of whether it was enabled manually.
- *
- * @param bool $enabled Current filter value.
- * @return bool True if _also_ the `WP_HTML_Tag_Processor` class was found.
- */
