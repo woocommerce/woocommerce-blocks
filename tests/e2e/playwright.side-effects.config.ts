@@ -27,7 +27,7 @@ export default defineConfig( {
 		{
 			name: 'blockThemeWithGlobalSideEffects',
 			testMatch: /.*.block_theme.side_effects.spec.ts/,
-			dependencies: [ 'blockThemeConfiguration', 'authSetup' ],
+			dependencies: [ 'blockThemeConfiguration' ],
 		},
 		{
 			name: 'authSetup',
