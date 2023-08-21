@@ -81,6 +81,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 10.9.2 - 2023-08-21 =
+
+#### Bug Fixes
+
+- Load Interactivity API in `bootstrap.php` (https://github.com/woocommerce/woocommerce-blocks/pull/10657)
+
 = 10.9.1 - 2023-08-17 =
 
 #### Enhancements
