@@ -86,6 +86,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 #### Bug Fixes
 
 - Load Interactivity API in `bootstrap.php` (https://github.com/woocommerce/woocommerce-blocks/pull/10657)
+- Make View Cart link displayed below the Add to Cart button (https://github.com/woocommerce/woocommerce-blocks/pull/10675)
 
 = 10.9.1 - 2023-08-17 =
 
