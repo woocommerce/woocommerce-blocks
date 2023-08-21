@@ -52,16 +52,6 @@ const config: ExtendedPlaywrightTestConfig = {
 			testMatch: /.*.block_theme.spec.ts/,
 			dependencies: [ 'blockThemeConfiguration' ],
 		},
-		{
-			name: 'classicThemeConfiguration',
-			testDir: '.',
-			testMatch: /classic-theme.setup.ts/,
-		},
-		{
-			name: 'classicTheme',
-			testMatch: /.*.classic_theme.spec.ts/,
-			dependencies: [ 'classicThemeConfiguration' ],
-		},
 	],
 };
 
