@@ -2,7 +2,7 @@
 	"name": "woocommerce/order-confirmation-downloads-wrapper",
 	"version": "1.0.0",
 	"title": "Order Confirmation Downloads",
-	"description": "Display the downloadale products section.",
+	"description": "Display the downloadable products section.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"attributes": {
