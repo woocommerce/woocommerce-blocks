@@ -26,7 +26,7 @@ class ProductGallery extends AbstractBlock {
 	 */
 	protected function register_block_type_assets() {
 		parent::register_block_type_assets();
-		
+
 		return null;
 	}
 }
