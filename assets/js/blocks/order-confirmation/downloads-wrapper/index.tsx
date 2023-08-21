@@ -3,7 +3,7 @@
  */
 import { registerBlockType, type BlockConfiguration } from '@wordpress/blocks';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
-import { Icon, mapMarker } from '@wordpress/icons';
+import { Icon, download } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -18,7 +18,7 @@ registerBlockType(
 		icon: {
 			src: (
 				<Icon
-					icon={ mapMarker }
+					icon={ download }
 					className="wc-block-editor-components-block-icon"
 				/>
 			),
