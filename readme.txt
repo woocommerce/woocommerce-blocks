@@ -85,9 +85,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 #### Bug Fixes
 
-- Load Interactivity API in `bootstrap.php` (https://github.com/woocommerce/woocommerce-blocks/pull/10657)
-- Make View Cart link displayed below the Add to Cart button (https://github.com/woocommerce/woocommerce-blocks/pull/10675)
+#### Bug Fixes
 
+- Load Interactivity API in `bootstrap.php`. ([10657](https://github.com/woocommerce/woocommerce-blocks/pull/10657))
+- Add to Cart button: fix the layout of View Cart link showing after adding product to cart. ([10675](https://github.com/woocommerce/woocommerce-blocks/pull/10675))
+- Fixed checkout and cart page migration routine for users of block themes so that block templates are also migrated. ([10641](https://github.com/woocommerce/woocommerce-blocks/pull/10641))
+- Fixed a bug causing Cart and Checkout Blocks to be used by default instead of shortcode versions on WC updates. ([10608](https://github.com/woocommerce/woocommerce-blocks/pull/10608))
 = 10.9.1 - 2023-08-17 =
 
 #### Enhancements
