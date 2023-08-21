@@ -11,8 +11,18 @@ import ReviewListItem from '../review-list-item';
 import type { Review } from '../types';
 import './style.scss';
 
+export type ReviewListAttributes = BlockAttributes & {
+	imageType: string;
+	showReviewImage: boolean;
+	showReviewRating: boolean;
+	showReviewDate: boolean;
+	showReviewerName: boolean;
+	showReviewContent: boolean;
+	showProductName: boolean;
+};
+
 interface ReviewListProps {
-	attributes: BlockAttributes;
+	attributes: ReviewListAttributes;
 	reviews: Review[];
 }
 
@@ -20,8 +30,11 @@ const ReviewList = ( {
 	attributes,
 	reviews,
 }: ReviewListProps ): JSX.Element => {
-	const showAvatars = getSetting( 'showAvatars', true );
-	const reviewRatingsEnabled = getSetting( 'reviewRatingsEnabled', true );
+	const showAvatars = getSetting< boolean >( 'showAvatars', true );
+	const reviewRatingsEnabled = getSetting< boolean >(
+		'reviewRatingsEnabled',
+		true
+	);
 	const showReviewImage =
 		( showAvatars || attributes.imageType === 'product' ) &&
 		attributes.showReviewImage;

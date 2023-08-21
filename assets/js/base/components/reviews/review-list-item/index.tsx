@@ -4,13 +4,13 @@
 import { __, sprintf } from '@wordpress/i18n';
 import classNames from 'classnames';
 import ReadMore from '@woocommerce/base-components/read-more';
-import type { BlockAttributes } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 import type { Review } from '../types';
+import { ReviewListAttributes } from '../review-list';
 
 function getReviewImage(
 	review: Review,
@@ -154,8 +154,9 @@ function getReviewRating( review: Review ): JSX.Element {
 		</div>
 	);
 }
+
 interface ReviewListItemProps {
-	attributes: BlockAttributes;
+	attributes: ReviewListAttributes;
 	review?: Review;
 }
 

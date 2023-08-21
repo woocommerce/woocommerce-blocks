@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
 import { getSetting } from '@woocommerce/settings';
 import LoadMoreButton from '@woocommerce/base-components/load-more-button';
 import {
@@ -10,15 +9,36 @@ import {
 	ReviewSortSelect,
 } from '@woocommerce/base-components/reviews';
 import withReviews from '@woocommerce/base-hocs/with-reviews';
+import type { ChangeEventHandler, MouseEventHandler } from 'react';
+
+/**
+ * Internal dependencies
+ */
+import { ReviewListAttributes } from '../../base/components/reviews/review-list';
+import { Review } from '../../base/components/reviews/types';
+
+type FrontendBlockAttributes = ReviewListAttributes & {
+	showOrderby?: 'false' | 'true';
+	showLoadMore?: 'false' | 'true';
+};
+
+interface FrontendBlockProps {
+	attributes: FrontendBlockAttributes;
+	onAppendReviews: MouseEventHandler;
+	onChangeOrderby: ChangeEventHandler< HTMLSelectElement >;
+	sortSelectValue: 'most-recent' | 'highest-rating' | 'lowest-rating';
+	reviews: Review[];
+	totalReviews: number;
+}
 
 /**
  * Block rendered in the frontend.
  *
- * @param {Object}                                             props                 Incoming props for the component.
- * @param {Object}                                             props.attributes      Incoming block attributes.
- * @param {function(any):any}                                  props.onAppendReviews Function called when appending review.
- * @param {function(any):any}                                  props.onChangeOrderby
- * @param {Array}                                              props.reviews
+ * @param {FrontendBlockProps}                                 props                 Incoming props for the component.
+ * @param {FrontendBlockAttributes}                            props.attributes      Incoming block attributes.
+ * @param {MouseEventHandler}                                  props.onAppendReviews Function called when appending review.
+ * @param {ChangeEventHandler< HTMLSelectElement >}            props.onChangeOrderby
+ * @param {Array<Review>}                                      props.reviews
  * @param {'most-recent' | 'highest-rating' | 'lowest-rating'} props.sortSelectValue
  * @param {number}                                             props.totalReviews
  */
@@ -29,12 +49,15 @@ const FrontendBlock = ( {
 	reviews,
 	sortSelectValue,
 	totalReviews,
-} ) => {
+}: FrontendBlockProps ) => {
 	if ( reviews.length === 0 ) {
 		return null;
 	}
 
-	const reviewRatingsEnabled = getSetting( 'reviewRatingsEnabled', true );
+	const reviewRatingsEnabled = getSetting< boolean >(
+		'reviewRatingsEnabled',
+		true
+	);
 
 	return (
 		<>
@@ -58,18 +81,6 @@ const FrontendBlock = ( {
 				) }
 		</>
 	);
-};
-
-FrontendBlock.propTypes = {
-	/**
-	 * The attributes for this block.
-	 */
-	attributes: PropTypes.object.isRequired,
-	onAppendReviews: PropTypes.func,
-	onChangeArgs: PropTypes.func,
-	// from withReviewsattributes
-	reviews: PropTypes.array,
-	totalReviews: PropTypes.number,
 };
 
 export default withReviews( FrontendBlock );
