@@ -33,14 +33,15 @@ test.describe( 'Merchant → Cart', () => {
 			await editorUtils.enterEditMode();
 		} );
 
-		test( 'it renders without crashing', async ( { editorUtils } ) => {
+		test( 'renders without crashing and can only be inserted once', async ( {
+			page,
+			editorUtils,
+		} ) => {
 			const blockPresence = await editorUtils.getBlockByName(
 				blockData.slug
 			);
 			expect( blockPresence ).toBeTruthy();
-		} );
 
-		test( 'can only be inserted once', async ( { page, editorUtils } ) => {
 			await editorUtils.openGlobalBlockInserter();
 			await page.getByPlaceholder( 'Search' ).fill( blockData.slug );
 			const cartBlockButton = page.getByRole( 'option', {
@@ -142,7 +143,7 @@ test.describe( 'Merchant → Cart', () => {
 			await expect( filledCartAudioButton ).toBeHidden();
 		} );
 
-		test( 'shows empty cart when changing the view', async ( {
+		test( 'shows empty cart when changing the view and allows toggling of shipping calculator', async ( {
 			page,
 			editor,
 			editorUtils,
