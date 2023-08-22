@@ -10,11 +10,11 @@ import {
 } from '@woocommerce/base-components/reviews';
 import withReviews from '@woocommerce/base-hocs/with-reviews';
 import type { ChangeEventHandler, MouseEventHandler } from 'react';
+import { Review } from '@woocommerce/base-components/reviews/types';
 
 /**
  * Internal dependencies
  */
-import { Review } from '../../base/components/reviews/types';
 import { ReviewBlockAttributes } from './attributes';
 
 interface FrontendBlockProps {
