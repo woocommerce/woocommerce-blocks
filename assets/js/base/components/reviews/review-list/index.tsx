@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { getSetting } from '@woocommerce/settings';
-import type { BlockAttributes } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -10,19 +9,9 @@ import type { BlockAttributes } from '@wordpress/blocks';
 import ReviewListItem from '../review-list-item';
 import type { Review } from '../types';
 import './style.scss';
-
-export type ReviewListAttributes = BlockAttributes & {
-	imageType: string;
-	showReviewImage: boolean;
-	showReviewRating: boolean;
-	showReviewDate: boolean;
-	showReviewerName: boolean;
-	showReviewContent: boolean;
-	showProductName: boolean;
-};
-
+import { ReviewBlockAttributes } from '../../../../blocks/reviews/attributes';
 interface ReviewListProps {
-	attributes: ReviewListAttributes;
+	attributes: ReviewBlockAttributes;
 	reviews: Review[];
 }
 

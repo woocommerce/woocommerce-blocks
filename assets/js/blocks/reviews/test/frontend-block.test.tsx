@@ -97,7 +97,7 @@ describe( 'ReviewsFrontendBlock', () => {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore - we can't fix this until withReviews is converted to TS.
 			<ReviewsFrontendBlock
-				attributes={ { showLoadMore: 'true', showOrderby: 'true' } }
+				attributes={ { showLoadMore: true, showOrderby: true } }
 				sortSelectValue={ 'most-recent' }
 				reviewsToDisplay={ 1 }
 				orderby={ 'reviewer' }
@@ -122,7 +122,7 @@ describe( 'ReviewsFrontendBlock', () => {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore - we can't fix this until withReviews is converted to TS.
 			<ReviewsFrontendBlock
-				attributes={ { showLoadMore: 'true', showOrderby: 'true' } }
+				attributes={ { showLoadMore: true, showOrderby: true } }
 				sortSelectValue={ 'most-recent' }
 				reviewsToDisplay={ 1 }
 				orderby={ 'reviewer' }

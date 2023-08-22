@@ -14,16 +14,11 @@ import type { ChangeEventHandler, MouseEventHandler } from 'react';
 /**
  * Internal dependencies
  */
-import { ReviewListAttributes } from '../../base/components/reviews/review-list';
 import { Review } from '../../base/components/reviews/types';
-
-type FrontendBlockAttributes = ReviewListAttributes & {
-	showOrderby?: 'false' | 'true';
-	showLoadMore?: 'false' | 'true';
-};
+import { ReviewBlockAttributes } from './attributes';
 
 interface FrontendBlockProps {
-	attributes: FrontendBlockAttributes;
+	attributes: ReviewBlockAttributes;
 	onAppendReviews: MouseEventHandler;
 	onChangeOrderby: ChangeEventHandler< HTMLSelectElement >;
 	sortSelectValue: 'most-recent' | 'highest-rating' | 'lowest-rating';
@@ -50,7 +45,7 @@ const FrontendBlock = ( {
 
 	return (
 		<>
-			{ attributes.showOrderby !== 'false' && reviewRatingsEnabled && (
+			{ attributes.showOrderby && reviewRatingsEnabled && (
 				<ReviewSortSelect
 					value={ sortSelectValue }
 					onChange={ onChangeOrderby }
@@ -58,16 +53,15 @@ const FrontendBlock = ( {
 				/>
 			) }
 			<ReviewList attributes={ attributes } reviews={ reviews } />
-			{ attributes.showLoadMore !== 'false' &&
-				totalReviews > reviews.length && (
-					<LoadMoreButton
-						onClick={ onAppendReviews }
-						screenReaderLabel={ __(
-							'Load more reviews',
-							'woo-gutenberg-products-block'
-						) }
-					/>
-				) }
+			{ attributes.showLoadMore && totalReviews > reviews.length && (
+				<LoadMoreButton
+					onClick={ onAppendReviews }
+					screenReaderLabel={ __(
+						'Load more reviews',
+						'woo-gutenberg-products-block'
+					) }
+				/>
+			) }
 		</>
 	);
 };
