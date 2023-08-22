@@ -21,7 +21,8 @@ const blockData: BlockData = {
 };
 
 test.describe( 'Merchant → Cart', () => {
-	const blockSelectorInEditor = blockData.selectors.editor.block;
+	// `as string` is safe here because we know the variable is a string, it is defined above.
+	const blockSelectorInEditor = blockData.selectors.editor.block as string;
 
 	test.describe( 'in page editor', () => {
 		test.beforeEach( async ( { editorUtils, admin } ) => {
