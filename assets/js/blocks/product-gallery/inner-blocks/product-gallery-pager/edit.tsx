@@ -100,7 +100,3 @@ export const Edit = ( props: EditProps ): JSX.Element => {
 		</div>
 	);
 };
-
-export const Save = (): JSX.Element => {
-	return <div { ...useBlockProps.save() }></div>;
-};

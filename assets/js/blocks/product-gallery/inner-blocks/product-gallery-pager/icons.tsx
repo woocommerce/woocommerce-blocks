@@ -3,7 +3,7 @@
  */
 import { SVG } from '@wordpress/primitives';
 
-export const ProductGalleryBlockIcon = () => (
+export const ProductGalleryPagerBlockIcon = () => (
 	<svg
 		width="24"
 		height="24"
