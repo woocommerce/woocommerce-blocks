@@ -10,7 +10,7 @@ import ReadMore from '@woocommerce/base-components/read-more';
  */
 import './style.scss';
 import type { Review } from '../types';
-import { ReviewListAttributes } from '../review-list';
+import { ReviewBlockAttributes } from '../../../../blocks/reviews/attributes';
 
 function getReviewImage(
 	review: Review,
@@ -156,7 +156,7 @@ function getReviewRating( review: Review ): JSX.Element {
 }
 
 interface ReviewListItemProps {
-	attributes: ReviewListAttributes;
+	attributes: ReviewBlockAttributes;
 	review?: Review;
 }
 
