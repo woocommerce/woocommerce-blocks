@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Social: Follow us in social media
+ * Title: Social: Follow us on social media
  * Slug: woocommerce-blocks/social-follow-us-in-social-media
  * Categories: WooCommerce
  */
@@ -10,7 +10,7 @@
 	<!-- wp:column {"verticalAlignment":"bottom","width":"75%","layout":{"type":"constrained"}} -->
 	<div class="wp-block-column is-vertically-aligned-bottom" style="flex-basis:75%">
 		<!-- wp:heading {"level":3,"align":"wide"} -->
-		<h3 class="wp-block-heading alignwide"><?php esc_html_e( 'Follow us in social media', 'woo-gutenberg-products-block' ); ?></h3>
+		<h3 class="wp-block-heading alignwide"><?php esc_html_e( 'Follow us on social media', 'woo-gutenberg-products-block' ); ?></h3>
 		<!-- /wp:heading --></div>
 	<!-- /wp:column -->
 
