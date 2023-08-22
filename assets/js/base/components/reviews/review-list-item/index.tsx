@@ -4,13 +4,13 @@
 import { __, sprintf } from '@wordpress/i18n';
 import classNames from 'classnames';
 import ReadMore from '@woocommerce/base-components/read-more';
+import { ReviewBlockAttributes } from '@woocommerce/blocks/reviews/attributes';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 import type { Review } from '../types';
-import { ReviewBlockAttributes } from '../../../../blocks/reviews/attributes';
 
 function getReviewImage(
 	review: Review,

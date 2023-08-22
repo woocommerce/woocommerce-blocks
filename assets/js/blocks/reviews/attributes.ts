@@ -2,11 +2,7 @@
  * External dependencies
  */
 import { BlockAttributes } from '@wordpress/blocks';
-
-/**
- * Internal dependencies
- */
-import { Review } from '../../base/components/reviews/types';
+import { Review } from '@woocommerce/base-components/reviews/types';
 
 export default {
 	/**
