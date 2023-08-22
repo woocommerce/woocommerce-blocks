@@ -31,17 +31,6 @@ interface FrontendBlockProps {
 	totalReviews: number;
 }
 
-/**
- * Block rendered in the frontend.
- *
- * @param {FrontendBlockProps}                                 props                 Incoming props for the component.
- * @param {FrontendBlockAttributes}                            props.attributes      Incoming block attributes.
- * @param {MouseEventHandler}                                  props.onAppendReviews Function called when appending review.
- * @param {ChangeEventHandler< HTMLSelectElement >}            props.onChangeOrderby
- * @param {Array<Review>}                                      props.reviews
- * @param {'most-recent' | 'highest-rating' | 'lowest-rating'} props.sortSelectValue
- * @param {number}                                             props.totalReviews
- */
 const FrontendBlock = ( {
 	attributes,
 	onAppendReviews,
