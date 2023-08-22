@@ -2,14 +2,6 @@
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd ../../pages && pwd)"
 
-wp post create \
-	--menu_order=0 \
-	--post_type=page \
-	--post_status=publish \
-	--post_author=1 \
-	--post_title='All Products block' \
-	${script_dir}/all-products.html
-
 post_id=$(wp post create \
 	--porcelain \
 	--menu_order=1 \
