@@ -16,6 +16,7 @@ WooCommerce Blocks uses Webpack to build the files that will be consumed by brow
 -   `FrontendConfig`: config that builds the JS files used by blocks in the store frontend.
 -   `PaymentsConfig`: config that builds the JS files used by payment methods in the Cart and Checkout blocks.
 -   `ExtensionsConfig`: config that builds extension integrations.
+-   `InteractivityBlocksConfig`: config that builds the JS files used by blocks that utilize the Interactivity API.
 -   `StylingConfig`: config that builds CSS files. You can read more about it in the page [CSS build system](css-build-system.md).
 
 Details on each config can be found in [`webpack-configs.js`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/bin/webpack-configs.js). Entry points are declared in [`webpack-entries.js`](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/bin/webpack-entries.js).

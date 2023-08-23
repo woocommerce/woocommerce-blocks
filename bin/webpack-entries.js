@@ -198,6 +198,9 @@ const entries = {
 		'wc-blocks-classic-template-revert-button':
 			'./assets/js/templates/revert-button/index.tsx',
 	},
+	interactivityBlocks: {
+		...getBlockEntries( 'view.{t,j}s' ),
+	},
 };
 
 const getEntryConfig = ( type = 'main', exclude = [] ) => {

@@ -11,6 +11,7 @@ const {
 	getSiteEditorConfig,
 	getStylingConfig,
 	getInteractivityAPIConfig,
+	getInteractivityBlocksConfig,
 } = require( './bin/webpack-configs.js' );
 
 // Only options shared between all configs should be defined here.
@@ -92,6 +93,14 @@ const InteractivityConfig = {
 };
 
 /**
+ * Config to generate the Interactivity Blocks runtime.
+ */
+const InteractivityBlocksConfig = {
+	...sharedConfig,
+	...getInteractivityBlocksConfig( { alias: getAlias() } ),
+};
+
+/**
  * Config to generate the site editor scripts.
  */
 const SiteEditorConfig = {
@@ -108,5 +117,6 @@ module.exports = [
 	SiteEditorConfig,
 	StylingConfig,
 	InteractivityConfig,
+	InteractivityBlocksConfig,
 	StylingClassicThemeConfig,
 ];

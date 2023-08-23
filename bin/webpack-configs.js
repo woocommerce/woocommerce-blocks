@@ -982,6 +982,125 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 	};
 };
 
+/**
+ * Build config for Interactivity Blocks in the frontend context.
+ *
+ * @param {Object} options Build options.
+ */
+const getInteractivityBlocksConfig = ( options = {} ) => {
+	let { fileSuffix } = options;
+	const { alias, resolvePlugins = [] } = options;
+	fileSuffix = fileSuffix ? `-${ fileSuffix }` : '';
+	const resolve = alias
+		? {
+				alias,
+				plugins: resolvePlugins,
+		  }
+		: {
+				plugins: resolvePlugins,
+		  };
+	return {
+		entry: getEntryConfig( 'interactivityBlocks', options.exclude || [] ),
+		output: {
+			devtoolNamespace: 'wc',
+			path: path.resolve( __dirname, '../build/' ),
+			// This is a cache busting mechanism which ensures that the script is loaded via the browser with a ?ver=hash
+			// string. The hash is based on the built file contents.
+			// @see https://github.com/webpack/webpack/issues/2329
+			// Using the ?ver string is needed here so the filename does not change between builds. The WordPress
+			// i18n system relies on the hash of the filename, so changing that frequently would result in broken
+			// translations which we must avoid.
+			// @see https://github.com/Automattic/jetpack/pull/20926
+			chunkFilename: `[name]-interactivity-view${ fileSuffix }.js?ver=[contenthash]`,
+			filename: `[name]-interactivity-view${ fileSuffix }.js`,
+			// This fixes an issue with multiple webpack projects using chunking
+			// overwriting each other's chunk loader function.
+			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
+			// This can be removed when moving to webpack 5:
+			// https://webpack.js.org/blog/2020-10-10-webpack-5-release/#automatic-unique-naming
+			jsonpFunction: 'webpackWcBlocksJsonp',
+		},
+		module: {
+			rules: [
+				{
+					test: /\.(j|t)sx?$/,
+					exclude: /node_modules/,
+					use: {
+						loader: 'babel-loader?cacheDirectory',
+						options: {
+							presets: [
+								[
+									'@wordpress/babel-preset-default',
+									{
+										modules: false,
+										targets: {
+											browsers: [
+												'extends @wordpress/browserslist-config',
+											],
+										},
+									},
+								],
+							],
+							plugins: [
+								isProduction
+									? require.resolve(
+											'babel-plugin-transform-react-remove-prop-types'
+									  )
+									: false,
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
+							].filter( Boolean ),
+						},
+					},
+				},
+				{
+					test: /\.s[c|a]ss$/,
+					use: {
+						loader: 'ignore-loader',
+					},
+				},
+			],
+		},
+		optimization: {
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
+			splitChunks: {
+				automaticNameDelimiter: '--',
+			},
+			minimizer: [
+				new TerserPlugin( {
+					cache: true,
+					parallel: true,
+					terserOptions: {
+						output: {
+							comments: /translators:/i,
+						},
+						compress: {
+							passes: 2,
+						},
+						mangle: {
+							reserved: [ '__', '_n', '_nx', '_x' ],
+						},
+					},
+					extractComments: false,
+				} ),
+			],
+		},
+		plugins: [
+			...getSharedPlugins( {
+				bundleAnalyzerReportTitle: 'InteractivityBlocks',
+			} ),
+			new ProgressBarPlugin(
+				getProgressBarPluginConfig( 'InteractivityBlocks' )
+			),
+		],
+		resolve: {
+			...resolve,
+			extensions: [ '.js', '.ts', '.tsx' ],
+		},
+	};
+};
+
 module.exports = {
 	getCoreConfig,
 	getFrontConfig,
@@ -991,4 +1110,5 @@ module.exports = {
 	getSiteEditorConfig,
 	getStylingConfig,
 	getInteractivityAPIConfig,
+	getInteractivityBlocksConfig,
 };
