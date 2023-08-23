@@ -17,16 +17,16 @@ const makeChangeLog = async () => {
 			? chalk.green( 'set' )
 			: chalk.red( 'not set' );
 		console.log( `${ chalk.yellow( 'Zenhub Token:' ) } ${ zenhubSet }` );
-		console.log( `${ chalk.yellow( 'Github Token:' ) } ${ githubSet }` );
+		console.log( `${ chalk.yellow( 'GitHub Token:' ) } ${ githubSet }` );
 		console.log( '' );
 		console.log(
 			chalk.yellow(
-				'This program requires an api token from Github and Zenhub.'
+				'This program requires an api token from GitHub and Zenhub.'
 			)
 		);
 		console.log(
 			chalk.yellow(
-				'You can create and get a Github token here: https://github.com/settings/tokens'
+				'You can create and get a GitHub token here: https://github.com/settings/tokens'
 			)
 		);
 		console.log(
@@ -37,7 +37,7 @@ const makeChangeLog = async () => {
 		console.log( '' );
 		console.log(
 			chalk.yellow(
-				'Token scope for Github will require read permissions on public_repo, admin:org, and user.'
+				'Token scope for GitHub will require read permissions on public_repo, admin:org, and user.'
 			)
 		);
 		console.log( '' );
