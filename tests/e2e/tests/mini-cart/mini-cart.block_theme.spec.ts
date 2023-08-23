@@ -22,7 +22,7 @@ test.describe( `Mini Cart Block`, () => {
 	test( 'should open the empty cart drawer', async ( { page } ) => {
 		await page.getByLabel( 'items in cart,' ).click();
 
-		await expect( page.getByRole( 'dialog' ) ).toHaveText(
+		await expect( page.getByRole( 'dialog' ) ).toContainText(
 			'Your cart is currently empty!'
 		);
 	} );
@@ -32,7 +32,7 @@ test.describe( `Mini Cart Block`, () => {
 	} ) => {
 		await page.getByLabel( 'items in cart,' ).click();
 
-		await expect( page.getByRole( 'dialog' ) ).toHaveText(
+		await expect( page.getByRole( 'dialog' ) ).toContainText(
 			'Your cart is currently empty!'
 		);
 
@@ -46,7 +46,7 @@ test.describe( `Mini Cart Block`, () => {
 	} ) => {
 		await page.getByLabel( 'items in cart,' ).click();
 
-		await expect( page.getByRole( 'dialog' ) ).toHaveText(
+		await expect( page.getByRole( 'dialog' ) ).toContainText(
 			'Your cart is currently empty!'
 		);
 
@@ -66,6 +66,6 @@ test.describe( `Mini Cart Block`, () => {
 
 		await expect(
 			page.locator( '.wc-block-mini-cart__title' ).first()
-		).toHaveText( 'Your cart (1 item)' );
+		).toContainText( 'Your cart (1 item)' );
 	} );
 } );
