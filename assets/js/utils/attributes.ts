@@ -55,14 +55,20 @@ export const convertAttributeObjectToSearchItem = (
 ): SearchListItem => {
 	const { count, id, name, parent } = attribute;
 
+	const base = isAttributeTerm( attribute )
+		? {
+				termId: id,
+				value: attribute.attr_slug,
+		  }
+		: { id, value: '' };
+
 	return {
+		...base,
 		count,
-		id,
 		name,
 		parent,
 		breadcrumbs: [],
 		children: [],
-		value: isAttributeTerm( attribute ) ? attribute.attr_slug : '',
 	};
 };
 
