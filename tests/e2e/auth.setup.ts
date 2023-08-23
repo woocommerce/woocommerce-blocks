@@ -11,20 +11,24 @@ import { customer, admin } from './test-data/data/data';
 
 setup( 'authenticate as admin', async ( { page } ) => {
 	await page.goto( '/my-account' );
-	const isLoggedOut = await page
+	const isLoggedIn = await page
 		.getByLabel( 'Username or email address' )
-		.isVisible();
+		.isHidden();
 
-	if ( isLoggedOut ) {
+	if ( isLoggedIn ) {
 		await page
-			.getByLabel( 'Username or email address' )
-			.fill( admin.username );
-		await page.getByLabel( 'Password' ).fill( admin.password );
-		await page.getByRole( 'button', { name: 'Log in' } ).click();
-		// Sometimes login flow sets cookies in the process of several redirects.
-		// Wait for the final URL to ensure that the cookies are actually set.
-		await page.waitForURL( '/my-account/' );
+			.getByRole( 'paragraph' )
+			.filter( { hasText: /Hello .* \(not .*? Log out\)/ } )
+			.getByRole( 'link', { name: 'Log out' } )
+			.click();
 	}
+
+	await page.getByLabel( 'Username or email address' ).fill( admin.username );
+	await page.getByLabel( 'Password' ).fill( admin.password );
+	await page.getByRole( 'button', { name: 'Log in' } ).click();
+	// Sometimes login flow sets cookies in the process of several redirects.
+	// Wait for the final URL to ensure that the cookies are actually set.
+	await page.waitForURL( '/my-account/' );
 
 	await expect(
 		page
@@ -41,20 +45,25 @@ setup( 'authenticate as admin', async ( { page } ) => {
 
 setup( 'authenticate as customer', async ( { page } ) => {
 	await page.goto( '/my-account' );
-	const isLoggedOut = await page
+	const isLoggedIn = await page
 		.getByLabel( 'Username or email address' )
-		.isVisible();
+		.isHidden();
 
-	if ( isLoggedOut ) {
+	if ( isLoggedIn ) {
 		await page
-			.getByLabel( 'Username or email address' )
-			.fill( customer.username );
-		await page.getByLabel( 'Password' ).fill( customer.password );
-		await page.getByRole( 'button', { name: 'Log in' } ).click();
-		// Sometimes login flow sets cookies in the process of several redirects.
-		// Wait for the final URL to ensure that the cookies are actually set.
-		await page.waitForURL( '/my-account/' );
+			.getByRole( 'paragraph' )
+			.filter( { hasText: /Hello .* \(not .*? Log out\)/ } )
+			.getByRole( 'link', { name: 'Log out' } )
+			.click();
 	}
+	await page
+		.getByLabel( 'Username or email address' )
+		.fill( customer.username );
+	await page.getByLabel( 'Password' ).fill( customer.password );
+	await page.getByRole( 'button', { name: 'Log in' } ).click();
+	// Sometimes login flow sets cookies in the process of several redirects.
+	// Wait for the final URL to ensure that the cookies are actually set.
+	await page.waitForURL( '/my-account/' );
 
 	await expect(
 		page
@@ -71,23 +80,16 @@ setup( 'authenticate as customer', async ( { page } ) => {
 
 setup( 'authenticate as guest', async ( { page } ) => {
 	await page.goto( '/my-account' );
-	const isLoggedOut = await page
+	const isLoggedIn = await page
 		.getByLabel( 'Username or email address' )
-		.isVisible();
+		.isHidden();
 
-	if ( ! isLoggedOut ) {
+	if ( isLoggedIn ) {
 		await page
-			.getByRole( 'list' )
-			.filter( {
-				hasText:
-					'Dashboard Orders Downloads Addresses Account details Log out',
-			} )
+			.getByRole( 'paragraph' )
+			.filter( { hasText: /Hello .* \(not .*? Log out\)/ } )
 			.getByRole( 'link', { name: 'Log out' } )
 			.click();
-
-		// Sometimes login flow sets cookies in the process of several redirects.
-		// Wait for the final URL to ensure that the cookies are actually set.
-		await page.waitForURL( '/my-account/' );
 	}
 
 	await expect(
