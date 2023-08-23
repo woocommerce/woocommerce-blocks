@@ -2,18 +2,10 @@
  * External dependencies
  */
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
-
-const getFreshSession = () => {
-	return {
-		cookies: [],
-		origins: [],
-	};
-};
+import { useIncognito } from '@woocommerce/e2e-utils';
 
 test.describe( `Mini Cart Block`, () => {
-	test.use( {
-		storageState: getFreshSession(),
-	} );
+	useIncognito( test );
 
 	test.beforeEach( async ( { page } ) => {
 		await page.goto( `/mini-cart-block`, { waitUntil: 'commit' } );
