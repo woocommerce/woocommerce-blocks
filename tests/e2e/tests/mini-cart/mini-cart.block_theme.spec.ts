@@ -3,6 +3,12 @@
  */
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
 import { useIncognito } from '@woocommerce/e2e-utils';
+import { Page } from '@playwright/test';
+
+const openMiniCart = async ( page: Page ) => {
+	await page.getByLabel( 'items in cart,' ).hover();
+	await page.getByLabel( 'items in cart,' ).click();
+};
 
 test.describe( `Mini Cart Block`, () => {
 	useIncognito( test );
@@ -12,8 +18,7 @@ test.describe( `Mini Cart Block`, () => {
 	} );
 
 	test( 'should open the empty cart drawer', async ( { page } ) => {
-		await page.getByLabel( 'items in cart,' ).hover();
-		await page.getByLabel( 'items in cart,' ).click();
+		await openMiniCart( page );
 
 		await expect( page.getByRole( 'dialog' ) ).toContainText(
 			'Your cart is currently empty!'
@@ -23,8 +28,7 @@ test.describe( `Mini Cart Block`, () => {
 	test( 'should close the drawer when clicking on the close button', async ( {
 		page,
 	} ) => {
-		await page.getByLabel( 'items in cart,' ).hover();
-		await page.getByLabel( 'items in cart,' ).click();
+		await openMiniCart( page );
 
 		await expect( page.getByRole( 'dialog' ) ).toContainText(
 			'Your cart is currently empty!'
@@ -38,8 +42,7 @@ test.describe( `Mini Cart Block`, () => {
 	test( 'should close the drawer when clicking outside the drawer', async ( {
 		page,
 	} ) => {
-		await page.getByLabel( 'items in cart,' ).hover();
-		await page.getByLabel( 'items in cart,' ).click();
+		await openMiniCart( page );
 
 		await expect( page.getByRole( 'dialog' ) ).toContainText(
 			'Your cart is currently empty!'
@@ -57,8 +60,7 @@ test.describe( `Mini Cart Block`, () => {
 	test( 'should open the filled cart drawer', async ( { page } ) => {
 		await page.click( 'text=Add to cart' );
 
-		await page.getByLabel( 'items in cart,' ).hover();
-		await page.getByLabel( 'items in cart,' ).click();
+		await openMiniCart( page );
 
 		await expect(
 			page.locator( '.wc-block-mini-cart__title' ).first()
