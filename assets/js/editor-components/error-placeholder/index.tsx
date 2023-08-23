@@ -11,17 +11,7 @@ import { Button, Placeholder, Spinner } from '@wordpress/components';
  */
 import ErrorMessage from './error-message';
 import './editor.scss';
-
-export interface ErrorObject {
-	/**
-	 * Human-readable error message to display.
-	 */
-	message: string;
-	/**
-	 * Context in which the error was triggered. That will determine how the error is displayed to the user.
-	 */
-	type: 'api' | 'general' | string;
-}
+import { ErrorObject } from '../../base/utils';
 
 export interface ErrorPlaceholderProps {
 	/**

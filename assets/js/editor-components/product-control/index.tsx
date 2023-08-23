@@ -2,8 +2,11 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { isEmpty } from '@woocommerce/types';
-import PropTypes from 'prop-types';
+import {
+	isEmpty,
+	ProductResponseItem,
+	ProductResponseVariationsItem,
+} from '@woocommerce/types';
 import {
 	SearchListControl,
 	SearchListItem,
@@ -16,12 +19,14 @@ import {
 } from '@woocommerce/block-hocs';
 import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
 import classNames from 'classnames';
-import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item.tsx';
+import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { SearchListItem as SearchListItemType } from '../search-list-control/types';
+import { ErrorObject } from '../../base/utils';
 
 const messages = {
 	list: __( 'Products', 'woo-gutenberg-products-block' ),
@@ -39,21 +44,37 @@ const messages = {
 	),
 };
 
+type ProductControlProps = {
+	expandedProduct?: number | null;
+	error: ErrorObject | null;
+	instanceId?: number;
+	isCompact?: boolean;
+	isLoading?: boolean;
+	onChange: ( selected: SearchListItemType[] ) => void;
+	onSearch?: ( search: string ) => void;
+	products: ProductResponseItem[];
+	renderItem?: ( args: unknown ) => JSX.Element;
+	selected?: number[] | number | string;
+	showVariations?: boolean;
+	variations: { [ key: string ]: ProductResponseVariationsItem[] };
+	variationsLoading?: boolean;
+};
+
 const ProductControl = ( {
-	expandedProduct,
+	expandedProduct = null,
 	error,
 	instanceId,
-	isCompact,
+	isCompact = false,
 	isLoading,
 	onChange,
 	onSearch,
 	products,
 	renderItem,
-	selected,
-	showVariations,
+	selected = [],
+	showVariations = false,
 	variations,
 	variationsLoading,
-} ) => {
+}: ProductControlProps ) => {
 	const renderItemWithVariations = ( args ) => {
 		const { item, search, depth = 0, isSelected, onSelect } = args;
 		const variationsCount =
@@ -142,7 +163,9 @@ const ProductControl = ( {
 		} else if ( showVariations ) {
 			return renderItemWithVariations;
 		}
-		return null;
+		return () => {
+			return null;
+		};
 	};
 
 	if ( error ) {
@@ -150,7 +173,7 @@ const ProductControl = ( {
 	}
 
 	const currentVariations =
-		variations && variations[ expandedProduct ]
+		variations && expandedProduct !== null && variations[ expandedProduct ]
 			? variations[ expandedProduct ]
 			: [];
 	const currentList = [ ...products, ...currentVariations ];
@@ -158,13 +181,19 @@ const ProductControl = ( {
 	return (
 		<SearchListControl
 			className="woocommerce-products"
+			// @ts-expect-error - It looks like ProductResponse does not fulfill the SearchListItemProps interface. This needs to be fixed.
 			list={ currentList }
 			isCompact={ isCompact }
 			isLoading={ isLoading }
 			isSingle
-			selected={ currentList.filter( ( { id } ) =>
-				selected.includes( id )
-			) }
+			// @ts-expect-error - It looks like ProductResponse does not fulfill the SearchListItemProps interface. This needs to be fixed.
+			selected={ currentList.filter( ( { id } ) => {
+				if ( Array.isArray( selected ) ) {
+					return selected.includes( id );
+				}
+
+				return selected === id;
+			} ) }
 			onChange={ onChange }
 			renderItem={ getRenderItemFunc() }
 			onSearch={ onSearch }
@@ -172,45 +201,6 @@ const ProductControl = ( {
 			isHierarchical
 		/>
 	);
-};
-
-ProductControl.propTypes = {
-	/**
-	 * Callback to update the selected products.
-	 */
-	onChange: PropTypes.func.isRequired,
-	isCompact: PropTypes.bool,
-	/**
-	 * The ID of the currently expanded product.
-	 */
-	expandedProduct: PropTypes.number,
-	/**
-	 * Callback to search products by their name.
-	 */
-	onSearch: PropTypes.func,
-	/**
-	 * Query args to pass to getProducts.
-	 */
-	queryArgs: PropTypes.object,
-	/**
-	 * Callback to render each item in the selection list, allows any custom object-type rendering.
-	 */
-	renderItem: PropTypes.func,
-	/**
-	 * The ID of the currently selected item (product or variation).
-	 */
-	selected: PropTypes.arrayOf( PropTypes.number ),
-	/**
-	 * Whether to show variations in the list of items available.
-	 */
-	showVariations: PropTypes.bool,
-};
-
-ProductControl.defaultProps = {
-	isCompact: false,
-	expandedProduct: null,
-	selected: [],
-	showVariations: false,
 };
 
 export default withTransformSingleSelectToMultipleSelect(

@@ -35,13 +35,13 @@ export interface ListItemsProps
 }
 
 export type SearchListItem = {
-	breadcrumbs: string[];
+	breadcrumbs?: string[];
 	children?: SearchListItem[];
-	count: number;
+	count?: number;
 	id: string | number;
 	name: string;
 	parent: number;
-	value: string;
+	value?: string;
 };
 
 export interface SearchListItemsContainerProps
@@ -114,7 +114,7 @@ export interface SearchListControlProps {
 	// Callback fired when the search field is used.
 	onSearch?: ( ( search: string ) => void ) | undefined;
 	// Callback to render each item in the selection list, allows any custom object-type rendering.
-	renderItem?: ( args: renderItemArgs ) => JSX.Element;
+	renderItem?: ( args: renderItemArgs ) => JSX.Element | null;
 	// The list of currently selected items.
 	selected: SearchListItem[];
 	// Whether to show a text field or a token field as search

@@ -7,7 +7,7 @@ import { escapeHTML } from '@wordpress/escape-html';
 /**
  * Internal dependencies
  */
-import { ErrorObject } from '.';
+import { ErrorObject } from '../../base/utils';
 
 export interface ErrorMessageProps {
 	/**
