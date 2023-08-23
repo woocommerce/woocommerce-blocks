@@ -285,3 +285,28 @@ function woocommerce_blocks_plugin_outdated_notice() {
 }
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
+
+use Automattic\Jetpack\Config;
+
+$executed=false;
+function jpcs_load_plugin() {
+
+	// Here we enable the Jetpack packages.
+	$config = new Config();
+	$config->ensure(
+		'connection',
+		array(
+			'slug'     => 'woocommerce/woocommerce-blocks', // Required, slug of your plugin, should be unique.
+			'name'     => 'WooCommerce Blocks', // Required, your plugin name.
+			'url_info' => 'https://graceful-darkling.jurassic.ninja',
+		)
+	);
+
+	if (!$executed){
+		$response = wp_remote_post(get_site_url().'/jetpack/v4/connection/register');
+		$executed=true;
+		error_log(print_r($response,true));
+	}
+}
+
+add_action( 'plugins_loaded', 'jpcs_load_plugin', 1 );
