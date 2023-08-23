@@ -20,6 +20,7 @@ test.describe( `Mini Cart Block`, () => {
 	} );
 
 	test( 'should open the empty cart drawer', async ( { page } ) => {
+		await page.getByLabel( 'items in cart,' ).hover();
 		await page.getByLabel( 'items in cart,' ).click();
 
 		await expect( page.getByRole( 'dialog' ) ).toContainText(
@@ -30,6 +31,7 @@ test.describe( `Mini Cart Block`, () => {
 	test( 'should close the drawer when clicking on the close button', async ( {
 		page,
 	} ) => {
+		await page.getByLabel( 'items in cart,' ).hover();
 		await page.getByLabel( 'items in cart,' ).click();
 
 		await expect( page.getByRole( 'dialog' ) ).toContainText(
@@ -44,6 +46,7 @@ test.describe( `Mini Cart Block`, () => {
 	test( 'should close the drawer when clicking outside the drawer', async ( {
 		page,
 	} ) => {
+		await page.getByLabel( 'items in cart,' ).hover();
 		await page.getByLabel( 'items in cart,' ).click();
 
 		await expect( page.getByRole( 'dialog' ) ).toContainText(
@@ -62,6 +65,7 @@ test.describe( `Mini Cart Block`, () => {
 	test( 'should open the filled cart drawer', async ( { page } ) => {
 		await page.click( 'text=Add to cart' );
 
+		await page.getByLabel( 'items in cart,' ).hover();
 		await page.getByLabel( 'items in cart,' ).click();
 
 		await expect(
