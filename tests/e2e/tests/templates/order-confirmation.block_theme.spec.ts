@@ -48,6 +48,6 @@ test.fixme( 'Test the order confirmation template', async () => {
 		await editor.saveSiteEditorEntities();
 		await page.goto( permalink, { waitUntil: 'commit' } );
 
-		await expect( page.getByText( 'Hello World' ).first() ).toBeVisible();
+		await expect( page.getByText( 'Hello World' ) ).toBeVisible();
 	} );
 } );

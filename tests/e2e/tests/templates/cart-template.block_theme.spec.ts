@@ -59,6 +59,6 @@ test.describe( 'Test the cart template', async () => {
 
 		await page.goto( permalink, { waitUntil: 'commit' } );
 
-		await expect( page.getByText( 'Hello World' ).first() ).toBeVisible();
+		await expect( page.getByText( 'Hello World' ) ).toBeVisible();
 	} );
 } );
