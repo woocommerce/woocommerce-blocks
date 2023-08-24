@@ -9,8 +9,7 @@
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
 	"viewScript": [
-		"wc-simple-price-filter-block-frontend",
-		"wc-interactivity"
+		"wc-simple-price-filter-block-frontend"
 	],
 	"supports": {
 		"interactivity": true
