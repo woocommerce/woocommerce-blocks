@@ -39,8 +39,6 @@ export const ProductTagItem = ( {
 				_n(
 					'%1$d product tagged as %2$s',
 					'%1$d products tagged as %2$s',
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore - According to the type item.count can be undefined, SearchListItem type may need refactoring.
 					item.count,
 					'woo-gutenberg-products-block'
 				),
