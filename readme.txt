@@ -81,9 +81,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
-= 10.9.2 - 2023-08-21 =
+= 10.9.3 - 2023-08-24 =
 
 #### Bug Fixes
+
+- Add to Cart: fix the problem that variable products couldn't be added to cart
+
+= 10.9.2 - 2023-08-21 =
 
 #### Bug Fixes
 
@@ -91,6 +95,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Add to Cart button: fix the layout of View Cart link showing after adding product to cart. ([10675](https://github.com/woocommerce/woocommerce-blocks/pull/10675))
 - Fixed checkout and cart page migration routine for users of block themes so that block templates are also migrated. ([10641](https://github.com/woocommerce/woocommerce-blocks/pull/10641))
 - Fixed a bug causing Cart and Checkout Blocks to be used by default instead of shortcode versions on WC updates. ([10608](https://github.com/woocommerce/woocommerce-blocks/pull/10608))
+
 = 10.9.1 - 2023-08-17 =
 
 #### Enhancements
