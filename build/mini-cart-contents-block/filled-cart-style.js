@@ -1,0 +1,1 @@
+(window.webpackWcBlocksJsonp=window.webpackWcBlocksJsonp||[]).push([[76],{967:function(e,c,t){"use strict";t.r(c);var n=t(0),a=t(12),s=t(56);c.default=({children:e,className:c})=>{const{cartItems:t}=Object(s.a)();return 0===t.length?null:Object(n.createElement)("div",{className:c},Object(n.createElement)(a.StoreNoticesContainer,{context:"wc/cart"}),e)}}}]);
