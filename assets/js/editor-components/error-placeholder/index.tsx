@@ -5,13 +5,13 @@ import { __ } from '@wordpress/i18n';
 import { Icon, warning } from '@wordpress/icons';
 import classNames from 'classnames';
 import { Button, Placeholder, Spinner } from '@wordpress/components';
+import { ErrorObject } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
 import ErrorMessage from './error-message';
 import './editor.scss';
-import { ErrorObject } from '../../base/utils';
 
 export interface ErrorPlaceholderProps {
 	/**

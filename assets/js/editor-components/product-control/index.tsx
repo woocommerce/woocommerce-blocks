@@ -20,13 +20,13 @@ import {
 import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
 import classNames from 'classnames';
 import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item';
+import { ErrorObject } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
 import { SearchListItem as SearchListItemType } from '../search-list-control/types';
-import { ErrorObject } from '../../base/utils';
 
 const messages = {
 	list: __( 'Products', 'woo-gutenberg-products-block' ),

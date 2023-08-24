@@ -3,12 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { escapeHTML } from '@wordpress/escape-html';
-
-/**
- * Internal dependencies
- */
-import { ErrorObject } from '../../base/utils';
-
+import { ErrorObject } from '@woocommerce/base-utils';
 export interface ErrorMessageProps {
 	/**
 	 * The error object.
