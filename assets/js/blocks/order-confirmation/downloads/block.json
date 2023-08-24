@@ -30,8 +30,7 @@
 			"__experimentalDefaultControls": {
 				"background": true,
 				"text": true
-			},
-			"__experimentalSkipSerialization": true
+			}
 		},
 		"spacing": {
 			"padding": true,
@@ -49,8 +48,7 @@
 				"color": true,
 				"style": true,
 				"width": true
-			},
-			"__experimentalSkipSerialization": true
+			}
 		},
 		"__experimentalSelector": ".wp-block-woocommerce-order-confirmation-totals table"
 	},
@@ -62,10 +60,6 @@
 		"className": {
 			"type": "string",
 			"default": ""
-		},
-		"isPreview": {
-			"type": "boolean",
-			"default": false
 		}
 	},
 	"textdomain": "woo-gutenberg-products-block",
