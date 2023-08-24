@@ -190,7 +190,12 @@ const ProductControl = ( {
 			isSingle
 			// @ts-expect-error - It looks like ProductResponse does not fulfill the SearchListItemProps interface. This needs to be fixed.
 			selected={ currentList.filter( ( { id } ) => {
-				if ( Array.isArray( selected ) ) {
+				if (
+					Array.isArray( selected ) ||
+					typeof selected === 'string'
+				) {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore - comparing a string to a number still works here, and trying to avoid changing runtime behaviour.
 					return selected.includes( id );
 				}
 
