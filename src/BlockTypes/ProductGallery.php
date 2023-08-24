@@ -45,7 +45,7 @@ class ProductGallery extends AbstractBlock {
 			$p->set_attribute( 'data-wc-interactive', true );
 			$p->set_attribute(
 				'data-wc-context',
-				wp_json_encode( array( 'productGallery' => array( 'numberOfThumbnailImages' => 0 ) ) )
+				wp_json_encode( array( 'productGallery' => array( 'numberOfThumbnails' => 0 ) ) )
 			);
 			$html = $p->get_updated_html();
 		}

@@ -8,7 +8,7 @@ interface State {
 }
 
 interface Context {
-	productGallery: { numberOfThumbnailImages: number };
+	productGallery: { numberOfThumbnails: number };
 }
 
 interface Selectors {
@@ -32,7 +32,7 @@ interactivityApiStore( {
 			getNumberOfPages: ( store: SelectorsStore ) => {
 				const { context } = store;
 
-				return context.productGallery.numberOfThumbnailImages;
+				return context.productGallery.numberOfThumbnails;
 			},
 		},
 	},
