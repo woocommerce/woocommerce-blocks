@@ -3,7 +3,7 @@
  */
 import { BlockData } from '@woocommerce/e2e-types';
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
-import { cli } from '@woocommerce/e2e-utils';
+import { adminFile, cli } from '@woocommerce/e2e-utils';
 import { deleteAllTemplates } from '@wordpress/e2e-test-utils';
 
 /**
@@ -65,6 +65,7 @@ test.afterAll( async () => {
 
 for ( const { templateTitle, slug } of Object.values( templates ) ) {
 	test.describe( `${ blockData.name } Block `, () => {
+		test.use( { storageState: adminFile } );
 		test( `is rendered on ${ templateTitle } template`, async ( {
 			admin,
 			editorUtils,

@@ -3,6 +3,7 @@
  */
 import { BlockData } from '@woocommerce/e2e-types';
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
+import { adminFile } from '@woocommerce/e2e-utils';
 
 /**
  * Internal dependencies
@@ -56,6 +57,7 @@ const templates = {
 };
 
 test.describe( `${ blockData.name } Block `, () => {
+	test.use( { storageState: adminFile } );
 	test( 'when Inherit Query from template is enabled all the settings that customize the query should be hidden', async ( {
 		admin,
 		editorUtils,
@@ -123,6 +125,7 @@ for ( const {
 	legacyBlockName,
 } of Object.values( templates ) ) {
 	test.describe( `${ templateTitle } template`, () => {
+		test.use( { storageState: adminFile } );
 		test.afterAll( async ( { requestUtils } ) => {
 			await requestUtils.deleteAllTemplates( 'wp_template' );
 			await requestUtils.deleteAllTemplates( 'wp_template_part' );
