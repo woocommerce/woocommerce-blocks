@@ -9,16 +9,15 @@ export interface ErrorObject {
 	type: 'api' | 'general' | string;
 }
 
-interface IncomingError {
-	json?: () => Promise< ErrorObject >;
-	message?: string;
+type SimpleError = {
+	message: string;
 	type?: string;
-}
+};
 
 export const formatError = async (
-	error: IncomingError
+	error: SimpleError | Response
 ): Promise< ErrorObject > => {
-	if ( typeof error.json === 'function' ) {
+	if ( 'json' in error ) {
 		try {
 			const parsedError = await error.json();
 			return {
@@ -27,14 +26,16 @@ export const formatError = async (
 			};
 		} catch ( e ) {
 			return {
-				message: e.message,
+				// We could only return this if e is instanceof Error but, to avoid changing runtime
+				// behaviour, we'll just cast it instead.
+				message: ( e as Error ).message,
 				type: 'general',
 			};
 		}
+	} else {
+		return {
+			message: error.message,
+			type: error.type || 'general',
+		};
 	}
-
-	return {
-		message: error.message,
-		type: error.type || 'general',
-	};
 };
