@@ -65,7 +65,7 @@ const ProductAttributeTermControl = ( {
 			},
 		];
 
-		if ( ! item.breadcrumbs.length ) {
+		if ( ! item?.breadcrumbs?.length ) {
 			return (
 				<ExpandableSearchListItem
 					{ ...args }

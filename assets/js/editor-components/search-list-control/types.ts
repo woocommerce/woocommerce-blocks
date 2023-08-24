@@ -37,11 +37,11 @@ export interface ListItemsProps
 export type SearchListItem = {
 	breadcrumbs?: string[];
 	children?: SearchListItem[];
-	count?: number;
+	count: number;
 	id: string | number;
 	name: string;
 	parent: number;
-	value?: string;
+	value: string;
 };
 
 export interface SearchListItemsContainerProps
