@@ -195,7 +195,7 @@ const ProductControl = ( {
 					typeof selected === 'string'
 				) {
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore - comparing a string to a number still works here, and trying to avoid changing runtime behaviour.
+					// @ts-ignore - passing a number to includes won't crash it, so we can ignore this to avoid changing runtime behaviour.
 					return selected.includes( id );
 				}
 
