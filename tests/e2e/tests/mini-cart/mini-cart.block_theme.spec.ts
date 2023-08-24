@@ -62,8 +62,8 @@ test.describe( `Mini Cart Block`, () => {
 
 		await openMiniCart( page );
 
-		await expect(
-			page.locator( '.wc-block-mini-cart__title' ).first()
-		).toContainText( 'Your cart (1 item)' );
+		await expect( page.getByRole( 'dialog' ) ).toContainText(
+			'Your cart (1 item)'
+		);
 	} );
 } );
