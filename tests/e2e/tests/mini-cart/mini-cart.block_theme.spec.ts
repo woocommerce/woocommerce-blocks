@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
-import { useIncognito } from '@woocommerce/e2e-utils';
 import { Page } from '@playwright/test';
 
 const openMiniCart = async ( page: Page ) => {
@@ -11,7 +10,18 @@ const openMiniCart = async ( page: Page ) => {
 };
 
 test.describe( `Mini Cart Block`, () => {
-	useIncognito( test );
+	/**
+	 * This is a workaround to run tests in isolation.
+	 * Ideally, the test should be run in isolation by default. But we're
+	 * overriding the storageState in config which make all tests run with admin
+	 * user.
+	 */
+	test.use( {
+		storageState: {
+			origins: [],
+			cookies: [],
+		},
+	} );
 
 	test.beforeEach( async ( { page } ) => {
 		await page.goto( `/mini-cart-block`, { waitUntil: 'commit' } );

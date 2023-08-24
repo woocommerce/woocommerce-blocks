@@ -5,4 +5,3 @@ export * from './cli';
 export * from './api';
 export * from './editor';
 export * from './storeApi';
-export * from './use-incognito';
