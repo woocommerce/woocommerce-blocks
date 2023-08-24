@@ -1,7 +1,9 @@
 .wc-block-order-confirmation-downloads {
+	border: none !important;
+
 	table {
-		width: 100%;
 		border: 1px solid currentColor;
+		width: 100%;
 		border-collapse: collapse;
 		th,
 		td {
