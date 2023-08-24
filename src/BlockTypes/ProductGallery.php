@@ -39,7 +39,7 @@ class ProductGallery extends AbstractBlock {
 			$wrapper_attributes,
 			$content
 		);
-		$p = new \WP_HTML_Tag_Processor( $content );
+		$p                  = new \WP_HTML_Tag_Processor( $content );
 
 		if ( $p->next_tag() ) {
 			$p->set_attribute( 'data-wc-interactive', true );
