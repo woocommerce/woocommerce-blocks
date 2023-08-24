@@ -22,13 +22,22 @@ const Count = ( { label }: { label: string | React.ReactNode | number } ) => {
 	);
 };
 
+type SearchListItemPropsWithBreadcrumb = SearchListItemProps & {
+	breadcrumbs: string[];
+};
+
+const checkHasBreadCrumbs = (
+	item: SearchListItemProps
+): item is SearchListItemPropsWithBreadcrumb => {
+	return !! ( item.breadcrumbs && item.breadcrumbs.length );
+};
+
 const ItemLabel = ( props: { item: SearchListItemProps; search: string } ) => {
 	const { item, search } = props;
-	const hasBreadcrumbs = item.breadcrumbs && item.breadcrumbs.length;
 
 	return (
 		<span className="woocommerce-search-list__item-label">
-			{ hasBreadcrumbs ? (
+			{ checkHasBreadCrumbs( item ) ? (
 				<span className="woocommerce-search-list__item-prefix">
 					{ getBreadcrumbsForDisplay( item.breadcrumbs ) }
 				</span>

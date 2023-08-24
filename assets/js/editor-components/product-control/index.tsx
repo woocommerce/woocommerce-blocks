@@ -75,6 +75,8 @@ const ProductControl = ( {
 	variations,
 	variationsLoading,
 }: ProductControlProps ) => {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - SearchListControl needs refactoring to take a generic to determine the type of the list items.
 	const renderItemWithVariations = ( args ) => {
 		const { item, search, depth = 0, isSelected, onSelect } = args;
 		const variationsCount =

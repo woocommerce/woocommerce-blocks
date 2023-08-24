@@ -23,7 +23,7 @@ interface SearchListProps {
 	// A complete list of item objects, each with id, name properties. This is displayed as a clickable/keyboard-able list, and possibly filtered by the search term (searches name).
 	list: SearchListItem[];
 	// Callback to render each item in the selection list, allows any custom object-type rendering.
-	renderItem?: ( args: renderItemArgs ) => JSX.Element;
+	renderItem?: ( args: renderItemArgs ) => JSX.Element | null;
 	// The list of currently selected items.
 	selected: SearchListItem[];
 }

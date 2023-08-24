@@ -10,9 +10,7 @@ import EditProductLink from '@woocommerce/editor-components/edit-product-link';
 import { singleProductBlockPreview } from '@woocommerce/resource-previews';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { ProductResponseItem } from '@woocommerce/types';
-import ErrorPlaceholder, {
-	ErrorObject,
-} from '@woocommerce/editor-components/error-placeholder';
+import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 
 /**
  * Internal dependencies
@@ -24,6 +22,7 @@ import LayoutEditor from './layout-editor';
 import { BLOCK_ICON } from '../constants';
 import metadata from '../block.json';
 import { Attributes } from '../types';
+import { ErrorObject } from '../../../base/utils';
 
 interface EditorProps {
 	className: string;
