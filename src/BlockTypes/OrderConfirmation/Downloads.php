@@ -36,7 +36,7 @@ class Downloads extends AbstractOrderConfirmationBlock {
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, [ 'border_color', 'border_radius', 'border_width', 'background_color', 'text_color' ] );
 
 		return '
-			<table cellspacing="0" class="wc-block-order-confirmation-downloads__table">
+			<table cellspacing="0" class="wc-block-order-confirmation-downloads__table ' . esc_attr( $classes_and_styles['classes'] ) . '" style="' . esc_attr( $classes_and_styles['styles'] ) . '">
 				<thead>
 					<tr>
 						' . $this->render_order_downloads_column_headers( $order ) . '
