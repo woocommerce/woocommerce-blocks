@@ -327,14 +327,13 @@
 	.wc-block-components-price-slider__range-input-wrapper {
 		background: transparent;
 		border: $border-width solid currentColor;
-		box-sizing: border-box;
 	}
 	.wc-block-components-price-slider__range-input-progress {
 		--range-color: currentColor;
 	}
 	.wc-block-price-filter__range-input {
 		background: transparent;
-		margin: -$border-width;
+		height: 0;
 		width: calc(100% + #{$border-width * 2});
 		&:hover,
 		&:focus {
