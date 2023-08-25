@@ -10,7 +10,7 @@ import type { ProductResponseItem } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
-import { formatError } from '../base/utils/errors.js';
+import { formatError } from '../base/utils/errors';
 
 /**
  * A higher order component that enhances the provided component with products from a search query.
