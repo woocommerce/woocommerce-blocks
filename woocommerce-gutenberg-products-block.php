@@ -292,23 +292,35 @@ use Automattic\Jetpack\Connection\Utils;
 use Automattic\Jetpack\Config;
 use Automattic\Jetpack\Constants;
 
-function woocommerce_blocks_register_site() {
-	check_admin_referer( 'register-site' );
-
-	Utils::init_default_constants();
+function load_plugin() {
 	$config = new Config();
 	$config->ensure(
 		'connection',
 		array(
 			'slug'     => 'woocommerce/woocommerce-blocks', // Required, slug of your plugin, should be unique.
 			'name'     => 'WooCommerce Blocks', // Required, your plugin name.
-			'url_info' => get_site_url(),
+			//'url_info' => get_site_url(),
 		)
 	);
-	$manager = new Manager( 'woocommerce/woocommerce-blocks' );
-	$manager->try_registration();
+}
+add_action( 'plugins_loaded', 'load_plugin', 1 );
 
-	$manager->connect_user();
+function woocommerce_blocks_register_site() {
+	check_admin_referer( 'register-site' );
+
+	Utils::init_default_constants();
+
+	$manager = new Manager( 'woocommerce/woocommerce-blocks' );
+	$manager->enable_plugin();
+	if ( ! ( new Tokens() )->get_access_token() ) {
+		$result = $manager->register();
+		if ($result) {
+			$manager->connect_user();
+		}
+		else {
+			var_dump("failed registering :(");die;
+		}
+	}
 }
 
 function woocommerce_blocks_disconnect_site() {
