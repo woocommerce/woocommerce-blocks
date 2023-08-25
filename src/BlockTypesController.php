@@ -215,7 +215,6 @@ final class BlockTypesController {
 			'ReviewsByProduct',
 			'RelatedProducts',
 			'ProductDetails',
-			'SimplePriceFilter',
 			'SingleProduct',
 			'StockFilter',
 		];
@@ -234,6 +233,7 @@ final class BlockTypesController {
 			$block_types[] = 'ProductGalleryLargeImage';
 			$block_types[] = 'ProductGalleryPager';
 			$block_types[] = 'ProductGalleryThumbnails';
+			$block_types[] = 'CollectionPriceFilter';
 		}
 
 		/**

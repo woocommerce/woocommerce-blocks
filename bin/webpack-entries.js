@@ -82,7 +82,10 @@ const blocks = {
 	'reviews-by-product': {
 		customDir: 'reviews/reviews-by-product',
 	},
-	'simple-price-filter': {},
+	'collection-price-filter': {
+		customDir: 'collection-filters/inner-blocks/price-filter',
+		isExperimental: true,
+	},
 	'single-product': {},
 	'stock-filter': {},
 	'product-collection': {

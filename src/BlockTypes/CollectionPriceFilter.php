@@ -2,16 +2,16 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 /**
- * SimplePriceFilter class.
+ * CollectionPriceFilter class.
  */
-class SimplePriceFilter extends AbstractBlock {
+class CollectionPriceFilter extends AbstractBlock {
 
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name     = 'simple-price-filter';
+	protected $block_name     = 'collection-price-filter';
 	const MIN_PRICE_QUERY_VAR = 'min_price';
 	const MAX_PRICE_QUERY_VAR = 'max_price';
 

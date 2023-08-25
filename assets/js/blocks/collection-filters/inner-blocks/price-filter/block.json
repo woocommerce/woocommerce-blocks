@@ -1,16 +1,17 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"name": "woocommerce/simple-price-filter",
+	"name": "woocommerce/collection-price-filter",
 	"version": "1.0.0",
-	"title": "Simple Price filter",
-	"description": "Enable customers to filter the product grid by choosing a price range.",
+	"title": "Price filter",
+	"description": "Enable customers to filter the product collection by choosing a price range.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
 	"viewScript": [
-		"wc-simple-price-filter-block-frontend"
+		"wc-collection-price-filter-block-frontend"
 	],
+	"ancestor": [ "woocommerce/product-collection" ],
 	"supports": {
 		"interactivity": true
 	}

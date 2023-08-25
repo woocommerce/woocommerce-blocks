@@ -10,6 +10,6 @@ import './style.scss';
 import metadata from './block.json';
 
 registerBlockType( metadata, {
-	edit: () => <div>Simple price filter</div>,
+	edit: () => <div>Collection Price filter</div>,
 	save: () => null,
 } );
