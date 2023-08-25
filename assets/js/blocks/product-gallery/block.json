@@ -49,5 +49,5 @@
 			"default": false
 		}
 	},
-	"viewScript": "wc-product-gallery-interactivity-view"
+	"viewScript": "wc-product-gallery-interactivity-frontend"
 }
