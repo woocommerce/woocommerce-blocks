@@ -327,6 +327,7 @@
 	.wc-block-components-price-slider__range-input-wrapper {
 		background: transparent;
 		border: $border-width solid currentColor;
+		box-sizing: border-box;
 	}
 	.wc-block-components-price-slider__range-input-progress {
 		--range-color: currentColor;
@@ -348,19 +349,24 @@
 			}
 		}
 		&::-webkit-slider-thumb {
+			background: $white;
 			margin-top: -6px;
 			width: 12px;
 			height: 12px;
 		}
 		&.wc-block-components-price-slider__range-input--max::-moz-range-thumb {
+			background: $white;
 			transform: translate(2px, 2px);
 			width: 12px;
 			height: 12px;
+			box-sizing: content-box;
 		}
 		&.wc-block-components-price-slider__range-input--min::-moz-range-thumb {
+			background: $white;
 			transform: translate(-2px, 2px);
 			width: 12px;
 			height: 12px;
+			box-sizing: content-box;
 		}
 		&::-ms-track {
 			border-color: transparent !important;
