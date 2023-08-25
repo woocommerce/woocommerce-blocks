@@ -4,6 +4,7 @@
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { useMemo } from '@wordpress/element';
 import { BlockAttributes } from '@wordpress/blocks';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -62,7 +63,10 @@ export const Edit = ( {
 				<ProductGalleryNextPreviousBlockSettings context={ context } />
 			</InspectorControls>
 			<div
-				className={ `wc-block-product-gallery-large-image-next-previous-container` }
+				className={ classNames(
+					'wc-block-product-gallery-large-image-next-previous-container',
+					`wc-block-product-gallery-large-image-next-previous--${ suffixClass }`
+				) }
 			>
 				<PrevButton suffixClass={ suffixClass } />
 				<NextButton suffixClass={ suffixClass } />
