@@ -288,12 +288,14 @@ add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
 
 // Exploration: registering site with Jetpack without Jetpack plugin as a dependency.
 use Automattic\Jetpack\Connection\Manager;
+use Automattic\Jetpack\Connection\Utils;
 use Automattic\Jetpack\Config;
 use Automattic\Jetpack\Constants;
 
 function woocommerce_blocks_register_site() {
 	check_admin_referer( 'register-site' );
 
+	Utils::init_default_constants();
 	$config = new Config();
 	$config->ensure(
 		'connection',
