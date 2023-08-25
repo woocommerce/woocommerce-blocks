@@ -8,8 +8,10 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import './style.scss';
 import metadata from './block.json';
+import Edit from './edit';
+import Save from './save';
 
 registerBlockType( metadata, {
-	edit: () => <div>Collection Price filter</div>,
-	save: () => null,
+	edit: Edit,
+	save: Save,
 } );
