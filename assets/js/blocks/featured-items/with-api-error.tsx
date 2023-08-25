@@ -1,9 +1,8 @@
 /**
  * External dependencies
  */
-import ErrorPlaceholder, {
-	ErrorObject,
-} from '@woocommerce/editor-components/error-placeholder';
+import { ErrorObject } from '@woocommerce/base-utils';
+import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 import type { Block } from '@wordpress/blocks';
 import type { ComponentType } from 'react';
 

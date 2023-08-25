@@ -212,6 +212,7 @@ const ProductControl = ( {
 
 export default withTransformSingleSelectToMultipleSelect(
 	withSearchedProducts(
+		// @ts-expect-error - withProductVariations will need refactoring with TypeScript to resolve.
 		withProductVariations( withInstanceId( ProductControl ) )
 	)
 );
