@@ -312,15 +312,14 @@ function woocommerce_blocks_register_site() {
 	Utils::init_default_constants();
 
 	$manager = new Manager( 'woocommerce/woocommerce-blocks' );
-	$manager->enable_plugin();
-	if ( ! ( new Tokens() )->get_access_token() ) {
-		$result = $manager->register();
-		if ($result) {
-			$manager->connect_user();
-		}
-		else {
-			var_dump("failed registering :(");die;
-		}
+
+	$result = $manager->register();
+	if ($result) {
+		$r=$manager->connect_user();
+		var_dump($r);
+	}
+	else {
+		var_dump("failed registering :(");
 	}
 }
 
@@ -337,6 +336,7 @@ add_action( 'admin_post_disconnect_site', 'woocommerce_blocks_disconnect_site' )
 function wpb_admin_notice_warn() {
 	$id = \Jetpack_Options::get_option( 'id' );
 	if ( $id ) {
+		var_dump(get_openai_jwt());
 		echo '<div class="notice notice-warning">' . $id . '
                 	<form action="/wp-admin/admin-post.php" method="post">
                         	<input type="hidden" name="action" value="disconnect_site" />
