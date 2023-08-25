@@ -21,9 +21,12 @@ The release pull request has been created! This checklist is a guide to follow f
 -   [ ] Run `npm ci`
 -   [ ] Run `npm run package-plugin:deploy`. This will create a zip of the current branch build locally.
 -   [ ] Create the testing notes for the release.
-    -   [ ] For each pull request that belongs to the current release, grab the `User Facing Testing` notes from the PR's description. Be sure that the `Do not include in the Testing Notes is not flagged` checkbox is unchecked.
-    -   [ ] Add the notes to `docs/internal-developers/testing/releases`
-    -   [ ] Update the `docs/internal-developers/testing/releases/README.md` file index.
+    -   [ ] For each pull request that belongs to the current release, grab the `User Facing Testing` notes from the PR's description.
+        - If a PR has the `Should be tested by the development team exclusively` checkbox checked, create a new section called 'Testing notes for the development team' and copy the `User Facing Testing` notes from the PR to this section.
+        - If a PR has the `Experimental` checkbox checked, do not include it in the testing instructions.
+        - If a PR has the `Do not include in the Testing Notes` checkbox checked, as the description suggests, do not include it in the release instructions.
+-   [ ] Add the notes to `docs/internal-developers/testing/releases`
+-   [ ] Update the `docs/internal-developers/testing/releases/README.md` file index.
 -   [ ] Copy a link to the release zip you created earlier into the testing notes. To generate the link you can upload the zip as an attachment in a GitHub comment and then just copy the path (without publishing the comment).
 -   [ ] Commit and push the testing docs to the release branch.
 -   [ ] Smoke test built release zip using the testing instructions you created:
@@ -63,7 +66,7 @@ Each porter is responsible for testing the PRs that fall under the focus of thei
 
 ## After Deploy
 
--   [ ] Port to `trunk` the changes to the changelog, testing steps and required versions that you did in the previous steps. You can do so copy-and-pasting the changes in a new commit directly to `trunk`, or cherry-picking the commits that introduced those changes.
+-   [ ] Move the changes to the changelog, testing steps and required versions that you did in the previous steps to `trunk`. You can do so copy-and-pasting the changes in a new commit directly to `trunk`, or cherry-picking the commits that introduced those changes.
 -   [ ] Update the schedules p2 with the shipped date for the release (PdToLP-K-p2).
 -   [ ] Edit the GitHub milestone of the release you just shipped and add the current date as the due date (this is used to track ship date as well).
 

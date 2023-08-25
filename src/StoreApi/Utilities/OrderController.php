@@ -39,23 +39,12 @@ class OrderController {
 	}
 
 	/**
-	 * Get order.
-	 *
-	 * @throws RouteException Exception if invalid data is detected.
-	 *
-	 * @param integer $order_id Order ID.
-	 * @return \WC_Order A new order object.
-	 */
-	public function get_order( $order_id ) {
-		return wc_get_order( $order_id );
-	}
-
-	/**
 	 * Update an order using data from the current cart.
 	 *
 	 * @param \WC_Order $order The order object to update.
+	 * @param boolean   $update_totals Whether to update totals or not.
 	 */
-	public function update_order_from_cart( \WC_Order $order ) {
+	public function update_order_from_cart( \WC_Order $order, $update_totals = true ) {
 		/**
 		 * This filter ensures that local pickup locations are still used for order taxes by forcing the address used to
 		 * calculate tax for an order to match the current address of the customer.
@@ -93,8 +82,10 @@ class OrderController {
 		);
 
 		// Ensure cart is current.
-		wc()->cart->calculate_shipping();
-		wc()->cart->calculate_totals();
+		if ( $update_totals ) {
+			wc()->cart->calculate_shipping();
+			wc()->cart->calculate_totals();
+		}
 
 		// Update the current order to match the current cart.
 		$this->update_line_items_from_cart( $order );
@@ -481,25 +472,10 @@ class OrderController {
 	 * @param string  $order_key Order key.
 	 */
 	public function validate_order_key( $order_id, $order_key ) {
-		$order = $this->get_order( $order_id );
+		$order = wc_get_order( $order_id );
 
 		if ( ! $order || ! $order_key || $order->get_id() !== $order_id || ! hash_equals( $order->get_order_key(), $order_key ) ) {
 			throw new RouteException( 'woocommerce_rest_invalid_order', __( 'Invalid order ID or key provided.', 'woo-gutenberg-products-block' ), 401 );
-		}
-	}
-
-	/**
-	 * Validate a given billing email against an existing order.
-	 *
-	 * @throws RouteException Exception if invalid data is detected.
-	 * @param integer $order_id Order ID.
-	 * @param string  $billing_email Billing email.
-	 */
-	public function validate_billing_email( $order_id, $billing_email ) {
-		$order = $this->get_order( $order_id );
-
-		if ( ! $order || ! $billing_email || $order->get_billing_email() !== $billing_email ) {
-			throw new RouteException( 'woocommerce_rest_invalid_billing_email', __( 'Invalid billing email provided.', 'woo-gutenberg-products-block' ), 401 );
 		}
 	}
 
@@ -510,7 +486,7 @@ class OrderController {
 	 * @param integer $order_id Order ID.
 	 */
 	public function get_failed_order_stock_error( $order_id ) {
-		$order = $this->get_order( $order_id );
+		$order = wc_get_order( $order_id );
 
 		// Ensure order items are still stocked if paying for a failed order. Pending orders do not need this check because stock is held.
 		if ( ! $order->has_status( wc_get_is_pending_statuses() ) ) {

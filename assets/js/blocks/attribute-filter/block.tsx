@@ -19,6 +19,7 @@ import { getSettingWithCoercion } from '@woocommerce/settings';
 import { getQueryArgs, removeQueryArgs } from '@wordpress/url';
 import {
 	AttributeQuery,
+	AttributeTerm,
 	isAttributeQueryCollection,
 	isBoolean,
 	isString,
@@ -72,19 +73,19 @@ const AttributeFilterBlock = ( {
 	getNotice?: GetNotice;
 } ) => {
 	const hasFilterableProducts = getSettingWithCoercion(
-		'has_filterable_products',
+		'hasFilterableProducts',
 		false,
 		isBoolean
 	);
 
 	const filteringForPhpTemplate = getSettingWithCoercion(
-		'is_rendering_php_template',
+		'isRenderingPhpTemplate',
 		false,
 		isBoolean
 	);
 
 	const pageUrl = getSettingWithCoercion(
-		'page_url',
+		'pageUrl',
 		window.location.href,
 		isString
 	);
@@ -124,7 +125,7 @@ const AttributeFilterBlock = ( {
 		useQueryStateByKey( 'attributes', [] );
 
 	const { results: attributeTerms, isLoading: attributeTermsLoading } =
-		useCollection( {
+		useCollection< AttributeTerm >( {
 			namespace: '/wc/store/v1',
 			resourceName: 'products/attributes/terms',
 			resourceValues: [ attributeObject?.id || 0 ],
@@ -544,9 +545,6 @@ const AttributeFilterBlock = ( {
 								'single-selection': ! multiple,
 								'is-loading': isLoading,
 							} ) }
-							style={ {
-								borderStyle: 'none',
-							} }
 							suggestions={ displayedOptions
 								.filter(
 									( option ) =>

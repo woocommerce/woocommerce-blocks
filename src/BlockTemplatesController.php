@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
+use Automattic\Jetpack\Constants;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
@@ -10,6 +11,7 @@ use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
 use Automattic\WooCommerce\Blocks\Utils\SettingsUtils;
+use Automattic\WooCommerce\Blocks\Utils\BlockTemplateMigrationUtils;
 use \WP_Post;
 
 /**
@@ -95,6 +97,34 @@ class BlockTemplatesController {
 						in_array( $settings['render_callback'], [ 'render_block_core_template_part', 'gutenberg_render_block_core_template_part' ], true )
 					) {
 						$settings['render_callback'] = [ $this, 'render_woocommerce_template_part' ];
+					}
+					return $settings;
+				},
+				10,
+				2
+			);
+
+			// Prevents shortcodes in templates having their HTML content broken by wpautop.
+			// @see https://core.trac.wordpress.org/ticket/58366 for more info.
+			add_filter(
+				'block_type_metadata_settings',
+				function( $settings, $metadata ) {
+					if (
+						isset( $metadata['name'], $settings['render_callback'] ) &&
+						'core/shortcode' === $metadata['name']
+					) {
+						$settings['original_render_callback'] = $settings['render_callback'];
+						$settings['render_callback']          = function( $attributes, $content ) use ( $settings ) {
+							// The shortcode has already been rendered, so look for the cart/checkout HTML.
+							if ( strstr( $content, 'woocommerce-cart-form' ) || strstr( $content, 'woocommerce-checkout-form' ) ) {
+								// Return early before wpautop runs again.
+								return $content;
+							}
+
+							$render_callback = $settings['original_render_callback'];
+
+							return $render_callback( $attributes, $content );
+						};
 					}
 					return $settings;
 				},
@@ -590,7 +620,13 @@ class BlockTemplatesController {
 		if (
 			is_singular( 'product' ) && $this->block_template_is_available( 'single-product' )
 		) {
-			$templates = get_block_templates( array( 'slug__in' => array( 'single-product' ) ) );
+			global $post;
+
+			$valid_slugs = [ 'single-product' ];
+			if ( 'product' === $post->post_type && $post->post_name ) {
+				$valid_slugs[] = 'single-product-' . $post->post_name;
+			}
+			$templates = get_block_templates( array( 'slug__in' => $valid_slugs ) );
 
 			if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
 				add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
@@ -732,69 +768,18 @@ class BlockTemplatesController {
 	 * Migrates page content to templates if needed.
 	 */
 	public function maybe_migrate_content() {
-		if ( ! $this->has_migrated_page( 'cart' ) ) {
-			$this->migrate_page( 'cart', CartTemplate::get_placeholder_page() );
-		}
-		if ( ! $this->has_migrated_page( 'checkout' ) ) {
-			$this->migrate_page( 'checkout', CheckoutTemplate::get_placeholder_page() );
-		}
-	}
-
-	/**
-	 * Check if a page has been migrated to a template.
-	 *
-	 * @param string $page_id Page ID.
-	 * @return boolean
-	 */
-	protected function has_migrated_page( $page_id ) {
-		return (bool) get_option( 'has_migrated_' . $page_id, false );
-	}
-
-	/**
-	 * Migrates a page to a template if needed.
-	 *
-	 * @param string   $page_id Page ID.
-	 * @param \WP_Post $page Page object.
-	 */
-	protected function migrate_page( $page_id, $page ) {
-		if ( ! $page || empty( $page->post_content ) ) {
-			update_option( 'has_migrated_' . $page_id, '1' );
+		// Migration should occur on a normal request to ensure every requirement is met.
+		// We are postponing it if WP is in maintenance mode, installing, WC installing or if the request is part of a WP-CLI command.
+		if ( wp_is_maintenance_mode() || ! get_option( 'woocommerce_db_version', false ) || Constants::is_defined( 'WP_SETUP_CONFIG' ) || Constants::is_defined( 'WC_INSTALLING' ) || Constants::is_defined( 'WP_CLI' ) ) {
 			return;
 		}
 
-		$request = new \WP_REST_Request( 'POST', '/wp/v2/templates/woocommerce/woocommerce//' . $page_id );
-		$request->set_body_params(
-			[
-				'id'      => 'woocommerce/woocommerce//' . $page_id,
-				'content' => $this->get_block_template_part( 'header' ) .
-					'<!-- wp:group {"layout":{"inherit":true}} -->
-					<div class="wp-block-group">
-						<!-- wp:heading {"level":1} -->
-						<h1 class="wp-block-heading">' . wp_kses_post( $page->post_title ) . '</h1>
-						<!-- /wp:heading -->
-						' . wp_kses_post( $page->post_content ) . '
-					</div>
-					<!-- /wp:group -->' .
-					$this->get_block_template_part( 'footer' ),
-			]
-		);
-		rest_get_server()->dispatch( $request );
-		update_option( 'has_migrated_' . $page_id, '1' );
-	}
-
-	/**
-	 * Returns the requested template part.
-	 *
-	 * @param string $part The part to return.
-	 *
-	 * @return string
-	 */
-	protected function get_block_template_part( $part ) {
-		$template_part = get_block_template( get_stylesheet() . '//' . $part, 'wp_template_part' );
-		if ( ! $template_part || empty( $template_part->content ) ) {
-			return '';
+		if ( ! BlockTemplateMigrationUtils::has_migrated_page( 'cart' ) ) {
+			BlockTemplateMigrationUtils::migrate_page( 'cart', CartTemplate::get_placeholder_page() );
 		}
-		return $template_part->content;
+		if ( ! BlockTemplateMigrationUtils::has_migrated_page( 'checkout' ) ) {
+			BlockTemplateMigrationUtils::migrate_page( 'checkout', CheckoutTemplate::get_placeholder_page() );
+		}
 	}
 
 	/**
@@ -870,6 +855,15 @@ class BlockTemplatesController {
 	 * @return string THe actual permalink assigned to the page. May differ from $permalink if it was already taken.
 	 */
 	protected function sync_endpoint_with_page( $page, $page_slug, $permalink ) {
+		$matching_page = get_page_by_path( $permalink );
+
+		if ( $matching_page && 'publish' === $matching_page->post_status ) {
+			// Existing page matches given permalink; use its ID.
+			update_option( 'woocommerce_' . $page_slug . '_page_id', $matching_page->ID );
+			return $permalink;
+		}
+
+		// No matching page; either update current page (by ID stored in option table) or create a new page.
 		if ( ! $page ) {
 			$updated_page_id = wc_create_page(
 				esc_sql( $permalink ),

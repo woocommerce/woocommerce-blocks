@@ -38,6 +38,55 @@ class OrderSchema extends AbstractSchema {
 	protected $order_controller;
 
 	/**
+	 * Coupon schema instance.
+	 *
+	 * @var OrderCouponSchema
+	 */
+	public $coupon_schema;
+
+	/**
+	 * Product item schema instance representing cross-sell items.
+	 *
+	 * @var ProductSchema
+	 */
+	public $cross_sells_item_schema;
+
+	/**
+	 * Fee schema instance.
+	 *
+	 * @var OrderFeeSchema
+	 */
+	public $fee_schema;
+
+	/**
+	 * Shipping rates schema instance.
+	 *
+	 * @var CartShippingRateSchema
+	 */
+	public $shipping_rate_schema;
+
+	/**
+	 * Shipping address schema instance.
+	 *
+	 * @var ShippingAddressSchema
+	 */
+	public $shipping_address_schema;
+
+	/**
+	 * Billing address schema instance.
+	 *
+	 * @var BillingAddressSchema
+	 */
+	public $billing_address_schema;
+
+	/**
+	 * Error schema instance.
+	 *
+	 * @var ErrorSchema
+	 */
+	public $error_schema;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param ExtendSchema     $extend Rest Extending instance.
@@ -271,8 +320,8 @@ class OrderSchema extends AbstractSchema {
 			'coupons'              => $this->get_item_responses_from_schema( $this->coupon_schema, $order->get_items( 'coupon' ) ),
 			'fees'                 => $this->get_item_responses_from_schema( $this->fee_schema, $order->get_items( 'fee' ) ),
 			'totals'               => (object) $this->prepare_currency_response( $this->get_totals( $order ) ),
-			'shipping_address'     => (object) $this->shipping_address_schema->get_item_response( new \WC_Customer( $order->get_customer_id() ) ),
-			'billing_address'      => (object) $this->billing_address_schema->get_item_response( new \WC_Customer( $order->get_customer_id() ) ),
+			'shipping_address'     => (object) $this->shipping_address_schema->get_item_response( $order ),
+			'billing_address'      => (object) $this->billing_address_schema->get_item_response( $order ),
 			'needs_payment'        => $order->needs_payment(),
 			'needs_shipping'       => $order->needs_shipping_address(),
 			'payment_requirements' => $this->extend->get_payment_requirements(),
