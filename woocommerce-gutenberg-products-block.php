@@ -286,27 +286,115 @@ function woocommerce_blocks_plugin_outdated_notice() {
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
 
+// Exploration: registering site with Jetpack without Jetpack plugin as a dependency.
+use Automattic\Jetpack\Connection\Manager;
 use Automattic\Jetpack\Config;
+use Automattic\Jetpack\Constants;
 
-$executed=false;
-function jpcs_load_plugin() {
+function woocommerce_blocks_register_site() {
+	check_admin_referer( 'register-site' );
 
-	// Here we enable the Jetpack packages.
 	$config = new Config();
 	$config->ensure(
 		'connection',
 		array(
 			'slug'     => 'woocommerce/woocommerce-blocks', // Required, slug of your plugin, should be unique.
 			'name'     => 'WooCommerce Blocks', // Required, your plugin name.
-			'url_info' => 'https://graceful-darkling.jurassic.ninja',
+			'url_info' => get_site_url(),
+		)
+	);
+	$manager = new Manager( 'woocommerce/woocommerce-blocks' );
+	$manager->try_registration();
+
+	$manager->connect_user();
+}
+
+function woocommerce_blocks_disconnect_site() {
+	check_admin_referer( 'disconnect-site' );
+
+	$manager = new Manager( 'woocommerce/woocommerce-blocks' );
+	$manager->remove_connection();
+}
+
+add_action( 'admin_post_register_site', 'woocommerce_blocks_register_site' );
+add_action( 'admin_post_disconnect_site', 'woocommerce_blocks_disconnect_site' );
+
+function wpb_admin_notice_warn() {
+	$id = \Jetpack_Options::get_option( 'id' );
+	if ( $id ) {
+		echo '<div class="notice notice-warning">' . $id . '
+                	<form action="/wp-admin/admin-post.php" method="post">
+                        	<input type="hidden" name="action" value="disconnect_site" />
+	                        ' . wp_nonce_field( 'disconnect-site' ) . '
+        	                <input type="submit" value="Disconnect this site" class="button button-primary" />
+                	</form>
+	        </div>';
+	}
+
+	echo '<div class="notice notice-warning">
+		<form action="/wp-admin/admin-post.php" method="post">
+			<input type="hidden" name="action" value="register_site" />
+			' . wp_nonce_field( 'register-site' ) . '
+			<input type="submit" value="Register this site" class="button button-primary" />
+		</form>
+	</div>';
+}
+
+add_action( 'admin_notices', 'wpb_admin_notice_warn' );
+
+function get_openai_jwt() {
+	$blog_id = \Jetpack_Options::get_option( 'id' );
+
+	$response = \Automattic\Jetpack\Connection\Client::wpcom_json_api_request_as_user(
+		"/sites/$blog_id/jetpack-openai-query/jwt",
+		'2',
+		array(
+			'method'  => 'POST',
+			'headers' => array( 'Content-Type' => 'application/json; charset=utf-8' ),
+		),
+		wp_json_encode( array() ),
+		'wpcom'
+	);
+
+	if ( is_wp_error( $response ) ) {
+		return $response;
+	}
+
+	$json = json_decode( wp_remote_retrieve_body( $response ) );
+
+	if ( ! isset( $json->token ) ) {
+		return new WP_Error( 'no-token', 'No token returned from WPCOM' );
+	}
+
+	return array(
+		'token'   => $json->token,
+		'blog_id' => $blog_id,
+	);
+}
+
+function connect_ai_api() {
+	$api_url = 'https://public-api.wordpress.com/wpcom/v2/text-completion';
+	$token   = get_openai_jwt();
+	$token   = $token['token'] ?? '';
+
+	$response = wp_remote_post(
+		$api_url,
+		array(
+			'body'    =>
+				array(
+					'feature' => 'woocommerce_blocks_patterns',
+					'prompt'  => 'Generate a product title for a product within the Shirts category, blue, medium size.',
+					'token'   => $token,
+				),
+			'timeout' => 15,
 		)
 	);
 
-	if (!$executed){
-		$response = wp_remote_post(get_site_url().'/jetpack/v4/connection/register');
-		$executed=true;
-		error_log(print_r($response,true));
+	if ( is_wp_error( $response ) ) {
+		return $response->get_error_message();
+	} else {
+		$body = wp_remote_retrieve_body( $response );
+
+		return json_decode( $body, true );
 	}
 }
-
-add_action( 'plugins_loaded', 'jpcs_load_plugin', 1 );
