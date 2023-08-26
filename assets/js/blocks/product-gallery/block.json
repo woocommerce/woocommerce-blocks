@@ -13,6 +13,7 @@
 		"interactivity": true
 	},
 	"textdomain": "woo-gutenberg-products-block",
+	"usesContext": [ "postId" ],
 	"providesContext": {
 		"thumbnailsPosition": "thumbnailsPosition",
 		"thumbnailsNumberOfThumbnails": "thumbnailsNumberOfThumbnails",
@@ -49,5 +50,5 @@
 			"default": false
 		}
 	},
-	"viewScript": "wc-product-gallery-interactivity-frontend"
+	"viewScript": "wc-product-gallery-frontend"
 }

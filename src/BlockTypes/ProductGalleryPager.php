@@ -37,10 +37,11 @@ class ProductGalleryPager extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$pager_display_mode = $block->context['pagerDisplayMode'] ?? '';
-		$classname          = $attributes['className'] ?? '';
-		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$html               = $this->render_pager( $pager_display_mode );
+		$number_of_thumbnails = $block->context['thumbnailsNumberOfThumbnails'] ?? 0;
+		$pager_display_mode   = $block->context['pagerDisplayMode'] ?? '';
+		$classname            = $attributes['className'] ?? '';
+		$wrapper_attributes   = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
+		$html                 = $this->render_pager( $pager_display_mode, $number_of_thumbnails );
 
 		return sprintf(
 			'<div %1$s>
@@ -58,16 +59,16 @@ class ProductGalleryPager extends AbstractBlock {
 	 *
 	 * @return string|null The rendered pager HTML, or null if the pager is disabled.
 	 */
-	private function render_pager( $pager_display_mode ) {
+	private function render_pager( $pager_display_mode, $number_of_thumbnails ) {
 		switch ( $pager_display_mode ) {
 			case 'dots':
-				return $this->render_dots_pager();
+				return $this->render_dots_pager( $number_of_thumbnails );
 			case 'digits':
-				return $this->render_digits_pager();
+				return $this->render_digits_pager( $number_of_thumbnails );
 			case 'off':
 				return null;
 			default:
-				return $this->render_dots_pager();
+				return $this->render_dots_pager( $number_of_thumbnails );
 		}
 	}
 
@@ -76,7 +77,7 @@ class ProductGalleryPager extends AbstractBlock {
 	 *
 	 * @return string The rendered digits pager HTML.
 	 */
-	private function render_digits_pager() {
+	private function render_digits_pager( $number_of_thumbnails ) {
 		return sprintf(
 			'<ul class="wp-block-woocommerce-product-gallery-pager__pager">
 				<li class="wp-block-woocommerce-product-gallery__pager-item is-active">1</li>
@@ -92,15 +93,54 @@ class ProductGalleryPager extends AbstractBlock {
 	 *
 	 * @return string The rendered dots pager HTML.
 	 */
-	private function render_dots_pager() {
+	private function render_dots_pager( $number_of_thumbnails ) {
+		$pager_item = sprintf(
+			'<li class="wp-block-woocommerce-product-gallery__pager-item is-active">%1$s</li>',
+			$this->get_dot_icon()
+		);
+
+		// <li data-wc-context="%2$s" class="wp-block-woocommerce-product-gallery__pager-item is-active">%1$s</li>
+		// <li class="wp-block-woocommerce-product-gallery__pager-item">%1$s</li>
+		// <li class="wp-block-woocommerce-product-gallery__pager-item">%1$s</li>
+		$p = new \WP_HTML_Tag_Processor( $pager_item );
+
+		if ( $p->next_tag() ) {
+			$p->set_attribute(
+				'data-wc-context',
+				wp_json_encode(
+					array( 'isSelected' => false )
+				)
+			);
+			$p->set_attribute(
+				'data-wc-on--click',
+				'actions.productGallery.selectThumbnail'
+			);
+			$p->set_attribute(
+				'data-page-index',
+				0
+			);
+			$p->set_attribute(
+				'data-wc-effect',
+				'effects.productGallery.checkSelectedThumbnail'
+			);
+			$pager_item = $p->get_updated_html();
+			$p->set_attribute(
+				'data-page-index',
+				1
+			);
+			$pager_item2 = $p->get_updated_html();
+		}
+
 		return sprintf(
 			'<ul class="wp-block-woocommerce-product-gallery-pager__pager">
-				<li class="wp-block-woocommerce-product-gallery__pager-item is-active">%1$s</li>
-				<li class="wp-block-woocommerce-product-gallery__pager-item">%2$s</li>
-				<li class="wp-block-woocommerce-product-gallery__pager-item">%2$s</li>
+				%1$s
+				%2$s
 			</ul>',
-			$this->get_selected_dot_icon(),
-			$this->get_dot_icon()
+			$pager_item,
+			$pager_item2
+			// <li data-wc-context="%2$s" class="wp-block-woocommerce-product-gallery__pager-item is-active">%1$s</li>
+			// <li class="wp-block-woocommerce-product-gallery__pager-item">%1$s</li>
+			// <li class="wp-block-woocommerce-product-gallery__pager-item">%1$s</li>
 		);
 	}
 
@@ -112,7 +152,7 @@ class ProductGalleryPager extends AbstractBlock {
 	private function get_dot_icon() {
 		return sprintf(
 			'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<circle cx="6" cy="6" r="6" fill="black" fill-opacity="0.2"/>
+				<circle cx="6" cy="6" r="6" fill="black" fill-opacity="0.2" data-wc-bind--fill-opacity="selectors.productGallery.pager.getDotFillOpacity"  />
 			</svg>'
 		);
 	}
@@ -128,5 +168,20 @@ class ProductGalleryPager extends AbstractBlock {
 				<circle cx="6" cy="6" r="6" fill="black"/>
 			</svg>'
 		);
+	}
+
+	/**
+	 * Get the Interactivity API's view script handle for this block type.
+	 *
+	 * @param string $key Data to get, or default to everything.
+	 */
+	protected function get_block_type_script( $key = null ) {
+		$script = [
+			'handle'       => 'wc-' . $this->block_name . '-frontend',
+			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-frontend' ),
+			'dependencies' => [ 'wc-interactivity' ],
+		];
+
+		return $key ? $script[ $key ] : $script;
 	}
 }
