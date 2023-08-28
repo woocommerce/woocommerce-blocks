@@ -863,7 +863,7 @@ class BlockTemplatesController {
 		 * Returning a false value from the filter will disable the URL guessing
 		 * and return early without performing a redirect.
 		 *
-		 * @since 5.5.0
+		 * @since 11.0.0
 		 *
 		 * @param bool $do_redirect_guess Whether to attempt to guess a redirect URL
 		 *                                for a 404 request. Default true.
