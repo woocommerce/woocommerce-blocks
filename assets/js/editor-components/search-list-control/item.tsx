@@ -22,22 +22,12 @@ const Count = ( { label }: { label: string | React.ReactNode | number } ) => {
 	);
 };
 
-type SearchListItemPropsWithBreadcrumb = SearchListItemProps & {
-	breadcrumbs: string[];
-};
-
-const checkHasBreadCrumbs = (
-	item: SearchListItemProps
-): item is SearchListItemPropsWithBreadcrumb => {
-	return !! ( item.breadcrumbs && item.breadcrumbs.length );
-};
-
 const ItemLabel = ( props: { item: SearchListItemProps; search: string } ) => {
 	const { item, search } = props;
 
 	return (
 		<span className="woocommerce-search-list__item-label">
-			{ checkHasBreadCrumbs( item ) ? (
+			{ item.breadcrumbs.length ? (
 				<span className="woocommerce-search-list__item-prefix">
 					{ getBreadcrumbsForDisplay( item.breadcrumbs ) }
 				</span>
@@ -69,7 +59,7 @@ export const SearchListItem = ( {
 		countLabel !== null &&
 		item.count !== undefined &&
 		item.count !== null;
-	const hasBreadcrumbs = !! item.breadcrumbs?.length;
+	const hasBreadcrumbs = !! item.breadcrumbs.length;
 	const hasChildren = !! item.children?.length;
 	const isExpanded = expandedPanelId === item.id;
 	const classes = classNames(

@@ -16,7 +16,7 @@ export const ProductTagItem = ( {
 	depth = 0,
 	...rest
 }: renderItemArgs ): JSX.Element => {
-	const accessibleName = ! item?.breadcrumbs?.length
+	const accessibleName = ! item.breadcrumbs.length
 		? item.name
 		: `${ item.breadcrumbs.join( ', ' ) }, ${ item.name }`;
 

@@ -35,7 +35,7 @@ export interface ListItemsProps
 }
 
 export type SearchListItem = {
-	breadcrumbs?: string[];
+	breadcrumbs: string[];
 	children?: SearchListItem[];
 	count: number;
 	id: string | number;
