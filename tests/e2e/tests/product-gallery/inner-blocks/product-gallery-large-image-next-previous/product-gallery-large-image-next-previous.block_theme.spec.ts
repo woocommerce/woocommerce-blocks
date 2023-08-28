@@ -36,7 +36,7 @@ const blockData = {
 		},
 	},
 	slug: 'single-product',
-	productPage: '/product/album/',
+	productPage: '/product/logo-collection/',
 };
 
 const getBoundingClientRect = async ( {
