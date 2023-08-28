@@ -3,6 +3,7 @@
 	white-space: normal;
 	display: flex;
 	justify-content: center;
+	flex-direction: column;
 	align-items: center;
 	gap: $gap-small;
 
@@ -53,6 +54,14 @@
 			transform: translate(0);
 			opacity: 1;
 		}
+	}
+
+	&.align-left {
+		align-items: flex-start;
+	}
+
+	&.align-right {
+		align-items: flex-end;
 	}
 
 	.wc-block-components-product-button__button {

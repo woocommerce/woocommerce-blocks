@@ -7,7 +7,8 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import icon from './icon';
-import { Edit, Save } from './edit';
+import { Edit } from './edit';
+import { Save } from './save';
 import metadata from './block.json';
 import './style.scss';
 
