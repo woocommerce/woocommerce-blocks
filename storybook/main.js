@@ -18,6 +18,9 @@ module.exports = {
 	core: {
 		builder: 'webpack5',
 	},
+	typescript: {
+		reactDocgen: 'react-docgen-typescript-plugin',
+	},
 	// webpackFinal field was added in following PR: https://github.com/woocommerce/woocommerce-blocks/pull/7514
 	// This fixes "storybook build issue" related to framer-motion library.
 	// Solution is from this commment: https://github.com/storybookjs/storybook/issues/16690#issuecomment-971579785
