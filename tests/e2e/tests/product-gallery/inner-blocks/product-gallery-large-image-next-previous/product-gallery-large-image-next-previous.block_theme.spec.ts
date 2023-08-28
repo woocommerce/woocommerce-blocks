@@ -429,7 +429,7 @@ test.describe( `${ blockData.name }`, () => {
 			await expect( frontendBlock ).toHaveCSS( 'align-items', 'center' );
 		} );
 
-		test( 'Show buttons at the bottom of the image', async ( {
+		test( 'Show buttons at the bottom of the image by default', async ( {
 			page,
 			editor,
 			editorUtils,
@@ -455,8 +455,6 @@ test.describe( `${ blockData.name }`, () => {
 			await (
 				await editorUtils.getBlockByName( blockData.name )
 			 ).click();
-
-			await editorUtils.setLayoutOption( 'Align Bottom' );
 
 			const block = await editorUtils.getBlockByName( blockData.name );
 
