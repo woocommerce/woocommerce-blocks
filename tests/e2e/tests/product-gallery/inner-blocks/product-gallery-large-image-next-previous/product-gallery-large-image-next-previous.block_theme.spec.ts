@@ -323,5 +323,164 @@ test.describe( `${ blockData.name }`, () => {
 				frontendBoundingClientRect.gallery.right
 			);
 		} );
+
+		test( 'Show buttons at the top of the image', async ( {
+			page,
+			editor,
+			editorUtils,
+			frontendUtils,
+		} ) => {
+			// Currently we are adding the block under the related products block, but in the future we have to add replace the product gallery block with this block.
+			const parentBlock = await editorUtils.getBlockByName(
+				'woocommerce/product-image-gallery'
+			);
+			const clientId =
+				// eslint-disable-next-line playwright/no-conditional-in-test
+				( await parentBlock.getAttribute( 'data-block' ) ) ?? '';
+			const parentClientId =
+				// eslint-disable-next-line playwright/no-conditional-in-test
+				( await editorUtils.getBlockRootClientId( clientId ) ) ?? '';
+
+			await editor.selectBlocks( parentBlock );
+			await editorUtils.insertBlock(
+				{ name: 'woocommerce/product-gallery' },
+				undefined,
+				parentClientId
+			);
+			await (
+				await editorUtils.getBlockByName( blockData.name )
+			 ).click();
+
+			await editorUtils.setLayoutOption( 'Align Top' );
+
+			const block = await editorUtils.getBlockByName( blockData.name );
+
+			await expect( block ).toHaveCSS( 'align-items', 'flex-start' );
+
+			await Promise.all( [
+				editor.saveSiteEditorEntities(),
+				page.waitForResponse( ( response ) =>
+					response.url().includes( 'wp-json/wp/v2/templates/' )
+				),
+			] );
+
+			await page.goto( blockData.productPage, {
+				waitUntil: 'commit',
+			} );
+
+			const frontendBlock = await frontendUtils.getBlockByName(
+				blockData.name
+			);
+
+			await expect( frontendBlock ).toHaveCSS(
+				'align-items',
+				'flex-start'
+			);
+		} );
+
+		test( 'Show buttons at the middle of the image', async ( {
+			page,
+			editor,
+			editorUtils,
+			frontendUtils,
+		} ) => {
+			// Currently we are adding the block under the related products block, but in the future we have to add replace the product gallery block with this block.
+			const parentBlock = await editorUtils.getBlockByName(
+				'woocommerce/product-image-gallery'
+			);
+			const clientId =
+				// eslint-disable-next-line playwright/no-conditional-in-test
+				( await parentBlock.getAttribute( 'data-block' ) ) ?? '';
+			const parentClientId =
+				// eslint-disable-next-line playwright/no-conditional-in-test
+				( await editorUtils.getBlockRootClientId( clientId ) ) ?? '';
+
+			await editor.selectBlocks( parentBlock );
+			await editorUtils.insertBlock(
+				{ name: 'woocommerce/product-gallery' },
+				undefined,
+				parentClientId
+			);
+			await (
+				await editorUtils.getBlockByName( blockData.name )
+			 ).click();
+
+			await editorUtils.setLayoutOption( 'Align Middle' );
+
+			const block = await editorUtils.getBlockByName( blockData.name );
+
+			await expect( block ).toHaveCSS( 'align-items', 'center' );
+
+			await Promise.all( [
+				editor.saveSiteEditorEntities(),
+				page.waitForResponse( ( response ) =>
+					response.url().includes( 'wp-json/wp/v2/templates/' )
+				),
+			] );
+
+			await page.goto( blockData.productPage, {
+				waitUntil: 'commit',
+			} );
+
+			const frontendBlock = await frontendUtils.getBlockByName(
+				blockData.name
+			);
+
+			await expect( frontendBlock ).toHaveCSS( 'align-items', 'center' );
+		} );
+
+		test( 'Show buttons at the bottom of the image', async ( {
+			page,
+			editor,
+			editorUtils,
+			frontendUtils,
+		} ) => {
+			// Currently we are adding the block under the related products block, but in the future we have to add replace the product gallery block with this block.
+			const parentBlock = await editorUtils.getBlockByName(
+				'woocommerce/product-image-gallery'
+			);
+			const clientId =
+				// eslint-disable-next-line playwright/no-conditional-in-test
+				( await parentBlock.getAttribute( 'data-block' ) ) ?? '';
+			const parentClientId =
+				// eslint-disable-next-line playwright/no-conditional-in-test
+				( await editorUtils.getBlockRootClientId( clientId ) ) ?? '';
+
+			await editor.selectBlocks( parentBlock );
+			await editorUtils.insertBlock(
+				{ name: 'woocommerce/product-gallery' },
+				undefined,
+				parentClientId
+			);
+			await (
+				await editorUtils.getBlockByName( blockData.name )
+			 ).click();
+
+			await editorUtils.setLayoutOption( 'Align Bottom' );
+
+			const block = await editorUtils.getBlockByName( blockData.name );
+
+			await expect( block ).toHaveCSS( 'align-items', 'flex-end' );
+
+			await Promise.all( [
+				editor.saveSiteEditorEntities(),
+				page.waitForResponse( ( response ) =>
+					response.url().includes( 'wp-json/wp/v2/templates/' )
+				),
+			] );
+
+			await page.goto( blockData.productPage, {
+				waitUntil: 'commit',
+			} );
+
+			const frontendBlock = await frontendUtils.getBlockByName(
+				blockData.name
+			);
+
+			await expect( frontendBlock ).toHaveCSS(
+				'align-items',
+				'flex-end'
+			);
+		} );
 	} );
 } );
