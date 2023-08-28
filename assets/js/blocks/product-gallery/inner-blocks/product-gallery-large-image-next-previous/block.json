@@ -12,7 +12,8 @@
 	"supports": {
 		"layout": {
 			"default": {
-				"type": "flex"
+				"type": "flex",
+				"verticalAlignment": "bottom"
 			},
 			"allowVerticalAlignment": true,
 			"allowJustification": false,
