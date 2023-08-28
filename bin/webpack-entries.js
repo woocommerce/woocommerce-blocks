@@ -93,6 +93,10 @@ const blocks = {
 	'collection-filters': {
 		isExperimental: true,
 	},
+	'collection-stock-filter': {
+		isExperimental: true,
+		customDir: 'collection-filters/inner-blocks/stock-filter',
+	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,

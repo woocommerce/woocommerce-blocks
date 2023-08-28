@@ -15,11 +15,7 @@ const Edit = ( props: BlockEditProps< Attributes > ) => {
 		<div { ...blockProps }>
 			<InnerBlocks
 				allowedBlocks={ [
-					'woocommerce/attribute-filter',
-					'woocommerce/price-filter',
-					'woocommerce/rating-filter',
-					'woocommerce/stock-filter',
-					'woocommerce/filter-wrapper',
+					'woocommerce/collection-stock-filter',
 				] }
 			/>
 		</div>
