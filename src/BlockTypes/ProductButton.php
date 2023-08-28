@@ -61,7 +61,6 @@ class ProductButton extends AbstractBlock {
 	 */
 	public function dequeue_add_to_cart_scripts() {
 		wp_dequeue_script( 'wc-add-to-cart' );
-		wp_dequeue_script( 'wc-add-to-cart-variation' );
 	}
 
 	/**
@@ -128,7 +127,7 @@ class ProductButton extends AbstractBlock {
 					/**
 					* Filters the change the quantity to add to cart.
 					*
-					* @since $VID:$
+					* @since 10.9.0
 					* @param number $default_quantity The default quantity.
 					* @param number $product_id The product id.
 					*/
@@ -192,7 +191,7 @@ class ProductButton extends AbstractBlock {
 			return apply_filters(
 				'woocommerce_loop_add_to_cart_link',
 				strtr(
-					'<div class="wp-block-button wc-block-components-product-button {classes} {custom_classes}"
+					'<div data-wc-interactive class="wp-block-button wc-block-components-product-button {classes} {custom_classes}"
 						{div_directives}
 					>
 					<{html_element}

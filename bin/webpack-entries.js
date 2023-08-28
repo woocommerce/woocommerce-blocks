@@ -47,11 +47,16 @@ const blocks = {
 	'product-best-sellers': {},
 	'product-category': {},
 	'product-categories': {},
+	'product-collection': {},
 	'product-gallery': {
 		isExperimental: true,
 	},
 	'product-gallery-large-image': {
 		customDir: 'product-gallery/inner-blocks/product-gallery-large-image',
+		isExperimental: true,
+	},
+	'product-gallery-pager': {
+		customDir: 'product-gallery/inner-blocks/product-gallery-pager',
 		isExperimental: true,
 	},
 	'product-gallery-thumbnails': {
@@ -66,6 +71,7 @@ const blocks = {
 	'product-results-count': {},
 	'product-search': {},
 	'product-tag': {},
+	'product-template': {},
 	'product-top-rated': {},
 	'products-by-attribute': {},
 	'rating-filter': {},
@@ -80,12 +86,6 @@ const blocks = {
 	},
 	'single-product': {},
 	'stock-filter': {},
-	'product-collection': {
-		isExperimental: true,
-	},
-	'product-template': {
-		isExperimental: true,
-	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,
@@ -118,6 +118,16 @@ const getBlockEntries = ( relativePath ) => {
 
 const entries = {
 	styling: {
+		// @wordpress/components styles
+		'custom-select-control-style':
+			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
+		'snackbar-notice-style':
+			'./node_modules/wordpress-components/src/snackbar/style.scss',
+		'combobox-control-style':
+			'./node_modules/wordpress-components/src/combobox-control/style.scss',
+		'form-token-field-style':
+			'./node_modules/wordpress-components/src/form-token-field/style.scss',
+
 		// Packages styles
 		'packages-style': glob.sync( './packages/**/index.js' ),
 
