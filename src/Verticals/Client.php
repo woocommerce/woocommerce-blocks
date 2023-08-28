@@ -17,14 +17,28 @@ class Client {
 	 */
 	private function request( string $url ) {
 		$response = wp_remote_get( $url );
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
 
 		$response_code = wp_remote_retrieve_response_code( $response );
 		$response_body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		$error_data = array();
+		if ( is_wp_error( $response ) ) {
+			$error_data['code']    = $response->get_error_code();
+			$error_data['message'] = $response->get_error_message();
+		}
+
 		if ( 200 !== $response_code ) {
-			return new \WP_Error( $response_code, $response_body['message'] );
+			$error_data['status'] = $response_code;
+			if ( isset( $response_body['message'] ) ) {
+				$error_data['message'] = $response_body['message'];
+			}
+			if ( isset( $response_body['code'] ) ) {
+				$error_data['code'] = $response_body['code'];
+			}
+		}
+
+		if ( ! empty( $error_data ) ) {
+			return new \WP_Error( 'verticals_api_error', __( 'Request to the Verticals API failed.', 'woo-gutenberg-products-block' ), $error_data );
 		}
 
 		return $response_body;

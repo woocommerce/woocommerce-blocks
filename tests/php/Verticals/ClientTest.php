@@ -40,6 +40,10 @@ class ClientTest extends WP_UnitTestCase {
 		$response = $this->client->get_verticals();
 		$this->assertInstanceOf( 'WP_Error', $response );
 
+		$error_data = $response->get_error_data();
+		$this->assertEquals( 'error', $error_data['code'] );
+		$this->assertEquals( 'Request failed.', $error_data['message'] );
+
 		remove_filter( 'pre_http_request', array( $this, 'return_wp_error' ) );
 	}
 
@@ -51,8 +55,11 @@ class ClientTest extends WP_UnitTestCase {
 
 		$response = $this->client->get_verticals();
 		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( 500, $response->get_error_code() );
-		$this->assertEquals( 'The request failed.', $response->get_error_message() );
+
+		$error_data = $response->get_error_data();
+		$this->assertEquals( 500, $error_data['status'] );
+		$this->assertEquals( 'rest_error', $error_data['code'] );
+		$this->assertEquals( 'The request failed.', $error_data['message'] );
 
 		remove_filter( 'pre_http_request', array( $this, 'return_request_failed' ) );
 	}
@@ -82,6 +89,10 @@ class ClientTest extends WP_UnitTestCase {
 		$response = $this->client->get_vertical_images( 1 );
 		$this->assertInstanceOf( 'WP_Error', $response );
 
+		$error_data = $response->get_error_data();
+		$this->assertEquals( 'error', $error_data['code'] );
+		$this->assertEquals( 'Request failed.', $error_data['message'] );
+
 		remove_filter( 'pre_http_request', array( $this, 'return_wp_error' ) );
 	}
 
@@ -93,8 +104,11 @@ class ClientTest extends WP_UnitTestCase {
 
 		$response = $this->client->get_vertical_images( 1 );
 		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( 500, $response->get_error_code() );
-		$this->assertEquals( 'The request failed.', $response->get_error_message() );
+
+		$error_data = $response->get_error_data();
+		$this->assertEquals( 500, $error_data['status'] );
+		$this->assertEquals( 'rest_error', $error_data['code'] );
+		$this->assertEquals( 'The request failed.', $error_data['message'] );
 
 		remove_filter( 'pre_http_request', array( $this, 'return_request_failed' ) );
 	}
@@ -128,7 +142,7 @@ class ClientTest extends WP_UnitTestCase {
 	 * Returns a WP_Error.
 	 */
 	public function return_wp_error() {
-		return new \WP_Error( 'error', 'Request failed' );
+		return new \WP_Error( 'error', 'Request failed.' );
 	}
 
 	/**
