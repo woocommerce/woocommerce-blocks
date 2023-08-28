@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import { NextButton, PrevButton } from './icons';
 import './editor.scss';
 import { ProductGalleryNextPreviousBlockSettings } from './settings';
-import { Context } from '../../types';
+import { ProductGalleryContext } from '../../types';
 
 const getAlignmentStyle = ( alignment: string ): string => {
 	switch ( alignment ) {
@@ -32,7 +32,7 @@ export const Edit = ( {
 	context,
 }: {
 	attributes: BlockAttributes;
-	context: Context;
+	context: ProductGalleryContext;
 } ): JSX.Element => {
 	const blockProps = useBlockProps( {
 		style: {

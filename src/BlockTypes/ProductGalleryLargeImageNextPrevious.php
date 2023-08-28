@@ -57,6 +57,19 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+		$post_id = $block->context['postId'];
+		if ( ! isset( $post_id ) ) {
+			return '';
+		}
+
+		$product = wc_get_product( $post_id );
+
+		$product_gallery = $product->get_gallery_image_ids();
+
+		if ( empty( $product_gallery ) ) {
+			return null;
+		}
+
 		$context     = $block->context;
 		$prev_button = sprintf(
 			'

@@ -42,12 +42,12 @@ export interface ProductGalleryThumbnailsSettingsProps {
 	context: ProductGalleryThumbnailsBlockAttributes;
 }
 
-export interface ProductGalleryContext {
+export type ProductGalleryContext = {
 	thumbnailsPosition: ThumbnailsPosition;
 	thumbnailsNumberOfThumbnails: number;
 	productGalleryClientId: string;
 	pagerDisplayMode: PagerDisplayModes;
-}
+} & ProductGalleryNextPreviousBlockAttributes;
 
 export type ProductGalleryPagerContext = Pick<
 	ProductGalleryContext,
