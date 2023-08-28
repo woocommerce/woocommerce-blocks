@@ -9,13 +9,15 @@
 	"keywords": [ "WooCommerce" ],
 	"supports": {
 		"align": true,
-		"multiple": false
+		"multiple": false,
+		"interactivity": true
 	},
 	"textdomain": "woo-gutenberg-products-block",
 	"providesContext": {
 		"thumbnailsPosition": "thumbnailsPosition",
 		"thumbnailsNumberOfThumbnails": "thumbnailsNumberOfThumbnails",
-		"productGalleryClientId": "productGalleryClientId"
+		"productGalleryClientId": "productGalleryClientId",
+		"pagerDisplayMode": "pagerDisplayMode"
 	},
 	"attributes": {
 		"thumbnailsPosition": {
@@ -25,6 +27,10 @@
 		"thumbnailsNumberOfThumbnails": {
 			"type": "number",
 			"default": 3
+		},
+		"pagerDisplayMode": {
+			"type": "string",
+			"default": "dots"
 		},
 		"productGalleryClientId": {
 			"type": "string",
@@ -42,5 +48,6 @@
 			"type": "boolean",
 			"default": false
 		}
-	}
+	},
+	"viewScript": "wc-product-gallery-interactivity-frontend"
 }

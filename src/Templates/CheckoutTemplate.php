@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Templates;
 
+use Automattic\WooCommerce\Blocks\Utils\BlockTemplateMigrationUtils;
+
 /**
  * CheckoutTemplate class.
  *
@@ -41,7 +43,13 @@ class CheckoutTemplate extends AbstractPageTemplate {
 	 * @return boolean
 	 */
 	public function is_active_template() {
+
+		if ( ! BlockTemplateMigrationUtils::has_migrated_page( 'checkout' ) ) {
+			return false;
+		}
+
 		global $post;
-		return $post instanceof \WP_Post && get_option( 'woocommerce_checkout_page_endpoint' ) === $post->post_name;
+		$placeholder = $this->get_placeholder_page();
+		return null !== $placeholder && $post instanceof \WP_Post && $placeholder->post_name === $post->post_name;
 	}
 }
