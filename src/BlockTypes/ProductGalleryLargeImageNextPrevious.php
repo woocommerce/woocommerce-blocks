@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
+
 /**
  * ProductGalleryLargeImage class.
  */
@@ -95,16 +97,22 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 			$this->get_class_suffix( $context )
 		);
 
+		$alignment_class = $attributes['layout']['verticalAlignment'] ? 'is-vertically-aligned-' . $attributes['layout']['verticalAlignment'] : '';
+		$position_class  = 'wc-block-product-gallery-large-image-next-previous--' . $this->get_class_suffix( $context );
+
 		return strtr(
-			'<div class="wp-block-woocommerce-product-gallery-large-image-next-previous">
-			{prev_button}
-			{next_button}
+			'<div class="wp-block-woocommerce-product-gallery-large-image-next-previous {alignment_class}">
+				<div class="wc-block-product-gallery-large-image-next-previous-container {position_class}">
+					{prev_button}
+					{next_button}
+				</div>
 		</div>',
 			array(
-				'{prev_button}' => $prev_button,
-				'{next_button}' => $next_button,
+				'{prev_button}'     => $prev_button,
+				'{next_button}'     => $next_button,
+				'{alignment_class}' => $alignment_class,
+				'{position_class}'  => $position_class,
 			)
 		);
-
 	}
 }
