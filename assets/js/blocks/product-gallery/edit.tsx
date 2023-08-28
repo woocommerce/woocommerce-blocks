@@ -22,6 +22,7 @@ import { ProductGalleryThumbnailsBlockSettings } from './inner-blocks/product-ga
 import { ProductGalleryPagerBlockSettings } from './inner-blocks/product-gallery-pager/settings';
 import { ProductGalleryBlockSettings } from './block-settings/index';
 import type { ProductGalleryAttributes } from './types';
+import { ProductGalleryNextPreviousBlockSettings } from './inner-blocks/product-gallery-large-image-next-previous/settings';
 
 const TEMPLATE: InnerBlockTemplate[] = [
 	[

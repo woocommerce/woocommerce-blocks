@@ -10,9 +10,13 @@ import { useMemo } from '@wordpress/element';
 import { NextButton, PrevButton } from './icons';
 import './editor.scss';
 import { ProductGalleryNextPreviousBlockSettings } from './settings';
-import { Context } from '../../types';
+import { ProductGalleryContext } from '../../types';
 
-export const Edit = ( { context }: { context: Context } ): JSX.Element => {
+export const Edit = ( {
+	context,
+}: {
+	context: ProductGalleryContext;
+} ): JSX.Element => {
 	const blockProps = useBlockProps();
 
 	const suffixClass = useMemo( () => {
