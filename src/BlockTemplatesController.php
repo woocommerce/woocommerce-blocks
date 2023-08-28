@@ -869,7 +869,7 @@ class BlockTemplatesController {
 		 *                                for a 404 request. Default true.
 		 */
 		if ( ! $matching_page instanceof WP_Post && apply_filters( 'do_redirect_guess_404_permalink', true ) ) {
-			// If it is a subpage and url guessing is on, then we will need to get it via postname as path will not match.
+			// If it is a subpage and url guessing is on, then we will need to get it via post_name as path will not match.
 			$query = new \WP_Query(
 				[
 					'post_type' => 'page',
