@@ -8,9 +8,7 @@ export const supports = {
 	align: [ 'left', 'right', 'center' ],
 	spacing: {
 		margin: true,
-		__experimentalSkipSerialization: true,
 	},
-	__experimentalSelector: '.wc-block-components-product-sale-badge',
 	...( isFeaturePluginBuild() && {
 		color: {
 			gradients: true,

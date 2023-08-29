@@ -29,13 +29,13 @@ class ProductSaleBadge extends AbstractBlock {
 	 */
 	protected function get_block_type_supports() {
 		return array(
-			'color'                  =>
+			'color'                =>
 			array(
 				'gradients'  => true,
 				'background' => true,
 				'link'       => true,
 			),
-			'typography'             =>
+			'typography'           =>
 			array(
 				'fontSize'                        => true,
 				'lineHeight'                      => true,
@@ -47,19 +47,17 @@ class ProductSaleBadge extends AbstractBlock {
 				'__experimentalTextDecoration'    => true,
 				'__experimentalSkipSerialization' => true,
 			),
-			'__experimentalBorder'   =>
+			'__experimentalBorder' =>
 			array(
 				'color'  => true,
 				'radius' => true,
 				'width'  => true,
 			),
-			'spacing'                =>
+			'spacing'              =>
 			array(
-				'margin'                          => true,
-				'padding'                         => true,
-				'__experimentalSkipSerialization' => true,
+				'margin'  => true,
+				'padding' => true,
 			),
-			'__experimentalSelector' => '.wc-block-components-product-sale-badge',
 		);
 	}
 
