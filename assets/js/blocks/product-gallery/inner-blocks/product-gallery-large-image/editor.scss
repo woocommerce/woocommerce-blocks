@@ -4,4 +4,6 @@
 
 .wc-block-product-gallery-large-image__inner-blocks {
 	max-width: 500px;
+	display: flex;
+	flex-direction: column;
 }
