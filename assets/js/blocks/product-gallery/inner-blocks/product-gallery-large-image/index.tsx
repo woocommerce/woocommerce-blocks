@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
+import { isExperimentalBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -12,9 +13,11 @@ import { Save } from './save';
 import metadata from './block.json';
 import './style.scss';
 
-// @ts-expect-error: `metadata` currently does not have a type definition in WordPress core
-registerBlockType( metadata, {
-	icon,
-	edit: Edit,
-	save: Save,
-} );
+if ( isExperimentalBuild() ) {
+	// @ts-expect-error: `metadata` currently does not have a type definition in WordPress core
+	registerBlockType( metadata, {
+		icon,
+		edit: Edit,
+		save: Save,
+	} );
+}

@@ -32,6 +32,7 @@
 		"./assets/js/blocks/product-gallery/**.tsx",
 		"./assets/js/blocks/product-gallery/inner-blocks/**/index.tsx",
 		"./assets/js/templates/revert-button/index.tsx",
+		"./assets/js/settings/blocks/index.ts",
 		"./packages/**/*.{tsx,ts,js}"
 	],
 	"repository": {
