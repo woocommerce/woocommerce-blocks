@@ -23,7 +23,8 @@ class Migration {
 		),
 		// @todo Confirm version to run migration.
 		'11.0.0' => array(
-			'wc_blocks_update_1030_rename_checkout_template',
+			'wc_blocks_update_1100_rename_checkout_template',
+			'wc_blocks_update_1100_rename_cart_template',
 		),
 	);
 
@@ -81,6 +82,26 @@ class Migration {
 				array(
 					'ID'        => $template->wp_id,
 					'post_name' => 'page-checkout',
+				)
+			);
+		}
+	}
+
+	/**
+	 * Rename `cart` template to `page-cart`.
+	 */
+	public static function wc_blocks_update_1100_rename_cart_template() {
+		$template = BlockTemplateUtils::get_block_template( BlockTemplateUtils::PLUGIN_SLUG . '//cart', 'wp_template' );
+
+		if ( $template && ! empty( $template->wp_id ) ) {
+			if ( ! defined( 'WP_POST_REVISIONS' ) ) {
+				// This prevents a fatal error when ran outside of admin context.
+				define( 'WP_POST_REVISIONS', false );
+			}
+			wp_update_post(
+				array(
+					'ID'        => $template->wp_id,
+					'post_name' => 'page-cart',
 				)
 			);
 		}

@@ -15,7 +15,7 @@ class CartTemplate extends AbstractPageTemplate {
 	 * @return string
 	 */
 	public static function get_slug() {
-		return 'cart';
+		return 'page-cart';
 	}
 
 	/**
@@ -42,14 +42,5 @@ class CartTemplate extends AbstractPageTemplate {
 		global $post;
 		$placeholder = $this->get_placeholder_page();
 		return null !== $placeholder && $post instanceof \WP_Post && $placeholder->post_name === $post->post_name;
-	}
-
-	/**
-	 * Should return the title of the page.
-	 *
-	 * @return string
-	 */
-	public static function get_template_title() {
-		return __( 'Cart', 'woo-gutenberg-products-block' );
 	}
 }

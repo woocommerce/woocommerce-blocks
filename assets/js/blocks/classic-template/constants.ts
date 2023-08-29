@@ -23,6 +23,7 @@ export const PLACEHOLDERS = {
 	singleProduct: 'single-product',
 	archiveProduct: 'archive-product',
 	orderConfirmation: 'fallback',
+	cart: 'cart',
 	checkout: 'checkout',
 	checkoutHeader: 'checkout-header',
 };
@@ -85,10 +86,10 @@ export const TEMPLATES: TemplateDetails = {
 		),
 		placeholder: PLACEHOLDERS.archiveProduct,
 	},
-	cart: {
+	'page-cart': {
 		type: TYPES.cart,
-		title: __( 'WooCommerce Cart Block', 'woo-gutenberg-products-block' ),
-		placeholder: 'cart',
+		title: __( 'Cart Block', 'woo-gutenberg-products-block' ),
+		placeholder: PLACEHOLDERS.cart,
 	},
 	'page-checkout': {
 		type: TYPES.checkout,

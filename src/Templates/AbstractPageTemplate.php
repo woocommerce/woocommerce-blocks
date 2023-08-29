@@ -41,18 +41,20 @@ abstract class AbstractPageTemplate {
 	abstract public static function get_placeholder_page();
 
 	/**
-	 * Should return the title of the page.
-	 *
-	 * @return string
-	 */
-	abstract public static function get_template_title();
-
-	/**
 	 * Should return true on pages/endpoints/routes where the template should be shown.
 	 *
 	 * @return boolean
 	 */
 	abstract protected function is_active_template();
+
+	/**
+	 * Should return the title of the page, or an empty string if the page title should not be changed.
+	 *
+	 * @return string
+	 */
+	public static function get_template_title() {
+		return '';
+	}
 
 	/**
 	 * Returns the URL to edit the template.
