@@ -17,6 +17,7 @@ import {
 	withSearchedProducts,
 	withTransformSingleSelectToMultipleSelect,
 } from '@woocommerce/block-hocs';
+import { convertProductResponseItemToSearchItem } from '@woocommerce/utils';
 import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
 import classNames from 'classnames';
 import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item';
@@ -80,8 +81,8 @@ const ProductControl = ( {
 	const renderItemWithVariations = ( args ) => {
 		const { item, search, depth = 0, isSelected, onSelect } = args;
 		const variationsCount =
-			item.variations && Array.isArray( item.variations )
-				? item.variations.length
+			item.details?.variations && Array.isArray( item.details.variations )
+				? item.details.variations.length
 				: 0;
 		const classes = classNames(
 			'woocommerce-search-product__item',
@@ -97,6 +98,9 @@ const ProductControl = ( {
 
 		// Top level items custom rendering based on SearchListItem.
 		if ( ! item.breadcrumbs.length ) {
+			const hasVariations =
+				item.details?.variations && item.details.variations.length > 0;
+
 			return (
 				<ExpandableSearchListItem
 					{ ...args }
@@ -112,42 +116,47 @@ const ProductControl = ( {
 					} }
 					isLoading={ isLoading || variationsLoading }
 					countLabel={
-						item.variations.length > 0
+						hasVariations
 							? sprintf(
 									/* translators: %1$d is the number of variations of a product product. */
 									__(
 										'%1$d variations',
 										'woo-gutenberg-products-block'
 									),
-									item.variations.length
+									item.details?.variations.length
 							  )
 							: null
 					}
 					name={ `products-${ instanceId }` }
-					aria-label={ sprintf(
-						/* translators: %1$s is the product name, %2$d is the number of variations of that product. */
-						_n(
-							'%1$s, has %2$d variation',
-							'%1$s, has %2$d variations',
-							item.variations.length,
-							'woo-gutenberg-products-block'
-						),
-						item.name,
-						item.variations.length
-					) }
+					aria-label={
+						hasVariations
+							? sprintf(
+									/* translators: %1$s is the product name, %2$d is the number of variations of that product. */
+									_n(
+										'%1$s, has %2$d variation',
+										'%1$s, has %2$d variations',
+										item.details?.variations
+											?.length as number,
+										'woo-gutenberg-products-block'
+									),
+									item.name,
+									item.details?.variations.length
+							  )
+							: undefined
+					}
 				/>
 			);
 		}
 
-		const itemArgs = isEmpty( item.variation )
+		const itemArgs = isEmpty( item.details?.variation )
 			? args
 			: {
 					...args,
 					item: {
 						...args.item,
-						name: item.variation,
+						name: item.details?.variation as string,
 					},
-					'aria-label': `${ item.breadcrumbs[ 0 ] }: ${ item.variation }`,
+					'aria-label': `${ item.breadcrumbs[ 0 ] }: ${ item.details?.variation }`,
 			  };
 
 		return (
@@ -178,7 +187,9 @@ const ProductControl = ( {
 		variations && expandedProduct !== null && variations[ expandedProduct ]
 			? variations[ expandedProduct ]
 			: [];
-	const currentList = [ ...products, ...currentVariations ];
+	const currentList = [ ...products, ...currentVariations ].map(
+		convertProductResponseItemToSearchItem
+	);
 
 	return (
 		<SearchListControl
