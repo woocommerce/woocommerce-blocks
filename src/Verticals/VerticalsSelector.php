@@ -1,18 +1,15 @@
 <?php
 
-namespace Automattic\WooCommerce\Blocks\Patterns;
+namespace Automattic\WooCommerce\Blocks\Verticals;
 
 use Automattic\WooCommerce\Blocks\Verticals\Client as VerticalsAPIClient;
 
-interface ChatGPTClient {
-	public function text_completion( $prompt ): string;
-}
 
 /**
  * PatternVerticalsAiPrompt class.
  */
 class VerticalsSelector {
-	private const STORE_DESCRIPTION_OPTION_KEY = 'woo_ai_describe_store_description';
+	public const STORE_DESCRIPTION_OPTION_KEY = 'woo_ai_describe_store_description';
 
 	/**
 	 * The verticals API client.
@@ -34,18 +31,20 @@ class VerticalsSelector {
 	 * @param VerticalsAPIClient $verticals_api_client The verticals API client.
 	 * @param ChatGPTClient      $chat_gpt_client The ChatGPT client.
 	 */
-	public function __construct( VerticalsAPIClient $verticals_api_client/*, ChatGPTClient $chat_gpt_client */ ) {
+	public function __construct( VerticalsAPIClient $verticals_api_client, ChatGPTClient $chat_gpt_client ) {
 		$this->verticals_api_client = $verticals_api_client;
-		// $this->chat_gpt_client      = $chat_gpt_client;
+		$this->chat_gpt_client      = $chat_gpt_client;
 	}
 
 	/**
 	 * Gets the vertical id that better matches the business description using the GPT API.
+	 *
+	 * @return string|\WP_Error The vertical id, or WP_Error if the request failed.
 	 */
-	public function get_vertical_id(): string {
+	public function get_vertical_id() {
 		$business_description = $this->get_business_description();
 		if ( empty( $business_description ) ) {
-			return \WP_Error(
+			return new \WP_Error(
 				'empty_business_description',
 				__( 'The business description is empty.', 'woo-gutenberg-products-block' )
 			);
@@ -59,6 +58,9 @@ class VerticalsSelector {
 		$prompt = $this->build_prompt( $verticals, $business_description );
 
 		$answer = $this->chat_gpt_client->text_completion( $prompt );
+		if ( is_wp_error( $answer ) ) {
+			return $answer; // TODO: should wrap the error in another WP_Error???
+		}
 
 		return $this->parse_answer( $answer );
 	}
