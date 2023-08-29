@@ -33,7 +33,7 @@ import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-
  */
 import './style.scss';
 
-interface Props {
+interface ProductControlProps {
 	/**
 	 * Callback to update the selected products.
 	 */
@@ -78,7 +78,7 @@ const messages = {
 };
 
 const ProductControl = (
-	props: Props &
+	props: ProductControlProps &
 		WithInjectedSearchedProducts &
 		WithInjectedProductVariations &
 		WithInjectedInstanceId
