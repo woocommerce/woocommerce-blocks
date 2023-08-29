@@ -20,6 +20,7 @@
 		"nextPreviousButtonsPosition": "nextPreviousButtonsPosition",
 		"pagerDisplayMode": "pagerDisplayMode"
 	},
+	"usesContext": [ "postId" ],
 	"attributes": {
 		"thumbnailsPosition": {
 			"type": "string",

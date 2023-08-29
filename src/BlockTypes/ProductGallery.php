@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\ProductGalleryUtils;
+
 /**
  * ProductGallery class.
  */
@@ -30,22 +32,32 @@ class ProductGallery extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$classname          = $attributes['className'] ?? '';
-		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$html               = sprintf(
+		$classname              = $attributes['className'] ?? '';
+		$wrapper_attributes     = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
+		$html                   = sprintf(
 			'<div data-wc-interactive %1$s>
 				%2$s
 			</div>',
 			$wrapper_attributes,
 			$content
 		);
-		$p                  = new \WP_HTML_Tag_Processor( $content );
+		$post_id                = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
+		$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id );
+
+		$p = new \WP_HTML_Tag_Processor( $content );
 
 		if ( $p->next_tag() ) {
 			$p->set_attribute( 'data-wc-interactive', true );
 			$p->set_attribute(
 				'data-wc-context',
-				wp_json_encode( array( 'productGallery' => array( 'numberOfThumbnails' => 0 ) ) )
+				wp_json_encode(
+					array(
+						'productGallery' => array(
+							'numberOfThumbnails'   => 0,
+							'productGalleryImages' => $product_gallery_images,
+						),
+					)
+				)
 			);
 			$html = $p->get_updated_html();
 		}
