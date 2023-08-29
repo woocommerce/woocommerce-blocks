@@ -23,6 +23,8 @@ const blockData = {
 				'.wp-block-woocommerce-product-sale-badge',
 		},
 	},
+	// This margin is applied via Block Styles to the product sale badge. It's necessary to take it into account when calculating the position of the badge. https://github.com/woocommerce/woocommerce-blocks/blob/445b9431ccba460f9badd41d52ed991958524e33/assets/js/blocks/product-gallery/edit.tsx/#L44-L53
+	margin: 4,
 	slug: 'single-product',
 	productPage: '/product/logo-collection/',
 	productPageNotOnSale: '/product/album/',
@@ -48,7 +50,7 @@ const getBoundingClientRect = async ( {
 		productSaleBadgeContainer: await page
 			.locator(
 				blockData.selectors[ isFrontend ? 'frontend' : 'editor' ]
-					.productSaleBadge
+					.productSaleBadgeContainer
 			)
 			.evaluate( ( el ) => el.getBoundingClientRect() ),
 	};
@@ -134,7 +136,7 @@ test.describe( `${ blockData.name }`, () => {
 			await expect( block ).toBeHidden();
 		} );
 
-		test( 'should be aligned on the left by default', async ( {
+		test( 'should be aligned on the left', async ( {
 			frontendUtils,
 			editorUtils,
 			editor,
@@ -144,15 +146,21 @@ test.describe( `${ blockData.name }`, () => {
 				name: 'woocommerce/product-gallery',
 			} );
 
+			const block = await editorUtils.getBlockByName( blockData.name );
+
+			await block.click();
+
+			await editorUtils.setAlignOption( 'Align Left' );
+
 			const editorBoundingClientRect = await getBoundingClientRect( {
 				frontendUtils,
 				editorUtils,
 				isFrontend: false,
 			} );
 
-			await expect( editorBoundingClientRect.productSaleBadge.x ).toEqual(
-				editorBoundingClientRect.productSaleBadgeContainer.x
-			);
+			await expect(
+				editorBoundingClientRect.productSaleBadge.x - blockData.margin
+			).toEqual( editorBoundingClientRect.productSaleBadgeContainer.x );
 
 			await Promise.all( [
 				editor.saveSiteEditorEntities(),
@@ -168,12 +176,12 @@ test.describe( `${ blockData.name }`, () => {
 			const clientBoundingClientRect = await getBoundingClientRect( {
 				frontendUtils,
 				editorUtils,
-				isFrontend: false,
+				isFrontend: true,
 			} );
 
-			await expect( clientBoundingClientRect.productSaleBadge.x ).toEqual(
-				clientBoundingClientRect.productSaleBadgeContainer.x
-			);
+			await expect(
+				clientBoundingClientRect.productSaleBadge.x - blockData.margin
+			).toEqual( clientBoundingClientRect.productSaleBadgeContainer.x );
 		} );
 
 		test( 'should be aligned on the center', async ( {
@@ -199,9 +207,9 @@ test.describe( `${ blockData.name }`, () => {
 			} );
 
 			await expect(
-				editorBoundingClientRect.productSaleBadge.x
+				editorBoundingClientRect.productSaleBadge.right
 			).toBeLessThan(
-				editorBoundingClientRect.productSaleBadgeContainer.x
+				editorBoundingClientRect.productSaleBadgeContainer.right
 			);
 
 			await Promise.all( [
@@ -218,17 +226,17 @@ test.describe( `${ blockData.name }`, () => {
 			const clientBoundingClientRect = await getBoundingClientRect( {
 				frontendUtils,
 				editorUtils,
-				isFrontend: false,
+				isFrontend: true,
 			} );
 
 			await expect(
-				clientBoundingClientRect.productSaleBadge.x
+				clientBoundingClientRect.productSaleBadge.right
 			).toBeLessThan(
-				clientBoundingClientRect.productSaleBadgeContainer.x
+				clientBoundingClientRect.productSaleBadgeContainer.right
 			);
 		} );
 
-		test( 'should be aligned on the right', async ( {
+		test( 'should be aligned on the right by default', async ( {
 			frontendUtils,
 			editorUtils,
 			editor,
@@ -238,20 +246,17 @@ test.describe( `${ blockData.name }`, () => {
 				name: 'woocommerce/product-gallery',
 			} );
 
-			const block = await editorUtils.getBlockByName( blockData.name );
-
-			await block.click();
-
-			await editorUtils.setAlignOption( 'Align Right' );
-
 			const editorBoundingClientRect = await getBoundingClientRect( {
 				frontendUtils,
 				editorUtils,
 				isFrontend: false,
 			} );
 
-			await expect( editorBoundingClientRect.productSaleBadge.x ).toEqual(
-				editorBoundingClientRect.productSaleBadgeContainer.x
+			await expect(
+				editorBoundingClientRect.productSaleBadge.right +
+					blockData.margin
+			).toEqual(
+				editorBoundingClientRect.productSaleBadgeContainer.right
 			);
 
 			await Promise.all( [
@@ -268,11 +273,14 @@ test.describe( `${ blockData.name }`, () => {
 			const clientBoundingClientRect = await getBoundingClientRect( {
 				frontendUtils,
 				editorUtils,
-				isFrontend: false,
+				isFrontend: true,
 			} );
 
-			await expect( clientBoundingClientRect.productSaleBadge.x ).toEqual(
-				clientBoundingClientRect.productSaleBadgeContainer.x
+			await expect(
+				clientBoundingClientRect.productSaleBadge.right +
+					blockData.margin
+			).toEqual(
+				clientBoundingClientRect.productSaleBadgeContainer.right
 			);
 		} );
 	} );

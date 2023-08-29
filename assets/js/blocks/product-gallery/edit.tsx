@@ -40,7 +40,17 @@ const TEMPLATE: InnerBlockTemplate[] = [
 					[
 						'woocommerce/product-sale-badge',
 						{
-							align: 'left',
+							align: 'right',
+							style: {
+								spacing: {
+									margin: {
+										top: '4px',
+										right: '4px',
+										bottom: '4px',
+										left: '4px',
+									},
+								},
+							},
 						},
 					],
 				],

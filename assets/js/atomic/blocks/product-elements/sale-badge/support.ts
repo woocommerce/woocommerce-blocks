@@ -1,13 +1,16 @@
-/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * External dependencies
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
-import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
 
 export const supports = {
 	html: false,
 	align: [ 'left', 'right', 'center' ],
+	spacing: {
+		margin: true,
+		__experimentalSkipSerialization: true,
+	},
+	__experimentalSelector: '.wc-block-components-product-sale-badge',
 	...( isFeaturePluginBuild() && {
 		color: {
 			gradients: true,
@@ -32,18 +35,5 @@ export const supports = {
 			width: true,
 			__experimentalSkipSerialization: true,
 		},
-		...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
-			spacing: {
-				margin: true,
-				padding: true,
-			},
-		} ),
-		__experimentalSelector: '.wc-block-components-product-sale-badge',
 	} ),
-	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' &&
-		! isFeaturePluginBuild() && {
-			spacing: {
-				margin: true,
-			},
-		} ),
 };

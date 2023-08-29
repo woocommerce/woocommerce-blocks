@@ -4,7 +4,6 @@
 }
 
 .wc-block-components-product-sale-badge {
-	margin: 0 0 $gap-small;
 	@include font-size(small);
 	padding: em($gap-smallest) em($gap-small);
 	display: inline-block;
