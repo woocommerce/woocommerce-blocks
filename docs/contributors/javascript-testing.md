@@ -63,7 +63,7 @@ When you're done, you may want to shut down the test environment:
 
 ## How to run end-to-end tests
 
-Visit the [dedicated documentation](../../tests/e2e-pw/README.md).
+Visit the [dedicated documentation](../../tests/e2e/README.md).
 
 ### Debugging e2e tests using generated reports
 
@@ -118,3 +118,4 @@ When preparing for a new version of WordPress, it's a good practice to search fo
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/javascript-testing.md)
 
 <!-- /FEEDBACK -->
+

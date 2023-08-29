@@ -189,11 +189,13 @@ final class BlockTypesController {
 			'ProductButton',
 			'ProductCategories',
 			'ProductCategory',
+			'ProductCollection',
 			'ProductImage',
 			'ProductImageGallery',
 			'ProductNew',
 			'ProductOnSale',
 			'ProductPrice',
+			'ProductTemplate',
 			'ProductQuery',
 			'ProductAverageRating',
 			'ProductRating',
@@ -227,10 +229,10 @@ final class BlockTypesController {
 		);
 
 		if ( Package::feature()->is_experimental_build() ) {
-			$block_types[] = 'ProductCollection';
-			$block_types[] = 'ProductTemplate';
 			$block_types[] = 'ProductGallery';
 			$block_types[] = 'ProductGalleryLargeImage';
+			$block_types[] = 'ProductGalleryLargeImageNextPrevious';
+			$block_types[] = 'ProductGalleryPager';
 			$block_types[] = 'ProductGalleryThumbnails';
 		}
 
