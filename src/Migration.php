@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
+use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
+
 /**
  * Takes care of the migrations.
  *
@@ -18,6 +20,10 @@ class Migration {
 	private $db_upgrades = array(
 		'10.3.0' => array(
 			'wc_blocks_update_1030_blockified_product_grid_block',
+		),
+		// @todo Confirm version to run migration.
+		'11.0.0' => array(
+			'wc_blocks_update_1030_rename_checkout_template',
 		),
 	);
 
@@ -58,5 +64,25 @@ class Migration {
 	 */
 	public static function wc_blocks_update_1030_blockified_product_grid_block() {
 		update_option( Options::WC_BLOCK_USE_BLOCKIFIED_PRODUCT_GRID_BLOCK_AS_TEMPLATE, wc_bool_to_string( false ) );
+	}
+
+	/**
+	 * Rename `checkout` template to `page-checkout`.
+	 */
+	public static function wc_blocks_update_1100_rename_checkout_template() {
+		$template = BlockTemplateUtils::get_block_template( BlockTemplateUtils::PLUGIN_SLUG . '//checkout', 'wp_template' );
+
+		if ( $template && ! empty( $template->wp_id ) ) {
+			if ( ! defined( 'WP_POST_REVISIONS' ) ) {
+				// This prevents a fatal error when ran outside of admin context.
+				define( 'WP_POST_REVISIONS', false );
+			}
+			wp_update_post(
+				array(
+					'ID'        => $template->wp_id,
+					'post_name' => 'page-checkout',
+				)
+			);
+		}
 	}
 }
