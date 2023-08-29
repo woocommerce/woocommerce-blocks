@@ -4,7 +4,7 @@
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
 
 const permalink = '/cart';
-const templatePath = 'woocommerce/woocommerce//cart';
+const templatePath = 'woocommerce/woocommerce//page-cart';
 const templateType = 'wp_template';
 
 test.describe( 'Test the cart template', async () => {
