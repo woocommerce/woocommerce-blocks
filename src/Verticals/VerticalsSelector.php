@@ -6,7 +6,7 @@ use Automattic\WooCommerce\Blocks\Verticals\Client as VerticalsAPIClient;
 
 
 /**
- * PatternVerticalsAiPrompt class.
+ * VerticalsSelector class.
  */
 class VerticalsSelector {
 	public const STORE_DESCRIPTION_OPTION_KEY = 'woo_ai_describe_store_description';
