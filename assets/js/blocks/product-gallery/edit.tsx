@@ -53,6 +53,7 @@ const TEMPLATE: InnerBlockTemplate[] = [
 							},
 						},
 					],
+					[ 'woocommerce/product-gallery-large-image-next-previous' ],
 				],
 			],
 		],
