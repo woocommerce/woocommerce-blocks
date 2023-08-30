@@ -7,7 +7,7 @@ import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-edito
 
 export const supports = {
 	html: false,
-	align: [ 'left', 'right', 'center' ],
+	align: true,
 	...( isFeaturePluginBuild() && {
 		color: {
 			gradients: true,
