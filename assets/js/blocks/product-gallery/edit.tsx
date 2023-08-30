@@ -53,7 +53,15 @@ const TEMPLATE: InnerBlockTemplate[] = [
 							},
 						},
 					],
-					[ 'woocommerce/product-gallery-large-image-next-previous' ],
+					[
+						'woocommerce/product-gallery-large-image-next-previous',
+						{
+							layout: {
+								type: 'flex',
+								verticalAlignment: 'bottom',
+							},
+						},
+					],
 				],
 			],
 		],
