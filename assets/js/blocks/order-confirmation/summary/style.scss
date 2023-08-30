@@ -1,6 +1,7 @@
 .wc-block-order-confirmation-summary {
 	margin-top: $gap-largest;
 	margin-bottom: $gap-largest;
+	border-radius: 2px;
 	ul {
 		list-style: none outside;
 		display: flex;
@@ -19,6 +20,10 @@
 				font-weight: inherit;
 				display: block;
 			}
+		}
+
+		@media only screen and (max-width: 480px) {
+			flex-direction: column;
 		}
 	}
 	.woocommerce-verify-email {
