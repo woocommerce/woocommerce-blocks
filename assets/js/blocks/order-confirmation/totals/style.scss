@@ -27,7 +27,8 @@
 				border-bottom-width: 0;
 			}
 		}
-		.wc-block-order-confirmation-totals__total {
+		.wc-block-order-confirmation-totals__total,
+		.wc-block-order-confirmation-totals__note {
 			font-variant-numeric: tabular-nums;
 			text-align: right;
 		}

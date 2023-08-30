@@ -30,6 +30,7 @@ const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 			...inheritedAttributes,
 			content: __( 'Order details', 'woo-gutenberg-products-block' ),
 			level: 3,
+			style: { typography: { fontSize: '24px' } },
 		} ),
 		createBlock(
 			'woocommerce/order-confirmation-totals',

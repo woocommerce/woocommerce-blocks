@@ -1,10 +1,17 @@
 .wc-block-order-confirmation-billing-address {
-	border: 1px solid currentColor;
-	padding: $gap-large;
+	border: 1px solid $universal-border-light;
+	border-radius: 2px;
+	padding: $gap;
 
-	address {
+	address,
+	p {
 		width: 100% !important;
 		display: block;
 		box-sizing: border-box;
+		margin: 0 0 $gap;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
 	}
 }

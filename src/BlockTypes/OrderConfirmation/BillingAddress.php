@@ -24,12 +24,13 @@ class BillingAddress extends AbstractOrderConfirmationBlock {
 	 * @return string
 	 */
 	protected function render_content( $order, $permission = false, $attributes = [], $content = '' ) {
-		if ( 'full' !== $permission ) {
+		if ( 'full' !== $permission || ! $order->has_billing_address() ) {
 			return '';
 		}
-		$address = $order->get_formatted_billing_address( esc_html__( 'This order has no billing address.', 'woo-gutenberg-products-block' ) );
-		$address = $address . ( $order->get_billing_phone() ? '<br><span class="woocommerce-customer-details--phone">' . esc_html( $order->get_billing_phone() ) . '</span>' : '' );
 
-		return '<address>' . wp_kses_post( $address ) . '</address>';
+		$address = '<address>' . wp_kses_post( $order->get_formatted_billing_address() ) . '</address>';
+		$phone   = $order->get_billing_phone() ? '<p class="woocommerce-customer-details--phone">' . esc_html( $order->get_billing_phone() ) . '</p>' : '';
+
+		return $address . $phone;
 	}
 }
