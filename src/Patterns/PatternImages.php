@@ -18,14 +18,22 @@ class PatternImages {
 	 */
 	private $verticals_api_client;
 
+	/**
+	 * The patterns dictionary.
+	 *
+	 * @var array
+	 */
+	private $patterns_dictionary;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param VerticalsAPIClient $verticals_api_client The verticals API client.
+	 * @param array              $patterns_dictionary The patterns dictionary.
 	 */
-	public function __construct( VerticalsAPIClient $verticals_api_client ) {
+	public function __construct( VerticalsAPIClient $verticals_api_client, array $patterns_dictionary ) {
 		$this->verticals_api_client = $verticals_api_client;
+		$this->patterns_dictionary  = $patterns_dictionary;
 	}
 
 	/**
@@ -35,7 +43,7 @@ class PatternImages {
 	 *
 	 * @return void|WP_Error
 	 */
-	public function create_patterns_content_for_vertical( int $vertical_id ) {
+	public function create_patterns_content( int $vertical_id ) {
 		$vertical_images = $this->verticals_api_client->get_vertical_images( $vertical_id );
 		if ( is_wp_error( $vertical_images ) ) {
 			return $vertical_images; // TODO: should wrap the error in another WP_Error???
@@ -53,10 +61,10 @@ class PatternImages {
 	 *
 	 * @return array The patterns with images.
 	 */
-	public function get_patterns_with_images( array $vertical_images ): array {
-		$patterns_with_images = wp_json_file_decode( __DIR__ . '/dictionary.json', [ 'associative' => true ] );
+	private function get_patterns_with_images( array $vertical_images ): array {
+		$patterns_with_images = array();
 
-		foreach ( $patterns_with_images as $key => $pattern ) {
+		foreach ( $this->patterns_dictionary as $pattern ) {
 			if ( ! $this->pattern_has_images( $pattern ) ) {
 				continue;
 			}
@@ -66,7 +74,8 @@ class PatternImages {
 				continue;
 			}
 
-			$patterns_with_images[ $key ]['images'] = $images;
+			$pattern['images']      = $images;
+			$patterns_with_images[] = $pattern;
 		}
 
 		return $patterns_with_images;
