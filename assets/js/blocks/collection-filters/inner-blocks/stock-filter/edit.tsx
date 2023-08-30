@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import BlockTitle from '@woocommerce/editor-components/block-title';
 import type { BlockEditProps } from '@wordpress/blocks';
 import {
 	Disabled,
@@ -26,20 +25,11 @@ import './editor.scss';
 import { Attributes } from './types';
 
 const Edit = ( {
-	clientId,
 	attributes,
 	setAttributes,
 	context,
 }: BlockEditProps< Attributes > & { context: Context } ) => {
-	const {
-		className,
-		heading,
-		headingLevel,
-		showCounts,
-		showFilterButton,
-		selectType,
-		displayStyle,
-	} = attributes;
+	const { className, showCounts, selectType, displayStyle } = attributes;
 
 	const blockProps = useBlockProps( {
 		className: classnames( 'wc-block-stock-filter', className ),
@@ -122,22 +112,6 @@ const Edit = ( {
 							) }
 						/>
 					</ToggleGroupControl>
-					<ToggleControl
-						label={ __(
-							"Show 'Apply filters' button",
-							'woo-gutenberg-products-block'
-						) }
-						help={ __(
-							'Products will update when the button is clicked.',
-							'woo-gutenberg-products-block'
-						) }
-						checked={ showFilterButton }
-						onChange={ ( value ) =>
-							setAttributes( {
-								showFilterButton: value,
-							} )
-						}
-					/>
 				</PanelBody>
 			</InspectorControls>
 		);
@@ -148,16 +122,6 @@ const Edit = ( {
 			{ getInspectorControls() }
 			{
 				<div { ...blockProps }>
-					{ heading && (
-						<BlockTitle
-							className="wc-block-stock-filter__title"
-							headingLevel={ headingLevel }
-							heading={ heading }
-							onChange={ ( value: string ) =>
-								setAttributes( { heading: value } )
-							}
-						/>
-					) }
 					<Disabled>
 						<Block attributes={ attributes } isEditor={ true } />
 					</Disabled>

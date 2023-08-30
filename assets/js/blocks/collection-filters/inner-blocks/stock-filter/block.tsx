@@ -19,9 +19,6 @@ import {
 	useRef,
 } from '@wordpress/element';
 import CheckboxList from '@woocommerce/base-components/checkbox-list';
-import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
-import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
-import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import Label from '@woocommerce/base-components/filter-element-label';
 import FormTokenField from '@woocommerce/base-components/form-token-field';
 import isShallowEqual from '@wordpress/is-shallow-equal';
@@ -52,7 +49,7 @@ export const QUERY_PARAM_KEY = PREFIX_QUERY_ARG_FILTER_TYPE + 'stock_status';
  * @param {Object}  props.attributes Incoming block attributes.
  * @param {boolean} props.isEditor   Whether the component is being rendered in the editor.
  */
-const StockStatusFilterBlock = ( {
+const Block = ( {
 	attributes: blockAttributes,
 	isEditor = false,
 }: {
@@ -252,7 +249,7 @@ const StockStatusFilterBlock = ( {
 		if ( ! blockAttributes.showFilterButton ) {
 			onSubmit( checked );
 		}
-	}, [ blockAttributes.showFilterButton, checked, onSubmit ] );
+	}, [ checked, onSubmit ] );
 
 	const checkedQuery = useMemo( () => {
 		return productStockStatusQuery;
@@ -400,8 +397,6 @@ const StockStatusFilterBlock = ( {
 		return null;
 	}
 
-	const TagName =
-		`h${ blockAttributes.headingLevel }` as keyof JSX.IntrinsicElements;
 	const isLoading =
 		( ! blockAttributes.isPreview && ! STOCK_STATUS_OPTIONS.current ) ||
 		displayedOptions.length === 0;
@@ -421,21 +416,9 @@ const StockStatusFilterBlock = ( {
 		? ! isLoading && checked.length < displayedOptions.length
 		: ! isLoading && checked.length === 0;
 
-	const heading = (
-		<TagName className="wc-block-stock-filter__title">
-			{ blockAttributes.heading }
-		</TagName>
-	);
-
-	const filterHeading = isLoading ? (
-		<FilterTitlePlaceholder>{ heading }</FilterTitlePlaceholder>
-	) : (
-		heading
-	);
-
 	return (
 		<>
-			{ ! isEditor && blockAttributes.heading && filterHeading }
+			{ ! isEditor }
 			<div
 				className={ classnames(
 					'wc-block-stock-filter',
@@ -507,32 +490,8 @@ const StockStatusFilterBlock = ( {
 					/>
 				) }
 			</div>
-			{
-				<div className="wc-block-stock-filter__actions">
-					{ ( checked.length > 0 || isEditor ) && ! isLoading && (
-						<FilterResetButton
-							onClick={ () => {
-								setChecked( [] );
-								onSubmit( [] );
-							} }
-							screenReaderLabel={ __(
-								'Reset stock filter',
-								'woo-gutenberg-products-block'
-							) }
-						/>
-					) }
-					{ blockAttributes.showFilterButton && (
-						<FilterSubmitButton
-							className="wc-block-stock-filter__button"
-							isLoading={ isLoading }
-							disabled={ isLoading || isDisabled }
-							onClick={ () => onSubmit( checked ) }
-						/>
-					) }
-				</div>
-			}
 		</>
 	);
 };
 
-export default StockStatusFilterBlock;
+export default Block;

@@ -1,75 +1,31 @@
 /**
  * External dependencies
  */
-import { store, navigate } from '@woocommerce/interactivity';
+import {
+	store as interactivityStore,
+	navigate,
+} from '@woocommerce/interactivity';
 
-const getHrefWithFilters = ( { state } ) => {
-	const { minPrice, maxPrice } = state.filters;
+const getUrl = ( { state } ) => {
+	const { stockStatus } = state.filters;
 	const url = new URL( window.location.href );
 	const { searchParams } = url;
 
-	if ( minPrice > 0 ) {
-		searchParams.set( 'min_price', minPrice );
-	} else {
-		searchParams.delete( 'min_price' );
-	}
-
-	if ( maxPrice < state.filters.maxRange ) {
-		searchParams.set( 'max_price', maxPrice );
-	} else {
-		searchParams.delete( 'max_price' );
-	}
-
-	searchParams.forEach( ( _, key ) => {
-		if ( /query-[0-9]+-page/.test( key ) ) searchParams.delete( key );
-	} );
+	searchParams.set( 'filter_stock_status', stockStatus );
 
 	return url.href;
 };
 
-store( {
-	state: {
-		filters: {
-			rangeStyle: ( { state } ) => {
-				const { minPrice, maxPrice, maxRange } = state.filters;
-				return [
-					`--low: ${ ( 100 * minPrice ) / maxRange }%`,
-					`--high: ${ ( 100 * maxPrice ) / maxRange }%`,
-				].join( ';' );
+interactivityStore(
+	// @ts-expect-error: Store function isn't typed.
+	{
+		actions: {
+			filters: {
+				updateProducts: ( { state, event } ) => {
+					state.filters.stockStatus = event.target.value;
+					navigate( getUrl( { state } ) );
+				},
 			},
 		},
-	},
-	actions: {
-		filters: {
-			setMinPrice: ( { state, event } ) => {
-				const value = parseFloat( event.target.value ) || 0;
-				state.filters.minPrice = value;
-			},
-			setMaxPrice: ( { state, event } ) => {
-				const value =
-					parseFloat( event.target.value ) || state.filters.maxRange;
-				state.filters.maxPrice = value;
-			},
-			updateProducts: ( { state } ) => {
-				navigate( getHrefWithFilters( { state } ) );
-			},
-			reset: ( { state } ) => {
-				state.filters.minPrice = 0;
-				state.filters.maxPrice = state.filters.maxRange;
-				navigate( getHrefWithFilters( { state } ) );
-			},
-			updateActiveHandle: ( { state, event } ) => {
-				const { minPrice, maxPrice, maxRange } = state.filters;
-				const { target, offsetX } = event;
-				const xPos = offsetX / target.offsetWidth;
-				const minPos = minPrice / maxRange;
-				const maxPos = maxPrice / maxRange;
-
-				state.filters.isMinActive =
-					Math.abs( xPos - minPos ) < Math.abs( xPos - maxPos );
-
-				state.filters.isMaxActive = ! state.filters.isMinActive;
-			},
-		},
-	},
-} );
+	}
+);

@@ -6,27 +6,16 @@
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce", "filter", "stock" ],
 	"supports": {
-		"interactivity": true
+		"interactivity": true,
+		"html": false,
+		"multiple": false
 	},
-	"viewScript": [
-		"wc-collection-stock-filter-block-frontend"
-	],
-	"usesContext": [ "query", "queryId", "postId" ],
-	"parent": [ "woocommerce/collection-filters" ],
 	"attributes": {
 		"className": {
 			"type": "string",
 			"default": ""
 		},
-		"headingLevel": {
-			"type": "number",
-			"default": 3
-		},
 		"showCounts": {
-			"type": "boolean",
-			"default": false
-		},
-		"showFilterButton": {
 			"type": "boolean",
 			"default": false
 		},
@@ -43,6 +32,8 @@
 			"default": false
 		}
 	},
+	"usesContext": [ "query", "queryId", "postId" ],
+	"ancestor": [ "woocommerce/collection-filters" ],
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
 	"$schema": "https://schemas.wp.org/trunk/block.json"
