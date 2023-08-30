@@ -1,0 +1,1 @@
+<?php return array('dependencies' => array('wc-price-format', 'wc-settings', 'wp-i18n', 'wp-polyfill'), 'version' => '3c96a624a6c691180d9bd41ed0878bed');
