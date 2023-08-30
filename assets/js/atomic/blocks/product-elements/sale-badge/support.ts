@@ -1,14 +1,13 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * External dependencies
  */
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
+import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
 
 export const supports = {
 	html: false,
 	align: [ 'left', 'right', 'center' ],
-	spacing: {
-		margin: true,
-	},
 	...( isFeaturePluginBuild() && {
 		color: {
 			gradients: true,
@@ -33,5 +32,19 @@ export const supports = {
 			width: true,
 			__experimentalSkipSerialization: true,
 		},
+		// @todo: Improve styles support when WordPress 6.4 is released. https://make.wordpress.org/core/2023/07/17/introducing-the-block-selectors-api/
+		...( typeof __experimentalGetSpacingClassesAndStyles === 'function' && {
+			spacing: {
+				margin: true,
+				padding: true,
+			},
+		} ),
+		__experimentalSelector: '.wc-block-components-product-sale-badge',
 	} ),
+	...( typeof __experimentalGetSpacingClassesAndStyles === 'function' &&
+		! isFeaturePluginBuild() && {
+			spacing: {
+				margin: true,
+			},
+		} ),
 };
