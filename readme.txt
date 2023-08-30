@@ -1,5 +1,5 @@
 === WooCommerce Blocks ===
-Contributors: automattic, woocommerce, claudiulodro, tiagonoronha, jameskoster, ryelle, levinmedia, aljullu, mikejolley, nerrad, joshuawold, assassinateur, haszari, mppfeiffer, nielslange, opr18, ralucastn, tjcafferkey
+Contributors: automattic, woocommerce, claudiulodro, tiagonoronha, jameskoster, ryelle, levinmedia, aljullu, mikejolley, nerrad, joshuawold, assassinateur, haszari, mppfeiffer, nielslange, opr18, ralucastn, tjcafferkey, danielwrobert, patriciahillebrandt, albarin, dinhtungdu, royho, imanish003, karolmanijak, sunyatasattva, alexandrelara, gigitux, danieldudzic, samueljseay, alexflorisca, opr18, tarunvijwani, pauloarromba, saadtarhi
 Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.3
 Tested up to: 6.3
@@ -80,6 +80,12 @@ Yes you can! Join in on our [GitHub repository](https://github.com/woocommerce/w
 Release and roadmap notes available on the [WooCommerce Developers Blog](https://woocommerce.wordpress.com/2019/01/15/woocommerce-blocks-1-3-0-release-notes/)
 
 == Changelog ==
+
+= 10.9.3 - 2023-08-24 =
+
+#### Bug Fixes
+
+- Add to Cart: fix the problem that variable products couldn't be added to cart
 
 = 10.9.2 - 2023-08-21 =
 
@@ -221,6 +227,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Single Product Template > Ensure extensions can't trigger fatal errors on customized single product templates without any post content blocks. ([10128](https://github.com/woocommerce/woocommerce-blocks/pull/10128))
 - Fix image overlapping in mobile in the Editor for the `Discount banner with image`. ([10108](https://github.com/woocommerce/woocommerce-blocks/pull/10108))
 - Fix: Return null or object for ImageAttachmentSchema response. ([9962](https://github.com/woocommerce/woocommerce-blocks/pull/9962))
+
+= 10.6.6. - 2023-08-22 =
+
+#### Bug Fixes
+
+- Fix: Made migration migrate block templates in the current theme. (https://github.com/woocommerce/woocommerce-blocks/pull/10641)
+- Fixed a bug causing  Cart and Checkout Blocks to be used by default instead of shortcode versions on WC updates. (https://github.com/woocommerce/woocommerce-blocks/pull/10608)
 
 = 10.6.5 - 2023-08-09 =
 

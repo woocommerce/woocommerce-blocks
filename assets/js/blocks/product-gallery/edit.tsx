@@ -5,6 +5,7 @@ import {
 	InnerBlocks,
 	InspectorControls,
 	useBlockProps,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 import { BlockEditProps, InnerBlockTemplate } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
@@ -18,11 +19,10 @@ import {
 	getInnerBlocksLockAttributes,
 } from './utils';
 import { ProductGalleryThumbnailsBlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
+import { ProductGalleryPagerBlockSettings } from './inner-blocks/product-gallery-pager/settings';
 import { ProductGalleryBlockSettings } from './block-settings/index';
-import type {
-	ProductGalleryThumbnailsBlockAttributes,
-	ProductGalleryBlockAttributes,
-} from './types';
+import type { ProductGalleryAttributes } from './types';
+import { ProductGalleryNextPreviousBlockSettings } from './inner-blocks/product-gallery-large-image-next-previous/settings';
 
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
@@ -39,15 +39,17 @@ const TEMPLATE: InnerBlockTemplate[] = [
 			],
 		],
 	],
+	[
+		'woocommerce/product-gallery-pager',
+		getInnerBlocksLockAttributes( 'lock' ),
+	],
 ];
 
 export const Edit = ( {
 	clientId,
 	attributes,
 	setAttributes,
-}: BlockEditProps<
-	ProductGalleryThumbnailsBlockAttributes & ProductGalleryBlockAttributes
-> ) => {
+}: BlockEditProps< ProductGalleryAttributes > ) => {
 	const blockProps = useBlockProps();
 
 	// Update the Group block type when the thumbnailsPosition attribute changes.
@@ -65,6 +67,12 @@ export const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<ProductGalleryPagerBlockSettings
+					context={ {
+						productGalleryClientId: clientId,
+						pagerDisplayMode: attributes.pagerDisplayMode,
+					} }
+				/>
 				<ProductGalleryThumbnailsBlockSettings
 					attributes={ attributes }
 					setAttributes={ setAttributes }
@@ -82,13 +90,29 @@ export const Edit = ( {
 					setAttributes={ setAttributes }
 				/>
 			</InspectorControls>
+			<InspectorControls>
+				<ProductGalleryNextPreviousBlockSettings
+					context={ {
+						...attributes,
+						productGalleryClientId: clientId,
+					} }
+				/>
+			</InspectorControls>
 			<InnerBlocks
 				allowedBlocks={ [
 					'woocommerce/product-gallery-large-image',
+					'woocommerce/product-gallery-pager',
 					'woocommerce/product-gallery-thumbnails',
 				] }
+				templateLock={ false }
 				template={ TEMPLATE }
 			/>
 		</div>
 	);
+};
+
+export const Save = () => {
+	const blockProps = useBlockProps.save();
+	const innerBlocksProps = useInnerBlocksProps.save( blockProps );
+	return <div { ...innerBlocksProps } />;
 };
