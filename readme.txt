@@ -100,7 +100,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Store Breadcrumbs block: Fix icon color when block is selected in List View. ([10652](https://github.com/woocommerce/woocommerce-blocks/pull/10652))
 - Fix "On sale" badge class. ([10634](https://github.com/woocommerce/woocommerce-blocks/pull/10634))
 - Ensure the event dispatched when rendering the empty cart block is done only when it actually renders. ([10619](https://github.com/woocommerce/woocommerce-blocks/pull/10619))
-- Fixed template endpoint editing to support WP redirection. ([10745](https://github.com/woocommerce/woocommerce-blocks/pull/10745))
 
 #### Various
 
