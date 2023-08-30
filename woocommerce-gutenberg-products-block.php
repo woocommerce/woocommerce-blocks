@@ -285,7 +285,3 @@ function woocommerce_blocks_plugin_outdated_notice() {
 }
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
-
-$client =new \Automattic\WooCommerce\Blocks\Verticals\Client();
-$prompt = new \Automattic\WooCommerce\Blocks\Patterns\VerticalsSelector($client);
-var_dump($prompt->get_vertical_id());
