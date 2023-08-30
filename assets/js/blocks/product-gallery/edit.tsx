@@ -39,10 +39,6 @@ const TEMPLATE: InnerBlockTemplate[] = [
 			],
 		],
 	],
-	[
-		'woocommerce/product-gallery-pager',
-		getInnerBlocksLockAttributes( 'lock' ),
-	],
 ];
 
 export const Edit = ( {
@@ -101,7 +97,6 @@ export const Edit = ( {
 			<InnerBlocks
 				allowedBlocks={ [
 					'woocommerce/product-gallery-large-image',
-					'woocommerce/product-gallery-pager',
 					'woocommerce/product-gallery-thumbnails',
 				] }
 				templateLock={ false }
