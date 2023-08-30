@@ -26,7 +26,7 @@ const blockData = {
 	// This margin is applied via Block Styles to the product sale badge. It's necessary to take it into account when calculating the position of the badge. https://github.com/woocommerce/woocommerce-blocks/blob/445b9431ccba460f9badd41d52ed991958524e33/assets/js/blocks/product-gallery/edit.tsx/#L44-L53
 	margin: 4,
 	slug: 'single-product',
-	productPage: '/product/logo-collection/',
+	productPage: '/product/hoodie/',
 	productPageNotOnSale: '/product/album/',
 };
 
