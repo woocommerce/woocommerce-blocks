@@ -5,7 +5,3 @@ export { default as withProduct } from './with-product';
 export { default as withProductVariations } from './with-product-variations';
 export { default as withSearchedProducts } from './with-searched-products';
 export { default as withTransformSingleSelectToMultipleSelect } from './with-transform-single-select-to-multiple-select';
-export {
-	SelectedOption,
-	WithMaybeSelectedOption,
-} from './with-transform-single-select-to-multiple-select';

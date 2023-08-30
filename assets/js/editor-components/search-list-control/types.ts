@@ -1,16 +1,14 @@
 /**
  * External dependencies
  */
-import type { InputHTMLAttributes, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Require } from '@woocommerce/types';
 
-interface ItemProps< T extends object = object > {
+interface ItemProps {
 	// Depth, non-zero if the list is hierarchical.
 	depth?: number;
 	// Callback for selecting the item.
-	onSelect: (
-		item: SearchListItem< T > | SearchListItem< T >[]
-	) => () => void;
+	onSelect: ( item: SearchListItem | SearchListItem[] ) => () => void;
 	// Search string, used to highlight the substring in the item name.
 	search: string;
 	useExpandedPanelId: [
@@ -19,15 +17,15 @@ interface ItemProps< T extends object = object > {
 	];
 }
 
-interface SearchListProps< T extends object = object > {
+interface SearchListProps {
 	//Restrict selections to one item.
 	isSingle: boolean;
 	// A complete list of item objects, each with id, name properties. This is displayed as a clickable/keyboard-able list, and possibly filtered by the search term (searches name).
-	list: SearchListItem< T >[];
+	list: SearchListItem[];
 	// Callback to render each item in the selection list, allows any custom object-type rendering.
-	renderItem?: ( args: renderItemArgs< T > ) => JSX.Element;
+	renderItem?: ( args: renderItemArgs ) => JSX.Element;
 	// The list of currently selected items.
-	selected: SearchListItem< T >[];
+	selected: SearchListItem[];
 }
 
 export interface ListItemsProps
@@ -36,22 +34,21 @@ export interface ListItemsProps
 	instanceId: string | number;
 }
 
-export type SearchListItem< T extends object = object > = {
+export type SearchListItem = {
 	breadcrumbs: string[];
-	children?: SearchListItem< T >[];
-	count?: number;
-	details?: T;
+	children?: SearchListItem[];
+	count: number;
 	id: string | number;
 	name: string;
 	parent: number;
 	value: string;
 };
 
-export interface SearchListItemsContainerProps< T extends object = object >
+export interface SearchListItemsContainerProps
 	extends SearchListControlProps,
 		ItemProps {
 	instanceId: string | number;
-	filteredList: SearchListItem< T >[];
+	filteredList: SearchListItem[];
 	messages: SearchListMessages;
 }
 
@@ -70,30 +67,23 @@ export interface SearchListMessages {
 	updated: string;
 }
 
-export interface renderItemArgs< T extends object = object >
-	extends ItemProps,
-		Partial<
-			Omit<
-				InputHTMLAttributes< HTMLInputElement >,
-				'onChange' | 'onSelect'
-			>
-		> {
+export interface renderItemArgs extends ItemProps {
 	// Additional CSS classes.
-	className?: string;
-	// Unique id of the parent control.
-	controlId: string | number;
-	// Label to display in the count bubble. Takes preference over `item.count`.
-	countLabel?: ReactNode;
-	// Whether the item is disabled.
-	disabled?: boolean;
+	className?: string | undefined;
+	// Whether the item is disable.
+	disabled?: boolean | undefined;
 	// Current item to display.
-	item: SearchListItem< T >;
+	item: SearchListItem;
 	// Whether this item is selected.
 	isSelected: boolean;
 	// Whether this should only display a single item (controls radio vs checkbox icon).
 	isSingle: boolean;
 	// The list of currently selected items.
-	selected: SearchListItem< T >[];
+	selected: SearchListItem[];
+	// Unique id of the parent control.
+	controlId: string | number;
+	// Label to display in the count bubble. Takes preference over `item.count`.
+	countLabel?: ReactNode;
 	/**
 	 * Name of the inputs. Used to group input controls together. See:
 	 * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-name
@@ -104,7 +94,7 @@ export interface renderItemArgs< T extends object = object >
 	ariaLabel?: string;
 }
 
-export interface SearchListControlProps< T extends object = object > {
+export interface SearchListControlProps {
 	// Additional CSS classes.
 	className?: string;
 	// Whether it should be displayed in a compact way, so it occupies less space.
@@ -116,19 +106,17 @@ export interface SearchListControlProps< T extends object = object > {
 	//Restrict selections to one item.
 	isSingle: boolean;
 	// A complete list of item objects, each with id, name properties. This is displayed as a clickable/keyboard-able list, and possibly filtered by the search term (searches name).
-	list: SearchListItem< T >[];
+	list: SearchListItem[];
 	// Messages displayed or read to the user. Configure these to reflect your object type.
 	messages?: Partial< SearchListMessages >;
 	// Callback fired when selected items change, whether added, cleared, or removed. Passed an array of item objects (as passed in via props.list).
-	onChange: ( search: SearchListItem< T >[] ) => void;
+	onChange: ( search: SearchListItem[] ) => void;
 	// Callback fired when the search field is used.
 	onSearch?: ( ( search: string ) => void ) | undefined;
 	// Callback to render each item in the selection list, allows any custom object-type rendering.
-	renderItem?:
-		| ( ( args: renderItemArgs< T > ) => JSX.Element | null )
-		| undefined;
+	renderItem?: ( args: renderItemArgs ) => JSX.Element;
 	// The list of currently selected items.
-	selected: SearchListItem< T >[];
+	selected: SearchListItem[];
 	// Whether to show a text field or a token field as search
 	// Defaults to `'text'`
 	type?: 'text' | 'token';

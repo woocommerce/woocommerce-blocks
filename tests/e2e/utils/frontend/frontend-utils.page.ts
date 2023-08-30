@@ -27,7 +27,6 @@ export class FrontendUtils {
 	}
 
 	async addToCart( itemName = '' ) {
-		await this.page.waitForLoadState( 'domcontentloaded' );
 		if ( itemName !== '' ) {
 			await this.page
 				.getByLabel( `Add “${ itemName }” to your cart` )

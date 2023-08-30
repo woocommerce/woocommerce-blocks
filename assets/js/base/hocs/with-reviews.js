@@ -9,7 +9,7 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
  * Internal dependencies
  */
 import { getReviews } from '../../blocks/reviews/utils';
-import { formatError } from '../utils/errors';
+import { formatError } from '../utils/errors.js';
 
 /**
  * HOC that queries reviews for a component.

@@ -5,29 +5,20 @@ import { useEffect, useState, useCallback, useRef } from '@wordpress/element';
 import { blocksConfig } from '@woocommerce/block-settings';
 import { getProducts } from '@woocommerce/editor-components/utils';
 import { useDebouncedCallback } from 'use-debounce';
-import type {
-	ProductResponseItem,
-	WithInjectedSearchedProducts,
-} from '@woocommerce/types';
+import type { ProductResponseItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
-import { formatError } from '../base/utils/errors';
-
-interface WithSearchedProductProps {
-	selected: number[];
-}
+import { formatError } from '../base/utils/errors.js';
 
 /**
  * A higher order component that enhances the provided component with products from a search query.
  */
-const withSearchedProducts = <
-	T extends Record< string, unknown > & WithSearchedProductProps
->(
-	OriginalComponent: React.ComponentType< T & WithInjectedSearchedProducts >
+const withSearchedProducts = (
+	OriginalComponent: React.FunctionComponent< Record< string, unknown > >
 ) => {
-	return ( { selected, ...props }: T ): JSX.Element => {
+	return ( { selected, ...props }: { selected: number[] } ): JSX.Element => {
 		const [ isLoading, setIsLoading ] = useState( true );
 		const [ error, setError ] = useState< {
 			message: string;
@@ -80,7 +71,7 @@ const withSearchedProducts = <
 
 		return (
 			<OriginalComponent
-				{ ...( props as T ) }
+				{ ...props }
 				selected={ selected }
 				error={ error }
 				products={ productsList }

@@ -90,5 +90,4 @@ export interface ProductResponseItem {
 		maximum: number;
 		multiple_of: number;
 	};
-	slug: string;
 }

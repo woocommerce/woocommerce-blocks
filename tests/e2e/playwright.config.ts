@@ -32,8 +32,6 @@ const config: ExtendedPlaywrightTestConfig = {
 		? [ [ 'github' ], [ 'list' ], [ 'html' ] ]
 		: 'list',
 	maxFailures: E2E_MAX_FAILURES ? Number( E2E_MAX_FAILURES ) : 0,
-	snapshotPathTemplate:
-		'{testDir}/{testFileDir}/__screenshots__/{arg}{testName}{ext}',
 	use: {
 		baseURL: BASE_URL,
 		screenshot: 'only-on-failure',
@@ -46,13 +44,21 @@ const config: ExtendedPlaywrightTestConfig = {
 	projects: [
 		{
 			name: 'blockThemeConfiguration',
-			testDir: '.',
 			testMatch: /block-theme.setup.ts/,
 		},
 		{
 			name: 'blockTheme',
 			testMatch: /.*.block_theme.spec.ts/,
 			dependencies: [ 'blockThemeConfiguration' ],
+		},
+		{
+			name: 'classicThemeConfiguration',
+			testMatch: /classic-theme.setup.ts/,
+		},
+		{
+			name: 'classicTheme',
+			testMatch: /.*.classic_theme.spec.ts/,
+			dependencies: [ 'classicThemeConfiguration' ],
 		},
 	],
 };

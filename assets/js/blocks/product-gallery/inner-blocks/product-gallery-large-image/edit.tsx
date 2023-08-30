@@ -2,23 +2,8 @@
  * External dependencies
  */
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
-import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { memo } from '@wordpress/element';
-
-const getInnerBlocksTemplate = () => {
-	return [ [ 'woocommerce/product-gallery-large-image-next-previous' ] ];
-};
-
-const Placeholder = memo( () => {
-	return (
-		<div className="wc-block-editor-product-gallery-large-image">
-			<img
-				src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
-				alt="Placeholder"
-			/>
-		</div>
-	);
-} );
+import { useBlockProps } from '@wordpress/block-editor';
+import { Disabled } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -26,23 +11,29 @@ const Placeholder = memo( () => {
 import './editor.scss';
 
 export const Edit = (): JSX.Element => {
-	const innerBlocksProps = useInnerBlocksProps(
-		{
-			className: 'wc-block-product-gallery-large-image__inner-blocks',
-		},
-		{
-			template: getInnerBlocksTemplate(),
-			templateInsertUpdatesSelection: true,
-		}
-	);
 	const blockProps = useBlockProps( {
 		className: 'wc-block-editor-product-gallery_large-image',
 	} );
+	const Placeholder = () => {
+		return (
+			<div className="wc-block-editor-product-gallery-large-image">
+				<img
+					src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
+					alt="Placeholder"
+				/>
+			</div>
+		);
+	};
 
 	return (
 		<div { ...blockProps }>
-			<Placeholder />
-			<div { ...innerBlocksProps } />
+			<Disabled>
+				<Placeholder />
+			</Disabled>
 		</div>
 	);
+};
+
+export const Save = (): JSX.Element => {
+	return <div { ...useBlockProps.save() }></div>;
 };

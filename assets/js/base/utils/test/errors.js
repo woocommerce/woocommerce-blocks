@@ -4,9 +4,6 @@
 import { formatError } from '../errors';
 
 describe( 'formatError', () => {
-	const mockResponseBody = JSON.stringify( { message: 'Lorem Ipsum' } );
-	const mockMalformedJson = '{ "message": "Lorem Ipsum"';
-
 	test( 'should format general errors', async () => {
 		const error = await formatError( {
 			message: 'Lorem Ipsum',
@@ -20,9 +17,9 @@ describe( 'formatError', () => {
 	} );
 
 	test( 'should format API errors', async () => {
-		const mockResponse = new Response( mockResponseBody, { status: 400 } );
-
-		const error = await formatError( mockResponse );
+		const error = await formatError( {
+			json: () => Promise.resolve( { message: 'Lorem Ipsum' } ),
+		} );
 		const expectedError = {
 			message: 'Lorem Ipsum',
 			type: 'api',
@@ -32,12 +29,11 @@ describe( 'formatError', () => {
 	} );
 
 	test( 'should format JSON parse errors', async () => {
-		const mockResponse = new Response( mockMalformedJson, { status: 400 } );
-
-		const error = await formatError( mockResponse );
+		const error = await formatError( {
+			json: () => Promise.reject( { message: 'Lorem Ipsum' } ),
+		} );
 		const expectedError = {
-			message:
-				'invalid json response body at  reason: Unexpected end of JSON input',
+			message: 'Lorem Ipsum',
 			type: 'general',
 		};
 

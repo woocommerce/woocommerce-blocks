@@ -56,7 +56,6 @@ const ProductAttributeTermControl = ( {
 
 	const renderItem = ( args: renderItemArgs ) => {
 		const { item, search, depth = 0 } = args;
-		const count = item.count || 0;
 		const classes = [
 			'woocommerce-product-attributes__item',
 			'woocommerce-search-list__item',
@@ -80,21 +79,21 @@ const ProductAttributeTermControl = ( {
 						_n(
 							'%d term',
 							'%d terms',
-							count,
+							item.count,
 							'woo-gutenberg-products-block'
 						),
-						count
+						item.count
 					) }
 					aria-label={ sprintf(
 						/* translators: %1$s is the item name, %2$d is the count of terms for the item. */
 						_n(
 							'%1$s, has %2$d term',
 							'%1$s, has %2$d terms',
-							count,
+							item.count,
 							'woo-gutenberg-products-block'
 						),
 						item.name,
-						count
+						item.count
 					) }
 				/>
 			);
@@ -112,21 +111,21 @@ const ProductAttributeTermControl = ( {
 					_n(
 						'%d product',
 						'%d products',
-						count,
+						item.count,
 						'woo-gutenberg-products-block'
 					),
-					count
+					item.count
 				) }
 				aria-label={ sprintf(
 					/* translators: %1$s is the attribute name, %2$d is the count of products for that attribute. */
 					_n(
 						'%1$s, has %2$d product',
 						'%1$s, has %2$d products',
-						count,
+						item.count,
 						'woo-gutenberg-products-block'
 					),
 					itemName,
-					count
+					item.count
 				) }
 			/>
 		);
