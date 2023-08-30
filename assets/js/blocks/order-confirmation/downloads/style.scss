@@ -1,25 +1,46 @@
 .wc-block-order-confirmation-downloads {
-	border: none !important;
+	margin-top: $gap-large;
+	margin-bottom: $gap-large * 2;
+	border: 0 !important; // We want styles to appear on table, not on block.
 
 	table {
-		border: 1px solid currentColor;
 		width: 100%;
-		border-collapse: collapse;
+		border: 1px solid $universal-border-light;
+		border-spacing: 0;
+		border-radius: 2px;
 		th,
 		td {
-			border: 1px solid currentColor;
+			border: 1px solid $universal-border-light;
 			border-right-width: 0;
 			border-left-width: 0;
+			border-top-width: 0;
 			padding: $gap;
 			margin: 0;
-			text-align: left;
+			text-align: center;
 			font-weight: inherit;
+		}
+		tr {
+			> th:first-child,
+			> td:first-child {
+				text-align: left;
+			}
+			> th:last-child,
+			> td:last-child {
+				text-align: right;
+			}
 		}
 		thead {
 			font-weight: bold;
 		}
+		tbody tr:last-child {
+			td,
+			th {
+				border-bottom-width: 0;
+			}
+		}
 	}
-	table[style*="border-width"] {
+	table[style*="border-width"],
+	table[style*="border-color"] {
 		> *,
 		tr,
 		th,
@@ -29,6 +50,7 @@
 			border-color: inherit;
 			border-right-width: 0;
 			border-left-width: 0;
+			border-top-width: 0;
 		}
 	}
 }

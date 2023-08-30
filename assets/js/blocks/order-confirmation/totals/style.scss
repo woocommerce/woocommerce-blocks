@@ -1,7 +1,8 @@
 .wc-block-order-confirmation-totals {
 	margin-top: $gap-large;
-	margin-bottom: $gap-large;
+	margin-bottom: $gap-large * 2;
 	border: 0 !important; // We want styles to appear on table, not on block.
+
 	table {
 		width: 100%;
 		border: 1px solid $universal-border-light;
@@ -18,7 +19,8 @@
 			text-align: left;
 			font-weight: inherit;
 		}
-		thead {
+		thead,
+		tfoot th {
 			font-weight: bold;
 		}
 		tfoot tr:last-child {

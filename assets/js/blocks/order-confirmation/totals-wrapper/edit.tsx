@@ -38,7 +38,7 @@ const Edit = ( {
 						},
 					],
 					[
-						'woocommerce/order-confirmation-downloads',
+						'woocommerce/order-confirmation-totals',
 						{
 							lock: {
 								remove: true,

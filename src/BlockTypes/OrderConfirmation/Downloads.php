@@ -33,7 +33,7 @@ class Downloads extends AbstractOrderConfirmationBlock {
 			return $this->render_content_fallback();
 		}
 
-		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, [ 'border_color', 'border_radius', 'border_width', 'background_color', 'text_color' ] );
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, [ 'border_color', 'border_radius', 'border_width', 'border_style', 'background_color', 'text_color' ] );
 
 		return '
 			<table cellspacing="0" class="wc-block-order-confirmation-downloads__table ' . esc_attr( $classes_and_styles['classes'] ) . '" style="' . esc_attr( $classes_and_styles['styles'] ) . '">
@@ -47,6 +47,38 @@ class Downloads extends AbstractOrderConfirmationBlock {
 				</tbody>
 			</table>
 		';
+	}
+
+	/**
+	 * Enqueue frontend assets for this block, just in time for rendering.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 * @return string
+	 */
+	protected function get_inline_styles( array $attributes ) {
+		$link_classes_and_styles       = StyleAttributesUtils::get_link_color_class_and_style( $attributes );
+		$link_hover_classes_and_styles = StyleAttributesUtils::get_link_hover_color_class_and_style( $attributes );
+		$border_classes_and_styles     = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, [ 'border_color', 'border_radius', 'border_width', 'border_style' ] );
+
+		return '
+			.wc-block-order-confirmation-downloads__table a {' . $link_classes_and_styles['style'] . '}
+			.wc-block-order-confirmation-downloads__table a:hover, .wc-block-order-confirmation-downloads__table a:focus {' . $link_hover_classes_and_styles['style'] . '}
+			.wc-block-order-confirmation-downloads__table {' . $border_classes_and_styles['styles'] . '}
+			.wc-block-order-confirmation-downloads__table th, .wc-block-order-confirmation-downloads__table td {' . $border_classes_and_styles['styles'] . '}
+		';
+	}
+
+	/**
+	 * Enqueue frontend assets for this block, just in time for rendering.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 */
+	protected function enqueue_assets( array $attributes ) {
+		parent::enqueue_assets( $attributes );
+
+		$styles = $this->get_inline_styles( $attributes );
+
+		wp_add_inline_style( 'wc-blocks-style', $styles );
 	}
 
 	/**

@@ -93,6 +93,9 @@ const blocks = {
 	'order-confirmation-summary': {
 		customDir: 'order-confirmation/summary',
 	},
+	'order-confirmation-totals-wrapper': {
+		customDir: 'order-confirmation/totals-wrapper',
+	},
 	'order-confirmation-totals': {
 		customDir: 'order-confirmation/totals',
 	},
