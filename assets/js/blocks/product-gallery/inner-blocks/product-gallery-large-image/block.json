@@ -12,8 +12,5 @@
 		"interactivity": true
 	},
     "textdomain": "woo-gutenberg-products-block",
-	"ancestor": [ "woocommerce/product-gallery" ],
-	"viewScript": [
-		"wc-product-gallery-large-image"
-	]
+	"ancestor": [ "woocommerce/product-gallery" ]
 }
