@@ -51,8 +51,6 @@ import {
 import * as blockifiedSingleProduct from './single-product';
 import * as blockifiedProductSearchResults from './product-search-results';
 import * as blockifiedOrderConfirmation from './order-confirmation';
-import * as blockifiedCheckout from './checkout';
-import * as blockifiedCart from './cart';
 
 import type { BlockifiedTemplateConfig } from './types';
 
@@ -74,8 +72,6 @@ const conversionConfig: { [ key: string ]: BlockifiedTemplateConfig } = {
 	[ TYPES.singleProduct ]: blockifiedSingleProduct,
 	[ TYPES.productSearchResults ]: blockifiedProductSearchResults,
 	[ TYPES.orderConfirmation ]: blockifiedOrderConfirmation,
-	[ TYPES.cart ]: blockifiedCart,
-	[ TYPES.checkout ]: blockifiedCheckout,
 	fallback: blockifiedFallbackConfig,
 };
 
@@ -89,12 +85,8 @@ const pickBlockClientIds = ( blocks: Array< BlockInstance > ) =>
 	}, [] );
 
 const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
-	const {
-		getButtonLabel,
-		onClickCallback,
-		getBlockifiedTemplate,
-		getAdditionalActions,
-	} = blockifyConfig;
+	const { getButtonLabel, onClickCallback, getBlockifiedTemplate } =
+		blockifyConfig;
 
 	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false );
 	const { replaceBlock, selectBlock, replaceBlocks } =
@@ -195,17 +187,6 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 					</Popover>
 				) }
 			</Button>
-			{ getAdditionalActions &&
-				getAdditionalActions().map( ( action ) => (
-					<Button
-						key={ action.label }
-						variant="secondary"
-						href={ action.url }
-						target="_parent"
-					>
-						{ action.label }
-					</Button>
-				) ) }
 		</div>
 	);
 };

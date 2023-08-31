@@ -4,10 +4,7 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
-use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
-use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
-use WC_Shortcode_Cart;
 use WC_Shortcode_Checkout;
 use WC_Frontend_Scripts;
 
@@ -94,14 +91,6 @@ class ClassicTemplate extends AbstractDynamicBlock {
 			return $this->render_order_received();
 		}
 
-		if ( CartTemplate::get_slug() === $attributes['template'] || 'cart' === $attributes['template'] ) {
-			return $this->render_cart();
-		}
-
-		if ( CheckoutTemplate::get_slug() === $attributes['template'] || 'checkout' === $attributes['template'] ) {
-			return $this->render_checkout();
-		}
-
 		if ( is_product() ) {
 			return $this->render_single_product();
 		}
@@ -158,52 +147,6 @@ class ClassicTemplate extends AbstractDynamicBlock {
 
 		WC_Shortcode_Checkout::output( array() );
 
-		echo '</div>';
-
-		return ob_get_clean();
-	}
-
-	/**
-	 * Render method for rendering the cart shortcode.
-	 *
-	 * @return string Rendered block type output.
-	 */
-	protected function render_cart() {
-		global $post;
-
-		// If we're viewing the page and it has content, render that instead to maintain backwards compatibility.
-		if ( $post && $post->post_content ) {
-			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-			return apply_filters( 'the_content', $post->post_content );
-		}
-
-		ob_start();
-
-		echo '<div class="wp-block-group">';
-		WC_Shortcode_Cart::output( array() );
-		echo '</div>';
-
-		return ob_get_clean();
-	}
-
-	/**
-	 * Render method for rendering the checkout shortcode.
-	 *
-	 * @return string Rendered block type output.
-	 */
-	protected function render_checkout() {
-		global $post;
-
-		// If we're viewing the page and it has content, render that instead to maintain backwards compatibility.
-		if ( $post && $post->post_content ) {
-			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-			return apply_filters( 'the_content', $post->post_content );
-		}
-
-		ob_start();
-
-		echo '<div class="wp-block-group">';
-		WC_Shortcode_Checkout::output( array() );
 		echo '</div>';
 
 		return ob_get_clean();

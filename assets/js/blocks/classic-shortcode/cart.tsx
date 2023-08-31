@@ -3,8 +3,6 @@
  */
 import { createBlock, type BlockInstance } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
-import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
-import { ADMIN_URL } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -20,9 +18,9 @@ const getButtonLabel = () =>
 
 const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 	[
-		createBlock( 'woocommerce/checkout', {
+		createBlock( 'woocommerce/cart', {
 			...inheritedAttributes,
-			className: 'wc-block-checkout',
+			className: 'wc-block-cart',
 		} ),
 	].filter( Boolean ) as BlockInstance[];
 
@@ -51,31 +49,27 @@ const onClickCallback = ( {
 	}
 };
 
+/**
+ * Title shown within the block itself.
+ */
 const getTitle = () => {
-	return __( 'Checkout Page Placeholder', 'woo-gutenberg-products-block' );
+	return __( 'Cart Shortcode', 'woo-gutenberg-products-block' );
 };
 
+/**
+ * Description shown within the block itself.
+ */
 const getDescription = () => {
 	return __(
-		'This block will render the contents of the classic checkout page. You can transform it into blocks to control the checkout page appearance here instead.',
+		'This block will render the classic cart shortcode. You can optionally transform it into blocks for more control over the cart experience.',
 		'woo-gutenberg-products-block'
 	);
-};
-
-const getAdditionalActions = () => {
-	return [
-		{
-			label: __( 'Edit page content', 'woo-gutenberg-products-block' ),
-			url: `${ ADMIN_URL }post.php?post=${ CHECKOUT_PAGE_ID }&action=edit`,
-		},
-	];
 };
 
 const blockifyConfig = {
 	getButtonLabel,
 	onClickCallback,
 	getBlockifiedTemplate,
-	getAdditionalActions,
 };
 
 export { blockifyConfig, isConversionPossible, getDescription, getTitle };

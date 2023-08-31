@@ -176,6 +176,7 @@ final class BlockTypesController {
 			'Breadcrumbs',
 			'CatalogSorting',
 			'ClassicTemplate',
+			'ClassicShortcode',
 			'CustomerAccount',
 			'FeaturedCategory',
 			'FeaturedProduct',
@@ -263,7 +264,6 @@ final class BlockTypesController {
 					'ClassicTemplate',
 					'ProductResultsCount',
 					'ProductDetails',
-					'StoreNotices',
 				]
 			);
 		}

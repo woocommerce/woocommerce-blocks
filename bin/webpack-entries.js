@@ -38,6 +38,7 @@ const blocks = {
 	'legacy-template': {
 		customDir: 'classic-template',
 	},
+	'classic-shortcode': {},
 	'mini-cart': {},
 	'mini-cart-contents': {
 		customDir: 'mini-cart/mini-cart-contents',
