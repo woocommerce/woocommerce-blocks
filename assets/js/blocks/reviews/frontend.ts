@@ -6,7 +6,7 @@ import { renderFrontend } from '@woocommerce/base-utils';
 /**
  * Internal dependencies
  */
-import FrontendContainerBlock from './frontend-container-block.jsx';
+import FrontendContainerBlock from './frontend-container-block';
 
 const selector = `
 	.wp-block-woocommerce-all-reviews,
