@@ -89,8 +89,12 @@ const pickBlockClientIds = ( blocks: Array< BlockInstance > ) =>
 	}, [] );
 
 const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
-	const { getButtonLabel, onClickCallback, getBlockifiedTemplate } =
-		blockifyConfig;
+	const {
+		getButtonLabel,
+		onClickCallback,
+		getBlockifiedTemplate,
+		getAdditionalActions,
+	} = blockifyConfig;
 
 	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false );
 	const { replaceBlock, selectBlock, replaceBlocks } =
@@ -107,7 +111,7 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 	return (
 		<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
 			<Button
-				isPrimary
+				variant="primary"
 				onClick={ () => {
 					onClickCallback( {
 						clientId,
@@ -191,6 +195,17 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 					</Popover>
 				) }
 			</Button>
+			{ getAdditionalActions &&
+				getAdditionalActions().map( ( action ) => (
+					<Button
+						key={ action.label }
+						variant="secondary"
+						href={ action.url }
+						target="_parent"
+					>
+						{ action.label }
+					</Button>
+				) ) }
 		</div>
 	);
 };
@@ -330,10 +345,16 @@ const registerClassicTemplateBlock = ( {
 		category: 'woocommerce',
 		apiVersion: 2,
 		keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-		description: __(
-			'Renders classic WooCommerce PHP templates.',
-			'woo-gutenberg-products-block'
-		),
+		description:
+			template &&
+			TEMPLATES[ template ] &&
+			TEMPLATES[ template ].description
+				? TEMPLATES[ template ].description
+				: __(
+						'Renders classic WooCommerce PHP templates.',
+						'woo-gutenberg-products-block'
+				  ),
+
 		supports: {
 			align: [ 'wide', 'full' ],
 			html: false,

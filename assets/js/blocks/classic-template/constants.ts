@@ -88,12 +88,25 @@ export const TEMPLATES: TemplateDetails = {
 	},
 	'page-cart': {
 		type: TYPES.cart,
-		title: __( 'Cart Block', 'woo-gutenberg-products-block' ),
+		// Title shows up in the list view in the site editor.
+		title: __( 'Cart Page Placeholder', 'woo-gutenberg-products-block' ),
+		// Description in the site editor.
+		description: __(
+			'Renders classic cart page content inside the template.',
+			'woo-gutenberg-products-block'
+		),
 		placeholder: PLACEHOLDERS.cart,
 	},
 	'page-checkout': {
 		type: TYPES.checkout,
-		title: __( 'Checkout Block', 'woo-gutenberg-products-block' ),
+		title: __(
+			'Checkout Page Placeholder',
+			'woo-gutenberg-products-block'
+		),
+		description: __(
+			'Renders classic checkout page content inside the template.',
+			'woo-gutenberg-products-block'
+		),
 		placeholder: PLACEHOLDERS.checkout,
 	},
 	'checkout-header': {

@@ -6,6 +6,7 @@ import { type BlockInstance } from '@wordpress/blocks';
 type TemplateDetail = {
 	type: string;
 	title: string;
+	description?: string | undefined;
 	placeholder: string;
 };
 

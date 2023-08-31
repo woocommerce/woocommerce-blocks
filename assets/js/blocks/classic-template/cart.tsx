@@ -3,6 +3,8 @@
  */
 import { createBlock, type BlockInstance } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
+import { CART_PAGE_ID } from '@woocommerce/block-settings';
+import { ADMIN_URL } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -49,21 +51,37 @@ const onClickCallback = ( {
 	}
 };
 
+/**
+ * Title shown within the block itself.
+ */
 const getTitle = () => {
-	return __( 'Classic Cart Page', 'woo-gutenberg-products-block' );
+	return __( 'Cart Page Placeholder', 'woo-gutenberg-products-block' );
 };
 
+/**
+ * Description shown within the block itself.
+ */
 const getDescription = () => {
 	return __(
-		'This block represents the classic cart page used to display the cart. The actual rendered content may appear different from this placeholder.',
+		'This block will render the contents of the classic cart page. You can transform it into blocks to control the cart page appearance here instead.',
 		'woo-gutenberg-products-block'
 	);
+};
+
+const getAdditionalActions = () => {
+	return [
+		{
+			label: __( 'Edit page content', 'woo-gutenberg-products-block' ),
+			url: `${ ADMIN_URL }post.php?post=${ CART_PAGE_ID }&action=edit`,
+		},
+	];
 };
 
 const blockifyConfig = {
 	getButtonLabel,
 	onClickCallback,
 	getBlockifiedTemplate,
+	getAdditionalActions,
 };
 
 export { blockifyConfig, isConversionPossible, getDescription, getTitle };

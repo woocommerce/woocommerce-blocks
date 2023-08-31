@@ -3,6 +3,8 @@
  */
 import { createBlock, type BlockInstance } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
+import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
+import { ADMIN_URL } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -50,20 +52,30 @@ const onClickCallback = ( {
 };
 
 const getTitle = () => {
-	return __( 'Classic Checkout Page', 'woo-gutenberg-products-block' );
+	return __( 'Checkout Page Placeholder', 'woo-gutenberg-products-block' );
 };
 
 const getDescription = () => {
 	return __(
-		'This block represents the classic checkout page used to display the checkout. The actual rendered content may appear different from this placeholder.',
+		'This block will render the contents of the classic checkout page. You can transform it into blocks to control the checkout page appearance here instead.',
 		'woo-gutenberg-products-block'
 	);
+};
+
+const getAdditionalActions = () => {
+	return [
+		{
+			label: __( 'Edit page content', 'woo-gutenberg-products-block' ),
+			url: `${ ADMIN_URL }post.php?post=${ CHECKOUT_PAGE_ID }&action=edit`,
+		},
+	];
 };
 
 const blockifyConfig = {
 	getButtonLabel,
 	onClickCallback,
 	getBlockifiedTemplate,
+	getAdditionalActions,
 };
 
 export { blockifyConfig, isConversionPossible, getDescription, getTitle };
