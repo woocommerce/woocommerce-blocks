@@ -19,7 +19,11 @@ const blockData: BlockData = {
 	},
 };
 
-test.describe( 'Merchant → Order Confirmation', () => {
+test.describe( 'Shopper → Order Confirmation', () => {
+	test.use( {
+		storageState: process.env.CUSTOMERSTATE,
+	} );
+
 	// `as string` is safe here because we know the variable is a string, it is defined above.
 	const blockSelectorInEditor = blockData.selectors.editor.block as string;
 
