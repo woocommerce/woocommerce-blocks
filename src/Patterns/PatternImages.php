@@ -37,6 +37,56 @@ class PatternImages {
 	}
 
 	/**
+	 * Returns the pattern images.
+	 *
+	 * @param string $pattern_slug The pattern slug.
+	 *
+	 * @return array The pattern images.
+	 */
+	public static function get_pattern_images( string $pattern_slug ): array {
+		$dictionary = get_option( self::WC_BLOCKS_PATTERNS_CONTENT );
+		if ( empty( $dictionary ) ) {
+			return array();
+		}
+
+		$pattern = null;
+		foreach ( $dictionary as $item ) {
+			if ( $item['slug'] === $pattern_slug ) {
+				$pattern = $item;
+				break;
+			}
+		}
+
+		if ( empty( $pattern ) ) {
+			return array();
+		}
+
+		if ( ! isset( $pattern['images'] ) ) {
+			return array();
+		}
+
+		if ( ! isset( $pattern['images_total'] ) ) {
+			return array();
+		}
+
+		return self::get_random_images( $pattern['images'], $pattern['images_total'] );
+	}
+
+	/**
+	 * Returns an array of random images.
+	 *
+	 * @param array $images The pattern images.
+	 * @param int   $images_total The total number of images needed for the pattern.
+	 *
+	 * @return array The random images.
+	 */
+	private static function get_random_images( array $images, int $images_total ): array {
+		shuffle( $images );
+
+		return array_slice( $images, 0, $images_total );
+	}
+
+	/**
 	 * Creates the patterns content for the given vertical.
 	 *
 	 * @param int $vertical_id The vertical id.
