@@ -16,7 +16,6 @@ export default defineConfig( {
 		'artifacts/test-results-side-effects'
 	),
 	fullyParallel: false,
-	workers: 1,
 	projects: [
 		{
 			name: 'classicThemeConfiguration',
