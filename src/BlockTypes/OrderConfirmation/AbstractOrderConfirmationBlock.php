@@ -78,8 +78,6 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	/**
 	 * Get current order.
 	 *
-	 * @todo Check auth.
-	 *
 	 * @return \WC_Order|null
 	 */
 	protected function get_order() {
