@@ -56,7 +56,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 
 			if ( $product ) {
 				$post_thumbnail_id      = $product->get_image_id();
-				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id );
+				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail' );
 				if ( $product_gallery_images && $post_thumbnail_id ) {
 					$number_of_thumbnails = isset( $block->context['thumbnailsNumberOfThumbnails'] ) ? $block->context['thumbnailsNumberOfThumbnails'] : 3;
 					$thumbnails_count     = 1;

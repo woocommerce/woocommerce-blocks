@@ -9,10 +9,11 @@ class ProductGalleryUtils {
 	/**
 	 * Get all Product Gallery images.
 	 *
-	 * @param int $post_id Post ID.
+	 * @param int    $post_id Post ID.
+	 * @param string $size Image size.
 	 * @return array
 	 */
-	public static function get_product_gallery_images( $post_id ) {
+	public static function get_product_gallery_images( $post_id, $size = 'full' ) {
 		$product_gallery_images = array();
 		$product                = wc_get_product( $post_id );
 
@@ -27,16 +28,21 @@ class ProductGalleryUtils {
 				array_unshift( $product_gallery_image_ids, $featured_image_id );
 
 				foreach ( $product_gallery_image_ids as $product_gallery_image_id ) {
-
-					/**
-					 * Filter the HTML markup for a single product image in the gallery.
-					 *
-					 * @param string $product_gallery_image_html The HTML markup for the product gallery image.
-					 * @param int    $product_gallery_image_id  The ID of the product gallery image.
-					 *
-					 * @since 7.9.0
-					 */
-					$product_gallery_images[ $product_gallery_image_id ] = apply_filters( 'woocommerce_single_product_image_thumbnail_html', wc_get_gallery_image_html( $product_gallery_image_id ), $product_gallery_image_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+					$product_gallery_images[ $product_gallery_image_id ] = strtr(
+						'<div class="wp-block-woocommerce-product-gallery-thumbnails__thumbnail">
+							{image}
+						</div>',
+						array(
+							'{image}' => wp_get_attachment_image(
+								$product_gallery_image_id,
+								$size,
+								false,
+								array(
+									'class' => 'wp-block-woocommerce-product-gallery-thumbnails__image',
+								)
+							),
+						)
+					);
 				}
 			}
 		}

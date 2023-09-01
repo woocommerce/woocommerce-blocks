@@ -36,4 +36,11 @@ interactivityApiStore( {
 			},
 		},
 	},
+	actions: {
+		woocommerce: {
+			// updateProductGalleryLargeImage: ( { context } ) => {
+			// 	console.log(context);
+			// },
+		},
+	},
 } as Store );
