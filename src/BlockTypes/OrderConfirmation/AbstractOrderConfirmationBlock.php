@@ -104,8 +104,8 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	 * @return "full"|"limited"|false
 	 */
 	protected function get_view_order_permissions( $order ) {
-		if ( ! $order ) {
-			return false;
+		if ( ! $order || ! $this->has_valid_order_key( $order ) ) {
+			return false; // Always disallow access to invalid orders and those without a valid key.
 		}
 
 		// For customers with accounts, verify the order belongs to the current user or disallow access.
@@ -113,13 +113,8 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 			return $this->is_current_customer_order( $order ) ? 'full' : false;
 		}
 
-		// For guests, verify the order key is valid and matches the session.
-		if ( $this->allow_guest_checkout() && $this->has_valid_order_key( $order ) ) {
-			return $this->email_verification_required( $order ) ? false : 'limited';
-		}
-
-		// If we reached this point, disallow access.
-		return false;
+		// Guest orders are displayed with limited information.
+		return $this->email_verification_required( $order ) ? false : 'limited';
 	}
 
 	/**
@@ -132,17 +127,23 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	}
 
 	/**
+	 * Guest users without an active session can provide their email address to view order details. This however can only
+	 * be permitted if the user also provided the correct order key, and guest checkout is actually enabled.
+	 *
+	 * @param \WC_Order $order Order object.
+	 * @return boolean
+	 */
+	protected function email_verification_permitted( $order ) {
+		return $this->allow_guest_checkout() && $this->has_valid_order_key( $order ) && ! $this->is_customer_order( $order );
+	}
+
+	/**
 	 * See if we need to verify the email address before showing the order details.
 	 *
 	 * @param \WC_Order $order Order object.
 	 * @return boolean
 	 */
 	protected function email_verification_required( $order ) {
-		// These orders need login.
-		if ( $this->is_customer_order( $order ) ) {
-			return false;
-		}
-
 		// Skip verification if the current user still has the order in their session.
 		if ( $order->get_id() === wc()->session->get( 'store_api_draft_order' ) ) {
 			return false;
