@@ -124,6 +124,7 @@ woocommerce_blocks_env = ${ NODE_ENV }
 			} ),
 		],
 		optimization: {
+			chunkIds: 'named',
 			// Only concatenate modules in production, when not analyzing bundles.
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
@@ -221,6 +222,7 @@ const getMainConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
+			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
@@ -364,6 +366,7 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
+			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
@@ -464,6 +467,7 @@ const getPaymentsConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
+			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
@@ -568,6 +572,7 @@ const getExtensionsConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
+			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
@@ -670,6 +675,7 @@ const getSiteEditorConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
+			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
@@ -736,6 +742,7 @@ const getStylingConfig = ( options = {} ) => {
 			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		optimization: {
+			chunkIds: 'named',
 			splitChunks: {
 				minSize: 0,
 				automaticNameDelimiter: '--',
