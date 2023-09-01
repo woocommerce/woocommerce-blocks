@@ -367,8 +367,10 @@ class Bootstrap {
 		$this->container->register(
 			JetpackWooCommerceAnalytics::class,
 			function( Container $container ) {
-				$asset_api = $container->get( AssetApi::class );
-				return new JetpackWooCommerceAnalytics( $asset_api );
+				$asset_api                  = $container->get( AssetApi::class );
+				$asset_data_registry        = $container->get( AssetDataRegistry::class );
+				$block_templates_controller = $container->get( BlockTemplatesController::class );
+				return new JetpackWooCommerceAnalytics( $asset_api, $asset_data_registry, $block_templates_controller );
 			}
 		);
 		$this->container->register(

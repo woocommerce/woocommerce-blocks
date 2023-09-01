@@ -1,8 +1,9 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
-use Automattic\WooCommerce\Blocks\Package;
+use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
+use Automattic\WooCommerce\Blocks\BlockTemplatesController;
 
 /**
  * Service class to integrate Blocks with the Jetpack WooCommerce Analytics extension,
@@ -16,6 +17,20 @@ class JetpackWooCommerceAnalytics {
 	protected $asset_api;
 
 	/**
+	 * Instance of the asset data registry.
+	 *
+	 * @var AssetDataRegistry
+	 */
+	protected $asset_data_registry;
+
+	/**
+	 * Instance of the block templates controller.
+	 *
+	 * @var BlockTemplatesController
+	 */
+	protected $block_templates_controller;
+
+	/**
 	 * Whether the required Jetpack WooCommerce Analytics classes are available.
 	 *
 	 * @var bool
@@ -25,10 +40,14 @@ class JetpackWooCommerceAnalytics {
 	/**
 	 * Constructor.
 	 *
-	 * @param AssetApi $asset_api Instance of the asset API.
+	 * @param AssetApi                 $asset_api Instance of the asset API.
+	 * @param AssetDataRegistry        $asset_data_registry Instance of the asset data registry.
+	 * @param BlockTemplatesController $block_templates_controller Instance of the block templates controller.
 	 */
-	public function __construct( AssetApi $asset_api ) {
-		$this->asset_api = $asset_api;
+	public function __construct( AssetApi $asset_api, AssetDataRegistry $asset_data_registry, BlockTemplatesController $block_templates_controller ) {
+		$this->asset_api                  = $asset_api;
+		$this->asset_data_registry        = $asset_data_registry;
+		$this->block_templates_controller = $block_templates_controller;
 	}
 
 	/**
