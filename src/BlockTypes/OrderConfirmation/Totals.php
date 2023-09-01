@@ -17,26 +17,6 @@ class Totals extends AbstractOrderConfirmationBlock {
 	protected $block_name = 'order-confirmation-totals';
 
 	/**
-	 * Render the block.
-	 *
-	 * @param array    $attributes Block attributes.
-	 * @param string   $content Block content.
-	 * @param WP_Block $block Block instance.
-	 * @return string | void Rendered block output.
-	 */
-	protected function render( $attributes, $content, $block ) {
-		$render = parent::render( $attributes, $content, $block );
-
-		// Appends inline styles in the editor.
-		if ( ! empty( $attributes['isPreview'] ) ) {
-			$styles  = $this->get_link_styles( $attributes );
-			$render .= '<style>' . esc_html( $styles ) . '</style>';
-		}
-
-		return $render;
-	}
-
-	/**
 	 * This renders the content of the block within the wrapper.
 	 *
 	 * @param \WC_Order $order Order object.
@@ -49,7 +29,7 @@ class Totals extends AbstractOrderConfirmationBlock {
 		if ( ! $permission ) {
 			return $this->render_content_fallback();
 		}
-		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, [ 'border_color', 'border_radius', 'border_width', 'background_color', 'text_color' ] );
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, [ 'border_color', 'border_radius', 'border_width', 'border_style', 'background_color', 'text_color' ] );
 
 		return $this->get_hook_content( 'woocommerce_order_details_before_order_table', [ $order ] ) . '
 			<table cellspacing="0" class="wc-block-order-confirmation-totals__table ' . esc_attr( $classes_and_styles['classes'] ) . '" style="' . esc_attr( $classes_and_styles['styles'] ) . '">
@@ -61,7 +41,7 @@ class Totals extends AbstractOrderConfirmationBlock {
 				</thead>
 				<tbody>
 					' . $this->get_hook_content( 'woocommerce_order_details_before_order_table_items', [ $order ] ) . '
-					' . $this->render_order_details_table_items( $order, $attributes ) . '
+					' . $this->render_order_details_table_items( $order ) . '
 					' . $this->get_hook_content( 'woocommerce_order_details_after_order_table_items', [ $order ] ) . '
 				</tbody>
 				<tfoot>
@@ -80,13 +60,16 @@ class Totals extends AbstractOrderConfirmationBlock {
 	 * @param array $attributes  Any attributes that currently are available from the block.
 	 * @return string
 	 */
-	protected function get_link_styles( array $attributes ) {
+	protected function get_inline_styles( array $attributes ) {
 		$link_classes_and_styles       = StyleAttributesUtils::get_link_color_class_and_style( $attributes );
 		$link_hover_classes_and_styles = StyleAttributesUtils::get_link_hover_color_class_and_style( $attributes );
+		$border_classes_and_styles     = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, [ 'border_color', 'border_radius', 'border_width', 'border_style' ] );
 
 		return '
 			.wc-block-order-confirmation-totals__table a {' . $link_classes_and_styles['style'] . '}
 			.wc-block-order-confirmation-totals__table a:hover, .wc-block-order-confirmation-totals__table a:focus {' . $link_hover_classes_and_styles['style'] . '}
+			.wc-block-order-confirmation-totals__table {' . $border_classes_and_styles['styles'] . '}
+			.wc-block-order-confirmation-totals__table th, .wc-block-order-confirmation-totals__table td {' . $border_classes_and_styles['styles'] . '}
 		';
 	}
 
@@ -98,7 +81,7 @@ class Totals extends AbstractOrderConfirmationBlock {
 	protected function enqueue_assets( array $attributes ) {
 		parent::enqueue_assets( $attributes );
 
-		$styles = $this->get_link_styles( $attributes );
+		$styles = $this->get_inline_styles( $attributes );
 
 		wp_add_inline_style( 'wc-blocks-style', $styles );
 	}
@@ -109,10 +92,9 @@ class Totals extends AbstractOrderConfirmationBlock {
 	 * Loosely based on the templates order-details.php and order-details-item.php from core.
 	 *
 	 * @param \WC_Order $order Order object.
-	 * @param array     $attributes Block attributes.
 	 * @return string
 	 */
-	protected function render_order_details_table_items( $order, $attributes ) {
+	protected function render_order_details_table_items( $order ) {
 		$return      = '';
 		$order_items = array_filter(
 			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
@@ -125,7 +107,7 @@ class Totals extends AbstractOrderConfirmationBlock {
 
 		foreach ( $order_items as $item_id => $item ) {
 			$product = $item->get_product();
-			$return .= $this->render_order_details_table_item( $order, $item_id, $item, $product, $attributes );
+			$return .= $this->render_order_details_table_item( $order, $item_id, $item, $product );
 		}
 
 		return $return;
@@ -138,20 +120,14 @@ class Totals extends AbstractOrderConfirmationBlock {
 	 * @param integer           $item_id Item ID.
 	 * @param \WC_Order_Item    $item Item object.
 	 * @param \WC_Product|false $product Product object if it exists.
-	 * @param array             $attributes Block attributes.
 	 * @return string
 	 */
-	protected function render_order_details_table_item( $order, $item_id, $item, $product, $attributes ) {
+	protected function render_order_details_table_item( $order, $item_id, $item, $product ) {
 		$is_visible = $product && $product->is_visible();
 		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 		$row_class = apply_filters( 'woocommerce_order_item_class', 'woocommerce-table__line-item order_item', $item, $order );
 		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 		$product_permalink = apply_filters( 'woocommerce_order_item_permalink', $is_visible ? $product->get_permalink( $item ) : '', $item, $order );
-
-		// Previews enable links.
-		if ( ! empty( $attributes['isPreview'] ) ) {
-			$product_permalink = '#';
-		}
 
 		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 		$item_name    = apply_filters(
@@ -179,7 +155,7 @@ class Totals extends AbstractOrderConfirmationBlock {
 					' . wc_display_item_meta( $item, [ 'echo' => false ] ) . '
 					' . $this->get_hook_content( 'woocommerce_order_item_meta_end', [ $item_id, $item, $order, false ] ) . '
 					' . $this->render_order_details_table_item_purchase_note( $order, $product ) . '
-				</td>
+				</th>
 				<td class="wc-block-order-confirmation-totals__total">
 					' . wp_kses_post( $order->get_formatted_line_subtotal( $item ) ) . '
 				</td>

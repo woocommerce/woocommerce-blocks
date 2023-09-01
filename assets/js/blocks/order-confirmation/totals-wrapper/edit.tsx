@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import { getSetting } from '@woocommerce/settings';
 
 const Edit = ( {
 	attributes,
@@ -13,6 +14,13 @@ const Edit = ( {
 	setAttributes: ( attributes: Record< string, unknown > ) => void;
 } ) => {
 	const blockProps = useBlockProps();
+	const hasDownloadableProducts = getSetting(
+		'storeHasDownloadableProducts'
+	);
+
+	if ( ! hasDownloadableProducts ) {
+		return null;
+	}
 
 	return (
 		<div { ...blockProps }>
@@ -30,7 +38,7 @@ const Edit = ( {
 						},
 					],
 					[
-						'woocommerce/order-confirmation-billing-address',
+						'woocommerce/order-confirmation-totals',
 						{
 							lock: {
 								remove: true,

@@ -1,14 +1,19 @@
 {
-	"name": "woocommerce/order-confirmation-billing-wrapper",
+	"name": "woocommerce/order-confirmation-downloads-wrapper",
 	"version": "1.0.0",
-	"title": "Billing Address Section",
-	"description": "Display the order confirmation billing section.",
+	"title": "Downloads Section",
+	"description": "Display the downloadable products section.",
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"attributes": {
 		"heading": {
 			"type": "string"
 		}
+	},
+	"supports": {
+		"multiple": false,
+		"align": [ "wide", "full" ],
+		"html": false
 	},
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,

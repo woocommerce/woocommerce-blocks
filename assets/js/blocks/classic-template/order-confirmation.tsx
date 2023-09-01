@@ -27,7 +27,11 @@ const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 			inheritedAttributes
 		),
 		createBlock(
-			'woocommerce/order-confirmation-totals',
+			'woocommerce/order-confirmation-totals-wrapper',
+			inheritedAttributes
+		),
+		createBlock(
+			'woocommerce/order-confirmation-downloads-wrapper',
 			inheritedAttributes
 		),
 		createBlock( 'core/columns', inheritedAttributes, [
