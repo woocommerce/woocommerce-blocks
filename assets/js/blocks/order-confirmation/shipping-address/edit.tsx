@@ -16,14 +16,11 @@ const Edit = (): JSX.Element => {
 	return (
 		<div { ...blockProps }>
 			<address>
-				Han Solo
-				<br />
 				Test address 1<br />
 				Test address 2<br />
-				Test City, AL 90210
+				San Francisco, CA 94110
 				<br />
 				United States
-				<br />
 			</address>
 		</div>
 	);
