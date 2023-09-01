@@ -39,23 +39,41 @@ const registerActions = (): void => {
 		return;
 	}
 	/**
-	 * Fired when selecting a payment method
+	 * Fired when selecting a payment method.
 	 *
 	 * @summary Track the payment method being set using set_checkout_option
-	 * @see https://developers.google.com/analytics/devguides/collection/gtagjs/enhanced-ecommerce#2_measure_checkout_options
 	 */
 	addAction(
 		`${ actionPrefix }-checkout-set-active-payment-method`,
 		namespace,
-		( { paymentMethodSlug }: { paymentMethodSlug: string } ): void => {
+		( { value: paymentMethodSlug }: { value: string } ): void => {
 			window._wca.push( {
 				_en: 'woocommerceanalytics_select_payment_method',
 				payment_method: paymentMethodSlug,
 			} );
 		}
 	);
+
+	/**
+	 * Fired when selecting a shipping rate.
+	 *
+	 * @summary Track the shipping rate being set using selectShippingRate
+	 */
+	addAction(
+		`${ actionPrefix }-checkout-set-selected-shipping-rate`,
+		namespace,
+		( { shippingRateId }: { shippingRateId: string } ): void => {
+			window._wca.push( {
+				_en: 'woocommerceanalytics_select_shipping_rate',
+				shipping_method: shippingRateId,
+			} );
+		}
+	);
 };
-registerActions();
+
+document.addEventListener( 'DOMContentLoaded', () => {
+	registerActions();
+} );
 
 // Exporting to prevent TS error.
 export {};
