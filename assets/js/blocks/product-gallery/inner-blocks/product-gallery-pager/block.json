@@ -8,6 +8,6 @@
     "category": "woocommerce",
     "keywords": [ "WooCommerce" ],
     "textdomain": "woo-gutenberg-products-block",
-	"ancestor": [ "woocommerce/product-gallery-large-image" ],
+	"ancestor": [ "woocommerce/product-gallery" ],
 	"usesContext": [ "pagerDisplayMode", "productGalleryClientId" ]
 }
