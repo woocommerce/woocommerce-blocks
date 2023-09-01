@@ -52,9 +52,11 @@ class ProductGallery extends AbstractBlock {
 				'data-wc-context',
 				wp_json_encode(
 					array(
-						'productGallery' => array(
-							'numberOfThumbnails'   => 0,
-							'productGalleryImages' => $product_gallery_images,
+						'woocommerce' => array(
+							'productGallery' => array(
+								'numberOfThumbnails'   => 0,
+								'productGalleryImages' => $product_gallery_images,
+							),
 						),
 					)
 				)
