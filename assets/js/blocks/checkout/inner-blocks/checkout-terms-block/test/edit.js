@@ -49,7 +49,6 @@ const blockSettingsMock = jest.requireMock( '@woocommerce/block-settings' );
 
 describe( 'Edit', () => {
 	it( 'Renders a checkbox if the checkbox attribute is true', async () => {
-		// useSelect.mockImplementation( () => {} );
 		const { container } = render(
 			<Edit
 				attributes={ {
