@@ -77,6 +77,9 @@ class JetpackWooCommerceAnalytics {
 	 * Enqueue the Google Tag Manager script if prerequisites are met.
 	 */
 	public function enqueue_scripts() {
+		if ( ! is_cart() && ! is_checkout() ) {
+			return;
+		}
 		wp_enqueue_script( 'wc-blocks-jetpack-woocommerce-analytics' );
 	}
 }
