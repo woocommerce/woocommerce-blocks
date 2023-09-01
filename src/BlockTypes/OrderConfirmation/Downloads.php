@@ -26,39 +26,59 @@ class Downloads extends AbstractOrderConfirmationBlock {
 	 * @return string
 	 */
 	protected function render_content( $order, $permission = false, $attributes = [], $content = '' ) {
-		if ( ! empty( $attributes['isPreview'] ) ) {
-			$show_downloads = true;
-			$downloads      = [
-				[
-					'product_name'  => 'Test Product',
-					'product_url'   => 'https://example.com',
-					'download_name' => 'Test Download',
-					'download_url'  => 'https://example.com',
-				],
-			];
-		} else {
-			$show_downloads = $order && $order->has_downloadable_item() && $order->is_download_permitted();
-			$downloads      = $order ? $order->get_downloadable_items() : [];
-		}
+		$show_downloads = $order && $order->has_downloadable_item() && $order->is_download_permitted();
+		$downloads      = $order ? $order->get_downloadable_items() : [];
 
-		if ( 'full' !== $permission || ! $show_downloads ) {
+		if ( ! $permission || ! $show_downloads ) {
 			return $this->render_content_fallback();
 		}
 
+		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, [ 'border_color', 'border_radius', 'border_width', 'border_style', 'background_color', 'text_color' ] );
+
 		return '
-			<section class="woocommerce-order-downloads">
-				<table class="woocommerce-table woocommerce-table--order-downloads shop_table shop_table_responsive order_details" cellspacing="0">
-					<thead>
-						<tr>
-							' . $this->render_order_downloads_column_headers( $order ) . '
-						</td>
-					</thead>
-					<tbody>
-						' . $this->render_order_downloads( $order, $downloads ) . '
-					</tbody>
-				</table>
-			</section>
+			<table cellspacing="0" class="wc-block-order-confirmation-downloads__table ' . esc_attr( $classes_and_styles['classes'] ) . '" style="' . esc_attr( $classes_and_styles['styles'] ) . '">
+				<thead>
+					<tr>
+						' . $this->render_order_downloads_column_headers( $order ) . '
+					</td>
+				</thead>
+				<tbody>
+					' . $this->render_order_downloads( $order, $downloads ) . '
+				</tbody>
+			</table>
 		';
+	}
+
+	/**
+	 * Enqueue frontend assets for this block, just in time for rendering.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 * @return string
+	 */
+	protected function get_inline_styles( array $attributes ) {
+		$link_classes_and_styles       = StyleAttributesUtils::get_link_color_class_and_style( $attributes );
+		$link_hover_classes_and_styles = StyleAttributesUtils::get_link_hover_color_class_and_style( $attributes );
+		$border_classes_and_styles     = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes, [ 'border_color', 'border_radius', 'border_width', 'border_style' ] );
+
+		return '
+			.wc-block-order-confirmation-downloads__table a {' . $link_classes_and_styles['style'] . '}
+			.wc-block-order-confirmation-downloads__table a:hover, .wc-block-order-confirmation-downloads__table a:focus {' . $link_hover_classes_and_styles['style'] . '}
+			.wc-block-order-confirmation-downloads__table {' . $border_classes_and_styles['styles'] . '}
+			.wc-block-order-confirmation-downloads__table th, .wc-block-order-confirmation-downloads__table td {' . $border_classes_and_styles['styles'] . '}
+		';
+	}
+
+	/**
+	 * Enqueue frontend assets for this block, just in time for rendering.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 */
+	protected function enqueue_assets( array $attributes ) {
+		parent::enqueue_assets( $attributes );
+
+		$styles = $this->get_inline_styles( $attributes );
+
+		wp_add_inline_style( 'wc-blocks-style', $styles );
 	}
 
 	/**

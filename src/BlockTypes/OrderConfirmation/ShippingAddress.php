@@ -24,37 +24,35 @@ class ShippingAddress extends AbstractOrderConfirmationBlock {
 	 * @return string
 	 */
 	protected function render_content( $order, $permission = false, $attributes = [], $content = '' ) {
-		if ( ! $permission ) {
+		if ( ! $permission || ! $order->needs_shipping_address() || ! $order->has_shipping_address() ) {
 			return $this->render_content_fallback();
 		}
 
-		if ( $order->needs_shipping_address() ) {
-			if ( 'full' === $permission ) {
-				$address = $order->get_formatted_shipping_address( esc_html__( 'This order has no shipping address.', 'woo-gutenberg-products-block' ) );
-				$address = $address . ( $order->get_shipping_phone() ? '<br><span class="woocommerce-customer-details--phone">' . esc_html( $order->get_shipping_phone() ) . '</span>' : '' );
-			} else {
-				$states  = wc()->countries->get_states( $order->get_shipping_country() );
-				$address = esc_html(
-					sprintf(
-					/* translators: %s location. */
-						__( 'Shipping to %s', 'woo-gutenberg-products-block' ),
-						implode(
-							', ',
-							array_filter(
-								[
-									$order->get_shipping_postcode(),
-									$order->get_shipping_city(),
-									$states[ $order->get_shipping_state() ] ?? $order->get_shipping_state(),
-									wc()->countries->countries[ $order->get_shipping_country() ] ?? $order->get_shipping_country(),
-								]
-							)
-						)
-					)
-				);
-			}
-		} else {
-			$address = esc_html__( 'This order does not require shipping.', 'woo-gutenberg-products-block' );
+		if ( 'full' === $permission ) {
+			$address = '<address>' . wp_kses_post( $order->get_formatted_shipping_address() ) . '</address>';
+			$phone   = $order->get_shipping_phone() ? '<p class="woocommerce-customer-details--phone">' . esc_html( $order->get_shipping_phone() ) . '</p>' : '';
+
+			return $address . $phone;
 		}
+
+		$states  = wc()->countries->get_states( $order->get_shipping_country() );
+		$address = esc_html(
+			sprintf(
+			/* translators: %s location. */
+				__( 'Shipping to %s', 'woo-gutenberg-products-block' ),
+				implode(
+					', ',
+					array_filter(
+						[
+							$order->get_shipping_postcode(),
+							$order->get_shipping_city(),
+							$states[ $order->get_shipping_state() ] ?? $order->get_shipping_state(),
+							wc()->countries->countries[ $order->get_shipping_country() ] ?? $order->get_shipping_country(),
+						]
+					)
+				)
+			)
+		);
 
 		return '<address>' . wp_kses_post( $address ) . '</address>';
 	}
