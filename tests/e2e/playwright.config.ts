@@ -36,10 +36,7 @@ const config: ExtendedPlaywrightTestConfig = {
 		'{testDir}/{testFileDir}/__screenshots__/{arg}{testName}{ext}',
 	use: {
 		baseURL: BASE_URL,
-		screenshot: {
-			mode: 'only-on-failure',
-			fullPage: true,
-		},
+		screenshot: 'only-on-failure',
 		stateDir: 'tests/e2e/test-results/storage/',
 		trace: 'retain-on-failure',
 		video: 'on-first-retry',
