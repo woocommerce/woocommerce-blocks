@@ -31,6 +31,15 @@
 				"text": true
 			}
 		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"width": true,
+				"color": true
+			}
+		},
 		"spacing": {
 			"padding": true,
 			"margin": true,
@@ -48,10 +57,6 @@
 		"className": {
 			"type": "string",
 			"default": ""
-		},
-		"isPreview": {
-			"type": "boolean",
-			"default": false
 		}
 	},
 	"textdomain": "woo-gutenberg-products-block",

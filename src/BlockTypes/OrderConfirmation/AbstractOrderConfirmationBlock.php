@@ -33,14 +33,8 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	 * @return string | void Rendered block output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		if ( ! empty( $attributes['isPreview'] ) ) {
-			$order      = $this->get_preview_order();
-			$permission = 'full';
-		} else {
-			$order      = $this->get_order();
-			$permission = $this->get_view_order_permissions( $order );
-		}
-
+		$order              = $this->get_order();
+		$permission         = $this->get_view_order_permissions( $order );
 		$block_content      = $order ? $this->render_content( $order, $permission, $attributes, $content ) : $this->render_content_fallback();
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
@@ -251,35 +245,5 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	 */
 	protected function get_block_type_script( $key = null ) {
 		return null;
-	}
-
-	/**
-	 * Get a fake order for previews.
-	 *
-	 * @return \WC_Order Fake order.
-	 */
-	protected function get_preview_order() {
-		$product = new \WC_Product();
-		$product->set_name( 'Test Product' );
-		$product->set_price( '10' );
-
-		$order = new \WC_Order();
-		$order->set_id( 123 );
-		$order->set_billing_email( 'test@test.com' );
-		$order->set_date_created( 'now' );
-		$order->set_payment_method_title( 'Credit Card' );
-		$order->set_total( 40 );
-
-		$item_1 = new \WC_Order_Item_Product();
-		$item_1->set_props(
-			array(
-				'product'  => $product,
-				'quantity' => 4,
-				'total'    => 40,
-			)
-		);
-		$order->add_item( $item_1 );
-
-		return $order;
 	}
 }

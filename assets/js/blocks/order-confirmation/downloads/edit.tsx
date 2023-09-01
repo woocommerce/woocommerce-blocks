@@ -3,6 +3,7 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import { Disabled } from '@wordpress/components';
+import { __, _x } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -39,18 +40,36 @@ const Edit = (): JSX.Element => {
 					<thead>
 						<tr>
 							<th className="download-product">
-								<span className="nobr">Product</span>
+								<span className="nobr">
+									{ __(
+										'Product',
+										'woo-gutenberg-products-block'
+									) }
+								</span>
 							</th>
 							<th className="download-remaining">
 								<span className="nobr">
-									Downloads remaining
+									{ __(
+										'Downloads remaining',
+										'woo-gutenberg-products-block'
+									) }
 								</span>
 							</th>
 							<th className="download-expires">
-								<span className="nobr">Expires</span>
+								<span className="nobr">
+									{ __(
+										'Expires',
+										'woo-gutenberg-products-block'
+									) }
+								</span>
 							</th>
 							<th className="download-file">
-								<span className="nobr">Download</span>
+								<span className="nobr">
+									{ __(
+										'Download',
+										'woo-gutenberg-products-block'
+									) }
+								</span>
 							</th>
 						</tr>
 					</thead>
@@ -60,26 +79,44 @@ const Edit = (): JSX.Element => {
 								className="download-product"
 								data-title="Product"
 							>
-								<a href="https://example.com">Test Product</a>
+								<a href="https://example.com">
+									{ _x(
+										'Test Product',
+										'sample product name',
+										'woo-gutenberg-products-block'
+									) }
+								</a>
 							</td>
 							<td
 								className="download-remaining"
 								data-title="Downloads remaining"
 							>
-								∞
+								{ _x(
+									'∞',
+									'infinite downloads remaining',
+									'woo-gutenberg-products-block'
+								) }
 							</td>
 							<td
 								className="download-expires"
 								data-title="Expires"
 							>
-								Never
+								{ _x(
+									'Never',
+									'download expires',
+									'woo-gutenberg-products-block'
+								) }
 							</td>
 							<td className="download-file" data-title="Download">
 								<a
 									href="https://example.com"
 									className="woocommerce-MyAccount-downloads-file button alt"
 								>
-									Test Download
+									{ _x(
+										'Test Download',
+										'sample download name',
+										'woo-gutenberg-products-block'
+									) }
 								</a>
 							</td>
 						</tr>

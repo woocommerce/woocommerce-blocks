@@ -1,7 +1,10 @@
+.editor-styles-wrapper .wc-block-order-confirmation-summary,
 .wc-block-order-confirmation-summary {
 	margin-top: $gap-largest;
 	margin-bottom: $gap-largest;
 	border-radius: 2px;
+}
+.wc-block-order-confirmation-summary {
 	ul {
 		list-style: none outside;
 		display: flex;
@@ -33,8 +36,7 @@
 		}
 	}
 
-	&.has-background,
-	&.has-border {
+	&.has-background {
 		padding: $gap;
 	}
 }
