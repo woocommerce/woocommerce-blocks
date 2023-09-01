@@ -8,6 +8,16 @@ post_id=$(wp post create \
 	--post_type=page \
 	--post_status=publish \
 	--post_author=1 \
+	--post_title='Shop' \
+)
+wp option update woocommerce_shop_page_id $post_id
+
+post_id=$(wp post create \
+	--porcelain \
+	--menu_order=1 \
+	--post_type=page \
+	--post_status=publish \
+	--post_author=1 \
 	--post_title='Cart block' \
 	${script_dir}/cart.html
 )
@@ -53,3 +63,6 @@ post_id=$(wp post create \
 	--post_title='Privacy'
 )
 wp option update wp_page_for_privacy_policy $post_id
+
+# Create renaming WooCommerce pages using tool
+wp wc tool run install_pages --user=1

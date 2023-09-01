@@ -5,6 +5,7 @@ import {
 	InnerBlocks,
 	InspectorControls,
 	useBlockProps,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 import { BlockEditProps, InnerBlockTemplate } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
@@ -21,6 +22,7 @@ import { ProductGalleryThumbnailsBlockSettings } from './inner-blocks/product-ga
 import { ProductGalleryPagerBlockSettings } from './inner-blocks/product-gallery-pager/settings';
 import { ProductGalleryBlockSettings } from './block-settings/index';
 import type { ProductGalleryAttributes } from './types';
+import { ProductGalleryNextPreviousBlockSettings } from './inner-blocks/product-gallery-large-image-next-previous/settings';
 
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
@@ -34,6 +36,33 @@ const TEMPLATE: InnerBlockTemplate[] = [
 			[
 				'woocommerce/product-gallery-large-image',
 				getInnerBlocksLockAttributes( 'lock' ),
+				[
+					[
+						'woocommerce/product-sale-badge',
+						{
+							align: 'right',
+							style: {
+								spacing: {
+									margin: {
+										top: '4px',
+										right: '4px',
+										bottom: '4px',
+										left: '4px',
+									},
+								},
+							},
+						},
+					],
+					[
+						'woocommerce/product-gallery-large-image-next-previous',
+						{
+							layout: {
+								type: 'flex',
+								verticalAlignment: 'bottom',
+							},
+						},
+					],
+				],
 			],
 		],
 	],
@@ -88,6 +117,14 @@ export const Edit = ( {
 					setAttributes={ setAttributes }
 				/>
 			</InspectorControls>
+			<InspectorControls>
+				<ProductGalleryNextPreviousBlockSettings
+					context={ {
+						...attributes,
+						productGalleryClientId: clientId,
+					} }
+				/>
+			</InspectorControls>
 			<InnerBlocks
 				allowedBlocks={ [
 					'woocommerce/product-gallery-large-image',
@@ -99,4 +136,10 @@ export const Edit = ( {
 			/>
 		</div>
 	);
+};
+
+export const Save = () => {
+	const blockProps = useBlockProps.save();
+	const innerBlocksProps = useInnerBlocksProps.save( blockProps );
+	return <div { ...innerBlocksProps } />;
 };
