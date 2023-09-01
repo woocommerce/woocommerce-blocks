@@ -39,7 +39,7 @@ interactivityStore(
 		selectors: productButtonSelectors,
 		actions: {
 			woocommerce: {
-				handleMouseMove: async ( {
+				handleMouseMove: ( {
 					event,
 					context,
 				}: {
@@ -71,11 +71,7 @@ interactivityStore(
 						] = `${ maxPercentageX }% ${ maxPercentageY }%`;
 					}
 				},
-				handleMouseLeave: async ( {
-					context,
-				}: {
-					context: Context;
-				} ) => {
+				handleMouseLeave: ( { context }: { context: Context } ) => {
 					context.woocommerce.styles.transform = `scale(1.0)`;
 					context.woocommerce.styles[ 'transform-origin' ] = '';
 				},
