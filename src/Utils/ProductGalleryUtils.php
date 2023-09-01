@@ -11,9 +11,10 @@ class ProductGalleryUtils {
 	 *
 	 * @param int    $post_id Post ID.
 	 * @param string $size Image size.
+	 * @param string $class Image class.
 	 * @return array
 	 */
-	public static function get_product_gallery_images( $post_id, $size = 'full' ) {
+	public static function get_product_gallery_images( $post_id, $size = 'full', $class = '' ) {
 		$product_gallery_images = array();
 		$product                = wc_get_product( $post_id );
 
@@ -29,16 +30,14 @@ class ProductGalleryUtils {
 
 				foreach ( $product_gallery_image_ids as $product_gallery_image_id ) {
 					$product_gallery_images[ $product_gallery_image_id ] = strtr(
-						'<div class="wp-block-woocommerce-product-gallery-thumbnails__thumbnail">
-							{image}
-						</div>',
+						'{image}',
 						array(
 							'{image}' => wp_get_attachment_image(
 								$product_gallery_image_id,
 								$size,
 								false,
 								array(
-									'class' => 'wp-block-woocommerce-product-gallery-thumbnails__image',
+									'class' => $class,
 								)
 							),
 						)

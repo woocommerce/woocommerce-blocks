@@ -42,7 +42,7 @@ class ProductGallery extends AbstractBlock {
 			$content
 		);
 		$post_id                = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
-		$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id );
+		$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'full', 'wp-block-woocommerce-product-gallery-large-image__image' );
 
 		$p = new \WP_HTML_Tag_Processor( $content );
 
@@ -54,6 +54,7 @@ class ProductGallery extends AbstractBlock {
 					array(
 						'woocommerce' => array(
 							'productGallery' => array(
+								'activeProductGalleryImage' => array_key_first( $product_gallery_images ),
 								'numberOfThumbnails'   => 0,
 								'productGalleryImages' => $product_gallery_images,
 							),
@@ -61,6 +62,7 @@ class ProductGallery extends AbstractBlock {
 					)
 				)
 			);
+			$p->set_attribute( 'data-wc-effect', 'effects.woocommerce.productGallery.updateProductGalleryLargeImage' );
 			$html = $p->get_updated_html();
 		}
 

@@ -66,19 +66,23 @@ class ProductGalleryThumbnails extends AbstractBlock {
 							break;
 						}
 
-						$p = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
+						$html .= '<div class="wp-block-woocommerce-product-gallery-thumbnails__thumbnail">';
 
-						if ( $p->next_tag() ) {
-							$p->set_attribute(
+						$processor = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
+
+						if ( $processor->next_tag() ) {
+							$processor->set_attribute(
 								'data-wc-on--click',
-								'actions.woocommerce.updateProductGalleryLargeImage'
+								'actions.woocommerce.productGallery.updateActiveProductGalleryImage'
 							);
-							$p->set_attribute(
+							$processor->set_attribute(
 								'data-wc-context',
 								wp_json_encode( array( 'productGalleryThumbnailId' => $product_gallery_image_id ) )
 							);
-							$html .= $p->get_updated_html();
+							$html .= $processor->get_updated_html();
 						}
+
+						$html .= '</div>';
 
 						$thumbnails_count++;
 					}

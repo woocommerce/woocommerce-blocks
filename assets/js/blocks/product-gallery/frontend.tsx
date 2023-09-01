@@ -9,7 +9,12 @@ interface State {
 
 interface Context {
 	woocommerce: {
-		productGallery: { numberOfThumbnails: number };
+		productGallery: {
+			numberOfThumbnails: number;
+			activeProductGalleryImage: number;
+			productGalleryImages: string[];
+		};
+		productGalleryThumbnailId?: number;
 	};
 }
 
@@ -21,16 +26,41 @@ interface Selectors {
 	};
 }
 
-interface Store {
-	state: State;
-	context: Context;
-	selectors: Selectors;
-	ref: HTMLElement;
+interface Actions {
+	woocommerce: {
+		productGallery: {
+			updateActiveProductGalleryImage: ( context: Context ) => void;
+		};
+	};
 }
 
-type SelectorsStore = Pick< Store, 'context' | 'selectors' >;
+interface Effects {
+	woocommerce: {
+		productGallery: {
+			updateProductGalleryLargeImage: (
+				context: Context,
+				ref: HTMLElement
+			) => void;
+		};
+	};
+}
+
+interface Store {
+	state: State;
+	context?: Context;
+	selectors: Selectors;
+	actions: Actions;
+	effects: Effects;
+	ref?: HTMLElement;
+}
+
+type SelectorsStore = Pick<
+	Store,
+	'state' | 'context' | 'selectors' | 'actions' | 'effects' | 'ref'
+>;
 
 interactivityApiStore( {
+	state: {},
 	selectors: {
 		woocommerce: {
 			productGallery: {
@@ -45,9 +75,31 @@ interactivityApiStore( {
 	},
 	actions: {
 		woocommerce: {
-			// updateProductGalleryLargeImage: ( { context } ) => {
-			// 	console.log(context);
-			// },
+			productGallery: {
+				updateActiveProductGalleryImage: ( { context } ) => {
+					context.woocommerce.productGallery.activeProductGalleryImage =
+						context.productGalleryThumbnailId;
+				},
+			},
+		},
+	},
+	effects: {
+		woocommerce: {
+			productGallery: {
+				updateProductGalleryLargeImage: ( { context, ref } ) => {
+					const activeImage =
+						context.woocommerce.productGallery
+							.activeProductGalleryImage;
+					const activeImageMarkup =
+						context.woocommerce.productGallery.productGalleryImages[
+							activeImage
+						];
+
+					ref.querySelector(
+						'.wp-block-woocommerce-product-gallery-large-image__image'
+					).outerHTML = activeImageMarkup;
+				},
+			},
 		},
 	},
 } as Store );
