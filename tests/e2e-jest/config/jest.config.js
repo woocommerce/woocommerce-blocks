@@ -35,6 +35,8 @@ module.exports = {
 		// Ignore all the files that have utils in the name
 		'utils',
 	],
-	transformIgnorePatterns: [ 'node_modules/(?!(woocommerce)/)' ],
+	transformIgnorePatterns: [
+		'node_modules/?!(woocommerce|simple-html-tokenizer|is-plain-obj|is-plain-object|memize)',
+	],
 	testMatch: [ '**/?(*.)+(spec|test).[jt]s?(x)' ],
 };
