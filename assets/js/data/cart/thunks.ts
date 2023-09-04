@@ -43,6 +43,7 @@ export const receiveCart =
 		} );
 		dispatch.setCartData( newCart );
 		maybeTrackCartPageView( newCart );
+		maybeTrackCheckoutPageView( newCart );
 	};
 
 /**
