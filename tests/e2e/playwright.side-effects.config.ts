@@ -20,6 +20,7 @@ export default defineConfig( {
 	projects: [
 		{
 			name: 'blockThemeConfiguration',
+			testDir: '.',
 			testMatch: /block-theme.setup.ts/,
 		},
 		{

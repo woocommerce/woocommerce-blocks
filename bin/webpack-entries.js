@@ -47,12 +47,17 @@ const blocks = {
 	'product-best-sellers': {},
 	'product-category': {},
 	'product-categories': {},
+	'product-collection': {},
 	'product-gallery': {
 		isExperimental: true,
 	},
 	'product-gallery-large-image': {
 		customDir: 'product-gallery/inner-blocks/product-gallery-large-image',
 		isExperimental: true,
+	},
+	'product-gallery-large-image-next-previous': {
+		customDir:
+			'product-gallery/inner-blocks/product-gallery-large-image-next-previous',
 	},
 	'product-gallery-pager': {
 		customDir: 'product-gallery/inner-blocks/product-gallery-pager',
@@ -70,6 +75,7 @@ const blocks = {
 	'product-results-count': {},
 	'product-search': {},
 	'product-tag': {},
+	'product-template': {},
 	'product-top-rated': {},
 	'products-by-attribute': {},
 	'rating-filter': {},
@@ -84,12 +90,6 @@ const blocks = {
 	},
 	'single-product': {},
 	'stock-filter': {},
-	'product-collection': {
-		isExperimental: true,
-	},
-	'product-template': {
-		isExperimental: true,
-	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,
