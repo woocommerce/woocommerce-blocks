@@ -1,3 +1,5 @@
+// Copy-pasted from https://github.com/brankosekulic/trimHtml/blob/master/index.js
+// the published npm version of this code contains a bug that causes it throw exceptions.
 export function trimHtml( html, options ) {
 	options = options || {};
 
