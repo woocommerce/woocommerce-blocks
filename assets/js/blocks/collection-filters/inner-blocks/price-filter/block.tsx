@@ -1,4 +1,14 @@
-const Block = ( { minRange, maxRange, minPrice, maxPrice } ) => {
+/**
+ * Internal dependencies
+ */
+import { PriceFilterState } from './types';
+
+const Block = ( {
+	minRange,
+	maxRange,
+	minPrice,
+	maxPrice,
+}: Partial< PriceFilterState[ 'filters' ] > ) => {
 	return (
 		<>
 			<div
