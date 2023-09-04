@@ -36,7 +36,7 @@ module.exports = {
 		'utils',
 	],
 	transformIgnorePatterns: [
-		'node_modules/?!(woocommerce|simple-html-tokenizer|is-plain-obj|is-plain-object|memize)',
+		'node_modules/?!(simple-html-tokenizer|is-plain-obj|is-plain-object|memize)',
 		'node_modules/@woocommerce/e2e-utils/node_modules/config',
 	],
 	testMatch: [ '**/?(*.)+(spec|test).[jt]s?(x)' ],
