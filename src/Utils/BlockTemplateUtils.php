@@ -38,6 +38,8 @@ class BlockTemplateUtils {
 		'TEMPLATE_PARTS'            => 'parts',
 	);
 
+	const TEMPLATES_ROOT_DIR = 'templates';
+
 	/**
 	 * WooCommerce plugin slug
 	 *
@@ -272,6 +274,29 @@ class BlockTemplateUtils {
 			}
 		}
 		return $path_list;
+	}
+
+	/**
+	 * Gets the directory where templates of a specific template type can be found.
+	 *
+	 * @param string $template_type wp_template or wp_template_part.
+	 *
+	 * @return string
+	 */
+	public static function get_templates_directory( $template_type = 'wp_template' ) {
+			$root_path                = dirname( __DIR__, 2 ) . '/' . self::TEMPLATES_ROOT_DIR . DIRECTORY_SEPARATOR;
+			$templates_directory      = $root_path . self::DIRECTORY_NAMES['TEMPLATES'];
+			$template_parts_directory = $root_path . self::DIRECTORY_NAMES['TEMPLATE_PARTS'];
+
+		if ( 'wp_template_part' === $template_type ) {
+			return $template_parts_directory;
+		}
+
+		if ( self::should_use_blockified_product_grid_templates() ) {
+			return $templates_directory . '/blockified';
+		}
+
+		return $templates_directory;
 	}
 
 	/**

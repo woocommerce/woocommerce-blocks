@@ -1,7 +1,10 @@
 /**
  * External dependencies
  */
-import { store as interactivityStore } from '@woocommerce/interactivity';
+import {
+	store as interactivityStore,
+	navigate,
+} from '@woocommerce/interactivity';
 
 type Context = {
 	woocommerce: {
@@ -14,9 +17,16 @@ type Context = {
 	};
 };
 
+type State = {
+	woocommerce: {
+		isProductGalleryModalOpen: boolean;
+	};
+};
+
 type Store = {
 	context: Context;
 	selectors: typeof productButtonSelectors;
+	state: State;
 	ref: HTMLElement;
 };
 
@@ -63,6 +73,21 @@ interactivityStore(
 				handleMouseLeave: ( { context }: { context: Context } ) => {
 					context.woocommerce.styles.transform = `scale(1.0)`;
 					context.woocommerce.styles[ 'transform-origin' ] = '';
+				},
+				handleClick: async ( { state }: { state: State } ) => {
+					if ( state.woocommerce.isProductGalleryModalOpen ) {
+						return;
+					}
+					const dialog = document.createElement( 'dialog' );
+					dialog.setAttribute(
+						'data-wc-navigation-id',
+						'wc-block-product-gallery-full-view'
+					);
+					document.body.appendChild( dialog );
+
+					await navigate( '?product-id=10', { replace: false } );
+					state.woocommerce.isProductGalleryModalOpen = true;
+					dialog.showModal();
 				},
 			},
 		},

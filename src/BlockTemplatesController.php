@@ -22,27 +22,6 @@ use \WP_Post;
 class BlockTemplatesController {
 
 	/**
-	 * Holds the Package instance
-	 *
-	 * @var Package
-	 */
-	private $package;
-
-	/**
-	 * Holds the path for the directory where the block templates will be kept.
-	 *
-	 * @var string
-	 */
-	private $templates_directory;
-
-	/**
-	 * Holds the path for the directory where the block template parts will be kept.
-	 *
-	 * @var string
-	 */
-	private $template_parts_directory;
-
-	/**
 	 * Directory which contains all templates
 	 *
 	 * @var string
@@ -59,9 +38,6 @@ class BlockTemplatesController {
 
 		// This feature is gated for WooCommerce versions 6.0.0 and above.
 		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '6.0.0', '>=' ) ) {
-			$root_path                      = plugin_dir_path( __DIR__ ) . self::TEMPLATES_ROOT_DIR . DIRECTORY_SEPARATOR;
-			$this->templates_directory      = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATES'];
-			$this->template_parts_directory = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATE_PARTS'];
 			$this->init();
 		}
 	}
@@ -321,7 +297,7 @@ class BlockTemplatesController {
 			return $template;
 		}
 
-		$directory          = $this->get_templates_directory( $template_type );
+		$directory          = BlockTemplateUtils::get_templates_directory( $template_type );
 		$template_file_path = $directory . '/' . $template_slug . '.html';
 		$template_object    = BlockTemplateUtils::create_new_block_template_object( $template_file_path, $template_type, $template_slug );
 		$template_built     = BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
@@ -476,7 +452,7 @@ class BlockTemplatesController {
 	 * @return array Templates from the WooCommerce blocks plugin directory.
 	 */
 	public function get_block_templates_from_woocommerce( $slugs, $already_found_templates, $template_type = 'wp_template' ) {
-		$directory      = $this->get_templates_directory( $template_type );
+		$directory      = BlockTemplateUtils::get_templates_directory( $template_type );
 		$template_files = BlockTemplateUtils::get_template_paths( $directory );
 		$templates      = array();
 
@@ -560,25 +536,6 @@ class BlockTemplatesController {
 	}
 
 	/**
-	 * Gets the directory where templates of a specific template type can be found.
-	 *
-	 * @param string $template_type wp_template or wp_template_part.
-	 *
-	 * @return string
-	 */
-	protected function get_templates_directory( $template_type = 'wp_template' ) {
-		if ( 'wp_template_part' === $template_type ) {
-			return $this->template_parts_directory;
-		}
-
-		if ( BlockTemplateUtils::should_use_blockified_product_grid_templates() ) {
-			return $this->templates_directory . '/blockified';
-		}
-
-		return $this->templates_directory;
-	}
-
-	/**
 	 * Returns the path of a template on the Blocks template folder.
 	 *
 	 * @param string $template_slug Block template slug e.g. single-product.
@@ -587,7 +544,7 @@ class BlockTemplatesController {
 	 * @return string
 	 */
 	public function get_template_path_from_woocommerce( $template_slug, $template_type = 'wp_template' ) {
-		return $this->get_templates_directory( $template_type ) . '/' . $template_slug . '.html';
+		return BlockTemplateUtils::get_templates_directory( $template_type ) . '/' . $template_slug . '.html';
 	}
 
 	/**
@@ -602,7 +559,7 @@ class BlockTemplatesController {
 		if ( ! $template_name ) {
 			return false;
 		}
-		$directory = $this->get_templates_directory( $template_type ) . '/' . $template_name . '.html';
+		$directory = BlockTemplateUtils::get_templates_directory( $template_type ) . '/' . $template_name . '.html';
 
 		return is_readable(
 			$directory

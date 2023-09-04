@@ -36,6 +36,7 @@ use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ArchiveProductTemplatesCompatibility;
+use Automattic\WooCommerce\Blocks\Templates\ProductGalleryTemplate;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -149,6 +150,7 @@ class Bootstrap {
 			$this->container->get( ProductSearchResultsTemplate::class );
 			$this->container->get( ProductAttributeTemplate::class );
 			$this->container->get( CartTemplate::class );
+			$this->container->get( ProductGalleryTemplate::class );
 			$this->container->get( CheckoutTemplate::class );
 			$this->container->get( CheckoutHeaderTemplate::class );
 			$this->container->get( OrderConfirmationTemplate::class );
@@ -303,6 +305,12 @@ class Bootstrap {
 			CartTemplate::class,
 			function () {
 				return new CartTemplate();
+			}
+		);
+		$this->container->register(
+			ProductGalleryTemplate::class,
+			function () {
+				return new ProductGalleryTemplate();
 			}
 		);
 		$this->container->register(
