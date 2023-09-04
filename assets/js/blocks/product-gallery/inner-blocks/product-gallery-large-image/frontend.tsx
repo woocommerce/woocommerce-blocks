@@ -48,27 +48,16 @@ interactivityStore(
 				} ) => {
 					if ( ( event.target as HTMLElement ).tagName === 'IMG' ) {
 						const element = event.target as HTMLElement;
-						const left = element.offsetLeft;
-						const top = element.offsetTop;
-						const width = element.clientWidth;
-						const height = element.clientHeight;
-
-						const offsetX = event.clientX - left;
-						const offsetY = event.clientY - top;
-
-						const percentageX = ( offsetX / width ) * 100;
-						const percentageY = ( offsetY / height ) * 100;
-
-						const maxPercentageX =
-							percentageX > 100 ? 100 : percentageX;
-						const maxPercentageY =
-							percentageY > 100 ? 100 : percentageY;
+						const percentageX =
+							( event.offsetX / element.clientWidth ) * 100;
+						const percentageY =
+							( event.offsetY / element.clientHeight ) * 100;
 
 						context.woocommerce.styles.transform = `scale(1.3)`;
 
 						context.woocommerce.styles[
 							'transform-origin'
-						] = `${ maxPercentageX }% ${ maxPercentageY }%`;
+						] = `${ percentageX }% ${ percentageY }%`;
 					}
 				},
 				handleMouseLeave: ( { context }: { context: Context } ) => {
