@@ -69,7 +69,11 @@
 		padding: 0;
 	}
 }
-.wp-block-woocommerce-classic-shortcode.is-selected {
+
+.is-selected .wp-block-woocommerce-classic-shortcode,
+.is-hovered .wp-block-woocommerce-classic-shortcode,
+.wp-block-woocommerce-classic-shortcode.is-selected,
+.wp-block-woocommerce-classic-shortcode.is-hovered {
 	.wp-block-woocommerce-classic-shortcode__placeholder-wireframe {
 		filter: blur(3px);
 		opacity: 0.5;

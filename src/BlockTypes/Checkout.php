@@ -33,6 +33,8 @@ class Checkout extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 		add_action( 'wp_loaded', array( $this, 'register_patterns' ) );
+		// This prevents the page redirecting when the cart is empty. This is so the editor still loads the page preview.
+		add_filter( 'woocommerce_checkout_redirect_empty_cart', '__return_false' );
 
 	}
 

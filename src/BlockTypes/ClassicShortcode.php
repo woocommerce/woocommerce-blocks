@@ -26,37 +26,6 @@ class ClassicShortcode extends AbstractDynamicBlock {
 	protected $api_version = '2';
 
 	/**
-	 * Initialize this block.
-	 */
-	protected function initialize() {
-		parent::initialize();
-		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
-	}
-
-	/**
-	 * Enqueue assets used for rendering the block in editor context.
-	 *
-	 * This is needed if a block is not yet within the post content--`render` and `enqueue_assets` may not have ran.
-	 */
-	public function enqueue_block_assets() {
-		// Ensures frontend styles for blocks exist in the site editor iframe.
-		if ( class_exists( 'WC_Frontend_Scripts' ) && is_admin() ) {
-			$frontend_scripts = new WC_Frontend_Scripts();
-			$styles           = $frontend_scripts::get_styles();
-
-			foreach ( $styles as $handle => $style ) {
-				wp_enqueue_style(
-					$handle,
-					set_url_scheme( $style['src'] ),
-					$style['deps'],
-					$style['version'],
-					$style['media']
-				);
-			}
-		}
-	}
-
-	/**
 	 * Render method for the Classic Template block. This method will determine which template to render.
 	 *
 	 * @param array    $attributes Block attributes.

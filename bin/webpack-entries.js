@@ -44,6 +44,7 @@ const blocks = {
 		customDir: 'mini-cart/mini-cart-contents',
 	},
 	'store-notices': {},
+	'page-content-wrapper': {},
 	'price-filter': {},
 	'product-best-sellers': {},
 	'product-category': {},
