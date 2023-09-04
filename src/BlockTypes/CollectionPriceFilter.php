@@ -27,7 +27,7 @@ class CollectionPriceFilter extends AbstractBlock {
 
 		$min_range = 0; // This value should come from DB.
 		$max_range = 90; // This value should come from DB.
-		$min_price = get_query_var( self::MIN_PRICE_QUERY_VAR, 0 );
+		$min_price = get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range );
 		$max_price = get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range );
 
 		// CSS variables for the range bar style.
