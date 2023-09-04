@@ -14,14 +14,6 @@
 		"page": {
 			"type": "string",
 			"default": ""
-		},
-		"postId": {
-			"type": "number",
-			"default": 0
-		},
-		"postType": {
-			"type": "string",
-			"default": "page"
 		}
 	},
 	"providesContext": {
