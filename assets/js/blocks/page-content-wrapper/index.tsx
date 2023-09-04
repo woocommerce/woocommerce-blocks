@@ -45,7 +45,9 @@ const Edit = ( {
 				postId = CART_PAGE_ID;
 			}
 
-			setAttributes( { postId } );
+			if ( postId ) {
+				setAttributes( { postId, postType: 'page' } );
+			}
 		}
 	}, [ attributes, setAttributes ] );
 

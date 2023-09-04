@@ -13,7 +13,7 @@
 	"attributes": {
 		"page": {
 			"type": "string",
-			"default": false
+			"default": ""
 		},
 		"postId": {
 			"type": "number",
