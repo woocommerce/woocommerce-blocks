@@ -96,6 +96,7 @@ class JetpackWooCommerceAnalytics {
 	 * Enqueue the Google Tag Manager script if prerequisites are met.
 	 */
 	public function enqueue_scripts() {
+		// Additional check here before finally enqueueing the scripts. Done late here because checking these earlier fails.
 		if ( ! is_cart() && ! is_checkout() ) {
 			return;
 		}
