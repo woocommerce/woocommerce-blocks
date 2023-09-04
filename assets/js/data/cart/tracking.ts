@@ -97,6 +97,7 @@ export const maybeTrackCartPageView = ( cart: Cart ) => {
 						pq: item.quantity,
 						pi: item.id,
 						pn: item.name,
+						pt: item.type,
 					};
 				} )
 			),
