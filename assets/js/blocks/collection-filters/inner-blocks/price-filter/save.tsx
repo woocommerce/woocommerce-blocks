@@ -12,10 +12,10 @@ const Save = () => {
 	return (
 		<div { ...useBlockProps.save() }>
 			<Block
-				minPrice={ '' }
-				maxPrice={ '' }
-				minRange={ '' }
-				maxRange={ '' }
+				minPrice={ 0 }
+				maxPrice={ 0 }
+				minRange={ 0 }
+				maxRange={ 0 }
 			/>
 		</div>
 	);
