@@ -6,6 +6,7 @@ import {
 	InnerBlockTemplate,
 	BlockAttributes,
 } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 import { page } from '@wordpress/icons';
 import { CHECKOUT_PAGE_ID, CART_PAGE_ID } from '@woocommerce/block-settings';
@@ -64,4 +65,24 @@ registerBlockType( metadata, {
 	},
 	edit: Edit,
 	save: () => <InnerBlocks.Content />,
+	variations: [
+		{
+			name: 'checkout-page',
+			title: __( 'Checkout Page', 'woo-gutenberg-products-block' ),
+			attributes: {
+				page: 'checkout',
+			},
+			isActive: ( blockAttributes, variationAttributes ) =>
+				blockAttributes.page === variationAttributes.page,
+		},
+		{
+			name: 'cart-page',
+			title: __( 'Cart Page', 'woo-gutenberg-products-block' ),
+			attributes: {
+				page: 'cart',
+			},
+			isActive: ( blockAttributes, variationAttributes ) =>
+				blockAttributes.page === variationAttributes.page,
+		},
+	],
 } );
