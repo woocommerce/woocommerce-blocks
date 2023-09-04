@@ -160,6 +160,8 @@ class JetpackWooCommerceAnalytics {
 
 		// Update the info transient with data we got from the templates, if the site isn't using WC Blocks we
 		// won't be doing this so no concern about overwriting.
+		// Sites that load this code will be loading it on a page using the relevant block, but we still need to check
+		// the other page to see if it's using the block or shortcode.
 		$info = array(
 			'cart_page_contains_cart_block'             => str_contains( $cart_template->content, '<!-- wp:woocommerce/cart' ),
 			'cart_page_contains_cart_shortcode'         => str_contains( $cart_template->content, '[woocommerce_cart]' ),
