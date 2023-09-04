@@ -23,7 +23,8 @@ $product_id = $products ? $products[0] : null;
 	<div class="wp-block-columns">
 		<!-- wp:column {"verticalAlignment":"center","width":"40%","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"}}},"layout":{"type":"constrained"}} -->
 		<div class="wp-block-column is-vertically-aligned-center" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;flex-basis:40%">
-			<!-- wp:woocommerce/product-image {"showSaleBadge":false,"isDescendentOfSingleProductBlock":true,"height":"300px"} /--></div>
+			<!-- wp:woocommerce/product-image {"showSaleBadge":false,"isDescendentOfSingleProductBlock":true,"height":"300px"} /-->
+		</div>
 		<!-- /wp:column -->
 
 		<!-- wp:column {"verticalAlignment":"center","width":"60%","layout":{"type":"constrained","justifyContent":"left","contentSize":"650px"}} -->
