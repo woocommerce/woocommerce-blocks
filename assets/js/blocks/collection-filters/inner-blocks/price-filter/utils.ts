@@ -9,24 +9,12 @@ import {
 	isString,
 } from '@woocommerce/types';
 
-export const formatPrice = (
-	price: string | number,
-	currency: Currency,
-	rounding: 'ROUND_UP' | 'ROUND_DOWN'
-) => {
-	let priceInt = typeof price === 'number' ? price : parseInt( price, 10 );
-	const step = 10 * 10 ** currency.minorUnit;
-
-	if ( rounding === 'ROUND_UP' ) {
-		priceInt = Math.ceil( priceInt / step ) * step;
-	} else if ( rounding === 'ROUND_DOWN' ) {
-		priceInt = Math.floor( priceInt / step ) * step;
-	}
-
+export const formatPrice = ( price: string | number, currency: Currency ) => {
+	const priceInt = typeof price === 'number' ? price : parseInt( price, 10 );
 	return priceInt / 10 ** currency.minorUnit;
 };
 
-export const getFormatedPrice = ( results: unknown[] ) => {
+export const getFormattedPrice = ( results: unknown[] ) => {
 	if ( ! objectHasProp( results, 'price_range' ) ) {
 		return { minPrice: 0, maxPrice: 0 };
 	}
@@ -47,7 +35,7 @@ export const getFormatedPrice = ( results: unknown[] ) => {
 			: 0;
 
 	return {
-		minPrice: formatPrice( minPrice, currency, 'ROUND_DOWN' ),
-		maxPrice: formatPrice( maxPrice, currency, 'ROUND_UP' ),
+		minPrice: formatPrice( minPrice, currency ),
+		maxPrice: formatPrice( maxPrice, currency ),
 	};
 };
