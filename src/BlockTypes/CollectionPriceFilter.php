@@ -24,6 +24,7 @@ class CollectionPriceFilter extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+		error_log( print_r($block->context, true) );
 		$min_range = 0; // This value should come from DB.
 		$max_range = 90; // This value should come from DB.
 		$min_price = get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range );

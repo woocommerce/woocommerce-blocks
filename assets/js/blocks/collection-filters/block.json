@@ -11,5 +11,6 @@
 		"reusable": false
 	},
 	"apiVersion": 2,
-	"$schema": "https://schemas.wp.org/trunk/block.json"
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"usesContext": [ "query" ]
 }

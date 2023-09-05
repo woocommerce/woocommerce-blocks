@@ -11,7 +11,7 @@
 	"viewScript": [
 		"wc-collection-price-filter-block-frontend"
 	],
-	"ancestor": [ "woocommerce/product-collection" ],
+	"ancestor": [ "woocommerce/product-collection", "woocommerce/collection-filters" ],
 	"supports": {
 		"interactivity": true
 	},
