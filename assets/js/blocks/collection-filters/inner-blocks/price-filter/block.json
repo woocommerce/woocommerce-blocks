@@ -14,5 +14,6 @@
 	"ancestor": [ "woocommerce/product-collection" ],
 	"supports": {
 		"interactivity": true
-	}
+	},
+	"usesContext": [ "query" ]
 }

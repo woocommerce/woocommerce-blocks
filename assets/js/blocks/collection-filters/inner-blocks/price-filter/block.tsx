@@ -1,14 +1,15 @@
 /**
  * Internal dependencies
  */
-import { PriceFilterState } from './types';
+import { BlockProps } from './types';
 
 const Block = ( {
 	minRange,
 	maxRange,
 	minPrice,
 	maxPrice,
-}: Partial< PriceFilterState[ 'filters' ] > ) => {
+	isEditor = false,
+}: BlockProps ) => {
 	return (
 		<>
 			<div
@@ -28,6 +29,7 @@ const Block = ( {
 					data-wc-class--active="state.filters.isMinActive"
 					data-wc-on--input="actions.filters.setMinPrice"
 					data-wc-on--change="actions.filters.updateProducts"
+					readOnly={ isEditor }
 				/>
 				<input
 					type="range"
@@ -39,6 +41,7 @@ const Block = ( {
 					data-wc-class--active="state.filters.isMaxActive"
 					data-wc-on--input="actions.filters.setMaxPrice"
 					data-wc-on--change="actions.filters.updateProducts"
+					readOnly={ isEditor }
 				/>
 			</div>
 			<div className="text">
@@ -48,6 +51,7 @@ const Block = ( {
 					data-wc-bind--value="state.filters.minPrice"
 					data-wc-on--input="actions.filters.setMinPrice"
 					data-wc-on--change="actions.filters.updateProducts"
+					readOnly={ isEditor }
 				/>
 				<input
 					type="text"
@@ -55,6 +59,7 @@ const Block = ( {
 					data-wc-bind--value="state.filters.maxPrice"
 					data-wc-on--input="actions.filters.setMaxPrice"
 					data-wc-on--change="actions.filters.updateProducts"
+					readOnly={ isEditor }
 				/>
 			</div>
 			<button data-wc-on--click="actions.filters.reset">Reset</button>

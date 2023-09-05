@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { ProductCollectionQuery } from '@woocommerce/blocks/product-collection/types';
 import { HTMLElementEvent } from '@woocommerce/types';
 
 export interface PriceFilterState {
@@ -23,3 +24,13 @@ export interface InputActionProps {
 export interface MouseActionProps extends InputActionProps {
 	event: InputActionProps[ 'event' ] & MouseEvent;
 }
+
+export interface EditProps {
+	context: {
+		query: Partial< ProductCollectionQuery >;
+	};
+}
+
+export type BlockProps = Partial< PriceFilterState[ 'filters' ] > & {
+	isEditor: boolean;
+};
