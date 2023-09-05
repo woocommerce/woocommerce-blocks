@@ -62,6 +62,14 @@ interface StorePages {
 	shop: StorePageDetails;
 	terms: StorePageDetails;
 }
+
+export const cleanUrl = ( link: string ) => {
+	const url = link.split( '?' )[ 0 ];
+	if ( url.charAt( url.length - 1 ) !== '/' ) {
+		return url + '/';
+	}
+	return url;
+};
 export const maybeTrackCheckoutPageView = ( cart: Cart ) => {
 	const storePages = getSetting< StorePages >( 'storePages', {} );
 	if ( ! objectHasProp( storePages, 'checkout' ) ) {
