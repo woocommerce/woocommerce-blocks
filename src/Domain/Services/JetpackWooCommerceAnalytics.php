@@ -110,6 +110,7 @@ class JetpackWooCommerceAnalytics {
 	 * Enqueue the Google Tag Manager script if prerequisites are met.
 	 */
 	public function register_script_data() {
+		$this->asset_data_registry->add( 'wc-blocks-jetpack-woocommerce-analytics_is_thankyou_page', is_wc_endpoint_url( 'order-received' ) );
 		$this->asset_data_registry->add( 'wc-blocks-jetpack-woocommerce-analytics_cart_checkout_info', $this->get_cart_checkout_info() );
 	}
 
@@ -138,6 +139,8 @@ class JetpackWooCommerceAnalytics {
 		$cart_template_id     = null;
 		$checkout_template_id = null;
 		$templates            = $this->block_templates_controller->get_block_templates( array( 'cart', 'checkout' ) );
+		$guest_checkout       = ucfirst( get_option( 'woocommerce_enable_guest_checkout', 'No' ) );
+		$create_account       = ucfirst( get_option( 'woocommerce_enable_signup_and_login_from_checkout', 'No' ) );
 
 		foreach ( $templates as $template ) {
 			if ( 'cart' === $template->slug ) {
@@ -177,6 +180,9 @@ class JetpackWooCommerceAnalytics {
 				$checkout_template->content,
 				array( 'woocommerce/checkout' )
 			),
+			'device'                                    => wp_is_mobile() ? 'mobile' : 'desktop',
+			'guest_checkout'                            => 'Yes' === $guest_checkout ? 'Yes' : 'No',
+			'create_account'                            => 'Yes' === $create_account ? 'Yes' : 'No',
 		);
 		set_transient( $transient_name, $info, DAY_IN_SECONDS );
 		return $info;
