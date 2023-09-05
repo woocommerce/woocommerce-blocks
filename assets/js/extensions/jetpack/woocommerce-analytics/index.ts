@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { Cart, isObject, objectHasProp } from '@woocommerce/types';
-import { subscribe, select } from '@wordpress/data';
+import { select } from '@wordpress/data';
 import { getSetting } from '@woocommerce/settings';
 
 /**
@@ -149,15 +149,11 @@ export const maybeTrackCartPageView = ( cart: Cart ) => {
 	} );
 };
 
-const unsubscribe = subscribe( () => {
+document.addEventListener( 'DOMContentLoaded', () => {
 	const store = select( CART_STORE_KEY );
 	const hasCartLoaded = store.hasFinishedResolution( 'getCartTotals' );
 	if ( hasCartLoaded ) {
-		unsubscribe();
 		maybeTrackCartPageView( store.getCartData() );
 		maybeTrackCheckoutPageView( store.getCartData() );
 	}
-}, CART_STORE_KEY );
-
-// Exporting to prevent TS error.
-export {};
+} );
