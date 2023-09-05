@@ -15,7 +15,6 @@ import { camelCaseKeys } from '@woocommerce/base-utils';
 import { notifyQuantityChanges } from './notify-quantity-changes';
 import { notifyCartErrors } from './notify-errors';
 import { CartDispatchFromMap, CartSelectFromMap } from './index';
-import { maybeTrackCartPageView, maybeTrackCheckoutPageView } from './tracking';
 
 /**
  * A thunk used in updating the store with the cart items retrieved from a request. This also notifies the shopper
@@ -42,8 +41,6 @@ export const receiveCart =
 			cartItemsPendingDelete: select.getItemsPendingDelete(),
 		} );
 		dispatch.setCartData( newCart );
-		maybeTrackCartPageView( newCart );
-		maybeTrackCheckoutPageView( newCart );
 	};
 
 /**
