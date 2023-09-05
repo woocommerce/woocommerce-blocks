@@ -337,8 +337,16 @@ class JetpackWooCommerceAnalytics {
 		return $additional_blocks;
 	}
 
-	public function track_local_pickup( $served, $result, $request, $server ) {
-		if ( $request->get_route() !== '/wp/v2/settings' ) {
+	/**
+	 * Track local pickup settings changes via Store API
+	 *
+	 * @param bool              $served
+	 * @param \WP_REST_Response $result
+	 * @param \WP_REST_Request  $request
+	 * @return bool
+	 */
+	public function track_local_pickup( $served, $result, $request ) {
+		if ( '/wp/v2/settings' !== $request->get_route() ) {
 			return $served;
 		}
 		// Param name here comes from the show_in_rest['name'] value when registering the setting.
@@ -356,17 +364,17 @@ class JetpackWooCommerceAnalytics {
 		$locations = $request->get_param( 'pickup_locations' );
 
 		$data = array(
-			'local_pickup_enabled'     => $settings['enabled'] === 'yes' ? true : false,
+			'local_pickup_enabled'     => 'yes' === $settings['enabled'] ? true : false,
 			'title'                    => $settings['title'],
-			'price'                    => $settings['cost'] === '',
-			'cost'                     => $settings['cost'] === '' ? 0 : $settings['cost'],
+			'price'                    => '' === $settings['cost'],
+			'cost'                     => '' === $settings['cost'] ? 0 : $settings['cost'],
 			'taxes'                    => $settings['tax_status'],
 			'total_pickup_locations'   => count( $locations ),
 			'pickup_locations_enabled' => count(
 				array_filter(
 					$locations,
 					function( $location ) {
-						return $location['enabled'] === 'yes'; }
+						return 'yes' === $location['enabled']; }
 				)
 			),
 		);
