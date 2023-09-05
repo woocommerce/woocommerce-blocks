@@ -83,7 +83,7 @@ class Summary extends AbstractOrderConfirmationBlock {
 			sprintf(
 				'<p class="form-row verify-email">
 					<label for="%1$s">%2$s</label>
-					<input type="email" name="email" id="%1$s" autocomplete="email" class="input-text" />
+					<input type="email" name="email" id="%1$s" autocomplete="email" class="input-text" required />
 				</p>',
 				esc_attr( 'verify-email' ),
 				esc_html__( 'Email address', 'woo-gutenberg-products-block' ) . '&nbsp;<span class="required">*</span>'
