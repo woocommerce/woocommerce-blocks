@@ -232,7 +232,7 @@
 		"react-docgen": "5.4.3",
 		"react-test-renderer": "17.0.2",
 		"request-promise": "4.2.6",
-		"rimraf": "3.0.2",
+		"rimraf": "5.0.1",
 		"sass-loader": "10.1.0",
 		"storybook-addon-react-docgen": "1.2.43",
 		"terser-webpack-plugin": "4.2.3",
