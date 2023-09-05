@@ -38,11 +38,6 @@ class Summary extends AbstractOrderConfirmationBlock {
 		}
 		$content .= '</ul>';
 
-		$this->remove_core_hooks();
-		$content .= $this->get_hook_content( 'woocommerce_thankyou_' . $order->get_payment_method(), [ $order->get_id() ] );
-		$content .= $this->get_hook_content( 'woocommerce_thankyou', [ $order->get_id() ] );
-		$this->restore_core_hooks();
-
 		return $content;
 	}
 

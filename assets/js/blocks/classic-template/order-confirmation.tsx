@@ -55,6 +55,10 @@ const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 				] ),
 			]
 		),
+		createBlock(
+			'woocommerce/order-confirmation-additional-information',
+			inheritedAttributes
+		),
 	].filter( Boolean ) as BlockInstance[];
 
 const onClickCallback = ( {
