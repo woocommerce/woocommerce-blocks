@@ -127,7 +127,7 @@ class JetpackWooCommerceAnalytics {
 		$info = get_transient( $transient_name );
 
 		// Return cached data early to prevent additional processing, the transient lasts for 1 day.
-		if ( false && false !== $info ) {
+		if ( false !== $info ) {
 			return $info;
 		}
 
