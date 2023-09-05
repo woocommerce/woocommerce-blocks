@@ -9,7 +9,12 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import { NextButton, PrevButton } from './icons';
+import {
+	NextButtonInsideImage,
+	NextButtonOutsideImage,
+	PrevButtonInsideImage,
+	PrevButtonOutsideImage,
+} from './icons';
 import './editor.scss';
 import { ProductGalleryNextPreviousBlockSettings } from './settings';
 import { ProductGalleryContext } from '../../types';
@@ -43,16 +48,24 @@ export const Edit = ( {
 		},
 	} );
 
-	const suffixClass = useMemo( () => {
+	const previousNextImage = useMemo( () => {
 		switch ( context.nextPreviousButtonsPosition ) {
 			case 'insideTheImage':
-				return 'inside-image';
+				return {
+					PrevButtonImage: PrevButtonInsideImage,
+					NextButtonImage: NextButtonInsideImage,
+					classname: 'inside-image',
+				};
 			case 'outsideTheImage':
-				return 'outside-image';
+				return {
+					PrevButtonImage: PrevButtonOutsideImage,
+					NextButtonImage: NextButtonOutsideImage,
+					classname: 'outside-image',
+				};
 			case 'off':
-				return 'off';
+				return null;
 			default:
-				return 'off';
+				return null;
 		}
 	}, [ context.nextPreviousButtonsPosition ] );
 
@@ -64,11 +77,15 @@ export const Edit = ( {
 			<div
 				className={ classNames(
 					'wc-block-product-gallery-large-image-next-previous-container',
-					`wc-block-product-gallery-large-image-next-previous--${ suffixClass }`
+					`wc-block-product-gallery-large-image-next-previous--${ previousNextImage?.classname }`
 				) }
 			>
-				<PrevButton suffixClass={ suffixClass } />
-				<NextButton suffixClass={ suffixClass } />
+				{ previousNextImage?.PrevButtonImage && (
+					<previousNextImage.PrevButtonImage />
+				) }
+				{ previousNextImage?.NextButtonImage && (
+					<previousNextImage.NextButtonImage />
+				) }
 			</div>
 		</div>
 	);
