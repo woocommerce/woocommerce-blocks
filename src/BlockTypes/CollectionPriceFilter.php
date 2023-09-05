@@ -57,21 +57,12 @@ class CollectionPriceFilter extends AbstractBlock {
 
 		// Loop through all the tags and update the attributes.
 		while ( $tags->next_tag() ) {
-			if ( $tags->get_attribute( 'data-wc-bind--style' ) === 'state.filters.rangeStyle' ) {
-				$tags->set_attribute( 'style', $range_style );
-			}
-
-			if ( $tags->get_attribute( 'type' ) === 'range' ) {
-				$tags->set_attribute( 'min', $min_range );
-				$tags->set_attribute( 'max', $max_range );
-			}
-
-			if ( $tags->get_attribute( 'data-wc-on--input' ) === 'actions.filters.setMinPrice' ) {
-				$tags->set_attribute( 'value', $min_price );
-			}
-
-			if ( $tags->get_attribute( 'data-wc-on--input' ) === 'actions.filters.setMaxPrice' ) {
-				$tags->set_attribute( 'value', $max_price );
+			foreach ( $tags->get_attribute_names_with_prefix( 'data-wc-bind--' ) as $attribute_name ) {
+				$attribute_value  = str_replace( 'state.filters.', '', $tags->get_attribute( $attribute_name ) );
+				$target_attribute = str_replace( 'data-wc-bind--', '', $attribute_name );
+				if ( in_array( $attribute_value, array_keys( $data ), true ) ) {
+					$tags->set_attribute( $target_attribute, $data[ $attribute_value ] );
+				}
 			}
 		}
 

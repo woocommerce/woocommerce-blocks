@@ -9,7 +9,7 @@ import { useCollectionData } from '@woocommerce/base-context/hooks';
  */
 import Block from './block';
 import { EditProps } from './types';
-import { getFormatedPrice } from './utils';
+import { getFormattedPrice } from './utils';
 
 const Edit = ( { context }: EditProps ) => {
 	const blockProps = useBlockProps();
@@ -19,7 +19,7 @@ const Edit = ( { context }: EditProps ) => {
 		queryState: context.query,
 	} );
 
-	const { minPrice, maxPrice } = getFormatedPrice( results );
+	const { minPrice, maxPrice } = getFormattedPrice( results );
 
 	return (
 		<div { ...blockProps }>
