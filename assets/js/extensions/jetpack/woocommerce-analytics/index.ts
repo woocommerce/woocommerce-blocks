@@ -82,11 +82,7 @@ export const maybeTrackCheckoutPageView = ( cart: Cart ) => {
 		return;
 	}
 
-	if (
-		! isObject( window._wca ) ||
-		! objectHasProp( window._wca, 'push' ) ||
-		typeof window._wca.push !== 'function'
-	) {
+	if ( ! isValidWCA( window._wca ) ) {
 		return;
 	}
 	const checkoutData = getSetting< Record< string, unknown > >(
@@ -121,11 +117,7 @@ export const maybeTrackCartPageView = ( cart: Cart ) => {
 		return;
 	}
 
-	if (
-		! isObject( window._wca ) ||
-		! objectHasProp( window._wca, 'push' ) ||
-		typeof window._wca.push !== 'function'
-	) {
+	if ( ! isValidWCA( window._wca ) ) {
 		return;
 	}
 	const checkoutData = getSetting< Record< string, unknown > >(
