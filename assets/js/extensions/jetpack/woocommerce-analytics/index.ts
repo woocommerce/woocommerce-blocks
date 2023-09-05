@@ -1,7 +1,14 @@
 /**
  * External dependencies
  */
-import { isObject, objectHasProp } from '@woocommerce/types';
+import { Cart, isObject, objectHasProp } from '@woocommerce/types';
+import { subscribe, select } from '@wordpress/data';
+import { getSetting } from '@woocommerce/settings';
+
+/**
+ * Internal dependencies
+ */
+import { STORE_KEY as CART_STORE_KEY } from '../../../data/cart/constants';
 
 declare global {
 	interface Window {
@@ -40,6 +47,103 @@ const registerActions = (): void => {
 document.addEventListener( 'DOMContentLoaded', () => {
 	registerActions();
 } );
+
+interface StorePageDetails {
+	id: number;
+	title: string;
+	permalink: string;
+}
+
+interface StorePages {
+	checkout: StorePageDetails;
+	cart: StorePageDetails;
+	myaccount: StorePageDetails;
+	privacy: StorePageDetails;
+	shop: StorePageDetails;
+	terms: StorePageDetails;
+}
+export const maybeTrackCheckoutPageView = ( cart: Cart ) => {
+	const storePages = getSetting< StorePages >( 'storePages', {} );
+	if ( ! objectHasProp( storePages, 'checkout' ) ) {
+		return;
+	}
+	if ( storePages?.checkout?.permalink !== window.location.href ) {
+		return;
+	}
+
+	if (
+		! isObject( window._wca ) ||
+		! objectHasProp( window._wca, 'push' ) ||
+		typeof window._wca.push !== 'function'
+	) {
+		return;
+	}
+	const checkoutData = getSetting< Record< string, unknown > >(
+		'wc-blocks-jetpack-woocommerce-analytics_cart_checkout_info',
+		{}
+	);
+	window._wca.push( {
+		_en: 'woocommerceanalytics_checkout_view',
+		products: JSON.stringify(
+			cart.items.map( ( item ) => {
+				return {
+					pp: item.totals.line_total,
+					pq: item.quantity,
+					pi: item.id,
+					pn: item.name,
+				};
+			} )
+		),
+		...checkoutData,
+	} );
+};
+
+export const maybeTrackCartPageView = ( cart: Cart ) => {
+	const storePages = getSetting< StorePages >( 'storePages', {} );
+	if ( ! objectHasProp( storePages, 'cart' ) ) {
+		return;
+	}
+	if ( storePages?.cart?.permalink !== window.location.href ) {
+		return;
+	}
+
+	if (
+		! isObject( window._wca ) ||
+		! objectHasProp( window._wca, 'push' ) ||
+		typeof window._wca.push !== 'function'
+	) {
+		return;
+	}
+	const checkoutData = getSetting< Record< string, unknown > >(
+		'wc-blocks-jetpack-woocommerce-analytics_cart_checkout_info',
+		{}
+	);
+	window._wca.push( {
+		_en: 'woocommerceanalytics_cart_view',
+		products: JSON.stringify(
+			cart.items.map( ( item ) => {
+				return {
+					pp: item.totals.line_total,
+					pq: item.quantity,
+					pi: item.id,
+					pn: item.name,
+					pt: item.type,
+				};
+			} )
+		),
+		...checkoutData,
+	} );
+};
+
+const unsubscribe = subscribe( () => {
+	const store = select( CART_STORE_KEY );
+	const hasCartLoaded = store.hasFinishedResolution( 'getCartTotals' );
+	if ( hasCartLoaded ) {
+		unsubscribe();
+		maybeTrackCartPageView( store.getCartData() );
+		maybeTrackCheckoutPageView( store.getCartData() );
+	}
+}, CART_STORE_KEY );
 
 // Exporting to prevent TS error.
 export {};
