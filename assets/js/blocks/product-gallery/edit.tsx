@@ -79,10 +79,9 @@ export const Edit = ( {
 }: BlockEditProps< ProductGalleryAttributes > ) => {
 	const blockProps = useBlockProps();
 
-	// Update the Group block type when the thumbnailsPosition attribute changes.
-	updateGroupBlockType( attributes, clientId );
-
 	useEffect( () => {
+		// Update the Group block type when the thumbnailsPosition attribute changes.
+		updateGroupBlockType( attributes, clientId );
 		setAttributes( {
 			...attributes,
 			productGalleryClientId: clientId,
