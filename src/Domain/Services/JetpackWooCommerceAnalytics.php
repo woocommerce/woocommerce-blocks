@@ -90,7 +90,9 @@ class JetpackWooCommerceAnalytics {
 			return;
 		}
 		$asset_file = include dirname( __FILE__ ) . '/../../../build/wc-blocks-jetpack-woocommerce-analytics.asset.php';
-		$this->asset_api->register_script( 'wc-blocks-jetpack-woocommerce-analytics', 'build/wc-blocks-jetpack-woocommerce-analytics.js', array_merge( array( 'wc-blocks' ), $asset_file['dependencies'] ) );
+		if ( is_array( $asset_file['dependencies'] ) ) {
+			$this->asset_api->register_script( 'wc-blocks-jetpack-woocommerce-analytics', 'build/wc-blocks-jetpack-woocommerce-analytics.js', array_merge( array( 'wc-blocks' ), $asset_file['dependencies'] ) );
+		}
 	}
 
 	/**
