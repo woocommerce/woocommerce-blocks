@@ -5,6 +5,7 @@ use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\BlockTemplatesController;
 use Automattic\WooCommerce\Blocks\Package;
+use WC_Tracks;
 
 /**
  * Service class to integrate Blocks with the Jetpack WooCommerce Analytics extension,
@@ -57,6 +58,7 @@ class JetpackWooCommerceAnalytics {
 	public function init() {
 		add_action( 'init', array( $this, 'check_compatibility' ) );
 		add_action( 'init', array( $this, 'init_if_compatible' ), 20 );
+		add_action( 'rest_pre_serve_request', array( $this, 'track_local_pickup' ), 10, 4 );
 	}
 
 	/**
@@ -333,5 +335,44 @@ class JetpackWooCommerceAnalytics {
 			$additional_blocks[] = $block['blockName'];
 		}
 		return $additional_blocks;
+	}
+
+	public function track_local_pickup( $served, $result, $request, $server ) {
+		if ( $request->get_route() !== '/wp/v2/settings' ) {
+			return $served;
+		}
+		// Param name here comes from the show_in_rest['name'] value when registering the setting.
+		if ( ! $request->get_param( 'pickup_location_settings' ) && ! $request->get_param( 'pickup_locations' ) ) {
+			return $served;
+		}
+
+		if ( ! $this->is_compatible ) {
+			return $served;
+		}
+
+		$event_name = 'wcadmin_local_pickup_save_changes';
+
+		$settings  = $request->get_param( 'pickup_location_settings' );
+		$locations = $request->get_param( 'pickup_locations' );
+
+		$data = array(
+			'local_pickup_enabled'     => $settings['enabled'] === 'yes' ? true : false,
+			'title'                    => $settings['title'],
+			'price'                    => $settings['cost'] === '',
+			'cost'                     => $settings['cost'] === '' ? 0 : $settings['cost'],
+			'taxes'                    => $settings['tax_status'],
+			'total_pickup_locations'   => count( $locations ),
+			'pickup_locations_enabled' => count(
+				array_filter(
+					$locations,
+					function( $location ) {
+						return $location['enabled'] === 'yes'; }
+				)
+			),
+		);
+
+		WC_Tracks::record_event( $event_name, $data );
+
+		return $served;
 	}
 }
