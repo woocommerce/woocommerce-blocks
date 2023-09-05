@@ -75,7 +75,10 @@ export const maybeTrackCheckoutPageView = ( cart: Cart ) => {
 	if ( ! objectHasProp( storePages, 'checkout' ) ) {
 		return;
 	}
-	if ( storePages?.checkout?.permalink !== window.location.href ) {
+	if (
+		cleanUrl( storePages?.checkout?.permalink ) !==
+		cleanUrl( window.location.href )
+	) {
 		return;
 	}
 
@@ -111,7 +114,10 @@ export const maybeTrackCartPageView = ( cart: Cart ) => {
 	if ( ! objectHasProp( storePages, 'cart' ) ) {
 		return;
 	}
-	if ( storePages?.cart?.permalink !== window.location.href ) {
+	if (
+		cleanUrl( storePages?.cart?.permalink ) !==
+		cleanUrl( window.location.href )
+	) {
 		return;
 	}
 
