@@ -1,13 +1,7 @@
 /**
  * External dependencies
  */
-import { addAction } from '@wordpress/hooks';
 import { isObject, objectHasProp } from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
-import { actionPrefix, namespace } from './constants';
 
 declare global {
 	interface Window {
@@ -36,39 +30,11 @@ const isValidWCA = (
 
 const registerActions = (): void => {
 	if ( ! isValidWCA( window._wca ) ) {
+		// eslint-disable-next-line no-useless-return
 		return;
 	}
-	/**
-	 * Fired when selecting a payment method.
-	 *
-	 * @summary Track the payment method being set using set_checkout_option
-	 */
-	addAction(
-		`${ actionPrefix }-checkout-set-active-payment-method`,
-		namespace,
-		( { value: paymentMethodSlug }: { value: string } ): void => {
-			window._wca.push( {
-				_en: 'woocommerceanalytics_select_payment_method',
-				payment_method: paymentMethodSlug,
-			} );
-		}
-	);
 
-	/**
-	 * Fired when selecting a shipping rate.
-	 *
-	 * @summary Track the shipping rate being set using selectShippingRate
-	 */
-	addAction(
-		`${ actionPrefix }-checkout-set-selected-shipping-rate`,
-		namespace,
-		( { shippingRateId }: { shippingRateId: string } ): void => {
-			window._wca.push( {
-				_en: 'woocommerceanalytics_select_shipping_rate',
-				shipping_method: shippingRateId,
-			} );
-		}
-	);
+	// We will register actions here in a later PR.
 };
 
 document.addEventListener( 'DOMContentLoaded', () => {
