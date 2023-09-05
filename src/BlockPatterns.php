@@ -5,6 +5,7 @@ use Automattic\WooCommerce\Blocks\Domain\Package;
 
 /**
  * Registers patterns under the `./patterns/` directory.
+ * They can be directly in the folder or nested one level.
  * Each pattern is defined as a PHP file and defines its metadata using plugin-style headers.
  * The minimum required definition is:
  *
@@ -51,7 +52,7 @@ class BlockPatterns {
 	}
 
 	/**
-	 * Registers the block patterns and categories under `./patterns/`.
+	 * Registers the block patterns and categories under `./patterns/*.php` and `./patterns/**\/*.php`.
 	 */
 	public function register_block_patterns() {
 		if ( ! class_exists( 'WP_Block_Patterns_Registry' ) ) {
@@ -73,7 +74,7 @@ class BlockPatterns {
 			return;
 		}
 
-		$files = glob( $this->patterns_path . '/*.php' );
+		$files = glob( $this->patterns_path . '/{,*/}*.php', GLOB_BRACE );
 		if ( ! $files ) {
 			return;
 		}
