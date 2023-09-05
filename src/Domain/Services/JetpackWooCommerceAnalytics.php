@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\Blocks\Domain\Services;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
 use Automattic\WooCommerce\Blocks\BlockTemplatesController;
+use Automattic\WooCommerce\Blocks\Package;
 
 /**
  * Service class to integrate Blocks with the Jetpack WooCommerce Analytics extension,
@@ -89,7 +90,7 @@ class JetpackWooCommerceAnalytics {
 		if ( ! $this->is_compatible ) {
 			return;
 		}
-		$asset_file = include dirname( __FILE__ ) . '/../../../build/wc-blocks-jetpack-woocommerce-analytics.asset.php';
+		$asset_file = include Package::get_path() . 'build/wc-blocks-jetpack-woocommerce-analytics.asset.php';
 		if ( is_array( $asset_file['dependencies'] ) ) {
 			$this->asset_api->register_script( 'wc-blocks-jetpack-woocommerce-analytics', 'build/wc-blocks-jetpack-woocommerce-analytics.js', array_merge( array( 'wc-blocks' ), $asset_file['dependencies'] ) );
 		}
