@@ -52,12 +52,6 @@ class BlockTemplateMigrationUtils {
 		}
 
 		$template_content = self::get_default_template( $template_slug );
-
-		// If at this point we have no content to migrate, bail.
-		if ( ! $template_content ) {
-			return self::set_has_migrated_page( $template_slug, 'no-content' );
-		}
-
 		if ( self::create_custom_template( $block_template, $template_content ) ) {
 			return self::set_has_migrated_page( $template_slug );
 		}
