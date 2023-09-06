@@ -8,9 +8,10 @@
 
 		a {
 			margin-right: $gap;
-		}
-		a.has-link-color {
-			color: inherit;
+
+			&.has-link-color {
+				color: inherit;
+			}
 		}
 	}
 }
