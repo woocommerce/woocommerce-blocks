@@ -13,7 +13,15 @@
 	"supports": {
 		"multiple": false,
 		"align": [ "wide", "full" ],
-		"html": false
+		"html": false,
+		"spacing": {
+			"padding": true,
+			"margin": true,
+			"__experimentalDefaultControls": {
+				"margin": false,
+				"padding": false
+			}
+		}
 	},
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
