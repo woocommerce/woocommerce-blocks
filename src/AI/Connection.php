@@ -49,10 +49,15 @@ class Connection {
 	 */
 	public function get_jwt_token() {
 		if ( ! class_exists( 'Jetpack_Options' ) ) {
-			return new \WP_Error( 'no-jetpack-options', 'No Jetpack_Options class found' );
+			return new \WP_Error( 'jwt-token-generation-error', esc_html__( 'Failed to generate JWT token: try again later.', 'woo-gutenberg-products-block' ) );
 		}
 
 		$site_id = \Jetpack_Options::get_option( 'id' );
+
+		if ( ! $site_id ) {
+			return new \WP_Error( 'jwt-token-generation-error', esc_html__( 'Failed to generate JWT token: Make sure you enabled the AI integration for your site.', 'woo-gutenberg-products-block' ) );
+		}
+
 		$request = Client::wpcom_json_api_request_as_user(
 			sprintf( '/sites/%d/jetpack-openai-query/jwt', $site_id ),
 			'2',
@@ -65,7 +70,7 @@ class Connection {
 		$response = json_decode( wp_remote_retrieve_body( $request ) );
 
 		if ( $response instanceof \WP_Error ) {
-			return new \WP_Error( $response->get_error_code(), esc_html__( 'Failed to generate JWT token', 'woo-gutenberg-products-block' ), $response->get_error_message() );
+			return new \WP_Error( $response->get_error_code(), esc_html__( 'Failed to generate the JWT token', 'woo-gutenberg-products-block' ), $response->get_error_message() );
 		}
 
 		if ( ! isset( $response->token ) ) {
