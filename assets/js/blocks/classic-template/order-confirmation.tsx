@@ -34,20 +34,27 @@ const getBlockifiedTemplate = ( inheritedAttributes: InheritedAttributes ) =>
 			'woocommerce/order-confirmation-downloads-wrapper',
 			inheritedAttributes
 		),
-		createBlock( 'core/columns', inheritedAttributes, [
-			createBlock( 'core/column', inheritedAttributes, [
-				createBlock(
-					'woocommerce/order-confirmation-shipping-wrapper',
-					inheritedAttributes
-				),
-			] ),
-			createBlock( 'core/column', inheritedAttributes, [
-				createBlock(
-					'woocommerce/order-confirmation-billing-wrapper',
-					inheritedAttributes
-				),
-			] ),
-		] ),
+		createBlock(
+			'core/columns',
+			{
+				...inheritedAttributes,
+				className: 'woocommerce-order-confirmation-address-wrapper',
+			},
+			[
+				createBlock( 'core/column', inheritedAttributes, [
+					createBlock(
+						'woocommerce/order-confirmation-shipping-wrapper',
+						inheritedAttributes
+					),
+				] ),
+				createBlock( 'core/column', inheritedAttributes, [
+					createBlock(
+						'woocommerce/order-confirmation-billing-wrapper',
+						inheritedAttributes
+					),
+				] ),
+			]
+		),
 	].filter( Boolean ) as BlockInstance[];
 
 const onClickCallback = ( {
