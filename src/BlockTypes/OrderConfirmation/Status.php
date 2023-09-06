@@ -17,6 +17,39 @@ class Status extends AbstractOrderConfirmationBlock {
 	protected $block_name = 'order-confirmation-status';
 
 	/**
+	 * This block uses a custom render method so that the email verification form can be appended to the block. This does
+	 * not inherit styles from the parent block.
+	 *
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content Block content.
+	 * @param WP_Block $block Block instance.
+	 *
+	 * @return string | void Rendered block output.
+	 */
+	protected function render( $attributes, $content, $block ) {
+		$order     = $this->get_order();
+		$classname = $attributes['className'] ?? '';
+
+		if ( isset( $attributes['align'] ) ) {
+			$classname .= " align{$attributes['align']}";
+		}
+
+		$block = parent::render( $attributes, $content, $block );
+
+		if ( ! $block ) {
+			return '';
+		}
+
+		$additional_content = $this->render_confirmation_notice( $order );
+
+		return $additional_content ? $block . sprintf(
+			'<div class="wc-block-order-confirmation-status-description %1$s">%2$s</div>',
+			esc_attr( trim( $classname ) ),
+			$additional_content
+		) : $block;
+	}
+
+	/**
 	 * This renders the content of the block within the wrapper.
 	 *
 	 * @param \WC_Order $order Order object.
@@ -111,5 +144,93 @@ class Status extends AbstractOrderConfirmationBlock {
 	protected function render_content_fallback() {
 		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 		return '<p>' . esc_html__( 'Please check your email for the order confirmation.', 'woo-gutenberg-products-block' ) . '</p>';
+	}
+
+	/**
+	 * If the order is invalid or there is no permission to view the details, tell the user to check email or log-in.
+	 *
+	 * @param \WC_Order|null $order Order object.
+	 * @return string
+	 */
+	protected function render_confirmation_notice( $order = null ) {
+		if ( ! $order ) {
+			$content = '<p>' . esc_html__( 'If you\'ve just placed an order, give your email a quick check for the confirmation.', 'woo-gutenberg-products-block' );
+
+			if ( wc_get_page_permalink( 'myaccount' ) ) {
+				$content .= ' ' . sprintf(
+					/* translators: 1: opening a link tag 2: closing a link tag */
+					esc_html__( 'Have an account with us? %1$sLog in here to view your order details%2$s.', 'woo-gutenberg-products-block' ),
+					'<a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="button">',
+					'</a>'
+				);
+			}
+
+			$content .= '</p>';
+
+			return $content;
+		}
+
+		$permission = $this->get_view_order_permissions( $order );
+
+		if ( $permission ) {
+			return '';
+		}
+
+		$verification_required  = $this->email_verification_required( $order );
+		$verification_permitted = $this->email_verification_permitted( $order );
+		$my_account_page        = wc_get_page_permalink( 'myaccount' );
+
+		$content  = '<p>';
+		$content .= esc_html__( 'Great news! Your order has been received, and a confirmation will be sent to your email address.', 'woo-gutenberg-products-block' );
+		$content .= $my_account_page ? ' ' . sprintf(
+			/* translators: 1: opening a link tag 2: closing a link tag */
+			esc_html__( 'Have an account with us? %1$sLog in here%2$s to view your order.', 'woo-gutenberg-products-block' ),
+			'<a href="' . esc_url( $my_account_page ) . '" class="button">',
+			'</a>'
+		) : '';
+
+		if ( $verification_required && $verification_permitted ) {
+			$content .= ' ' . esc_html__( 'Alternatively, confirm the email address linked to the order below.', 'woo-gutenberg-products-block' );
+		}
+
+		$content .= '</p>';
+
+		if ( $verification_required && $verification_permitted ) {
+			$content .= $this->render_verification_form();
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Email verification for guest users.
+	 *
+	 * @return string
+	 */
+	protected function render_verification_form() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$check_submission_notice = ! empty( $_POST ) ? wc_print_notice( esc_html__( 'We were unable to verify the email address you provided. Please try again.', 'woo-gutenberg-products-block' ), 'error', [], true ) : '';
+
+		return '<form method="post" class="woocommerce-form woocommerce-verify-email">' .
+			$check_submission_notice .
+			sprintf(
+				'<p class="form-row verify-email">
+					<label for="%1$s">%2$s</label>
+					<input type="email" name="email" id="%1$s" autocomplete="email" class="input-text" required />
+				</p>',
+				esc_attr( 'verify-email' ),
+				esc_html__( 'Email address', 'woo-gutenberg-products-block' ) . '&nbsp;<span class="required">*</span>'
+			) .
+			sprintf(
+				'<p class="form-row login-submit">
+					<input type="submit" name="wp-submit" id="%1$s" class="button button-primary %4$s" value="%2$s" />
+					%3$s
+				</p>',
+				esc_attr( 'verify-email-submit' ),
+				esc_html__( 'Confirm email and view order', 'woo-gutenberg-products-block' ),
+				wp_nonce_field( 'wc_verify_email', 'check_submission', true, false ),
+				esc_attr( wc_wp_theme_get_element_class_name( 'button' ) )
+			) .
+			'</form>';
 	}
 }
