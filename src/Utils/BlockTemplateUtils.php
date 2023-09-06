@@ -354,7 +354,7 @@ class BlockTemplateUtils {
 			),
 			OrderConfirmationTemplate::get_slug() => array(
 				'title'       => _x( 'Order Confirmation', 'Template name', 'woo-gutenberg-products-block' ),
-				'description' => __( 'The Order Confirmation template serves as a receipt and confirmation of a successful purchase. It includes a summary of the ordered items, shipping, and totals.', 'woo-gutenberg-products-block' ),
+				'description' => __( 'The Order Confirmation template serves as a receipt and confirmation of a successful purchase. It includes a summary of the ordered items, shipping, billing, and totals.', 'woo-gutenberg-products-block' ),
 			),
 		);
 	}
