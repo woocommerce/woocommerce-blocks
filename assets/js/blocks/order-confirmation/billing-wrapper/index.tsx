@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { registerBlockType, type BlockConfiguration } from '@wordpress/blocks';
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import { InnerBlocks } from '@wordpress/block-editor';
 import { Icon, mapMarker } from '@wordpress/icons';
 
 /**
@@ -25,11 +25,7 @@ registerBlockType(
 		},
 		edit,
 		save() {
-			return (
-				<div { ...useBlockProps.save() }>
-					<InnerBlocks.Content />
-				</div>
-			);
+			return <InnerBlocks.Content />;
 		},
 		attributes,
 	} as unknown as Partial< BlockConfiguration >
