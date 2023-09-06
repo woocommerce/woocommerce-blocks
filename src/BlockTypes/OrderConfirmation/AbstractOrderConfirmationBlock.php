@@ -46,7 +46,7 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 		return $block_content ? sprintf(
 			'<div class="wc-block-%5$s %1$s %2$s" style="%3$s">%4$s</div>',
 			esc_attr( $classes_and_styles['classes'] ),
-			esc_attr( $classname ),
+			esc_attr( trim( $classname ) ),
 			esc_attr( $classes_and_styles['styles'] ),
 			$block_content,
 			esc_attr( $this->block_name )
