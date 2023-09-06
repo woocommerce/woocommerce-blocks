@@ -15,13 +15,8 @@ class ProductGallery extends AbstractBlock {
 	protected $block_name = 'product-gallery';
 
 	/**
-	 * Get the frontend style handle for this block type.
-	 *
-	 * @return null
+	 * It isn't necessary register block assets because it is a server side block.
 	 */
-	protected function get_block_type_style() {
-		return null;
-	}
 
 	/**
 	 * Include and render the block.
@@ -32,17 +27,17 @@ class ProductGallery extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$classname              = $attributes['className'] ?? '';
-		$wrapper_attributes     = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$html                   = sprintf(
+		// This is a temporary solution. We have to refactor this code when the block will have to be addable on every page/post.
+		global $product;
+		$classname          = $attributes['className'] ?? '';
+		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
+		$html               = sprintf(
 			'<div data-wc-interactive %1$s>
 				%2$s
 			</div>',
 			$wrapper_attributes,
 			$content
 		);
-		$post_id                = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
-		$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'full', 'wp-block-woocommerce-product-gallery-large-image__image' );
 
 		$p = new \WP_HTML_Tag_Processor( $content );
 
@@ -53,16 +48,11 @@ class ProductGallery extends AbstractBlock {
 				wp_json_encode(
 					array(
 						'woocommerce' => array(
-							'productGallery' => array(
-								'activeProductGalleryImage' => array_key_first( $product_gallery_images ),
-								'numberOfThumbnails'   => 0,
-								'productGalleryImages' => $product_gallery_images,
-							),
+							'selectedImage' => $product->get_image_id(),
 						),
 					)
 				)
 			);
-			$p->set_attribute( 'data-wc-effect', 'effects.woocommerce.productGallery.updateProductGalleryLargeImage' );
 			$html = $p->get_updated_html();
 		}
 

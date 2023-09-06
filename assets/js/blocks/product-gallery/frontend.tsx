@@ -9,20 +9,14 @@ interface State {
 
 interface Context {
 	woocommerce: {
-		productGallery: {
-			numberOfThumbnails: number;
-			activeProductGalleryImage: number;
-			productGalleryImages: string[];
-		};
-		productGalleryThumbnailId?: number;
+		selectedImage: string;
+		imageId: string;
 	};
 }
 
 interface Selectors {
 	woocommerce: {
-		productGallery: {
-			numberOfPages: ( store: unknown ) => number;
-		};
+		isSelected: ( store: unknown ) => boolean;
 	};
 }
 
@@ -47,59 +41,30 @@ interface Effects {
 
 interface Store {
 	state: State;
-	context?: Context;
+	context: Context;
 	selectors: Selectors;
 	actions: Actions;
 	effects: Effects;
 	ref?: HTMLElement;
 }
 
-type SelectorsStore = Pick<
-	Store,
-	'state' | 'context' | 'selectors' | 'actions' | 'effects' | 'ref'
->;
-
 interactivityApiStore( {
 	state: {},
 	selectors: {
 		woocommerce: {
-			productGallery: {
-				numberOfPages: ( store: SelectorsStore ) => {
-					const { context } = store;
-
-					return context.woocommerce.productGallery
-						.numberOfThumbnails;
-				},
+			isSelected: ( { context }: Store ) => {
+				return (
+					context?.woocommerce.selectedImage ===
+					context?.woocommerce.imageId
+				);
 			},
 		},
 	},
 	actions: {
 		woocommerce: {
-			productGallery: {
-				updateActiveProductGalleryImage: ( { context } ) => {
-					context.woocommerce.productGallery.activeProductGalleryImage =
-						context.productGalleryThumbnailId;
-				},
+			handleClick: ( { context }: Store ) => {
+				context.woocommerce.selectedImage = context.woocommerce.imageId;
 			},
 		},
 	},
-	effects: {
-		woocommerce: {
-			productGallery: {
-				updateProductGalleryLargeImage: ( { context, ref } ) => {
-					const activeImage =
-						context.woocommerce.productGallery
-							.activeProductGalleryImage;
-					const activeImageMarkup =
-						context.woocommerce.productGallery.productGalleryImages[
-							activeImage
-						];
-
-					ref.querySelector(
-						'.wp-block-woocommerce-product-gallery-large-image__image'
-					).outerHTML = activeImageMarkup;
-				},
-			},
-		},
-	},
-} as Store );
+} );

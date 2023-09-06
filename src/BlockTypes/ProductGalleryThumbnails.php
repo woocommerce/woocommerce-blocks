@@ -56,12 +56,12 @@ class ProductGalleryThumbnails extends AbstractBlock {
 
 			if ( $product ) {
 				$post_thumbnail_id      = $product->get_image_id();
-				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail' );
+				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail', array() );
 				if ( $product_gallery_images && $post_thumbnail_id ) {
 					$number_of_thumbnails = isset( $block->context['thumbnailsNumberOfThumbnails'] ) ? $block->context['thumbnailsNumberOfThumbnails'] : 3;
 					$thumbnails_count     = 1;
 
-					foreach ( $product_gallery_images as $product_gallery_image_id => $product_gallery_image_html ) {
+					foreach ( $product_gallery_images as $product_gallery_image_html ) {
 						if ( $thumbnails_count > $number_of_thumbnails ) {
 							break;
 						}
@@ -73,12 +73,9 @@ class ProductGalleryThumbnails extends AbstractBlock {
 						if ( $processor->next_tag() ) {
 							$processor->set_attribute(
 								'data-wc-on--click',
-								'actions.woocommerce.productGallery.updateActiveProductGalleryImage'
+								'actions.woocommerce.handleClick'
 							);
-							$processor->set_attribute(
-								'data-wc-context',
-								wp_json_encode( array( 'productGalleryThumbnailId' => $product_gallery_image_id ) )
-							);
+
 							$html .= $processor->get_updated_html();
 						}
 
@@ -89,7 +86,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 				}
 
 				return sprintf(
-					'<div class="wc-block-components-product-gallery-thumbnails %1$s" style="%2$s">
+					'<div class="wc-block-components-product-gallery-thumbnails wp-block-woocommerce-product-gallery-thumbnails %1$s" style="%2$s">
 						%3$s
 					</div>',
 					esc_attr( $classes_and_styles['classes'] ),
