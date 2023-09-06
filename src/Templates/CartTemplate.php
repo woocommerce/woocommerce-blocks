@@ -23,7 +23,7 @@ class CartTemplate extends AbstractPageTemplate {
 	 *
 	 * @return \WP_Post|null Post object or null.
 	 */
-	public static function get_placeholder_page() {
+	protected function get_placeholder_page() {
 		$page_id = wc_get_page_id( 'cart' );
 		return $page_id ? get_post( $page_id ) : null;
 	}

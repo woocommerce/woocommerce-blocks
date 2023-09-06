@@ -38,7 +38,7 @@ abstract class AbstractPageTemplate {
 	 *
 	 * @return \WP_Post|null Post object or null.
 	 */
-	abstract public static function get_placeholder_page();
+	abstract protected function get_placeholder_page();
 
 	/**
 	 * Should return true on pages/endpoints/routes where the template should be shown.

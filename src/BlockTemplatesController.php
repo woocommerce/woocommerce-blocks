@@ -770,10 +770,10 @@ class BlockTemplatesController {
 		}
 
 		if ( ! BlockTemplateMigrationUtils::has_migrated_page( 'cart' ) ) {
-			BlockTemplateMigrationUtils::migrate_page( 'cart', CartTemplate::get_placeholder_page() );
+			BlockTemplateMigrationUtils::migrate_page( 'cart' );
 		}
 		if ( ! BlockTemplateMigrationUtils::has_migrated_page( 'checkout' ) ) {
-			BlockTemplateMigrationUtils::migrate_page( 'checkout', CheckoutTemplate::get_placeholder_page() );
+			BlockTemplateMigrationUtils::migrate_page( 'checkout' );
 		}
 	}
 }
