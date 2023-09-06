@@ -34,7 +34,7 @@ class Status extends AbstractOrderConfirmationBlock {
 		$content = $this->get_hook_content( 'woocommerce_before_thankyou', [ $order ] );
 		$status  = $order->get_status();
 
-		// Unlike the core handling, this includes some extra messaging for completed orders to the text is appropriate for other order statuses.
+		// Unlike the core handling, this includes some extra messaging for completed orders so the text is appropriate for other order statuses.
 		switch ( $status ) {
 			case 'cancelled':
 				$content .= '<p>' . wp_kses_post(
