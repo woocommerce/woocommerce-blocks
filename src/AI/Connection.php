@@ -2,6 +2,8 @@
 
 namespace Automattic\WooCommerce\Blocks\AI;
 
+use Automattic\Jetpack\Connection\Client;
+
 /**
  * Class Connection
  */
@@ -14,7 +16,7 @@ class Connection {
 	 *
 	 * @return string
 	 */
-	public function prompt_ai( $prompt ) {
+	public function post_request( $prompt ) {
 		$api_url = 'https://public-api.wordpress.com/wpcom/v2/text-completion';
 		$token   = $this->get_jwt_token();
 
@@ -43,7 +45,7 @@ class Connection {
 	/**
 	 * Fetch the JWT token.
 	 *
-	 * @return array|\Automattic\Jetpack\Connection\WP_Error|\WP_Error
+	 * @return string|\WP_Error The JWT token or a WP_Error object.
 	 */
 	public function get_jwt_token() {
 		if ( ! class_exists( 'Jetpack_Options' ) ) {
@@ -51,27 +53,25 @@ class Connection {
 		}
 
 		$site_id = \Jetpack_Options::get_option( 'id' );
-
-		$response = \Automattic\Jetpack\Connection\Client::wpcom_json_api_request_as_user(
-			"/sites/$site_id/jetpack-openai-query/jwt",
+		$request = Client::wpcom_json_api_request_as_user(
+			sprintf( '/sites/%d/jetpack-openai-query/jwt', $site_id ),
 			'2',
 			array(
 				'method'  => 'POST',
 				'headers' => array( 'Content-Type' => 'application/json; charset=utf-8' ),
-			),
-			wp_json_encode( array() )
+			)
 		);
 
-		if ( is_wp_error( $response ) ) {
-			return $response;
+		$response = json_decode( wp_remote_retrieve_body( $request ) );
+
+		if ( $response instanceof \WP_Error ) {
+			return new \WP_Error( $response->get_error_code(), esc_html__( 'Failed to generate JWT token', 'woo-gutenberg-products-block' ), $response->get_error_message() );
 		}
 
-		$json = json_decode( wp_remote_retrieve_body( $response ) );
-
-		if ( ! isset( $json->token ) ) {
-			return new \WP_Error( 'no-token', 'No token returned from WPCOM' );
+		if ( ! isset( $response->token ) ) {
+			return new \WP_Error( $response->code, esc_html__( 'Failed to retrieve the JWT token: Try again later.', 'woo-gutenberg-products-block' ), $response->data );
 		}
 
-		return $json->token;
+		return $response->token;
 	}
 }
