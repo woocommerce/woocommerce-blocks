@@ -40,6 +40,12 @@ class BlockTemplateMigrationUtils {
 			return;
 		}
 
+		// Skip migration if the theme has a template file for this page.
+		$theme_template = BlockTemplateUtils::get_block_template( get_stylesheet() . '//page-' . $template_slug, 'wp_template' );
+		if ( $theme_template ) {
+			return self::set_has_migrated_page( $template_slug, 'theme-file-exists' );
+		}
+
 		// If a custom template is present already, no need to migrate.
 		if ( $block_template->wp_id ) {
 			return self::set_has_migrated_page( $template_slug, 'custom-template-exists' );
