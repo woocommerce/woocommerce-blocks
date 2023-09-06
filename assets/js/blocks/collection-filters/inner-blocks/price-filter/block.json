@@ -14,5 +14,15 @@
 	"ancestor": [ "woocommerce/product-collection" ],
 	"supports": {
 		"interactivity": true
+	},
+	"attributes": {
+		"showInputFields": {
+			"type": "boolean",
+			"default": true
+		},
+		"inlineInput": {
+			"type": "boolean",
+			"default": false
+		}
 	}
 }

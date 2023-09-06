@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { HTMLElementEvent } from '@woocommerce/types';
+import { BlockEditProps } from '@wordpress/blocks';
 
 export interface PriceFilterState {
 	filters: {
@@ -24,6 +25,14 @@ export interface MouseActionProps extends InputActionProps {
 	event: InputActionProps[ 'event' ] & MouseEvent;
 }
 
-export type BlockProps = Partial< PriceFilterState[ 'filters' ] > & {
-	isEditor: boolean;
-};
+export interface BlockAttributes {
+	showInputFields: boolean;
+	inlineInput: boolean;
+}
+
+export type EditProps = BlockEditProps< BlockAttributes >;
+
+export type BlockProps = Partial< PriceFilterState[ 'filters' ] > &
+	BlockAttributes & {
+		isEditor?: boolean;
+	};
