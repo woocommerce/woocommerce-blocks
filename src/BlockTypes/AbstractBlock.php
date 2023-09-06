@@ -218,6 +218,7 @@ abstract class AbstractBlock {
 		 * case.
 		 */
 		if (
+			! is_admin() &&
 			! wc_current_theme_is_fse_theme() &&
 			$block_settings['style'] &&
 			(
