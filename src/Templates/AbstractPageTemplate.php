@@ -57,15 +57,6 @@ abstract class AbstractPageTemplate {
 	}
 
 	/**
-	 * Returns the URL to edit the template.
-	 *
-	 * @return string
-	 */
-	protected function get_edit_template_url() {
-		return admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2F' . $this->get_slug() );
-	}
-
-	/**
 	 * When the page should be displaying the template, add it to the hierarchy.
 	 *
 	 * This places the template name e.g. `cart`, at the beginning of the template hierarchy array. The hook priority
@@ -79,21 +70,6 @@ abstract class AbstractPageTemplate {
 			array_unshift( $templates, $this->get_slug() );
 		}
 		return $templates;
-	}
-
-	/**
-	 * Redirect the edit page screen to the template editor.
-	 *
-	 * @param \WP_Screen $current_screen Current screen information.
-	 */
-	public function page_template_editor_redirect( \WP_Screen $current_screen ) {
-		$page         = $this->get_placeholder_page();
-		$edit_page_id = 'page' === $current_screen->id && ! empty( $_GET['post'] ) ? absint( $_GET['post'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
-		if ( $page && $edit_page_id === $page->ID ) {
-			wp_safe_redirect( $this->get_edit_template_url() );
-			exit;
-		}
 	}
 
 	/**
