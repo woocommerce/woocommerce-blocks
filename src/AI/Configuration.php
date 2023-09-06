@@ -17,16 +17,54 @@ class Configuration {
 	 * @var string
 	 */
 	private $consent_option_name = 'woocommerce_blocks_allow_ai_connection';
+	/**
+	 * The Jetpack connection manager.
+	 *
+	 * @var Manager
+	 */
+	private $manager;
+	/**
+	 * The Jetpack configuration.
+	 *
+	 * @var Config
+	 */
+	private $config;
 
 	/**
-	 * Register and Connect the site & user with Jetpack.
+	 * Inject dependencies.
+	 *
+	 * @param  Manager $manager The Jetpack connection manager.
+	 * @param  Config  $config The Jetpack configuration.
+	 */
+	public function __construct( $manager, $config ) {
+		$this->manager = $manager;
+		$this->config  = $config;
+	}
+
+	/**
+	 * Initialize the site and user connection and registration.
+	 *
+	 * @return bool|\WP_Error
+	 */
+	public function init() {
+		if ( ! $this->should_connect() ) {
+			return false;
+		}
+
+		$this->enable_connection_feature();
+
+		return $this->register_and_connect();
+	}
+
+	/**
+	 * Verify if the site should connect to Jetpack.
 	 *
 	 * @return bool
 	 */
-	public function init() {
-		$this->enable_connection_feature();
+	private function should_connect() {
+		$site_owner_consent = get_option( $this->consent_option_name );
 
-		return $this->register_site();
+		return $site_owner_consent && class_exists( 'Automattic\Jetpack\Connection\Utils' ) && class_exists( 'Automattic\Jetpack\Connection\Manager' );
 	}
 
 	/**
@@ -35,13 +73,7 @@ class Configuration {
 	 * @return void
 	 */
 	private function enable_connection_feature() {
-		$site_owner_consent = get_option( $this->consent_option_name );
-
-		if ( ! $site_owner_consent || ! class_exists( 'Automattic\Jetpack\Config' ) ) {
-			return;
-		}
-
-		( new Config() )->ensure(
+		$this->config->ensure(
 			'connection',
 			array(
 				'slug' => 'woocommerce/woocommerce-blocks',
@@ -55,33 +87,16 @@ class Configuration {
 	 *
 	 * @return bool|\WP_Error
 	 */
-	private function register_site() {
-		$site_owner_consent = get_option( $this->consent_option_name );
-
-		if (
-			! $site_owner_consent ||
-			! class_exists( 'Automattic\Jetpack\Connection\Utils' ) ||
-			! class_exists( 'Automattic\Jetpack\Connection\Manager' )
-		) {
-			return false;
-		}
-
+	private function register_and_connect() {
 		Utils::init_default_constants();
-
-		$manager = new Manager( 'woocommerce/woocommerce-blocks' );
 
 		$jetpack_id     = \Jetpack_Options::get_option( 'id' );
 		$jetpack_public = \Jetpack_Options::get_option( 'public' );
 
-		if ( $jetpack_id && $jetpack_public ) {
-			$register = true;
-		} else {
-			$register = $manager->register();
-		}
+		$register = $jetpack_id && $jetpack_public ? true : $this->manager->register();
 
-		if ( true === $register && ! $manager->is_user_connected() ) {
-			$manager->connect_user();
-
+		if ( true === $register && ! $this->manager->is_user_connected() ) {
+			$this->manager->connect_user();
 			return true;
 		}
 
@@ -94,10 +109,8 @@ class Configuration {
 	 * @return void
 	 */
 	private function unregister_site() {
-		$manager = new Manager( 'woocommerce/woocommerce-blocks' );
-
-		if ( $manager->is_connected() ) {
-			$manager->remove_connection();
+		if ( $this->manager->is_connected() ) {
+			$this->manager->remove_connection();
 		}
 	}
 }
