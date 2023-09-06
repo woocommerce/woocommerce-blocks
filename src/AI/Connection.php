@@ -52,7 +52,7 @@ class Connection {
 	 *
 	 * @return integer|\WP_Error The site ID or a WP_Error object.
 	 */
-	public function get_site_id() {
+	private function get_site_id() {
 		if ( ! class_exists( Jetpack_Options::class ) ) {
 			return new \WP_Error( 'site-id-error', esc_html__( 'Failed to fetch the site ID: try again later.', 'woo-gutenberg-products-block' ) );
 		}
