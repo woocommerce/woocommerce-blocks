@@ -23,18 +23,10 @@ class Configuration {
 	 *
 	 * @return bool
 	 */
-	public function register_and_connect() {
+	public function init() {
 		$this->enable_connection_feature();
 
-		$register = $this->register_site();
-
-		if ( is_wp_error( $register ) ) {
-			return false;
-		}
-
-		$this->connect_user();
-
-		return true;
+		return $this->register_site();
 	}
 
 	/**
@@ -78,7 +70,22 @@ class Configuration {
 
 		$manager = new Manager( 'woocommerce/woocommerce-blocks' );
 
-		return $manager->register();
+		$jetpack_id     = \Jetpack_Options::get_option( 'id' );
+		$jetpack_public = \Jetpack_Options::get_option( 'public' );
+
+		if ( $jetpack_id && $jetpack_public ) {
+			$register = true;
+		} else {
+			$register = $manager->register();
+		}
+
+		if ( true === $register && ! $manager->is_user_connected() ) {
+			$manager->connect_user();
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -92,20 +99,5 @@ class Configuration {
 		if ( $manager->is_connected() ) {
 			$manager->remove_connection();
 		}
-	}
-
-	/**
-	 * Connect the user.
-	 *
-	 * @return void
-	 */
-	private function connect_user() {
-		$manager = new Manager( 'woocommerce/woocommerce-blocks' );
-
-		if ( ! $manager->is_connected() || $manager->is_user_connected() ) {
-			return;
-		}
-
-		$manager->connect_user();
 	}
 }
