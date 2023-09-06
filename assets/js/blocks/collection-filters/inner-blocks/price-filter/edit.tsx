@@ -8,15 +8,14 @@ import { useCollectionData } from '@woocommerce/base-context/hooks';
  * Internal dependencies
  */
 import Block from './block';
-import { EditProps } from './types';
 import { getFormattedPrice } from './utils';
 
-const Edit = ( { context }: EditProps ) => {
+const Edit = () => {
 	const blockProps = useBlockProps();
 	const { results } = useCollectionData( {
 		queryPrices: true,
 		isEditor: true,
-		queryState: context.query,
+		queryState: {},
 	} );
 
 	const { minPrice, maxPrice } = getFormattedPrice( results );
