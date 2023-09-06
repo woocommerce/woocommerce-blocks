@@ -13,7 +13,7 @@
 		<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:50%">
 			<!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full">
-				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/crafting-pots.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a person making a clay pot.', 'woo-gutenberg-products-block' ); ?>" />
+				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/crafting-pots.png', dirname( __FILE__, 2 ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a person making a clay pot.', 'woo-gutenberg-products-block' ); ?>" />
 			</figure>
 			<!-- /wp:image -->
 		</div>
@@ -88,7 +88,7 @@
 		<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:52%">
 			<!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full">
-				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/hand-made-pots.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent clay pots.', 'woo-gutenberg-products-block' ); ?>" />
+				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/hand-made-pots.png', dirname( __FILE__, 2 ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent clay pots.', 'woo-gutenberg-products-block' ); ?>" />
 			</figure>
 			<!-- /wp:image -->
 		</div>

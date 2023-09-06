@@ -10,7 +10,7 @@
 <div class="wp-block-columns alignwide" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
 	<!-- wp:column {"width":"66.66%"} -->
 	<div class="wp-block-column" style="flex-basis:66.66%">
-		<!-- wp:media-text {"mediaPosition":"right","mediaId":1,"mediaLink":"<?php echo esc_url( plugins_url( 'images/pattern-placeholders/hand-guitar-finger-tshirt-clothing-rack.png', dirname( __FILE__ ) ) ); ?>","mediaType":"image","style":{"color":{"background":"#000000","text":"#ffffff"}}} -->
+		<!-- wp:media-text {"mediaPosition":"right","mediaId":1,"mediaLink":"<?php echo esc_url( plugins_url( 'images/pattern-placeholders/hand-guitar-finger-tshirt-clothing-rack.png', dirname( __FILE__, 2 ) ) ); ?>","mediaType":"image","style":{"color":{"background":"#000000","text":"#ffffff"}}} -->
 		<div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile has-text-color has-background" style="color:#ffffff;background-color:#000000">
 			<div class="wp-block-media-text__content">
 				<!-- wp:group {"style":{"spacing":{"margin":{"top":"20px","bottom":"20px"}}},"layout":{"type":"flex","orientation":"vertical"}} -->
@@ -36,7 +36,7 @@
 				<!-- /wp:group -->
 			</div>
 			<figure class="wp-block-media-text__media">
-				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/hand-guitar-finger-tshirt-clothing-rack.png', dirname( __FILE__ ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in a hero section.', 'woo-gutenberg-products-block' ); ?>" class="wp-image-1 size-full" />
+				<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/hand-guitar-finger-tshirt-clothing-rack.png', dirname( __FILE__, 2 ) ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in a hero section.', 'woo-gutenberg-products-block' ); ?>" class="wp-image-1 size-full" />
 			</figure>
 		</div>
 		<!-- /wp:media-text -->

@@ -32,7 +32,7 @@
 	<div class="wp-block-column">
 		<!-- wp:image {"align":"center","id":1,"sizeSlug":"full","linkDestination":"none"} -->
 		<figure class="wp-block-image aligncenter size-full">
-			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/table-floor-interior-atmosphere-living-room-furniture-square-lg.png', dirname( __FILE__ ) ) ); ?>" alt="" class="wp-image-1" />
+			<img src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/table-floor-interior-atmosphere-living-room-furniture-square-lg.png', dirname( __FILE__, 2 ) ) ); ?>" alt="" class="wp-image-1" />
 		</figure>
 		<!-- /wp:image -->
 	</div>
