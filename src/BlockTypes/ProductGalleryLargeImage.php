@@ -115,8 +115,8 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		);
 
 		if ( $context['hoverZoom'] ) {
-			$attributes['class']                     .= ' wc-block-woocommerce-product-gallery-large-image__image--hoverZoom';
-			$common_attributes['data-wc-bind--style'] = 'selectors.woocommerce.styles';
+			$attributes['class']              .= ' wc-block-woocommerce-product-gallery-large-image__image--hoverZoom';
+			$attributes['data-wc-bind--style'] = 'selectors.woocommerce.styles';
 		}
 
 		$main_images = ProductGalleryUtils::get_product_gallery_images(
