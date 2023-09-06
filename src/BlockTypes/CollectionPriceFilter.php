@@ -52,16 +52,29 @@ class CollectionPriceFilter extends AbstractBlock {
 			)
 		);
 
+		return $this->inject_interactivity_data( $content, $data, 'filters' );
+	}
+
+
+	/**
+	 * Injects the interactivity data into the block.
+	 * This is a temporary solution until we use Core Interactivity API.
+	 *
+	 * @param string $content The block content.
+	 * @param array  $state The state data.
+	 * @param string $namespace The namespace of the state data.
+	 */
+	protected function inject_interactivity_data( $content, $state, $namespace ) {
 		// Inject the dynamic data into the block.
 		$tags = new \WP_HTML_Tag_Processor( $content );
 
 		// Loop through all the tags and update the attributes.
 		while ( $tags->next_tag() ) {
 			foreach ( $tags->get_attribute_names_with_prefix( 'data-wc-bind--' ) as $attribute_name ) {
-				$attribute_value  = str_replace( 'state.filters.', '', $tags->get_attribute( $attribute_name ) );
+				$attribute_value  = str_replace( "state.{$namespace}.", '', $tags->get_attribute( $attribute_name ) );
 				$target_attribute = str_replace( 'data-wc-bind--', '', $attribute_name );
-				if ( in_array( $attribute_value, array_keys( $data ), true ) ) {
-					$tags->set_attribute( $target_attribute, $data[ $attribute_value ] );
+				if ( in_array( $attribute_value, array_keys( $state ), true ) ) {
+					$tags->set_attribute( $target_attribute, $state[ $attribute_value ] );
 				}
 			}
 		}
