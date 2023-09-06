@@ -1,15 +1,35 @@
 /**
  * External dependencies
  */
-import { test, expect } from '@woocommerce/e2e-playwright-utils';
+import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
 
-const permalink = '/checkout/order-received';
+/**
+ * Internal dependencies
+ */
+import { CheckoutPage } from '../checkout/checkout.page';
+import {
+	FREE_SHIPPING_NAME,
+	FREE_SHIPPING_PRICE,
+	SIMPLE_PHYSICAL_PRODUCT_NAME,
+} from '../checkout/constants';
+
+const test = base.extend< { pageObject: CheckoutPage } >( {
+	pageObject: async ( { page }, use ) => {
+		const pageObject = new CheckoutPage( {
+			page,
+		} );
+		await use( pageObject );
+	},
+} );
+
 const templatePath = 'woocommerce/woocommerce//order-confirmation';
 const templateType = 'wp_template';
 
-test.fixme( 'Test the order confirmation template', async () => {
-	// eslint-disable-next-line playwright/expect-expect
-	test( 'Template can be opened in the site editor', async ( {
+test.describe( 'Test the order confirmation template', async () => {
+	// These tests consistently fail due to the default content of the page--potentially the classic block is not being
+	// used after another test runs. Reenable this when we have a solution for this.
+	// eslint-disable-next-line playwright/no-skipped-test
+	test.skip( 'Template can be opened in the site editor', async ( {
 		page,
 		editorUtils,
 	} ) => {
@@ -35,6 +55,8 @@ test.fixme( 'Test the order confirmation template', async () => {
 		admin,
 		editor,
 		editorUtils,
+		frontendUtils,
+		pageObject,
 	} ) => {
 		await admin.visitSiteEditor( {
 			postId: templatePath,
@@ -46,7 +68,18 @@ test.fixme( 'Test the order confirmation template', async () => {
 			attributes: { content: 'Hello World' },
 		} );
 		await editor.saveSiteEditorEntities();
-		await page.goto( permalink, { waitUntil: 'commit' } );
+		await frontendUtils.emptyCart();
+		await frontendUtils.goToShop();
+		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
+		await frontendUtils.goToCheckout();
+		await expect(
+			await pageObject.selectAndVerifyShippingOption(
+				FREE_SHIPPING_NAME,
+				FREE_SHIPPING_PRICE
+			)
+		).toBe( true );
+		await pageObject.fillInCheckoutWithTestData();
+		await pageObject.placeOrder();
 
 		await expect( page.getByText( 'Hello World' ).first() ).toBeVisible();
 	} );
