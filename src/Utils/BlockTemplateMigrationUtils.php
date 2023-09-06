@@ -52,6 +52,7 @@ class BlockTemplateMigrationUtils {
 		}
 
 		$template_content = self::get_default_template( $template_slug );
+
 		if ( self::create_custom_template( $block_template, $template_content ) ) {
 			return self::set_has_migrated_page( $template_slug );
 		}
