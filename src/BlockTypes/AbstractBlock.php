@@ -212,9 +212,9 @@ abstract class AbstractBlock {
 		$metadata_path = $this->asset_api->get_block_metadata_path( $this->block_name );
 
 		/**
-		 * We want to load blocks style separatedly, always, for every themes.
+		 * We always want to load block styles separately, for every theme.
 		 * When the core assets are loaded separately, other blocks' styles get
-		 * enqueue separately too. Thus we only need to handle the remaining
+		 * enqueued separately too. Thus we only need to handle the remaining
 		 * case.
 		 */
 		if (
