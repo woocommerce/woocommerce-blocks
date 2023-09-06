@@ -69,7 +69,7 @@ class Connection {
 	/**
 	 * Fetch the JWT token.
 	 *
-	 * @return \WP_Error
+	 * @return string|\WP_Error The JWT token or a WP_Error object.
 	 */
 	private function get_jwt_token() {
 		$site_id = $this->get_site_id();
