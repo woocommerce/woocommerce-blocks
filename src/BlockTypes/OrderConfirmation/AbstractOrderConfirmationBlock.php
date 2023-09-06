@@ -161,7 +161,7 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 		$date_created              = $order->get_date_created();
 
 		// We do not need to verify the email address if we are within the grace period immediately following order creation.
-		if ( is_a( $date_created, WC_DateTime::class ) && time() - $date_created->getTimestamp() <= $verification_grace_period ) {
+		if ( is_a( $date_created, \WC_DateTime::class ) && time() - $date_created->getTimestamp() <= $verification_grace_period ) {
 			return false;
 		}
 
