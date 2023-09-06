@@ -1,0 +1,19 @@
+{
+	"name": "woocommerce/original-price",
+	"version": "1.0.0",
+	"icon": "info",
+	"title": "Original Price",
+	"description": "Display the original price for the product",
+	"supports": {
+		"color": {
+			"background": true,
+			"text": true
+		}
+	},
+	"category": "woocommerce",
+	"keywords": [ "WooCommerce" ],
+	"usesContext": ["woocommerce/withSuperScriptStyle", "woocommerce/isDescendentOfSingleProductTemplate", "postId"],
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"$schema": "https://schemas.wp.org/trunk/block.json"
+}

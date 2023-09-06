@@ -1,0 +1,8 @@
+.wp-block-woocommerce-product-price-v2 {
+	display: flex;
+
+	.wp-block-woocommerce-original-price,
+	.wp-block-woocommerce-current-price {
+		margin-right: $gap-smaller;
+	}
+}

@@ -18,15 +18,41 @@ import './style.scss';
 interface FormattedMonetaryAmountProps
 	extends Omit< NumberFormatProps, 'onValueChange' > {
 	className?: string;
-	displayType?: NumberFormatProps[ 'displayType' ];
 	allowNegative?: boolean;
 	isAllowed?: ( formattedValue: NumberFormatValues ) => boolean;
 	value: number | string; // Value of money amount.
 	currency: Currency | Record< string, never >; // Currency configuration object.
 	onValueChange?: ( unit: number ) => void; // Function to call when value changes.
 	style?: React.CSSProperties | undefined;
-	renderText?: ( value: string ) => JSX.Element;
+	renderText?: ( value: string ) => ReactElement | string;
+	withSuperScript?: boolean;
 }
+
+const applySuperscript =
+	( currency: FormattedMonetaryAmountProps[ 'currency' ] ) =>
+	( formattedValue: string ): ReactElement | string => {
+		if ( ! currency.decimalSeparator ) {
+			return formattedValue;
+		}
+		const pattern = new RegExp(
+			`^(.*)([${ currency.decimalSeparator }])(([^${ currency.decimalSeparator }]*))$`
+		);
+		const matches = formattedValue.match( pattern );
+		if ( ! matches ) {
+			return formattedValue;
+		}
+		return (
+			<>
+				<>{ matches[ 1 ] }</>
+				<span className="formatted-money-amount-superscript">
+					<span className="formatted-money-amount-separator">
+						${ currency.decimalSeparator }
+					</span>
+					{ matches[ 3 ] }
+				</span>
+			</>
+		);
+	};
 
 /**
  * Formats currency data into the expected format for NumberFormat.
@@ -44,12 +70,7 @@ const currencyToNumberFormat = (
 	};
 };
 
-type CustomFormattedMonetaryAmountProps = Omit<
-	FormattedMonetaryAmountProps,
-	'currency'
-> & {
-	currency: Currency | Record< string, never >;
-};
+const defaultRenderText = ( formattedAmount: string ) => formattedAmount;
 
 /**
  * FormattedMonetaryAmount component.
@@ -62,8 +83,10 @@ const FormattedMonetaryAmount = ( {
 	currency,
 	onValueChange,
 	displayType = 'text',
+	withSuperScript = false,
+	renderText,
 	...props
-}: CustomFormattedMonetaryAmountProps ): ReactElement | null => {
+}: FormattedMonetaryAmountProps ): JSX.Element | null => {
 	const value =
 		typeof rawValue === 'string' ? parseInt( rawValue, 10 ) : rawValue;
 
@@ -100,6 +123,12 @@ const FormattedMonetaryAmount = ( {
 		  }
 		: () => void 0;
 
+	if ( ! renderText ) {
+		renderText = withSuperScript
+			? applySuperscript( currency )
+			: defaultRenderText;
+	}
+
 	return (
 		<NumberFormat
 			className={ classes }
@@ -107,6 +136,7 @@ const FormattedMonetaryAmount = ( {
 			{ ...numberFormatProps }
 			value={ priceValue }
 			onValueChange={ onValueChangeWrapper }
+			renderText={ renderText }
 		/>
 	);
 };

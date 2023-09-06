@@ -219,6 +219,9 @@ final class BlockTypesController {
 			'ProductDetails',
 			'SingleProduct',
 			'StockFilter',
+			'ProductPriceDiscount',
+			'ProductPriceCurrentPrice',
+			'ProductPriceOriginalPrice',
 		];
 
 		$block_types = array_merge(

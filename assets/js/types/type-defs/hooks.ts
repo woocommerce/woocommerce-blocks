@@ -63,9 +63,10 @@ export interface StoreCart {
 }
 
 export type Query = {
-	catalog_visibility: 'catalog';
-	per_page: number;
-	page: number;
-	orderby: string;
-	order: string;
+	catalog_visibility?: 'catalog';
+	per_page?: number;
+	page?: number;
+	orderby?: string;
+	order?: string;
+	include?: string | number;
 };
