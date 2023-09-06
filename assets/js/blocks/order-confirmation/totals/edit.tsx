@@ -62,11 +62,13 @@ const Edit = (): JSX.Element => {
 								scope="row"
 								className="wc-block-order-confirmation-totals__product"
 							>
-								{ _x(
-									'Test Product',
-									'sample product name',
-									'woo-gutenberg-products-block'
-								) }
+								<a href="#link">
+									{ _x(
+										'Test Product',
+										'sample product name',
+										'woo-gutenberg-products-block'
+									) }
+								</a>
 								&nbsp;
 								<strong className="product-quantity">
 									&times;&nbsp;2
@@ -81,11 +83,13 @@ const Edit = (): JSX.Element => {
 								scope="row"
 								className="wc-block-order-confirmation-totals__product"
 							>
-								{ _x(
-									'Test Product',
-									'sample product name',
-									'woo-gutenberg-products-block'
-								) }
+								<a href="#link">
+									{ _x(
+										'Test Product',
+										'sample product name',
+										'woo-gutenberg-products-block'
+									) }
+								</a>
 								&nbsp;
 								<strong className="product-quantity">
 									&times;&nbsp;2
