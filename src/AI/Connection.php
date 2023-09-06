@@ -3,6 +3,7 @@
 namespace Automattic\WooCommerce\Blocks\AI;
 
 use Automattic\Jetpack\Connection\Client;
+use Jetpack_Options;
 
 /**
  * Class Connection
@@ -10,18 +11,22 @@ use Automattic\Jetpack\Connection\Client;
 class Connection {
 
 	/**
-	 * Send a POST request to the AI API.
+	 * The post request.
 	 *
-	 * @param string $prompt Prompt to send to the API.
+	 * @param string $prompt The prompt to send to the API.
+	 * @param int    $timeout The timeout for the request.
 	 *
-	 * @return string
+	 * @return mixed
 	 */
-	public function post_request( $prompt ) {
-		$api_url = 'https://public-api.wordpress.com/wpcom/v2/text-completion';
-		$token   = $this->get_jwt_token();
+	public function post_request( $prompt, $timeout = 15 ) {
+		$token = $this->get_jwt_token();
+
+		if ( $token instanceof \WP_Error ) {
+			return $token;
+		}
 
 		$response = wp_remote_post(
-			$api_url,
+			'https://public-api.wordpress.com/wpcom/v2/text-completion',
 			array(
 				'body'    =>
 					array(
@@ -29,33 +34,48 @@ class Connection {
 						'prompt'  => $prompt,
 						'token'   => $token,
 					),
-				'timeout' => 15,
+				'timeout' => $timeout,
 			)
 		);
 
 		if ( is_wp_error( $response ) ) {
-			return $response->get_error_message();
-		} else {
-			$body = wp_remote_retrieve_body( $response );
-
-			return json_decode( $body, true );
+			return new \WP_Error( $response->get_error_code(), esc_html__( 'Failed to connect with the AI endpoint: try again later.', 'woo-gutenberg-products-block' ), $response->get_error_message() );
 		}
+
+		$body = wp_remote_retrieve_body( $response );
+
+		return json_decode( $body, true );
+	}
+
+	/**
+	 * Return the site ID.
+	 *
+	 * @return integer|\WP_Error The site ID or a WP_Error object.
+	 */
+	public function get_site_id() {
+		if ( ! class_exists( Jetpack_Options::class ) ) {
+			return new \WP_Error( 'site-id-error', esc_html__( 'Failed to fetch the site ID: try again later.', 'woo-gutenberg-products-block' ) );
+		}
+
+		$site_id = Jetpack_Options::get_option( 'id' );
+
+		if ( ! $site_id ) {
+			return new \WP_Error( 'site-id-error', esc_html__( 'Failed to fetch the site ID: The site is not registered.', 'woo-gutenberg-products-block' ) );
+		}
+
+		return $site_id;
 	}
 
 	/**
 	 * Fetch the JWT token.
 	 *
-	 * @return string|\WP_Error The JWT token or a WP_Error object.
+	 * @return \WP_Error
 	 */
-	public function get_jwt_token() {
-		if ( ! class_exists( 'Jetpack_Options' ) ) {
-			return new \WP_Error( 'jwt-token-generation-error', esc_html__( 'Failed to generate JWT token: try again later.', 'woo-gutenberg-products-block' ) );
-		}
+	private function get_jwt_token() {
+		$site_id = $this->get_site_id();
 
-		$site_id = \Jetpack_Options::get_option( 'id' );
-
-		if ( ! $site_id ) {
-			return new \WP_Error( 'jwt-token-generation-error', esc_html__( 'Failed to generate JWT token: Make sure you enabled the AI integration for your site.', 'woo-gutenberg-products-block' ) );
+		if ( is_wp_error( $site_id ) ) {
+			return $site_id;
 		}
 
 		$request = Client::wpcom_json_api_request_as_user(
