@@ -16,19 +16,21 @@ const Edit = (): JSX.Element => {
 		className: 'wc-block-order-confirmation-totals',
 	} );
 
-	const borderStyles = ( ( {
+	const {
 		borderBottomColor,
 		borderLeftColor,
 		borderRightColor,
 		borderTopColor,
 		borderWidth,
-	} ) => ( {
+	} = blockProps.style;
+
+	const borderStyles = {
 		borderBottomColor,
 		borderLeftColor,
 		borderRightColor,
 		borderTopColor,
 		borderWidth,
-	} ) )( blockProps.style );
+	} as React.CSSProperties;
 
 	return (
 		<div { ...blockProps }>
