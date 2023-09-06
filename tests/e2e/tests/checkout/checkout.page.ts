@@ -222,4 +222,26 @@ export class CheckoutPage {
 		}
 		return await this.isShippingRateSelected( shippingName, shippingPrice );
 	}
+
+	async verifyOrderReceived() {
+		const OrderConfirmationStatus = this.page.locator(
+			'.wc-block-order-confirmation-status'
+		);
+		await expect( OrderConfirmationStatus ).toContainText( 'substring' );
+	}
+
+	async verifyOrderDetailsOnConfirmationPage() {
+		await expect(
+			this.page.locator( '.wc-block-order-confirmation-summary' )
+		).toBeVisible();
+		await expect(
+			this.page.locator( '.wc-block-order-confirmation-totals' )
+		).toBeVisible();
+		await expect(
+			this.page.locator( 'wc-block-order-confirmation-shipping-wrapper' )
+		).toBeVisible();
+		await expect(
+			this.page.locator( '.wc-block-order-confirmation-billing-wrapper' )
+		).toBeVisible();
+	}
 }
