@@ -60,6 +60,34 @@ class JetpackWooCommerceAnalytics {
 	}
 
 	/**
+	 * Gets product categories or varation attributes as a formatted concatenated string
+	 *
+	 * @param object $product WC_Product.
+	 * @return string
+	 */
+	public function get_product_categories_concatenated( $product ) {
+
+		if ( ! $product instanceof WC_Product ) {
+			return '';
+		}
+
+		$variation_data = $product->is_type( 'variation' ) ? wc_get_product_variation_attributes( $product->get_id() ) : '';
+		if ( is_array( $variation_data ) && ! empty( $variation_data ) ) {
+			$line = wc_get_formatted_variation( $variation_data, true );
+		} else {
+			$out        = array();
+			$categories = get_the_terms( $product->get_id(), 'product_cat' );
+			if ( $categories ) {
+				foreach ( $categories as $category ) {
+					$out[] = $category->name;
+				}
+			}
+			$line = implode( '/', $out );
+		}
+		return $line;
+	}
+
+	/**
 	 * Check compatibility with Jetpack WooCommerce Analytics.
 	 *
 	 * @return void
