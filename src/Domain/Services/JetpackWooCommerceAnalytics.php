@@ -104,6 +104,39 @@ class JetpackWooCommerceAnalytics {
 	}
 
 	/**
+	 * Save the order received page view event properties to the asset data registry. The front end will consume these
+	 * later.
+	 *
+	 * @param int $order_id The order ID.
+	 *
+	 * @return void
+	 */
+	public function output_order_received_page_view_properties( $order_id ) {
+		$order        = wc_get_order( $order_id );
+		$product_data = wp_json_encode(
+			array_map(
+				function( $item ) {
+					$product         = wc_get_product( $item->get_product_id() );
+					$product_details = $this->get_product_details( $product );
+					return array(
+						'pi' => $product_details['id'],
+						'pq' => $item->get_quantity(),
+						'pt' => $product_details['type'],
+						'pn' => $product_details['name'],
+						'pc' => $product_details['category'],
+						'pp' => $product_details['price'],
+					);
+				},
+				$order->get_items()
+			)
+		);
+
+		$properties             = $this->get_cart_checkout_info();
+		$properties['products'] = $product_data;
+		$this->asset_data_registry->add( 'wc-blocks-jetpack-woocommerce-analytics_order_received_properties', $properties );
+	}
+
+	/**
 	 * Check compatibility with Jetpack WooCommerce Analytics.
 	 *
 	 * @return void
@@ -125,6 +158,7 @@ class JetpackWooCommerceAnalytics {
 		$this->register_assets();
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_script_data' ) );
+		add_action( 'woocommerce_thankyou', array( $this, 'output_order_received_page_view_properties' ) );
 	}
 
 	/**
