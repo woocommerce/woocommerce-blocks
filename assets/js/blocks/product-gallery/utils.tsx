@@ -199,28 +199,3 @@ export const moveInnerBlocksToPosition = (
 		}
 	}
 };
-
-/**
- * Updates the type of group block based on provided attributes.
- *
- * @param {BlockAttributes} attributes - The attributes of the parent block.
- * @param {string}          clientId   - The clientId of the parent block.
- */
-export const updateGroupBlockType = (
-	attributes: BlockAttributes,
-	clientId: string
-): void => {
-	const block = select( 'core/block-editor' ).getBlock( clientId );
-	block?.innerBlocks.forEach( ( innerBlock ) => {
-		if ( innerBlock.name === 'core/group' ) {
-			updateBlockAttributes(
-				{
-					layout: getGroupLayoutAttributes(
-						attributes.thumbnailsPosition
-					),
-				},
-				innerBlock
-			);
-		}
-	} );
-};
