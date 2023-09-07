@@ -88,6 +88,22 @@ class JetpackWooCommerceAnalytics {
 	}
 
 	/**
+	 * Gather relevant product information. Taken from Jetpack WooCommerce Analytics Module.
+	 *
+	 * @param \WC_Product $product product.
+	 * @return array
+	 */
+	public function get_product_details( $product ) {
+		return array(
+			'id'       => $product->get_id(),
+			'name'     => $product->get_title(),
+			'category' => $this->get_product_categories_concatenated( $product ),
+			'price'    => $product->get_price(),
+			'type'     => $product->get_type(),
+		);
+	}
+
+	/**
 	 * Check compatibility with Jetpack WooCommerce Analytics.
 	 *
 	 * @return void
