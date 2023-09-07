@@ -249,4 +249,50 @@ export class EditorUtils {
 
 		await this.page.getByText( option ).click();
 	}
+
+	async closeWelcomeGuideModal() {
+		const isModalOpen = await this.page
+			.getByRole( 'dialog', { name: 'Welcome to the site editor' } )
+			.locator( 'div' )
+			.filter( {
+				hasText:
+					'Edit your siteDesign everything on your site — from the header right down to the',
+			} )
+			.nth( 2 )
+			.isVisible();
+
+		// eslint-disable-next-line playwright/no-conditional-in-test
+		if ( isModalOpen ) {
+			await this.page
+				.getByRole( 'button', { name: 'Get started' } )
+				.click();
+		}
+	}
+
+	async transformIntoBlocks() {
+		const isTransformedIntoBlocks = ! this.page
+			.frameLocator( 'iframe[name="editor-canvas"]' )
+			.getByRole( 'button', { name: 'Transform into blocks' } );
+
+		if ( ! isTransformedIntoBlocks ) {
+			await this.page
+				.frameLocator( 'iframe[name="editor-canvas"]' )
+				.getByRole( 'group' )
+				.click();
+			await this.page
+				.frameLocator( 'iframe[name="editor-canvas"]' )
+				.getByRole( 'button', { name: 'Transform into blocks' } )
+				.click();
+
+			// save changes
+			await this.page
+				.getByRole( 'region', { name: 'Editor top bar' } )
+				.getByRole( 'button', { name: 'Save' } )
+				.click();
+			await this.page
+				.getByRole( 'region', { name: 'Save panel' } )
+				.getByRole( 'button', { name: 'Save' } )
+				.click();
+		}
+	}
 }
