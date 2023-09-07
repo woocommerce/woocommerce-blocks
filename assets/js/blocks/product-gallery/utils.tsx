@@ -5,6 +5,11 @@ import { BlockAttributes, BlockInstance } from '@wordpress/blocks';
 import { select, dispatch } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import { ThumbnailsPosition } from './inner-blocks/product-gallery-thumbnails/constants';
+
+/**
  * Generates layout attributes based on the position of thumbnails.
  *
  * @param {string} thumbnailsPosition - The position of thumbnails ('bottom' or other values).
@@ -121,6 +126,23 @@ const findBlock = ( {
 	return undefined;
 };
 
+export const updateGroupBlockType = (
+	thumbnailsPosition: ThumbnailsPosition,
+	clientId: string
+): void => {
+	const block = select( 'core/block-editor' ).getBlock( clientId );
+	block?.innerBlocks.forEach( ( innerBlock ) => {
+		if ( innerBlock.name === 'core/group' ) {
+			updateBlockAttributes(
+				{
+					layout: getGroupLayoutAttributes( thumbnailsPosition ),
+				},
+				innerBlock
+			);
+		}
+	} );
+};
+
 /**
  * Moves inner blocks to a position based on provided attributes.
  *
@@ -174,6 +196,7 @@ export const moveInnerBlocksToPosition = (
 			} );
 
 			const { thumbnailsPosition } = attributes;
+			updateGroupBlockType( thumbnailsPosition, clientId );
 
 			if (
 				( ( thumbnailsPosition === 'bottom' ||
