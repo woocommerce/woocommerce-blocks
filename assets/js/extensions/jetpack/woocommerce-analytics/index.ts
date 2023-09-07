@@ -145,8 +145,28 @@ const maybeTrackCartPageView = ( cart: Cart ) => {
 	} );
 };
 
+const maybeTrackOrderReceivedPageView = () => {
+	const orderReceivedProps = getSetting(
+		'wc-blocks-jetpack-woocommerce-analytics_order_received_properties',
+		false
+	);
+	if ( ! orderReceivedProps || ! isValidWCA( window._wca ) ) {
+		return;
+	}
+	window._wca.push( {
+		_en: 'woocommerceanalytics_order_confirmation_view',
+		...orderReceivedProps,
+	} );
+};
+
 document.addEventListener( 'DOMContentLoaded', () => {
 	const store = select( CART_STORE_KEY );
+
+	// If the store doesn't load, we aren't on a cart/checkout block page, so maybe it's order received page.
+	if ( ! store ) {
+		maybeTrackOrderReceivedPageView();
+		return;
+	}
 	const hasCartLoaded = store.hasFinishedResolution( 'getCartTotals' );
 	if ( hasCartLoaded ) {
 		maybeTrackCartPageView( store.getCartData() );
