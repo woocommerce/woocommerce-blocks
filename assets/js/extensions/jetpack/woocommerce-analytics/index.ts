@@ -91,6 +91,8 @@ export const maybeTrackCheckoutPageView = ( cart: Cart ) => {
 	);
 	window._wca.push( {
 		_en: 'woocommerceanalytics_checkout_view',
+		products_count: cart.items.length,
+		order_value: cart.totals.total_price,
 		products: JSON.stringify(
 			cart.items.map( ( item ) => {
 				return {
@@ -126,6 +128,8 @@ export const maybeTrackCartPageView = ( cart: Cart ) => {
 	);
 	window._wca.push( {
 		_en: 'woocommerceanalytics_cart_view',
+		products_count: cart.items.length,
+		order_value: cart.totals.total_price,
 		products: JSON.stringify(
 			cart.items.map( ( item ) => {
 				return {
