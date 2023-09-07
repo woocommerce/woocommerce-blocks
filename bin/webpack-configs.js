@@ -26,6 +26,7 @@ const {
 	requestToExternal,
 	requestToHandle,
 	getProgressBarPluginConfig,
+	getCacheGroups,
 } = require( './webpack-helpers' );
 
 const isProduction = NODE_ENV === 'production';
@@ -124,12 +125,14 @@ woocommerce_blocks_env = ${ NODE_ENV }
 			} ),
 		],
 		optimization: {
-			chunkIds: 'named',
 			// Only concatenate modules in production, when not analyzing bundles.
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
+				cacheGroups: {
+					...getCacheGroups(),
+				},
 			},
 			minimizer: [
 				new TerserPlugin( {
@@ -222,11 +225,10 @@ const getMainConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
-			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
-				minSize: 0,
+				minSize: 200000,
 				automaticNameDelimiter: '--',
 				cacheGroups: {
 					commons: {
@@ -235,6 +237,7 @@ const getMainConfig = ( options = {} ) => {
 						chunks: 'all',
 						enforce: true,
 					},
+					...getCacheGroups(),
 				},
 			},
 			minimizer: [
@@ -366,11 +369,27 @@ const getFrontConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
-			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
+				minSize: 200000,
 				automaticNameDelimiter: '--',
+				cacheGroups: {
+					...getCacheGroups(),
+					'base-components': {
+						test: /\/assets\/js\/base\/components\//,
+						name( module, chunks, cacheGroupKey ) {
+							const moduleFileName = module
+								.identifier()
+								.split( '/' )
+								.reduceRight( ( item ) => item );
+							const allChunksNames = chunks
+								.map( ( item ) => item.name )
+								.join( '~' );
+							return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+						},
+					},
+				},
 			},
 			minimizer: [
 				new TerserPlugin( {
@@ -467,11 +486,13 @@ const getPaymentsConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
-			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
+				cacheGroups: {
+					...getCacheGroups(),
+				},
 			},
 			minimizer: [
 				new TerserPlugin( {
@@ -572,11 +593,13 @@ const getExtensionsConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
-			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
+				cacheGroups: {
+					...getCacheGroups(),
+				},
 			},
 			minimizer: [
 				new TerserPlugin( {
@@ -675,11 +698,13 @@ const getSiteEditorConfig = ( options = {} ) => {
 			],
 		},
 		optimization: {
-			chunkIds: 'named',
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
+				cacheGroups: {
+					...getCacheGroups(),
+				},
 			},
 			minimizer: [
 				new TerserPlugin( {
@@ -742,9 +767,7 @@ const getStylingConfig = ( options = {} ) => {
 			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		optimization: {
-			chunkIds: 'named',
 			splitChunks: {
-				minSize: 0,
 				automaticNameDelimiter: '--',
 				cacheGroups: {
 					editorStyle: {
@@ -788,6 +811,22 @@ const getStylingConfig = ( options = {} ) => {
 							priority: 5,
 						},
 					} ),
+					...getCacheGroups(),
+					'base-components': {
+						test: /\/assets\/js\/base\/components\//,
+						name( module, chunks, cacheGroupKey ) {
+							const moduleFileName = module
+								.identifier()
+								.split( '/' )
+								.reduceRight( ( item ) => item )
+								.split( '|' )
+								.reduce( ( item ) => item );
+							const allChunksNames = chunks
+								.map( ( item ) => item.name )
+								.join( '~' );
+							return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+						},
+					},
 				},
 			},
 		},

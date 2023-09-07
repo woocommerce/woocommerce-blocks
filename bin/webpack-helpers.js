@@ -128,6 +128,61 @@ const getProgressBarPluginConfig = ( name ) => {
 	};
 };
 
+const getCacheGroups = () => ( {
+	'base-components': {
+		test: /\/assets\/js\/base\/components\//,
+		name( module, chunks, cacheGroupKey ) {
+			const moduleFileName = module
+				.identifier()
+				.split( '/' )
+				.reduceRight( ( item ) => item );
+			const allChunksNames = chunks
+				.map( ( item ) => item.name )
+				.join( '~' );
+			return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+		},
+	},
+	'base-context': {
+		test: /\/assets\/js\/base\/context\//,
+		name( module, chunks, cacheGroupKey ) {
+			const moduleFileName = module
+				.identifier()
+				.split( '/' )
+				.reduceRight( ( item ) => item );
+			const allChunksNames = chunks
+				.map( ( item ) => item.name )
+				.join( '~' );
+			return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+		},
+	},
+	'base-hooks': {
+		test: /\/assets\/js\/base\/hooks\//,
+		name( module, chunks, cacheGroupKey ) {
+			const moduleFileName = module
+				.identifier()
+				.split( '/' )
+				.reduceRight( ( item ) => item );
+			const allChunksNames = chunks
+				.map( ( item ) => item.name )
+				.join( '~' );
+			return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+		},
+	},
+	'base-utils': {
+		test: /\/assets\/js\/base\/utils\//,
+		name( module, chunks, cacheGroupKey ) {
+			const moduleFileName = module
+				.identifier()
+				.split( '/' )
+				.reduceRight( ( item ) => item );
+			const allChunksNames = chunks
+				.map( ( item ) => item.name )
+				.join( '~' );
+			return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+		},
+	},
+} );
+
 module.exports = {
 	NODE_ENV,
 	CHECK_CIRCULAR_DEPS,
@@ -136,4 +191,5 @@ module.exports = {
 	requestToHandle,
 	requestToExternal,
 	getProgressBarPluginConfig,
+	getCacheGroups,
 };
