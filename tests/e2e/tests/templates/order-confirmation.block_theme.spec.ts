@@ -29,7 +29,7 @@ test.describe( 'Test the order confirmation template', async () => {
 	// These tests consistently fail due to the default content of the page--potentially the classic block is not being
 	// used after another test runs. Reenable this when we have a solution for this.
 	// eslint-disable-next-line playwright/no-skipped-test
-	test.skip( 'Template can be opened in the site editor', async ( {
+	test( 'Template can be opened in the site editor', async ( {
 		page,
 		editorUtils,
 	} ) => {
@@ -40,13 +40,34 @@ test.describe( 'Test the order confirmation template', async () => {
 			.click();
 		await editorUtils.enterEditMode();
 
+		await editorUtils.closeWelcomeGuideModal();
+		await editorUtils.transformIntoBlocks();
 		await expect(
-			page
-				.frameLocator( 'iframe' )
-				.locator(
-					'p:has-text("Thank you. Your order has been received.")'
-				)
-				.first()
+			page.getByText( 'Thank you. Your order has been received.' )
+		).toBeVisible();
+		await expect(
+			page.getByRole( 'document', { name: 'Block: Order Summary' } )
+		).toBeVisible();
+		await expect(
+			page.getByRole( 'document', {
+				name: 'Block: Order Totals',
+				exact: true,
+			} )
+		).toBeVisible();
+		await expect(
+			page.getByRole( 'document', { name: 'Block: Order Downloads' } )
+		).toBeVisible();
+		await expect(
+			page.getByRole( 'document', {
+				name: 'Block: Shipping Address',
+				exact: true,
+			} )
+		).toBeVisible();
+		await expect(
+			page.getByRole( 'document', {
+				name: 'Block: Billing Address',
+				exact: true,
+			} )
 		).toBeVisible();
 	} );
 
