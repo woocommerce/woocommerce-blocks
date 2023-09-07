@@ -116,12 +116,39 @@ class JetpackWooCommerceAnalytics {
 	}
 
 	/**
-	 * Get info about the cart & checkout pages, in particular
-	 * whether the store is using shortcodes or Gutenberg blocks.
-	 * This info is cached in a transient.
+	 * Get the current user id
 	 *
-	 * Note: similar code is in a WooCommerce core PR:
-	 * https://github.com/woocommerce/woocommerce/pull/25932
+	 * @return int
+	 */
+	private function get_user_id() {
+		if ( is_user_logged_in() ) {
+			$blogid = \Jetpack::get_option( 'id' );
+			$userid = get_current_user_id();
+			return $blogid . ':' . $userid;
+		}
+		return 'null';
+	}
+
+	/**
+	 * Default event properties which should be included with all events.
+	 *
+	 * @return array Array of standard event props.
+	 */
+	public function get_common_properties() {
+		if ( ! class_exists( 'Jetpack' ) || ! is_callable( array( 'Jetpack', 'get_option' ) ) ) {
+			return array();
+		}
+		return array(
+			'blog_id'     => \Jetpack::get_option( 'id' ),
+			'ui'          => $this->get_user_id(),
+			'url'         => home_url(),
+			'woo_version' => WC()->version,
+		);
+	}
+
+	/**
+	 * Get info about the cart & checkout pages, in particular whether the store is using shortcodes or Gutenberg blocks.
+	 * This info is cached in a transient.
 	 *
 	 * @return array
 	 */
