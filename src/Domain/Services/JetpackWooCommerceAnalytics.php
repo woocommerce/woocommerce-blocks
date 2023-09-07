@@ -111,7 +111,6 @@ class JetpackWooCommerceAnalytics {
 	 * Enqueue the Google Tag Manager script if prerequisites are met.
 	 */
 	public function register_script_data() {
-		$this->asset_data_registry->add( 'wc-blocks-jetpack-woocommerce-analytics_is_thankyou_page', is_wc_endpoint_url( 'order-received' ) );
 		$this->asset_data_registry->add( 'wc-blocks-jetpack-woocommerce-analytics_cart_checkout_info', $this->get_cart_checkout_info() );
 	}
 
