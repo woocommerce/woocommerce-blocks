@@ -1,8 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
-use PHP_CodeSniffer\Generators\HTML;
-
 /**
  * CollectionPriceFilter class.
  */
@@ -16,6 +14,21 @@ class CollectionPriceFilter extends AbstractBlock {
 	protected $block_name     = 'collection-price-filter';
 	const MIN_PRICE_QUERY_VAR = 'min_price';
 	const MAX_PRICE_QUERY_VAR = 'max_price';
+
+	/**
+	 * Extra data passed through from server to client for block.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 *                           Note, this will be empty in the editor context when the block is
+	 *                           not in the post content on editor load.
+	 */
+	protected function enqueue_data( array $attributes = [] ) {
+		parent::enqueue_data( $attributes );
+
+		if ( is_admin() ) {
+			$this->asset_data_registry->add( 'priceFilterOutputTemplate', $this->get_block_output_template() );
+		}
+	}
 
 	/**
 	 * Render the block.
@@ -55,86 +68,75 @@ class CollectionPriceFilter extends AbstractBlock {
 			)
 		);
 
-		$price_min = ! empty( $attributes['showInputFields'] ) ? <<<HTML
-			<input
-				type='text'
-				value='$min_price'
-				data-wc-bind--value='state.filters.minPrice'
-				data-wc-on--input='actions.filters.setMinPrice'
-				data-wc-on--change='actions.filters.updateProducts'
-			>
-		HTML : <<<HTML
-			<span data-wc-text="state.filters.minPrice">$min_price</span>
-		HTML;
-
-		$price_max = ! empty( $attributes['showInputFields'] ) ? <<<HTML
-			<input
-				type='text'
-				value='$max_price'
-				data-wc-bind--value='state.filters.maxPrice'
-				data-wc-on--input='actions.filters.setmaxPrice'
-				data-wc-on--change='actions.filters.updateProducts'
-			>
-		HTML : <<<HTML
-			<span data-wc-text="state.filters.maxPrice">$max_price</span>
-		HTML;
-
-		$price_range = <<<HTML
-			<div
-				class='range'
-				style='$range_style'
-				data-wc-bind--style='state.filters.rangeStyle'
-				data-wc-on--mousemove='actions.filters.updateActiveHandle'
-			>
-				<div class='range-bar'></div>
-				<input
-					type='range'
-					min='0'
-					max='$max_range'
-					value='$min_price'
-					class='active'
-					data-wc-bind--max='state.filters.maxRange'
-					data-wc-bind--value='state.filters.minPrice'
-					data-wc-class--active='state.filters.isMinActive'
-					data-wc-on--input='actions.filters.setMinPrice'
-					data-wc-on--change='actions.filters.updateProducts'
-				>
-				<input
-					type='range'
-					min='0'
-					max='$max_range'
-					value='$max_price'
-					data-wc-bind--max='state.filters.maxRange'
-					data-wc-bind--value='state.filters.maxPrice'
-					data-wc-class--active='state.filters.isMaxActive'
-					data-wc-on--input='actions.filters.setMaxPrice'
-					data-wc-on--change='actions.filters.updateProducts'
-				>
-			</div>
-		HTML;
-
-		if ( ! empty( $attributes['showInputFields'] && ! empty( $attributes['inlineInput'] ) ) ) {
-			return <<<HTML
-			<div $wrapper_attributes>
-				<div class='text'>
-					$price_min
-					$price_range
-					$price_max
-				</div>
-				<button data-wc-on--click='actions.filters.reset'>Reset</button>
-			</div>
-			HTML;
-		}
+		$injected_output = ( new \Mustache_Engine() )->render( $this->get_block_output_template(), $data );
 
 		return <<<HTML
-		<div $wrapper_attributes>
-			$price_range
-			<div class='text'>
-				$price_min
-				$price_max
+			<div $wrapper_attributes>
+				$injected_output
 			</div>
-			<button data-wc-on--click='actions.filters.reset'>Reset</button>
+		HTML;
+	}
+
+	/**
+	 * Get the block output mustache template.
+	 *
+	 * @return string
+	 */
+	public function get_block_output_template() {
+		return <<<HTML
+		<div
+			class="range"
+			style="{{ rangeStyle }}"
+			data-wc-bind--style="state.filters.rangeStyle"
+			data-wc-on--mousemove="actions.filters.updateActiveHandle"
+		>
+			<div class="range-bar"></div>
+			<input
+				type="range"
+				min="{{ minRange }}"
+				max="{{ maxRange }}"
+				value="{{ minPrice }}"
+				class="active"
+				data-wc-bind--max="state.filters.maxRange"
+				data-wc-bind--value="state.filters.minPrice"
+				data-wc-class--active="state.filters.isMinActive"
+				data-wc-on--input="actions.filters.setMinPrice"
+				data-wc-on--change="actions.filters.updateProducts"
+			/>
+			<input
+				type="range"
+				min="{{ minRange }}"
+				max="{{ maxRange }}"
+				value="{{ maxPrice }}"
+				data-wc-bind--max="state.filters.maxRange"
+				data-wc-bind--value="state.filters.maxPrice"
+				data-wc-class--active="state.filters.isMaxActive"
+				data-wc-on--input="actions.filters.setMaxPrice"
+				data-wc-on--change="actions.filters.updateProducts"
+			/>
 		</div>
-HTML;
+		<div class="text">
+			{{#showInputFields}}
+				<input
+					type="text"
+					value="{{ minPrice }}"
+					data-wc-bind--value="state.filters.minPrice"
+					data-wc-on--input="actions.filters.setMinPrice"
+					data-wc-on--change="actions.filters.updateProducts"
+				/>
+				<input
+					type="text"
+					value="{{ maxPrice }}"
+					data-wc-bind--value="state.filters.maxPrice"
+					data-wc-on--input="actions.filters.setmaxPrice"
+					data-wc-on--change="actions.filters.updateProducts"
+				/>
+			{{/showInputFields}}
+			{{^showInputFields}}
+				<span data-wc-text="state.filters.minPrice">{{ minPrice }}</span>
+				<span data-wc-text="state.filters.maxPrice">{{ maxPrice }}</span>
+			{{/showInputFields}}
+		</div>
+		HTML;
 	}
 }

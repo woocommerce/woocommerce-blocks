@@ -16,7 +16,8 @@
 		"ext-hash": "*",
 		"ext-json": "*",
 		"composer/installers": "^1.7.0",
-		"automattic/jetpack-autoloader": "^2.9.1"
+		"automattic/jetpack-autoloader": "^2.9.1",
+		"mustache/mustache": "~2.5"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "9.6.10",
