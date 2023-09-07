@@ -70,7 +70,7 @@ export const cleanUrl = ( link: string ) => {
 	}
 	return url;
 };
-export const maybeTrackCheckoutPageView = ( cart: Cart ) => {
+const maybeTrackCheckoutPageView = ( cart: Cart ) => {
 	const storePages = getSetting< StorePages >( 'storePages', {} );
 	if ( ! objectHasProp( storePages, 'checkout' ) ) {
 		return;
@@ -107,7 +107,7 @@ export const maybeTrackCheckoutPageView = ( cart: Cart ) => {
 	} );
 };
 
-export const maybeTrackCartPageView = ( cart: Cart ) => {
+const maybeTrackCartPageView = ( cart: Cart ) => {
 	const storePages = getSetting< StorePages >( 'storePages', {} );
 	if ( ! objectHasProp( storePages, 'cart' ) ) {
 		return;
