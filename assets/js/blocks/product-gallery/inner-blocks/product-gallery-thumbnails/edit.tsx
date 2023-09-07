@@ -5,6 +5,7 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { Disabled } from '@wordpress/components';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -27,7 +28,12 @@ export const Edit = ( { attributes, setAttributes, context }: EditProps ) => {
 
 	const Placeholder = () => {
 		return context.thumbnailsPosition !== ThumbnailsPosition.OFF ? (
-			<div className="wc-block-editor-product-gallery-thumbnails">
+			<div
+				className={ classNames(
+					'wc-block-editor-product-gallery-thumbnails',
+					`wc-block-editor-product-gallery-thumbnails--${ context.thumbnailsPosition }`
+				) }
+			>
 				{ [
 					...Array( context.thumbnailsNumberOfThumbnails ).keys(),
 				].map( ( index ) => {

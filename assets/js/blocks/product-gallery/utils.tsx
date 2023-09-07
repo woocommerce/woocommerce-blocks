@@ -18,6 +18,9 @@ export const getGroupLayoutAttributes = (
 		case 'bottom':
 			// Stack
 			return { type: 'flex', orientation: 'vertical' };
+		case 'off':
+			// Stack
+			return { type: 'flex', orientation: 'vertical' };
 		default:
 			// Row
 			return { type: 'flex', flexWrap: 'nowrap' };
@@ -125,7 +128,8 @@ export const moveInnerBlocksToPosition = (
 
 				if (
 					thumbnailsPosition === 'bottom' ||
-					thumbnailsPosition === 'right'
+					thumbnailsPosition === 'right' ||
+					thumbnailsPosition === 'off'
 				) {
 					// @ts-expect-error - Ignoring because `moveBlocksDown` is not yet in the type definitions.
 					dispatch( blockEditorStore ).moveBlocksDown(
