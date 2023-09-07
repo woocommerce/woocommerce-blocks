@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use PHP_CodeSniffer\Generators\HTML;
+
 /**
  * CollectionPriceFilter class.
  */
@@ -24,10 +26,11 @@ class CollectionPriceFilter extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$min_range = 0; // This value should come from DB.
-		$max_range = 90; // This value should come from DB.
-		$min_price = get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range );
-		$max_price = get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range );
+		$wrapper_attributes = get_block_wrapper_attributes();
+		$min_range          = 0; // This value should come from DB.
+		$max_range          = 90; // This value should come from DB.
+		$min_price          = get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range );
+		$max_price          = get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range );
 
 		// CSS variables for the range bar style.
 		$__low       = 100 * $min_price / $max_range;
@@ -52,33 +55,86 @@ class CollectionPriceFilter extends AbstractBlock {
 			)
 		);
 
-		return $this->inject_interactivity_data( $content, $data, 'filters' );
-	}
+		$price_min = ! empty( $attributes['showInputFields'] ) ? <<<HTML
+			<input
+				type='text'
+				value='$min_price'
+				data-wc-bind--value='state.filters.minPrice'
+				data-wc-on--input='actions.filters.setMinPrice'
+				data-wc-on--change='actions.filters.updateProducts'
+			>
+		HTML : <<<HTML
+			<span data-wc-text="state.filters.minPrice">$min_price</span>
+		HTML;
 
+		$price_max = ! empty( $attributes['showInputFields'] ) ? <<<HTML
+			<input
+				type='text'
+				value='$max_price'
+				data-wc-bind--value='state.filters.maxPrice'
+				data-wc-on--input='actions.filters.setmaxPrice'
+				data-wc-on--change='actions.filters.updateProducts'
+			>
+		HTML : <<<HTML
+			<span data-wc-text="state.filters.maxPrice">$max_price</span>
+		HTML;
 
-	/**
-	 * Injects the interactivity data into the block.
-	 * This is a temporary solution until we use Core Interactivity API.
-	 *
-	 * @param string $content The block content.
-	 * @param array  $state The state data.
-	 * @param string $namespace The namespace of the state data.
-	 */
-	protected function inject_interactivity_data( $content, $state, $namespace ) {
-		// Inject the dynamic data into the block.
-		$tags = new \WP_HTML_Tag_Processor( $content );
+		$price_range = <<<HTML
+			<div
+				class='range'
+				style='$range_style'
+				data-wc-bind--style='state.filters.rangeStyle'
+				data-wc-on--mousemove='actions.filters.updateActiveHandle'
+			>
+				<div class='range-bar'></div>
+				<input
+					type='range'
+					min='0'
+					max='$max_range'
+					value='$min_price'
+					class='active'
+					data-wc-bind--max='state.filters.maxRange'
+					data-wc-bind--value='state.filters.minPrice'
+					data-wc-class--active='state.filters.isMinActive'
+					data-wc-on--input='actions.filters.setMinPrice'
+					data-wc-on--change='actions.filters.updateProducts'
+				>
+				<input
+					type='range'
+					min='0'
+					max='$max_range'
+					value='$max_price'
+					data-wc-bind--max='state.filters.maxRange'
+					data-wc-bind--value='state.filters.maxPrice'
+					data-wc-class--active='state.filters.isMaxActive'
+					data-wc-on--input='actions.filters.setMaxPrice'
+					data-wc-on--change='actions.filters.updateProducts'
+				>
+			</div>
+		HTML;
 
-		// Loop through all the tags and update the attributes.
-		while ( $tags->next_tag() ) {
-			foreach ( $tags->get_attribute_names_with_prefix( 'data-wc-bind--' ) as $attribute_name ) {
-				$attribute_value  = str_replace( "state.{$namespace}.", '', $tags->get_attribute( $attribute_name ) );
-				$target_attribute = str_replace( 'data-wc-bind--', '', $attribute_name );
-				if ( in_array( $attribute_value, array_keys( $state ), true ) ) {
-					$tags->set_attribute( $target_attribute, $state[ $attribute_value ] );
-				}
-			}
+		if ( ! empty( $attributes['showInputFields'] && ! empty( $attributes['inlineInput'] ) ) ) {
+			return <<<HTML
+			<div $wrapper_attributes>
+				<div class='text'>
+					$price_min
+					$price_range
+					$price_max
+				</div>
+				<button data-wc-on--click='actions.filters.reset'>Reset</button>
+			</div>
+			HTML;
 		}
 
-		return $tags->get_updated_html();
+		return <<<HTML
+		<div $wrapper_attributes>
+			$price_range
+			<div class='text'>
+				$price_min
+				$price_max
+			</div>
+			<button data-wc-on--click='actions.filters.reset'>Reset</button>
+		</div>
+HTML;
 	}
 }
