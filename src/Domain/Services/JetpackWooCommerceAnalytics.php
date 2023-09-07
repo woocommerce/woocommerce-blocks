@@ -211,9 +211,10 @@ class JetpackWooCommerceAnalytics {
 			'device'                                    => wp_is_mobile() ? 'mobile' : 'desktop',
 			'guest_checkout'                            => 'Yes' === $guest_checkout ? 'Yes' : 'No',
 			'create_account'                            => 'Yes' === $create_account ? 'Yes' : 'No',
+			'store_currency'                            => get_woocommerce_currency(),
 		);
 		set_transient( $transient_name, $info, DAY_IN_SECONDS );
-		return $info;
+		return array_merge( $this->get_common_properties(), $info );
 	}
 
 	/**
