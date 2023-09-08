@@ -13,14 +13,13 @@ class Connection {
 	/**
 	 * The post request.
 	 *
+	 * @param string $token The JWT token.
 	 * @param string $prompt The prompt to send to the API.
 	 * @param int    $timeout The timeout for the request.
 	 *
 	 * @return mixed
 	 */
-	public function post_request( $prompt, $timeout = 15 ) {
-		$token = $this->get_jwt_token();
-
+	public function fetch_ai_response( $token, $prompt, $timeout = 15 ) {
 		if ( $token instanceof \WP_Error ) {
 			return $token;
 		}
@@ -52,7 +51,7 @@ class Connection {
 	 *
 	 * @return integer|\WP_Error The site ID or a WP_Error object.
 	 */
-	private function get_site_id() {
+	public function get_site_id() {
 		if ( ! class_exists( Jetpack_Options::class ) ) {
 			return new \WP_Error( 'site-id-error', esc_html__( 'Failed to fetch the site ID: try again later.', 'woo-gutenberg-products-block' ) );
 		}
@@ -69,11 +68,11 @@ class Connection {
 	/**
 	 * Fetch the JWT token.
 	 *
+	 * @param integer $site_id The site ID.
+	 *
 	 * @return string|\WP_Error The JWT token or a WP_Error object.
 	 */
-	private function get_jwt_token() {
-		$site_id = $this->get_site_id();
-
+	public function get_jwt_token( $site_id ) {
 		if ( is_wp_error( $site_id ) ) {
 			return $site_id;
 		}
@@ -94,7 +93,7 @@ class Connection {
 		}
 
 		if ( ! isset( $response->token ) ) {
-			return new \WP_Error( $response->code, esc_html__( 'Failed to retrieve the JWT token: Try again later.', 'woo-gutenberg-products-block' ), $response->data );
+			return new \WP_Error( 'failed-to-retrieve-jwt-token', esc_html__( 'Failed to retrieve the JWT token: Try again later.', 'woo-gutenberg-products-block' ) );
 		}
 
 		return $response->token;
