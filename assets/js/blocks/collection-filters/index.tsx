@@ -14,8 +14,6 @@ import save from './save';
 
 if ( isExperimentalBuild() ) {
 	registerBlockType( metadata, {
-		ancestor: [ 'woocommerce/product-collection' ],
-		supports: { ...metadata.supports },
 		icon: {
 			src: (
 				<Icon
