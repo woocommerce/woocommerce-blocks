@@ -1,23 +1,26 @@
-.woocommerce .wp-block-woocommerce-product-gallery-large-image {
+.wp-block-woocommerce-product-gallery-large-image {
+	width: fit-content;
+	height: fit-content;
 	position: relative;
-	// This is necessary to calculate the correct width of the gallery. https://www.lockedownseo.com/parent-div-100-height-child-floated-elements/#:~:text=Solution%20%232%3A%20Float%20Parent%20Container
-	clear: both;
+	overflow: hidden;
 
-	span.onsale {
-		right: unset;
-		z-index: 1;
-		left: -1rem;
+	img {
+		display: block;
+		transition: all 0.1s linear;
+
+		&.wc-block-woocommerce-product-gallery-large-image__image--hoverZoom {
+			cursor: zoom-in;
+		}
 	}
-}
 
-// This is necessary to calculate the correct width of the gallery. https://www.lockedownseo.com/parent-div-100-height-child-floated-elements/#:~:text=Solution%20%232%3A%20Float%20Parent%20Container
-.woocommerce .wp-block-woocommerce-product-gallery-large-image::after {
-	clear: both;
-	content: "";
-	display: table;
-}
-
-
-.woocommerce .wp-block-woocommerce-product-gallery-large-image .woocommerce-product-gallery.images {
-	width: auto;
+	.wc-block-product-gallery-large-image__inner-blocks {
+		pointer-events: none;
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		z-index: 1;
+		width: 100%;
+		height: 100%;
+		top: 0;
+	}
 }

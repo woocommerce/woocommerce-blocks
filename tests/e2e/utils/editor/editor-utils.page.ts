@@ -65,6 +65,17 @@ export class EditorUtils {
 		);
 	}
 
+	async closeModalByName( name: string ) {
+		const isModalOpen = await this.page.getByLabel( name ).isVisible();
+
+		// eslint-disable-next-line playwright/no-conditional-in-test
+		if ( isModalOpen ) {
+			await this.page
+				.getByLabel( name )
+				.getByRole( 'button', { name: 'Close' } )
+				.click();
+		}
+	}
 	async replaceBlockByBlockName( name: string, nameToInsert: string ) {
 		await this.page.evaluate(
 			( { name: _name, nameToInsert: _nameToInsert } ) => {
@@ -211,5 +222,40 @@ export class EditorUtils {
 		await this.page
 			.locator( '.edit-site-canvas-spinner' )
 			.waitFor( { state: 'hidden' } );
+	}
+
+	async setLayoutOption(
+		option:
+			| 'Align Top'
+			| 'Align Bottom'
+			| 'Align Middle'
+			| 'Stretch to Fill'
+	) {
+		const button = this.page.locator(
+			"button[aria-label='Change vertical alignment']"
+		);
+
+		await button.click();
+
+		await this.page.getByText( option ).click();
+	}
+
+	async setAlignOption(
+		option: 'Align Left' | 'Align Center' | 'Align Right' | 'None'
+	) {
+		const button = this.page.locator( "button[aria-label='Align']" );
+
+		await button.click();
+
+		await this.page.getByText( option ).click();
+	}
+
+	async saveTemplate() {
+		await Promise.all( [
+			this.editor.saveSiteEditorEntities(),
+			this.page.waitForResponse( ( response ) =>
+				response.url().includes( 'wp-json/wp/v2/templates/' )
+			),
+		] );
 	}
 }
