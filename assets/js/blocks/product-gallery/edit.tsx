@@ -15,7 +15,6 @@ import { useEffect } from '@wordpress/element';
  */
 import {
 	moveInnerBlocksToPosition,
-	updateGroupBlockType,
 	getInnerBlocksLockAttributes,
 } from './utils';
 import { ProductGalleryThumbnailsBlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
@@ -27,48 +26,61 @@ import { ProductGalleryNextPreviousBlockSettings } from './inner-blocks/product-
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'core/group',
-		{ layout: { type: 'flex' } },
+		{ layout: { type: 'flex', flexWrap: 'nowrap' } },
 		[
 			[
 				'woocommerce/product-gallery-thumbnails',
 				getInnerBlocksLockAttributes( 'lock' ),
 			],
 			[
-				'woocommerce/product-gallery-large-image',
-				getInnerBlocksLockAttributes( 'lock' ),
+				'core/group',
+				{
+					layout: {
+						type: 'flex',
+						orientation: 'vertical',
+						justifyContent: 'center',
+					},
+					...getInnerBlocksLockAttributes( 'lock' ),
+				},
 				[
 					[
-						'woocommerce/product-sale-badge',
-						{
-							align: 'right',
-							style: {
-								spacing: {
-									margin: {
-										top: '4px',
-										right: '4px',
-										bottom: '4px',
-										left: '4px',
+						'woocommerce/product-gallery-large-image',
+						getInnerBlocksLockAttributes( 'lock' ),
+						[
+							[
+								'woocommerce/product-sale-badge',
+								{
+									align: 'right',
+									style: {
+										spacing: {
+											margin: {
+												top: '4px',
+												right: '4px',
+												bottom: '4px',
+												left: '4px',
+											},
+										},
 									},
 								},
-							},
-						},
+							],
+							[
+								'woocommerce/product-gallery-large-image-next-previous',
+								{
+									layout: {
+										type: 'flex',
+										verticalAlignment: 'bottom',
+									},
+								},
+							],
+						],
 					],
 					[
-						'woocommerce/product-gallery-large-image-next-previous',
-						{
-							layout: {
-								type: 'flex',
-								verticalAlignment: 'bottom',
-							},
-						},
+						'woocommerce/product-gallery-pager',
+						{ lock: { move: true, remove: true } },
 					],
 				],
 			],
 		],
-	],
-	[
-		'woocommerce/product-gallery-pager',
-		getInnerBlocksLockAttributes( 'lock' ),
 	],
 ];
 
@@ -78,9 +90,6 @@ export const Edit = ( {
 	setAttributes,
 }: BlockEditProps< ProductGalleryAttributes > ) => {
 	const blockProps = useBlockProps();
-
-	// Update the Group block type when the thumbnailsPosition attribute changes.
-	updateGroupBlockType( attributes, clientId );
 
 	useEffect( () => {
 		setAttributes( {
@@ -128,7 +137,6 @@ export const Edit = ( {
 			<InnerBlocks
 				allowedBlocks={ [
 					'woocommerce/product-gallery-large-image',
-					'woocommerce/product-gallery-pager',
 					'woocommerce/product-gallery-thumbnails',
 				] }
 				templateLock={ false }
