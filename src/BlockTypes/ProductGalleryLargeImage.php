@@ -125,8 +125,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 			$attributes
 		);
 
-		$visible_main_image = array_shift( $main_images );
-
+		$visible_main_image           = array_shift( $main_images );
 		$visible_main_image_processor = new \WP_HTML_Tag_Processor( $visible_main_image );
 		$visible_main_image_processor->next_tag();
 		$visible_main_image_processor->remove_attribute( 'hidden' );

@@ -22,20 +22,7 @@ interface Selectors {
 
 interface Actions {
 	woocommerce: {
-		productGallery: {
-			updateActiveProductGalleryImage: ( context: Context ) => void;
-		};
-	};
-}
-
-interface Effects {
-	woocommerce: {
-		productGallery: {
-			updateProductGalleryLargeImage: (
-				context: Context,
-				ref: HTMLElement
-			) => void;
-		};
+		handleClick: ( context: Context ) => void;
 	};
 }
 
@@ -44,7 +31,6 @@ interface Store {
 	context: Context;
 	selectors: Selectors;
 	actions: Actions;
-	effects: Effects;
 	ref?: HTMLElement;
 }
 
