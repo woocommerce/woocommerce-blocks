@@ -126,7 +126,13 @@ const findBlock = ( {
 	return undefined;
 };
 
-export const updateGroupBlockType = (
+/**
+ * Sets the layout of group block based on the thumbnails' position.
+ *
+ * @param {ThumbnailsPosition} thumbnailsPosition - The position of thumbnails.
+ * @param {string}             clientId           - The client ID of the block to update.
+ */
+const setGroupBlockLayoutByThumbnailsPosition = (
 	thumbnailsPosition: ThumbnailsPosition,
 	clientId: string
 ): void => {
@@ -196,7 +202,10 @@ export const moveInnerBlocksToPosition = (
 			} );
 
 			const { thumbnailsPosition } = attributes;
-			updateGroupBlockType( thumbnailsPosition, clientId );
+			setGroupBlockLayoutByThumbnailsPosition(
+				thumbnailsPosition,
+				clientId
+			);
 
 			if (
 				( ( thumbnailsPosition === 'bottom' ||
