@@ -17,6 +17,7 @@ import {
 	moveInnerBlocksToPosition,
 	updateGroupBlockType,
 	getInnerBlocksLockAttributes,
+	getClassNameByNextPreviousButtonsPosition,
 } from './utils';
 import { ProductGalleryThumbnailsBlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
 import { ProductGalleryPagerBlockSettings } from './inner-blocks/product-gallery-pager/settings';
@@ -77,7 +78,11 @@ export const Edit = ( {
 	attributes,
 	setAttributes,
 }: BlockEditProps< ProductGalleryAttributes > ) => {
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( {
+		className: getClassNameByNextPreviousButtonsPosition(
+			attributes.nextPreviousButtonsPosition
+		),
+	} );
 
 	// Update the Group block type when the thumbnailsPosition attribute changes.
 	updateGroupBlockType( attributes, clientId );

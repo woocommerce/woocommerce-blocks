@@ -6,6 +6,12 @@ import { BlockAttributes } from '@wordpress/blocks';
 import { select, dispatch } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import { NextPreviousButtonSettingValues } from './inner-blocks/product-gallery-large-image-next-previous/types';
+import { getNextPreviousImagesWithClassName } from './inner-blocks/product-gallery-large-image-next-previous/utils';
+
+/**
  * Generates layout attributes based on the position of thumbnails.
  *
  * @param {string} thumbnailsPosition - The position of thumbnails ('bottom' or other values).
@@ -180,4 +186,13 @@ export const updateGroupBlockType = (
 			);
 		}
 	} );
+};
+
+export const getClassNameByNextPreviousButtonsPosition = (
+	nextPreviousButtonsPosition: NextPreviousButtonSettingValues
+) => {
+	return `wc-block-product-gallery--has-next-previous-buttons-${
+		getNextPreviousImagesWithClassName( nextPreviousButtonsPosition )
+			?.classname
+	}`;
 };

@@ -9,15 +9,11 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import {
-	NextButtonInsideImage,
-	NextButtonOutsideImage,
-	PrevButtonInsideImage,
-	PrevButtonOutsideImage,
-} from './icons';
+
 import './editor.scss';
 import { ProductGalleryNextPreviousBlockSettings } from './settings';
 import { ProductGalleryContext } from '../../types';
+import { getNextPreviousImagesWithClassName } from './utils';
 
 const getAlignmentStyle = ( alignment: string ): string => {
 	switch ( alignment ) {
@@ -49,24 +45,9 @@ export const Edit = ( {
 	} );
 
 	const previousNextImage = useMemo( () => {
-		switch ( context.nextPreviousButtonsPosition ) {
-			case 'insideTheImage':
-				return {
-					PrevButtonImage: PrevButtonInsideImage,
-					NextButtonImage: NextButtonInsideImage,
-					classname: 'inside-image',
-				};
-			case 'outsideTheImage':
-				return {
-					PrevButtonImage: PrevButtonOutsideImage,
-					NextButtonImage: NextButtonOutsideImage,
-					classname: 'outside-image',
-				};
-			case 'off':
-				return null;
-			default:
-				return null;
-		}
+		return getNextPreviousImagesWithClassName(
+			context.nextPreviousButtonsPosition
+		);
 	}, [ context.nextPreviousButtonsPosition ] );
 
 	return (

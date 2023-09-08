@@ -13,15 +13,6 @@ class ProductGallery extends AbstractBlock {
 	protected $block_name = 'product-gallery';
 
 	/**
-	 * Get the frontend style handle for this block type.
-	 *
-	 * @return null
-	 */
-	protected function get_block_type_style() {
-		return null;
-	}
-
-	/**
 	 * Include and render the block.
 	 *
 	 * @param array    $attributes Block attributes. Default empty array.
@@ -30,7 +21,8 @@ class ProductGallery extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$classname          = $attributes['className'] ?? '';
+		$classname = $attributes['className'] ?? '';
+
 		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
 		$html               = sprintf(
 			'<div data-wc-interactive %1$s>
