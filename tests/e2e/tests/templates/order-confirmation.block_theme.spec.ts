@@ -46,7 +46,10 @@ test.describe( 'Test the order confirmation template', async () => {
 			page.getByText( 'Thank you. Your order has been received.' )
 		).toBeVisible();
 		await expect(
-			page.getByRole( 'document', { name: 'Block: Order Summary' } )
+			page.getByRole( 'document', {
+				name: 'Block: Order Summary',
+				exact: true,
+			} )
 		).toBeVisible();
 		await expect(
 			page.getByRole( 'document', {
@@ -55,7 +58,10 @@ test.describe( 'Test the order confirmation template', async () => {
 			} )
 		).toBeVisible();
 		await expect(
-			page.getByRole( 'document', { name: 'Block: Order Downloads' } )
+			page.getByRole( 'document', {
+				name: 'Block: Order Downloads',
+				exact: true,
+			} )
 		).toBeVisible();
 		await expect(
 			page.getByRole( 'document', {
