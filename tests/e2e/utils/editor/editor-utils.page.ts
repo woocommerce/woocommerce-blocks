@@ -270,11 +270,12 @@ export class EditorUtils {
 	}
 
 	async transformIntoBlocks() {
-		const isTransformedIntoBlocks = ! this.page
+		const isNotTransformedIntoBlocks = await this.page
 			.frameLocator( 'iframe[name="editor-canvas"]' )
-			.getByRole( 'button', { name: 'Transform into blocks' } );
+			.getByRole( 'button', { name: 'Transform into blocks' } )
+			.count();
 
-		if ( ! isTransformedIntoBlocks ) {
+		if ( isNotTransformedIntoBlocks ) {
 			await this.page
 				.frameLocator( 'iframe[name="editor-canvas"]' )
 				.getByRole( 'group' )
