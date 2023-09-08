@@ -31,14 +31,15 @@ class Configuration {
 	private $config;
 
 	/**
-	 * Inject dependencies.
-	 *
-	 * @param  Manager $manager The Jetpack connection manager.
-	 * @param  Config  $config The Jetpack configuration.
+	 * Configuration constructor.
 	 */
-	public function __construct( $manager, $config ) {
-		$this->manager = $manager;
-		$this->config  = $config;
+	public function __construct() {
+		if ( ! class_exists( 'Automattic\Jetpack\Connection\Manager' ) || ! class_exists( 'Automattic\Jetpack\Config' ) ) {
+			return;
+		}
+
+		$this->manager = new Manager( 'woocommerce_blocks' );
+		$this->config  = new Config();
 	}
 
 	/**
