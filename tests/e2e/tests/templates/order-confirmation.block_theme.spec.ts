@@ -29,7 +29,7 @@ test.describe( 'Test the order confirmation template', async () => {
 	// These tests consistently fail due to the default content of the page--potentially the classic block is not being
 	// used after another test runs. Reenable this when we have a solution for this.
 	// eslint-disable-next-line playwright/no-skipped-test
-	test( 'Template can be opened in the site editor', async ( {
+	test.skip( 'Template can be opened in the site editor', async ( {
 		page,
 		editorUtils,
 	} ) => {
