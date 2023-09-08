@@ -7,7 +7,11 @@ namespace Automattic\WooCommerce\Blocks\Utils;
 class ProductGalleryUtils {
 
 	/**
-	 * Get all Product Gallery images.
+	 * When requesting a full-size image, this function may return an array with a single image.
+	 * However, when requesting a non-full-size image, it will always return an array with multiple images.
+	 * This distinction is based on the image size needed for rendering purposes:
+	 * - "Full" size is used for the main product featured image.
+	 * - Non-full sizes are used for rendering thumbnails.
 	 *
 	 * @param int    $post_id Post ID.
 	 * @param string $size Image size.
@@ -24,11 +28,13 @@ class ProductGalleryUtils {
 			// All other product gallery images.
 			$product_gallery_image_ids = $product->get_gallery_image_ids();
 
-			if ( $featured_image_id && $product_gallery_image_ids ) {
-				// Add the featured image to the beginning of the product gallery images array.
-				array_unshift( $product_gallery_image_ids, $featured_image_id );
+			$all_product_gallery_image_ids = array_merge(
+				array( $featured_image_id ),
+				$product_gallery_image_ids
+			);
 
-				foreach ( $product_gallery_image_ids as $product_gallery_image_id ) {
+			if ( 'full' === $size || 'full' !== $size && count( $all_product_gallery_image_ids ) > 1 ) {
+				foreach ( $all_product_gallery_image_ids as $product_gallery_image_id ) {
 					$product_image_html = wp_get_attachment_image(
 						$product_gallery_image_id,
 						$size,
