@@ -28,9 +28,12 @@ class ProductGalleryUtils {
 			// All other product gallery images.
 			$product_gallery_image_ids = $product->get_gallery_image_ids();
 
-			$all_product_gallery_image_ids = array_merge(
-				array( $featured_image_id ),
-				$product_gallery_image_ids
+			// We don't want to show the same image twice, so remove the featured image from the gallery if it's there.
+			$all_product_gallery_image_ids = array_unique(
+				array_merge(
+					array( $featured_image_id ),
+					$product_gallery_image_ids
+				)
 			);
 
 			if ( 'full' === $size || 'full' !== $size && count( $all_product_gallery_image_ids ) > 1 ) {
