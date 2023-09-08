@@ -28,7 +28,7 @@ class ProductGalleryUtils {
 			// All other product gallery images.
 			$product_gallery_image_ids = $product->get_gallery_image_ids();
 
-			// We don't want to show the same image twice, so remove the featured image from the gallery if it's there.
+			// We don't want to show the same image twice, so we have to remove the featured image from the gallery if it's there.
 			$all_product_gallery_image_ids = array_unique(
 				array_merge(
 					array( $featured_image_id ),
