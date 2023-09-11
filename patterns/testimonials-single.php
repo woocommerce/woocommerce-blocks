@@ -15,7 +15,7 @@ $images = PatternImages::get_pattern_images( 'woocommerce-blocks/testimonials-si
 	<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:160px">
 		<!-- wp:image {"width":164,"className":"is-style-rounded"} -->
 		<figure class="wp-block-image is-resized is-style-rounded">
-			<img src="<?php echo esc_url( get_image_url( $images, 0, 'https://s.w.org/images/core/5.8/portrait.jpg' ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image with the avatar of the user who is writing the testimonial.', 'woo-gutenberg-products-block' ); ?>" width="164"/>
+			<img src="<?php echo esc_url( PatternImages::get_image_url( $images, 0, 'https://s.w.org/images/core/5.8/portrait.jpg' ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image with the avatar of the user who is writing the testimonial.', 'woo-gutenberg-products-block' ); ?>" width="164"/>
 		</figure>
 		<!-- /wp:image -->
 	</div>

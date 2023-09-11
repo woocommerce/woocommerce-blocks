@@ -28,7 +28,7 @@ $images = PatternImages::get_pattern_images( 'woocommerce-blocks/hero-product-sp
 	</div>
 
 	<figure class="wp-block-media-text__media">
-		<img src="<?php echo esc_url( get_image_url( $images, 0, 'images/pattern-placeholders/pattern-fashion-clothing-outerwear-wool-scarf.png' ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in a hero section.', 'woo-gutenberg-products-block' ); ?>" />
+		<img src="<?php echo esc_url( PatternImages::get_image_url( $images, 0, 'images/pattern-placeholders/pattern-fashion-clothing-outerwear-wool-scarf.png' ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in a hero section.', 'woo-gutenberg-products-block' ); ?>" />
 	</figure>
 </div>
 <!-- /wp:media-text -->

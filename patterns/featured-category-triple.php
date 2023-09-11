@@ -8,9 +8,9 @@
 use Automattic\WooCommerce\Blocks\Patterns\PatternImages;
 $images = PatternImages::get_pattern_images( 'woocommerce-blocks/featured-category-triple' );
 
-$image1 = get_image_url( $images, 0, 'images/pattern-placeholders/sweet-restaurant-celebration-food-chocolate-cupcake.png' );
-$image2 = get_image_url( $images, 1, 'images/pattern-placeholders/dish-meal-food-breakfast-dessert-eat.png' );
-$image3 = get_image_url( $images, 2, 'images/pattern-placeholders/dish-food-baking-dessert-bread-bakery.png' );
+$image1 = PatternImages::get_image_url( $images, 0, 'images/pattern-placeholders/sweet-restaurant-celebration-food-chocolate-cupcake.png' );
+$image2 = PatternImages::get_image_url( $images, 1, 'images/pattern-placeholders/dish-meal-food-breakfast-dessert-eat.png' );
+$image3 = PatternImages::get_image_url( $images, 2, 'images/pattern-placeholders/dish-food-baking-dessert-bread-bakery.png' );
 ?>
 
 <!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"top":"0px","left":"0px"}}}} -->

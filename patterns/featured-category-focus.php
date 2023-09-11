@@ -13,7 +13,7 @@ $images = PatternImages::get_pattern_images( 'woocommerce-blocks/featured-catego
 <div class="wp-block-group alignfull has-background" style="background-color:#84bfe1;padding-top:var(--wp--preset--spacing--70);padding-right:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70);padding-left:var(--wp--preset--spacing--70)">
 	<!-- wp:image {"id":1,"width":502,"height":335,"sizeSlug":"full","linkDestination":"none"} -->
 	<figure class="wp-block-image size-full is-resized">
-		<img src="<?php echo esc_url( get_image_url( $images, 0, 'images/pattern-placeholders/floor-home-decoration-fireplace-property-living-room.png' ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased in a featured category section.', 'woo-gutenberg-products-block' ); ?>" class="wp-image-1" width="502" height="335"/>
+		<img src="<?php echo esc_url( PatternImages::get_image_url( $images, 0, 'images/pattern-placeholders/floor-home-decoration-fireplace-property-living-room.png' ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased in a featured category section.', 'woo-gutenberg-products-block' ); ?>" class="wp-image-1" width="502" height="335"/>
 	</figure>
 	<!-- /wp:image -->
 

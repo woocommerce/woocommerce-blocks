@@ -8,8 +8,8 @@
 use Automattic\WooCommerce\Blocks\Patterns\PatternImages;
 $images = PatternImages::get_pattern_images( 'woocommerce-blocks/hero-product-chessboard' );
 
-$image1 = get_image_url( $images, 0, 'images/pattern-placeholders/sweet-restaurant-celebration-food-chocolate-cupcake.png' );
-$image2 = get_image_url( $images, 1, 'images/pattern-placeholders/dish-meal-food-breakfast-dessert-eat.png' );
+$image1 = PatternImages::get_image_url( $images, 0, 'images/pattern-placeholders/sweet-restaurant-celebration-food-chocolate-cupcake.png' );
+$image2 = PatternImages::get_image_url( $images, 1, 'images/pattern-placeholders/dish-meal-food-breakfast-dessert-eat.png' );
 ?>
 
 <!-- wp:group {"align":"full","layout":{"type":"constrained"}} -->

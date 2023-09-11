@@ -8,10 +8,10 @@
 use Automattic\WooCommerce\Blocks\Patterns\PatternImages;
 $images = PatternImages::get_pattern_images( 'woocommerce-blocks/featured-products-fresh-and-tasty' );
 
-$image1 = get_image_url( $images, 0, 'images/pattern-placeholders/sweet-organic-lemons.png' );
-$image2 = get_image_url( $images, 1, 'images/pattern-placeholders/fresh-organic-tomatoes.png' );
-$image3 = get_image_url( $images, 2, 'images/pattern-placeholders/fresh-lettuce-washed.png' );
-$image4 = get_image_url( $images, 3, 'images/pattern-placeholders/russet-organic-potatoes.png' );
+$image1 = PatternImages::get_image_url( $images, 0, 'images/pattern-placeholders/sweet-organic-lemons.png' );
+$image2 = PatternImages::get_image_url( $images, 1, 'images/pattern-placeholders/fresh-organic-tomatoes.png' );
+$image3 = PatternImages::get_image_url( $images, 2, 'images/pattern-placeholders/fresh-lettuce-washed.png' );
+$image4 = PatternImages::get_image_url( $images, 3, 'images/pattern-placeholders/russet-organic-potatoes.png' );
 ?>
 
 <!-- wp:heading {"level":3,"align":"wide"} -->
