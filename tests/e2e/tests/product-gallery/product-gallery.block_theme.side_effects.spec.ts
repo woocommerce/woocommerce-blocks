@@ -120,7 +120,7 @@ test.describe( `${ blockData.name }`, () => {
 		await editorUtils.saveTemplate();
 
 		await page.goto( blockData.productPage, {
-			waitUntil: 'commit',
+			waitUntil: 'domcontentloaded',
 		} );
 
 		const visibleLargeImageId = await getVisibleLargeImageId(
