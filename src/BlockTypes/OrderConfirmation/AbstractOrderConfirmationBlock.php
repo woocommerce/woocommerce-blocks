@@ -39,13 +39,12 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 		$classname          = $attributes['className'] ?? '';
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-		if ( isset( $attributes['align'] ) ) {
-			$classname .= " align{$attributes['align']}";
+		if ( ! empty( $classes_and_styles['classes'] ) ) {
+			$classname .= ' ' . $classes_and_styles['classes'];
 		}
 
 		return $block_content ? sprintf(
-			'<div class="wc-block-%5$s %1$s %2$s" style="%3$s">%4$s</div>',
-			esc_attr( $classes_and_styles['classes'] ),
+			'<div class="wc-block-%4$s %1$s" style="%2$s">%3$s</div>',
 			esc_attr( trim( $classname ) ),
 			esc_attr( $classes_and_styles['styles'] ),
 			$block_content,
