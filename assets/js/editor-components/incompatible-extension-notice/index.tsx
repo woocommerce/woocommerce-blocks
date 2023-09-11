@@ -12,15 +12,15 @@ import { Icon } from '@wordpress/icons';
 import { useIncompatiblePaymentGatewaysNotice } from './use-incompatible-payment-gateways-notice';
 import './editor.scss';
 
-interface PaymentGatewaysNoticeProps {
+interface ExtensionNoticeProps {
 	toggleDismissedStatus: ( status: boolean ) => void;
 	block: 'woocommerce/cart' | 'woocommerce/checkout';
 }
 
-export function IncompatiblePaymentGatewaysNotice( {
+export function IncompatibleExtensionsNotice( {
 	toggleDismissedStatus,
 	block,
-}: PaymentGatewaysNoticeProps ) {
+}: ExtensionNoticeProps ) {
 	const [
 		isVisible,
 		dismissNotice,
