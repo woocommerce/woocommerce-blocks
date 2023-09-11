@@ -51,7 +51,7 @@ export default function ToolbarControls(
 			{ isPatternSelectionModalOpen && (
 				<PatternSelectionModal
 					clientId={ clientId }
-					attributes={ attributes }
+					query={ query }
 					closePatternSelectionModal={ () =>
 						setIsPatternSelectionModalOpen( false )
 					}

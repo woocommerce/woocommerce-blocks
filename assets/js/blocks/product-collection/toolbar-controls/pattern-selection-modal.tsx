@@ -2,37 +2,60 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { Modal } from '@wordpress/components';
-import { __experimentalBlockPatternsList as BlockPatternsList } from '@wordpress/block-editor';
+import {
+	store as blockEditorStore,
+	__experimentalBlockPatternsList as BlockPatternsList,
+} from '@wordpress/block-editor';
+import { type BlockInstance, cloneBlock } from '@wordpress/blocks';
+
+/**
+ * Internal dependencies
+ */
+import { ProductCollectionQuery } from '../types';
+
+const blockName = 'woocommerce/product-collection';
 
 const DisplayLayoutControl = ( props: {
 	clientId: string;
+	query: ProductCollectionQuery;
 	closePatternSelectionModal: () => void;
 } ) => {
-	const { clientId } = props;
-	const blockName = 'woocommerce/product-collection';
+	const { clientId, query } = props;
+	const { replaceBlock, selectBlock } = useDispatch( blockEditorStore );
 
-	// const onBlockPatternSelect = ( pattern, blocks ) => {
-	// 	const { newBlocks, queryClientIds } = getTransformedBlocksFromPattern(
-	// 		blocks,
-	// 		attributes
-	// 	);
-	// 	replaceBlock( clientId, newBlocks );
-	// 	if ( queryClientIds[ 0 ] ) {
-	// 		selectBlock( queryClientIds[ 0 ] );
-	// 	}
-	// };
+	const transformBlock = ( block: BlockInstance ): BlockInstance => {
+		const newInnerBlocks = block.innerBlocks.map( transformBlock );
+		if ( block.name === blockName ) {
+			const { perPage, offset, pages } = block.attributes.query;
+			const newQuery = {
+				...query,
+				perPage,
+				offset,
+				pages,
+			};
+			return cloneBlock( block, { query: newQuery }, newInnerBlocks );
+		}
+		return cloneBlock( block, {}, newInnerBlocks );
+	};
 
 	const blockPatterns = useSelect(
 		( select ) => {
 			const { getBlockRootClientId, getPatternsByBlockTypes } =
-				select( 'core/block-editor' );
+				select( blockEditorStore );
 			const rootClientId = getBlockRootClientId( clientId );
 			return getPatternsByBlockTypes( blockName, rootClientId );
 		},
 		[ blockName, clientId ]
 	);
+
+	const onClickPattern = ( pattern, blocks: BlockInstance[] ) => {
+		const newBlocks = blocks.map( transformBlock );
+
+		replaceBlock( clientId, newBlocks );
+		selectBlock( newBlocks[ 0 ].clientId );
+	};
 
 	return (
 		<Modal
@@ -42,13 +65,11 @@ const DisplayLayoutControl = ( props: {
 			isFullScreen={ true }
 		>
 			<div className="block-library-query-pattern__selection-content">
-				{ /* <BlockContextProvider value={ blockPreviewContext }> */ }
 				<BlockPatternsList
 					blockPatterns={ blockPatterns }
 					shownPatterns={ blockPatterns }
-					// onClickPattern={  }
+					onClickPattern={ onClickPattern }
 				/>
-				{ /* </BlockContextProvider> */ }
 			</div>
 		</Modal>
 	);
