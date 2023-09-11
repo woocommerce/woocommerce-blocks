@@ -2,9 +2,7 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
-import { Placeholder } from '@wordpress/components';
-import { Icon, info } from '@wordpress/icons';
+import { Skeleton } from '@woocommerce/base-components/skeleton';
 
 /**
  * Internal dependencies
@@ -18,18 +16,8 @@ const Edit = (): JSX.Element => {
 
 	return (
 		<div { ...blockProps }>
-			<Placeholder
-				icon={ <Icon icon={ info } /> }
-				label={ __(
-					'Additional Information',
-					'woo-gutenberg-products-block'
-				) }
-				instructions={ __(
-					'Displays additional information provided by third-party extensions for the current order. This block will be hidden if no extensions provide additional information.',
-					'woo-gutenberg-products-block'
-				) }
-				withIllustration={ true }
-			/>
+			<Skeleton tag="h3" numberOfLines={ 1 } maxWidth="25%" />
+			<Skeleton numberOfLines={ 3 } />
 		</div>
 	);
 };
