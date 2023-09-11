@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\Blocks\Utils;
 
 /**
  * Utility methods used for the Product Gallery block.
+ * {@internal This class and its methods are not intended for public use.}
  */
 class ProductGalleryUtils {
 

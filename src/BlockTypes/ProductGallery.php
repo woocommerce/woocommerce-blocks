@@ -23,7 +23,7 @@ class ProductGallery extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		// This is a temporary solution. We have to refactor this code when the block will have to be addable on every page/post.
+		// This is a temporary solution. We have to refactor this code when the block will have to be addable on every page/post https://github.com/woocommerce/woocommerce-blocks/issues/10882.
 		global $product;
 		$classname          = $attributes['className'] ?? '';
 		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
