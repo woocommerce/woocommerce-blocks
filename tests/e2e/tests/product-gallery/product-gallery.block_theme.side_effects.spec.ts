@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
-import { Locator } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 import { FrontendUtils } from '@woocommerce/e2e-utils';
 
 /**
@@ -46,6 +46,14 @@ export const getVisibleLargeImageId = async (
 	const mainImageParsedContext = JSON.parse( mainImageContext );
 
 	return mainImageParsedContext.woocommerce.imageId;
+};
+
+export const waitForJavascriptFrontendFileIsLoaded = async ( page: Page ) => {
+	await page.waitForResponse(
+		( response ) =>
+			response.url().includes( 'product-gallery-frontend' ) &&
+			response.status() === 200
+	);
 };
 
 export const getThumbnailImageIdByNth = async (
@@ -97,6 +105,8 @@ test.describe( `${ blockData.name }`, () => {
 			waitUntil: 'commit',
 		} );
 
+		await waitForJavascriptFrontendFileIsLoaded( page );
+
 		const visibleLargeImageId = await getVisibleLargeImageId(
 			frontendUtils
 		);
@@ -122,6 +132,8 @@ test.describe( `${ blockData.name }`, () => {
 		await page.goto( blockData.productPage, {
 			waitUntil: 'domcontentloaded',
 		} );
+
+		await waitForJavascriptFrontendFileIsLoaded( page );
 
 		const visibleLargeImageId = await getVisibleLargeImageId(
 			frontendUtils
