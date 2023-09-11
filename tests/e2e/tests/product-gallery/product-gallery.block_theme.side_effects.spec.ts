@@ -129,7 +129,7 @@ test.describe( `${ blockData.name }`, () => {
 
 		await Promise.all( [
 			page.goto( blockData.productPage, {
-				waitUntil: 'domcontentloaded',
+				waitUntil: 'load',
 			} ),
 			waitForJavascriptFrontendFileIsLoaded( page ),
 		] );
