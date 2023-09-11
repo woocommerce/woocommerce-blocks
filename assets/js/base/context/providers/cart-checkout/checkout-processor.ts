@@ -296,7 +296,7 @@ const CheckoutProcessor = () => {
 					processErrorResponse( {
 						code: 'unknown_error',
 						message: __(
-							'Something went wrong. Please try placing your order again.',
+							'Something went wrong, but your order may still have been placed. Please check your email or your order history in the "My Account" area before retrying.',
 							'woo-gutenberg-products-block'
 						),
 						data: null,
