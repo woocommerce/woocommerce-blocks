@@ -13,11 +13,16 @@ import {
 	BlockPreview,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
-import { Button, Placeholder, Popover } from '@wordpress/components';
+import {
+	Button,
+	Placeholder,
+	Popover,
+	ExternalLink,
+} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { box, Icon } from '@wordpress/icons';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useState, createInterpolateElement } from '@wordpress/element';
 import { store as noticesStore } from '@wordpress/notices';
 import { woo } from '@woocommerce/icons';
 
@@ -163,6 +168,13 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 					</Popover>
 				) }
 			</Button>
+			<Button
+				variant="secondary"
+				href="https://woocommerce.com/document/cart-checkout-blocks-support-status/"
+				target="_blank"
+			>
+				{ __( 'Learn more', 'woo-gutenberg-products-block' ) }
+			</Button>
 		</div>
 	);
 };
@@ -186,6 +198,20 @@ const Edit = ( { clientId, attributes }: BlockEditProps< Attributes > ) => {
 		? getTitle()
 		: __( 'Classic Shortcode Placeholder', 'woo-gutenberg-products-block' );
 	const placeholderDescription = getDescription( templateTitle, canConvert );
+
+	const learnMoreContent = createInterpolateElement(
+		__(
+			'You can learn more about the benefits of switching to blocks, compatibility with extensions, and how to switch back to shortcodes <a>in our documentation</a>.',
+			'woo-gutenberg-products-block'
+		),
+		{
+			a: (
+				// Suppress the warning as this <a> will be interpolated into the string with content.
+				// eslint-disable-next-line jsx-a11y/anchor-has-content
+				<ExternalLink href="https://woocommerce.com/document/cart-checkout-blocks-support-status/" />
+			),
+		}
+	);
 
 	return (
 		<div { ...blockProps }>
@@ -213,12 +239,7 @@ const Edit = ( { clientId, attributes }: BlockEditProps< Attributes > ) => {
 							__html: placeholderDescription,
 						} }
 					/>
-					<p>
-						{ __(
-							'You cannot edit the content of this block. However, you can move it and place other blocks around it.',
-							'woo-gutenberg-products-block'
-						) }
-					</p>
+					<p>{ learnMoreContent }</p>
 					{ canConvert && blockifyConfig && (
 						<ConvertTemplate
 							clientId={ clientId }
