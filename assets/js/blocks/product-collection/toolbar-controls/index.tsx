@@ -31,13 +31,13 @@ export default function ToolbarControls(
 
 	return (
 		<BlockControls>
+			<PatternChooserToolbar
+				openPatternSelectionModal={ () =>
+					setIsPatternSelectionModalOpen( true )
+				}
+			/>
 			{ ! query.inherit && (
 				<>
-					<PatternChooserToolbar
-						openPatternSelectionModal={ () =>
-							setIsPatternSelectionModalOpen( true )
-						}
-					/>
 					<DisplaySettingsToolbar
 						query={ query }
 						setQueryAttribute={ setQueryAttributeBind }
