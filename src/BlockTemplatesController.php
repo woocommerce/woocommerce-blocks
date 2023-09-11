@@ -142,7 +142,7 @@ class BlockTemplatesController {
 
 					// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 					if ( $current_screen && 'page' === $current_screen->id && ! empty( $_GET['post'] ) && in_array( absint( $_GET['post'] ), [ wc_get_page_id( 'cart' ), wc_get_page_id( 'checkout' ) ], true ) ) {
-						$result = wp_add_inline_style( 'wc-blocks-editor-style', '.edit-post-post-template { display: none; }' );
+						wp_add_inline_style( 'wc-blocks-editor-style', '.edit-post-post-template { display: none; }' );
 					}
 				},
 				10
