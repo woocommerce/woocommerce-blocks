@@ -42,14 +42,14 @@ const withSidebarNotices = createHigherOrderComponent(
 		const isBlockTheme = getSetting( 'isBlockTheme' );
 
 		const [
-			isIncompatiblePaymentGatewaysNoticeDismissed,
-			setIsIncompatiblePaymentGatewaysNoticeDismissed,
+			isIncompatibleExtensionsNoticeDismissed,
+			setIsIncompatibleExtensionsNoticeDismissed,
 		] = useState( true );
 
-		const toggleIncompatiblePaymentGatewaysNoticeDismissedStatus = (
+		const toggleIncompatibleExtensionsNoticeDismissedStatus = (
 			isDismissed: boolean
 		) => {
-			setIsIncompatiblePaymentGatewaysNoticeDismissed( isDismissed );
+			setIsIncompatibleExtensionsNoticeDismissed( isDismissed );
 		};
 
 		const { isCart, isCheckout, isPaymentMethodsBlock, hasPaymentMethods } =
@@ -97,7 +97,7 @@ const withSidebarNotices = createHigherOrderComponent(
 				<InspectorControls>
 					<IncompatibleExtensionsNotice
 						toggleDismissedStatus={
-							toggleIncompatiblePaymentGatewaysNoticeDismissedStatus
+							toggleIncompatibleExtensionsNoticeDismissedStatus
 						}
 						block={
 							isCheckout
@@ -116,7 +116,7 @@ const withSidebarNotices = createHigherOrderComponent(
 						/>
 					) }
 
-					{ isIncompatiblePaymentGatewaysNoticeDismissed ? (
+					{ isIncompatibleExtensionsNoticeDismissed ? (
 						<CartCheckoutSidebarCompatibilityNotice
 							block={ isCheckout ? 'checkout' : 'cart' }
 						/>
