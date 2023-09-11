@@ -38,8 +38,8 @@ export function IncompatiblePaymentGatewaysNotice( {
 
 	const noticeContent = createInterpolateElement(
 		_n(
-			'The following extension is incompatible with the block-based checkout. <a>Learn more</a>',
-			'The following extensions are incompatible with the block-based checkout. <a>Learn more</a>',
+			'The following extension might be incompatible with the block-based checkout. <a>Learn more</a>',
+			'The following extensions might be incompatible with the block-based checkout. <a>Learn more</a>',
 			numberOfIncompatiblePaymentMethods,
 			'woo-gutenberg-products-block'
 		),
