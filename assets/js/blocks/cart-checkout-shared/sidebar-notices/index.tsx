@@ -13,7 +13,7 @@ import { NoPaymentMethodsNotice } from '@woocommerce/editor-components/no-paymen
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 import { DefaultNotice } from '@woocommerce/editor-components/default-notice';
 import { TemplateNotice } from '@woocommerce/editor-components/template-notice';
-import { IncompatiblePaymentGatewaysNotice } from '@woocommerce/editor-components/incompatible-payment-gateways-notice';
+import { IncompatiblePaymentGatewaysNotice } from '@woocommerce/editor-components/incompatible-extension-notice';
 import { useSelect } from '@wordpress/data';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { useState } from '@wordpress/element';
