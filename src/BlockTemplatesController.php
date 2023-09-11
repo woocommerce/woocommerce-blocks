@@ -126,6 +126,27 @@ class BlockTemplatesController {
 				10,
 				2
 			);
+
+			/**
+			 * Prevents the pages that are assigned as cart/checkout from showing the "template" selector in the page-editor.
+			 * We want to avoid this flow and point users towards the site editor instead.
+			 */
+			add_action(
+				'current_screen',
+				function () {
+					if ( ! is_admin() ) {
+						return;
+					}
+
+					$current_screen = get_current_screen();
+
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+					if ( $current_screen && 'page' === $current_screen->id && ! empty( $_GET['post'] ) && in_array( absint( $_GET['post'] ), [ wc_get_page_id( 'cart' ), wc_get_page_id( 'checkout' ) ], true ) ) {
+						$result = wp_add_inline_style( 'wc-blocks-editor-style', '.edit-post-post-template { display: none; }' );
+					}
+				},
+				10
+			);
 		}
 	}
 
