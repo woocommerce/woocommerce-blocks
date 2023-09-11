@@ -45,21 +45,12 @@ class ProductGallery extends AbstractBlock {
 			$p->set_attribute( 'data-wc-interactive', true );
 			$p->set_attribute(
 				'data-wc-context',
-				wp_json_encode( array( 'productGallery' => array( 'numberOfThumbnails' => 0 ) ) )
+				wp_json_encode( array( 'woocommerce' => array( 'productGallery' => array( 'numberOfThumbnails' => 0 ) ) ) )
 			);
 			$html = $p->get_updated_html();
 		}
 
 		return $html;
-	}
-
-	/**
-	 * It isn't necessary register block assets because it is a server side block.
-	 */
-	protected function register_block_type_assets() {
-		parent::register_block_type_assets();
-
-		return null;
 	}
 
 	/**
@@ -69,8 +60,8 @@ class ProductGallery extends AbstractBlock {
 	 */
 	protected function get_block_type_script( $key = null ) {
 		$script = [
-			'handle'       => 'wc-' . $this->block_name . '-interactivity-frontend',
-			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-interactivity-frontend' ),
+			'handle'       => 'wc-' . $this->block_name . '-frontend',
+			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-frontend' ),
 			'dependencies' => [ 'wc-interactivity' ],
 		];
 
