@@ -71,7 +71,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		$processor->remove_class( 'wp-block-woocommerce-product-gallery-large-image' );
 		$content = $processor->get_updated_html();
 
-		[  $visible_main_image, $main_images ] = $this->get_main_images_html( $block->context, $post_id );
+		[ $visible_main_image, $main_images ] = $this->get_main_images_html( $block->context, $post_id );
 
 		$directives = $this->get_directives( $block->context );
 
@@ -146,19 +146,20 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		if ( ! $block_context['hoverZoom'] ) {
 			return array();
 		}
-			$context = array(
-				'woocommerce' => array(
-					'styles' => array(
-						'transform'        => 'scale(1.0)',
-						'transform-origin' => '',
-					),
-				),
-			);
 
-			return array(
-				'data-wc-on--mousemove'  => 'actions.woocommerce.handleMouseMove',
-				'data-wc-on--mouseleave' => 'actions.woocommerce.handleMouseLeave',
-				'data-wc-context'        => wp_json_encode( $context, JSON_NUMERIC_CHECK ),
-			);
+		$context = array(
+			'woocommerce' => array(
+				'styles' => array(
+					'transform'        => 'scale(1.0)',
+					'transform-origin' => '',
+				),
+			),
+		);
+
+		return array(
+			'data-wc-on--mousemove'  => 'actions.woocommerce.handleMouseMove',
+			'data-wc-on--mouseleave' => 'actions.woocommerce.handleMouseLeave',
+			'data-wc-context'        => wp_json_encode( $context, JSON_NUMERIC_CHECK ),
+		);
 	}
 }
