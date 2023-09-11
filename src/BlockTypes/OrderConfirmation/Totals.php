@@ -148,14 +148,14 @@ class Totals extends AbstractOrderConfirmationBlock {
 
 		return '
 			<tr class="' . esc_attr( $row_class ) . '">
-				<th scope="row" class="wc-block-order-confirmation-totals__product">
+				<td class="wc-block-order-confirmation-totals__product">
 					' . wp_kses_post( $item_name ) . '&nbsp;
 					' . wp_kses_post( $item_qty ) . '
 					' . $this->get_hook_content( 'woocommerce_order_item_meta_start', [ $item_id, $item, $order, false ] ) . '
 					' . wc_display_item_meta( $item, [ 'echo' => false ] ) . '
 					' . $this->get_hook_content( 'woocommerce_order_item_meta_end', [ $item_id, $item, $order, false ] ) . '
 					' . $this->render_order_details_table_item_purchase_note( $order, $product ) . '
-				</th>
+				</td>
 				<td class="wc-block-order-confirmation-totals__total">
 					' . wp_kses_post( $order->get_formatted_line_subtotal( $item ) ) . '
 				</td>
