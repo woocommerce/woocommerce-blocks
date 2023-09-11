@@ -51,18 +51,4 @@ class Summary extends AbstractOrderConfirmationBlock {
 	protected function render_summary_row( $name, $value ) {
 		return $value ? '<li class="wc-block-order-confirmation-summary-list-item"><span class="wc-block-order-confirmation-summary-list-item__key">' . esc_html( $name ) . '</span> <span class="wc-block-order-confirmation-summary-list-item__value">' . wp_kses_post( $value ) . '</span></li>' : '';
 	}
-
-	/**
-	 * Remove core hooks from the thankyou page.
-	 */
-	protected function remove_core_hooks() {
-		remove_action( 'woocommerce_thankyou', 'woocommerce_order_details_table', 10 );
-	}
-
-	/**
-	 * Restore core hooks from the thankyou page.
-	 */
-	protected function restore_core_hooks() {
-		add_action( 'woocommerce_thankyou', 'woocommerce_order_details_table', 10 );
-	}
 }
