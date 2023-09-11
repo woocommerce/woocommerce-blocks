@@ -247,6 +247,7 @@ final class BlockTypesController {
 			$block_types[] = 'OrderConfirmation\ShippingAddress';
 			$block_types[] = 'OrderConfirmation\BillingWrapper';
 			$block_types[] = 'OrderConfirmation\ShippingWrapper';
+			$block_types[] = 'OrderConfirmation\AdditionalInformation';
 		}
 
 		/**
