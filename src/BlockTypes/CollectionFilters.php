@@ -28,6 +28,13 @@ class CollectionFilters extends AbstractBlock {
 	);
 
 	/**
+	 * Cache the current response from the API.
+	 *
+	 * @var array
+	 */
+	protected $current_response = null;
+
+	/**
 	 * Get the frontend style handle for this block type.
 	 *
 	 * @return null
@@ -59,6 +66,25 @@ class CollectionFilters extends AbstractBlock {
 	}
 
 	/**
+	 * Extra data passed through from server to client for block.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 *                           Note, this will be empty in the editor context when the block is
+	 *                           not in the post content on editor load.
+	 */
+	protected function enqueue_data( array $attributes = [] ) {
+		parent::enqueue_data( $attributes );
+
+		if ( ! is_admin() ) {
+			/**
+			 * At this point, WP starts rendering the Collection Filters block,
+			 * we can safely nuke the current response.
+			 */
+			$this->current_response = null;
+		}
+	}
+
+	/**
 	 * Modify the context of inner blocks.
 	 *
 	 * @param array    $context The block context.
@@ -78,10 +104,12 @@ class CollectionFilters extends AbstractBlock {
 			return $context;
 		}
 
-		$collection_data = $this->get_aggregated_collection_data( $parent_block );
+		if ( ! isset( $this->current_response ) ) {
+			$this->current_response = $this->get_aggregated_collection_data( $parent_block );
+		}
 
-		if ( ! empty( $collection_data ) ) {
-			$context['collectionData'] = $collection_data;
+		if ( ! empty( $this->current_response ) ) {
+			$context['collectionData'] = $this->current_response;
 		}
 
 		return $context;
