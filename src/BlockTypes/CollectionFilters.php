@@ -21,10 +21,18 @@ class CollectionFilters extends AbstractBlock {
 	 * @var array
 	 */
 	protected $mapping = array(
-		'calculate_price_range'         => 'woocommerce/collection-price-filter',
+		'calculate_price_range'         => 'woocommerce/price-filter',
 		'calculate_stock_status_counts' => 'woocommerce/collection-stock-filter',
 		'calculate_attribute_counts'    => 'woocommerce/collection-attribute-filter',
 		'calculate_rating_counts'       => 'woocommerce/collection-rating-filter',
+	);
+
+	protected $params_mapping = array(
+		'perPage' => 'per_page',
+		'pages'   => 'page',
+		'orderBy' => 'orderby',
+		'parents' => 'parent',
+		'woocommerceStockStatus' => 'stock_status',
 	);
 
 	/**
@@ -75,7 +83,7 @@ class CollectionFilters extends AbstractBlock {
 			return $context;
 		}
 
-		$params       = array();
+		$params       = $this->get_products_params_from_query( $parent_block->context['query'] );
 		$inner_blocks = array();
 
 		do {
@@ -95,6 +103,14 @@ class CollectionFilters extends AbstractBlock {
 				'/wc/store/v1/products/collection-data'
 			)
 		);
+
+			error_log(add_query_arg(
+				$params,
+				'/wc/store/v1/products/collection-data'
+			)          );
+		error_log( print_r( $inner_blocks, true));
+		error_log( print_r( $params, true));
+		error_log( print_r( $response, true));
 
 		if ( ! empty( $response['body'] ) ) {
 			$context['collectionData'] = $response['body'];
@@ -119,5 +135,37 @@ class CollectionFilters extends AbstractBlock {
 			}
 		}
 		return $results;
+	}
+
+	protected function get_products_params_from_query( $query ) {
+		$params = array();
+
+		if ( empty( $query['isProductCollectionBlock'] ) ) {
+			return $params;
+		}
+
+		if ( ! empty( $query['taxQuery'] ) ) {
+			foreach( $query['taxQuery'] as $taxonomy => $value ) {
+				if ( 'product_cat' === $taxonomy ) {
+					$params['category'] = implode( ',', $value );
+				}
+				if ( 'product_tag' === $taxonomy ) {
+					$params['tag'] = implode( ',', $value );
+				}
+			}
+
+			// @todo handle other product taxonomies
+			unset( $query['taxQuery'] );
+		}
+
+		foreach ( $query as $key => $value ) {
+			if ( isset( $this->params_mapping[ $key ] ) ) {
+				$params[ $this->params_mapping[ $key ] ] = $value;
+			} else {
+				$params[ $key ] = $value;
+			}
+		}
+
+		return array_filter($params);
 	}
 }
