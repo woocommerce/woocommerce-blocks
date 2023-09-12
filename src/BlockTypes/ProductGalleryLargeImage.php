@@ -156,16 +156,6 @@ class ProductGalleryLargeImage extends AbstractBlock {
 			),
 		);
 
-		wc_store(
-			array(
-				'state' => array(
-					'woocommerce' => array(
-						'isProductGalleryModalOpen' => false,
-					),
-				),
-			)
-		);
-
 		return array(
 			'data-wc-on--mousemove'  => 'actions.woocommerce.handleMouseMove',
 			'data-wc-on--mouseleave' => 'actions.woocommerce.handleMouseLeave',
