@@ -24,7 +24,7 @@ class ProductGalleryUtils {
 		$product                = wc_get_product( $post_id );
 
 		if ( $product ) {
-			$all_product_gallery_image_ids = ProductGalleryUtils::get_product_gallery_image_ids( $product );
+			$all_product_gallery_image_ids = self::get_product_gallery_image_ids( $product );
 
 			if ( 'full' === $size || 'full' !== $size && count( $all_product_gallery_image_ids ) > 1 ) {
 				foreach ( $all_product_gallery_image_ids as $product_gallery_image_id ) {

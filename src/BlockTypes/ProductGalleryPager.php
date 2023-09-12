@@ -66,9 +66,9 @@ class ProductGalleryPager extends AbstractBlock {
 	/**
 	 * Renders the pager for the product gallery.
 	 *
-	 * @param  array  $product_gallery_image_ids An array of image IDs for the product gallery.
-	 * @param  string $pager_display_mode        The display mode for the pager.
-	 * @param  int    $number_of_thumbnails      The number of thumbnails to display in the pager.
+	 * @param  array  $product_gallery_images_ids An array of image IDs for the product gallery.
+	 * @param  string $pager_display_mode         The display mode for the pager.
+	 * @param  int    $number_of_thumbnails       The number of thumbnails to display in the pager.
 	 * @return string|null The rendered pager HTML, or null if the pager should not be displayed.
 	 */
 	private function render_pager( $product_gallery_images_ids, $pager_display_mode, $number_of_thumbnails ) {
