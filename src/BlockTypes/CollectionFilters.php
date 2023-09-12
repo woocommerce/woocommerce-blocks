@@ -20,20 +20,27 @@ class CollectionFilters extends AbstractBlock {
 	 *
 	 * @var array
 	 */
-	protected $mapping = array(
-		'calculate_price_range'         => 'woocommerce/price-filter',
+	protected $collection_data_params_mapping = array(
+		'calculate_price_range'         => 'woocommerce/collection-price-filter',
 		'calculate_stock_status_counts' => 'woocommerce/collection-stock-filter',
 		'calculate_attribute_counts'    => 'woocommerce/collection-attribute-filter',
 		'calculate_rating_counts'       => 'woocommerce/collection-rating-filter',
 	);
 
-	protected $params_mapping = array(
-		'perPage' => 'per_page',
-		'pages'   => 'page',
-		'orderBy' => 'orderby',
-		'parents' => 'parent',
+	protected $product_params_mapping = array(
+		'perPage'                => 'per_page',
+		'pages'                  => 'page',
+		'orderBy'                => 'orderby',
+		'parents'                => 'parent',
 		'woocommerceStockStatus' => 'stock_status',
 	);
+
+	/**
+	 * Cache the current response from the API.
+	 *
+	 * @var array
+	 */
+	protected $current_response = null;
 
 	/**
 	 * Get the frontend style handle for this block type.
@@ -67,6 +74,25 @@ class CollectionFilters extends AbstractBlock {
 	}
 
 	/**
+	 * Extra data passed through from server to client for block.
+	 *
+	 * @param array $attributes  Any attributes that currently are available from the block.
+	 *                           Note, this will be empty in the editor context when the block is
+	 *                           not in the post content on editor load.
+	 */
+	protected function enqueue_data( array $attributes = [] ) {
+		parent::enqueue_data( $attributes );
+
+		if ( ! is_admin() ) {
+			/**
+			 * At this point, WP starts rendering the Collection Filters block,
+			 * we can safely nuke the current response.
+			 */
+			$this->current_response = null;
+		}
+	}
+
+	/**
 	 * Modify the context of inner blocks.
 	 *
 	 * @param array    $context The block context.
@@ -76,6 +102,7 @@ class CollectionFilters extends AbstractBlock {
 	 */
 	public function modify_inner_blocks_context( $context, $parsed_block, $parent_block ) {
 		if (
+			is_admin() ||
 			! is_a( $parent_block, 'WP_Block' ) ||
 			"woocommerce/{$this->block_name}" !== $parent_block->name ||
 			empty( $parent_block->inner_blocks )
@@ -83,40 +110,66 @@ class CollectionFilters extends AbstractBlock {
 			return $context;
 		}
 
-		$params       = $this->get_products_params_from_query( $parent_block->context['query'] );
-		$inner_blocks = array();
+		if ( ! isset( $this->current_response ) ) {
+			$this->current_response = $this->get_aggregated_collection_data( $parent_block );
+		}
+
+		if (
+			! empty( $this->current_response ) ||
+			isset( $parsed_block['blockName'] ) ||
+			in_array( $parsed_block['blockName'], $this->collection_data_params_mapping, true )
+		) {
+			$context['collectionData'] = $this->current_response;
+			error_log( print_r( $this->current_response, true ) );
+		}
+
+		return $context;
+	}
+
+	/**
+	 * Get the aggregated collection data from the API.
+	 * Loop through inner blocks and build a query string to pass to the API.
+	 *
+	 * @param WP_Block $block The block instance.
+	 * @return array
+	 */
+	protected function get_aggregated_collection_data( $block ) {
+		$collection_data_params = array();
+		$inner_blocks           = array();
 
 		do {
 			$inner_blocks = array_merge(
-				$this->get_inner_blocks_recursive( $parent_block->inner_blocks->current() ),
+				$this->get_inner_blocks_recursive( $block->inner_blocks->current() ),
 				$inner_blocks
 			);
-		} while ( $parent_block->inner_blocks->next() );
+			$block->inner_blocks->next();
+		} while ( $block->inner_blocks->valid() );
 
-		foreach ( $this->mapping as $key => $block_name ) {
-			$params[ $key ] = ( in_array( $block_name, $inner_blocks, true ) );
+		foreach ( $this->collection_data_params_mapping as $key => $block_name ) {
+			$collection_data_params[ $key ] = ( in_array( $block_name, $inner_blocks, true ) );
 		}
+
+		if ( empty( array_filter( $collection_data_params ) ) ) {
+			return array();
+		}
+
+		$products_params = $this->get_products_params_from_query( $block->context['query'] );
 
 		$response = Package::container()->get( Hydration::class )->get_rest_api_response_data(
 			add_query_arg(
-				$params,
+				array_merge(
+					$products_params,
+					$collection_data_params,
+				),
 				'/wc/store/v1/products/collection-data'
 			)
 		);
 
-			error_log(add_query_arg(
-				$params,
-				'/wc/store/v1/products/collection-data'
-			)          );
-		error_log( print_r( $inner_blocks, true));
-		error_log( print_r( $params, true));
-		error_log( print_r( $response, true));
-
 		if ( ! empty( $response['body'] ) ) {
-			$context['collectionData'] = $response['body'];
+			return $response['body'];
 		}
 
-		return $context;
+		return array();
 	}
 
 	/**
@@ -145,7 +198,7 @@ class CollectionFilters extends AbstractBlock {
 		}
 
 		if ( ! empty( $query['taxQuery'] ) ) {
-			foreach( $query['taxQuery'] as $taxonomy => $value ) {
+			foreach ( $query['taxQuery'] as $taxonomy => $value ) {
 				if ( 'product_cat' === $taxonomy ) {
 					$params['category'] = implode( ',', $value );
 				}
@@ -159,13 +212,17 @@ class CollectionFilters extends AbstractBlock {
 		}
 
 		foreach ( $query as $key => $value ) {
-			if ( isset( $this->params_mapping[ $key ] ) ) {
-				$params[ $this->params_mapping[ $key ] ] = $value;
+			if ( isset( $this->product_params_mapping[ $key ] ) ) {
+				$params[ $this->product_params_mapping[ $key ] ] = $value;
 			} else {
 				$params[ $key ] = $value;
 			}
 		}
 
-		return array_filter($params);
+		if ( ! isset( $params['catalog_visibility'] ) ) {
+			$params['catalog_visibility'] = 'visible';
+		}
+
+		return array_filter( $params );
 	}
 }
