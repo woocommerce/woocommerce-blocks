@@ -95,8 +95,6 @@ class CollectionFilters extends AbstractBlock {
 	public function modify_inner_blocks_context( $context, $parsed_block, $parent_block ) {
 		if (
 			is_admin() ||
-			! isset( $parsed_block['blockName'] ) ||
-			! in_array( $parsed_block['blockName'], $this->mapping, true ) ||
 			! is_a( $parent_block, 'WP_Block' ) ||
 			"woocommerce/{$this->block_name}" !== $parent_block->name ||
 			empty( $parent_block->inner_blocks )
@@ -108,7 +106,12 @@ class CollectionFilters extends AbstractBlock {
 			$this->current_response = $this->get_aggregated_collection_data( $parent_block );
 		}
 
-		if ( ! empty( $this->current_response ) ) {
+		if (
+			! empty(
+				$this->current_response ||
+				isset( $parsed_block['blockName'] ) ||
+				in_array( $parsed_block['blockName'], $this->mapping, true )
+			) ) {
 			$context['collectionData'] = $this->current_response;
 		}
 
@@ -131,10 +134,15 @@ class CollectionFilters extends AbstractBlock {
 				$this->get_inner_blocks_recursive( $block->inner_blocks->current() ),
 				$inner_blocks
 			);
-		} while ( $block->inner_blocks->next() );
+			$block->inner_blocks->next();
+		} while ( $block->inner_blocks->valid() );
 
 		foreach ( $this->mapping as $key => $block_name ) {
 			$params[ $key ] = ( in_array( $block_name, $inner_blocks, true ) );
+		}
+
+		if ( empty( array_filter( $params ) ) ) {
+			return array();
 		}
 
 		$response = Package::container()->get( Hydration::class )->get_rest_api_response_data(
