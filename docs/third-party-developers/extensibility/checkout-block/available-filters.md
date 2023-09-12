@@ -29,6 +29,24 @@ Line items refer to each item listed in the cart or checkout. For instance, the 
 
 ![Cart Line Items](https://user-images.githubusercontent.com/17236129/192795735-bd6e8494-e5c9-4384-b6a4-092a579c4755.png)
 
+```
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust cart item class of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  cartItemClass: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return 'my-custom-class';
+  }
+} );
+```
+
+![Cart Line Items](https://user-images.githubusercontent.com/3323310/267219896-58ed0551-998b-4309-bc22-3f7be84565d6.png)
+
 The following filters are available for line items:
 
 | Filter name            | Description                                                                                                                            | Return type                                                                           |
