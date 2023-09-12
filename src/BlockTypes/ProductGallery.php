@@ -53,10 +53,10 @@ class ProductGallery extends AbstractBlock {
 			$content
 		);
 
-		$post_id                    = $block->context['postId'] ?? '';
-		$product                    = wc_get_product( $post_id );
+		$post_id                     = $block->context['postId'] ?? '';
+		$product                     = wc_get_product( $post_id );
 		$product_gallery_images_urls = array();
-		$number_of_thumbnails = $block->attributes['thumbnailsNumberOfThumbnails'] ?? 0;
+		$number_of_thumbnails        = $block->attributes['thumbnailsNumberOfThumbnails'] ?? 0;
 
 		if ( $product ) {
 			$product_gallery_images_urls = $this->get_product_gallery_images_urls(
@@ -75,8 +75,8 @@ class ProductGallery extends AbstractBlock {
 					array(
 						'productGallery' => array(
 							'selectedThumbnailIndex' => 0,
-							'thumbnailsUrls' => $product_gallery_images_urls['thumbnails'],
-							'largeImagesUrls' => $product_gallery_images_urls['large_images'],
+							'thumbnailsUrls'         => $product_gallery_images_urls['thumbnails'],
+							'largeImagesUrls'        => $product_gallery_images_urls['large_images'],
 						),
 						'woocommerce' => array(
 							'selectedImage' => $product->get_image_id(),
@@ -91,8 +91,8 @@ class ProductGallery extends AbstractBlock {
 	}
 
 	private function get_product_gallery_images_urls( $main_post_thumbnail_id, $gallery_thumbnails_ids, $number_of_thumbnails ) {
-		$main_thumbnail_id = $main_post_thumbnail_id;
-		$gallery_images_ids    = $gallery_thumbnails_ids;
+		$main_thumbnail_id  = $main_post_thumbnail_id;
+		$gallery_images_ids = $gallery_thumbnails_ids;
 
 		if ( ! $number_of_thumbnails || ! $gallery_images_ids ) {
 			return array(

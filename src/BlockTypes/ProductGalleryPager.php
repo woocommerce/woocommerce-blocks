@@ -43,13 +43,13 @@ class ProductGalleryPager extends AbstractBlock {
 		$pager_display_mode   = $block->context['pagerDisplayMode'] ?? '';
 		$classname            = $attributes['className'] ?? '';
 		$wrapper_attributes   = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$post_id           = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
-		$product           = wc_get_product( $post_id );
+		$post_id              = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
+		$product              = wc_get_product( $post_id );
 
-		if( $product ) {
+		if ( $product ) {
 			$product_gallery_images_ids = ProductGalleryUtils::get_product_gallery_image_ids( $product );
 			$number_of_available_images = count( $product_gallery_images_ids );
-			$number_of_thumbnails = $number_of_thumbnails < $number_of_available_images ? $number_of_thumbnails : $number_of_available_images;
+			$number_of_thumbnails       = $number_of_thumbnails < $number_of_available_images ? $number_of_thumbnails : $number_of_available_images;
 
 			$html                 = $this->render_pager( $product_gallery_images_ids, $pager_display_mode, $number_of_thumbnails );
 
@@ -96,19 +96,19 @@ class ProductGalleryPager extends AbstractBlock {
 			}
 
 			$is_first_pager_item = $key === 0;
-			$pager_item = sprintf(
+			$pager_item          = sprintf(
 				'<li class="wp-block-woocommerce-product-gallery__pager-item %2$s">%1$s</li>',
 				$pager_display_mode === 'dots' ? $this->get_dot_icon( $is_first_pager_item ) : $key + 1,
 				$is_first_pager_item ? 'is-active' : ''
 			);
-			$p = new \WP_HTML_Tag_Processor( $pager_item );
+			$p                   = new \WP_HTML_Tag_Processor( $pager_item );
 
 			if ( $p->next_tag() ) {
 				$p->set_attribute(
 					'data-wc-context',
 					wp_json_encode(
 						array(
-							'isSelected' => $is_first_pager_item,
+							'isSelected'  => $is_first_pager_item,
 							'woocommerce' => array( 'imageId' => strval( $product_gallery_image_id ) )
 						)
 					)
