@@ -51,7 +51,7 @@ class ProductGalleryPager extends AbstractBlock {
 			$number_of_available_images = count( $product_gallery_images_ids );
 			$number_of_thumbnails       = $number_of_thumbnails < $number_of_available_images ? $number_of_thumbnails : $number_of_available_images;
 
-			$html                 = $this->render_pager( $product_gallery_images_ids, $pager_display_mode, $number_of_thumbnails );
+			$html = $this->render_pager( $product_gallery_images_ids, $pager_display_mode, $number_of_thumbnails );
 
 			return sprintf(
 				'<div %1$s>
@@ -66,9 +66,9 @@ class ProductGalleryPager extends AbstractBlock {
 	/**
 	 * Renders the pager for the product gallery.
 	 *
-	 * @param array $product_gallery_image_ids An array of image IDs for the product gallery.
-	 * @param string $pager_display_mode The display mode for the pager.
-	 * @param int $number_of_thumbnails The number of thumbnails to display in the pager.
+	 * @param  array  $product_gallery_image_ids An array of image IDs for the product gallery.
+	 * @param  string $pager_display_mode The display mode for the pager.
+	 * @param  int    $number_of_thumbnails The number of thumbnails to display in the pager.
 	 * @return string|null The rendered pager HTML, or null if the pager should not be displayed.
 	 */
 	private function render_pager( $product_gallery_images_ids, $pager_display_mode, $number_of_thumbnails ) {
@@ -82,9 +82,9 @@ class ProductGalleryPager extends AbstractBlock {
 	/**
 	 * Renders the pager pages for the product gallery.
 	 *
-	 * @param array $product_gallery_images_ids An array of image IDs for the product gallery.
-	 * @param int $number_of_thumbnails The number of thumbnails to display in the pager.
-	 * @param string $pager_display_mode The display mode for the pager. Defaults to 'dots'.
+	 * @param  array  $product_gallery_images_ids An array of image IDs for the product gallery.
+	 * @param  int    $number_of_thumbnails The number of thumbnails to display in the pager.
+	 * @param  string $pager_display_mode The display mode for the pager. Defaults to 'dots'.
 	 * @return string The rendered pager pages HTML.
 	 */
 	private function render_pager_pages( $product_gallery_images_ids, $number_of_thumbnails, $pager_display_mode = 'dots' ) {
@@ -95,10 +95,10 @@ class ProductGalleryPager extends AbstractBlock {
 				break;
 			}
 
-			$is_first_pager_item = $key === 0;
+			$is_first_pager_item = 0 === $key;
 			$pager_item          = sprintf(
 				'<li class="wp-block-woocommerce-product-gallery__pager-item %2$s">%1$s</li>',
-				$pager_display_mode === 'dots' ? $this->get_dot_icon( $is_first_pager_item ) : $key + 1,
+				'dots' === $pager_display_mode ? $this->get_dot_icon( $is_first_pager_item ) : $key + 1,
 				$is_first_pager_item ? 'is-active' : ''
 			);
 			$p                   = new \WP_HTML_Tag_Processor( $pager_item );
@@ -109,7 +109,7 @@ class ProductGalleryPager extends AbstractBlock {
 					wp_json_encode(
 						array(
 							'isSelected'  => $is_first_pager_item,
-							'woocommerce' => array( 'imageId' => strval( $product_gallery_image_id ) )
+							'woocommerce' => array( 'imageId' => strval( $product_gallery_image_id ) ),
 						)
 					)
 				);

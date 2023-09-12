@@ -53,19 +53,9 @@ class ProductGallery extends AbstractBlock {
 			$content
 		);
 
-		$post_id                     = $block->context['postId'] ?? '';
-		$product                     = wc_get_product( $post_id );
-		$product_gallery_images_urls = array();
-		$number_of_thumbnails        = $block->attributes['thumbnailsNumberOfThumbnails'] ?? 0;
-
-		if ( $product ) {
-			$product_gallery_images_urls = $this->get_product_gallery_images_urls(
-				get_post_thumbnail_id( $post_id ),
-				$product->get_gallery_image_ids(),
-				$number_of_thumbnails
-			);
-		}
-		$p = new \WP_HTML_Tag_Processor( $content );
+		$post_id = $block->context['postId'] ?? '';
+		$product = wc_get_product( $post_id );
+		$p       = new \WP_HTML_Tag_Processor( $content );
 
 		if ( $p->next_tag() ) {
 			$p->set_attribute( 'data-wc-interactive', true );
@@ -73,11 +63,6 @@ class ProductGallery extends AbstractBlock {
 				'data-wc-context',
 				wp_json_encode(
 					array(
-						'productGallery' => array(
-							'selectedThumbnailIndex' => 0,
-							'thumbnailsUrls'         => $product_gallery_images_urls['thumbnails'],
-							'largeImagesUrls'        => $product_gallery_images_urls['large_images'],
-						),
 						'woocommerce' => array(
 							'selectedImage' => $product->get_image_id(),
 						),
@@ -88,34 +73,6 @@ class ProductGallery extends AbstractBlock {
 		}
 
 		return $html;
-	}
-
-	private function get_product_gallery_images_urls( $main_post_thumbnail_id, $gallery_thumbnails_ids, $number_of_thumbnails ) {
-		$main_thumbnail_id  = $main_post_thumbnail_id;
-		$gallery_images_ids = $gallery_thumbnails_ids;
-
-		if ( ! $number_of_thumbnails || ! $gallery_images_ids ) {
-			return array(
-				'large_images' => array(),
-				'thumbnails'   => array(),
-			);
-		}
-		array_unshift( $gallery_images_ids, $main_thumbnail_id );
-		$images_urls       = array();
-		$thumbnails_urls   = array();
-
-		foreach ( $gallery_images_ids as $index => $gallery_image_id ) {
-			if ( $index >= $number_of_thumbnails ) {
-				break;
-			}
-			$images_urls[ $index ]     = wp_get_attachment_image_src( $gallery_image_id, 'full' )[0];
-			$thumbnails_urls[ $index ] = wp_get_attachment_image_src( $gallery_image_id, 'thumbnail' )[0];
-		}
-
-		return array(
-			'large_images' => $images_urls,
-			'thumbnails'   => $thumbnails_urls,
-		);
 	}
 
 	/**
