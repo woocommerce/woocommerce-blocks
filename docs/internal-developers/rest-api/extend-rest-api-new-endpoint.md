@@ -1,6 +1,6 @@
 # Adding an endpoint to ExtendSchema <!-- omit in toc -->
 
-This document is intended for contrubtors to WooCommerce Blocks plugin, if you feel like a new endpoint should be added, feel free to open an issue or a PR detailing why.
+This document is intended for contributors to WooCommerce Blocks plugin, if you feel like a new endpoint should be added, feel free to open an issue or a PR detailing why.
 
 ## Extending `GET` endpoints in Store API
 
