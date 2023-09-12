@@ -18,8 +18,11 @@
 		"thumbnailsPosition": "thumbnailsPosition",
 		"thumbnailsNumberOfThumbnails": "thumbnailsNumberOfThumbnails",
 		"productGalleryClientId": "productGalleryClientId",
-		"pagerDisplayMode": "pagerDisplayMode"
+		"nextPreviousButtonsPosition": "nextPreviousButtonsPosition",
+		"pagerDisplayMode": "pagerDisplayMode",
+		"hoverZoom": "hoverZoom"
 	},
+	"usesContext": [ "postId" ],
 	"attributes": {
 		"thumbnailsPosition": {
 			"type": "string",
@@ -43,11 +46,15 @@
 		},
 		"hoverZoom": {
 			"type": "boolean",
-			"default": false
+			"default": true
 		},
 		"fullScreenOnClick": {
 			"type": "boolean",
 			"default": false
+		},
+		"nextPreviousButtonsPosition":{
+			"type": "string",
+			"default": "insideTheImage"
 		}
 	},
 	"viewScript": "wc-product-gallery-frontend"

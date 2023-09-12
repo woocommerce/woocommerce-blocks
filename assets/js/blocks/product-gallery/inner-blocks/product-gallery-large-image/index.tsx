@@ -8,7 +8,8 @@ import { isExperimentalBuild } from '@woocommerce/block-settings';
  * Internal dependencies
  */
 import icon from './icon';
-import { Edit, Save } from './edit';
+import { Edit } from './edit';
+import { Save } from './save';
 import metadata from './block.json';
 import './style.scss';
 

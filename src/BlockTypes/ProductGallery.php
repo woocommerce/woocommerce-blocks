@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\ProductGalleryUtils;
+
 /**
  * ProductGallery class.
  */
@@ -39,6 +41,8 @@ class ProductGallery extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+		// This is a temporary solution. We have to refactor this code when the block will have to be addable on every page/post https://github.com/woocommerce/woocommerce-blocks/issues/10882.
+		global $product;
 		$classname          = $attributes['className'] ?? '';
 		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
 		$html               = sprintf(
@@ -62,6 +66,7 @@ class ProductGallery extends AbstractBlock {
 				$number_of_thumbnails
 			);
 		}
+		$p = new \WP_HTML_Tag_Processor( $content );
 
 		if ( $p->next_tag() ) {
 			$p->set_attribute( 'data-wc-interactive', true );
@@ -73,6 +78,9 @@ class ProductGallery extends AbstractBlock {
 							'selectedThumbnailIndex' => 0,
 							'thumbnailsUrls' => $product_gallery_images_urls['thumbnails'],
 							'largeImagesUrls' => $product_gallery_images_urls['large_images'],
+						),
+						'woocommerce' => array(
+							'selectedImage' => $product->get_image_id(),
 						),
 					)
 				)
@@ -109,15 +117,6 @@ class ProductGallery extends AbstractBlock {
 			'large_images' => $images_urls,
 			'thumbnails'   => $thumbnails_urls,
 		);
-	}
-
-	/**
-	 * It isn't necessary register block assets because it is a server side block.
-	 */
-	protected function register_block_type_assets() {
-		parent::register_block_type_assets();
-
-		return null;
 	}
 
 	/**
