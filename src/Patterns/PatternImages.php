@@ -27,13 +27,10 @@ class PatternImages {
 
 	/**
 	 * Constructor.
-	 *
-	 * @param VerticalsAPIClient $verticals_api_client The verticals API client.
-	 * @param array              $patterns_dictionary The patterns dictionary.
 	 */
-	public function __construct( VerticalsAPIClient $verticals_api_client, array $patterns_dictionary ) {
-		$this->verticals_api_client = $verticals_api_client;
-		$this->patterns_dictionary  = $patterns_dictionary;
+	public function __construct() {
+		$this->verticals_api_client = new VerticalsAPIClient();
+		$this->patterns_dictionary  = wp_json_file_decode( __DIR__ . '/src/Patterns/dictionary.json', array( 'associative' => true ) );
 	}
 
 	/**
@@ -45,8 +42,9 @@ class PatternImages {
 	 */
 	public function create_patterns_content( int $vertical_id ) {
 		$vertical_images = $this->verticals_api_client->get_vertical_images( $vertical_id );
+
 		if ( is_wp_error( $vertical_images ) ) {
-			return $vertical_images; // TODO: should wrap the error in another WP_Error???
+			return $vertical_images;
 		}
 
 		$patterns_with_images = $this->get_patterns_with_images( $vertical_images );
