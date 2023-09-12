@@ -9,6 +9,7 @@
 .wp-block-woocommerce-product-gallery__pager-item {
 	@include font-size(regular);
 	color: $gray-600;
+	cursor: pointer;
 }
 
 .wp-block-woocommerce-product-gallery__pager-item.is-active {

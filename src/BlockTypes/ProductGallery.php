@@ -53,7 +53,6 @@ class ProductGallery extends AbstractBlock {
 			$content
 		);
 
-		$p                          = new \WP_HTML_Tag_Processor( $content );
 		$post_id                    = $block->context['postId'] ?? '';
 		$product                    = wc_get_product( $post_id );
 		$product_gallery_images_urls = array();

@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\ProductGalleryUtils;
+
 /**
  * ProductGalleryPager class.
  */
@@ -25,7 +27,7 @@ class ProductGalleryPager extends AbstractBlock {
 	 * @return string[]
 	 */
 	protected function get_block_type_uses_context() {
-		return [ 'productGalleryClientId', 'pagerDisplayMode' ];
+		return [ 'productGalleryClientId', 'pagerDisplayMode', 'thumbnailsNumberOfThumbnails', 'postId' ];
 	}
 
 	/**
@@ -41,106 +43,93 @@ class ProductGalleryPager extends AbstractBlock {
 		$pager_display_mode   = $block->context['pagerDisplayMode'] ?? '';
 		$classname            = $attributes['className'] ?? '';
 		$wrapper_attributes   = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$html                 = $this->render_pager( $pager_display_mode, $number_of_thumbnails );
+		$post_id           = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
+		$product           = wc_get_product( $post_id );
 
-		return sprintf(
-			'<div %1$s>
-				%2$s
-			</div>',
-			$wrapper_attributes,
-			$html
-		);
-	}
+		if( $product ) {
+			$product_gallery_images_ids = ProductGalleryUtils::get_product_gallery_image_ids( $product );
+			$number_of_available_images = count( $product_gallery_images_ids );
+			$number_of_thumbnails = $number_of_thumbnails < $number_of_available_images ? $number_of_thumbnails : $number_of_available_images;
 
-	/**
-	 * Renders the pager based on the given display mode.
-	 *
-	 * @param string $pager_display_mode The display mode for the pager. Possible values are 'dots', 'digits', and 'off'.
-	 *
-	 * @return string|null The rendered pager HTML, or null if the pager is disabled.
-	 */
-	private function render_pager( $pager_display_mode, $number_of_thumbnails ) {
-		switch ( $pager_display_mode ) {
-			case 'dots':
-				return $this->render_dots_pager( $number_of_thumbnails );
-			case 'digits':
-				return $this->render_digits_pager( $number_of_thumbnails );
-			case 'off':
-				return null;
-			default:
-				return $this->render_dots_pager( $number_of_thumbnails );
+			$html                 = $this->render_pager( $product_gallery_images_ids, $pager_display_mode, $number_of_thumbnails );
+
+			return sprintf(
+				'<div %1$s>
+					%2$s
+				</div>',
+				$wrapper_attributes,
+				$html
+			);
 		}
 	}
 
 	/**
-	 * Renders the digits pager HTML.
+	 * Renders the pager for the product gallery.
 	 *
-	 * @return string The rendered digits pager HTML.
+	 * @param array $product_gallery_image_ids An array of image IDs for the product gallery.
+	 * @param string $pager_display_mode The display mode for the pager.
+	 * @param int $number_of_thumbnails The number of thumbnails to display in the pager.
+	 * @return string|null The rendered pager HTML, or null if the pager should not be displayed.
 	 */
-	private function render_digits_pager( $number_of_thumbnails ) {
-		return sprintf(
-			'<ul class="wp-block-woocommerce-product-gallery-pager__pager">
-				<li class="wp-block-woocommerce-product-gallery__pager-item is-active">1</li>
-				<li class="wp-block-woocommerce-product-gallery__pager-item">2</li>
-				<li class="wp-block-woocommerce-product-gallery__pager-item">3</li>
-				<li class="wp-block-woocommerce-product-gallery__pager-item">4</li>
-			</ul>'
-		);
+	private function render_pager( $product_gallery_images_ids, $pager_display_mode, $number_of_thumbnails ) {
+		if ( $number_of_thumbnails < 2 || 'off' === $pager_display_mode ) {
+			return null;
+		}
+
+		return $this->render_pager_pages( $product_gallery_images_ids, $number_of_thumbnails, $pager_display_mode );
 	}
 
 	/**
-	 * Renders the dots pager HTML.
+	 * Renders the pager pages for the product gallery.
 	 *
-	 * @return string The rendered dots pager HTML.
+	 * @param array $product_gallery_images_ids An array of image IDs for the product gallery.
+	 * @param int $number_of_thumbnails The number of thumbnails to display in the pager.
+	 * @param string $pager_display_mode The display mode for the pager. Defaults to 'dots'.
+	 * @return string The rendered pager pages HTML.
 	 */
-	private function render_dots_pager( $number_of_thumbnails ) {
-		$pager_item = sprintf(
-			'<li class="wp-block-woocommerce-product-gallery__pager-item is-active">%1$s</li>',
-			$this->get_dot_icon()
-		);
+	private function render_pager_pages( $product_gallery_images_ids, $number_of_thumbnails, $pager_display_mode = 'dots' ) {
+		$html = '';
 
-		// <li data-wc-context="%2$s" class="wp-block-woocommerce-product-gallery__pager-item is-active">%1$s</li>
-		// <li class="wp-block-woocommerce-product-gallery__pager-item">%1$s</li>
-		// <li class="wp-block-woocommerce-product-gallery__pager-item">%1$s</li>
-		$p = new \WP_HTML_Tag_Processor( $pager_item );
+		foreach ( $product_gallery_images_ids as $key => $product_gallery_image_id ) {
+			if ( $key >= $number_of_thumbnails ) {
+				break;
+			}
 
-		if ( $p->next_tag() ) {
-			$p->set_attribute(
-				'data-wc-context',
-				wp_json_encode(
-					array( 'isSelected' => false )
-				)
+			$is_first_pager_item = $key === 0;
+			$pager_item = sprintf(
+				'<li class="wp-block-woocommerce-product-gallery__pager-item %2$s">%1$s</li>',
+				$pager_display_mode === 'dots' ? $this->get_dot_icon( $is_first_pager_item ) : $key + 1,
+				$is_first_pager_item ? 'is-active' : ''
 			);
-			$p->set_attribute(
-				'data-wc-on--click',
-				'actions.productGallery.selectThumbnail'
-			);
-			$p->set_attribute(
-				'data-page-index',
-				0
-			);
-			$p->set_attribute(
-				'data-wc-effect',
-				'effects.productGallery.checkSelectedThumbnail'
-			);
-			$pager_item = $p->get_updated_html();
-			$p->set_attribute(
-				'data-page-index',
-				1
-			);
-			$pager_item2 = $p->get_updated_html();
+			$p = new \WP_HTML_Tag_Processor( $pager_item );
+
+			if ( $p->next_tag() ) {
+				$p->set_attribute(
+					'data-wc-context',
+					wp_json_encode(
+						array(
+							'isSelected' => $is_first_pager_item,
+							'woocommerce' => array( 'imageId' => strval( $product_gallery_image_id ) )
+						)
+					)
+				);
+				$p->set_attribute(
+					'data-wc-on--click',
+					'actions.woocommerce.handleClick'
+				);
+				$p->set_attribute(
+					'data-wc-class--is-active',
+					'selectors.woocommerce.isSelected'
+				);
+				$html .= $p->get_updated_html();
+			}
 		}
 
 		return sprintf(
 			'<ul class="wp-block-woocommerce-product-gallery-pager__pager">
 				%1$s
-				%2$s
 			</ul>',
-			$pager_item,
-			$pager_item2
-			// <li data-wc-context="%2$s" class="wp-block-woocommerce-product-gallery__pager-item is-active">%1$s</li>
-			// <li class="wp-block-woocommerce-product-gallery__pager-item">%1$s</li>
-			// <li class="wp-block-woocommerce-product-gallery__pager-item">%1$s</li>
+			$html
 		);
 	}
 
@@ -149,24 +138,13 @@ class ProductGalleryPager extends AbstractBlock {
 	 *
 	 * @return string The dot icon SVG code.
 	 */
-	private function get_dot_icon() {
+	private function get_dot_icon( $is_active = false ) {
+		$initial_opacity = $is_active ? '1' : '0.2';
 		return sprintf(
 			'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<circle cx="6" cy="6" r="6" fill="black" fill-opacity="0.2" data-wc-bind--fill-opacity="selectors.productGallery.pager.getDotFillOpacity"  />
-			</svg>'
-		);
-	}
-
-	/**
-	 * Returns the selected dot icon SVG code.
-	 *
-	 * @return string The selected dot icon SVG code.
-	 */
-	private function get_selected_dot_icon() {
-		return sprintf(
-			'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<circle cx="6" cy="6" r="6" fill="black"/>
-			</svg>'
+				<circle cx="6" cy="6" r="6" fill="black" fill-opacity="%1$s" data-wc-bind--fill-opacity="selectors.woocommerce.pagerDotFillOpacity"  />
+			</svg>',
+			$initial_opacity
 		);
 	}
 

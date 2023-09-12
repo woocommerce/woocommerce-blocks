@@ -8,14 +8,6 @@ interface State {
 }
 
 interface Context {
-	isSelected: boolean;
-	productGallery: {
-		selectedThumbnailIndex: number;
-		numberOfThumbnails: number;
-		pager: {
-			isSelected: boolean;
-		};
-	};
 	woocommerce: {
 		selectedImage: string;
 		imageId: string;
@@ -23,27 +15,13 @@ interface Context {
 }
 
 interface Selectors {
-	productGallery: {
-		getNumberOfPages: ( store: SelectorsStore ) => number;
-		pager: {
-			getDotFillOpacity: ( store: SelectorsStore ) => number;
-		};
-	};
 	woocommerce: {
 		isSelected: ( store: unknown ) => boolean;
+		pagerDotFillOpacity: ( store: SelectorsStore ) => number;
 	};
 }
 
 interface Actions {
-	productGallery: {
-		selectThumbnail: ( store: SelectorsStore ) => void;
-	};
-}
-
-interface Effects {
-	productGallery: {
-		checkSelectedThumbnail: ( store: SelectorsStore ) => void;
-	};
 	woocommerce: {
 		handleClick: ( context: Context ) => void;
 	};
@@ -54,7 +32,6 @@ interface Store {
 	context: Context;
 	selectors: Selectors;
 	actions: Actions;
-	effects: Effects;
 	ref?: HTMLElement;
 }
 
@@ -70,35 +47,13 @@ interactivityApiStore( {
 					context?.woocommerce.imageId
 				);
 			},
-			pager: {
-				getDotFillOpacity( store: SelectorsStore ) {
-					const { context } = store;
+			pagerDotFillOpacity( store: SelectorsStore ) {
+				const { context } = store;
 
-					return context.isSelected ? 1 : 0.2;
-				},
-			},
-		},
-	},
-	actions: {
-		productGallery: {
-			selectThumbnail: ( store: SelectorsStore ) => {
-				const { ref, context } = store;
-				context.productGallery.selectedThumbnailIndex =
-					ref?.attributes[ 'data-page-index' ];
-			},
-		},
-	},
-	effects: {
-		productGallery: {
-			checkSelectedThumbnail: ( store: SelectorsStore ) => {
-				if (
-					store.ref?.attributes[ 'data-page-index' ] ===
-					store.context.productGallery.selectedThumbnailIndex
-				) {
-					store.context.isSelected = true;
-				} else {
-					store.context.isSelected = false;
-				}
+				return context?.woocommerce.selectedImage ===
+					context?.woocommerce.imageId
+					? 1
+					: 0.2;
 			},
 		},
 	},
