@@ -2,6 +2,7 @@
 
 namespace Automattic\WooCommerce\Blocks\Verticals;
 
+use Automattic\WooCommerce\Blocks\AI\Connection;
 use Automattic\WooCommerce\Blocks\Verticals\Client as VerticalsAPIClient;
 
 
@@ -19,30 +20,32 @@ class VerticalsSelector {
 	private $verticals_api_client;
 
 	/**
-	 * The GPT client.
+	 * The AI Connection.
 	 *
-	 * @var ChatGPTClient
+	 * @var Connection
 	 */
-	private $chat_gpt_client;
+	private $ai_connection;
 
 	/**
 	 * Constructor.
-	 *
-	 * @param VerticalsAPIClient $verticals_api_client The verticals API client.
-	 * @param ChatGPTClient      $chat_gpt_client The ChatGPT client.
 	 */
-	public function __construct( VerticalsAPIClient $verticals_api_client, ChatGPTClient $chat_gpt_client ) {
-		$this->verticals_api_client = $verticals_api_client;
-		$this->chat_gpt_client      = $chat_gpt_client;
+	public function __construct() {
+		$this->verticals_api_client = new VerticalsAPIClient();
+		$this->ai_connection        = new Connection();
 	}
 
 	/**
 	 * Gets the vertical id that better matches the business description using the GPT API.
 	 *
+	 * @param string $business_description The business description.
+	 *
 	 * @return string|\WP_Error The vertical id, or WP_Error if the request failed.
 	 */
-	public function get_vertical_id() {
-		$business_description = $this->get_business_description();
+	public function get_vertical_id( $business_description = '' ) {
+		if ( empty( $business_description ) ) {
+			$business_description = $this->get_business_description();
+		}
+
 		if ( empty( $business_description ) ) {
 			return new \WP_Error(
 				'empty_business_description',
@@ -52,14 +55,26 @@ class VerticalsSelector {
 
 		$verticals = $this->verticals_api_client->get_verticals();
 		if ( is_wp_error( $verticals ) ) {
-			return $verticals; // TODO: should wrap the error in another WP_Error???
+			return $verticals;
 		}
 
-		$prompt = $this->build_prompt( $verticals, $business_description );
+		$prompt  = $this->build_prompt( $verticals, $business_description );
+		$site_id = $this->ai_connection->get_site_id();
 
-		$answer = $this->chat_gpt_client->text_completion( $prompt );
+		if ( is_wp_error( $site_id ) ) {
+			return $site_id;
+		}
+
+		$token = $this->ai_connection->get_jwt_token( $site_id );
+
+		if ( is_wp_error( $token ) ) {
+			return $token;
+		}
+
+		$answer = $this->ai_connection->fetch_ai_response( $token, $prompt );
+
 		if ( is_wp_error( $answer ) ) {
-			return $answer; // TODO: should wrap the error in another WP_Error???
+			return $answer;
 		}
 
 		return $this->parse_answer( $answer );
