@@ -68,6 +68,9 @@ class CollectionFilters extends AbstractBlock {
 	 */
 	public function modify_inner_blocks_context( $context, $parsed_block, $parent_block ) {
 		if (
+			is_admin() ||
+			! isset( $parsed_block['blockName'] ) ||
+			! in_array( $parsed_block['blockName'], $this->mapping, true ) ||
 			! is_a( $parent_block, 'WP_Block' ) ||
 			"woocommerce/{$this->block_name}" !== $parent_block->name ||
 			empty( $parent_block->inner_blocks )
@@ -75,15 +78,32 @@ class CollectionFilters extends AbstractBlock {
 			return $context;
 		}
 
+		$collection_data = $this->get_aggregated_collection_data( $parent_block );
+
+		if ( ! empty( $collection_data ) ) {
+			$context['collectionData'] = $collection_data;
+		}
+
+		return $context;
+	}
+
+	/**
+	 * Get the aggregated collection data from the API.
+	 * Loop through inner blocks and build a query string to pass to the API.
+	 *
+	 * @param WP_Block $block The block instance.
+	 * @return array
+	 */
+	protected function get_aggregated_collection_data( $block ) {
 		$params       = array();
 		$inner_blocks = array();
 
 		do {
 			$inner_blocks = array_merge(
-				$this->get_inner_blocks_recursive( $parent_block->inner_blocks->current() ),
+				$this->get_inner_blocks_recursive( $block->inner_blocks->current() ),
 				$inner_blocks
 			);
-		} while ( $parent_block->inner_blocks->next() );
+		} while ( $block->inner_blocks->next() );
 
 		foreach ( $this->mapping as $key => $block_name ) {
 			$params[ $key ] = ( in_array( $block_name, $inner_blocks, true ) );
@@ -97,10 +117,10 @@ class CollectionFilters extends AbstractBlock {
 		);
 
 		if ( ! empty( $response['body'] ) ) {
-			$context['collectionData'] = $response['body'];
+			return $response['body'];
 		}
 
-		return $context;
+		return array();
 	}
 
 	/**
