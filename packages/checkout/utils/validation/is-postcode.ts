@@ -14,6 +14,7 @@ const CUSTOM_REGEXES = new Map< string, RegExp >( [
 	[ 'LI', /^(94[8-9][0-9])$/ ],
 	[ 'NL', /^([1-9][0-9]{3})(\s?)(?!SA|SD|SS)[A-Z]{2}$/i ],
 	[ 'SI', /^([1-9][0-9]{3})$/ ],
+	[ 'TW', /^\d{3}(\d{2,3})?$/ ], // Taiwanese postcodes can be a 5 digit or 6-digit number. (3+3 or 3+2).
 	[ 'KH', /^[0-9]{6}$/ ], // Cambodia (6-digit postal code)
 ] );
 
