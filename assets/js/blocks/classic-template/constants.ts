@@ -15,16 +15,12 @@ export const TYPES = {
 	productTaxonomy: 'product-taxonomy',
 	productSearchResults: 'product-search-results',
 	orderConfirmation: 'order-confirmation',
-	cart: 'cart',
-	checkout: 'checkout',
 	checkoutHeader: 'checkout-header',
 };
 export const PLACEHOLDERS = {
 	singleProduct: 'single-product',
 	archiveProduct: 'archive-product',
 	orderConfirmation: 'fallback',
-	cart: 'cart',
-	checkout: 'checkout',
 	checkoutHeader: 'checkout-header',
 };
 

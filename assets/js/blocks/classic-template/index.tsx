@@ -103,7 +103,7 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 	return (
 		<div className="wp-block-woocommerce-classic-template__placeholder-migration-button-container">
 			<Button
-				variant="primary"
+				isPrimary
 				onClick={ () => {
 					onClickCallback( {
 						clientId,
@@ -232,7 +232,6 @@ const Edit = ( {
 	const {
 		isConversionPossible,
 		getDescription,
-		getTitle,
 		getSkeleton,
 		blockifyConfig,
 	} = conversionConfig[ templateType ];
@@ -248,9 +247,6 @@ const Edit = ( {
 	);
 
 	const canConvert = isConversionPossible();
-	const placeholderTitle = getTitle
-		? getTitle()
-		: __( 'Classic Template Placeholder', 'woo-gutenberg-products-block' );
 	const placeholderDescription = getDescription( templateTitle, canConvert );
 
 	return (
@@ -268,7 +264,12 @@ const Edit = ( {
 								'woo-gutenberg-products-block'
 							) }
 						</span>
-						<span>{ placeholderTitle }</span>
+						<span>
+							{ __(
+								'Classic Template Placeholder',
+								'woo-gutenberg-products-block'
+							) }
+						</span>
 					</div>
 					<p
 						dangerouslySetInnerHTML={ {
@@ -326,16 +327,10 @@ const registerClassicTemplateBlock = ( {
 		category: 'woocommerce',
 		apiVersion: 2,
 		keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-		description:
-			template &&
-			TEMPLATES[ template ] &&
-			TEMPLATES[ template ].description
-				? TEMPLATES[ template ].description
-				: __(
-						'Renders classic WooCommerce PHP templates.',
-						'woo-gutenberg-products-block'
-				  ),
-
+		description: __(
+			'Renders classic WooCommerce PHP templates.',
+			'woo-gutenberg-products-block'
+		),
 		supports: {
 			align: [ 'wide', 'full' ],
 			html: false,
