@@ -38,7 +38,7 @@ class PatternImages {
 	 *
 	 * @param int $vertical_id The vertical id.
 	 *
-	 * @return void|WP_Error
+	 * @return bool|WP_Error
 	 */
 	public function create_patterns_content( int $vertical_id ) {
 		$vertical_images = $this->verticals_api_client->get_vertical_images( $vertical_id );
@@ -49,7 +49,7 @@ class PatternImages {
 
 		$patterns_with_images = $this->get_patterns_with_images( $vertical_images );
 
-		update_option( self::WC_BLOCKS_PATTERNS_CONTENT, $patterns_with_images );
+		return update_option( self::WC_BLOCKS_PATTERNS_CONTENT, $patterns_with_images );
 	}
 
 	/**
