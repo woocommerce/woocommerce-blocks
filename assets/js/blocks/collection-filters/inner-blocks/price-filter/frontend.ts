@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { store, navigate } from '@woocommerce/interactivity';
+import { formatPrice, getCurrency } from '@woocommerce/price-format';
 
 /**
  * Internal dependencies
@@ -41,6 +42,14 @@ store( {
 					`--low: ${ ( 100 * minPrice ) / maxRange }%`,
 					`--high: ${ ( 100 * maxPrice ) / maxRange }%`,
 				].join( ';' );
+			},
+			formattedMinPrice: ( { state }: { state: PriceFilterState } ) => {
+				const { minPrice } = state.filters;
+				return formatPrice( minPrice, getCurrency( { minorUnit: 0 } ) );
+			},
+			formattedMaxPrice: ( { state }: { state: PriceFilterState } ) => {
+				const { maxPrice } = state.filters;
+				return formatPrice( maxPrice, getCurrency( { minorUnit: 0 } ) );
 			},
 		},
 	},

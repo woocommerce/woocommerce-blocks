@@ -1,8 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
-use PHP_CodeSniffer\Generators\HTML;
-
 /**
  * CollectionPriceFilter class.
  */
@@ -26,11 +24,15 @@ class CollectionPriceFilter extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$wrapper_attributes = get_block_wrapper_attributes();
-		$min_range          = 0; // This value should come from DB.
-		$max_range          = 90; // This value should come from DB.
-		$min_price          = get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range );
-		$max_price          = get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range );
+		list ( 'showInputFields' => $show_input_fields, 'inlineInput' => $inline_input ) = $attributes;
+
+		$wrapper_attributes  = get_block_wrapper_attributes();
+		$min_range           = 0; // This value should come from DB.
+		$max_range           = 90; // This value should come from DB.
+		$min_price           = intval( get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range ) );
+		$max_price           = intval( get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range ) );
+		$formatted_min_price = wc_price( $min_price, array( 'decimals' => 0 ) );
+		$formatted_max_price = wc_price( $max_price, array( 'decimals' => 0 ) );
 
 		// CSS variables for the range bar style.
 		$__low       = 100 * $min_price / $max_range;
@@ -55,7 +57,7 @@ class CollectionPriceFilter extends AbstractBlock {
 			)
 		);
 
-		$price_min = ! empty( $attributes['showInputFields'] ) ? <<<HTML
+		$price_min = $show_input_fields ? <<<HTML
 			<input
 				type='text'
 				value='$min_price'
@@ -64,10 +66,10 @@ class CollectionPriceFilter extends AbstractBlock {
 				data-wc-on--change='actions.filters.updateProducts'
 			>
 		HTML : <<<HTML
-			<span data-wc-text="state.filters.minPrice">$min_price</span>
+			<span data-wc-text="state.filters.formattedMinPrice">$formatted_min_price</span>
 		HTML;
 
-		$price_max = ! empty( $attributes['showInputFields'] ) ? <<<HTML
+		$price_max = $show_input_fields ? <<<HTML
 			<input
 				type='text'
 				value='$max_price'
@@ -76,7 +78,7 @@ class CollectionPriceFilter extends AbstractBlock {
 				data-wc-on--change='actions.filters.updateProducts'
 			>
 		HTML : <<<HTML
-			<span data-wc-text="state.filters.maxPrice">$max_price</span>
+			<span data-wc-text="state.filters.formattedMaxPrice">$formatted_max_price</span>
 		HTML;
 
 		$price_range = <<<HTML
@@ -113,7 +115,7 @@ class CollectionPriceFilter extends AbstractBlock {
 			</div>
 		HTML;
 
-		if ( ! empty( $attributes['showInputFields'] && ! empty( $attributes['inlineInput'] ) ) ) {
+		if ( $show_input_fields & $inline_input ) {
 			return <<<HTML
 			<div $wrapper_attributes>
 				<div class='text'>
