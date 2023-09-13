@@ -21,10 +21,9 @@ class Migration {
 		'10.3.0' => array(
 			'wc_blocks_update_1030_blockified_product_grid_block',
 		),
-		// @todo Confirm version to run migration.
-		'11.0.0' => array(
-			'wc_blocks_update_1100_rename_checkout_template',
-			'wc_blocks_update_1100_rename_cart_template',
+		'11.2.0' => array(
+			'wc_blocks_update_1120_rename_checkout_template',
+			'wc_blocks_update_1120_rename_cart_template',
 		),
 	);
 
@@ -70,7 +69,7 @@ class Migration {
 	/**
 	 * Rename `checkout` template to `page-checkout`.
 	 */
-	public static function wc_blocks_update_1100_rename_checkout_template() {
+	public static function wc_blocks_update_1120_rename_checkout_template() {
 		$template = BlockTemplateUtils::get_block_template( BlockTemplateUtils::PLUGIN_SLUG . '//checkout', 'wp_template' );
 
 		if ( $template && ! empty( $template->wp_id ) ) {
@@ -90,7 +89,7 @@ class Migration {
 	/**
 	 * Rename `cart` template to `page-cart`.
 	 */
-	public static function wc_blocks_update_1100_rename_cart_template() {
+	public static function wc_blocks_update_1120_rename_cart_template() {
 		$template = BlockTemplateUtils::get_block_template( BlockTemplateUtils::PLUGIN_SLUG . '//cart', 'wp_template' );
 
 		if ( $template && ! empty( $template->wp_id ) ) {
