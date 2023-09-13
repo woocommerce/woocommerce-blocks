@@ -59,12 +59,12 @@ const DisplayLayoutControl = ( props: {
 
 	return (
 		<Modal
-			overlayClassName="block-library-query-pattern__selection-modal"
+			overlayClassName="wc-blocks-product-collection__selection-modal"
 			title={ __( 'Choose a pattern', 'woo-gutenberg-products-block' ) }
 			onRequestClose={ props.closePatternSelectionModal }
 			isFullScreen={ true }
 		>
-			<div className="block-library-query-pattern__selection-content">
+			<div className="wc-blocks-product-collection__selection-content">
 				<BlockPatternsList
 					blockPatterns={ blockPatterns }
 					shownPatterns={ blockPatterns }
