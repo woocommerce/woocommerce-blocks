@@ -320,6 +320,20 @@ registerCheckoutFilters( 'automatic-coupon-extension', {
 ### Prevent a snackbar notice from appearing for coupons
 
 If you want to prevent a coupon apply notice from appearing, you can use the `showApplyCouponNotice` filter. If it returns `false` then the notice will not be created.
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Prevent a couponCode called '10off' from creating a notice when it gets applied.
+registerCheckoutFilters( 'example-extension', {
+  showApplyCouponNotice: ( value, extensions, args ) => {
+    return args?.couponCode === '10off' ? false : value;
+  }
+} );
+```
+
+| Before                                                                                                         | After                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| <img width="599" alt="image" src="https://github.com/masteradhoc/woocommerce-blocks/assets/6242098/b091a815-5e6b-45a2-8d2b-d55196afd59e">  | <img width="599" alt="image" src="https://github.com/masteradhoc/woocommerce-blocks/assets/6242098/b967b04b-4065-4aa7-8d16-8ab311c1ccbb"> |
 
 The same can be done with the `showRemoveCouponNotice` filter to prevent a notice when a coupon is removed from the cart.
 
