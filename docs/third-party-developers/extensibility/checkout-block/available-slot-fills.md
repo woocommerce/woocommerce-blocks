@@ -37,6 +37,35 @@ Checkout:
 
 ## ExperimentalOrderShippingPackages
 
+Code:
+``` 
+  /**
+  * External dependencies
+  */
+  
+  import { __ } from '@wordpress/i18n';
+  import { registerPlugin } from '@wordpress/plugins';
+  import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout';
+  
+  const render = () => {
+    return (
+      <ExperimentalOrderShippingPackages>
+        <div>
+          {
+            __( 'Express Shipping', 'YOUR-TEXTDOMAIN' )
+          }  
+        </div>
+      </ExperimentalOrderShippingPackages>
+    );
+  };
+  
+  registerPlugin( 'slot-and-fill-examples', {
+    render,
+    scope: 'woocommerce-checkout',
+  } );
+
+```
+
 This slot renders inside the shipping step of Checkout and inside the shipping options in Cart.
 
 Cart:
