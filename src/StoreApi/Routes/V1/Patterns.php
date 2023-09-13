@@ -67,9 +67,13 @@ class Patterns extends AbstractRoute {
 		$allow_ai_connection = get_option( 'woocommerce_blocks_allow_ai_connection' );
 
 		if ( ! $allow_ai_connection ) {
-			return new \WP_Error(
-				'ai_connection_not_allowed',
-				__( 'AI content generation is not allowed on this store. Update your store settings if you want to enable this feature.', 'woo-gutenberg-products-block' )
+			return rest_ensure_response(
+				$this->error_to_response(
+					new \WP_Error(
+						'ai_connection_not_allowed',
+						__( 'AI content generation is not allowed on this store. Update your store settings if you wish to enable this feature.', 'woo-gutenberg-products-block' )
+					)
+				)
 			);
 		}
 
