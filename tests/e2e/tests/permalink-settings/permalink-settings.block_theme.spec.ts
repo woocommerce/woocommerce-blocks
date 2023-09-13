@@ -2,20 +2,10 @@
  * External dependencies
  */
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
-import { cli } from '@woocommerce/e2e-utils';
 
 test.describe(
 	'Tests permalink settings for the cart and checkout templates',
 	async () => {
-		test.afterAll( async () => {
-			await cli(
-				'npm run wp-env run tests-cli -- wp option update woocommerce_cart_page_endpoint cart'
-			);
-			await cli(
-				'npm run wp-env run tests-cli -- wp option update woocommerce_checkout_page_endpoint checkout'
-			);
-		} );
-
 		test.describe( 'Settings page', () => {
 			test( 'Load advanced settings', async ( { page } ) => {
 				await page.goto(

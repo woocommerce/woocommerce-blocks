@@ -30,9 +30,14 @@ export class FrontendUtils {
 		await this.page.waitForLoadState( 'domcontentloaded' );
 		if ( itemName !== '' ) {
 			await this.page
-				.getByLabel( `Add “${ itemName }” to your cart` )
+				.getByRole( 'button', {
+					name: `Add “${ itemName }” to your cart`,
+				} )
 				.click();
-			await this.page.waitForResponse( /add_to_cart|batch/ );
+			await this.page.waitForResponse( ( request ) => {
+				const url = request.url();
+				return url.includes( 'add_to_cart' ) || url.includes( 'batch' );
+			} );
 			return;
 		}
 		await this.page.click( 'text=Add to cart' );
