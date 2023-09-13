@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { BlockEditProps, InnerBlockTemplate } from '@wordpress/blocks';
+import {
+	BlockEditProps,
+	InnerBlockTemplate,
+	registerBlockVariation,
+} from '@wordpress/blocks';
 import { useInstanceId } from '@wordpress/compose';
 import { useEffect } from '@wordpress/element';
 
@@ -78,7 +82,63 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 	[ 'core/query-no-results' ],
 ];
 
+const registerSampleVariation = () => {
+	const variationAttrs = {
+		name: 'product-collection__new-arrivals',
+		title: 'New Arrivals',
+	};
+	const attributes = {
+		...DEFAULT_ATTRIBUTES,
+		query: {
+			...DEFAULT_ATTRIBUTES.query,
+			inherit: false,
+			orderBy: 'date',
+			order: 'desc',
+			perPage: 3,
+		},
+	};
+	const innerBlocks: InnerBlockTemplate[] = [
+		[
+			'woocommerce/product-template',
+			{},
+			[
+				[
+					'woocommerce/product-image',
+					{
+						imageSizing: ImageSizing.THUMBNAIL,
+					},
+				],
+				[
+					'core/post-title',
+					{
+						textAlign: 'center',
+						level: 3,
+						fontSize: 'medium',
+						style: {
+							spacing: {
+								margin: {
+									bottom: '0.75rem',
+									top: '0',
+								},
+							},
+						},
+						isLink: true,
+						__woocommerceNamespace: PRODUCT_TITLE_ID,
+					},
+				],
+			],
+		],
+	];
+
+	registerBlockVariation( 'woocommerce/product-collection', {
+		...variationAttrs,
+		attributes,
+		innerBlocks,
+	} );
+};
+
 const Edit = ( props: BlockEditProps< ProductCollectionAttributes > ) => {
+	registerSampleVariation();
 	const { attributes, setAttributes } = props;
 	const { queryId } = attributes;
 

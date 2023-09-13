@@ -8,7 +8,13 @@ import {
 	store as blockEditorStore,
 	__experimentalBlockPatternsList as BlockPatternsList,
 } from '@wordpress/block-editor';
-import { type BlockInstance, cloneBlock } from '@wordpress/blocks';
+import {
+	store as blocksStore,
+	type BlockInstance,
+	cloneBlock,
+	createBlock,
+	createBlocksFromInnerBlocksTemplate,
+} from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -16,6 +22,24 @@ import { type BlockInstance, cloneBlock } from '@wordpress/blocks';
 import { ProductCollectionQuery } from '../types';
 
 const blockName = 'woocommerce/product-collection';
+
+const mapVariationToPattern = ( variation ) => {
+	const { name, title, attributes, innerBlocks } = variation;
+	return {
+		name,
+		title,
+		blockTypes: [ 'woocommerce/product-collection' ],
+		categories: [ 'woo-commerce' ],
+		collection: true,
+		blocks: [
+			createBlock(
+				'woocommerce/product-collection',
+				attributes,
+				createBlocksFromInnerBlocksTemplate( innerBlocks )
+			),
+		],
+	};
+};
 
 const DisplayLayoutControl = ( props: {
 	clientId: string;
@@ -50,7 +74,21 @@ const DisplayLayoutControl = ( props: {
 		[ blockName, clientId ]
 	);
 
+	const blockVariations = useSelect( ( select ) => {
+		const { getBlockVariations } = select( blocksStore );
+		return getBlockVariations( 'woocommerce/product-collection' );
+	}, [] );
+
+	const variationsAsPatterns = blockVariations.map( mapVariationToPattern );
+
 	const onClickPattern = ( pattern, blocks: BlockInstance[] ) => {
+		const { collection } = pattern;
+
+		if ( collection ) {
+			replaceBlock( clientId, blocks );
+			return;
+		}
+
 		const newBlocks = blocks.map( transformBlock );
 
 		replaceBlock( clientId, newBlocks );
@@ -66,8 +104,14 @@ const DisplayLayoutControl = ( props: {
 		>
 			<div className="wc-blocks-product-collection__selection-content">
 				<BlockPatternsList
-					blockPatterns={ blockPatterns }
-					shownPatterns={ blockPatterns }
+					blockPatterns={ [
+						...blockPatterns,
+						...variationsAsPatterns,
+					] }
+					shownPatterns={ [
+						...blockPatterns,
+						...variationsAsPatterns,
+					] }
 					onClickPattern={ onClickPattern }
 				/>
 			</div>
