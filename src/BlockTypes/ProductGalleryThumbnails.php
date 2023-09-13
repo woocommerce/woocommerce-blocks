@@ -39,7 +39,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$post_id = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
+		$post_id = $block->context['postId'] ?? '';
 
 		if ( ! isset( $post_id ) ) {
 			return null;
