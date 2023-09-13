@@ -29,7 +29,7 @@ Line items refer to each item listed in the cart or checkout. For instance, the 
 
 ![Cart Line Items](https://user-images.githubusercontent.com/17236129/192795735-bd6e8494-e5c9-4384-b6a4-092a579c4755.png)
 
-```
+```js
 const { registerCheckoutFilters } = window.wc.blocksCheckout;
  
 // Adjust cart item class of the cart line items.
