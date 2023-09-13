@@ -116,7 +116,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 	 * Generates the HTML for a next or previous button for the product gallery large image.
 	 *
 	 * @param string $button_type The type of button to generate. Either 'previous' or 'next'.
-	 * @param string $context The block context.
+	 * @param string $context     The block context.
 	 * @return string The HTML for the generated button.
 	 */
 	protected function get_button( $button_type, $context ) {

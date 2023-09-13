@@ -59,9 +59,9 @@ class ProductGalleryUtils {
 	/**
 	 * Get the product gallery image IDs.
 	 *
-	 * @param \WC_Product $product The product object to retrieve the gallery images for.
-	 * @param int $max_number_of_visible_images The maximum number of visible images to return. Defaults to 8.
-	 * @param bool $only_visible Whether to return only the visible images. Defaults to false.
+	 * @param \WC_Product $product                      The product object to retrieve the gallery images for.
+	 * @param int         $max_number_of_visible_images The maximum number of visible images to return. Defaults to 8.
+	 * @param bool        $only_visible                 Whether to return only the visible images. Defaults to false.
 	 * @return array An array of unique image IDs for the product gallery.
 	 */
 	public static function get_product_gallery_image_ids( $product, $max_number_of_visible_images = 8, $only_visible = false ) {
