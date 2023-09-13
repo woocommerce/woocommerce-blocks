@@ -46,10 +46,10 @@ class VerticalsSelector {
 			$business_description = $this->get_business_description();
 		}
 
-		if ( empty( $business_description ) ) {
+		if ( ! is_string( $business_description ) ) {
 			return new \WP_Error(
-				'empty_business_description',
-				__( 'The business description is empty.', 'woo-gutenberg-products-block' )
+				'missing_business_description',
+				__( 'The business description is required to generate the content for your site.', 'woo-gutenberg-products-block' )
 			);
 		}
 
@@ -71,13 +71,17 @@ class VerticalsSelector {
 			return $token;
 		}
 
-		$answer = $this->ai_connection->fetch_ai_response( $token, $prompt );
+		$ai_response = $this->ai_connection->fetch_ai_response( $token, $prompt );
 
-		if ( is_wp_error( $answer ) ) {
-			return $answer;
+		if ( is_wp_error( $ai_response ) ) {
+			return $ai_response;
 		}
 
-		return $this->parse_answer( $answer );
+		if ( ! isset( $ai_response['completion'] ) ) {
+			return new \WP_Error( 'invalid_ai_response', __( 'The AI response is invalid.', 'woo-gutenberg-products-block' ) );
+		}
+
+		return $this->parse_answer( $ai_response['completion'] );
 	}
 
 	/**
@@ -112,10 +116,7 @@ class VerticalsSelector {
 		$verticals = implode( ', ', $verticals );
 
 		return sprintf(
-			'Filter the objects provided below and return the one that has a title that better matches this' .
-			' description of an online store with the following description: "%s". Objects: %s.' .
-			' The response should include exclusively the ID of the object that better matches' .
-			' the description in the following format: [id=selected_id]. Do not include other text or explanation.',
+			'Filter the objects provided below and return the one that has a title that better matches this description of an online store with the following description: "%s". The response should include exclusively the ID of the object that better matches. The response should be a number, with absolutely no texts and without any explanations \n %s.',
 			$business_description,
 			$verticals
 		);
@@ -124,17 +125,17 @@ class VerticalsSelector {
 	/**
 	 * Parse the answer from the GPT API and return the id of the selected vertical.
 	 *
-	 * @param string $answer The answer from the GPT API.
+	 * @param string $ai_response The answer from the GPT API.
 	 *
-	 * @return string The id of the selected vertical.
+	 * @return int|\WP_Error The id of the selected vertical.
 	 */
-	private function parse_answer( string $answer ): string {
-		$pattern = '/\[id=(\d+)]/';
+	private function parse_answer( $ai_response ) {
+		$vertical_id = preg_replace( '/[^0-9]/', '', $ai_response );
 
-		if ( preg_match( $pattern, $answer, $matches ) ) {
-			return $matches[1];
+		if ( ! is_numeric( $vertical_id ) ) {
+			return new \WP_Error( 'invalid_ai_response', __( 'The AI response is invalid.', 'woo-gutenberg-products-block' ) );
 		}
 
-		return '';
+		return (int) $vertical_id;
 	}
 }
