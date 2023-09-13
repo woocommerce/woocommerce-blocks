@@ -17,11 +17,11 @@ class Patterns extends AbstractRoute {
 	const IDENTIFIER = 'patterns';
 
 	/**
-	 * The routes schema.
+	 * The schema item identifier.
 	 *
 	 * @var string
 	 */
-	const SCHEMA_TYPE = 'pattern';
+	const SCHEMA_TYPE = 'patterns';
 
 	/**
 	 * Get the path of this REST route.
@@ -29,7 +29,7 @@ class Patterns extends AbstractRoute {
 	 * @return string
 	 */
 	public function get_path() {
-		return '/patterns(?P<id>[\d]+)';
+		return '/patterns';
 	}
 
 	/**
@@ -73,15 +73,7 @@ class Patterns extends AbstractRoute {
 		}
 
 		$business_description = sanitize_text_field( wp_unslash( $request['business_description'] ) );
-
-		if ( ! is_string( $business_description ) ) {
-			return new \WP_Error(
-				'missing_business_description',
-				__( 'The business description is required to generate the content for your site.', 'woo-gutenberg-products-block' )
-			);
-		}
-
-		$vertical_id = ( new VerticalsSelector() )->get_vertical_id( $business_description );
+		$vertical_id          = ( new VerticalsSelector() )->get_vertical_id( $business_description );
 
 		if ( is_wp_error( $vertical_id ) ) {
 			return $vertical_id;
