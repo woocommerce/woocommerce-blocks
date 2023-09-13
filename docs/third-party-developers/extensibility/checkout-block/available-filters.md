@@ -324,18 +324,19 @@ If you want to prevent a coupon apply notice from appearing, you can use the `sh
 The same can be done with the `showRemoveCouponNotice` filter to prevent a notice when a coupon is removed from the cart.
 
 ```ts
-import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
-
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Prevent a couponCode called '10off' from creating a notice when it gets removed.
 registerCheckoutFilters( 'example-extension', {
-	showApplyCouponNotice: ( value, extensions, { couponCode } ) => {
-		// Prevent a couponCode called '10off' from creating a notice.
-		return couponCode === '10off' ? false : value;
-	},
-	showRemoveCouponNotice: ( value, _, { couponCode } ) => {
-		return couponCode === '10off' ? false : value;
-	},
+  showRemoveCouponNotice: ( value, extensions, args ) => {
+    return args?.couponCode === '10off' ? false : value;
+  }
 } );
 ```
+
+| Before                                                                                                         | After                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| <img width="598" alt="image" src="https://github.com/woocommerce/woocommerce-blocks/assets/6242098/276a7ece-2189-4636-9f65-4c1fb925c57e"> | <img width="600" alt="image" src="https://github.com/woocommerce/woocommerce-blocks/assets/6242098/1c9cf2c3-83ac-4c0c-bb28-314235ec9247"> |
 
 ### Hide the "Remove item" link on a cart item
 
