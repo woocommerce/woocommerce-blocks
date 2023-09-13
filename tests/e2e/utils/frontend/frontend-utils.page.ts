@@ -34,13 +34,14 @@ export class FrontendUtils {
 					name: `Add “${ itemName }” to your cart`,
 				} )
 				.click();
-			await this.page.waitForResponse( ( request ) => {
-				const url = request.url();
-				return url.includes( 'add_to_cart' ) || url.includes( 'batch' );
-			} );
-			return;
+		} else {
+			await this.page.click( 'text=Add to cart' );
 		}
-		await this.page.click( 'text=Add to cart' );
+
+		await this.page.waitForResponse( ( request ) => {
+			const url = request.url();
+			return url.includes( 'add_to_cart' ) || url.includes( 'batch' );
+		} );
 	}
 
 	async goToCheckout() {
