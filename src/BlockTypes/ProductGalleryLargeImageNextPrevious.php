@@ -71,44 +71,27 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 		}
 
 		$context     = $block->context;
-		$prev_button = sprintf(
-			'
-			<svg class="wc-block-product-gallery-large-image-next-previous-left--%1$s" xmlns="http://www.w3.org/2000/svg" width="49" height="48" viewBox="0 0 49 48" fill="none">
-			<g filter="url(#filter0_b_397_11356)">
-			<rect x="0.5" width="48" height="48" rx="5" fill="black" fill-opacity="0.5"/>
-			<path d="M28.1 12L30.5 14L21.3 24L30.5 34L28.1 36L17.3 24L28.1 12Z" fill="white"/>
-			</g>
-			<defs>
-			<filter id="filter0_b_397_11356" x="-9.5" y="-10" width="68" height="68" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-			<feGaussianBlur in="BackgroundImageFix" stdDeviation="5"/>
-			<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_397_11356"/>
-			<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_397_11356" result="shape"/>
-			</filter>
-			</defs>
-			</svg>',
-			$this->get_class_suffix( $context )
-		);
+		$prev_button = $this->get_button( 'previous', $context );
+		$p           = new \WP_HTML_Tag_Processor( $prev_button );
 
-		$next_button = sprintf(
-			'
-			<svg class="wc-block-product-gallery-large-image-next-previous-right--%1$s" xmlns="http://www.w3.org/2000/svg" width="49" height="48" viewBox="0 0 49 48" fill="none">
-			<g filter="url(#filter0_b_397_11354)">
-			<rect x="0.5" width="48" height="48" rx="5" fill="black" fill-opacity="0.5"/>
-			<path d="M21.7001 12L19.3 14L28.5 24L19.3 34L21.7001 36L32.5 24L21.7001 12Z" fill="white"/>
-			</g>
-			<defs>
-			<filter id="filter0_b_397_11354" x="-9.5" y="-10" width="68" height="68" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-			<feGaussianBlur in="BackgroundImageFix" stdDeviation="5"/>
-			<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_397_11354"/>
-			<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_397_11354" result="shape"/>
-			</filter>
-			</defs>
-			</svg>
-		',
-			$this->get_class_suffix( $context )
-		);
+		if ( $p->next_tag() ) {
+			$p->set_attribute(
+				'data-wc-on--click',
+				'actions.woocommerce.onPreviousImageButtonClick'
+			);
+			$prev_button = $p->get_updated_html();
+		}
+
+		$next_button = $this->get_button( 'next', $context );
+		$p           = new \WP_HTML_Tag_Processor( $next_button );
+
+		if ( $p->next_tag() ) {
+			$p->set_attribute(
+				'data-wc-on--click',
+				'actions.woocommerce.onNextImageButtonClick'
+			);
+			$next_button = $p->get_updated_html();
+		}
 
 		$alignment_class = isset( $attributes['layout']['verticalAlignment'] ) ? 'is-vertically-aligned-' . $attributes['layout']['verticalAlignment'] : '';
 		$position_class  = 'wc-block-product-gallery-large-image-next-previous--' . $this->get_class_suffix( $context );
@@ -127,5 +110,53 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 				'{position_class}'  => $position_class,
 			)
 		);
+	}
+
+	protected function get_button( $button_type, $context ) {
+		if ( 'previous' === $button_type ) {
+			return sprintf(
+				'<button class="wc-block-product-gallery-large-image-next-previous--button wc-block-product-gallery-large-image-next-previous-left--%1$s">
+					<svg xmlns="http://www.w3.org/2000/svg" width="49" height="48" viewBox="0 0 49 48" fill="none">
+						<g filter="url(#filter0_b_397_11356)">
+							<rect x="0.5" width="48" height="48" rx="5" fill="black" fill-opacity="0.5"/>
+							<path d="M28.1 12L30.5 14L21.3 24L30.5 34L28.1 36L17.3 24L28.1 12Z" fill="white"/>
+						</g>
+						<defs>
+							<filter id="filter0_b_397_11356" x="-9.5" y="-10" width="68" height="68" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+								<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+								<feGaussianBlur in="BackgroundImageFix" stdDeviation="5"/>
+								<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_397_11356"/>
+								<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_397_11356" result="shape"/>
+							</filter>
+						</defs>
+					</svg>
+				</button>',
+				$this->get_class_suffix( $context )
+			);
+		}
+
+		if ( 'next' === $button_type ) {
+			return sprintf(
+				'
+				<button class="wc-block-product-gallery-large-image-next-previous--button wc-block-product-gallery-large-image-next-previous-right--%1$s">
+					<svg  xmlns="http://www.w3.org/2000/svg" width="49" height="48" viewBox="0 0 49 48" fill="none">
+						<g filter="url(#filter0_b_397_11354)">
+							<rect x="0.5" width="48" height="48" rx="5" fill="black" fill-opacity="0.5"/>
+							<path d="M21.7001 12L19.3 14L28.5 24L19.3 34L21.7001 36L32.5 24L21.7001 12Z" fill="white"/>
+						</g>
+						<defs>
+							<filter id="filter0_b_397_11354" x="-9.5" y="-10" width="68" height="68" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+								<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+								<feGaussianBlur in="BackgroundImageFix" stdDeviation="5"/>
+								<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_397_11354"/>
+								<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_397_11354" result="shape"/>
+							</filter>
+						</defs>
+					</svg>
+				</button>
+			',
+				$this->get_class_suffix( $context )
+			);
+		}
 	}
 }

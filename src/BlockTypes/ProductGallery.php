@@ -52,6 +52,7 @@ class ProductGallery extends AbstractBlock {
 			$wrapper_attributes,
 			$content
 		);
+		$number_of_thumbnails = $block->attributes['thumbnailsNumberOfThumbnails'] ?? 0;
 
 		$post_id = $block->context['postId'] ?? '';
 		$product = wc_get_product( $post_id );
@@ -65,6 +66,7 @@ class ProductGallery extends AbstractBlock {
 					array(
 						'woocommerce' => array(
 							'selectedImage' => $product->get_image_id(),
+							'visibleImagesIds' => ProductGalleryUtils::get_product_gallery_image_ids( $product, $number_of_thumbnails, true ),
 						),
 					)
 				)
