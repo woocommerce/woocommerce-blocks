@@ -5,6 +5,7 @@ namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 use Automattic\WooCommerce\Blocks\Patterns\PatternImages;
 use Automattic\WooCommerce\Blocks\Verticals\Client;
 use Automattic\WooCommerce\Blocks\Verticals\VerticalsSelector;
+use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 
 /**
  * Patterns class.
@@ -43,7 +44,7 @@ class Patterns extends AbstractRoute {
 			[
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'get_response' ],
-				'permission_callback' => '__return_true',
+				'permission_callback' => [ $this, 'is_authorized' ],
 				'args'                => [
 					'business_description' => [
 						'description' => __( 'The business description for a given store.', 'woo-gutenberg-products-block' ),
@@ -54,6 +55,29 @@ class Patterns extends AbstractRoute {
 			'schema'      => [ $this->schema, 'get_public_item_schema' ],
 			'allow_batch' => [ 'v1' => true ],
 		];
+	}
+
+	/**
+	 * Permission callback.
+	 *
+	 * @throws RouteException If the user is not allowed to make this request.
+	 *
+	 * @return true|\WP_Error
+	 */
+	public function is_authorized() {
+		try {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				throw new RouteException( 'woocommerce_rest_invalid_user', __( 'You are not allowed to make this request. Please make sure you are logged in.', 'woo-gutenberg-products-block' ), 403 );
+			}
+		} catch ( RouteException $error ) {
+			return new \WP_Error(
+				$error->getErrorCode(),
+				$error->getMessage(),
+				array( 'status' => $error->getCode() )
+			);
+		}
+
+		return true;
 	}
 
 	/**
