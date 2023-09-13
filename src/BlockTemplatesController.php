@@ -29,6 +29,13 @@ class BlockTemplatesController {
 	const TEMPLATES_ROOT_DIR = 'templates';
 
 	/**
+	 * Package instance.
+	 *
+	 * @var Package
+	 */
+	private $package;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Package $package An instance of Package.
@@ -457,6 +464,9 @@ class BlockTemplatesController {
 		$templates      = array();
 
 		foreach ( $template_files as $template_file ) {
+			if ( ! $this->package->is_experimental_build() && str_contains( $template_file, 'templates/parts/product-gallery.html' ) ) {
+				break;
+			}
 			// Skip the template if it's blockified, and we should only use classic ones.
 			if ( ! BlockTemplateUtils::should_use_blockified_product_grid_templates() && strpos( $template_file, 'blockified' ) !== false ) {
 				continue;
