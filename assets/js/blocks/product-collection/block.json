@@ -24,6 +24,9 @@
 		"convertedFromProducts": {
 			"type": "boolean",
 			"default": false
+		},
+		"collection": {
+			"type": "string"
 		}
 	},
 	"providesContext": {

@@ -7,6 +7,7 @@ import {
 	InnerBlockTemplate,
 	registerBlockVariation,
 } from '@wordpress/blocks';
+import { Icon } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
 import { useEffect } from '@wordpress/element';
 
@@ -85,7 +86,10 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 const registerSampleVariation = () => {
 	const variationAttrs = {
 		name: 'product-collection__new-arrivals',
-		title: 'New Arrivals',
+		title: 'Product Collection - New Arrivals',
+		icon: <Icon icon={ 'star-filled' } />,
+		description:
+			'Product Collection variation. This is used as a Collection with custom icon, title etc.',
 	};
 	const attributes = {
 		...DEFAULT_ATTRIBUTES,
@@ -96,6 +100,7 @@ const registerSampleVariation = () => {
 			order: 'desc',
 			perPage: 3,
 		},
+		collection: 'product-collection/new-arrivals',
 	};
 	const innerBlocks: InnerBlockTemplate[] = [
 		[
@@ -134,11 +139,14 @@ const registerSampleVariation = () => {
 		...variationAttrs,
 		attributes,
 		innerBlocks,
+		isActive: ( blockAttrs ) =>
+			blockAttrs.collection === 'product-collection/new-arrivals',
 	} );
 };
 
+registerSampleVariation();
+
 const Edit = ( props: BlockEditProps< ProductCollectionAttributes > ) => {
-	registerSampleVariation();
 	const { attributes, setAttributes } = props;
 	const { queryId } = attributes;
 
