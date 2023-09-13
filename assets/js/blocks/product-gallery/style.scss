@@ -1,10 +1,36 @@
 .wp-block-woocommerce-product-gallery {
+	.wc-block-product-gallery-dialog__overlay {
+		height: 100vh;
+		width: 100vw;
+		position: fixed;
+		top: 0;
+		left: 0;
+		background-color: #808080;
+		z-index: 9999;
+	}
+
 	dialog {
 		position: fixed;
-		width: 90vw;
+		width: calc(100vw - 100px);
+		border: none;
+		border-radius: 10px;
 		height: 90vh;
 		top: 0;
-		margin: $gap-largest;
+		margin-top: $gap-largest;
+		margin-bottom: $gap-largest;
 		z-index: 9999;
+
+		.wc-block-product-galler-dialog__header-right {
+			display: flex;
+			justify-content: flex-end;
+
+			.wc-block-product-gallery-dialog__close {
+				border: none;
+				background-color: transparent;
+				outline: none;
+				cursor: pointer;
+			}
+		}
+
 	}
 }
