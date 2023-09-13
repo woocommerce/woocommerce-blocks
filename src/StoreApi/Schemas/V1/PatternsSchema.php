@@ -20,11 +20,24 @@ class PatternsSchema extends AbstractSchema {
 	const IDENTIFIER = 'patterns';
 
 	/**
-	 * Batch schema properties.
+	 * Patterns schema properties.
 	 *
 	 * @return array
 	 */
 	public function get_properties() {
 		return [];
+	}
+
+	/**
+	 * Get the Patterns response.
+	 *
+	 * @param object $item Item to get response for.
+	 *
+	 * @return object
+	 */
+	public function get_item_response( $item ) {
+		return (object) [
+			'ai_content_generated' => true,
+		];
 	}
 }
