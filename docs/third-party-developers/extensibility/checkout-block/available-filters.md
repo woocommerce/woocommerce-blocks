@@ -2,28 +2,45 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Cart Line Items](#cart-line-items)
--   [Order Summary Items](#order-summary-items)
--   [Totals footer item (in Mini-Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
--   [Coupons](#coupons)
--   [Proceed to Checkout Button Label](#proceed-to-checkout-button-label)
--   [Proceed to Checkout Button Link](#proceed-to-checkout-button-link)
--   [Place Order Button Label](#place-order-button-label)
--   [Additional Cart Checkout inner block types](#additional-cart-checkout-inner-block-types)
--   [Examples](#examples)
-    -   [Changing the wording and the link on the "Proceed to Checkout" button when a specific item is in the Cart](#changing-the-wording-and-the-link-on-the-proceed-to-checkout-button-when-a-specific-item-is-in-the-cart)
-    -   [Allowing blocks in specific areas in the Cart and Checkout blocks](#allowing-blocks-in-specific-areas-in-the-cart-and-checkout-blocks)
-    -   [Changing the wording of the Totals label in the Mini-Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
-    -   [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
-    -   [Change the name of a coupon](#change-the-name-of-a-coupon)
-    -   [Prevent a snackbar notice from appearing for coupons](#prevent-a-snackbar-notice-from-appearing-for-coupons)
-    -   [Hide the "Remove item" link on a cart item](#hide-the-remove-item-link-on-a-cart-item)
-    -   [Change the label of the Place Order button](#change-the-label-of-the-place-order-button)
--   [Troubleshooting](#troubleshooting)
+- [Cart Line Items](#cart-line-items)
+- [Order Summary Items](#order-summary-items)
+- [Totals footer item (in Mini-Cart, Cart and Checkout)](#totals-footer-item-in-mini-cart-cart-and-checkout)
+- [Coupons](#coupons)
+- [Proceed to Checkout Button Label](#proceed-to-checkout-button-label)
+- [Proceed to Checkout Button Link](#proceed-to-checkout-button-link)
+- [Place Order Button Label](#place-order-button-label)
+- [Additional Cart Checkout inner block types](#additional-cart-checkout-inner-block-types)
+- [Examples](#examples)
+  - [Changing the wording and the link on the "Proceed to Checkout" button when a specific item is in the Cart](#changing-the-wording-and-the-link-on-the-proceed-to-checkout-button-when-a-specific-item-is-in-the-cart)
+  - [Allowing blocks in specific areas in the Cart and Checkout blocks](#allowing-blocks-in-specific-areas-in-the-cart-and-checkout-blocks)
+  - [Changing the wording of the Totals label in the Mini-Cart, Cart and Checkout](#changing-the-wording-of-the-totals-label-in-the-mini-cart-cart-and-checkout)
+  - [Changing the format of the item's single price](#changing-the-format-of-the-items-single-price)
+  - [Change the name of a coupon](#change-the-name-of-a-coupon)
+  - [Prevent a snackbar notice from appearing for coupons](#prevent-a-snackbar-notice-from-appearing-for-coupons)
+  - [Hide the "Remove item" link on a cart item](#hide-the-remove-item-link-on-a-cart-item)
+  - [Change the label of the Place Order button](#change-the-label-of-the-place-order-button)
+- [Troubleshooting](#troubleshooting)
 
 This document lists the filters that are currently available to extensions and offers usage information for each one of them. Information on registering filters can be found on the [Checkout - Filter Registry](../../../../packages/checkout/filter-registry/README.md) page.
 
 ## Cart Line Items
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust sale badge price format of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  saleBadgePriceFormat: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return ' per item';
+  }
+} );
+```
+![Cart Line Items](https://user-images.githubusercontent.com/3323310/267230515-d5e9d791-2429-4cac-b4fb-106a3dbe07ce.png)
 
 Line items refer to each item listed in the cart or checkout. For instance, the "Sunglasses" and "Beanie with Logo" in this image are the line items.
 
