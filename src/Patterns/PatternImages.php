@@ -30,7 +30,14 @@ class PatternImages {
 	 */
 	public function __construct() {
 		$this->verticals_api_client = new VerticalsAPIClient();
-		$this->patterns_dictionary  = wp_json_file_decode( __DIR__ . '/src/Patterns/dictionary.json', array( 'associative' => true ) );
+
+		$patterns_dictionary = plugin_dir_path( __FILE__ ) . 'dictionary.json';
+
+		if ( ! file_exists( $patterns_dictionary ) ) {
+			return new WP_Error( 'missing_patterns_dictionary', __( 'The patterns dictionary is missing.', 'woo-gutenberg-products-block' ) );
+		}
+
+		$this->patterns_dictionary = wp_json_file_decode( $patterns_dictionary, array( 'associative' => true ) );
 	}
 
 	/**
@@ -59,7 +66,7 @@ class PatternImages {
 	 *
 	 * @return array The patterns with images.
 	 */
-	private function get_patterns_with_images( array $vertical_images ): array {
+	private function get_patterns_with_images( $vertical_images ) {
 		$patterns_with_images = array();
 
 		foreach ( $this->patterns_dictionary as $pattern ) {
