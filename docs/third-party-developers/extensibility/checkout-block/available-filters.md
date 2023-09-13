@@ -133,7 +133,7 @@ registerCheckoutFilters( 'example-extension', {
 
 | Before                                                                                                                                   | After                                                                                                                                    |
 | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| x | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267271739-3a8babc4-2848-424b-bc4a-8137eb2b2746.png"> |
+| <img width="761" alt="image" src="https://github.com/masteradhoc/woocommerce-blocks/assets/6242098/5703a5a6-39f4-4c29-a176-1a80412e3de9"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267271739-3a8babc4-2848-424b-bc4a-8137eb2b2746.png"> |
 
 ## Additional Cart Checkout inner block types
 
