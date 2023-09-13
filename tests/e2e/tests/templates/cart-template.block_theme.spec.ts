@@ -76,6 +76,7 @@ test.describe( 'Test editing the cart template', async () => {
 		await editor.page.getByRole( 'button', { name: /Cart/i } ).click();
 		await editorUtils.enterEditMode();
 		await editor.setContent( '' );
+		await editor.canvas.click( 'body' );
 		await editor.insertBlock( {
 			name: 'woocommerce/classic-shortcode',
 			attributes: {
