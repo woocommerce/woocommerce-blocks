@@ -105,11 +105,12 @@ test.describe( 'Test editing the cart template', async () => {
 		await editorUtils.enterEditMode();
 		await editor.insertBlock( {
 			name: 'core/paragraph',
-			attributes: { content: 'Hello World' },
+			attributes: { content: 'Hello World in the template' },
 		} );
-
 		await editor.saveSiteEditorEntities();
 		await page.goto( permalink, { waitUntil: 'commit' } );
-		await expect( page.getByText( 'Hello World' ).first() ).toBeVisible();
+		await expect(
+			page.getByText( 'Hello World in the template' ).first()
+		).toBeVisible();
 	} );
 } );
