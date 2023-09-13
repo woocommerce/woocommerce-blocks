@@ -109,7 +109,7 @@ test.describe( 'Test editing the cart template', async () => {
 			attributes: { content: 'Hello World in the template' },
 		} );
 		await editor.saveSiteEditorEntities();
-		await page.goto( permalink, { waitUntil: 'commit' } );
+		await page.goto( permalink, { waitUntil: 'domcontentloaded' } );
 		await expect(
 			page.getByText( 'Hello World in the template' ).first()
 		).toBeVisible();

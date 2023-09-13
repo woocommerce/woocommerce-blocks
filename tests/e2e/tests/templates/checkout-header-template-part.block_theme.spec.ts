@@ -41,8 +41,8 @@ test.describe( 'Test the checkout header template part', async () => {
 			attributes: { content: 'Hello World in the header' },
 		} );
 		await editor.saveSiteEditorEntities();
-		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
+		await frontendUtils.emptyCart();
 		await frontendUtils.addToCart( 'Beanie' );
 		await frontendUtils.goToCheckout();
 		await expect(

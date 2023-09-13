@@ -107,8 +107,8 @@ test.describe( 'Test editing the checkout template', async () => {
 			attributes: { content: 'Hello World in the template' },
 		} );
 		await editor.saveSiteEditorEntities();
-		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
+		await frontendUtils.emptyCart();
 		await frontendUtils.addToCart();
 		await frontendUtils.goToCheckout();
 		await expect(
