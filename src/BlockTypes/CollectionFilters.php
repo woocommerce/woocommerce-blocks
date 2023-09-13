@@ -20,7 +20,7 @@ class CollectionFilters extends AbstractBlock {
 	 *
 	 * @var array
 	 */
-	protected $mapping = array(
+	protected $collection_data_params_mapping = array(
 		'calculate_price_range'         => 'woocommerce/collection-price-filter',
 		'calculate_stock_status_counts' => 'woocommerce/collection-stock-filter',
 		'calculate_attribute_counts'    => 'woocommerce/collection-attribute-filter',
@@ -110,7 +110,7 @@ class CollectionFilters extends AbstractBlock {
 			! empty(
 				$this->current_response ||
 				isset( $parsed_block['blockName'] ) ||
-				in_array( $parsed_block['blockName'], $this->mapping, true )
+				in_array( $parsed_block['blockName'], $this->collection_data_params_mapping, true )
 			) ) {
 			$context['collectionData'] = $this->current_response;
 		}
@@ -126,8 +126,8 @@ class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	protected function get_aggregated_collection_data( $block ) {
-		$params       = array();
-		$inner_blocks = array();
+		$collection_data_params = array();
+		$inner_blocks           = array();
 
 		do {
 			$inner_blocks = array_merge(
@@ -137,17 +137,17 @@ class CollectionFilters extends AbstractBlock {
 			$block->inner_blocks->next();
 		} while ( $block->inner_blocks->valid() );
 
-		foreach ( $this->mapping as $key => $block_name ) {
-			$params[ $key ] = ( in_array( $block_name, $inner_blocks, true ) );
+		foreach ( $this->collection_data_params_mapping as $key => $block_name ) {
+			$collection_data_params[ $key ] = ( in_array( $block_name, $inner_blocks, true ) );
 		}
 
-		if ( empty( array_filter( $params ) ) ) {
+		if ( empty( array_filter( $collection_data_params ) ) ) {
 			return array();
 		}
 
 		$response = Package::container()->get( Hydration::class )->get_rest_api_response_data(
 			add_query_arg(
-				$params,
+				$collection_data_params,
 				'/wc/store/v1/products/collection-data'
 			)
 		);
