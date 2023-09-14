@@ -30,6 +30,7 @@ test.describe( 'Test the checkout header template part', async () => {
 		admin,
 		editor,
 		editorUtils,
+		page,
 	} ) => {
 		await admin.visitSiteEditor( {
 			postId: templatePath,
@@ -40,7 +41,12 @@ test.describe( 'Test the checkout header template part', async () => {
 			name: 'core/paragraph',
 			attributes: { content: 'Hello World in the header' },
 		} );
-		await editor.saveSiteEditorEntities();
+		await Promise.all( [
+			editor.saveSiteEditorEntities(),
+			page.waitForResponse( ( response ) =>
+				response.url().includes( 'templates' )
+			),
+		] );
 		await frontendUtils.goToShop();
 		await frontendUtils.emptyCart();
 		await frontendUtils.addToCart( 'Beanie' );

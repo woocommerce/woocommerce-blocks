@@ -96,6 +96,7 @@ test.describe( 'Test editing the checkout template', async () => {
 		editor,
 		editorUtils,
 		frontendUtils,
+		page,
 	} ) => {
 		await admin.visitSiteEditor( {
 			postId: templatePath,
@@ -106,7 +107,12 @@ test.describe( 'Test editing the checkout template', async () => {
 			name: 'core/paragraph',
 			attributes: { content: 'Hello World in the template' },
 		} );
-		await editor.saveSiteEditorEntities();
+		await Promise.all( [
+			editor.saveSiteEditorEntities(),
+			page.waitForResponse( ( response ) =>
+				response.url().includes( 'templates' )
+			),
+		] );
 		await frontendUtils.goToShop();
 		await frontendUtils.emptyCart();
 		await frontendUtils.addToCart();

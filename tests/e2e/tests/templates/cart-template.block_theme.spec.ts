@@ -108,7 +108,12 @@ test.describe( 'Test editing the cart template', async () => {
 			name: 'core/paragraph',
 			attributes: { content: 'Hello World in the template' },
 		} );
-		await editor.saveSiteEditorEntities();
+		await Promise.all( [
+			editor.saveSiteEditorEntities(),
+			page.waitForResponse( ( response ) =>
+				response.url().includes( 'templates' )
+			),
+		] );
 		await page.goto( permalink, { waitUntil: 'domcontentloaded' } );
 		await expect(
 			page.getByText( 'Hello World in the template' ).first()
