@@ -11,7 +11,7 @@ import { list, grid } from '@wordpress/icons';
 import {
 	DisplayLayoutToolbarProps,
 	ProductCollectionDisplayLayout,
-} from '../types';
+} from '../../types';
 
 const DisplayLayoutToolbar = ( props: DisplayLayoutToolbarProps ) => {
 	const { type, columns } = props.displayLayout;

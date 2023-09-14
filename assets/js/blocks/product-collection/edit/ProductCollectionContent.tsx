@@ -12,14 +12,15 @@ import { useEffect } from '@wordpress/element';
 import type {
 	ProductCollectionAttributes,
 	ProductCollectionQuery,
-} from './types';
+} from '../types';
+import { DEFAULT_ATTRIBUTES, INNER_BLOCKS_TEMPLATE } from '../constants';
+import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
 import InspectorControls from './inspector-controls';
-import { DEFAULT_ATTRIBUTES, INNER_BLOCKS_TEMPLATE } from './constants';
-import { getDefaultValueOfInheritQueryFromTemplate } from './utils';
 import ToolbarControls from './toolbar-controls';
-import './editor.scss';
 
-const Edit = ( props: BlockEditProps< ProductCollectionAttributes > ) => {
+const ProductCollectionContent = (
+	props: BlockEditProps< ProductCollectionAttributes >
+) => {
 	const { attributes, setAttributes } = props;
 	const { queryId } = attributes;
 
@@ -28,7 +29,7 @@ const Edit = ( props: BlockEditProps< ProductCollectionAttributes > ) => {
 		template: INNER_BLOCKS_TEMPLATE,
 	} );
 
-	const instanceId = useInstanceId( Edit );
+	const instanceId = useInstanceId( ProductCollectionContent );
 
 	// We need this for multi-query block pagination.
 	// Query parameters for each block are scoped to their ID.
@@ -61,7 +62,9 @@ const Edit = ( props: BlockEditProps< ProductCollectionAttributes > ) => {
 	 * We don't wanna render anything until default attributes are set.
 	 * Default attributes are set in the useEffect above.
 	 */
-	if ( typeof attributes?.query?.inherit !== 'boolean' ) return null;
+	if ( typeof attributes?.query?.inherit !== 'boolean' ) {
+		return null;
+	}
 
 	return (
 		<div { ...blockProps }>
@@ -72,4 +75,4 @@ const Edit = ( props: BlockEditProps< ProductCollectionAttributes > ) => {
 	);
 };
 
-export default Edit;
+export default ProductCollectionContent;
