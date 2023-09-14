@@ -106,12 +106,12 @@ class Patterns extends AbstractRoute {
 
 		if ( is_wp_error( $vertical_id ) ) {
 			$response = $this->error_to_response( $vertical_id );
-		}
+		} else {
+			$populate_images = ( new PatternImages() )->create_patterns_content( $vertical_id, new Client() );
 
-		$populate_images = ( new PatternImages() )->create_patterns_content( $vertical_id, new Client() );
-
-		if ( is_wp_error( $populate_images ) ) {
-			$response = $this->error_to_response( $populate_images );
+			if ( is_wp_error( $populate_images ) ) {
+				$response = $this->error_to_response( $populate_images );
+			}
 		}
 
 		if ( ! isset( $response ) ) {

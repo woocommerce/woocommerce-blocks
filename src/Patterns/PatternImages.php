@@ -109,6 +109,10 @@ class PatternImages {
 	 * @return bool|WP_Error
 	 */
 	public function create_patterns_content( $vertical_id, $verticals_api_client ) {
+		if ( ! is_int( $vertical_id ) ) {
+			return new WP_Error( 'invalid_vertical_id', __( 'The vertical id is invalid.', 'woo-gutenberg-products-block' ) );
+		}
+
 		$vertical_images = $verticals_api_client->get_vertical_images( $vertical_id );
 
 		if ( is_wp_error( $vertical_images ) ) {
