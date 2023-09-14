@@ -101,6 +101,12 @@ test.describe( 'Test editing the cart template', async () => {
 				shortcode: 'cart',
 			},
 		} );
+		await expect(
+			editor.canvas
+				.locator( 'button:has-text("Transform into blocks")' )
+				.first()
+		).toBeVisible();
+
 		await editor.canvas
 			.getByRole( 'button', { name: 'Transform into blocks' } )
 			.click();
