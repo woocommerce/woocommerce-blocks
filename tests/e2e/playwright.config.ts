@@ -51,7 +51,7 @@ const config: ExtendedPlaywrightTestConfig = {
 		},
 		{
 			name: 'blockTheme',
-			testMatch: /.*.block_theme.spec.ts/,
+			testMatch: /templates\/.*.block_theme.spec.ts/,
 			dependencies: [ 'blockThemeConfiguration' ],
 		},
 	],
