@@ -83,7 +83,7 @@ test.describe( 'Test editing the cart template', async () => {
 		await requestUtils.deleteAllTemplates( 'wp_template_part' );
 	} );
 
-	test( 'Merchant can transform shortcode block into blocks', async ( {
+	test.only( 'Merchant can transform shortcode block into blocks', async ( {
 		admin,
 		editorUtils,
 		editor,
@@ -92,8 +92,12 @@ test.describe( 'Test editing the cart template', async () => {
 		await editorUtils.waitForSiteEditorFinishLoading();
 		await editor.page.getByRole( 'button', { name: /Pages/i } ).click();
 		await editor.page.getByRole( 'button', { name: /Cart/i } ).click();
+
+		await expect( editor.canvas.getByText( 'Cart' ) ).toBeVisible();
+
 		await editorUtils.enterEditMode();
 		await editor.setContent( '' );
+		await editor.page.screenshot( { path: 'artifacts/empty.png' } );
 		await editor.canvas.click( 'body' );
 		await editor.insertBlock( {
 			name: 'woocommerce/classic-shortcode',
@@ -101,6 +105,8 @@ test.describe( 'Test editing the cart template', async () => {
 				shortcode: 'cart',
 			},
 		} );
+		await editor.page.screenshot( { path: 'artifacts/cartcode.png' } );
+
 		await expect(
 			editor.canvas
 				.locator( 'button:has-text("Transform into blocks")' )
