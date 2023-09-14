@@ -3,6 +3,7 @@
  */
 import { getSetting } from '@woocommerce/settings';
 import { objectOmit } from '@woocommerce/utils';
+import { type InnerBlockTemplate } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -14,6 +15,8 @@ import {
 	ProductCollectionQuery,
 	ProductCollectionDisplayLayout,
 } from './types';
+import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
+import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 
 export const STOCK_STATUS_OPTIONS = getSetting< Record< string, string > >(
 	'stockStatusOptions',
@@ -87,3 +90,60 @@ export const DEFAULT_FILTERS: Partial< ProductCollectionQuery > = {
 	taxQuery: DEFAULT_QUERY.taxQuery,
 	woocommerceHandPickedProducts: [],
 };
+
+export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
+	[
+		'woocommerce/product-template',
+		{},
+		[
+			[
+				'woocommerce/product-image',
+				{
+					imageSizing: ImageSizing.THUMBNAIL,
+				},
+			],
+			[
+				'core/post-title',
+				{
+					textAlign: 'center',
+					level: 3,
+					fontSize: 'medium',
+					style: {
+						spacing: {
+							margin: {
+								bottom: '0.75rem',
+								top: '0',
+							},
+						},
+					},
+					isLink: true,
+					__woocommerceNamespace: PRODUCT_TITLE_ID,
+				},
+			],
+			[
+				'woocommerce/product-price',
+				{
+					textAlign: 'center',
+					fontSize: 'small',
+				},
+			],
+			[
+				'woocommerce/product-button',
+				{
+					textAlign: 'center',
+					fontSize: 'small',
+				},
+			],
+		],
+	],
+	[
+		'core/query-pagination',
+		{
+			layout: {
+				type: 'flex',
+				justifyContent: 'center',
+			},
+		},
+	],
+	[ 'core/query-no-results' ],
+];
