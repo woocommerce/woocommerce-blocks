@@ -18,7 +18,7 @@ const { CI, DEFAULT_TIMEOUT_OVERRIDE, E2E_MAX_FAILURES } = process.env;
 const config: ExtendedPlaywrightTestConfig = {
 	timeout: DEFAULT_TIMEOUT_OVERRIDE
 		? Number( DEFAULT_TIMEOUT_OVERRIDE )
-		: 90 * 1000,
+		: 40 * 1000,
 	expect: { timeout: 20 * 1000 },
 	outputDir: path.join( process.cwd(), 'artifacts/test-results' ),
 	globalSetup: fileURLToPath(
@@ -26,7 +26,7 @@ const config: ExtendedPlaywrightTestConfig = {
 	),
 	globalTeardown: require.resolve( './global-teardown' ),
 	testDir: 'tests',
-	retries: CI ? 2 : 0,
+	retries: CI ? 0 : 0,
 	workers: 1,
 	reporter: process.env.CI
 		? [ [ 'github' ], [ 'list' ], [ 'html' ] ]
