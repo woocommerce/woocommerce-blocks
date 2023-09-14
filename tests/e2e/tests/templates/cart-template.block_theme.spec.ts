@@ -15,6 +15,24 @@ test.describe( 'Test the cart template', async () => {
 	} ) => {
 		await admin.visitAdminPage( 'site-editor.php' );
 		await editorUtils.waitForSiteEditorFinishLoading();
+		await admin.page.evaluate( () => {
+			window.wp.data
+				.dispatch( 'core/preferences' )
+				.set( 'core/edit-site', 'welcomeGuide', false );
+
+			window.wp.data
+				.dispatch( 'core/preferences' )
+				.set( 'core/edit-site', 'welcomeGuideStyles', false );
+
+			window.wp.data
+				.dispatch( 'core/preferences' )
+				.set( 'core/edit-site', 'welcomeGuidePage', false );
+
+			window.wp.data
+				.dispatch( 'core/preferences' )
+				.set( 'core/edit-site', 'welcomeGuideTemplate', false );
+		} );
+
 		await page.getByRole( 'button', { name: /Templates/i } ).click();
 		await page.getByRole( 'button', { name: /Page: Cart/i } ).click();
 		await editorUtils.enterEditMode();
