@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { AttributeMetadata } from '@woocommerce/types';
+import { type BlockEditProps } from '@wordpress/blocks';
+import { type AttributeMetadata } from '@woocommerce/types';
 
 export interface ProductCollectionAttributes {
 	query: ProductCollectionQuery;
@@ -55,6 +56,11 @@ export interface ProductCollectionQuery {
 	isProductCollectionBlock?: boolean;
 	woocommerceHandPickedProducts?: string[];
 }
+
+export type QueryEditComponentProps =
+	BlockEditProps< ProductCollectionAttributes > & {
+		openPatternSelectionModalOpen: () => void;
+	};
 
 export type TProductCollectionOrder = 'asc' | 'desc';
 export type TProductCollectionOrderBy =

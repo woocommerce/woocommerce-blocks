@@ -9,8 +9,10 @@ import { Placeholder, Button } from '@wordpress/components';
  * Internal dependencies
  */
 import Icon from '../icon';
+import type { QueryEditComponentProps } from '../types';
 
-const QueryPlaceholder = () => {
+const QueryPlaceholder = ( props: QueryEditComponentProps ) => {
+	const { openPatternSelectionModalOpen } = props;
 	const blockProps = useBlockProps();
 	const tempEventHandler = () => {
 		/** Temp handler */
@@ -29,7 +31,10 @@ const QueryPlaceholder = () => {
 					'woo-gutenberg-products-block'
 				) }
 			>
-				<Button variant="primary" onClick={ tempEventHandler }>
+				<Button
+					variant="primary"
+					onClick={ openPatternSelectionModalOpen }
+				>
 					{ __(
 						'Choose Collection',
 						'woo-gutenberg-products-block'

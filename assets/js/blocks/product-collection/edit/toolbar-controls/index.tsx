@@ -1,27 +1,20 @@
 /**
  * External dependencies
  */
-import type { BlockEditProps } from '@wordpress/blocks';
-import { useMemo, useState } from '@wordpress/element';
+import { useMemo } from '@wordpress/element';
 import { BlockControls } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
 import { setQueryAttribute } from '../../utils';
-import { ProductCollectionAttributes } from '../../types';
 import DisplaySettingsToolbar from './display-settings-toolbar';
 import DisplayLayoutToolbar from './display-layout-toolbar';
 import PatternChooserToolbar from './pattern-chooser-toolbar';
-import PatternSelectionModal from './pattern-selection-modal';
+import type { QueryEditComponentProps } from '../../types';
 
-export default function ToolbarControls(
-	props: BlockEditProps< ProductCollectionAttributes >
-) {
-	const [ isPatternSelectionModalOpen, setIsPatternSelectionModalOpen ] =
-		useState( false );
-
-	const { attributes, clientId, setAttributes } = props;
+export default function ToolbarControls( props: QueryEditComponentProps ) {
+	const { attributes, setAttributes, openPatternSelectionModalOpen } = props;
 	const { query, displayLayout } = attributes;
 
 	const setQueryAttributeBind = useMemo(
@@ -32,9 +25,7 @@ export default function ToolbarControls(
 	return (
 		<BlockControls>
 			<PatternChooserToolbar
-				openPatternSelectionModal={ () =>
-					setIsPatternSelectionModalOpen( true )
-				}
+				openPatternSelectionModal={ openPatternSelectionModalOpen }
 			/>
 			{ ! query.inherit && (
 				<>
@@ -47,15 +38,6 @@ export default function ToolbarControls(
 						setAttributes={ setAttributes }
 					/>
 				</>
-			) }
-			{ isPatternSelectionModalOpen && (
-				<PatternSelectionModal
-					clientId={ clientId }
-					query={ query }
-					closePatternSelectionModal={ () =>
-						setIsPatternSelectionModalOpen( false )
-					}
-				/>
 			) }
 		</BlockControls>
 	);

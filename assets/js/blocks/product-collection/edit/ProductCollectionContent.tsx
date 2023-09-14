@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { BlockEditProps } from '@wordpress/blocks';
 import { useInstanceId } from '@wordpress/compose';
 import { useEffect } from '@wordpress/element';
 
@@ -12,15 +11,14 @@ import { useEffect } from '@wordpress/element';
 import type {
 	ProductCollectionAttributes,
 	ProductCollectionQuery,
+	QueryEditComponentProps,
 } from '../types';
 import { DEFAULT_ATTRIBUTES, INNER_BLOCKS_TEMPLATE } from '../constants';
 import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
 import InspectorControls from './inspector-controls';
 import ToolbarControls from './toolbar-controls';
 
-const ProductCollectionContent = (
-	props: BlockEditProps< ProductCollectionAttributes >
-) => {
+const ProductCollectionContent = ( props: QueryEditComponentProps ) => {
 	const { attributes, setAttributes } = props;
 	const { queryId } = attributes;
 
