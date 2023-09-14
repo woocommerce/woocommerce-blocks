@@ -93,11 +93,19 @@ final class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	public function modify_inner_blocks_context( $context, $parsed_block, $parent_block ) {
+		if ( is_admin() || ! is_a( $parent_block, 'WP_Block' ) ) {
+			return $context;
+		}
+
+		/**
+		 * Bail if the current block is not a direct child of CollectionFilters
+		 * and the parent block doesn't have our custom context.
+		 *
+		 * When we reach the direct child of CollectionFilters block, we
+		 */
 		if (
-			is_admin() ||
-			! is_a( $parent_block, 'WP_Block' ) ||
-			"woocommerce/{$this->block_name}" !== $parent_block->name ||
-			empty( $parent_block->inner_blocks )
+			"woocommerce/{$this->block_name}" !== $parent_block->name &&
+			empty( $parent_block->context['isCollectionFiltersInnerBlock'] )
 		) {
 			return $context;
 		}
@@ -106,8 +114,13 @@ final class CollectionFilters extends AbstractBlock {
 			$this->current_response = $this->get_aggregated_collection_data( $parent_block );
 		}
 
+		if ( empty( $this->current_response ) ) {
+			return $context;
+		}
+
+		$context['isCollectionFiltersInnerBlock'] = true;
+
 		if (
-			! empty( $this->current_response ) ||
 			isset( $parsed_block['blockName'] ) ||
 			in_array( $parsed_block['blockName'], $this->collection_data_params_mapping, true )
 		) {
