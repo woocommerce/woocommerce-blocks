@@ -7,5 +7,5 @@ export default function save() {
 	const blockProps = useBlockProps.save();
 	const innerBlockProps = useInnerBlocksProps.save( blockProps );
 
-	return <div { ...innerBlockProps } />;
+	return <nav { ...innerBlockProps } />;
 }
