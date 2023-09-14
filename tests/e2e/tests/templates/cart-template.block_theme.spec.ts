@@ -136,7 +136,7 @@ test.describe( 'Test editing the cart template', async () => {
 
 		await editor.canvas
 			.getByRole( 'button', { name: 'Transform into blocks' } )
-			.click();
+			.click( { force: true } );
 		await expect(
 			editor.canvas
 				.locator( 'button:has-text("Proceed to checkout")' )
