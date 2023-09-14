@@ -78,7 +78,7 @@ final class CollectionFilters extends AbstractBlock {
 		if ( ! is_admin() ) {
 			/**
 			 * At this point, WP starts rendering the Collection Filters block,
-			 * we can safely nuke the current response.
+			 * we can safely unset the current response.
 			 */
 			$this->current_response = null;
 		}
