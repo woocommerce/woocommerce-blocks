@@ -15,7 +15,6 @@ import { useEffect } from '@wordpress/element';
  */
 import {
 	moveInnerBlocksToPosition,
-	updateGroupBlockType,
 	getInnerBlocksLockAttributes,
 } from './utils';
 import { ProductGalleryThumbnailsBlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
@@ -27,7 +26,7 @@ import { ProductGalleryNextPreviousBlockSettings } from './inner-blocks/product-
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'core/group',
-		{ layout: { type: 'flex' } },
+		{ layout: { type: 'flex', flexWrap: 'nowrap' } },
 		[
 			[
 				'woocommerce/product-gallery-thumbnails',
@@ -62,6 +61,7 @@ const TEMPLATE: InnerBlockTemplate[] = [
 											},
 										},
 									},
+									lock: { move: true },
 								},
 							],
 							[
@@ -71,6 +71,7 @@ const TEMPLATE: InnerBlockTemplate[] = [
 										type: 'flex',
 										verticalAlignment: 'bottom',
 									},
+									lock: { move: true, remove: true },
 								},
 							],
 						],
@@ -91,9 +92,6 @@ export const Edit = ( {
 	setAttributes,
 }: BlockEditProps< ProductGalleryAttributes > ) => {
 	const blockProps = useBlockProps();
-
-	// Update the Group block type when the thumbnailsPosition attribute changes.
-	updateGroupBlockType( attributes, clientId );
 
 	useEffect( () => {
 		setAttributes( {
