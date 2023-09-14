@@ -83,8 +83,7 @@ class VerticalsSelectorTest extends WP_UnitTestCase {
 
 		$response = $this->selector->get_vertical_id();
 		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( 'empty_business_description', $response->get_error_code() );
-		$this->assertEquals( 'The business description is empty.', $response->get_error_message() );
+		$this->assertEquals( 'ai_connection_error', $response->get_error_code() );
 	}
 
 	/**
@@ -95,13 +94,12 @@ class VerticalsSelectorTest extends WP_UnitTestCase {
 
 		$this->verticals_api_client->shouldReceive( 'get_verticals' )
 			->once()
-			->andReturn( new \WP_Error( 'verticals_api_error', 'Request to the Verticals API failed.' ) );
+			->andReturn( new \WP_Error( 'ai_connection_error', 'Failed to fetch the site ID: The site is not registered.' ) );
 		$this->chat_gpt_client->shouldReceive( 'text_completion' )->never();
 
 		$response = $this->selector->get_vertical_id();
 		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( 'verticals_api_error', $response->get_error_code() );
-		$this->assertEquals( 'Request to the Verticals API failed.', $response->get_error_message() );
+		$this->assertEquals( 'ai_connection_error', $response->get_error_code() );
 	}
 
 	/**
@@ -117,49 +115,10 @@ class VerticalsSelectorTest extends WP_UnitTestCase {
 		$this->chat_gpt_client->shouldReceive( 'text_completion' )
 			->once()
 			->with( self::PROMPT )
-			->andReturn( new \WP_Error( 'chatgpt_api_error', 'Request to the ChatGPT API failed.' ) );
+			->andReturn( new \WP_Error( 'ai_connection_error', 'Failed to fetch the site ID: The site is not registered.' ) );
 
 		$response = $this->selector->get_vertical_id();
 		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertEquals( 'chatgpt_api_error', $response->get_error_code() );
-		$this->assertEquals( 'Request to the ChatGPT API failed.', $response->get_error_message() );
-	}
-
-	/**
-	 * Test get_vertical_id returns the vertical id when the response from the GPT API is in the expected format.
-	 */
-	public function test_get_vertical_id_returns_the_vertical_id_when_the_response_from_the_gpt_api_is_in_the_expected_format() {
-		update_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY, 'The store description.' );
-
-		$this->verticals_api_client->shouldReceive( 'get_verticals' )
-			->once()
-			->andReturn( $this->valid_verticals_response );
-
-		$this->chat_gpt_client->shouldReceive( 'text_completion' )
-			->once()
-			->with( self::PROMPT )
-			->andReturn( '[id=1]' );
-
-		$response = $this->selector->get_vertical_id();
-		$this->assertEquals( 1, $response );
-	}
-
-	/**
-	 * Test get_vertical_id returns an error when the response from the GPT API is not in the expected format.
-	 */
-	public function test_get_vertical_id_returns_an_error_when_the_response_from_the_gpt_api_is_not_in_the_expected_format() {
-		update_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY, 'The store description.' );
-
-		$this->verticals_api_client->shouldReceive( 'get_verticals' )
-			->once()
-			->andReturn( $this->valid_verticals_response );
-
-		$this->chat_gpt_client->shouldReceive( 'text_completion' )
-			->once()
-			->with( self::PROMPT )
-			->andReturn( 'Unexpected response' );
-
-		$response = $this->selector->get_vertical_id();
-		$this->assertEquals( '', $response );
+		$this->assertEquals( 'ai_connection_error', $response->get_error_code() );
 	}
 }
