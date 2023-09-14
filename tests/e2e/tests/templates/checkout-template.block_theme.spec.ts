@@ -69,11 +69,12 @@ test.describe( 'Test editing the checkout template', async () => {
 		admin,
 		editorUtils,
 		editor,
+		page,
 	} ) => {
 		await admin.visitAdminPage( 'site-editor.php' );
 		await editorUtils.waitForSiteEditorFinishLoading();
-		await editor.page.getByRole( 'button', { name: /Pages/i } ).click();
-		await editor.page.getByRole( 'button', { name: /Checkout/i } ).click();
+		await page.getByRole( 'button', { name: /Templates/i } ).click();
+		await page.getByRole( 'button', { name: /Page: Checkout/i } ).click();
 		await editorUtils.enterEditMode();
 		await editor.setContent(
 			'<!-- wp:woocommerce/classic-shortcode {"shortcode":"checkout"} /-->'
