@@ -167,12 +167,9 @@ registerCheckoutFilters( 'example-extension', {
 } );
 ```
 
-![image](https://github.com/woocommerce/woocommerce-blocks/assets/6242098/9e338a2e-953f-4e1f-b547-ad5b4343b4bb)
-
-
 | Before                                                                                                                                   | After                                                                                                                                    |
 | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| <img width="761" alt="image" src="https://github.com/masteradhoc/woocommerce-blocks/assets/6242098/9e338a2e-953f-4e1f-b547-ad5b4343b4b"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267269678-2d2ccd6b-edb4-4bec-952d-19dcae105fdd.png"> |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/9e338a2e-953f-4e1f-b547-ad5b4343b4bb"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267269678-2d2ccd6b-edb4-4bec-952d-19dcae105fdd.png"> |
 
 ## Proceed to Checkout Button Link
 
