@@ -320,6 +320,7 @@ registerCheckoutFilters( 'automatic-coupon-extension', {
 ### Prevent a snackbar notice from appearing for coupons
 
 If you want to prevent a coupon apply notice from appearing, you can use the `showApplyCouponNotice` filter. If it returns `false` then the notice will not be created.
+
 ```ts
 const { registerCheckoutFilters } = window.wc.blocksCheckout;
  
