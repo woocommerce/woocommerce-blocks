@@ -118,12 +118,12 @@ test.describe( 'Test editing the cart template', async () => {
 			path: 'artifacts/test-results/empty.png',
 		} );
 		await editor.canvas.click( 'body' );
-		await editor.insertBlock( {
-			name: 'woocommerce/classic-shortcode',
-			attributes: {
-				shortcode: 'cart',
-			},
-		} );
+		await editor.setContent(
+			'<!-- wp:woocommerce/classic-shortcode {"shortcode":"cart"} /-->'
+		);
+
+		await editor.selectBlocks( '.wp-block-woocommerce-classic-shortcode' );
+
 		await editor.page.screenshot( {
 			path: 'artifacts/test-results/cartcode.png',
 		} );
