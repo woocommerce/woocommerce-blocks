@@ -90,6 +90,23 @@ test.describe( 'Test editing the cart template', async () => {
 	} ) => {
 		await admin.visitAdminPage( 'site-editor.php' );
 		await editorUtils.waitForSiteEditorFinishLoading();
+		await admin.page.evaluate( () => {
+			window.wp.data
+				.dispatch( 'core/preferences' )
+				.set( 'core/edit-site', 'welcomeGuide', false );
+
+			window.wp.data
+				.dispatch( 'core/preferences' )
+				.set( 'core/edit-site', 'welcomeGuideStyles', false );
+
+			window.wp.data
+				.dispatch( 'core/preferences' )
+				.set( 'core/edit-site', 'welcomeGuidePage', false );
+
+			window.wp.data
+				.dispatch( 'core/preferences' )
+				.set( 'core/edit-site', 'welcomeGuideTemplate', false );
+		} );
 		await editor.page.getByRole( 'button', { name: /Pages/i } ).click();
 		await editor.page.getByRole( 'button', { name: /Cart/i } ).click();
 
