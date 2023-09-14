@@ -75,14 +75,12 @@ test.describe( 'Test editing the checkout template', async () => {
 		await editor.page.getByRole( 'button', { name: /Pages/i } ).click();
 		await editor.page.getByRole( 'button', { name: /Checkout/i } ).click();
 		await editorUtils.enterEditMode();
-		await editor.setContent( '' );
-		await editor.canvas.click( 'body' );
-		await editor.insertBlock( {
-			name: 'woocommerce/classic-shortcode',
-			attributes: {
-				shortcode: 'checkout',
-			},
-		} );
+		await editor.setContent(
+			'<!-- wp:woocommerce/classic-shortcode {"shortcode":"checkout"} /-->'
+		);
+		await editor.canvas.waitForSelector(
+			'.wp-block-woocommerce-classic-shortcode'
+		);
 		await editor.canvas
 			.getByRole( 'button', { name: 'Transform into blocks' } )
 			.click();
