@@ -175,6 +175,7 @@ class ProductReviewSchema extends AbstractSchema {
 			'rating'                 => $rating,
 			'verified'               => wc_review_is_from_verified_owner( $review->comment_ID ),
 			'reviewer_avatar_urls'   => rest_get_avatar_urls( $review->comment_author_email ),
+			'parent_id'=> (int) $review->comment_parent,
 		];
 
 		if ( 'view' === $context ) {

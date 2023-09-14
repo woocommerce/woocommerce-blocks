@@ -651,8 +651,15 @@ class ProductSchema extends AbstractSchema {
 				}
 			}
 
+			$variation = wc_get_product($variation_id);
 			$variations[] = (object) [
 				'id'         => $variation_id,
+				'images'         => $this->get_images($variation),
+				'prices'         => (object) $this->prepare_product_price_response($variation),
+				'is_purchasable'      => $variation->is_purchasable(),
+				'is_in_stock'         => $variation->is_in_stock(),
+				'is_on_backorder'     => 'onbackorder' === $variation->get_stock_status(),
+				'low_stock_remaining' => $this->get_low_stock_remaining( $variation ),
 				'attributes' => array_values( $attribute_data ),
 			];
 		}
