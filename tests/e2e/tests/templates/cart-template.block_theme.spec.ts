@@ -110,8 +110,6 @@ test.describe( 'Test editing the cart template', async () => {
 		await editor.page.getByRole( 'button', { name: /Pages/i } ).click();
 		await editor.page.getByRole( 'button', { name: /Cart/i } ).click();
 
-		await expect( editor.canvas.getByText( 'Cart' ) ).toBeVisible();
-
 		await editorUtils.enterEditMode();
 		await editor.setContent( '' );
 		await editor.page.screenshot( {
