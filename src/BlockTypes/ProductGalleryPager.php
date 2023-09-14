@@ -97,7 +97,7 @@ class ProductGalleryPager extends AbstractBlock {
 
 			$is_first_pager_item = 0 === $key;
 			$pager_item          = sprintf(
-				'<li class="wp-block-woocommerce-product-gallery__pager-item %2$s">%1$s</li>',
+				'<li class="wc-block-woocommerce-product-gallery__pager-item %2$s">%1$s</li>',
 				'dots' === $pager_display_mode ? $this->get_dot_icon( $is_first_pager_item ) : $key + 1,
 				$is_first_pager_item ? 'is-active' : ''
 			);
@@ -108,7 +108,6 @@ class ProductGalleryPager extends AbstractBlock {
 					'data-wc-context',
 					wp_json_encode(
 						array(
-							'isSelected'  => $is_first_pager_item,
 							'woocommerce' => array( 'imageId' => strval( $product_gallery_image_id ) ),
 						)
 					)
@@ -147,20 +146,5 @@ class ProductGalleryPager extends AbstractBlock {
 			</svg>',
 			$initial_opacity
 		);
-	}
-
-	/**
-	 * Get the Interactivity API's view script handle for this block type.
-	 *
-	 * @param string $key Data to get, or default to everything.
-	 */
-	protected function get_block_type_script( $key = null ) {
-		$script = [
-			'handle'       => 'wc-' . $this->block_name . '-frontend',
-			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-frontend' ),
-			'dependencies' => [ 'wc-interactivity' ],
-		];
-
-		return $key ? $script[ $key ] : $script;
 	}
 }
