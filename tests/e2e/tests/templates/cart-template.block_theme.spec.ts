@@ -114,7 +114,9 @@ test.describe( 'Test editing the cart template', async () => {
 
 		await editorUtils.enterEditMode();
 		await editor.setContent( '' );
-		await editor.page.screenshot( { path: 'artifacts/empty.png' } );
+		await editor.page.screenshot( {
+			path: 'artifacts/test-results/empty.png',
+		} );
 		await editor.canvas.click( 'body' );
 		await editor.insertBlock( {
 			name: 'woocommerce/classic-shortcode',
@@ -122,7 +124,9 @@ test.describe( 'Test editing the cart template', async () => {
 				shortcode: 'cart',
 			},
 		} );
-		await editor.page.screenshot( { path: 'artifacts/cartcode.png' } );
+		await editor.page.screenshot( {
+			path: 'artifacts/test-results/cartcode.png',
+		} );
 
 		await expect(
 			editor.canvas
