@@ -36,7 +36,7 @@ registerCheckoutFilters( 'example-extension', {
     if ( args?.context !== 'cart' ) {
       return value;
     }
-    return ' per item';
+    return '<price/> per item';
   }
 } );
 ```
