@@ -100,8 +100,6 @@ final class CollectionFilters extends AbstractBlock {
 		/**
 		 * Bail if the current block is not a direct child of CollectionFilters
 		 * and the parent block doesn't have our custom context.
-		 *
-		 * When we reach the direct child of CollectionFilters block, we
 		 */
 		if (
 			"woocommerce/{$this->block_name}" !== $parent_block->name &&
@@ -110,6 +108,11 @@ final class CollectionFilters extends AbstractBlock {
 			return $context;
 		}
 
+		/**
+		 * The first time we reach here, WP is rendering the first direct child
+		 * of CollectionFilters block. We hydrate and cache the collection data
+		 * response for other inner blocks to use.
+		 */
 		if ( ! isset( $this->current_response ) ) {
 			$this->current_response = $this->get_aggregated_collection_data( $parent_block );
 		}
@@ -118,6 +121,13 @@ final class CollectionFilters extends AbstractBlock {
 			return $context;
 		}
 
+		/**
+		 * We target only filter blocks, but they can be nested inside other
+		 * blocks like Group/Row for layout purposes. We pass this custom light
+		 * weight context (instead of full CollectionData response) to all inner
+		 * blocks of current CollectionFilters to find and iterate inner filter
+		 * blocks.
+		 */
 		$context['isCollectionFiltersInnerBlock'] = true;
 
 		if (
