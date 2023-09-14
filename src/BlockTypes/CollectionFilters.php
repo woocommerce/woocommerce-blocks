@@ -7,7 +7,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\Hydration;
 /**
  * CollectionFilters class.
  */
-class CollectionFilters extends AbstractBlock {
+final class CollectionFilters extends AbstractBlock {
 	/**
 	 * Block name.
 	 *
@@ -32,7 +32,7 @@ class CollectionFilters extends AbstractBlock {
 	 *
 	 * @var array
 	 */
-	protected $current_response = null;
+	private $current_response = null;
 
 	/**
 	 * Get the frontend style handle for this block type.
@@ -107,11 +107,10 @@ class CollectionFilters extends AbstractBlock {
 		}
 
 		if (
-			! empty(
-				$this->current_response ||
-				isset( $parsed_block['blockName'] ) ||
-				in_array( $parsed_block['blockName'], $this->collection_data_params_mapping, true )
-			) ) {
+			! empty( $this->current_response ) ||
+			isset( $parsed_block['blockName'] ) ||
+			in_array( $parsed_block['blockName'], $this->collection_data_params_mapping, true )
+		) {
 			$context['collectionData'] = $this->current_response;
 		}
 
@@ -125,7 +124,7 @@ class CollectionFilters extends AbstractBlock {
 	 * @param WP_Block $block The block instance.
 	 * @return array
 	 */
-	protected function get_aggregated_collection_data( $block ) {
+	private function get_aggregated_collection_data( $block ) {
 		$collection_data_params = array();
 		$inner_blocks           = array();
 
@@ -167,7 +166,7 @@ class CollectionFilters extends AbstractBlock {
 	 *
 	 * @return array
 	 */
-	protected function get_inner_blocks_recursive( $block, $results = array() ) {
+	private function get_inner_blocks_recursive( $block, $results = array() ) {
 		$results[] = $block->name;
 		if ( ! empty( $block->inner_blocks ) ) {
 			foreach ( $block->inner_blocks as $inner_block ) {
