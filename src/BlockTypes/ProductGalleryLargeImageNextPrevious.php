@@ -77,7 +77,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 		if ( $p->next_tag() ) {
 			$p->set_attribute(
 				'data-wc-on--click',
-				'actions.woocommerce.onPreviousImageButtonClick'
+				'actions.woocommerce.handlePreviousImageButtonClick'
 			);
 			$prev_button = $p->get_updated_html();
 		}
@@ -88,7 +88,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 		if ( $p->next_tag() ) {
 			$p->set_attribute(
 				'data-wc-on--click',
-				'actions.woocommerce.onNextImageButtonClick'
+				'actions.woocommerce.handleNextImageButtonClick'
 			);
 			$next_button = $p->get_updated_html();
 		}

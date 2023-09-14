@@ -64,7 +64,7 @@ interactivityApiStore( {
 			handleClick: ( { context }: Store ) => {
 				context.woocommerce.selectedImage = context.woocommerce.imageId;
 			},
-			onNextImageButtonClick: ( store: Store ) => {
+			handleNextImageButtonClick: ( store: Store ) => {
 				const { context } = store;
 				const selectedImageIdIndex =
 					context.woocommerce.visibleImagesIds.indexOf(
@@ -78,7 +78,7 @@ interactivityApiStore( {
 				context.woocommerce.selectedImage =
 					context.woocommerce.visibleImagesIds[ nextImageIndex ];
 			},
-			onPreviousImageButtonClick: ( store: Store ) => {
+			handlePreviousImageButtonClick: ( store: Store ) => {
 				const { context } = store;
 				const selectedImageIdIndex =
 					context.woocommerce.visibleImagesIds.indexOf(
