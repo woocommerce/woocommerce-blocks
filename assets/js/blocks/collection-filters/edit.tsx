@@ -7,7 +7,7 @@ const Edit = () => {
 	const blockProps = useBlockProps();
 	const innerBlockProps = useInnerBlocksProps( blockProps );
 
-	return <div { ...innerBlockProps } />;
+	return <nav { ...innerBlockProps } />;
 };
 
 export default Edit;
