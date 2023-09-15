@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use stdClass;
+
 /**
  * CollectionPriceFilter class.
  */
@@ -26,9 +28,21 @@ final class CollectionPriceFilter extends AbstractBlock {
 	protected function render( $attributes, $content, $block ) {
 		list ( 'showInputFields' => $show_input_fields, 'inlineInput' => $inline_input ) = $attributes;
 
+		// This should be available in $block->context['collectionData']['price_range'].
+		$price_range                              = new stdClass();
+		$price_range->min_price                   = 0;
+		$price_range->max_price                   = 25000;
+		$price_range->currency_code               = 'USD';
+		$price_range->currency_symbol             = '$';
+		$price_range->currency_minor_unit         = 3;
+		$price_range->currency_decimal_separator  = ',';
+		$price_range->currency_thousand_separator = '.';
+		$price_range->currency_prefix             = '$';
+		$price_range->currency_suffix             = '';
+
 		$wrapper_attributes  = get_block_wrapper_attributes();
-		$min_range           = 0; // This value should come from DB.
-		$max_range           = 90; // This value should come from DB.
+		$min_range           = $price_range->min_price / 10 ** $price_range->currency_minor_unit;
+		$max_range           = $price_range->max_price / 10 ** $price_range->currency_minor_unit;
 		$min_price           = intval( get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range ) );
 		$max_price           = intval( get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range ) );
 		$formatted_min_price = wc_price( $min_price, array( 'decimals' => 0 ) );
