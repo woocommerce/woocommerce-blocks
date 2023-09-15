@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { type BlockEditProps } from '@wordpress/blocks';
+import type { BlockEditProps } from '@wordpress/blocks';
 import { type AttributeMetadata } from '@woocommerce/types';
 
 export interface ProductCollectionAttributes {
