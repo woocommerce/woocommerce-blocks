@@ -42,7 +42,7 @@ const QueryPlaceholder = ( props: QueryEditComponentProps ) => {
 				</Button>
 				<Button variant="tertiary" onClick={ tempEventHandler }>
 					{ __(
-						'New custom collection ',
+						'New custom collection',
 						'woo-gutenberg-products-block'
 					) }
 				</Button>

@@ -10,8 +10,8 @@ import { useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import type { ProductCollectionAttributes } from '../types';
-import ProductCollectionPlaceholder from './ProductCollectionPlaceholder';
-import ProductCollectionContent from './ProductCollectionContent';
+import ProductCollectionPlaceholder from './product-collection-placeholder';
+import ProductCollectionContent from './product-collection-content';
 import PatternSelectionModal from './toolbar-controls/pattern-selection-modal';
 import './editor.scss';
 
@@ -38,7 +38,6 @@ const Edit = ( props: BlockEditProps< ProductCollectionAttributes > ) => {
 					setIsPatternSelectionModalOpen( true )
 				}
 			/>
-			;
 			{ isPatternSelectionModalOpen && (
 				<PatternSelectionModal
 					clientId={ clientId }
