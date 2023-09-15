@@ -15,12 +15,6 @@ class OptionUpdate {
 	 * OptionUpdate constructor.
 	 */
 	public function __construct() {
-		if ( class_exists( 'WooCommerce' ) ) {
-			$woocommerce_base_dir = WP_PLUGIN_DIR . '/woocommerce/';
-
-			require_once $woocommerce_base_dir . 'includes/libraries/action-scheduler/action-scheduler.php';
-		}
-
 		add_action( 'add_option_woo_ai_describe_store_description', array( $this, 'ai_store_description_changed' ), 10, 2 );
 		add_action( 'woocommerce_update_patterns_content', array( $this, 'update_patterns_content' ) );
 	}
@@ -34,6 +28,18 @@ class OptionUpdate {
 	 * @return bool|int|string|void|\WP_Error
 	 */
 	public function ai_store_description_changed( $option, $value ) {
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			return;
+		}
+
+		$action_scheduler = WP_PLUGIN_DIR . '/woocommerce/packages/action-scheduler/action-scheduler.php';
+
+		if ( ! file_exists( $action_scheduler ) ) {
+			return;
+		}
+
+		require_once $action_scheduler;
+
 		as_schedule_single_action( time(), 'woocommerce_update_patterns_content', array( $value ) );
 	}
 
