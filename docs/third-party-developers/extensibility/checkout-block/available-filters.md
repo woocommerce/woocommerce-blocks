@@ -202,6 +202,7 @@ registerCheckoutFilters( 'example-extension', {
   }
 } );
 ```
+
 <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267270560-2964d529-771d-4d00-9fff-646b15d59cbf.png">
 
 ## Place Order Button Label
