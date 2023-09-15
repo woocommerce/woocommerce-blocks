@@ -41,7 +41,7 @@ const Edit = ( props: BlockEditProps< ProductCollectionAttributes > ) => {
 			{ isPatternSelectionModalOpen && (
 				<PatternSelectionModal
 					clientId={ clientId }
-					query={ attributes.query }
+					attributes={ attributes }
 					closePatternSelectionModal={ () =>
 						setIsPatternSelectionModalOpen( false )
 					}

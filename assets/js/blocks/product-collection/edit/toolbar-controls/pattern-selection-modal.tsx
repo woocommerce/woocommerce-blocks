@@ -21,7 +21,10 @@ import { isEmpty } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
-import { ProductCollectionQuery } from '../../types';
+import type {
+	ProductCollectionQuery,
+	ProductCollectionAttributes,
+} from '../../types';
 import { DEFAULT_QUERY } from '../../constants';
 import { getDefaultValueOfInheritQueryFromTemplate } from '../../utils';
 
@@ -69,17 +72,22 @@ const mapCollectionToPattern = ( collection: BlockVariation ) => {
 
 const DisplayLayoutControl = ( props: {
 	clientId: string;
-	query?: ProductCollectionQuery;
+	attributes: ProductCollectionAttributes;
 	closePatternSelectionModal: () => void;
 } ) => {
-	const { clientId, query } = props;
+	const { clientId, attributes } = props;
+	const { query } = attributes;
 	const { replaceBlock, selectBlock } = useDispatch( blockEditorStore );
 
 	const applyQueryToPattern = ( block: BlockInstance ): BlockInstance => {
 		const newInnerBlocks = block.innerBlocks.map( applyQueryToPattern );
 		if ( block.name === blockName ) {
 			const newQuery = buildQuery( query, block.attributes.query );
-			return cloneBlock( block, { query: newQuery }, newInnerBlocks );
+			return cloneBlock(
+				block,
+				{ query: newQuery, collection: attributes.collection },
+				newInnerBlocks
+			);
 		}
 		return cloneBlock( block, {}, newInnerBlocks );
 	};
