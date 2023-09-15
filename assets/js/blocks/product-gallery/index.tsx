@@ -27,6 +27,6 @@ if ( isExperimentalBuild() ) {
 			edit: Edit,
 			save: Save,
 		},
-		isAvailableOnPostEditor: true,
+		isAvailableOnPostEditor: false,
 	} );
 }
