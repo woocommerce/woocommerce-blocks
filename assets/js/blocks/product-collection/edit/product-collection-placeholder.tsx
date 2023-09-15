@@ -2,20 +2,48 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useBlockProps } from '@wordpress/block-editor';
+import {
+	store as blockEditorStore,
+	useBlockProps,
+} from '@wordpress/block-editor';
+import {
+	createBlock,
+	createBlocksFromInnerBlocksTemplate,
+} from '@wordpress/blocks';
 import { Placeholder, Button } from '@wordpress/components';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import Icon from '../icon';
 import type { QueryEditComponentProps } from '../types';
+import { DEFAULT_ATTRIBUTES, INNER_BLOCKS_TEMPLATE } from '../constants';
+import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
+
+const getDefaultProductCollection = () =>
+	createBlock(
+		'woocommerce/product-collection',
+		{
+			...DEFAULT_ATTRIBUTES,
+			query: {
+				...DEFAULT_ATTRIBUTES.query,
+				inherit: getDefaultValueOfInheritQueryFromTemplate(),
+			},
+		},
+		createBlocksFromInnerBlocksTemplate( INNER_BLOCKS_TEMPLATE )
+	);
 
 const QueryPlaceholder = ( props: QueryEditComponentProps ) => {
-	const { openPatternSelectionModalOpen } = props;
+	const { clientId, openPatternSelectionModalOpen } = props;
 	const blockProps = useBlockProps();
-	const tempEventHandler = () => {
-		/** Temp handler */
+
+	const { replaceBlock } = useDispatch( blockEditorStore );
+	// @todo: This is temporary action that will be changed into
+	// "Add custom collection"
+	const addDefaultProductCollection = () => {
+		const defaultProductCollection = getDefaultProductCollection();
+		replaceBlock( clientId, defaultProductCollection );
 	};
 
 	return (
@@ -40,9 +68,12 @@ const QueryPlaceholder = ( props: QueryEditComponentProps ) => {
 						'woo-gutenberg-products-block'
 					) }
 				</Button>
-				<Button variant="tertiary" onClick={ tempEventHandler }>
+				<Button
+					variant="tertiary"
+					onClick={ addDefaultProductCollection }
+				>
 					{ __(
-						'New custom collection',
+						'Add default Product Collection',
 						'woo-gutenberg-products-block'
 					) }
 				</Button>
