@@ -86,6 +86,28 @@ registerCheckoutFilters( 'example-extension', {
 | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268294925-a014c8d7-4c26-4a0a-8f4c-f74a8240bbb4.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267226443-67f089bd-95d0-49f8-81f4-df2fec1a3d69.png"> |
 
+### showRemoveItemLink
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Show remove item link of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  showRemoveItemLink: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return false;
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268295858-ec76f525-e2cf-468c-9634-ae9e84e5aa48.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268295935-3171cd92-33f1-4182-b875-bc7e422771a0.png"> |
+
 ## Order Summary Items
 
 In the Checkout block, there is a sidebar that contains a summary of what the customer is about to purchase. There are some filters available to modify the way certain elements are displayed on each item. The sale badges are not shown here, so those filters are not applied in the Order Summary.
