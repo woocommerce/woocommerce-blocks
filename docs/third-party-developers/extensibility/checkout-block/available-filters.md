@@ -215,6 +215,34 @@ The Cart block contains a button which is labelled 'Proceed to Checkout' by defa
 | ------------------------------ | --------------------------------------------------- | ----------- |
 | `proceedToCheckoutButtonLabel` | The wanted label of the Proceed to Checkout button. | `string`    |
 
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust the proceed to checkout button label.
+registerCheckoutFilters( 'example-extension', {
+  proceedToCheckoutButtonLabel: ( value, extensions, args ) => {
+    if ( ! args?.cart.items ) {
+      return value;
+    }
+ 
+    const isSunglassesInCart = args?.cart.items.some(
+      ( item ) => item.name === 'Sunglasses'
+    );
+ 
+    // Return the default value if sunglasses is not in the cart.
+    if ( ! isSunglassesInCart ) {
+      return value;
+    }
+ 
+    return 'Proceed to 😎 checkout';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268078493-9e338a2e-953f-4e1f-b547-ad5b4343b4bb.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267269678-2d2ccd6b-edb4-4bec-952d-19dcae105fdd.png"> |
+
 ## Proceed to Checkout Button Link
 
 The Cart block contains a button which is labelled 'Proceed to Checkout' and links to the Checkout page by default, but can be changed using the following filter. This filter has the current cart passed to it in the third parameter.
@@ -222,6 +250,32 @@ The Cart block contains a button which is labelled 'Proceed to Checkout' and lin
 | Filter name                   | Description                                                 | Return type |
 | ----------------------------- | ----------------------------------------------------------- | ----------- |
 | `proceedToCheckoutButtonLink` | The URL that the Proceed to Checkout button should link to. | `string`    |
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust the proceed to checkout button link.
+registerCheckoutFilters( 'example-extension', {
+  proceedToCheckoutButtonLink: ( value, extensions, args ) => {
+    if ( ! args?.cart.items ) {
+      return value;
+    }
+ 
+    const isSunglassesInCart = args?.cart.items.some(
+      ( item ) => item.name === 'Sunglasses'
+    );
+ 
+    // Return the default value if sunglasses is not in the cart.
+    if ( ! isSunglassesInCart ) {
+      return value;
+    }
+ 
+    return '/sunglasses-checkout';
+  }
+} );
+```
+
+<img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267270560-2964d529-771d-4d00-9fff-646b15d59cbf.png">
 
 ## Place Order Button Label
 
