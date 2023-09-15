@@ -6,7 +6,7 @@ import { expect } from '@woocommerce/e2e-playwright-utils';
 
 export class CheckoutPage {
 	private BLOCK_NAME = 'woocommerce/checkout';
-	private page: Page;
+	public page: Page;
 	private testData = {
 		...{
 			firstname: 'John',
@@ -73,6 +73,7 @@ export class CheckoutPage {
 		await this.page.getByText( 'Place Order', { exact: true } ).click();
 		await this.page.waitForURL( /order-received/ );
 	}
+
 	async verifyAddressDetails(
 		shippingOrBilling: 'shipping' | 'billing',
 		overrideAddressDetails = {}
