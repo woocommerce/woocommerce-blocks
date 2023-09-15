@@ -64,6 +64,28 @@ registerCheckoutFilters( 'example-extension', {
 | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268245369-6cd0aad9-4a7e-45e1-915b-3294db101246.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267216388-08bc3af0-6290-4ec4-b7f5-5ee21d66ed7f.png"> |
 
+### subtotalPriceFormat
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust subtotal price format of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  subtotalPriceFormat: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return '<price/> per item';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268294925-a014c8d7-4c26-4a0a-8f4c-f74a8240bbb4.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267226443-67f089bd-95d0-49f8-81f4-df2fec1a3d69.png"> |
+
 ## Order Summary Items
 
 In the Checkout block, there is a sidebar that contains a summary of what the customer is about to purchase. There are some filters available to modify the way certain elements are displayed on each item. The sale badges are not shown here, so those filters are not applied in the Order Summary.
