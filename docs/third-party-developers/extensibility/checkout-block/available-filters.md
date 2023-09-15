@@ -58,6 +58,7 @@ In the Checkout block, there is a sidebar that contains a summary of what the cu
 Each of these filters has the following additional arguments passed to it: `{ context: 'summary', cartItem: CartItem }` ([CartItem](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L113))
 
 ### subtotalPriceFormat
+
 A code snippet to adjust subtotal price format of the order summary items can be found below:
 
 ```ts
