@@ -4,7 +4,7 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 /**
  * CollectionPriceFilter class.
  */
-class CollectionPriceFilter extends AbstractBlock {
+final class CollectionPriceFilter extends AbstractBlock {
 
 	/**
 	 * Block name.
