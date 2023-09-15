@@ -12,7 +12,7 @@ import { VARIATION_NAME as PRODUCT_TITLE_ID } from '../variations/elements/produ
 import { DEFAULT_ATTRIBUTES } from '../constants';
 
 const collection = {
-	name: 'product-collection__new-arrivals',
+	name: 'woocommerce-blocks/product-collection/new-arrivals',
 	title: 'New Arrivals',
 	icon: <Icon icon={ 'star-filled' } />,
 	description: 'Display a grid of your newest products.',

@@ -8,7 +8,14 @@ import {
 	store as blockEditorStore,
 	__experimentalBlockPatternsList as BlockPatternsList,
 } from '@wordpress/block-editor';
-import { type BlockInstance, cloneBlock } from '@wordpress/blocks';
+import {
+	type BlockInstance,
+	store as blocksStore,
+	cloneBlock,
+	createBlock,
+	createBlocksFromInnerBlocksTemplate,
+	BlockVariation,
+} from '@wordpress/blocks';
 import { isEmpty } from '@woocommerce/types';
 
 /**
@@ -42,6 +49,24 @@ const buildQuery = (
 	};
 };
 
+const mapCollectionToPattern = ( collection: BlockVariation ) => {
+	const { name, title, attributes, innerBlocks } = collection;
+	return {
+		name,
+		title,
+		blockTypes: [ 'woocommerce/product-collection' ],
+		categories: [ 'woo-commerce' ],
+		collection: true,
+		blocks: [
+			createBlock(
+				'woocommerce/product-collection',
+				attributes,
+				createBlocksFromInnerBlocksTemplate( innerBlocks )
+			),
+		],
+	};
+};
+
 const DisplayLayoutControl = ( props: {
 	clientId: string;
 	query?: ProductCollectionQuery;
@@ -50,8 +75,8 @@ const DisplayLayoutControl = ( props: {
 	const { clientId, query } = props;
 	const { replaceBlock, selectBlock } = useDispatch( blockEditorStore );
 
-	const transformBlock = ( block: BlockInstance ): BlockInstance => {
-		const newInnerBlocks = block.innerBlocks.map( transformBlock );
+	const applyQueryToPattern = ( block: BlockInstance ): BlockInstance => {
+		const newInnerBlocks = block.innerBlocks.map( applyQueryToPattern );
 		if ( block.name === blockName ) {
 			const newQuery = buildQuery( query, block.attributes.query );
 			return cloneBlock( block, { query: newQuery }, newInnerBlocks );
@@ -59,6 +84,7 @@ const DisplayLayoutControl = ( props: {
 		return cloneBlock( block, {}, newInnerBlocks );
 	};
 
+	// Get the Product Collection patterns
 	const blockPatterns = useSelect(
 		( select ) => {
 			const { getBlockRootClientId, getPatternsByBlockTypes } =
@@ -69,8 +95,27 @@ const DisplayLayoutControl = ( props: {
 		[ blockName, clientId ]
 	);
 
+	// Get the Product Collection collections
+	const blockCollections = useSelect( ( select ) => {
+		const { getBlockVariations } = select( blocksStore );
+		return getBlockVariations( 'woocommerce/product-collection' );
+	}, [] );
+
+	const collectionsAsPatterns = blockCollections.map(
+		mapCollectionToPattern
+	);
+
 	const onClickPattern = ( pattern, blocks: BlockInstance[] ) => {
-		const newBlocks = blocks.map( transformBlock );
+		const { collection } = pattern;
+
+		// Collection overrides the current block completely
+		// so there's no need to apply current query to pattern
+		if ( collection ) {
+			replaceBlock( clientId, blocks );
+			return;
+		}
+
+		const newBlocks = blocks.map( applyQueryToPattern );
 
 		replaceBlock( clientId, newBlocks );
 		selectBlock( newBlocks[ 0 ].clientId );
@@ -85,8 +130,14 @@ const DisplayLayoutControl = ( props: {
 		>
 			<div className="wc-blocks-product-collection__selection-content">
 				<BlockPatternsList
-					blockPatterns={ blockPatterns }
-					shownPatterns={ blockPatterns }
+					blockPatterns={ [
+						...blockPatterns,
+						...collectionsAsPatterns,
+					] }
+					shownPatterns={ [
+						...blockPatterns,
+						...collectionsAsPatterns,
+					] }
 					onClickPattern={ onClickPattern }
 				/>
 			</div>
