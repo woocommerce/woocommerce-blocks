@@ -77,12 +77,7 @@ class ShippingController {
 		add_filter( 'wc_shipping_enabled', array( $this, 'force_shipping_enabled' ), 100, 1 );
 		add_filter( 'woocommerce_order_shipping_to_display', array( $this, 'show_local_pickup_details' ), 10, 2 );
 
-		add_filter(
-			'woocommerce_shipping_chosen_method',
-			array( $this, 'prevent_shipping_method_selection_changes' ),
-			20,
-			3
-		);
+		add_filter( 'woocommerce_shipping_chosen_method', array( $this, 'prevent_shipping_method_selection_changes' ), 20, 3 );
 
 		// This is required to short circuit `show_shipping` from class-wc-cart.php - without it, that function
 		// returns based on the option's value in the DB and we can't override it any other way.
