@@ -21,6 +21,32 @@ If you want to add a new SlotFill component, check the [Checkout - Slot Fill doc
 
 This Slot renders below the Checkout summary section and above the "Proceed to Checkout" button in the Cart.
 
+```ts
+/**
+ * External dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { registerPlugin } from '@wordpress/plugins';
+import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
+ 
+const render = () => {
+  return (
+    <ExperimentalOrderMeta>
+      <div class="wc-block-components-totals-wrapper">
+        {
+          __( 'Yearly recurring total ...', 'YOUR-TEXTDOMAIN' )
+        }
+      </div>
+    </ExperimentalOrderMeta>
+  );
+};
+ 
+registerPlugin( 'slot-and-fill-examples', {
+  render,
+  scope: 'woocommerce-checkout',
+} );
+```
+
 Cart:
 
 ![Example of ExperimentalOrderMeta in the Cart block](https://user-images.githubusercontent.com/1628454/154517779-117bb4e4-568e-413c-904c-855fc3450dfa.png)
