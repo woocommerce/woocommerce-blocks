@@ -9,17 +9,36 @@ import {
 	__experimentalBlockPatternsList as BlockPatternsList,
 } from '@wordpress/block-editor';
 import { type BlockInstance, cloneBlock } from '@wordpress/blocks';
+import { isEmpty } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import { ProductCollectionQuery } from '../../types';
+import { DEFAULT_QUERY } from '../../constants';
 
 const blockName = 'woocommerce/product-collection';
 
+const buildQuery = (
+	blockQuery: ProductCollectionQuery | undefined,
+	patternQuery: ProductCollectionQuery
+) => {
+	// If blockQuery is empty, it means it's the initial pattern/collection choice
+	// and we should use DEFAULT_QUERY as a base for query.
+	const baseQuery = isEmpty( blockQuery ) ? DEFAULT_QUERY : blockQuery;
+	const { perPage, offset, pages } = patternQuery;
+
+	return {
+		...baseQuery,
+		perPage,
+		offset,
+		pages,
+	};
+};
+
 const DisplayLayoutControl = ( props: {
 	clientId: string;
-	query: ProductCollectionQuery;
+	query?: ProductCollectionQuery;
 	closePatternSelectionModal: () => void;
 } ) => {
 	const { clientId, query } = props;
@@ -28,13 +47,7 @@ const DisplayLayoutControl = ( props: {
 	const transformBlock = ( block: BlockInstance ): BlockInstance => {
 		const newInnerBlocks = block.innerBlocks.map( transformBlock );
 		if ( block.name === blockName ) {
-			const { perPage, offset, pages } = block.attributes.query;
-			const newQuery = {
-				...query,
-				perPage,
-				offset,
-				pages,
-			};
+			const newQuery = buildQuery( query, block.attributes.query );
 			return cloneBlock( block, { query: newQuery }, newInnerBlocks );
 		}
 		return cloneBlock( block, {}, newInnerBlocks );
