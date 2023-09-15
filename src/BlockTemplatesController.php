@@ -22,32 +22,18 @@ use \WP_Post;
 class BlockTemplatesController {
 
 	/**
-	 * Holds the Package instance
-	 *
-	 * @var Package
-	 */
-	private $package;
-
-	/**
-	 * Holds the path for the directory where the block templates will be kept.
-	 *
-	 * @var string
-	 */
-	private $templates_directory;
-
-	/**
-	 * Holds the path for the directory where the block template parts will be kept.
-	 *
-	 * @var string
-	 */
-	private $template_parts_directory;
-
-	/**
 	 * Directory which contains all templates
 	 *
 	 * @var string
 	 */
 	const TEMPLATES_ROOT_DIR = 'templates';
+
+	/**
+	 * Package instance.
+	 *
+	 * @var Package
+	 */
+	private $package;
 
 	/**
 	 * Constructor.
@@ -59,9 +45,6 @@ class BlockTemplatesController {
 
 		// This feature is gated for WooCommerce versions 6.0.0 and above.
 		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '6.0.0', '>=' ) ) {
-			$root_path                      = plugin_dir_path( __DIR__ ) . self::TEMPLATES_ROOT_DIR . DIRECTORY_SEPARATOR;
-			$this->templates_directory      = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATES'];
-			$this->template_parts_directory = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATE_PARTS'];
 			$this->init();
 		}
 	}
@@ -116,7 +99,7 @@ class BlockTemplatesController {
 						$settings['original_render_callback'] = $settings['render_callback'];
 						$settings['render_callback']          = function( $attributes, $content ) use ( $settings ) {
 							// The shortcode has already been rendered, so look for the cart/checkout HTML.
-							if ( strstr( $content, 'woocommerce-cart-form' ) || strstr( $content, 'woocommerce-checkout-form' ) ) {
+							if ( strstr( $content, 'woocommerce-cart-form' ) || strstr( $content, 'wc-empty-cart-message' ) || strstr( $content, 'woocommerce-checkout-form' ) ) {
 								// Return early before wpautop runs again.
 								return $content;
 							}
@@ -158,7 +141,7 @@ class BlockTemplatesController {
 	 * @return string The render.
 	 */
 	public function render_woocommerce_template_part( $attributes ) {
-		if ( 'woocommerce/woocommerce' === $attributes['theme'] ) {
+		if ( isset( $attributes['theme'] ) && 'woocommerce/woocommerce' === $attributes['theme'] ) {
 			$template_part = BlockTemplateUtils::get_block_template( $attributes['theme'] . '//' . $attributes['slug'], 'wp_template_part' );
 
 			if ( $template_part && ! empty( $template_part->content ) ) {
@@ -321,7 +304,7 @@ class BlockTemplatesController {
 			return $template;
 		}
 
-		$directory          = $this->get_templates_directory( $template_type );
+		$directory          = BlockTemplateUtils::get_templates_directory( $template_type );
 		$template_file_path = $directory . '/' . $template_slug . '.html';
 		$template_object    = BlockTemplateUtils::create_new_block_template_object( $template_file_path, $template_type, $template_slug );
 		$template_built     = BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
@@ -476,11 +459,14 @@ class BlockTemplatesController {
 	 * @return array Templates from the WooCommerce blocks plugin directory.
 	 */
 	public function get_block_templates_from_woocommerce( $slugs, $already_found_templates, $template_type = 'wp_template' ) {
-		$directory      = $this->get_templates_directory( $template_type );
+		$directory      = BlockTemplateUtils::get_templates_directory( $template_type );
 		$template_files = BlockTemplateUtils::get_template_paths( $directory );
 		$templates      = array();
 
 		foreach ( $template_files as $template_file ) {
+			if ( ! $this->package->is_experimental_build() && str_contains( $template_file, 'templates/parts/product-gallery.html' ) ) {
+				break;
+			}
 			// Skip the template if it's blockified, and we should only use classic ones.
 			if ( ! BlockTemplateUtils::should_use_blockified_product_grid_templates() && strpos( $template_file, 'blockified' ) !== false ) {
 				continue;
@@ -560,25 +546,6 @@ class BlockTemplatesController {
 	}
 
 	/**
-	 * Gets the directory where templates of a specific template type can be found.
-	 *
-	 * @param string $template_type wp_template or wp_template_part.
-	 *
-	 * @return string
-	 */
-	protected function get_templates_directory( $template_type = 'wp_template' ) {
-		if ( 'wp_template_part' === $template_type ) {
-			return $this->template_parts_directory;
-		}
-
-		if ( BlockTemplateUtils::should_use_blockified_product_grid_templates() ) {
-			return $this->templates_directory . '/blockified';
-		}
-
-		return $this->templates_directory;
-	}
-
-	/**
 	 * Returns the path of a template on the Blocks template folder.
 	 *
 	 * @param string $template_slug Block template slug e.g. single-product.
@@ -587,7 +554,7 @@ class BlockTemplatesController {
 	 * @return string
 	 */
 	public function get_template_path_from_woocommerce( $template_slug, $template_type = 'wp_template' ) {
-		return $this->get_templates_directory( $template_type ) . '/' . $template_slug . '.html';
+		return BlockTemplateUtils::get_templates_directory( $template_type ) . '/' . $template_slug . '.html';
 	}
 
 	/**
@@ -602,7 +569,7 @@ class BlockTemplatesController {
 		if ( ! $template_name ) {
 			return false;
 		}
-		$directory = $this->get_templates_directory( $template_type ) . '/' . $template_name . '.html';
+		$directory = BlockTemplateUtils::get_templates_directory( $template_type ) . '/' . $template_name . '.html';
 
 		return is_readable(
 			$directory
@@ -855,12 +822,36 @@ class BlockTemplatesController {
 	 * @return string THe actual permalink assigned to the page. May differ from $permalink if it was already taken.
 	 */
 	protected function sync_endpoint_with_page( $page, $page_slug, $permalink ) {
-		$matching_page = get_page_by_path( $permalink );
+		$matching_page = get_page_by_path( $permalink, OBJECT, 'page' );
+
+		/**
+		 * Filters whether to attempt to guess a redirect URL for a 404 request.
+		 *
+		 * Returning a false value from the filter will disable the URL guessing
+		 * and return early without performing a redirect.
+		 *
+		 * @since 11.0.0
+		 *
+		 * @param bool $do_redirect_guess Whether to attempt to guess a redirect URL
+		 *                                for a 404 request. Default true.
+		 */
+		if ( ! $matching_page instanceof WP_Post && apply_filters( 'do_redirect_guess_404_permalink', true ) ) {
+			// If it is a subpage and url guessing is on, then we will need to get it via post_name as path will not match.
+			$query = new \WP_Query(
+				[
+					'post_type' => 'page',
+					'name'      => $permalink,
+				]
+			);
+
+			$matching_page = $query->have_posts() ? $query->posts[0] : null;
+		}
 
 		if ( $matching_page && 'publish' === $matching_page->post_status ) {
 			// Existing page matches given permalink; use its ID.
 			update_option( 'woocommerce_' . $page_slug . '_page_id', $matching_page->ID );
-			return $permalink;
+
+			return get_page_uri( $matching_page );
 		}
 
 		// No matching page; either update current page (by ID stored in option table) or create a new page.
@@ -884,8 +875,9 @@ class BlockTemplatesController {
 
 		// Get post again in case slug was updated with a suffix.
 		if ( $updated_page_id && ! is_wp_error( $updated_page_id ) ) {
-			return get_post( $updated_page_id )->post_name;
+			return get_page_uri( get_post( $updated_page_id ) );
 		}
+
 		return $permalink;
 	}
 }

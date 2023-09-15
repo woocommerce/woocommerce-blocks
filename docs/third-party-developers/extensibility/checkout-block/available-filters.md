@@ -57,6 +57,30 @@ In the Checkout block, there is a sidebar that contains a summary of what the cu
 
 Each of these filters has the following additional arguments passed to it: `{ context: 'summary', cartItem: CartItem }` ([CartItem](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L113))
 
+### subtotalPriceFormat
+
+A code snippet to adjust subtotal price format of the order summary items can be found below:
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust subtotal price format of the order summary items.
+registerCheckoutFilters( 'example-extension', {
+  subtotalPriceFormat: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Summary context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'summary' ) {
+      return value;
+    }
+    return '<price/> per item';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/6242098/268092313-d981f064-f274-4175-8291-1671ed55535b.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267265204-7afbbe1a-de1a-4696-a2d9-881de3016060.png"> |
+
 ## Totals footer item (in Mini-Cart, Cart and Checkout)
 
 The word 'Total' that precedes the amount due, present in both the Cart _and_ Checkout blocks, is also passed through filters.
@@ -66,6 +90,21 @@ The word 'Total' that precedes the amount due, present in both the Cart _and_ Ch
 | `totalLabel` | This is the label for the cart total. It defaults to 'Total' (or the word for 'Total' if using translations). | `string`    |
 
 There are no additional arguments passed to this filter.
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust the total label.
+registerCheckoutFilters( 'example-extension', {
+  totalLabel: ( value, extensions, args ) => {
+    return 'Deposit due today';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/3323310/267275008-91bd6aeb-4824-4f8c-80ec-79bc63185bc6.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267274984-721e0be5-31a6-4190-947c-326462d6fd98.png"> |
 
 ## Coupons
 
@@ -119,6 +158,21 @@ The Checkout block contains a button which is labelled 'Place Order' by default,
 | Filter name             | Description                                 | Return type |
 | ----------------------- | ------------------------------------------- | ----------- |
 | `placeOrderButtonLabel` | The wanted label of the Place Order button. | `string`    |
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust the place order button label.
+registerCheckoutFilters( 'example-extension', {
+  placeOrderButtonLabel: ( value, extensions, args ) => {
+    return '💰 Pay now 💰';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://github.com/masteradhoc/woocommerce-blocks/assets/6242098/5703a5a6-39f4-4c29-a176-1a80412e3de9"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267271739-3a8babc4-2848-424b-bc4a-8137eb2b2746.png"> |
 
 ## Additional Cart Checkout inner block types
 
@@ -200,6 +254,8 @@ registerCheckoutFilters( 'newsletter-plugin', {
 	},
 } );
 ```
+
+<img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267215471-816eb52a-b052-4d98-a69e-e96b01dffd6a.png">
 
 ### Changing the wording of the Totals label in the Mini-Cart, Cart and Checkout
 
@@ -291,21 +347,37 @@ registerCheckoutFilters( 'automatic-coupon-extension', {
 
 If you want to prevent a coupon apply notice from appearing, you can use the `showApplyCouponNotice` filter. If it returns `false` then the notice will not be created.
 
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Prevent a couponCode called '10off' from creating a notice when it gets applied.
+registerCheckoutFilters( 'example-extension', {
+  showApplyCouponNotice: ( value, extensions, args ) => {
+    return args?.couponCode === '10off' ? false : value;
+  }
+} );
+```
+
+| Before                                                                                                         | After                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| <img width="599" alt="image" src="https://github.com/masteradhoc/woocommerce-blocks/assets/6242098/b091a815-5e6b-45a2-8d2b-d55196afd59e">  | <img width="599" alt="image" src="https://github.com/masteradhoc/woocommerce-blocks/assets/6242098/b967b04b-4065-4aa7-8d16-8ab311c1ccbb"> |
+
 The same can be done with the `showRemoveCouponNotice` filter to prevent a notice when a coupon is removed from the cart.
 
 ```ts
-import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
-
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Prevent a couponCode called '10off' from creating a notice when it gets removed.
 registerCheckoutFilters( 'example-extension', {
-	showApplyCouponNotice: ( value, extensions, { couponCode } ) => {
-		// Prevent a couponCode called '10off' from creating a notice.
-		return couponCode === '10off' ? false : value;
-	},
-	showRemoveCouponNotice: ( value, _, { couponCode } ) => {
-		return couponCode === '10off' ? false : value;
-	},
+  showRemoveCouponNotice: ( value, extensions, args ) => {
+    return args?.couponCode === '10off' ? false : value;
+  }
 } );
 ```
+
+| Before                                                                                                         | After                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| <img width="598" alt="image" src="https://github.com/woocommerce/woocommerce-blocks/assets/6242098/276a7ece-2189-4636-9f65-4c1fb925c57e"> | <img width="600" alt="image" src="https://github.com/woocommerce/woocommerce-blocks/assets/6242098/1c9cf2c3-83ac-4c0c-bb28-314235ec9247"> |
 
 ### Hide the "Remove item" link on a cart item
 
