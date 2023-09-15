@@ -78,7 +78,10 @@ export const registerBlockSingleProductTemplate = ( {
 			isBlockRegistered = false;
 		}
 
-		if ( ! isBlockRegistered ) {
+		if (
+			! isBlockRegistered &&
+			currentTemplateId?.includes( 'single-product' )
+		) {
 			if ( isVariationBlock ) {
 				registerBlockVariation( blockName, {
 					...blockSettings,
