@@ -89,6 +89,32 @@ Checkout:
 
 This slot renders inside the Checkout Pickup Options block in the Checkout block. It does not render in the Cart block.
 
+```ts
+/**
+ * External dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { registerPlugin } from '@wordpress/plugins';
+import { ExperimentalOrderLocalPickupPackages } from '@woocommerce/blocks-checkout';
+ 
+const render = () => {
+  return (
+    <ExperimentalOrderLocalPickupPackages>
+      <div>
+        {
+          __( 'By using our convenient local pickup option, you can come to our store and pick up your order. We will send you and email when your order is ready for pickup.', 'YOUR-TEXTDOMAIN' )
+        }
+      </div>
+    </ExperimentalOrderLocalPickupPackages>
+  );
+};
+ 
+registerPlugin( 'slot-and-fill-examples', {
+  render,
+  scope: 'woocommerce-checkout',
+} );
+```
+
 Checkout:
 
 ![Example of ExperimentalOrderLocalPickupPackages in the Checkout block](https://user-images.githubusercontent.com/5656702/222814945-a449d016-0621-4a70-b0f4-2ae1ce6487f1.png)
