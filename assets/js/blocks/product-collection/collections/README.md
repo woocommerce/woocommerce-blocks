@@ -24,3 +24,7 @@ Collections are in fact Variations and they are registred via Variation API. Hen
 Please be aware you can specify `isActive` function, but if not, the default one will compare the variation's `name` with `attributes.collection` value.
 
 As an example please follow `./new-arrivals.tsx`.
+
+## Registering Collection
+
+To register collection import it in `./index.ts` file and add to the `collections` array.
