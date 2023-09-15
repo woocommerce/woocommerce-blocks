@@ -130,6 +130,32 @@ Checkout:
 
 This slot renders below the `CouponCode` input.
 
+```ts
+/**
+ * External dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { registerPlugin } from '@wordpress/plugins';
+import { ExperimentalDiscountsMeta } from '@woocommerce/blocks-checkout';
+ 
+const render = () => {
+  return (
+    <ExperimentalDiscountsMeta>
+      <div class="wc-block-components-totals-wrapper">
+        {
+          __( 'You have 98683 coins to spend ...', 'YOUR-TEXTDOMAIN' )
+        }
+      </div>
+    </ExperimentalDiscountsMeta>
+  );
+};
+ 
+registerPlugin( 'slot-and-fill-examples', {
+  render,
+  scope: 'woocommerce-checkout',
+} );
+```
+
 Cart:
 
 ![Cart showing ExperimentalDiscountsMeta location](https://user-images.githubusercontent.com/5656702/122774218-ea27a880-d2a0-11eb-9450-11f119567f26.png)
