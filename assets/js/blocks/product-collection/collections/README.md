@@ -10,12 +10,12 @@ Collections are a variations of Product Collection block with the predefined att
 
 Collections are in fact Variations and they are registred via Variation API. Hence they should follow the BlockVariation type, providing at least:
 
-```javascript
+```typescript
 {
-	name: 'woocommerce-blocks/product-collection/new-arrivals',
-	title: 'New Arrivals',
-	icon: <Icon icon={ 'star-filled' } />,
-	description: 'Display a grid of your newest products.',
+	name: string;
+	title: string,
+	icon: Icon,
+	description: string,
 	attributes: ProductCollectionAttributes,
 	innerBlocks: InnerBlockTemplate[]
 }
