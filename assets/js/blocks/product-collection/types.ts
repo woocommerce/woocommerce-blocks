@@ -16,6 +16,7 @@ export interface ProductCollectionAttributes {
 	displayLayout: ProductCollectionDisplayLayout;
 	tagName: string;
 	convertedFromProducts: boolean;
+	collection?: string;
 }
 
 export interface ProductCollectionDisplayLayout {

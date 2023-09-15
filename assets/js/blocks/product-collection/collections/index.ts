@@ -12,7 +12,13 @@ const collections: BlockVariation[] = [ newArrivals ];
 
 const registerCollections = () => {
 	collections.forEach( ( collection ) => {
-		registerBlockVariation( 'woocommerce/product-collection', collection );
+		const isActive = ( blockAttrs ) =>
+			blockAttrs.collection === 'product-collection/new-arrivals';
+
+		registerBlockVariation( 'woocommerce/product-collection', {
+			isActive,
+			...collection,
+		} );
 	} );
 };
 
