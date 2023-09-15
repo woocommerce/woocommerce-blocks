@@ -46,7 +46,11 @@ test.describe( 'Shopper → Order Confirmation', () => {
 } );
 
 test.describe( 'Shopper → Order Confirmation → Local Pickup', () => {
-	test.beforeAll( async ( { admin } ) => {
+	test( 'Confirm shipping address section is hidden, but billing is visible', async ( {
+		pageObject,
+		frontendUtils,
+		admin,
+	} ) => {
 		await admin.visitAdminPage(
 			'admin.php?page=wc-settings&tab=shipping&section=pickup_location'
 		);
@@ -69,12 +73,6 @@ test.describe( 'Shopper → Order Confirmation → Local Pickup', () => {
 		await admin.page
 			.getByRole( 'button', { name: 'Dismiss this notice' } )
 			.click();
-	} );
-
-	test( 'Confirm shipping address section is hidden, but billing is visible', async ( {
-		pageObject,
-		frontendUtils,
-	} ) => {
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
@@ -96,7 +94,7 @@ test.describe( 'Shopper → Order Confirmation → Local Pickup', () => {
 test.describe( 'Shopper → Order Confirmation → Downloadable Products', () => {
 	let confirmationPageUrl: string;
 
-	test.beforeAll( async ( { frontendUtils, pageObject } ) => {
+	test.beforeEach( async ( { frontendUtils, pageObject } ) => {
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_VIRTUAL_PRODUCT_NAME );
