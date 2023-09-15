@@ -114,7 +114,7 @@ class ProductGalleryPager extends AbstractBlock {
 				);
 				$p->set_attribute(
 					'data-wc-on--click',
-					'actions.woocommerce.handleClick'
+					'actions.woocommerce.handleSelectImage'
 				);
 				$p->set_attribute(
 					'data-wc-class--is-active',

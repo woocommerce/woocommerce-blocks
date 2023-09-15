@@ -72,6 +72,9 @@ interactivityApiStore( {
 						context.woocommerce.imageId;
 				},
 			},
+			handleSelectImage: ( { context }: Store ) => {
+				context.woocommerce.selectedImage = context.woocommerce.imageId;
+			},
 		},
 	},
 } );
