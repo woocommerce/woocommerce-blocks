@@ -16,6 +16,7 @@ import { isEmpty } from '@woocommerce/types';
  */
 import { ProductCollectionQuery } from '../../types';
 import { DEFAULT_QUERY } from '../../constants';
+import { getDefaultValueOfInheritQueryFromTemplate } from '../../utils';
 
 const blockName = 'woocommerce/product-collection';
 
@@ -25,7 +26,12 @@ const buildQuery = (
 ) => {
 	// If blockQuery is empty, it means it's the initial pattern/collection choice
 	// and we should use DEFAULT_QUERY as a base for query.
-	const baseQuery = isEmpty( blockQuery ) ? DEFAULT_QUERY : blockQuery;
+	const baseQuery = isEmpty( blockQuery )
+		? {
+				...DEFAULT_QUERY,
+				inherit: getDefaultValueOfInheritQueryFromTemplate(),
+		  }
+		: blockQuery;
 	const { perPage, offset, pages } = patternQuery;
 
 	return {
