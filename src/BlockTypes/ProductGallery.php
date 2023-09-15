@@ -97,7 +97,7 @@ class ProductGallery extends AbstractBlock {
 
 		$post_id = $block->context['postId'] ?? '';
 		$product = wc_get_product( $post_id );
-		$p = new \WP_HTML_Tag_Processor( $html );
+		$p       = new \WP_HTML_Tag_Processor( $html );
 
 		if ( $p->next_tag() ) {
 			$p->set_attribute( 'data-wc-interactive', true );
