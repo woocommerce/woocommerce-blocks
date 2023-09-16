@@ -10,6 +10,7 @@ import {
 	FREE_SHIPPING_NAME,
 	FREE_SHIPPING_PRICE,
 	SIMPLE_PHYSICAL_PRODUCT_NAME,
+	SIMPLE_VIRTUAL_PRODUCT_NAME,
 } from './constants';
 import { CheckoutPage } from './checkout.page';
 
@@ -65,6 +66,7 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
+		await frontendUtils.addToCart( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await frontendUtils.goToCheckout();
 		await expect(
 			await pageObject.selectAndVerifyShippingOption(
@@ -74,6 +76,30 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		).toBe( true );
 		await pageObject.fillInCheckoutWithTestData( testData );
 		await pageObject.placeOrder();
+
+		// Confirm Order Confirmation Block sections are visible when logged in
+		const statusSection = page.locator(
+			'[data-block-name="woocommerce/order-confirmation-status"]'
+		);
+		await expect( statusSection ).toBeVisible();
+		const summarySection = page.locator(
+			'[data-block-name="woocommerce/order-confirmation-summary"]'
+		);
+		await expect( summarySection ).toBeVisible();
+		const totalsSection = page.locator(
+			'[data-block-name="woocommerce/order-confirmation-totals"]'
+		);
+		await expect( totalsSection ).toBeVisible();
+		const shippingAddressSection = page.locator(
+			'[data-block-name="woocommerce/order-confirmation-shipping-address"]'
+		);
+		await expect( shippingAddressSection ).toBeVisible();
+		const billingAddressSection = page.locator(
+			'[data-block-name="woocommerce/order-confirmation-billing-address"]'
+		);
+		await expect( billingAddressSection ).toBeVisible();
+
+		// Confirm order data are visible and correct
 		await expect(
 			page.getByText( 'Thank you. Your order has been received.' )
 		).toBeVisible();
@@ -81,6 +107,9 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await expect( page.getByText( FREE_SHIPPING_NAME ) ).toBeVisible();
 		await expect(
 			page.getByText( SIMPLE_PHYSICAL_PRODUCT_NAME )
+		).toBeVisible();
+		await expect(
+			page.getByText( SIMPLE_VIRTUAL_PRODUCT_NAME )
 		).toBeVisible();
 		await expect(
 			page
@@ -96,6 +125,26 @@ test.describe( 'Shopper → Order Confirmation', () => {
 				)
 				.nth( 1 )
 		).toBeVisible();
+
+		// Store order received URL to use later
+		const orderReceivedURL = page.url();
+
+		// Confirm downloads section is visible when logged in
+		// Open order we created
+		const orderId = pageObject.getOrderId();
+		await page.goto( `wp-admin/post.php?post=${ orderId }&action=edit` );
+
+		// Update order status to Processing
+		await page.locator( '#order_status' ).selectOption( 'wc-processing' );
+		await page.locator( 'button.save_order' ).click();
+
+		// Go back to order received page
+		await page.goto( orderReceivedURL );
+		// Confirm downloads section is visible
+		const DownloadSection = page.locator(
+			'[data-block-name="woocommerce/order-confirmation-downloads"]'
+		);
+		await expect( DownloadSection ).toBeVisible();
 	} );
 } );
 

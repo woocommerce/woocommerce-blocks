@@ -245,4 +245,19 @@ export class CheckoutPage {
 			this.page.locator( '.wc-block-order-confirmation-billing-wrapper' )
 		).toBeVisible();
 	}
+
+	getOrderId() {
+		// Get the current URL
+		const url = this.page.url();
+		const urlObject = new URL( url );
+
+		// Extract orderId from the pathname
+		const pathnameSegments = urlObject.pathname.split( '/' );
+		const orderId =
+			pathnameSegments[
+				pathnameSegments.indexOf( 'order-received' ) + 1
+			];
+
+		return orderId;
+	}
 }
