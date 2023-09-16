@@ -47,13 +47,11 @@ const test = base.extend< { pageObject: CheckoutPage } >( {
 } );
 
 test.describe( 'Shopper → Order Confirmation', () => {
-	test.beforeAll( async ( { page, editorUtils } ) => {
-		// Set the site to use the order confirmation template.
-		await page.goto( '/wp-admin/site-editor.php' );
-		await page.getByRole( 'button', { name: /Templates/i } ).click();
-		await page
-			.getByRole( 'button', { name: /Order confirmation/i } )
-			.click();
+	test.beforeEach( async ( { admin, editorUtils } ) => {
+		await admin.visitSiteEditor( {
+			postId: 'woocommerce/woocommerce//order-confirmation',
+			postType: 'wp_template',
+		} );
 		await editorUtils.enterEditMode();
 		await editorUtils.closeWelcomeGuideModal();
 		await editorUtils.transformIntoBlocks();

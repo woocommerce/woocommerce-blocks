@@ -286,14 +286,34 @@ export class EditorUtils {
 				.click();
 
 			// save changes
-			await this.page
-				.getByRole( 'region', { name: 'Editor top bar' } )
-				.getByRole( 'button', { name: 'Save' } )
-				.click();
-			await this.page
-				.getByRole( 'region', { name: 'Save panel' } )
-				.getByRole( 'button', { name: 'Save' } )
-				.click();
+			this.saveSiteEditorEntities();
 		}
+	}
+
+	// This method is the same as the one in @wordpress/e2e-test-utils-playwright. But for some reason
+	// it doesn't work as expected when imported from there. For its first run we get the following error:
+	// Error: locator.waitFor: Target closed
+	async saveSiteEditorEntities() {
+		const editorTopBar = this.page.getByRole( 'region', {
+			name: 'Editor top bar',
+		} );
+		const savePanel = this.page.getByRole( 'region', {
+			name: 'Save panel',
+		} );
+
+		// First Save button in the top bar.
+		await editorTopBar
+			.getByRole( 'button', { name: 'Save', exact: true } )
+			.click();
+
+		// Second Save button in the entities panel.
+		await savePanel
+			.getByRole( 'button', { name: 'Save', exact: true } )
+			.click();
+
+		await this.page
+			.getByRole( 'button', { name: 'Dismiss this notice' } )
+			.getByText( 'Site updated.' )
+			.waitFor();
 	}
 }
