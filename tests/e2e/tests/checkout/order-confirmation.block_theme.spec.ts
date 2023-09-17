@@ -143,6 +143,60 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await newContext.close();
 		await browser.close();
 	} );
+
+	test( 'Place order as guest user', async ( {
+		frontendUtils,
+		pageObject,
+		page,
+	} ) => {
+		await frontendUtils.logout();
+		await frontendUtils.emptyCart();
+		await frontendUtils.goToShop();
+		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
+		await frontendUtils.goToCheckout();
+		await expect(
+			await pageObject.selectAndVerifyShippingOption(
+				FREE_SHIPPING_NAME,
+				FREE_SHIPPING_PRICE
+			)
+		).toBe( true );
+		await pageObject.fillInCheckoutWithTestData( testData );
+		await pageObject.placeOrder();
+
+		// confirm details are limited
+		await expect(
+			page.getByText( 'Thank you. Your order has been received.' )
+		).toBeVisible();
+		await expect(
+			page.getByRole( 'listitem' ).filter( { hasText: 'Email' } )
+		).toBeHidden();
+		await expect(
+			page.getByRole( 'listitem' ).filter( { hasText: 'Payment method' } )
+		).toBeHidden();
+		await expect(
+			page.locator(
+				'[data-block-name="woocommerce/order-confirmation-billing-address"]'
+			)
+		).toBeHidden();
+		await expect(
+			page.locator(
+				'[data-block-name="woocommerce/order-confirmation-totals"]'
+			)
+		).toBeVisible();
+		await expect(
+			page.locator(
+				'[data-block-name="woocommerce/order-confirmation-summary"]'
+			)
+		).toBeVisible();
+
+		const { postcode, city, state, country } = testData;
+
+		await expect(
+			page.getByText(
+				`Shipping to ${ postcode }, ${ city }, ${ state }, ${ country }`
+			)
+		).toBeVisible();
+	} );
 } );
 
 test.describe( 'Shopper → Order Confirmation → Local Pickup', () => {
