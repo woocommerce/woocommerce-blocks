@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
+import { firefox } from '@playwright/test';
 
 /**
  * Internal dependencies
@@ -27,17 +28,6 @@ const testData = {
 	phone: '01234567890',
 };
 
-const {
-	firstname,
-	lastname,
-	addressfirstline,
-	addresssecondline,
-	city,
-	postcode,
-	email,
-	phone,
-} = testData;
-
 const test = base.extend< { pageObject: CheckoutPage } >( {
 	pageObject: async ( { page }, use ) => {
 		const pageObject = new CheckoutPage( {
@@ -58,7 +48,7 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await editorUtils.transformIntoBlocks();
 	} );
 
-	test( 'should be rendered on the frontend side', async ( {
+	test( 'Place order as a logged in user', async ( {
 		frontendUtils,
 		pageObject,
 		page,
@@ -78,53 +68,8 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await pageObject.placeOrder();
 
 		// Confirm Order Confirmation Block sections are visible when logged in
-		const statusSection = page.locator(
-			'[data-block-name="woocommerce/order-confirmation-status"]'
-		);
-		await expect( statusSection ).toBeVisible();
-		const summarySection = page.locator(
-			'[data-block-name="woocommerce/order-confirmation-summary"]'
-		);
-		await expect( summarySection ).toBeVisible();
-		const totalsSection = page.locator(
-			'[data-block-name="woocommerce/order-confirmation-totals"]'
-		);
-		await expect( totalsSection ).toBeVisible();
-		const shippingAddressSection = page.locator(
-			'[data-block-name="woocommerce/order-confirmation-shipping-address"]'
-		);
-		await expect( shippingAddressSection ).toBeVisible();
-		const billingAddressSection = page.locator(
-			'[data-block-name="woocommerce/order-confirmation-billing-address"]'
-		);
-		await expect( billingAddressSection ).toBeVisible();
-
-		// Confirm order data are visible and correct
-		await expect(
-			page.getByText( 'Thank you. Your order has been received.' )
-		).toBeVisible();
-		await expect( page.getByText( email ) ).toBeVisible();
-		await expect( page.getByText( FREE_SHIPPING_NAME ) ).toBeVisible();
-		await expect(
-			page.getByText( SIMPLE_PHYSICAL_PRODUCT_NAME )
-		).toBeVisible();
-		await expect(
-			page.getByText( SIMPLE_VIRTUAL_PRODUCT_NAME )
-		).toBeVisible();
-		await expect(
-			page
-				.getByText(
-					`${ firstname } ${ lastname }${ addressfirstline }${ addresssecondline }${ city }, NY ${ postcode }${ phone }`
-				)
-				.first()
-		).toBeVisible();
-		await expect(
-			page
-				.getByText(
-					`${ firstname } ${ lastname }${ addressfirstline }${ addresssecondline }${ city }, NY ${ postcode }${ phone }`
-				)
-				.nth( 1 )
-		).toBeVisible();
+		// order data are visible and correct
+		await pageObject.verifyOrderConfirmationDetails( page );
 
 		// Store order received URL to use later
 		const orderReceivedURL = page.url();
@@ -133,11 +78,9 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		// Open order we created
 		const orderId = pageObject.getOrderId();
 		await page.goto( `wp-admin/post.php?post=${ orderId }&action=edit` );
-
 		// Update order status to Processing
 		await page.locator( '#order_status' ).selectOption( 'wc-processing' );
 		await page.locator( 'button.save_order' ).click();
-
 		// Go back to order received page
 		await page.goto( orderReceivedURL );
 		// Confirm downloads section is visible
@@ -145,6 +88,60 @@ test.describe( 'Shopper → Order Confirmation', () => {
 			'[data-block-name="woocommerce/order-confirmation-downloads"]'
 		);
 		await expect( DownloadSection ).toBeVisible();
+
+		// Access page without order key (test visibility of default message, no order details)
+		const urlObj = new URL( orderReceivedURL );
+		urlObj.searchParams.delete( 'key' );
+		await page.goto( urlObj.toString() );
+		// Confirm default message is visible
+		await expect(
+			page.getByText(
+				'Great news! Your order has been received, and a confirmation will be sent to your email address. Have an account with us?'
+			)
+		).toBeVisible();
+		// Confirm order details are not visible
+		await pageObject.verifyOrderConfirmationDetails( page, false );
+
+		// Access page without order ID or key (test visibility of default message)
+		await page.goto(
+			'http://dev-store.local/checkout-block/order-received'
+		);
+		// Confirm default message is visible
+		await expect(
+			page.getByText(
+				"If you've just placed an order, give your email a quick check for the confirmation. Have an account with us?"
+			)
+		).toBeVisible();
+		// Confirm order details are not visible
+		await pageObject.verifyOrderConfirmationDetails( page, false );
+
+		// Confirm details are hidden when logged out
+		await frontendUtils.logout();
+		await page.goto( orderReceivedURL );
+		await expect(
+			page.getByText(
+				'Great news! Your order has been received, and a confirmation will be sent to your email address. Have an account with us?'
+			)
+		).toBeVisible();
+		await pageObject.verifyOrderConfirmationDetails( page, false );
+
+		// Confirm data is hidden without valid session/key
+		const browser = await firefox.launch();
+		// Starting a new browser session
+		const newContext = await browser.newContext();
+		const newPage = await newContext.newPage();
+		await newPage.goto( orderReceivedURL );
+		// Confirm default message is visible
+		await expect(
+			newPage.getByText(
+				'Great news! Your order has been received, and a confirmation will be sent to your email address. Have an account with us?'
+			)
+		).toBeVisible();
+		// Confirm order details are not visible
+		await pageObject.verifyOrderConfirmationDetails( newPage, false );
+		// Gracefully close up everything
+		await newContext.close();
+		await browser.close();
 	} );
 } );
 
