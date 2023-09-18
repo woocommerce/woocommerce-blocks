@@ -38,10 +38,6 @@ const test = base.extend< { pageObject: CheckoutPage } >( {
 } );
 
 test.describe( 'Shopper → Order Confirmation', () => {
-	test.afterAll( async ( { frontendUtils } ) => {
-		await frontendUtils.login( true );
-	} );
-
 	test.beforeEach( async ( { admin, editorUtils } ) => {
 		await admin.visitSiteEditor( {
 			postId: 'woocommerce/woocommerce//order-confirmation',
@@ -146,6 +142,8 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		// Gracefully close up everything
 		await newContext.close();
 		await browser.close();
+		// Teardown
+		await frontendUtils.login( true );
 	} );
 
 	test( 'Place order as guest user', async ( {
@@ -200,6 +198,8 @@ test.describe( 'Shopper → Order Confirmation', () => {
 				`Shipping to ${ postcode }, ${ city }, ${ state }, ${ country }`
 			)
 		).toBeVisible();
+		// Teardown
+		await frontendUtils.login( true );
 	} );
 } );
 
