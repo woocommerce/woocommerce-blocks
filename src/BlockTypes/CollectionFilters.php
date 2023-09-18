@@ -27,14 +27,6 @@ final class CollectionFilters extends AbstractBlock {
 		'calculate_rating_counts'       => 'woocommerce/collection-rating-filter',
 	);
 
-	protected $product_params_mapping = array(
-		'perPage'                => 'per_page',
-		'pages'                  => 'page',
-		'orderBy'                => 'orderby',
-		'parents'                => 'parent',
-		'woocommerceStockStatus' => 'stock_status',
-	);
-
 	/**
 	 * Cache the current response from the API.
 	 *
@@ -175,7 +167,7 @@ final class CollectionFilters extends AbstractBlock {
 			return array();
 		}
 
-		$products_params = $this->get_products_params_from_query( $block->context['query'] );
+		$products_params = $this->get_formatted_products_params( $block->context['query'] );
 
 		$response = Package::container()->get( Hydration::class )->get_rest_api_response_data(
 			add_query_arg(
@@ -212,13 +204,48 @@ final class CollectionFilters extends AbstractBlock {
 		return $results;
 	}
 
-	protected function get_products_params_from_query( $query ) {
+	/**
+	 * Get formatted products params for ProductCollectionData route from the
+	 * query context.
+	 *
+	 * @param array $query The query context.
+	 * @return array
+	 */
+	private function get_formatted_products_params( $query ) {
 		$params = array();
 
 		if ( empty( $query['isProductCollectionBlock'] ) ) {
 			return $params;
 		}
 
+		// Params that doesn't require additional conversion.
+		$params_mapping = array(
+			'exclude'                       => 'exclude',
+			'offset'                        => 'offset',
+			'order'                         => 'order',
+			'orderBy'                       => 'orderby',
+			'pages'                         => 'page',
+			'parents'                       => 'parent',
+			'perPage'                       => 'per_page',
+			'search'                        => 'search',
+			'woocommerceStockStatus'        => 'stock_status',
+			'woocommerceOnSale'             => 'on_sale',
+			'woocommerceHandPickedProducts' => 'include',
+		);
+
+		foreach ( $query as $key => $value ) {
+			if ( isset( $params_mapping[ $key ] ) ) {
+				$params[ $params_mapping[ $key ] ] = $value;
+			}
+		}
+
+		/**
+		* Remain params that need additional conversion.
+		* - taxQuery
+		* - woocommerceAttributes
+		*/
+
+		// @todo handle other product taxonomies
 		if ( ! empty( $query['taxQuery'] ) ) {
 			foreach ( $query['taxQuery'] as $taxonomy => $value ) {
 				if ( 'product_cat' === $taxonomy ) {
@@ -228,20 +255,20 @@ final class CollectionFilters extends AbstractBlock {
 					$params['tag'] = implode( ',', $value );
 				}
 			}
-
-			// @todo handle other product taxonomies
-			unset( $query['taxQuery'] );
 		}
 
-		foreach ( $query as $key => $value ) {
-			if ( isset( $this->product_params_mapping[ $key ] ) ) {
-				$params[ $this->product_params_mapping[ $key ] ] = $value;
-			} else {
-				$params[ $key ] = $value;
+		if ( ! empty( $query['woocommerceAttributes'] ) ) {
+			foreach ( $query['woocommerceAttributes'] as $attribute ) {
+				$params['attributes'][] = array(
+					'attribute' => $attribute['taxonomy'],
+					'term_id'   => $attribute['termId'],
+				);
 			}
 		}
 
-		if ( ! isset( $params['catalog_visibility'] ) ) {
+		if ( is_search() ) {
+			$params['catalog_visibility'] = 'catalog';
+		} else {
 			$params['catalog_visibility'] = 'visible';
 		}
 
