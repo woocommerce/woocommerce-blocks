@@ -64,9 +64,9 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		$content = $processor->get_updated_html();
 
 		return strtr(
-			'<div class="wp-block-woocommerce-product-gallery-large-image">
+			'<div class="wc-block-product-gallery-large-image wp-block-woocommerce-product-gallery-large-image">
 				{image}
-				<div class="wp-block-woocommerce-product-gallery-large-image__content">
+				<div class="wc-block-product-gallery-large-image__content">
 					{content}
 				</div>
 			</div>',
@@ -76,7 +76,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 					'full',
 					false,
 					array(
-						'class' => 'wp-block-woocommerce-product-gallery-large-image__image',
+						'class' => 'wc-block-product-gallery-large-image__image',
 					)
 				),
 				'{content}' => $content,

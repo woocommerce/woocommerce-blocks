@@ -24,7 +24,9 @@ interface EditProps
 }
 
 export const Edit = ( { attributes, setAttributes, context }: EditProps ) => {
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( {
+		className: 'wc-block-product-gallery-thumbnails',
+	} );
 
 	const Placeholder = () => {
 		return context.thumbnailsPosition !== ThumbnailsPosition.OFF ? (

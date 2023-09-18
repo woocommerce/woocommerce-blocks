@@ -5,13 +5,13 @@
 		width: 100%;
 	}
 
-	.wc-block-editor-product-gallery_large-image-next-previous--outside-image & img {
+	.wc-block-editor-product-gallery-large-image-next-previous--outside-image & img {
 		max-width: calc(100% - 60px);
 	}
 }
 
 .wc-block-product-gallery-large-image__inner-blocks {
-	.wc-block-editor-product-gallery_large-image-next-previous--outside-image & > * {
+	.wc-block-editor-product-gallery-large-image-next-previous--outside-image & > * {
 		margin-left: 30px;
 		margin-right: 30px;
 	}

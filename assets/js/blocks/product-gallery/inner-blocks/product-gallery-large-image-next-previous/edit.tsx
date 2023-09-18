@@ -42,6 +42,10 @@ export const Edit = ( {
 				attributes.layout?.verticalAlignment
 			),
 		},
+		className: classNames(
+			'wc-block-editor-product-gallery-large-image-next-previous',
+			'wc-block-product-gallery-large-image-next-previous'
+		),
 	} );
 
 	const previousNextImage = useMemo( () => {

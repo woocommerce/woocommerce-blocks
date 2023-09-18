@@ -139,7 +139,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 		$position_class  = 'wc-block-product-gallery-large-image-next-previous--' . $this->get_icons( $context )['class'];
 
 		return strtr(
-			'<div class="wp-block-woocommerce-product-gallery-large-image-next-previous {alignment_class}">
+			'<div class="wc-block-product-gallery-large-image-next-previous wp-block-woocommerce-product-gallery-large-image-next-previous {alignment_class}">
 				<div class="wc-block-product-gallery-large-image-next-previous-container {position_class}">
 					{prev_button}
 					{next_button}

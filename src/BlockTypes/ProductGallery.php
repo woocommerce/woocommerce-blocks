@@ -21,9 +21,8 @@ class ProductGallery extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$classname = $attributes['className'] ?? '';
-
-		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
+		$classname          = $attributes['className'] ?? '';
+		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce wc-block-product-gallery %1$s', $classname ) ) ) );
 		$html               = sprintf(
 			'<div data-wc-interactive %1$s>
 				%2$s

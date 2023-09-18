@@ -1,10 +1,9 @@
-$gallery: ".wp-block-woocommerce-product-gallery";
+$gallery: ".wc-block-product-gallery";
 $large-image: "#{$gallery}-large-image";
 $thumbnails: ".wc-block-components-product-gallery-thumbnails";
-$wp-next-previous: "#{$large-image}-next-previous";
-$wc-next-previous: ".wc-block-product-gallery-large-image-next-previous";
-$next-previous-left-off: "#{$wc-next-previous}-left--off";
-$next-previous-right-off: "#{$wc-next-previous}-right--off";
+$next-previous: "#{$large-image}-next-previous";
+$next-previous-left-off: "#{$next-previous}-left--off";
+$next-previous-right-off: "#{$next-previous}-right--off";
 $gallery-next-previous-outside-image: "#{$gallery}[data-next-previous-buttons-position='outsideTheImage']";
 
 $outside-image-offset: 30px;
@@ -44,7 +43,7 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 }
 
 // Next/Previous Buttons
-#{$wp-next-previous} {
+#{$next-previous} {
 	display: flex;
 	position: absolute;
 	flex-direction: row;
@@ -88,17 +87,17 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 // Next/Previous Buttons Outside the Image Settings
 #{$gallery-next-previous-outside-image} .wc-block-product-gallery-large-image-next-previous-left--outside-image {
 	bottom: 0;
-	left: -40px;
+	left: 0;
 	position: absolute;
 }
 
 #{$gallery-next-previous-outside-image} .wc-block-product-gallery-large-image-next-previous-right--outside-image {
 	bottom: 0;
-	right: -40px;
+	right: 0;
 	position: absolute;
 }
 
-#{$gallery-next-previous-outside-image} #{$large-image} #{$wp-next-previous} {
+#{$gallery-next-previous-outside-image} #{$large-image} #{$next-previous} {
 	margin-right: 0;
 	margin-left: 0;
 }
@@ -115,22 +114,17 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		margin-top: 15px;
 		margin-bottom: 15px;
 	}
-
-	// Restrict the width of the Next/Previous buttons container when they are outside the image.
-	#{$gallery-next-previous-outside-image} & {
-		max-width: $outside-image-max-width;
-	}
 }
 
 // Pager
-.wp-block-woocommerce-product-gallery-pager__pager {
+.wc-block-product-gallery-pager__pager {
 	display: flex;
 	justify-content: center;
 	list-style: none;
 	gap: $gap-small;
 }
 
-.wp-block-woocommerce-product-gallery__pager-item {
+.wc-block-product-gallery-pager__item {
 	@include font-size(regular);
 	color: $gray-600;
 

@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -15,8 +16,11 @@ export const Save = ( {
 	attributes: ProductGalleryAttributes;
 } ): JSX.Element => {
 	const blockProps = useBlockProps.save( {
-		className: getClassNameByNextPreviousButtonsPosition(
-			attributes.nextPreviousButtonsPosition
+		className: classnames(
+			'wc-block-product-gallery',
+			getClassNameByNextPreviousButtonsPosition(
+				attributes.nextPreviousButtonsPosition
+			)
 		),
 	} );
 	const innerBlocksProps = useInnerBlocksProps.save( blockProps );

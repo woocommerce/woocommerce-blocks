@@ -12,7 +12,7 @@ const getInnerBlocksTemplate = () => {
 
 const Placeholder = memo( () => {
 	return (
-		<div className="wc-block-editor-product-gallery-large-image">
+		<div className="wc-block-product-gallery-large-image wc-block-editor-product-gallery-large-image">
 			<img
 				src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
 				alt="Placeholder"
@@ -65,8 +65,9 @@ export const Edit = ( {
 
 	const blockProps = useBlockProps( {
 		className: classNames(
-			'wc-block-editor-product-gallery_large-image',
-			`wc-block-editor-product-gallery_large-image-next-previous--${ previousNextImage?.className }`
+			'wc-block-product-gallery-large-image',
+			'wc-block-editor-product-gallery-large-image',
+			`wc-block-editor-product-gallery-large-image-next-previous--${ previousNextImage?.className }`
 		),
 	} );
 
