@@ -209,8 +209,6 @@ class BlockPatterns {
 	 *
 	 * @param string $option The option name.
 	 * @param string $value The option value.
-	 *
-	 * @return bool|int|string|void|\WP_Error
 	 */
 	public function schedule_patterns_content_update( $option, $value ) {
 		if ( ! class_exists( 'WooCommerce' ) ) {
