@@ -9,6 +9,7 @@ import {
 } from '@wordpress/block-editor';
 import { BlockEditProps, InnerBlockTemplate } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -61,6 +62,7 @@ const TEMPLATE: InnerBlockTemplate[] = [
 											},
 										},
 									},
+									lock: { move: true },
 								},
 							],
 							[
@@ -70,6 +72,7 @@ const TEMPLATE: InnerBlockTemplate[] = [
 										type: 'flex',
 										verticalAlignment: 'bottom',
 									},
+									lock: { move: true, remove: true },
 								},
 							],
 						],
@@ -84,12 +87,39 @@ const TEMPLATE: InnerBlockTemplate[] = [
 	],
 ];
 
+const setMode = (
+	currentTemplateId: string,
+	templateType: string,
+	setAttributes: ( attrs: Partial< ProductGalleryAttributes > ) => void
+) => {
+	if (
+		templateType === 'wp_template_part' &&
+		currentTemplateId.includes( 'product-gallery' )
+	) {
+		setAttributes( {
+			mode: 'full',
+		} );
+	}
+};
+
 export const Edit = ( {
 	clientId,
 	attributes,
 	setAttributes,
 }: BlockEditProps< ProductGalleryAttributes > ) => {
 	const blockProps = useBlockProps();
+
+	const { currentTemplateId, templateType } = useSelect(
+		( select ) => ( {
+			currentTemplateId: select( 'core/edit-site' ).getEditedPostId(),
+			templateType: select( 'core/edit-site' ).getEditedPostType(),
+		} ),
+		[]
+	);
+
+	useEffect( () => {
+		setMode( currentTemplateId, templateType, setAttributes );
+	}, [ currentTemplateId, setAttributes, templateType ] );
 
 	useEffect( () => {
 		setAttributes( {
