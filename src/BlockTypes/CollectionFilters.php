@@ -239,21 +239,17 @@ final class CollectionFilters extends AbstractBlock {
 			}
 		}
 
-		/**
-		* Remain params that need additional conversion.
-		* - taxQuery
-		* - woocommerceAttributes
-		*/
-
-		// @todo handle other product taxonomies
 		if ( ! empty( $query['taxQuery'] ) ) {
 			foreach ( $query['taxQuery'] as $taxonomy => $value ) {
 				if ( 'product_cat' === $taxonomy ) {
-					$params['category'] = implode( ',', $value );
+					$key = 'category';
+				} elseif ( 'product_tag' === $taxonomy ) {
+					$key = 'tag';
+				} else {
+					$key = '_unstable_tax_' . $taxonomy;
 				}
-				if ( 'product_tag' === $taxonomy ) {
-					$params['tag'] = implode( ',', $value );
-				}
+
+				$params[ $key ] = implode( ',', $value );
 			}
 		}
 
