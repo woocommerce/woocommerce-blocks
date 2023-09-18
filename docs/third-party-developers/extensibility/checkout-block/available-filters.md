@@ -106,7 +106,7 @@ registerCheckoutFilters( 'example-extension', {
 
 | Before                                                                                                                                   | After                                                                                                                                    |
 | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268245369-6cd0aad9-4a7e-45e1-915b-3294db101246.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267218100-6f427b42-f985-4724-a537-8f83d9eff84a.png"> |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268705467-6059c77a-6375-4087-a3e5-485d7077ac54.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267219896-58ed0551-998b-4309-bc22-3f7be84565d6.png"> |
 
 ### subtotalPriceFormat
 
