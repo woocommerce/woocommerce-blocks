@@ -42,6 +42,72 @@ The following filters are available for line items:
 
 Each of these filters has the following arguments passed to it: `{ context: 'cart', cartItem: CartItem }` ([CartItem](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L113))
 
+### itemName
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust item name of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  itemName: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return '🪴 ' + value + ' 🪴';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268245369-6cd0aad9-4a7e-45e1-915b-3294db101246.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267216388-08bc3af0-6290-4ec4-b7f5-5ee21d66ed7f.png"> |
+
+### subtotalPriceFormat
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust subtotal price format of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  subtotalPriceFormat: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return '<price/> per item';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268294925-a014c8d7-4c26-4a0a-8f4c-f74a8240bbb4.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267226443-67f089bd-95d0-49f8-81f4-df2fec1a3d69.png"> |
+
+### showRemoveItemLink
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Show remove item link of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  showRemoveItemLink: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return false;
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268295858-ec76f525-e2cf-468c-9634-ae9e84e5aa48.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268295935-3171cd92-33f1-4182-b875-bc7e422771a0.png"> |
+
 ## Order Summary Items
 
 In the Checkout block, there is a sidebar that contains a summary of what the customer is about to purchase. There are some filters available to modify the way certain elements are displayed on each item. The sale badges are not shown here, so those filters are not applied in the Order Summary.
@@ -80,6 +146,78 @@ registerCheckoutFilters( 'example-extension', {
 | Before                                                                                                                                   | After                                                                                                                                    |
 | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | <img width="789" alt="image" src="https://user-images.githubusercontent.com/6242098/268092313-d981f064-f274-4175-8291-1671ed55535b.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267265204-7afbbe1a-de1a-4696-a2d9-881de3016060.png"> |
+
+### itemName
+
+A code snippet to adjust the item name of the order summary items can be found below:
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust item name of the order summary items.
+registerCheckoutFilters( 'example-extension', {
+  itemName: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Summary context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'summary' ) {
+      return value;
+    }
+    return '🪴 ' + value + ' 🪴';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/6242098/268092313-d981f064-f274-4175-8291-1671ed55535b.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267250835-6f4dade5-b4fe-4e55-a639-61b85f41ef28.png"> |
+
+### cartItemPrice
+
+A code snippet to adjust the cart item price of the order summary items can be found below:
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust cart item price of the order summary items.
+registerCheckoutFilters( 'example-extension', {
+  cartItemPrice: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Summary context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'summary' ) {
+      return value;
+    }
+    return '<price/> for all items';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/6242098/268092313-d981f064-f274-4175-8291-1671ed55535b.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267262765-a0d9e26c-51c0-4101-ae80-b626f8dd1f00.png"> |
+
+### cartItemClass
+
+A code snippet to adjust the cart item class of the order summary items can be found below:
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust cart item class of the order summary items.
+registerCheckoutFilters( 'example-extension', {
+  cartItemClass: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Summary context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'summary' ) {
+      return value;
+    }
+    return 'my-custom-class';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/6242098/268092313-d981f064-f274-4175-8291-1671ed55535b.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267264072-cd665949-ef82-497d-8c88-7391082dc431.png"> |
 
 ## Totals footer item (in Mini-Cart, Cart and Checkout)
 
@@ -135,6 +273,32 @@ CartCoupon {
 }
 ```
 
+A code snippet to replace coupon label for matching coupon(s) can be found below:
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Replace coupon label for matching coupon(s).
+registerCheckoutFilters( 'example-extension', {
+    coupons: ( coupons ) => {
+        return coupons.map( ( coupon ) => {
+            // Regex to match autocoupon then unlimited undersores and numbers
+            if ( ! coupon.label.match( /autocoupon(?:_\d+)+/ ) ) {
+                return coupon;
+            }
+            return {
+                ...coupon,
+                label: 'Automatic coupon',
+            };
+        } );
+    }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/3323310/267266272-bb6ff77e-7c40-46f7-8d66-a7825ea78fff.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267266261-029f993a-cf32-4f9b-abb5-af05df2477cd.png"> |
+
 ## Proceed to Checkout Button Label
 
 The Cart block contains a button which is labelled 'Proceed to Checkout' by default. It can be changed using the following filter.
@@ -178,6 +342,32 @@ The Cart block contains a button which is labelled 'Proceed to Checkout' and lin
 | Filter name                   | Description                                                 | Return type |
 | ----------------------------- | ----------------------------------------------------------- | ----------- |
 | `proceedToCheckoutButtonLink` | The URL that the Proceed to Checkout button should link to. | `string`    |
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust the proceed to checkout button link.
+registerCheckoutFilters( 'example-extension', {
+  proceedToCheckoutButtonLink: ( value, extensions, args ) => {
+    if ( ! args?.cart.items ) {
+      return value;
+    }
+ 
+    const isSunglassesInCart = args?.cart.items.some(
+      ( item ) => item.name === 'Sunglasses'
+    );
+ 
+    // Return the default value if sunglasses is not in the cart.
+    if ( ! isSunglassesInCart ) {
+      return value;
+    }
+ 
+    return '/sunglasses-checkout';
+  }
+} );
+```
+
+<img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267270560-2964d529-771d-4d00-9fff-646b15d59cbf.png">
 
 ## Place Order Button Label
 
