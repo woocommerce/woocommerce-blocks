@@ -286,7 +286,7 @@ export class EditorUtils {
 				.click();
 
 			// save changes
-			this.saveSiteEditorEntities();
+			await this.saveSiteEditorEntities();
 		}
 	}
 
