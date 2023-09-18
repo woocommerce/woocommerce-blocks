@@ -38,6 +38,10 @@ const test = base.extend< { pageObject: CheckoutPage } >( {
 } );
 
 test.describe( 'Shopper → Order Confirmation', () => {
+	test.afterAll( async ( { frontendUtils } ) => {
+		await frontendUtils.login( true );
+	} );
+
 	test.beforeEach( async ( { admin, editorUtils } ) => {
 		await admin.visitSiteEditor( {
 			postId: 'woocommerce/woocommerce//order-confirmation',
