@@ -174,7 +174,6 @@ registerCheckoutFilters( 'example-extension', {
 | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268295858-ec76f525-e2cf-468c-9634-ae9e84e5aa48.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267230515-d5e9d791-2429-4cac-b4fb-106a3dbe07ce.png"> |
 
-
 ## Order Summary Items
 
 In the Checkout block, there is a sidebar that contains a summary of what the customer is about to purchase. There are some filters available to modify the way certain elements are displayed on each item. The sale badges are not shown here, so those filters are not applied in the Order Summary.
