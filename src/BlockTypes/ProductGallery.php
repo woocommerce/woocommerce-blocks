@@ -110,7 +110,7 @@ class ProductGallery extends AbstractBlock {
 						'woocommerce' => array(
 							'selectedImage'    => $product->get_image_id(),
 							'visibleImagesIds' => ProductGalleryUtils::get_product_gallery_image_ids( $product, $number_of_thumbnails, true ),
-							'isDialogOpen'  => false,
+							'isDialogOpen'     => false,
 						),
 					)
 				)
