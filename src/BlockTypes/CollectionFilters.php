@@ -7,7 +7,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\Hydration;
 /**
  * CollectionFilters class.
  */
-class CollectionFilters extends AbstractBlock {
+final class CollectionFilters extends AbstractBlock {
 	/**
 	 * Block name.
 	 *
@@ -40,7 +40,7 @@ class CollectionFilters extends AbstractBlock {
 	 *
 	 * @var array
 	 */
-	protected $current_response = null;
+	private $current_response = null;
 
 	/**
 	 * Get the frontend style handle for this block type.
@@ -86,7 +86,7 @@ class CollectionFilters extends AbstractBlock {
 		if ( ! is_admin() ) {
 			/**
 			 * At this point, WP starts rendering the Collection Filters block,
-			 * we can safely nuke the current response.
+			 * we can safely unset the current response.
 			 */
 			$this->current_response = null;
 		}
@@ -101,26 +101,48 @@ class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	public function modify_inner_blocks_context( $context, $parsed_block, $parent_block ) {
+		if ( is_admin() || ! is_a( $parent_block, 'WP_Block' ) ) {
+			return $context;
+		}
+
+		/**
+		 * Bail if the current block is not a direct child of CollectionFilters
+		 * and the parent block doesn't have our custom context.
+		 */
 		if (
-			is_admin() ||
-			! is_a( $parent_block, 'WP_Block' ) ||
-			"woocommerce/{$this->block_name}" !== $parent_block->name ||
-			empty( $parent_block->inner_blocks )
+			"woocommerce/{$this->block_name}" !== $parent_block->name &&
+			empty( $parent_block->context['isCollectionFiltersInnerBlock'] )
 		) {
 			return $context;
 		}
 
+		/**
+		 * The first time we reach here, WP is rendering the first direct child
+		 * of CollectionFilters block. We hydrate and cache the collection data
+		 * response for other inner blocks to use.
+		 */
 		if ( ! isset( $this->current_response ) ) {
 			$this->current_response = $this->get_aggregated_collection_data( $parent_block );
 		}
 
+		if ( empty( $this->current_response ) ) {
+			return $context;
+		}
+
+		/**
+		 * We target only filter blocks, but they can be nested inside other
+		 * blocks like Group/Row for layout purposes. We pass this custom light
+		 * weight context (instead of full CollectionData response) to all inner
+		 * blocks of current CollectionFilters to find and iterate inner filter
+		 * blocks.
+		 */
+		$context['isCollectionFiltersInnerBlock'] = true;
+
 		if (
-			! empty( $this->current_response ) ||
 			isset( $parsed_block['blockName'] ) ||
 			in_array( $parsed_block['blockName'], $this->collection_data_params_mapping, true )
 		) {
 			$context['collectionData'] = $this->current_response;
-			error_log( print_r( $this->current_response, true ) );
 		}
 
 		return $context;
@@ -133,7 +155,7 @@ class CollectionFilters extends AbstractBlock {
 	 * @param WP_Block $block The block instance.
 	 * @return array
 	 */
-	protected function get_aggregated_collection_data( $block ) {
+	private function get_aggregated_collection_data( $block ) {
 		$collection_data_params = array();
 		$inner_blocks           = array();
 
@@ -180,7 +202,7 @@ class CollectionFilters extends AbstractBlock {
 	 *
 	 * @return array
 	 */
-	protected function get_inner_blocks_recursive( $block, $results = array() ) {
+	private function get_inner_blocks_recursive( $block, $results = array() ) {
 		$results[] = $block->name;
 		if ( ! empty( $block->inner_blocks ) ) {
 			foreach ( $block->inner_blocks as $inner_block ) {

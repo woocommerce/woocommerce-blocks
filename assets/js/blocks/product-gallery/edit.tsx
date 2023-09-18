@@ -9,13 +9,13 @@ import {
 } from '@wordpress/block-editor';
 import { BlockEditProps, InnerBlockTemplate } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import {
 	moveInnerBlocksToPosition,
-	updateGroupBlockType,
 	getInnerBlocksLockAttributes,
 } from './utils';
 import { ProductGalleryThumbnailsBlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
@@ -27,7 +27,7 @@ import { ProductGalleryNextPreviousBlockSettings } from './inner-blocks/product-
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'core/group',
-		{ layout: { type: 'flex' } },
+		{ layout: { type: 'flex', flexWrap: 'nowrap' } },
 		[
 			[
 				'woocommerce/product-gallery-thumbnails',
@@ -62,6 +62,7 @@ const TEMPLATE: InnerBlockTemplate[] = [
 											},
 										},
 									},
+									lock: { move: true },
 								},
 							],
 							[
@@ -71,6 +72,7 @@ const TEMPLATE: InnerBlockTemplate[] = [
 										type: 'flex',
 										verticalAlignment: 'bottom',
 									},
+									lock: { move: true, remove: true },
 								},
 							],
 						],
@@ -85,6 +87,21 @@ const TEMPLATE: InnerBlockTemplate[] = [
 	],
 ];
 
+const setMode = (
+	currentTemplateId: string,
+	templateType: string,
+	setAttributes: ( attrs: Partial< ProductGalleryAttributes > ) => void
+) => {
+	if (
+		templateType === 'wp_template_part' &&
+		currentTemplateId.includes( 'product-gallery' )
+	) {
+		setAttributes( {
+			mode: 'full',
+		} );
+	}
+};
+
 export const Edit = ( {
 	clientId,
 	attributes,
@@ -92,8 +109,17 @@ export const Edit = ( {
 }: BlockEditProps< ProductGalleryAttributes > ) => {
 	const blockProps = useBlockProps();
 
-	// Update the Group block type when the thumbnailsPosition attribute changes.
-	updateGroupBlockType( attributes, clientId );
+	const { currentTemplateId, templateType } = useSelect(
+		( select ) => ( {
+			currentTemplateId: select( 'core/edit-site' ).getEditedPostId(),
+			templateType: select( 'core/edit-site' ).getEditedPostType(),
+		} ),
+		[]
+	);
+
+	useEffect( () => {
+		setMode( currentTemplateId, templateType, setAttributes );
+	}, [ currentTemplateId, setAttributes, templateType ] );
 
 	useEffect( () => {
 		setAttributes( {
