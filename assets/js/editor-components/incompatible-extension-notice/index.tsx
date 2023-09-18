@@ -9,7 +9,7 @@ import { Icon } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import { useIncompatiblePaymentGatewaysNotice } from './use-incompatible-payment-gateways-notice';
+import { useCombinedIncompatibilityNotice } from './use-combined-incompatibility-notice';
 import './editor.scss';
 
 interface ExtensionNoticeProps {
@@ -26,7 +26,7 @@ export function IncompatibleExtensionsNotice( {
 		dismissNotice,
 		incompatiblePaymentMethods,
 		numberOfIncompatiblePaymentMethods,
-	] = useIncompatiblePaymentGatewaysNotice( block );
+	] = useCombinedIncompatibilityNotice( block );
 
 	useEffect( () => {
 		toggleDismissedStatus( ! isVisible );
