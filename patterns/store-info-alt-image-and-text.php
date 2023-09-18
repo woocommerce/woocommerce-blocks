@@ -20,7 +20,7 @@ $image2 = PatternImages::get_image_url( $images, 1, 'images/pattern-placeholders
 		<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:50%">
 			<!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full">
-				<img src="<?php echo esc_url( $image1 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a person making a clay pot.', 'woo-gutenberg-products-block' ); ?>" />
+				<img src="<?php echo esc_url( $image1 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used in the left column.', 'woo-gutenberg-products-block' ); ?>" />
 			</figure>
 			<!-- /wp:image -->
 		</div>
@@ -95,7 +95,7 @@ $image2 = PatternImages::get_image_url( $images, 1, 'images/pattern-placeholders
 		<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:52%">
 			<!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full">
-				<img src="<?php echo esc_url( $image2 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent clay pots.', 'woo-gutenberg-products-block' ); ?>" />
+				<img src="<?php echo esc_url( $image2 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used in the right column.', 'woo-gutenberg-products-block' ); ?>" />
 			</figure>
 			<!-- /wp:image -->
 		</div>

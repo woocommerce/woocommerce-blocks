@@ -47,7 +47,7 @@ $image4 = PatternImages::get_image_url( $images, 3, 'images/pattern-placeholders
 	<div class="wp-block-column">
 		<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
 		<figure class="wp-block-image size-large">
-			<img src="<?php echo esc_url( $image1 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in an office.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo esc_url( $image1 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased under the social media icons. 1 out of 4.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
 		<!-- /wp:image -->
 	</div>
@@ -57,7 +57,7 @@ $image4 = PatternImages::get_image_url( $images, 3, 'images/pattern-placeholders
 	<div class="wp-block-column">
 		<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
 		<figure class="wp-block-image size-large">
-			<img src="<?php echo esc_url( $image2 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in a living room.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo esc_url( $image2 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased under the social media icons. 2 out of 4.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
 		<!-- /wp:image -->
 	</div>
@@ -67,7 +67,7 @@ $image4 = PatternImages::get_image_url( $images, 3, 'images/pattern-placeholders
 	<div class="wp-block-column">
 		<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
 		<figure class="wp-block-image size-large">
-			<img src="<?php echo esc_url( $image3 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in a living room with gray sofa.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo esc_url( $image3 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased under the social media icons. 3 out of 4.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
 		<!-- /wp:image -->
 	</div>
@@ -77,7 +77,7 @@ $image4 = PatternImages::get_image_url( $images, 3, 'images/pattern-placeholders
 	<div class="wp-block-column">
 		<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
 		<figure class="wp-block-image size-large">
-			<img src="<?php echo esc_url( $image4 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased as furniture in a dining room.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo esc_url( $image4 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased under the social media icons. 4 out of 4.', 'woo-gutenberg-products-block' ); ?>" />
 		</figure>
 		<!-- /wp:image -->
 	</div>
