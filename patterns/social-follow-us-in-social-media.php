@@ -5,13 +5,13 @@
  * Categories: WooCommerce
  */
 
-use Automattic\WooCommerce\Blocks\Patterns\PatternImages;
-$images = PatternImages::get_pattern_images( 'woocommerce-blocks/product-collections-featured-collections' );
+use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
+$images = PatternImagesHelper::get_pattern_images( 'woocommerce-blocks/product-collections-featured-collections' );
 
-$image1 = PatternImages::get_image_url( $images, 0, 'images/pattern-placeholders/office.png' );
-$image2 = PatternImages::get_image_url( $images, 1, 'images/pattern-placeholders/living-room.png' );
-$image3 = PatternImages::get_image_url( $images, 2, 'images/pattern-placeholders/living-room-sofa.png' );
-$image4 = PatternImages::get_image_url( $images, 3, 'images/pattern-placeholders/dining-room.png' );
+$image1 = PatternImagesHelper::get_image_url( $images, 0, 'images/pattern-placeholders/office.png' );
+$image2 = PatternImagesHelper::get_image_url( $images, 1, 'images/pattern-placeholders/living-room.png' );
+$image3 = PatternImagesHelper::get_image_url( $images, 2, 'images/pattern-placeholders/living-room-sofa.png' );
+$image4 = PatternImagesHelper::get_image_url( $images, 3, 'images/pattern-placeholders/dining-room.png' );
 ?>
 
 <!-- wp:columns {"verticalAlignment":null,"align":"wide"} -->

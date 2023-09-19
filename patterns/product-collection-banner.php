@@ -5,9 +5,9 @@
  * Categories: WooCommerce
  */
 
-use Automattic\WooCommerce\Blocks\Patterns\PatternImages;
-$images = PatternImages::get_pattern_images( 'woocommerce-blocks/product-collection-banner' );
-$image  = PatternImages::get_image_url( $images, 0, 'images/pattern-placeholders/beach-landscape-sea-coast-nature-person.jpg' );
+use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
+$images = PatternImagesHelper::get_pattern_images( 'woocommerce-blocks/product-collection-banner' );
+$image  = PatternImagesHelper::get_image_url( $images, 0, 'images/pattern-placeholders/beach-landscape-sea-coast-nature-person.jpg' );
 ?>
 
 <!-- wp:group {"align":"wide","layout":{"type":"constrained","contentSize":"1000px"}} -->

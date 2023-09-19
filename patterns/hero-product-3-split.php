@@ -5,8 +5,8 @@
  * Categories: WooCommerce
  */
 
-use Automattic\WooCommerce\Blocks\Patterns\PatternImages;
-$images = PatternImages::get_pattern_images( 'woocommerce-blocks/hero-product-3-split' );
+use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
+$images = PatternImagesHelper::get_pattern_images( 'woocommerce-blocks/hero-product-3-split' );
 ?>
 
 <!-- wp:columns {"align":"wide","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"}}}} -->
@@ -39,7 +39,7 @@ $images = PatternImages::get_pattern_images( 'woocommerce-blocks/hero-product-3-
 				<!-- /wp:group -->
 			</div>
 			<figure class="wp-block-media-text__media">
-				<img src="<?php echo esc_url( PatternImages::get_image_url( $images, 0, 'images/pattern-placeholders/hand-guitar-finger-tshirt-clothing-rack.png' ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in a hero section.', 'woo-gutenberg-products-block' ); ?>" class="wp-image-1 size-full" />
+				<img src="<?php echo esc_url( PatternImagesHelper::get_image_url( $images, 0, 'images/pattern-placeholders/hand-guitar-finger-tshirt-clothing-rack.png' ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in a hero section.', 'woo-gutenberg-products-block' ); ?>" class="wp-image-1 size-full" />
 			</figure>
 		</div>
 		<!-- /wp:media-text -->
