@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
-import { firefox } from '@playwright/test';
 
 /**
  * Internal dependencies
@@ -49,10 +48,15 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await editorUtils.transformIntoBlocks();
 	} );
 
+	test.afterAll( async ( { frontendUtils } ) => {
+		await frontendUtils.login( true );
+	} );
+
 	test( 'Place order as a logged in user', async ( {
 		frontendUtils,
 		pageObject,
 		page,
+		browser,
 	} ) => {
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
@@ -130,7 +134,6 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await pageObject.verifyOrderConfirmationDetails( page, false );
 
 		// Confirm data is hidden without valid session/key
-		const browser = await firefox.launch();
 		// Starting a new browser session
 		const newContext = await browser.newContext();
 		const newPage = await newContext.newPage();
@@ -145,9 +148,6 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await pageObject.verifyOrderConfirmationDetails( newPage, false );
 		// Gracefully close up everything
 		await newContext.close();
-		await browser.close();
-		// Teardown
-		await frontendUtils.login( true );
 	} );
 
 	test( 'Place order as guest user', async ( {
@@ -202,12 +202,14 @@ test.describe( 'Shopper → Order Confirmation', () => {
 				`Shipping to ${ postcode }, ${ city }, ${ state }, ${ country }`
 			)
 		).toBeVisible();
-		// Teardown
-		await frontendUtils.login( true );
 	} );
 } );
 
 test.describe( 'Shopper → Order Confirmation → Local Pickup', () => {
+	test.beforeEach( async ( { frontendUtils } ) => {
+		await frontendUtils.login( true );
+	} );
+
 	test( 'Confirm shipping address section is hidden, but billing is visible', async ( {
 		pageObject,
 		frontendUtils,
@@ -257,6 +259,7 @@ test.describe( 'Shopper → Order Confirmation → Downloadable Products', () =>
 	let confirmationPageUrl: string;
 
 	test.beforeEach( async ( { frontendUtils, pageObject } ) => {
+		await frontendUtils.login( true );
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_VIRTUAL_PRODUCT_NAME );
