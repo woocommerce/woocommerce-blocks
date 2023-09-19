@@ -8,7 +8,7 @@ import { expect } from '@woocommerce/e2e-playwright-utils';
 /**
  * Internal dependencies
  */
-import { customer } from '../../test-data/data/data';
+import { customer, admin } from '../../test-data/data/data';
 
 export class FrontendUtils {
 	page: Page;
@@ -196,22 +196,25 @@ export class FrontendUtils {
 		return ! isLoginFormVisible;
 	}
 
-	async login() {
+	async login( asAdmin = false ) {
 		const isLoggedIn = await this.isLoggedIn();
 		if ( isLoggedIn ) {
 			return;
+		}
+
+		let { username, password } = customer;
+
+		if ( asAdmin ) {
+			username = admin.username;
+			password = admin.password;
 		}
 
 		await this.gotoMyAccount();
 		await expect(
 			this.page.getByRole( 'heading', { name: 'My account' } )
 		).toBeVisible();
-		await this.page
-			.locator( 'input[name="username"]' )
-			.fill( customer.username );
-		await this.page
-			.locator( 'input[name="password"]' )
-			.fill( customer.password );
+		await this.page.locator( 'input[name="username"]' ).fill( username );
+		await this.page.locator( 'input[name="password"]' ).fill( password );
 		await this.page.locator( 'text=Log In' ).click();
 		// eslint-disable-next-line playwright/no-networkidle
 		await this.page.waitForLoadState( 'networkidle' );
@@ -222,7 +225,6 @@ export class FrontendUtils {
 		await expect(
 			this.page.getByRole( 'heading', { name: 'My account' } )
 		).toBeVisible();
-		// await this.page.locator( 'text=Log out' ).click();
 		await this.page
 			.getByRole( 'list' )
 			.filter( {

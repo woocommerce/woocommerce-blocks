@@ -26,27 +26,63 @@ const templatePath = 'woocommerce/woocommerce//order-confirmation';
 const templateType = 'wp_template';
 
 test.describe( 'Test the order confirmation template', async () => {
-	// These tests consistently fail due to the default content of the page--potentially the classic block is not being
-	// used after another test runs. Reenable this when we have a solution for this.
-	// eslint-disable-next-line playwright/no-skipped-test
-	test.skip( 'Template can be opened in the site editor', async ( {
+	test( 'Template can be opened in the site editor', async ( {
 		page,
 		editorUtils,
+		admin,
 	} ) => {
-		await page.goto( '/wp-admin/site-editor.php' );
-		await page.getByRole( 'button', { name: /Templates/i } ).click();
-		await page
-			.getByRole( 'button', { name: /Order confirmation/i } )
-			.click();
+		await admin.visitSiteEditor( {
+			postId: 'woocommerce/woocommerce//order-confirmation',
+			postType: 'wp_template',
+		} );
 		await editorUtils.enterEditMode();
-
+		await editorUtils.closeWelcomeGuideModal();
+		await editorUtils.transformIntoBlocks();
+		await editorUtils.waitForSiteEditorFinishLoading();
 		await expect(
 			page
-				.frameLocator( 'iframe' )
-				.locator(
-					'p:has-text("Thank you. Your order has been received.")'
-				)
-				.first()
+				.frameLocator( 'iframe[title="Editor canvas"i]' )
+				.getByText( 'Thank you. Your order has been received.' )
+		).toBeVisible();
+		await expect(
+			page
+				.frameLocator( 'iframe[title="Editor canvas"i]' )
+				.getByRole( 'document', {
+					name: 'Block: Order Summary',
+					exact: true,
+				} )
+		).toBeVisible();
+		await expect(
+			page
+				.frameLocator( 'iframe[title="Editor canvas"i]' )
+				.getByRole( 'document', {
+					name: 'Block: Order Totals',
+					exact: true,
+				} )
+		).toBeVisible();
+		await expect(
+			page
+				.frameLocator( 'iframe[title="Editor canvas"i]' )
+				.getByRole( 'document', {
+					name: 'Block: Order Downloads',
+					exact: true,
+				} )
+		).toBeVisible();
+		await expect(
+			page
+				.frameLocator( 'iframe[title="Editor canvas"i]' )
+				.getByRole( 'document', {
+					name: 'Block: Shipping Address',
+					exact: true,
+				} )
+		).toBeVisible();
+		await expect(
+			page
+				.frameLocator( 'iframe[title="Editor canvas"i]' )
+				.getByRole( 'document', {
+					name: 'Block: Billing Address',
+					exact: true,
+				} )
 		).toBeVisible();
 	} );
 
@@ -72,6 +108,9 @@ test.describe( 'Test the order confirmation template', async () => {
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
 		await frontendUtils.goToCheckout();
+		await pageObject.page
+			.getByRole( 'radio', { name: 'Shipping from FREE' } )
+			.click();
 		await expect(
 			await pageObject.selectAndVerifyShippingOption(
 				FREE_SHIPPING_NAME,
