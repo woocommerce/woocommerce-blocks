@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\ProductGalleryUtils;
+
 /**
  * ProductGalleryPager class.
  */
@@ -25,7 +27,7 @@ class ProductGalleryPager extends AbstractBlock {
 	 * @return string[]
 	 */
 	protected function get_block_type_uses_context() {
-		return [ 'productGalleryClientId', 'pagerDisplayMode' ];
+		return [ 'productGalleryClientId', 'pagerDisplayMode', 'postId' ];
 	}
 
 	/**
@@ -37,18 +39,27 @@ class ProductGalleryPager extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$pager_display_mode = $block->context['pagerDisplayMode'] ?? '';
-		$classname          = $attributes['className'] ?? '';
-		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$html               = $this->render_pager( $pager_display_mode );
+		$post_id = $block->context['postId'] ?? '';
+		$product = wc_get_product( $post_id );
 
-		return sprintf(
-			'<div %1$s>
-				%2$s
-			</div>',
-			$wrapper_attributes,
-			$html
-		);
+		if ( $product ) {
+			$post_thumbnail_id      = $product->get_image_id();
+			$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail', array() );
+			if ( $product_gallery_images && $post_thumbnail_id ) {
+				$pager_display_mode = $block->context['pagerDisplayMode'] ?? '';
+				$classname          = $attributes['className'] ?? '';
+				$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
+				$html               = $this->render_pager( $pager_display_mode );
+
+				return sprintf(
+					'<div %1$s>
+						%2$s
+					</div>',
+					$wrapper_attributes,
+					$html
+				);
+			}
+		}
 	}
 
 	/**
