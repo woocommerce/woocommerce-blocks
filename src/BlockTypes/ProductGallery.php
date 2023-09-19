@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\ProductGalleryUtils;
+
 /**
  * ProductGallery class.
  */
@@ -21,8 +23,17 @@ class ProductGallery extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+		$post_id                = $block->context['postId'] ?? '';
+		$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail', array() );
+		$classname_single_image = '';
+
+		if ( count( $product_gallery_images ) < 2 ) {
+			// The gallery consists of a single image.
+			$classname_single_image = 'is-single-product-gallery-image';
+		}
+
 		$classname          = $attributes['className'] ?? '';
-		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce wc-block-product-gallery %1$s', $classname ) ) ) );
+		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'wc-block-product-gallery %1$s %2$s', $classname, $classname_single_image ) ) ) );
 		$html               = sprintf(
 			'<div data-wc-interactive %1$s>
 				%2$s
@@ -30,7 +41,8 @@ class ProductGallery extends AbstractBlock {
 			$wrapper_attributes,
 			$content
 		);
-		$p                  = new \WP_HTML_Tag_Processor( $content );
+
+		$p = new \WP_HTML_Tag_Processor( $html );
 
 		if ( $p->next_tag() ) {
 			$p->set_attribute( 'data-wc-interactive', true );

@@ -4,7 +4,7 @@ $thumbnails: ".wc-block-components-product-gallery-thumbnails";
 $next-previous: "#{$large-image}-next-previous";
 $next-previous-left-off: "#{$next-previous}-left--off";
 $next-previous-right-off: "#{$next-previous}-right--off";
-$gallery-next-previous-outside-image: "#{$gallery}[data-next-previous-buttons-position='outsideTheImage']";
+$gallery-next-previous-outside-image: "#{$gallery}[data-next-previous-buttons-position='outsideTheImage']:not(.is-single-product-gallery-image)";
 
 $outside-image-offset: 30px;
 $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
