@@ -5,7 +5,7 @@
  * Categories: WooCommerce
  */
 
-use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
+use Automattic\WooCommerce\Blocks\Patterns\PatternImagesHelper;
 $images = PatternImagesHelper::get_pattern_images( 'woocommerce-blocks/alt-image-and-text' );
 
 $image1 = PatternImagesHelper::get_image_url( $images, 0, 'images/pattern-placeholders/crafting-pots.png' );

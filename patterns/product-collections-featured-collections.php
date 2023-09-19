@@ -5,7 +5,7 @@
  * Categories: WooCommerce
  */
 
-use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
+use Automattic\WooCommerce\Blocks\Patterns\PatternImagesHelper;
 $images = PatternImagesHelper::get_pattern_images( 'woocommerce-blocks/product-collections-featured-collections' );
 
 $image1 = PatternImagesHelper::get_image_url( $images, 0, 'images/pattern-placeholders/technology-white-camera-photography-vintage-photographer.png' );

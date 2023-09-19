@@ -5,7 +5,7 @@
  * Categories: WooCommerce
  */
 
-use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
+use Automattic\WooCommerce\Blocks\Patterns\PatternImagesHelper;
 $images = PatternImagesHelper::get_pattern_images( 'woocommerce-blocks/product-collection-banner' );
 $image  = PatternImagesHelper::get_image_url( $images, 0, 'images/pattern-placeholders/beach-landscape-sea-coast-nature-person.jpg' );
 ?>

@@ -5,7 +5,7 @@
  * Categories: WooCommerce
  */
 
-use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
+use Automattic\WooCommerce\Blocks\Patterns\PatternImagesHelper;
 $images = PatternImagesHelper::get_pattern_images( 'woocommerce-blocks/featured-category-focus' );
 ?>
 
