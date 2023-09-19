@@ -7,9 +7,10 @@ import { Icon } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { ImageSizing } from '../../../atomic/blocks/product-elements/image/types';
-import { VARIATION_NAME as PRODUCT_TITLE_ID } from '../variations/elements/product-title';
-import { DEFAULT_ATTRIBUTES } from '../constants';
+import {
+	DEFAULT_ATTRIBUTES,
+	INNER_BLOCKS_PRODUCT_TEMPLATE,
+} from '../constants';
 
 const collection = {
 	name: 'woocommerce-blocks/product-collection/new-arrivals',
@@ -22,65 +23,29 @@ const attributes = {
 	...DEFAULT_ATTRIBUTES,
 	displayLayout: {
 		type: 'flex',
-		columns: 5,
+		columns: 3,
 	},
 	query: {
 		...DEFAULT_ATTRIBUTES.query,
 		inherit: false,
 		orderBy: 'date',
 		order: 'desc',
-		perPage: 10,
+		perPage: 9,
 		pages: 1,
 	},
-	collection: 'woocommerce-blocks/product-collection/new-arrivals',
+	collection: collection.name,
 };
 
 const innerBlocks: InnerBlockTemplate[] = [
+	[ 'core/heading', { textAlign: 'center', content: 'New Arrivals' } ],
 	[
-		'woocommerce/product-template',
-		{},
-		[
-			[
-				'woocommerce/product-image',
-				{
-					imageSizing: ImageSizing.THUMBNAIL,
-				},
-			],
-			[
-				'core/post-title',
-				{
-					textAlign: 'center',
-					level: 3,
-					fontSize: 'medium',
-					style: {
-						spacing: {
-							margin: {
-								bottom: '0.75rem',
-								top: '0',
-							},
-						},
-					},
-					isLink: true,
-					__woocommerceNamespace: PRODUCT_TITLE_ID,
-				},
-			],
-			[
-				'woocommerce/product-price',
-				{
-					textAlign: 'center',
-					fontSize: 'small',
-				},
-			],
-			[
-				'woocommerce/product-button',
-				{
-					textAlign: 'center',
-					fontSize: 'small',
-					width: 75,
-				},
-			],
-		],
+		'core/paragraph',
+		{
+			align: 'center',
+			content: 'Here are the latest products in our store',
+		},
 	],
+	INNER_BLOCKS_PRODUCT_TEMPLATE,
 ];
 
 export default {

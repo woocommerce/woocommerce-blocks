@@ -91,59 +91,71 @@ export const DEFAULT_FILTERS: Partial< ProductCollectionQuery > = {
 	woocommerceHandPickedProducts: [],
 };
 
-export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
+/**
+ * Default inner block templates for the product collection block.
+ * Exported for use in different collections, e.g., 'New Arrivals' collection.
+ */
+export const INNER_BLOCKS_PRODUCT_TEMPLATE: InnerBlockTemplate = [
+	'woocommerce/product-template',
+	{},
 	[
-		'woocommerce/product-template',
-		{},
 		[
-			[
-				'woocommerce/product-image',
-				{
-					imageSizing: ImageSizing.THUMBNAIL,
-				},
-			],
-			[
-				'core/post-title',
-				{
-					textAlign: 'center',
-					level: 3,
-					fontSize: 'medium',
-					style: {
-						spacing: {
-							margin: {
-								bottom: '0.75rem',
-								top: '0',
-							},
+			'woocommerce/product-image',
+			{
+				imageSizing: ImageSizing.THUMBNAIL,
+			},
+		],
+		[
+			'core/post-title',
+			{
+				textAlign: 'center',
+				level: 3,
+				fontSize: 'medium',
+				style: {
+					spacing: {
+						margin: {
+							bottom: '0.75rem',
+							top: '0',
 						},
 					},
-					isLink: true,
-					__woocommerceNamespace: PRODUCT_TITLE_ID,
 				},
-			],
-			[
-				'woocommerce/product-price',
-				{
-					textAlign: 'center',
-					fontSize: 'small',
-				},
-			],
-			[
-				'woocommerce/product-button',
-				{
-					textAlign: 'center',
-					fontSize: 'small',
-				},
-			],
+				isLink: true,
+				__woocommerceNamespace: PRODUCT_TITLE_ID,
+			},
+		],
+		[
+			'woocommerce/product-price',
+			{
+				textAlign: 'center',
+				fontSize: 'small',
+			},
+		],
+		[
+			'woocommerce/product-button',
+			{
+				textAlign: 'center',
+				fontSize: 'small',
+			},
 		],
 	],
-	[
-		'core/query-pagination',
-		{
-			layout: {
-				type: 'flex',
-				justifyContent: 'center',
-			},
+];
+
+export const INNER_BLOCKS_PAGINATION_TEMPLATE: InnerBlockTemplate = [
+	'core/query-pagination',
+	{
+		layout: {
+			type: 'flex',
+			justifyContent: 'center',
 		},
-	],
-	[ 'core/query-no-results' ],
+	},
+];
+
+export const INNER_BLOCKS_NO_RESULTS_TEMPLATE: InnerBlockTemplate = [
+	'core/query-no-results',
+];
+
+export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
+	INNER_BLOCKS_PRODUCT_TEMPLATE,
+	INNER_BLOCKS_PAGINATION_TEMPLATE,
+	INNER_BLOCKS_NO_RESULTS_TEMPLATE,
 ];

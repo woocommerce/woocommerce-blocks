@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { type BlockVariation, registerBlockVariation } from '@wordpress/blocks';
+import {
+	type BlockVariation,
+	registerBlockVariation,
+	BlockAttributes,
+} from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -12,8 +16,12 @@ const collections: BlockVariation[] = [ newArrivals ];
 
 const registerCollections = () => {
 	collections.forEach( ( collection ) => {
-		const isActive = ( blockAttrs ) =>
-			blockAttrs.collection === collection.name;
+		const isActive = (
+			blockAttrs: BlockAttributes,
+			variationAttributes: BlockAttributes
+		) => {
+			return blockAttrs.collection === variationAttributes.collection;
+		};
 
 		registerBlockVariation( 'woocommerce/product-collection', {
 			isActive,
