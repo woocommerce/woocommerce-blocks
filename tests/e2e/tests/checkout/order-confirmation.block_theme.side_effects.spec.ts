@@ -58,14 +58,12 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		page,
 		browser,
 	} ) => {
+		await frontendUtils.login( true );
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
 		await frontendUtils.addToCart( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await frontendUtils.goToCheckout();
-		await pageObject.page
-			.getByRole( 'radio', { name: 'Shipping from FREE' } )
-			.click();
 		await expect(
 			await pageObject.selectAndVerifyShippingOption(
 				FREE_SHIPPING_NAME,
@@ -111,9 +109,7 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await pageObject.verifyOrderConfirmationDetails( page, false );
 
 		// Access page without order ID or key (test visibility of default message)
-		await page.goto(
-			'http://dev-store.local/checkout-block/order-received'
-		);
+		await page.goto( '/checkout-block/order-received' );
 		// Confirm default message is visible
 		await expect(
 			page.getByText(
