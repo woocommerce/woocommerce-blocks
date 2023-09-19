@@ -81,6 +81,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.1.1 - 2023-09-20 =
+
+#### Bug Fixes
+
+- Improved escaping around attributes [bb37d05](https://github.com/woocommerce/woocommerce-blocks/commit/bb37d056bccccd714fa6617c5da6f50d54837f41)
+
 = 11.1.0 - 2023-09-11 =
 
 #### Enhancements
