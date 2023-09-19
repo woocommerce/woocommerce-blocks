@@ -94,6 +94,7 @@ const blocks = {
 	'stock-filter': {},
 	'collection-filters': {
 		isExperimental: true,
+	},
 	'order-confirmation-summary': {
 		customDir: 'order-confirmation/summary',
 	},
