@@ -176,7 +176,6 @@ export class FrontendUtils {
 		await expect(
 			this.page.getByRole( 'heading', { name: 'My account' } )
 		).toBeVisible();
-		// await this.page.locator( 'text=Log out' ).click();
 		await this.page
 			.getByRole( 'list' )
 			.filter( {
