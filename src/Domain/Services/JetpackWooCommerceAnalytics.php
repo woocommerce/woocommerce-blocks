@@ -362,7 +362,7 @@ class JetpackWooCommerceAnalytics {
 			return $served;
 		}
 
-		$event_name = 'wcadmin_local_pickup_save_changes';
+		$event_name = 'local_pickup_save_changes';
 
 		$settings  = $request->get_param( 'pickup_location_settings' );
 		$locations = $request->get_param( 'pickup_locations' );
