@@ -20,6 +20,15 @@ class ProductGalleryLargeImage extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return null
+	 */
+	protected function get_block_type_style() {
+		return null;
+	}
+
+	/**
 	 *  Register the context
 	 *
 	 * @return string[]
