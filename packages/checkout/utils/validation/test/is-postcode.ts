@@ -119,6 +119,12 @@ describe( 'isPostcode', () => {
 		[ false, '9385', 'LI' ],
 		[ false, '9475', 'LI' ],
 
+		// Nicaraguan postcodes
+		[ true, '12345', 'NI' ],
+		[ false, '01234', 'NI' ],
+		[ false, '1234', 'NI' ],
+		[ false, '123456', 'NI' ],
+
 		// Dutch postcodes
 		[ true, '3852GC', 'NL' ],
 		[ true, '3852 GC', 'NL' ],
@@ -172,6 +178,17 @@ describe( 'isPostcode', () => {
 		[ false, '12345', 'KH' ],
 		[ false, '1234', 'KH' ],
 		[ true, '123456', 'KH' ],
+
+		// Taiwanese postcodes
+		[ false, '12', 'TW' ],
+		[ false, '2', 'TW' ],
+		[ false, '1234567', 'TW' ],
+		[ false, '1234', 'TW' ],
+		[ false, 'ABC34', 'TW' ],
+		[ false, '', 'TW' ],
+		[ true, '123456', 'TW' ],
+		[ true, '12345', 'TW' ],
+		[ true, '123', 'TW' ],
 	];
 
 	test.each( cases )( '%s: %s for %s', ( result, postcode, country ) =>
