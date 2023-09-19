@@ -221,6 +221,17 @@ final class BlockTypesController {
 			'SingleProduct',
 			'StockFilter',
 			'PageContentWrapper',
+			'OrderConfirmation\Status',
+			'OrderConfirmation\Summary',
+			'OrderConfirmation\Totals',
+			'OrderConfirmation\TotalsWrapper',
+			'OrderConfirmation\Downloads',
+			'OrderConfirmation\DownloadsWrapper',
+			'OrderConfirmation\BillingAddress',
+			'OrderConfirmation\ShippingAddress',
+			'OrderConfirmation\BillingWrapper',
+			'OrderConfirmation\ShippingWrapper',
+			'OrderConfirmation\AdditionalInformation',
 		];
 
 		$block_types = array_merge(
@@ -237,17 +248,6 @@ final class BlockTypesController {
 			$block_types[] = 'ProductGalleryPager';
 			$block_types[] = 'ProductGalleryThumbnails';
 			$block_types[] = 'CollectionFilters';
-			$block_types[] = 'OrderConfirmation\Status';
-			$block_types[] = 'OrderConfirmation\Summary';
-			$block_types[] = 'OrderConfirmation\Totals';
-			$block_types[] = 'OrderConfirmation\TotalsWrapper';
-			$block_types[] = 'OrderConfirmation\Downloads';
-			$block_types[] = 'OrderConfirmation\DownloadsWrapper';
-			$block_types[] = 'OrderConfirmation\BillingAddress';
-			$block_types[] = 'OrderConfirmation\ShippingAddress';
-			$block_types[] = 'OrderConfirmation\BillingWrapper';
-			$block_types[] = 'OrderConfirmation\ShippingWrapper';
-			$block_types[] = 'OrderConfirmation\AdditionalInformation';
 		}
 
 		/**
