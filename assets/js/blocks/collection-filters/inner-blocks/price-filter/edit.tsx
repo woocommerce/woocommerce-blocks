@@ -19,17 +19,12 @@ const Edit = ( props: EditProps ) => {
 		isEditor: true,
 		queryState: {},
 	} );
-	const { minPrice, maxPrice } = getFormattedPrice( results );
 
 	return (
 		<div { ...blockProps }>
 			<Inspector { ...props } />
 			<Block
-				minPrice={ minPrice }
-				maxPrice={ maxPrice }
-				minRange={ minPrice }
-				maxRange={ maxPrice }
-				isEditor={ true }
+				{ ...getFormattedPrice( results ) }
 				{ ...props.attributes }
 			/>
 		</div>

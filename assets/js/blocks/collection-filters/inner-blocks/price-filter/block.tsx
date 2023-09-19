@@ -12,8 +12,8 @@ import { BlockProps } from './types';
 const PriceSlider = ( {
 	minPrice,
 	maxPrice,
-	minRange,
-	maxRange,
+	displayedMinPrice,
+	displayedMaxPrice,
 	showInputFields,
 	inlineInput,
 }: BlockProps ) => {
@@ -26,7 +26,7 @@ const PriceSlider = ( {
 			onChange={ onChange }
 		/>
 	) : (
-		<span>{ minPrice }</span>
+		<span>{ displayedMinPrice }</span>
 	);
 
 	const priceMax = showInputFields ? (
@@ -37,28 +37,28 @@ const PriceSlider = ( {
 			onChange={ onChange }
 		/>
 	) : (
-		<span>{ maxPrice }</span>
+		<span>{ displayedMaxPrice }</span>
 	);
 	return (
 		<div
 			className={ classNames( 'price-slider', {
-				'inline-input': inlineInput,
+				'inline-input': inlineInput && showInputFields,
 			} ) }
 		>
 			<div className="range">
 				<div className="range-bar"></div>
 				<input
 					type="range"
-					min={ minRange }
-					max={ maxRange }
+					min={ minPrice }
+					max={ maxPrice }
 					value={ minPrice }
 					className="active"
 					onChange={ onChange }
 				/>
 				<input
 					type="range"
-					min={ minRange }
-					max={ maxRange }
+					min={ minPrice }
+					max={ maxPrice }
 					value={ maxPrice }
 					onChange={ onChange }
 				/>
@@ -72,15 +72,6 @@ const PriceSlider = ( {
 };
 
 const Block = ( props: BlockProps ) => {
-	props = Object.assign(
-		{
-			minPrice: 0,
-			maxPrice: 0,
-			minRange: 0,
-			maxRange: 0,
-		},
-		props
-	);
 	return (
 		<Disabled>
 			<div className="controls">

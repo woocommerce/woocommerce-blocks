@@ -34,5 +34,6 @@ export type EditProps = BlockEditProps< BlockAttributes >;
 
 export type BlockProps = Partial< PriceFilterState[ 'filters' ] > &
 	BlockAttributes & {
-		isEditor?: boolean;
+		displayedMinPrice: string;
+		displayedMaxPrice: string;
 	};
