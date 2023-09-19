@@ -59,6 +59,9 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
 		await frontendUtils.addToCart( SIMPLE_VIRTUAL_PRODUCT_NAME );
 		await frontendUtils.goToCheckout();
+		await pageObject.page
+			.getByRole( 'radio', { name: 'Shipping from FREE' } )
+			.click();
 		await expect(
 			await pageObject.selectAndVerifyShippingOption(
 				FREE_SHIPPING_NAME,
