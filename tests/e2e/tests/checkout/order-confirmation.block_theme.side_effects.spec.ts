@@ -48,7 +48,7 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await editorUtils.transformIntoBlocks();
 	} );
 
-	test.afterAll( async ( { frontendUtils } ) => {
+	test.afterEach( async ( { frontendUtils } ) => {
 		await frontendUtils.login( true );
 	} );
 
