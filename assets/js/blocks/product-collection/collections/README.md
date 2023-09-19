@@ -8,7 +8,7 @@ Collections are a variations of Product Collection block with the predefined att
 
 ## Interface
 
-Collections are in fact Variations and they are registred via Variation API. Hence they should follow the BlockVariation type, providing at least:
+Collections are in fact Variations and they are registered via Variation API. Hence they should follow the BlockVariation type, providing at least:
 
 ```typescript
 {

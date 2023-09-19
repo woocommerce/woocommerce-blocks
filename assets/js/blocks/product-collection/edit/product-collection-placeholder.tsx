@@ -55,7 +55,7 @@ const QueryPlaceholder = ( props: QueryEditComponentProps ) => {
 					'woo-gutenberg-products-block'
 				) }
 				instructions={ __(
-					'Choose a pattern for the query loop or start blank.',
+					'Choose from pre-existing collections or add default one.',
 					'woo-gutenberg-products-block'
 				) }
 			>
