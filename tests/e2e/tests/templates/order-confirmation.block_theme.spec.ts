@@ -89,7 +89,6 @@ test.describe( 'Test the order confirmation template', async () => {
 	test( 'Template can be modified', async ( {
 		page,
 		admin,
-		editor,
 		editorUtils,
 		frontendUtils,
 		pageObject,
@@ -99,18 +98,15 @@ test.describe( 'Test the order confirmation template', async () => {
 			postType: templateType,
 		} );
 		await editorUtils.enterEditMode();
-		await editor.insertBlock( {
+		await editorUtils.editor.insertBlock( {
 			name: 'core/paragraph',
 			attributes: { content: 'Hello World' },
 		} );
-		await editor.saveSiteEditorEntities();
+		await editorUtils.saveTemplate();
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
 		await frontendUtils.goToCheckout();
-		await pageObject.page
-			.getByRole( 'radio', { name: 'Shipping from FREE' } )
-			.click();
 		await expect(
 			await pageObject.selectAndVerifyShippingOption(
 				FREE_SHIPPING_NAME,

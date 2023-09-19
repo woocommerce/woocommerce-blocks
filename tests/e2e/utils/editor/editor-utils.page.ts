@@ -253,8 +253,10 @@ export class EditorUtils {
 	async saveTemplate() {
 		await Promise.all( [
 			this.editor.saveSiteEditorEntities(),
-			this.page.waitForResponse( ( response ) =>
-				response.url().includes( 'wp-json/wp/v2/templates/' )
+			this.page.waitForResponse(
+				( response ) =>
+					response.url().includes( 'wp-json/wp/v2/templates/' ) ||
+					response.url().includes( 'wp-json/wp/v2/template-parts/' )
 			),
 		] );
 	}
