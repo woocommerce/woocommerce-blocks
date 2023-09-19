@@ -11,14 +11,16 @@ import { useEffect } from '@wordpress/element';
 import type {
 	ProductCollectionAttributes,
 	ProductCollectionQuery,
-	QueryEditComponentProps,
+	ProductCollectionEditComponentProps,
 } from '../types';
 import { DEFAULT_ATTRIBUTES, INNER_BLOCKS_TEMPLATE } from '../constants';
 import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
 import InspectorControls from './inspector-controls';
 import ToolbarControls from './toolbar-controls';
 
-const ProductCollectionContent = ( props: QueryEditComponentProps ) => {
+const ProductCollectionContent = (
+	props: ProductCollectionEditComponentProps
+) => {
 	const { attributes, setAttributes } = props;
 	const { queryId } = attributes;
 

@@ -34,7 +34,7 @@ const Edit = ( props: BlockEditProps< ProductCollectionAttributes > ) => {
 		<>
 			<Component
 				{ ...props }
-				openPatternSelectionModalOpen={ () =>
+				openPatternSelectionModal={ () =>
 					setIsPatternSelectionModalOpen( true )
 				}
 			/>

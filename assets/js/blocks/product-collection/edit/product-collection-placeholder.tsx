@@ -17,7 +17,7 @@ import { useDispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import Icon from '../icon';
-import type { QueryEditComponentProps } from '../types';
+import type { ProductCollectionEditComponentProps } from '../types';
 import { DEFAULT_ATTRIBUTES, INNER_BLOCKS_TEMPLATE } from '../constants';
 import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
 
@@ -34,8 +34,11 @@ const getDefaultProductCollection = () =>
 		createBlocksFromInnerBlocksTemplate( INNER_BLOCKS_TEMPLATE )
 	);
 
-const QueryPlaceholder = ( props: QueryEditComponentProps ) => {
-	const { clientId, openPatternSelectionModalOpen } = props;
+const QueryPlaceholder = ( props: ProductCollectionEditComponentProps ) => {
+	const {
+		clientId,
+		openPatternSelectionModal: openPatternSelectionModalOpen,
+	} = props;
 	const blockProps = useBlockProps();
 
 	const { replaceBlock } = useDispatch( blockEditorStore );

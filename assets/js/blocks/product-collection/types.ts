@@ -58,9 +58,9 @@ export interface ProductCollectionQuery {
 	woocommerceHandPickedProducts?: string[];
 }
 
-export type QueryEditComponentProps =
+export type ProductCollectionEditComponentProps =
 	BlockEditProps< ProductCollectionAttributes > & {
-		openPatternSelectionModalOpen: () => void;
+		openPatternSelectionModal: () => void;
 	};
 
 export type TProductCollectionOrder = 'asc' | 'desc';
