@@ -2,13 +2,29 @@
 
 namespace Automattic\WooCommerce\Blocks\Patterns;
 
+use Automattic\WooCommerce\Blocks\AI\Connection;
 use Automattic\WooCommerce\Blocks\Verticals\Client;
+use Automattic\WooCommerce\Blocks\Verticals\VerticalsSelector;
 use WP_Error;
 
 /**
  * Pattern Images class.
  */
 class PatternUpdater {
+	/**
+	 * The AI Connection.
+	 *
+	 * @var Connection
+	 */
+	private $ai_connection;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->ai_connection = new Connection();
+	}
+
 	/**
 	 * The patterns content option name.
 	 */
@@ -35,11 +51,17 @@ class PatternUpdater {
 
 		$patterns_with_images = $this->get_patterns_with_images( $vertical_images );
 
-		if ( get_option( self::WC_BLOCKS_PATTERNS_CONTENT ) === $patterns_with_images ) {
+		if ( is_wp_error( $patterns_with_images ) ) {
+			return new WP_Error( 'failed_to_set_pattern_images', __( 'Failed to set the pattern images.', 'woo-gutenberg-products-block' ) );
+		}
+
+		$patterns_with_images_and_content = $this->get_patterns_with_content( $patterns_with_images );
+
+		if ( get_option( self::WC_BLOCKS_PATTERNS_CONTENT ) === $patterns_with_images_and_content ) {
 			return true;
 		}
 
-		$updated_content = update_option( self::WC_BLOCKS_PATTERNS_CONTENT, $patterns_with_images );
+		$updated_content = update_option( self::WC_BLOCKS_PATTERNS_CONTENT, $patterns_with_images_and_content );
 
 		if ( ! $updated_content ) {
 			return new WP_Error( 'failed_to_update_patterns_content', __( 'Failed to update patterns content.', 'woo-gutenberg-products-block' ) );
@@ -53,7 +75,7 @@ class PatternUpdater {
 	 *
 	 * @param array $vertical_images The array of vertical images.
 	 *
-	 * @return array The patterns with images.
+	 * @return array|WP_Error The patterns with images.
 	 */
 	private function get_patterns_with_images( $vertical_images ) {
 		$patterns_dictionary = $this->get_patterns_dictionary();
@@ -79,6 +101,46 @@ class PatternUpdater {
 		}
 
 		return $patterns_with_images;
+	}
+
+	/**
+	 * Returns the patterns with AI generated content.
+	 *
+	 * @param array $patterns The array of patterns.
+	 *
+	 * @return array|WP_Error The patterns with AI generated content.
+	 */
+	public function get_patterns_with_content( array $patterns ) {
+		$site_id = $this->ai_connection->get_site_id();
+
+		if ( is_wp_error( $site_id ) ) {
+			return $site_id;
+		}
+
+		$token = $this->ai_connection->get_jwt_token( $site_id );
+
+		if ( is_wp_error( $token ) ) {
+			return $token;
+		}
+
+		$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing an array of patterns with titles, descriptions and button texts: %s.', get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY, '' ), wp_json_encode( $patterns ) );
+		$prompt .= "Replace the titles, descriptions and button texts in the 'default' key using the prompt in the 'ai_prompt' key a text that makes sense for the previous store description. The response should be only a JSON string, with absolutely no intro or explanations.";
+
+		$ai_response = $this->ai_connection->fetch_ai_response( $token, $prompt );
+		if ( is_wp_error( $ai_response ) ) {
+			return $ai_response;
+		}
+
+		if ( ! isset( $ai_response['completion'] ) ) {
+			return new \WP_Error( 'invalid_ai_response', __( 'The AI response is invalid.', 'woo-gutenberg-products-block' ) );
+		}
+
+		$patterns_with_content = json_decode( $ai_response['completion'], true );
+		if ( is_null( $patterns_with_content ) ) {
+			return $patterns;
+		}
+
+		return $patterns_with_content;
 	}
 
 	/**
