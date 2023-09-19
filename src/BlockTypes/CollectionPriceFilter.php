@@ -39,19 +39,11 @@ final class CollectionPriceFilter extends AbstractBlock {
 		$min_price          = intval( get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range ) );
 		$max_price          = intval( get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range ) );
 
-		// CSS variables for the range bar style.
-		$__low       = 100 * $min_price / $max_range;
-		$__high      = 100 * $max_price / $max_range;
-		$range_style = "--low: $__low%; --high: $__high%";
-
 		$data = array(
-			'minPrice'    => $min_price,
-			'maxPrice'    => $max_price,
-			'minRange'    => $min_range,
-			'maxRange'    => $max_range,
-			'rangeStyle'  => $range_style,
-			'isMinActive' => true,
-			'isMaxActive' => false,
+			'minPrice' => $min_price,
+			'maxPrice' => $max_price,
+			'minRange' => $min_range,
+			'maxRange' => $max_range,
 		);
 
 		wc_store(
@@ -92,8 +84,12 @@ final class CollectionPriceFilter extends AbstractBlock {
 			'maxPrice' => $max_price,
 			'minRange' => $min_range,
 			'maxRange' => $max_range,
-			'rangeStyle' => $range_style,
 		) = $store_data;
+
+		// CSS variables for the range bar style.
+		$__low       = 100 * $min_price / $max_range;
+		$__high      = 100 * $max_price / $max_range;
+		$range_style = "--low: $__low%; --high: $__high%";
 
 		$formatted_min_price = wc_price( $min_price, array( 'decimals' => 0 ) );
 		$formatted_max_price = wc_price( $max_price, array( 'decimals' => 0 ) );
