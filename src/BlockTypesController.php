@@ -176,6 +176,7 @@ final class BlockTypesController {
 			'Breadcrumbs',
 			'CatalogSorting',
 			'ClassicTemplate',
+			'ClassicShortcode',
 			'CustomerAccount',
 			'FeaturedCategory',
 			'FeaturedProduct',
@@ -219,6 +220,7 @@ final class BlockTypesController {
 			'ProductDetails',
 			'SingleProduct',
 			'StockFilter',
+			'PageContentWrapper',
 		];
 
 		$block_types = array_merge(
@@ -234,6 +236,7 @@ final class BlockTypesController {
 			$block_types[] = 'ProductGalleryLargeImageNextPrevious';
 			$block_types[] = 'ProductGalleryPager';
 			$block_types[] = 'ProductGalleryThumbnails';
+			$block_types[] = 'CollectionFilters';
 		}
 
 		/**
@@ -263,7 +266,6 @@ final class BlockTypesController {
 					'ClassicTemplate',
 					'ProductResultsCount',
 					'ProductDetails',
-					'StoreNotices',
 				]
 			);
 		}
