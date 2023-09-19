@@ -35,10 +35,7 @@ const getDefaultProductCollection = () =>
 	);
 
 const QueryPlaceholder = ( props: ProductCollectionEditComponentProps ) => {
-	const {
-		clientId,
-		openPatternSelectionModal: openPatternSelectionModalOpen,
-	} = props;
+	const { clientId, openPatternSelectionModal } = props;
 	const blockProps = useBlockProps();
 
 	const { replaceBlock } = useDispatch( blockEditorStore );
@@ -62,10 +59,7 @@ const QueryPlaceholder = ( props: ProductCollectionEditComponentProps ) => {
 					'woo-gutenberg-products-block'
 				) }
 			>
-				<Button
-					variant="primary"
-					onClick={ openPatternSelectionModalOpen }
-				>
+				<Button variant="primary" onClick={ openPatternSelectionModal }>
 					{ __(
 						'Choose Collection',
 						'woo-gutenberg-products-block'
