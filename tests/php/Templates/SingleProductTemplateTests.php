@@ -12,7 +12,7 @@ use \WP_UnitTestCase;
 class SingleProductTemplateTests extends WP_UnitTestCase {
 
 	/**
-	 * Test that the default Single Product Template is not wrapped in a div.
+	 * Test that the password form isn't added to the Single Product Template.
 	 *
 	 */
 	public function test_no_remove_block_when_no_single_product_is_in_the_template() {
@@ -34,7 +34,7 @@ class SingleProductTemplateTests extends WP_UnitTestCase {
 	<!-- /wp:group -->
 	<!-- wp:template-part {"slug":"footer","theme":"twentytwentythree","tagName":"footer"} /-->';
 
-		$result = SingleProductTemplate::remove_block(
+		$result = SingleProductTemplate::add_password_form(
 			$default_single_product_template
 		);
 
@@ -53,7 +53,7 @@ class SingleProductTemplateTests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test that the Single Product Template is wrapped in a div with the correct class if it contains a block related to the Single Product Template.
+	 * Test that the password form is added to the Single Product Template.
 	 */
 	public function test_replace_single_product_blocks_with_input_form() {
 		$default_single_product_template = '
@@ -108,7 +108,7 @@ class SingleProductTemplateTests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test that the Single Product Template is wrapped in a div with the correct class if it contains a block related to the Single Product Template.
+	 * Test that the password form is added to the Single Product Template with the default template.
 	 */
 	public function test_replace_default_template_single_product_blocks_with_input_form() {
 		$default_single_product_template = '
