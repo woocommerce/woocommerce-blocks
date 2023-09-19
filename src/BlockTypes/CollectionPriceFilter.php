@@ -26,17 +26,12 @@ final class CollectionPriceFilter extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		// This should be available in $block->context['collectionData']['price_range'].
-		$price_range                              = new stdClass();
-		$price_range->min_price                   = 0;
-		$price_range->max_price                   = 25000;
-		$price_range->currency_code               = 'USD';
-		$price_range->currency_symbol             = '$';
-		$price_range->currency_minor_unit         = 3;
-		$price_range->currency_decimal_separator  = ',';
-		$price_range->currency_thousand_separator = '.';
-		$price_range->currency_prefix             = '$';
-		$price_range->currency_suffix             = '';
+		// Short circuit if the collection data isn't ready yet.
+		if ( empty( $block->context['collectionData']['price_range'] ) ) {
+			return $content;
+		}
+
+		$price_range = $block->context['collectionData']['price_range'];
 
 		$wrapper_attributes = get_block_wrapper_attributes();
 		$min_range          = $price_range->min_price / 10 ** $price_range->currency_minor_unit;
