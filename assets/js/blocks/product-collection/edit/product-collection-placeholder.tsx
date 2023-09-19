@@ -6,12 +6,13 @@ import {
 	store as blockEditorStore,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import {
-	createBlock,
-	createBlocksFromInnerBlocksTemplate,
-} from '@wordpress/blocks';
 import { Placeholder, Button } from '@wordpress/components';
 import { useDispatch } from '@wordpress/data';
+import {
+	createBlock,
+	// @ts-expect-error Missing types in Gutenberg
+	createBlocksFromInnerBlocksTemplate,
+} from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -34,12 +35,16 @@ const getDefaultProductCollection = () =>
 		createBlocksFromInnerBlocksTemplate( INNER_BLOCKS_TEMPLATE )
 	);
 
-const QueryPlaceholder = ( props: ProductCollectionEditComponentProps ) => {
+const ProductCollectionPlaceholder = (
+	props: ProductCollectionEditComponentProps
+) => {
 	const { clientId, openPatternSelectionModal } = props;
 	const blockProps = useBlockProps();
 
+	// @ts-expect-error Missing types in Gutenberg
 	const { replaceBlock } = useDispatch( blockEditorStore );
-	// @todo: This is temporary action that will be changed into
+
+	// TODO: This is temporary action that will be changed into
 	// "Add custom collection"
 	const addDefaultProductCollection = () => {
 		const defaultProductCollection = getDefaultProductCollection();
@@ -79,4 +84,4 @@ const QueryPlaceholder = ( props: ProductCollectionEditComponentProps ) => {
 	);
 };
 
-export default QueryPlaceholder;
+export default ProductCollectionPlaceholder;
