@@ -51,7 +51,6 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		frontendUtils,
 		pageObject,
 		page,
-		browser,
 	} ) => {
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
@@ -113,25 +112,13 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		// Confirm order details are not visible
 		await pageObject.verifyOrderConfirmationDetails( page, false );
 
-		// Confirm details are hidden when logged out
-
-		// Confirm data is hidden without valid session/key
-		// Starting a new browser session
-		const newContext = await browser.newContext();
-		const newPage = await newContext.newPage();
-		await newPage.goto( orderReceivedURL );
-		// Confirm default message is visible
-		await expect(
-			newPage.getByText(
-				'Great news! Your order has been received, and a confirmation will be sent to your email address. Have an account with us?'
-			)
-		).toBeVisible();
-		// Confirm order details are not visible
-		await pageObject.verifyOrderConfirmationDetails( newPage, false );
-		// Gracefully close up everything
-		await newContext.close();
+		// The following tests are skipped until the multiple sign in roles is implemented
+		// - Confirm details are hidden when logged out
+		// - Confirm data is hidden without valid session/key
 	} );
 
+	// This test is skipped until the multiple sign in roles is implemented
+	// See: https://github.com/woocommerce/woocommerce-blocks/pull/10561
 	// eslint-disable-next-line playwright/no-skipped-test
 	test.skip( 'Place order as guest user', async ( {
 		frontendUtils,
