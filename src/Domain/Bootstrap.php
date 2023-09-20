@@ -130,6 +130,7 @@ class Bootstrap {
 		$this->container->get( DraftOrders::class )->init();
 		$this->container->get( CreateAccount::class )->init();
 		$this->container->get( ShippingController::class )->init();
+		$this->container->get( JetpackWooCommerceAnalytics::class )->init();
 
 		// Load assets in admin and on the frontend.
 		if ( ! $is_rest ) {
@@ -138,7 +139,6 @@ class Bootstrap {
 			$this->container->get( AssetsController::class );
 			$this->container->get( Installer::class )->init();
 			$this->container->get( GoogleAnalytics::class )->init();
-			$this->container->get( JetpackWooCommerceAnalytics::class )->init();
 		}
 
 		// Load assets unless this is a request specifically for the store API.
