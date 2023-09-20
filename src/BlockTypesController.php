@@ -277,6 +277,17 @@ final class BlockTypesController {
 					'ClassicTemplate',
 					'ProductResultsCount',
 					'ProductDetails',
+					'OrderConfirmation\Status',
+					'OrderConfirmation\Summary',
+					'OrderConfirmation\Totals',
+					'OrderConfirmation\TotalsWrapper',
+					'OrderConfirmation\Downloads',
+					'OrderConfirmation\DownloadsWrapper',
+					'OrderConfirmation\BillingAddress',
+					'OrderConfirmation\ShippingAddress',
+					'OrderConfirmation\BillingWrapper',
+					'OrderConfirmation\ShippingWrapper',
+					'OrderConfirmation\AdditionalInformation',
 				]
 			);
 		}
