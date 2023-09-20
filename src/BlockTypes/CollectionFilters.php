@@ -218,7 +218,10 @@ final class CollectionFilters extends AbstractBlock {
 			return $params;
 		}
 
-		// Params that doesn't require additional conversion.
+		/**
+		 * The following params just need to transform the key, their value can
+		 * be passed as it is to the Store API.
+		 */
 		$params_mapping = array(
 			'exclude'                       => 'exclude',
 			'offset'                        => 'offset',
@@ -233,12 +236,16 @@ final class CollectionFilters extends AbstractBlock {
 			'woocommerceHandPickedProducts' => 'include',
 		);
 
-		foreach ( $query as $key => $value ) {
-			if ( isset( $params_mapping[ $key ] ) ) {
-				$params[ $params_mapping[ $key ] ] = $value;
+		foreach ( $params_mapping as $key => $mapped_key ) {
+			if ( isset( $query[ $key ] ) ) {
+				$params[ $mapped_key ] = $query[ $key ];
 			}
 		}
 
+		/**
+		 * The value of taxQuery and woocommerceAttributes need additional
+		 * transformation to the shape that Store API accepts.
+		 */
 		if ( ! empty( $query['taxQuery'] ) ) {
 			foreach ( $query['taxQuery'] as $taxonomy => $value ) {
 				if ( 'product_cat' === $taxonomy ) {
@@ -262,6 +269,11 @@ final class CollectionFilters extends AbstractBlock {
 			}
 		}
 
+		/**
+		 * Product Collection determine the product visibility based on stock
+		 * status. We need to pass the catalog_visibility param to the Store
+		 * API to make sure the product visibility is correct.
+		 */
 		if ( is_search() ) {
 			$params['catalog_visibility'] = 'catalog';
 		} else {
