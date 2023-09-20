@@ -57,6 +57,11 @@ class PatternUpdater {
 
 		$patterns_with_images_and_content = $this->get_patterns_with_content( $patterns_with_images );
 
+		if ( is_wp_error( $patterns_with_images_and_content ) ) {
+			// Instead of returning an error, we return the patterns with images, with the default content.
+			$patterns_with_images_and_content = $patterns_with_images;
+		}
+
 		if ( get_option( self::WC_BLOCKS_PATTERNS_CONTENT ) === $patterns_with_images_and_content ) {
 			return true;
 		}
@@ -123,21 +128,32 @@ class PatternUpdater {
 			return $token;
 		}
 
-		$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing an array of patterns with titles, descriptions and button texts: %s.', get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY, '' ), wp_json_encode( $patterns ) );
-		$prompt .= "Replace the titles, descriptions and button texts in the 'default' key using the prompt in the 'ai_prompt' key a text that makes sense for the previous store description. The response should be only a JSON string, with absolutely no intro or explanations.";
+		$patterns_with_content = $patterns;
 
-		$ai_response = $this->ai_connection->fetch_ai_response( $token, $prompt );
-		if ( is_wp_error( $ai_response ) ) {
-			return $ai_response;
+		$prompts = array();
+		foreach ( $patterns_with_content as $key => $pattern ) {
+			$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing an array of patterns with titles, descriptions and button texts: %s.\n', get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY ), wp_json_encode( $pattern ) );
+			$prompt .= "Replace the titles, descriptions and button texts in each 'default' key using the prompt in the corresponding 'ai_prompt' key by a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The response should be only a JSON string, with absolutely no intro or explanations.";
+
+			$prompts[] = $prompt;
 		}
 
-		if ( ! isset( $ai_response['completion'] ) ) {
-			return new \WP_Error( 'invalid_ai_response', __( 'The AI response is invalid.', 'woo-gutenberg-products-block' ) );
-		}
+		$responses = $this->ai_connection->fetch_ai_responses( $token, $prompts );
 
-		$patterns_with_content = json_decode( $ai_response['completion'], true );
-		if ( is_null( $patterns_with_content ) ) {
-			return $patterns;
+		foreach ( $responses as $key => $response ) {
+			// If the AI response is invalid, we skip the pattern and keep the default content.
+			if ( is_wp_error( $response ) ) {
+				continue;
+			}
+
+			if ( ! isset( $ai_response['completion'] ) ) {
+				continue;
+			}
+
+			$pattern_with_content = json_decode( $ai_response['completion'], true );
+			if ( ! is_null( $pattern_with_content ) ) {
+				$patterns_with_content[ $key ] = $pattern_with_content;
+			}
 		}
 
 		return $patterns_with_content;

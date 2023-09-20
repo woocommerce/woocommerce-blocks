@@ -4,11 +4,14 @@ namespace Automattic\WooCommerce\Blocks\AI;
 
 use Automattic\Jetpack\Connection\Client;
 use Jetpack_Options;
+use WP_Error;
+use WpOrg\Requests\Requests;
 
 /**
  * Class Connection
  */
 class Connection {
+	const TEXT_COMPLETION_API_URL = 'https://public-api.wordpress.com/wpcom/v2/text-completion';
 
 	/**
 	 * The post request.
@@ -25,7 +28,7 @@ class Connection {
 		}
 
 		$response = wp_remote_post(
-			'https://public-api.wordpress.com/wpcom/v2/text-completion',
+			self::TEXT_COMPLETION_API_URL,
 			array(
 				'body'    =>
 					array(
@@ -44,6 +47,51 @@ class Connection {
 		$body = wp_remote_retrieve_body( $response );
 
 		return json_decode( $body, true );
+	}
+
+	/**
+	 * Fetch the AI responses in parallel using the given token and prompts.
+	 *
+	 * @param string $token The JWT token.
+	 * @param array  $prompts The prompts to send to the API.
+	 *
+	 * @return array|WP_Error The responses or a WP_Error object.
+	 */
+	public function fetch_ai_responses( $token, array $prompts ) {
+		// TODO: is there a timeout that we can set?
+		if ( $token instanceof \WP_Error ) {
+			return $token;
+		}
+
+		$requests = array();
+		foreach ( $prompts as $prompt ) {
+			$requests[] = array(
+				'url'     => self::TEXT_COMPLETION_API_URL,
+				'type'    => 'POST',
+				'headers' => array( 'Content-Type' => 'application/json; charset=utf-8' ),
+				'data'    => wp_json_encode(
+					array(
+						'feature' => 'woocommerce_blocks_patterns',
+						'prompt'  => $prompt,
+						'token'   => $token,
+					)
+				),
+			);
+		}
+
+		$responses = Requests::request_multiple( $requests );
+
+		$processed_responses = array();
+		foreach ( $responses as $key => $response ) {
+			if ( is_wp_error( $response ) ) {
+				$processed_responses[ $key ] = $response;
+				continue;
+			}
+
+			$processed_responses[ $key ] = json_decode( $response->body, true );
+		}
+
+		return $processed_responses;
 	}
 
 	/**
