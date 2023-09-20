@@ -12,7 +12,7 @@ import { useSelect } from '@wordpress/data';
 import type { ProductCollectionAttributes } from '../types';
 import ProductCollectionPlaceholder from './product-collection-placeholder';
 import ProductCollectionContent from './product-collection-content';
-import PatternSelectionModal from './toolbar-controls/pattern-selection-modal';
+import PatternSelectionModal from './pattern-selection-modal';
 import './editor.scss';
 
 const Edit = ( props: BlockEditProps< ProductCollectionAttributes > ) => {

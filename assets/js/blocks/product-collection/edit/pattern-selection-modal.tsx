@@ -4,19 +4,26 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { Modal } from '@wordpress/components';
-import {
-	store as blockEditorStore,
-	__experimentalBlockPatternsList as BlockPatternsList,
-} from '@wordpress/block-editor';
+import { isEmpty } from '@woocommerce/types';
 import {
 	type BlockInstance,
+	// @ts-expect-error Type definitions for this function are missing in Guteberg
 	store as blocksStore,
 	cloneBlock,
 	createBlock,
+	// @ts-expect-error Type definitions for this function are missing in Guteberg
 	createBlocksFromInnerBlocksTemplate,
 	BlockVariation,
 } from '@wordpress/blocks';
-import { isEmpty } from '@woocommerce/types';
+/**
+ * External dependencies
+ */
+import {
+	store as blockEditorStore,
+	// @ts-expect-error Using experimental features
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalBlockPatternsList as BlockPatternsList,
+} from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -24,16 +31,18 @@ import { isEmpty } from '@woocommerce/types';
 import type {
 	ProductCollectionQuery,
 	ProductCollectionAttributes,
-} from '../../types';
-import { DEFAULT_QUERY } from '../../constants';
-import { getDefaultValueOfInheritQueryFromTemplate } from '../../utils';
+} from '../types';
+import { DEFAULT_QUERY } from '../constants';
+import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
+import blockJson from '../block.json';
 
-const blockName = 'woocommerce/product-collection';
-
-const buildQuery = (
-	blockQuery: ProductCollectionQuery | undefined,
-	patternQuery: ProductCollectionQuery
-) => {
+const buildFinalQueryFromBlockAndPatternQuery = ( {
+	blockQuery,
+	patternQuery,
+}: {
+	blockQuery: ProductCollectionQuery | undefined;
+	patternQuery: ProductCollectionQuery;
+} ) => {
 	// If blockQuery is empty, it means it's the initial pattern/collection choice
 	// and we should use DEFAULT_QUERY as a base for query.
 	const baseQuery = isEmpty( blockQuery )
@@ -57,12 +66,12 @@ const mapCollectionToPattern = ( collection: BlockVariation ) => {
 	return {
 		name,
 		title,
-		blockTypes: [ 'woocommerce/product-collection' ],
-		categories: [ 'woo-commerce' ],
+		blockTypes: [ blockJson.name ],
+		categories: [ 'WooCommerce' ],
 		collection: true,
 		blocks: [
 			createBlock(
-				'woocommerce/product-collection',
+				blockJson.name,
 				attributes,
 				createBlocksFromInnerBlocksTemplate( innerBlocks )
 			),
@@ -70,19 +79,28 @@ const mapCollectionToPattern = ( collection: BlockVariation ) => {
 	};
 };
 
-const DisplayLayoutControl = ( props: {
+const PatternSelectionModal = ( props: {
 	clientId: string;
 	attributes: ProductCollectionAttributes;
 	closePatternSelectionModal: () => void;
 } ) => {
 	const { clientId, attributes } = props;
 	const { query } = attributes;
-	const { replaceBlock, selectBlock } = useDispatch( blockEditorStore );
+	// @ts-expect-error Type definitions for this function are missing
+	// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/actions.d.ts
+	const { replaceBlock } = useDispatch( blockEditorStore );
 
-	const applyQueryToPattern = ( block: BlockInstance ): BlockInstance => {
-		const newInnerBlocks = block.innerBlocks.map( applyQueryToPattern );
-		if ( block.name === blockName ) {
-			const newQuery = buildQuery( query, block.attributes.query );
+	const updateQueryAttributeOfPattern = (
+		block: BlockInstance
+	): BlockInstance => {
+		const newInnerBlocks =
+			block.innerBlocks?.map( updateQueryAttributeOfPattern ) || [];
+
+		if ( block.name === blockJson.name ) {
+			const newQuery = buildFinalQueryFromBlockAndPatternQuery( {
+				blockQuery: query,
+				patternQuery: block.attributes.query,
+			} );
 			return cloneBlock(
 				block,
 				{ query: newQuery, collection: attributes.collection },
@@ -92,21 +110,25 @@ const DisplayLayoutControl = ( props: {
 		return cloneBlock( block, {}, newInnerBlocks );
 	};
 
-	// Get the Product Collection patterns
+	// Get Patterns
 	const blockPatterns = useSelect(
 		( select ) => {
+			// @ts-expect-error Type definitions are missing
+			// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/selectors.d.ts
 			const { getBlockRootClientId, getPatternsByBlockTypes } =
 				select( blockEditorStore );
 			const rootClientId = getBlockRootClientId( clientId );
-			return getPatternsByBlockTypes( blockName, rootClientId );
+			return getPatternsByBlockTypes( blockJson.name, rootClientId );
 		},
-		[ blockName, clientId ]
+		[ blockJson.name, clientId ]
 	);
 
-	// Get the Product Collection collections
+	// Get Collections
 	const blockCollections = useSelect( ( select ) => {
+		// @ts-expect-error Type definitions are missing
+		// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/selectors.d.ts
 		const { getBlockVariations } = select( blocksStore );
-		return getBlockVariations( 'woocommerce/product-collection' );
+		return getBlockVariations( blockJson.name );
 	}, [] );
 
 	const collectionsAsPatterns = blockCollections.map(
@@ -123,10 +145,8 @@ const DisplayLayoutControl = ( props: {
 			return;
 		}
 
-		const newBlocks = blocks.map( applyQueryToPattern );
-
+		const newBlocks = blocks.map( updateQueryAttributeOfPattern );
 		replaceBlock( clientId, newBlocks );
-		selectBlock( newBlocks[ 0 ].clientId );
 	};
 
 	return (
@@ -134,7 +154,9 @@ const DisplayLayoutControl = ( props: {
 			overlayClassName="wc-blocks-product-collection__selection-modal"
 			title={ __( 'Choose a pattern', 'woo-gutenberg-products-block' ) }
 			onRequestClose={ props.closePatternSelectionModal }
-			isFullScreen={ true }
+			// @ts-expect-error Type definitions are missing in the version we are using i.e. 19.1.5,
+			// Once we will update to the latest version, ts-expect-error should be removed
+			isFullScreen
 		>
 			<div className="wc-blocks-product-collection__selection-content">
 				<BlockPatternsList
@@ -153,4 +175,4 @@ const DisplayLayoutControl = ( props: {
 	);
 };
 
-export default DisplayLayoutControl;
+export default PatternSelectionModal;

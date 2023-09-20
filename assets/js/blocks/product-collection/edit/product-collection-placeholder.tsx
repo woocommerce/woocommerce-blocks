@@ -21,10 +21,11 @@ import Icon from '../icon';
 import type { ProductCollectionEditComponentProps } from '../types';
 import { DEFAULT_ATTRIBUTES, INNER_BLOCKS_TEMPLATE } from '../constants';
 import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
+import blockJson from '../block.json';
 
 const getDefaultProductCollection = () =>
 	createBlock(
-		'woocommerce/product-collection',
+		blockJson.name,
 		{
 			...DEFAULT_ATTRIBUTES,
 			query: {

@@ -11,6 +11,7 @@ import {
  * Internal dependencies
  */
 import newArrivals from './new-arrivals';
+import blockJson from '../block.json';
 
 const collections: BlockVariation[] = [ newArrivals ];
 
@@ -23,7 +24,7 @@ const registerCollections = () => {
 			return blockAttrs.collection === variationAttributes.collection;
 		};
 
-		registerBlockVariation( 'woocommerce/product-collection', {
+		registerBlockVariation( blockJson.name, {
 			isActive,
 			...collection,
 		} );

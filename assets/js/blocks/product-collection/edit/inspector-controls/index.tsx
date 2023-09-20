@@ -196,8 +196,4 @@ export const withUpgradeNoticeControls =
 		);
 	};
 
-addFilter(
-	'editor.BlockEdit',
-	'woocommerce/product-collection',
-	withUpgradeNoticeControls
-);
+addFilter( 'editor.BlockEdit', metadata.name, withUpgradeNoticeControls );
