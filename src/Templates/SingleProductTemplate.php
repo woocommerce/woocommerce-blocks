@@ -8,7 +8,6 @@ namespace Automattic\WooCommerce\Blocks\Templates;
  */
 class SingleProductTemplate {
 
-
 	/**
 	 * Replace the first single product template block with the password form. Remove all other single product template blocks.
 	 *
