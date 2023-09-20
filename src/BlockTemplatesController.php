@@ -10,6 +10,7 @@ use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
+use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplate;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateMigrationUtils;
 
 /**
@@ -429,8 +430,12 @@ class BlockTemplatesController {
 							}
 						}
 
-						$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
-						$template->content = $new_content;
+						if ( post_password_required() ) {
+							$template->content = SingleProductTemplate::add_password_form( $template->content );
+						} else {
+							$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
+							$template->content = $new_content;
+						}
 					}
 				}
 
@@ -672,12 +677,6 @@ class BlockTemplatesController {
 		} elseif (
 			is_checkout() &&
 			! BlockTemplateUtils::theme_has_template( CheckoutTemplate::get_slug() ) && $this->block_template_is_available( CheckoutTemplate::get_slug() )
-		) {
-			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
-		} elseif (
-			is_wc_endpoint_url( 'order-received' )
-			&& ! BlockTemplateUtils::theme_has_template( OrderConfirmationTemplate::get_slug() )
-			&& $this->block_template_is_available( OrderConfirmationTemplate::get_slug() )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} else {
