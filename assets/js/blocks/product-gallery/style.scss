@@ -9,15 +9,37 @@ $gallery-next-previous-outside-image: "#{$gallery}[data-next-previous-buttons-po
 $outside-image-offset: 30px;
 $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 
+// Product Gallery
+#{$gallery} {
+	dialog {
+		position: fixed;
+		width: 90vw;
+		height: 90vh;
+		top: 0;
+		margin: $gap-largest;
+		z-index: 9999;
+	}
+}
+
 // Large Image
 #{$large-image} {
 	width: 100%;
 	height: fit-content;
 	position: relative;
+	overflow: hidden;
 
 	img {
 		display: block;
 		margin: 0 auto;
+		transition: all 0.1s linear;
+
+		&.wc-block-woocommerce-product-gallery-large-image__image--hoverZoom {
+			cursor: zoom-in;
+		}
+
+		&[hidden] {
+			display: none;
+		}
 
 		// Restrict the width of the Large Image when the Next/Previous buttons are outside the image.
 		#{$gallery-next-previous-outside-image} & {
@@ -29,6 +51,7 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		display: flex;
 		flex-direction: column;
 		position: absolute;
+		pointer-events: none;
 		z-index: 1;
 		width: 100%;
 		height: 100%;
@@ -135,15 +158,21 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 }
 
 // Thumbnails
-.woocommerce {
-	.is-vertical #{$thumbnails} {
+#{$thumbnails} {
+	img {
+		cursor: pointer;
+	}
+
+	.is-vertical & {
 		display: flex;
 		flex-direction: row;
 	}
 
-	#{$thumbnails} .woocommerce-product-gallery__image {
+	.woocommerce-product-gallery__image {
 		width: 100px;
 		height: 100px;
 		margin: 5px;
+
 	}
 }
+

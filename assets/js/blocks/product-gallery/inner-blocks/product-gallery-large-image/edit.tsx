@@ -6,9 +6,18 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { memo, useMemo } from '@wordpress/element';
 import classNames from 'classnames';
 
-const getInnerBlocksTemplate = () => {
-	return [ [ 'woocommerce/product-gallery-large-image-next-previous' ] ];
-};
+/**
+ * Internal dependencies
+ */
+import largeImageNextPreviousButtonMetadata from '../product-gallery-large-image-next-previous/block.json';
+import pagerMetadata from '../product-gallery-pager/block.json';
+import './editor.scss';
+import { ProductGalleryContext } from '../../types';
+
+const getInnerBlocksTemplate = () => [
+	[ largeImageNextPreviousButtonMetadata.name ],
+	[ pagerMetadata.name ],
+];
 
 const Placeholder = memo( () => {
 	return (
@@ -20,12 +29,6 @@ const Placeholder = memo( () => {
 		</div>
 	);
 } );
-
-/**
- * Internal dependencies
- */
-import './editor.scss';
-import { ProductGalleryContext } from '../../types';
 
 export const Edit = ( {
 	context,

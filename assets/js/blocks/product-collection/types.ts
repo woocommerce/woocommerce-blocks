@@ -17,8 +17,13 @@ export interface ProductCollectionAttributes {
 	convertedFromProducts: boolean;
 }
 
+export enum LayoutOptions {
+	GRID = 'flex',
+	STACK = 'list',
+}
+
 export interface ProductCollectionDisplayLayout {
-	type: 'flex' | 'list';
+	type: LayoutOptions;
 	columns: number;
 }
 
@@ -63,7 +68,7 @@ export type TProductCollectionOrderBy =
 	| 'popularity'
 	| 'rating';
 
-export type DisplayLayoutControlProps = {
+export type DisplayLayoutToolbarProps = {
 	displayLayout: ProductCollectionDisplayLayout;
 	setAttributes: ( attrs: Partial< ProductCollectionAttributes > ) => void;
 };

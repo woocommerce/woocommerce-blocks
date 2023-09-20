@@ -83,7 +83,7 @@ abstract class AbstractBlock {
 
 		$render_callback_attributes = $this->parse_render_callback_attributes( $attributes );
 		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
-			$this->enqueue_assets( $render_callback_attributes );
+			$this->enqueue_assets( $render_callback_attributes, $content, $block );
 		}
 		return $this->render( $render_callback_attributes, $content, $block );
 	}
@@ -210,6 +210,37 @@ abstract class AbstractBlock {
 		}
 
 		$metadata_path = $this->asset_api->get_block_metadata_path( $this->block_name );
+
+		/**
+		 * We always want to load block styles separately, for every theme.
+		 * When the core assets are loaded separately, other blocks' styles get
+		 * enqueued separately too. Thus we only need to handle the remaining
+		 * case.
+		 */
+		if (
+			! is_admin() &&
+			! wc_current_theme_is_fse_theme() &&
+			$block_settings['style'] &&
+			(
+				! function_exists( 'wp_should_load_separate_core_block_assets' ) ||
+				! wp_should_load_separate_core_block_assets()
+			)
+		) {
+			$style_handles           = $block_settings['style'];
+			$block_settings['style'] = null;
+			add_filter(
+				'render_block',
+				function( $html, $block ) use ( $style_handles ) {
+					if ( $block['blockName'] === $this->get_block_type() ) {
+						array_map( 'wp_enqueue_style', $style_handles );
+					}
+					return $html;
+				},
+				10,
+				2
+			);
+		}
+
 		// Prefer to register with metadata if the path is set in the block's class.
 		if ( ! empty( $metadata_path ) ) {
 			register_block_type_from_metadata(
@@ -303,12 +334,9 @@ abstract class AbstractBlock {
 	 * @return string[]|null
 	 */
 	protected function get_block_type_style() {
-		if ( wc_current_theme_is_fse_theme() ) {
-			$this->asset_api->register_style( 'wc-blocks-style-' . $this->block_name, $this->asset_api->get_block_asset_build_path( $this->block_name, 'css' ), [], 'all', true );
-			return [ 'wc-blocks-style', 'wc-blocks-style-' . $this->block_name ];
-		}
+		$this->asset_api->register_style( 'wc-blocks-style-' . $this->block_name, $this->asset_api->get_block_asset_build_path( $this->block_name, 'css' ), [], 'all', true );
 
-		return [ 'wc-all-blocks-style' ];
+		return [ 'wc-blocks-style', 'wc-blocks-style-' . $this->block_name ];
 	}
 
 	/**
@@ -367,9 +395,11 @@ abstract class AbstractBlock {
 	 * @internal This prevents the block script being enqueued on all pages. It is only enqueued as needed. Note that
 	 * we intentionally do not pass 'script' to register_block_type.
 	 *
-	 * @param array $attributes  Any attributes that currently are available from the block.
+	 * @param array    $attributes  Any attributes that currently are available from the block.
+	 * @param string   $content    The block content.
+	 * @param WP_Block $block    The block object.
 	 */
-	protected function enqueue_assets( array $attributes ) {
+	protected function enqueue_assets( array $attributes, $content, $block ) {
 		if ( $this->enqueued_assets ) {
 			return;
 		}

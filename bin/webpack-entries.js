@@ -38,11 +38,13 @@ const blocks = {
 	'legacy-template': {
 		customDir: 'classic-template',
 	},
+	'classic-shortcode': {},
 	'mini-cart': {},
 	'mini-cart-contents': {
 		customDir: 'mini-cart/mini-cart-contents',
 	},
 	'store-notices': {},
+	'page-content-wrapper': {},
 	'price-filter': {},
 	'product-best-sellers': {},
 	'product-category': {},
@@ -58,6 +60,7 @@ const blocks = {
 	'product-gallery-large-image-next-previous': {
 		customDir:
 			'product-gallery/inner-blocks/product-gallery-large-image-next-previous',
+		isExperimental: true,
 	},
 	'product-gallery-pager': {
 		customDir: 'product-gallery/inner-blocks/product-gallery-pager',
@@ -90,6 +93,9 @@ const blocks = {
 	},
 	'single-product': {},
 	'stock-filter': {},
+	'collection-filters': {
+		isExperimental: true,
+	},
 };
 
 // Returns the entries for each block given a relative path (ie: `index.js`,
@@ -122,16 +128,6 @@ const getBlockEntries = ( relativePath ) => {
 
 const entries = {
 	styling: {
-		// @wordpress/components styles
-		'custom-select-control-style':
-			'./node_modules/wordpress-components/src/custom-select-control/style.scss',
-		'snackbar-notice-style':
-			'./node_modules/wordpress-components/src/snackbar/style.scss',
-		'combobox-control-style':
-			'./node_modules/wordpress-components/src/combobox-control/style.scss',
-		'form-token-field-style':
-			'./node_modules/wordpress-components/src/form-token-field/style.scss',
-
 		// Packages styles
 		'packages-style': glob.sync( './packages/**/index.js' ),
 
@@ -171,7 +167,7 @@ const entries = {
 		...getBlockEntries( 'index.{t,j}s{,x}' ),
 	},
 	frontend: {
-		reviews: './assets/js/blocks/reviews/frontend.js',
+		reviews: './assets/js/blocks/reviews/frontend.ts',
 		...getBlockEntries( 'frontend.{t,j}s{,x}' ),
 		'mini-cart-component':
 			'./assets/js/blocks/mini-cart/component-frontend.tsx',
