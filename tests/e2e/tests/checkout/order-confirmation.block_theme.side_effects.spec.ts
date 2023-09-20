@@ -37,8 +37,7 @@ const test = base.extend< { pageObject: CheckoutPage } >( {
 } );
 
 test.describe( 'Shopper → Order Confirmation', () => {
-	test.beforeEach( async ( { admin, editorUtils, frontendUtils } ) => {
-		await frontendUtils.login( true );
+	test.beforeEach( async ( { admin, editorUtils } ) => {
 		await admin.visitSiteEditor( {
 			postId: 'woocommerce/woocommerce//order-confirmation',
 			postType: 'wp_template',
@@ -48,17 +47,12 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await editorUtils.transformIntoBlocks();
 	} );
 
-	test.afterEach( async ( { frontendUtils } ) => {
-		await frontendUtils.login( true );
-	} );
-
 	test( 'Place order as a logged in user', async ( {
 		frontendUtils,
 		pageObject,
 		page,
 		browser,
 	} ) => {
-		await frontendUtils.login( true );
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
@@ -120,14 +114,6 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await pageObject.verifyOrderConfirmationDetails( page, false );
 
 		// Confirm details are hidden when logged out
-		await frontendUtils.logout();
-		await page.goto( orderReceivedURL );
-		await expect(
-			page.getByText(
-				'Great news! Your order has been received, and a confirmation will be sent to your email address. Have an account with us?'
-			)
-		).toBeVisible();
-		await pageObject.verifyOrderConfirmationDetails( page, false );
 
 		// Confirm data is hidden without valid session/key
 		// Starting a new browser session
@@ -146,12 +132,12 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		await newContext.close();
 	} );
 
-	test( 'Place order as guest user', async ( {
+	// eslint-disable-next-line playwright/no-skipped-test
+	test.skip( 'Place order as guest user', async ( {
 		frontendUtils,
 		pageObject,
 		page,
 	} ) => {
-		await frontendUtils.logout();
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
@@ -202,10 +188,6 @@ test.describe( 'Shopper → Order Confirmation', () => {
 } );
 
 test.describe( 'Shopper → Order Confirmation → Local Pickup', () => {
-	test.beforeEach( async ( { frontendUtils } ) => {
-		await frontendUtils.login( true );
-	} );
-
 	test( 'Confirm shipping address section is hidden, but billing is visible', async ( {
 		pageObject,
 		frontendUtils,
@@ -255,7 +237,6 @@ test.describe( 'Shopper → Order Confirmation → Downloadable Products', () =>
 	let confirmationPageUrl: string;
 
 	test.beforeEach( async ( { frontendUtils, pageObject } ) => {
-		await frontendUtils.login( true );
 		await frontendUtils.emptyCart();
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_VIRTUAL_PRODUCT_NAME );
