@@ -1,4 +1,8 @@
 .wp-block-woocommerce-collection-price-filter {
+	.actions {
+		text-align: right;
+	}
+
 	.price-slider {
 		--low: 0%;
 		--high: 100%;
@@ -80,9 +84,5 @@
 				order: -1;
 			}
 		}
-	}
-
-	.actions {
-		text-align: right;
 	}
 }
