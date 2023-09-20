@@ -168,7 +168,7 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		flex-direction: row;
 	}
 
-	.woocommerce-product-gallery__image {
+	.wc-block-product-gallery-thumbnails__thumbnail {
 		width: 100px;
 		height: 100px;
 		margin: 5px;
