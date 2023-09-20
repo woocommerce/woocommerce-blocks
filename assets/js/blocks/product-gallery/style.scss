@@ -1,6 +1,6 @@
 $gallery: ".wc-block-product-gallery";
 $large-image: "#{$gallery}-large-image";
-$thumbnails: ".wc-block-components-product-gallery-thumbnails";
+$thumbnails: "#{$gallery}-thumbnails";
 $next-previous: "#{$large-image}-next-previous";
 $next-previous-left-off: "#{$next-previous}-left--off";
 $next-previous-right-off: "#{$next-previous}-right--off";

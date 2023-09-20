@@ -141,8 +141,8 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 		}
 
 		$context     = $block->context;
-		$prev_button = isset( $this->get_icons( $block->context )['prev_button'] ) ? $this->get_icons( $block->context )['prev_button'] : '';
-		$next_button = isset( $this->get_icons( $block->context )['next_button'] ) ? $this->get_icons( $block->context )['next_button'] : '';
+		$prev_button = isset( $this->get_icons( $context )['prev_button'] ) ? $this->get_icons( $context )['prev_button'] : '';
+		$next_button = isset( $this->get_icons( $context )['next_button'] ) ? $this->get_icons( $context )['next_button'] : '';
 
 		$alignment_class = isset( $attributes['layout']['verticalAlignment'] ) ? 'is-vertically-aligned-' . esc_attr( $attributes['layout']['verticalAlignment'] ) : '';
 		$position_class  = 'wc-block-product-gallery-large-image-next-previous--' . $this->get_icons( $context )['class'];
