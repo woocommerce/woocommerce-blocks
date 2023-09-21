@@ -61,6 +61,11 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		z-index: 1;
 		transition: all 0.1s linear;
 
+		// Keep the order in this way. The hoverZoom class should override the full-screen-on-click class when both are applied.
+		&.wc-block-woocommerce-product-gallery-large-image__image--full-screen-on-click {
+			cursor: pointer;
+		}
+
 		&.wc-block-woocommerce-product-gallery-large-image__image--hoverZoom {
 			cursor: zoom-in;
 		}
