@@ -55,10 +55,11 @@ class Connection {
 	 *
 	 * @param string $token The JWT token.
 	 * @param array  $prompts The prompts to send to the API.
+	 * @param int    $timeout The timeout for the request.
 	 *
 	 * @return array|WP_Error The responses or a WP_Error object.
 	 */
-	public function fetch_ai_responses( $token, array $prompts ) {
+	public function fetch_ai_responses( $token, array $prompts, $timeout = 15 ) {
 		// TODO: is there a timeout that we can set?
 		if ( $token instanceof \WP_Error ) {
 			return $token;
@@ -80,7 +81,7 @@ class Connection {
 			);
 		}
 
-		$responses = Requests::request_multiple( $requests );
+		$responses = Requests::request_multiple( $requests, array( 'timeout' => $timeout ) );
 
 		$processed_responses = array();
 		foreach ( $responses as $key => $response ) {
