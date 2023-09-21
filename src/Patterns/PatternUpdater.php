@@ -139,7 +139,7 @@ class PatternUpdater {
 
 		foreach ( $responses as $key => $response ) {
 			// If the AI response is invalid, we skip the pattern and keep the default content.
-			if ( is_wp_error( $response ) ) {
+			if ( is_wp_error( $response ) || empty( $response ) ) {
 				continue;
 			}
 

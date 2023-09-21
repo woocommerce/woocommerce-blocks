@@ -473,7 +473,15 @@
 		"name": "Social: Follow us in social media",
 		"slug": "woocommerce-blocks/social-follow-us-in-social-media",
 		"images_total": 4,
-		"images_format": "square"
+		"images_format": "square",
+		"content": {
+			"titles": [
+				{
+					"default": "Follow us in social media",
+					"ai_prompt": "An phrase that advertises the social media accounts"
+				}
+			]
+		}
 	},
 	{
 		"name": "Alternating Image and Text",

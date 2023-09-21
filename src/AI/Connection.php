@@ -85,7 +85,7 @@ class Connection {
 		$processed_responses = array();
 		foreach ( $responses as $key => $response ) {
 			if ( is_wp_error( $response ) || is_a( $response, Exception::class ) ) {
-				$processed_responses[ $key ] = $response;
+				$processed_responses[ $key ] = null;
 				continue;
 			}
 

@@ -31,7 +31,7 @@ $images  = PatternsHelper::get_pattern_images( 'woocommerce-blocks/banner' );
 			<!-- wp:button {"style":{"typography":{"fontSize":"16px"},"color":{"text":"#000000","background":"#ffffff"},"border":{"width":"0px","style":"none"}},"className":"is-style-fill"} -->
 			<div class="wp-block-button has-custom-font-size is-style-fill" style="font-size:16px">
 				<a class="wp-block-button__link has-text-color has-background wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" style="border-style:none;border-width:0px;color:#000000;background-color:#ffffff">
-					<?php echo esc_html( $content['descriptions'][2]['default'] ); ?>
+					<?php echo esc_html( $content['buttons'][0]['default'] ); ?>
 				</a>
 			</div>
 			<!-- /wp:button -->
