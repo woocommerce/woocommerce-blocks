@@ -45,7 +45,7 @@
 		"name": "Discount Banner with Image",
 		"slug": "woocommerce-blocks/discount-banner-with-image",
 		"images_total": 1,
-		"images_format": "square",
+		"images_format": "landscape",
 		"content": {
 			"descriptions": [
 				{
@@ -191,7 +191,7 @@
 		"name": "Hero Product Chessboard",
 		"slug": "woocommerce-blocks/hero-product-chessboard",
 		"images_total": 2,
-		"images_format": "square",
+		"images_format": "landscape",
 		"content": {
 			"titles": [
 				{
@@ -377,7 +377,7 @@
 		"name": "Product Hero 2 Column 2 Row",
 		"slug": "woocommerce-blocks/product-hero-2-column-2-row",
 		"images_total": 2,
-		"images_format": "square",
+		"images_format": "landscape",
 		"content": {
 			"titles": [
 				{
@@ -459,7 +459,7 @@
 		"name": "Small Discount Banner with Image",
 		"slug": "woocommerce-blocks/small-discount-banner-with-image",
 		"images_total": 1,
-		"images_format": "square",
+		"images_format": "landscape",
 		"content": {
 			"titles": [
 				{
@@ -473,7 +473,7 @@
 		"name": "Social: Follow us in social media",
 		"slug": "woocommerce-blocks/social-follow-us-in-social-media",
 		"images_total": 4,
-		"images_format": "square",
+		"images_format": "landscape",
 		"content": {
 			"titles": [
 				{
@@ -487,7 +487,7 @@
 		"name": "Alternating Image and Text",
 		"slug": "woocommerce-blocks/alt-image-and-text",
 		"images_total": 2,
-		"images_format": "square",
+		"images_format": "landscape",
 		"content": {
 			"titles": [
 				{
@@ -563,7 +563,7 @@
 		"name": "Testimonials Single",
 		"slug": "woocommerce-blocks/testimonials-single",
 		"images_total": 1,
-		"images_format": "square",
+		"images_format": "landscape",
 		"content": {
 			"titles": [
 				{
