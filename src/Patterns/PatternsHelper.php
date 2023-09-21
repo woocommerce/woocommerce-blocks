@@ -2,6 +2,8 @@
 
 namespace Automattic\WooCommerce\Blocks\Patterns;
 
+use WP_Error;
+
 /**
  * Pattern Images Helper class.
  */
@@ -16,7 +18,7 @@ class PatternsHelper {
 	public static function get_pattern_content( string $pattern_slug ) {
 		$dictionary = get_option( PatternUpdater::WC_BLOCKS_PATTERNS_CONTENT );
 		if ( empty( $dictionary ) ) {
-			return array();
+			$dictionary = self::get_patterns_dictionary();
 		}
 
 		$pattern = null;
@@ -107,5 +109,20 @@ class PatternsHelper {
 		shuffle( $images );
 
 		return array_slice( $images, 0, $images_total );
+	}
+
+	/**
+	 * Get the Patterns Dictionary.
+	 *
+	 * @return mixed|WP_Error|null
+	 */
+	private static function get_patterns_dictionary() {
+		$patterns_dictionary = plugin_dir_path( __FILE__ ) . 'dictionary.json';
+
+		if ( ! file_exists( $patterns_dictionary ) ) {
+			return new WP_Error( 'missing_patterns_dictionary', __( 'The patterns dictionary is missing.', 'woo-gutenberg-products-block' ) );
+		}
+
+		return wp_json_file_decode( $patterns_dictionary, array( 'associative' => true ) );
 	}
 }
