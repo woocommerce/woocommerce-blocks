@@ -5,7 +5,39 @@ namespace Automattic\WooCommerce\Blocks\Patterns;
 /**
  * Pattern Images Helper class.
  */
-class PatternImagesHelper {
+class PatternsHelper {
+	/**
+	 * Returns the pattern content.
+	 *
+	 * @param string $pattern_slug The pattern slug.
+	 *
+	 * @return array The pattern content.
+	 */
+	public static function get_pattern_content( string $pattern_slug ) {
+		$dictionary = get_option( PatternUpdater::WC_BLOCKS_PATTERNS_CONTENT );
+		if ( empty( $dictionary ) ) {
+			return array();
+		}
+
+		$pattern = null;
+		foreach ( $dictionary as $item ) {
+			if ( $item['slug'] === $pattern_slug ) {
+				$pattern = $item;
+				break;
+			}
+		}
+
+		if ( empty( $pattern ) ) {
+			return array();
+		}
+
+		if ( ! isset( $pattern['content'] ) ) {
+			return array();
+		}
+
+		return $pattern['content'];
+	}
+
 	/**
 	 * Returns the pattern images.
 	 *

@@ -5,6 +5,7 @@ namespace Automattic\WooCommerce\Blocks\AI;
 use Automattic\Jetpack\Connection\Client;
 use Jetpack_Options;
 use WP_Error;
+use WpOrg\Requests\Exception;
 use WpOrg\Requests\Requests;
 
 /**
@@ -83,7 +84,7 @@ class Connection {
 
 		$processed_responses = array();
 		foreach ( $responses as $key => $response ) {
-			if ( is_wp_error( $response ) ) {
+			if ( is_wp_error( $response ) || is_a( $response, Exception::class ) ) {
 				$processed_responses[ $key ] = $response;
 				continue;
 			}

@@ -57,11 +57,6 @@ class PatternUpdater {
 
 		$patterns_with_images_and_content = $this->get_patterns_with_content( $patterns_with_images );
 
-		if ( is_wp_error( $patterns_with_images_and_content ) ) {
-			// Instead of returning an error, we return the patterns with images, with the default content.
-			$patterns_with_images_and_content = $patterns_with_images;
-		}
-
 		if ( get_option( self::WC_BLOCKS_PATTERNS_CONTENT ) === $patterns_with_images_and_content ) {
 			return true;
 		}
@@ -93,11 +88,13 @@ class PatternUpdater {
 
 		foreach ( $patterns_dictionary as $pattern ) {
 			if ( ! $this->pattern_has_images( $pattern ) ) {
+				$patterns_with_images[] = $pattern;
 				continue;
 			}
 
 			$images = $this->get_images_for_pattern( $pattern, $vertical_images );
 			if ( empty( $images ) ) {
+				$patterns_with_images[] = $pattern;
 				continue;
 			}
 
@@ -132,7 +129,7 @@ class PatternUpdater {
 
 		$prompts = array();
 		foreach ( $patterns_with_content as $key => $pattern ) {
-			$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing an array of patterns with titles, descriptions and button texts: %s.\n', get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY ), wp_json_encode( $pattern ) );
+			$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing the content of the "%s" pattern: %s.\n', get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY ), $pattern['name'], wp_json_encode( $pattern['content'] ) );
 			$prompt .= "Replace the titles, descriptions and button texts in each 'default' key using the prompt in the corresponding 'ai_prompt' key by a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The response should be only a JSON string, with absolutely no intro or explanations.";
 
 			$prompts[] = $prompt;
@@ -146,13 +143,13 @@ class PatternUpdater {
 				continue;
 			}
 
-			if ( ! isset( $ai_response['completion'] ) ) {
+			if ( ! isset( $response['completion'] ) ) {
 				continue;
 			}
 
-			$pattern_with_content = json_decode( $ai_response['completion'], true );
-			if ( ! is_null( $pattern_with_content ) ) {
-				$patterns_with_content[ $key ] = $pattern_with_content;
+			$pattern_content = json_decode( $response['completion'], true );
+			if ( ! is_null( $pattern_content ) ) {
+				$patterns_with_content[ $key ]['content'] = $pattern_content;
 			}
 		}
 
