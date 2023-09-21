@@ -9,15 +9,14 @@ import { BlockControls } from '@wordpress/block-editor';
  */
 import { setQueryAttribute } from '../../utils';
 import DisplaySettingsToolbar from './display-settings-toolbar';
-import DisplayLayoutToolbar from './display-layout-toolbar';
 import PatternChooserToolbar from './pattern-chooser-toolbar';
 import type { ProductCollectionEditComponentProps } from '../../types';
 
 export default function ToolbarControls(
 	props: ProductCollectionEditComponentProps
 ) {
-	const { attributes, setAttributes, openPatternSelectionModal } = props;
-	const { query, displayLayout } = attributes;
+	const { attributes, openPatternSelectionModal } = props;
+	const { query } = attributes;
 
 	const setQueryAttributeBind = useMemo(
 		() => setQueryAttribute.bind( null, props ),
@@ -34,10 +33,6 @@ export default function ToolbarControls(
 					<DisplaySettingsToolbar
 						query={ query }
 						setQueryAttribute={ setQueryAttributeBind }
-					/>
-					<DisplayLayoutToolbar
-						displayLayout={ displayLayout }
-						setAttributes={ setAttributes }
 					/>
 				</>
 			) }

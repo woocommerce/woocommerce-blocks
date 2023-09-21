@@ -75,7 +75,7 @@ export type TProductCollectionOrderBy =
 	| 'popularity'
 	| 'rating';
 
-export type DisplayLayoutToolbarProps = {
+export type DisplayLayoutControlProps = {
 	displayLayout: ProductCollectionDisplayLayout;
 	setAttributes: ( attrs: Partial< ProductCollectionAttributes > ) => void;
 };
