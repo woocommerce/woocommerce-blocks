@@ -22,6 +22,15 @@ class ProductGalleryPager extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return null
+	 */
+	protected function get_block_type_style() {
+		return null;
+	}
+
+	/**
 	 *  Register the context
 	 *
 	 * @return string[]
@@ -42,7 +51,7 @@ class ProductGalleryPager extends AbstractBlock {
 		$number_of_thumbnails = $block->context['thumbnailsNumberOfThumbnails'] ?? 0;
 		$pager_display_mode   = $block->context['pagerDisplayMode'] ?? '';
 		$classname            = $attributes['className'] ?? '';
-		$wrapper_attributes   = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
+		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( $classname ) ) );
 		$post_id              = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
 		$product              = wc_get_product( $post_id );
 
