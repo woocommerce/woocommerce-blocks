@@ -106,7 +106,7 @@ class ProductGalleryPager extends AbstractBlock {
 
 			$is_first_pager_item = 0 === $key;
 			$pager_item          = sprintf(
-				'<li class="wc-block-woocommerce-product-gallery__pager-item %2$s">%1$s</li>',
+				'<li class="wc-block-product-gallery-pager__item %2$s">%1$s</li>',
 				'dots' === $pager_display_mode ? $this->get_dot_icon( $is_first_pager_item ) : $key + 1,
 				$is_first_pager_item ? 'is-active' : ''
 			);
@@ -134,7 +134,7 @@ class ProductGalleryPager extends AbstractBlock {
 		}
 
 		return sprintf(
-			'<ul class="wp-block-woocommerce-product-gallery-pager__pager">
+			'<ul class="wc-block-product-gallery-pager__pager">
 				%1$s
 			</ul>',
 			$html
