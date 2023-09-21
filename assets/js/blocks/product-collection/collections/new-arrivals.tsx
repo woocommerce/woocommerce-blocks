@@ -43,6 +43,7 @@ const innerBlocks: InnerBlockTemplate[] = [
 		{
 			align: 'center',
 			content: 'Here are the latest products in our store',
+			style: { spacing: { margin: { bottom: 'var:preset|spacing|30' } } },
 		},
 	],
 	INNER_BLOCKS_PRODUCT_TEMPLATE,
