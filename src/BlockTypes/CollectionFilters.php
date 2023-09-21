@@ -248,35 +248,45 @@ final class CollectionFilters extends AbstractBlock {
 		/**
 		 * Process params whose value can be passed as it is to the Store API.
 		 */
-		foreach ( $query as $key => $value ) {
-			if ( in_array( $key, $shared_params, true ) ) {
-				$params[ $key ] = $value;
-			} elseif ( isset( $param_keys_mapping[ $key ] ) ) {
-				$params[ $param_keys_mapping[ $key ] ] = $value;
+		array_walk(
+			$query,
+			function ( $value, $key ) use ( &$params, $shared_params, $param_keys_mapping ) {
+				if ( in_array( $key, $shared_params, true ) ) {
+					$params[ $key ] = $value;
+				} elseif ( isset( $param_keys_mapping[ $key ] ) ) {
+					$params[ $param_keys_mapping[ $key ] ] = $value;
+				}
 			}
-		}
+		);
 
 		/**
 		 * The value of taxQuery and woocommerceAttributes need additional
 		 * transformation to the shape that Store API accepts.
 		 */
-		foreach ( $query['taxQuery'] as $taxonomy => $value ) {
-			if ( 'product_cat' === $taxonomy ) {
-				$key = 'category';
-			} elseif ( 'product_tag' === $taxonomy ) {
-				$key = 'tag';
-			} else {
-				$key = '_unstable_tax_' . $taxonomy;
-			}
+		array_walk(
+			$query['taxQuery'],
+			function( $terms, $taxonomy ) use ( &$params ) {
+				$mapper = function( $key ) {
+					$mapping = array(
+						'product_tag' => 'tag',
+						'product_cat' => 'category',
+					);
 
-			$params[ $key ] = implode( ',', $value );
-		}
-		foreach ( $query['woocommerceAttributes'] as $attribute ) {
-			$params['attributes'][] = array(
-				'attribute' => $attribute['taxonomy'],
-				'term_id'   => $attribute['termId'],
-			);
-		}
+					return $mapping[ $key ] ?? '_unstable_tax_' . $key;
+				};
+
+				$params[ $mapper( $taxonomy ) ] = implode( ',', $terms );
+			}
+		);
+		array_walk(
+			$query['woocommerceAttributes'],
+			function( $attribute ) use ( &$params ) {
+				$params['attributes'][] = array(
+					'attribute' => $attribute['taxonomy'],
+					'term_id'   => $attribute['termId'],
+				);
+			}
+		);
 
 		/**
 		 * Product Collection determine the product visibility based on stock
