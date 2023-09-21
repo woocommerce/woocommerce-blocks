@@ -62,7 +62,7 @@ interactivityApiStore( {
 				},
 			},
 			dialog: {
-				handleClick: ( { context }: Store ) => {
+				handleCloseButtonClick: ( { context }: Store ) => {
 					context.woocommerce.isDialogOpen = false;
 				},
 			},
