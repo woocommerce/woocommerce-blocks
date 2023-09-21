@@ -19,8 +19,13 @@ export interface ProductCollectionAttributes {
 	collection?: string;
 }
 
+export enum LayoutOptions {
+	GRID = 'flex',
+	STACK = 'list',
+}
+
 export interface ProductCollectionDisplayLayout {
-	type: 'flex' | 'list';
+	type: LayoutOptions;
 	columns: number;
 }
 
