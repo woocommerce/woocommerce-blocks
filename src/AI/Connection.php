@@ -60,7 +60,6 @@ class Connection {
 	 * @return array|WP_Error The responses or a WP_Error object.
 	 */
 	public function fetch_ai_responses( $token, array $prompts, $timeout = 15 ) {
-		// TODO: is there a timeout that we can set?
 		if ( $token instanceof \WP_Error ) {
 			return $token;
 		}
