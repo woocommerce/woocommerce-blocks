@@ -35,6 +35,16 @@ class ProductGallery extends AbstractBlock {
 			''
 		);
 
+		$html_processor = new \WP_HTML_Tag_Processor( $html );
+
+		$html_processor->next_tag(
+			array(
+				'class_name' => 'wp-block-woocommerce-product-gallery',
+			)
+		);
+
+		$html_processor->remove_attribute( 'data-wc-context' );
+
 		$gallery_dialog = strtr(
 			'
 		<div class="wc-block-product-gallery-dialog__overlay" hidden data-wc-bind--hidden="!selectors.woocommerce.isDialogOpen">
@@ -55,7 +65,7 @@ class ProductGallery extends AbstractBlock {
 			</dialog>
 		</div>',
 			array(
-				'{{html}}' => $html,
+				'{{html}}' => $html_processor->get_updated_html(),
 			)
 		);
 		return $gallery_dialog;
