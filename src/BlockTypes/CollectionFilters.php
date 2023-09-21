@@ -212,6 +212,14 @@ final class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_formatted_products_params( $query ) {
+		$query = wp_parse_args(
+			$query,
+			array(
+				'taxQuery'              => array(),
+				'woocommerceAttributes' => array(),
+			)
+		);
+
 		$params = array();
 
 		if ( empty( $query['isProductCollectionBlock'] ) ) {
@@ -237,6 +245,9 @@ final class CollectionFilters extends AbstractBlock {
 			'woocommerceHandPickedProducts' => 'include',
 		);
 
+		/**
+		 * Process params whose value can be passed as it is to the Store API.
+		 */
 		foreach ( $query as $key => $value ) {
 			if ( in_array( $key, $shared_params, true ) ) {
 				$params[ $key ] = $value;
@@ -249,27 +260,22 @@ final class CollectionFilters extends AbstractBlock {
 		 * The value of taxQuery and woocommerceAttributes need additional
 		 * transformation to the shape that Store API accepts.
 		 */
-		if ( ! empty( $query['taxQuery'] ) ) {
-			foreach ( $query['taxQuery'] as $taxonomy => $value ) {
-				if ( 'product_cat' === $taxonomy ) {
-					$key = 'category';
-				} elseif ( 'product_tag' === $taxonomy ) {
-					$key = 'tag';
-				} else {
-					$key = '_unstable_tax_' . $taxonomy;
-				}
-
-				$params[ $key ] = implode( ',', $value );
+		foreach ( $query['taxQuery'] as $taxonomy => $value ) {
+			if ( 'product_cat' === $taxonomy ) {
+				$key = 'category';
+			} elseif ( 'product_tag' === $taxonomy ) {
+				$key = 'tag';
+			} else {
+				$key = '_unstable_tax_' . $taxonomy;
 			}
+
+			$params[ $key ] = implode( ',', $value );
 		}
-
-		if ( ! empty( $query['woocommerceAttributes'] ) ) {
-			foreach ( $query['woocommerceAttributes'] as $attribute ) {
-				$params['attributes'][] = array(
-					'attribute' => $attribute['taxonomy'],
-					'term_id'   => $attribute['termId'],
-				);
-			}
+		foreach ( $query['woocommerceAttributes'] as $attribute ) {
+			$params['attributes'][] = array(
+				'attribute' => $attribute['taxonomy'],
+				'term_id'   => $attribute['termId'],
+			);
 		}
 
 		/**
