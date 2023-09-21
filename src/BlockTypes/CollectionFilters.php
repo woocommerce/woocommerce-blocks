@@ -219,26 +219,29 @@ final class CollectionFilters extends AbstractBlock {
 		}
 
 		/**
+		 * The following params can be passed directly to Store API endpoints.
+		 */
+		$shared_params = array( 'exclude', 'offset', 'order', 'serach' );
+
+		/**
 		 * The following params just need to transform the key, their value can
 		 * be passed as it is to the Store API.
 		 */
-		$params_mapping = array(
-			'exclude'                       => 'exclude',
-			'offset'                        => 'offset',
-			'order'                         => 'order',
+		$param_keys_mapping = array(
 			'orderBy'                       => 'orderby',
 			'pages'                         => 'page',
 			'parents'                       => 'parent',
 			'perPage'                       => 'per_page',
-			'search'                        => 'search',
 			'woocommerceStockStatus'        => 'stock_status',
 			'woocommerceOnSale'             => 'on_sale',
 			'woocommerceHandPickedProducts' => 'include',
 		);
 
-		foreach ( $params_mapping as $key => $mapped_key ) {
-			if ( isset( $query[ $key ] ) ) {
-				$params[ $mapped_key ] = $query[ $key ];
+		foreach ( $query as $key => $value ) {
+			if ( in_array( $key, $shared_params, true ) ) {
+				$params[ $key ] = $value;
+			} elseif ( isset( $param_keys_mapping[ $key ] ) ) {
+				$params[ $param_keys_mapping[ $key ] ] = $value;
 			}
 		}
 
