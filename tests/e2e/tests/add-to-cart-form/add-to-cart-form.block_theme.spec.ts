@@ -71,6 +71,8 @@ test.describe( `${ blockData.name } Block`, () => {
 		} );
 		await editorUtils.enterEditMode();
 
+		await editor.insertBlock( { name: 'woocommerce/single-product' } );
+
 		await configureSingleProductBlock( editorUtils );
 
 		await expect(
