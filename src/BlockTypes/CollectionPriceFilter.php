@@ -13,7 +13,8 @@ final class CollectionPriceFilter extends AbstractBlock {
 	 *
 	 * @var string
 	 */
-	protected $block_name     = 'collection-price-filter';
+	protected $block_name = 'collection-price-filter';
+
 	const MIN_PRICE_QUERY_VAR = 'min_price';
 	const MAX_PRICE_QUERY_VAR = 'max_price';
 
@@ -54,15 +55,25 @@ final class CollectionPriceFilter extends AbstractBlock {
 			)
 		);
 
+		$filter_reset_button = sprintf(
+			' <button class="wc-block-components-filter-reset-button" data-wc-on--click="actions.filters.reset">
+				<span aria-hidden="true">%1$s</span>
+				<span class="screen-reader-text">%2$s</span>
+			</button>',
+			__( 'Reset', 'woo-gutenberg-products-block' ),
+			__( 'Reset filter', 'woo-gutenberg-products-block' ),
+		);
+
 		return sprintf(
 			'<div %1$s>
 				<div class="controls">%2$s</div>
 				<div class="actions">
-					<button class="reset" data-wc-on--click="actions.filters.reset">Reset</button>
+					%3$s
 				</div>
 			</div>',
 			$wrapper_attributes,
-			$this->get_price_slider( $data, $attributes )
+			$this->get_price_slider( $data, $attributes ),
+			$filter_reset_button
 		);
 	}
 
@@ -138,6 +149,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 					<div class="range-bar"></div>
 					<input
 						type="range"
+						class="min"
 						min="<?php echo esc_attr( $min_range ); ?>"
 						max="<?php echo esc_attr( $max_range ); ?>"
 						value="<?php echo esc_attr( $min_price ); ?>"
@@ -149,6 +161,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 					>
 					<input
 						type="range"
+						class="max"
 						min="<?php echo esc_attr( $min_range ); ?>"
 						max="<?php echo esc_attr( $max_range ); ?>"
 						value="<?php echo esc_attr( $max_price ); ?>"
