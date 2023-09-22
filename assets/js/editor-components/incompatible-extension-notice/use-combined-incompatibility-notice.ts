@@ -79,7 +79,7 @@ export const useCombinedIncompatibilityNotice = (
 			Object.keys( notice ).includes( blockName ) &&
 			areEqual(
 				notice[ blockName as keyof object ],
-				incompatiblePaymentMethodSlugs
+				allIncompatibleItemSlugs
 			)
 	);
 
