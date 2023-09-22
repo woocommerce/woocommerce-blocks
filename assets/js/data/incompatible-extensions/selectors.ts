@@ -1,8 +1,21 @@
 /**
- * Internal dependencies
+ * External dependencies
  */
-import { IncompatibilityState } from './default-state';
+import { getSetting } from '@woocommerce/settings';
 
-export const getIncompatibleExtensions = (
-	state: IncompatibilityState
-): IncompatibilityState[ 'extensions' ] => state.extensions;
+interface GlobalIncompatibleExtensions {
+	id: string;
+	title: string;
+}
+
+const incompatibleExtensions: Record< string, string > = {};
+
+if ( getSetting( 'incompatibleExtensions' ) ) {
+	getSetting< GlobalIncompatibleExtensions[] >(
+		'incompatibleExtensions'
+	).forEach( ( extension ) => {
+		incompatibleExtensions[ extension.id ] = extension.title;
+	} );
+}
+
+export const getIncompatibleExtensions = () => incompatibleExtensions;

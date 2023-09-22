@@ -1,26 +1,24 @@
+/**
+ * External dependencies
+ */
+import { useSelect } from '@wordpress/data';
+
 export const useIncompatibleExtensionNotice = (): [
 	{ [ k: string ]: string } | null,
 	string[],
 	number
 ] => {
-	const incompatibleExtensions = {
-		secondIncompatibleExtension: 'Second Incompatible Extension',
-		firstIncompatibleExtension: 'First Incompatible Extension',
-		aawesomeIncompatibleExtension: 'Aawesome Incompatible Extension',
-	};
+	const { incompatibleExtensions } = useSelect( ( select ) => {
+		const { getIncompatibleExtensions } = select(
+			'wc/store/incompatible-extensions'
+		);
+		return {
+			incompatibleExtensions: getIncompatibleExtensions(),
+		};
+	}, [] );
+
 	const incompatibleExtensionSlugs = Object.keys( incompatibleExtensions );
 	const incompatibleExtensionCount = incompatibleExtensionSlugs.length;
-
-	// const incompatibleExtensions = {};
-	// const incompatibleExtensionSlugs = Object.keys( incompatibleExtensions );
-	// const incompatibleExtensionCount = incompatibleExtensionSlugs.length;
-
-	// console.clear();
-	// console.log( {
-	// 	incompatibleExtensions,
-	// 	incompatibleExtensionSlugs,
-	// 	incompatibleExtensionCount,
-	// } );
 
 	return [
 		incompatibleExtensions,

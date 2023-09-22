@@ -27,13 +27,6 @@ export const useIncompatiblePaymentGatewaysNotice = (): [
 	const incompatiblePaymentMethodCount =
 		incompatiblePaymentMethodSlugs.length;
 
-	// console.clear();
-	// console.log( {
-	// 	incompatiblePaymentMethods,
-	// 	incompatiblePaymentMethodSlugs,
-	// 	incompatiblePaymentMethodCount,
-	// } );
-
 	return [
 		incompatiblePaymentMethods,
 		incompatiblePaymentMethodSlugs,
