@@ -54,9 +54,6 @@ export const useCombinedIncompatibilityNotice = (
 		...incompatiblePaymentMethods,
 	};
 
-	// console.clear();
-	// console.log( sortAlphabetically( allIncompatibleItems ) );
-
 	const allIncompatibleItemSlugs = [
 		...incompatibleExtensionSlugs,
 		...incompatiblePaymentMethodSlugs,
