@@ -33,6 +33,14 @@ class Checkout extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 		add_action( 'wp_loaded', array( $this, 'register_patterns' ) );
+		// This prevents the page redirecting when the cart is empty. This is so the editor still loads the page preview.
+		add_filter(
+			'woocommerce_checkout_redirect_empty_cart',
+			function( $return ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				return isset( $_GET['_wp-find-template'] ) ? false : $return;
+			}
+		);
 	}
 
 	/**
@@ -104,16 +112,18 @@ class Checkout extends AbstractBlock {
 	/**
 	 * Enqueue frontend assets for this block, just in time for rendering.
 	 *
-	 * @param array $attributes  Any attributes that currently are available from the block.
+	 * @param array    $attributes  Any attributes that currently are available from the block.
+	 * @param string   $content    The block content.
+	 * @param WP_Block $block    The block object.
 	 */
-	protected function enqueue_assets( array $attributes ) {
+	protected function enqueue_assets( array $attributes, $content, $block ) {
 		/**
 		 * Fires before checkout block scripts are enqueued.
 		 *
 		 * @since 4.6.0
 		 */
 		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' );
-		parent::enqueue_assets( $attributes );
+		parent::enqueue_assets( $attributes, $content, $block );
 		/**
 		 * Fires after checkout block scripts are enqueued.
 		 *

@@ -9,14 +9,24 @@ interface State {
 
 interface Context {
 	woocommerce: {
-		productGallery: { numberOfThumbnails: number };
+		selectedImage: string;
+		imageId: string;
+		isDialogOpen: boolean;
 	};
 }
 
 interface Selectors {
 	woocommerce: {
-		productGallery: {
-			numberOfPages: ( store: unknown ) => number;
+		isSelected: ( store: unknown ) => boolean;
+		pagerDotFillOpacity: ( store: SelectorsStore ) => number;
+		isDialogOpen: ( store: unknown ) => boolean;
+	};
+}
+
+interface Actions {
+	woocommerce: {
+		thumbnails: {
+			handleClick: ( context: Context ) => void;
 		};
 	};
 }
@@ -25,22 +35,46 @@ interface Store {
 	state: State;
 	context: Context;
 	selectors: Selectors;
-	ref: HTMLElement;
+	actions: Actions;
+	ref?: HTMLElement;
 }
 
-type SelectorsStore = Pick< Store, 'context' | 'selectors' >;
+type SelectorsStore = Pick< Store, 'context' | 'selectors' | 'ref' >;
 
 interactivityApiStore( {
+	state: {},
 	selectors: {
 		woocommerce: {
-			productGallery: {
-				numberOfPages: ( store: SelectorsStore ) => {
-					const { context } = store;
+			isSelected: ( { context }: Store ) => {
+				return (
+					context?.woocommerce.selectedImage ===
+					context?.woocommerce.imageId
+				);
+			},
+			pagerDotFillOpacity( store: SelectorsStore ) {
+				const { context } = store;
 
-					return context.woocommerce.productGallery
-						.numberOfThumbnails;
-				},
+				return context?.woocommerce.selectedImage ===
+					context?.woocommerce.imageId
+					? 1
+					: 0.2;
+			},
+			isDialogOpen: ( { context }: Store ) => {
+				return context?.woocommerce.isDialogOpen;
 			},
 		},
 	},
-} as Store );
+	actions: {
+		woocommerce: {
+			thumbnails: {
+				handleClick: ( { context }: Store ) => {
+					context.woocommerce.selectedImage =
+						context.woocommerce.imageId;
+				},
+			},
+			handleSelectImage: ( { context }: Store ) => {
+				context.woocommerce.selectedImage = context.woocommerce.imageId;
+			},
+		},
+	},
+} );

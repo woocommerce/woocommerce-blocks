@@ -9,14 +9,15 @@ import {
 } from '@wordpress/block-editor';
 import { BlockEditProps, InnerBlockTemplate } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import {
 	moveInnerBlocksToPosition,
-	updateGroupBlockType,
 	getInnerBlocksLockAttributes,
+	getClassNameByNextPreviousButtonsPosition,
 } from './utils';
 import { ProductGalleryThumbnailsBlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
 import { ProductGalleryPagerBlockSettings } from './inner-blocks/product-gallery-pager/settings';
@@ -27,60 +28,103 @@ import { ProductGalleryNextPreviousBlockSettings } from './inner-blocks/product-
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'core/group',
-		{ layout: { type: 'flex' } },
+		{ layout: { type: 'flex', flexWrap: 'nowrap' } },
 		[
 			[
 				'woocommerce/product-gallery-thumbnails',
 				getInnerBlocksLockAttributes( 'lock' ),
 			],
 			[
-				'woocommerce/product-gallery-large-image',
-				getInnerBlocksLockAttributes( 'lock' ),
+				'core/group',
+				{
+					layout: {
+						type: 'flex',
+						orientation: 'vertical',
+						justifyContent: 'center',
+					},
+					...getInnerBlocksLockAttributes( 'lock' ),
+				},
 				[
 					[
-						'woocommerce/product-sale-badge',
-						{
-							align: 'right',
-							style: {
-								spacing: {
-									margin: {
-										top: '4px',
-										right: '4px',
-										bottom: '4px',
-										left: '4px',
+						'woocommerce/product-gallery-large-image',
+						getInnerBlocksLockAttributes( 'lock' ),
+						[
+							[
+								'woocommerce/product-sale-badge',
+								{
+									align: 'right',
+									style: {
+										spacing: {
+											margin: {
+												top: '4px',
+												right: '4px',
+												bottom: '4px',
+												left: '4px',
+											},
+										},
 									},
+									lock: { move: true },
 								},
-							},
-						},
+							],
+							[
+								'woocommerce/product-gallery-large-image-next-previous',
+								{
+									layout: {
+										type: 'flex',
+										verticalAlignment: 'bottom',
+									},
+									lock: { move: true, remove: true },
+								},
+							],
+						],
 					],
 					[
-						'woocommerce/product-gallery-large-image-next-previous',
-						{
-							layout: {
-								type: 'flex',
-								verticalAlignment: 'bottom',
-							},
-						},
+						'woocommerce/product-gallery-pager',
+						{ lock: { move: true, remove: true } },
 					],
 				],
 			],
 		],
 	],
-	[
-		'woocommerce/product-gallery-pager',
-		getInnerBlocksLockAttributes( 'lock' ),
-	],
 ];
+
+const setMode = (
+	currentTemplateId: string,
+	templateType: string,
+	setAttributes: ( attrs: Partial< ProductGalleryAttributes > ) => void
+) => {
+	if (
+		templateType === 'wp_template_part' &&
+		currentTemplateId.includes( 'product-gallery' )
+	) {
+		setAttributes( {
+			mode: 'full',
+		} );
+	}
+};
 
 export const Edit = ( {
 	clientId,
 	attributes,
 	setAttributes,
 }: BlockEditProps< ProductGalleryAttributes > ) => {
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( {
+		className: getClassNameByNextPreviousButtonsPosition(
+			attributes.nextPreviousButtonsPosition
+		),
+	} );
 
-	// Update the Group block type when the thumbnailsPosition attribute changes.
-	updateGroupBlockType( attributes, clientId );
+	const { currentTemplateId, templateType } = useSelect(
+		( select ) => ( {
+			currentTemplateId: select( 'core/edit-site' ).getEditedPostId(),
+			templateType: select( 'core/edit-site' ).getEditedPostType(),
+		} ),
+		[]
+	);
+
+	useEffect( () => {
+		setMode( currentTemplateId, templateType, setAttributes );
+	}, [ currentTemplateId, setAttributes, templateType ] );
 
 	useEffect( () => {
 		setAttributes( {
@@ -128,7 +172,6 @@ export const Edit = ( {
 			<InnerBlocks
 				allowedBlocks={ [
 					'woocommerce/product-gallery-large-image',
-					'woocommerce/product-gallery-pager',
 					'woocommerce/product-gallery-thumbnails',
 				] }
 				templateLock={ false }
