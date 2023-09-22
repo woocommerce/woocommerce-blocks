@@ -76,7 +76,7 @@ const ProductCollectionPlaceholder = (
 					onClick={ addDefaultProductCollection }
 				>
 					{ __(
-						'Add default Product Collection',
+						'Use default collection',
 						'woo-gutenberg-products-block'
 					) }
 				</Button>

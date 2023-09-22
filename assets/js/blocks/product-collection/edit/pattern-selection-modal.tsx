@@ -152,7 +152,10 @@ const PatternSelectionModal = ( props: {
 	return (
 		<Modal
 			overlayClassName="wc-blocks-product-collection__selection-modal"
-			title={ __( 'Choose a pattern', 'woo-gutenberg-products-block' ) }
+			title={ __(
+				'Choose a collection',
+				'woo-gutenberg-products-block'
+			) }
 			onRequestClose={ props.closePatternSelectionModal }
 			// @ts-expect-error Type definitions are missing in the version we are using i.e. 19.1.5,
 			// Once we will update to the latest version, ts-expect-error should be removed
