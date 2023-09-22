@@ -10,9 +10,9 @@ import { useLocalStorageState } from '@woocommerce/base-hooks';
 import { useIncompatiblePaymentGatewaysNotice } from './use-incompatible-payment-gateways-notice';
 import { useIncompatibleExtensionNotice } from './use-incompatible-extensions-notice';
 
-type StoredIncompatibleGateway = { [ k: string ]: string[] };
+type StoredIncompatibleExtension = { [ k: string ]: string[] };
 const initialDismissedNotices: React.SetStateAction<
-	StoredIncompatibleGateway[]
+	StoredIncompatibleExtension[]
 > = [];
 
 const areEqual = ( array1: string[], array2: string[] ) => {
@@ -66,7 +66,7 @@ export const useCombinedIncompatibilityNotice = (
 		incompatibleExtensionCount + incompatiblePaymentMethodCount;
 
 	const [ dismissedNotices, setDismissedNotices ] = useLocalStorageState<
-		StoredIncompatibleGateway[]
+		StoredIncompatibleExtension[]
 	>(
 		`wc-blocks_dismissed_incompatible_extensions_notices`,
 		initialDismissedNotices
@@ -102,7 +102,7 @@ export const useCombinedIncompatibilityNotice = (
 		if ( ! shouldBeDismissed && ! isDismissedNoticeUpToDate ) {
 			setDismissedNotices( ( previousDismissedNotices ) =>
 				previousDismissedNotices.reduce(
-					( acc: StoredIncompatibleGateway[], curr ) => {
+					( acc: StoredIncompatibleExtension[], curr ) => {
 						if ( Object.keys( curr ).includes( blockName ) ) {
 							return acc;
 						}
