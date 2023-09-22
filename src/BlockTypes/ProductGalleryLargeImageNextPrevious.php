@@ -22,6 +22,15 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return null
+	 */
+	protected function get_block_type_style() {
+		return null;
+	}
+
+	/**
 	 *  Register the context
 	 *
 	 * @return string[]
@@ -46,7 +55,8 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 				return 'off';
 			default:
 				return 'off';
-		}   }
+		}
+	}
 
 	/**
 	 * Include and render the block.
@@ -97,7 +107,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 		$position_class  = 'wc-block-product-gallery-large-image-next-previous--' . $this->get_class_suffix( $context );
 
 		return strtr(
-			'<div class="wp-block-woocommerce-product-gallery-large-image-next-previous {alignment_class}">
+			'<div class="wc-block-product-gallery-large-image-next-previous wp-block-woocommerce-product-gallery-large-image-next-previous {alignment_class}">
 				<div class="wc-block-product-gallery-large-image-next-previous-container {position_class}">
 					{prev_button}
 					{next_button}

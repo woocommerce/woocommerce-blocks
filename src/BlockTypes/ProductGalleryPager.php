@@ -22,6 +22,15 @@ class ProductGalleryPager extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return null
+	 */
+	protected function get_block_type_style() {
+		return null;
+	}
+
+	/**
 	 *  Register the context
 	 *
 	 * @return string[]
@@ -42,8 +51,8 @@ class ProductGalleryPager extends AbstractBlock {
 		$number_of_thumbnails = $block->context['thumbnailsNumberOfThumbnails'] ?? 0;
 		$pager_display_mode   = $block->context['pagerDisplayMode'] ?? '';
 		$classname            = $attributes['className'] ?? '';
-		$wrapper_attributes   = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$post_id              = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
+		$wrapper_attributes   = get_block_wrapper_attributes( array( 'class' => trim( $classname ) ) );
+		$post_id              = $block->context['postId'] ?? '';
 		$product              = wc_get_product( $post_id );
 
 		if ( $product ) {
@@ -51,15 +60,18 @@ class ProductGalleryPager extends AbstractBlock {
 			$number_of_available_images = count( $product_gallery_images_ids );
 			$number_of_thumbnails       = $number_of_thumbnails < $number_of_available_images ? $number_of_thumbnails : $number_of_available_images;
 
-			$html = $this->render_pager( $product_gallery_images_ids, $pager_display_mode, $number_of_thumbnails );
+			if ( $number_of_thumbnails > 1 ) {
+				$html = $this->render_pager( $product_gallery_images_ids, $pager_display_mode, $number_of_thumbnails );
 
-			return sprintf(
-				'<div %1$s>
-					%2$s
-				</div>',
-				$wrapper_attributes,
-				$html
-			);
+				return sprintf(
+					'<div %1$s>
+						%2$s
+					</div>',
+					$wrapper_attributes,
+					$html
+				);
+			}
+			return '';
 		}
 	}
 
@@ -97,9 +109,9 @@ class ProductGalleryPager extends AbstractBlock {
 
 			$is_first_pager_item = 0 === $key;
 			$pager_item          = sprintf(
-				'<li class="wc-block-woocommerce-product-gallery__pager-item %2$s">%1$s</li>',
+				'<li class="wc-block-product-gallery-pager__item %2$s">%1$s</li>',
 				'dots' === $pager_display_mode ? $this->get_dot_icon( $is_first_pager_item ) : $key + 1,
-				$is_first_pager_item ? 'is-active' : ''
+				$is_first_pager_item ? 'wc-block-woocommerce-product-gallery-pager-item-is-active' : ''
 			);
 			$p                   = new \WP_HTML_Tag_Processor( $pager_item );
 
@@ -117,7 +129,7 @@ class ProductGalleryPager extends AbstractBlock {
 					'actions.woocommerce.handleSelectImage'
 				);
 				$p->set_attribute(
-					'data-wc-class--is-active',
+					'data-wc-class--wc-block-woocommerce-product-gallery-pager-item-is-active',
 					'selectors.woocommerce.isSelected'
 				);
 				$html .= $p->get_updated_html();
@@ -125,7 +137,7 @@ class ProductGalleryPager extends AbstractBlock {
 		}
 
 		return sprintf(
-			'<ul class="wp-block-woocommerce-product-gallery-pager__pager">
+			'<ul class="wc-block-product-gallery-pager__pager">
 				%1$s
 			</ul>',
 			$html

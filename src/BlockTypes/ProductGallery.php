@@ -16,15 +16,6 @@ class ProductGallery extends AbstractBlock {
 	protected $block_name = 'product-gallery';
 
 	/**
-	 * Get the frontend style handle for this block type.
-	 *
-	 * @return null
-	 */
-	protected function get_block_type_style() {
-		return null;
-	}
-
-	/**
 	 *  Register the context
 	 *
 	 * @return string[]
@@ -81,18 +72,27 @@ class ProductGallery extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+		$post_id                = $block->context['postId'] ?? '';
+		$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail', array() );
+		$classname_single_image = '';
 		// This is a temporary solution. We have to refactor this code when the block will have to be addable on every page/post https://github.com/woocommerce/woocommerce-blocks/issues/10882.
 		global $product;
-		$classname            = $attributes['className'] ?? '';
-		$wrapper_attributes   = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$gallery              = ( true === $attributes['fullScreenOnClick'] && isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ) ? $this->render_dialog() : '';
-		$html                 = sprintf(
+
+		if ( count( $product_gallery_images ) < 2 ) {
+			// The gallery consists of a single image.
+			$classname_single_image = 'is-single-product-gallery-image';
+		}
+
+		$classname          = $attributes['className'] ?? '';
+		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'wc-block-product-gallery %1$s %2$s', $classname, $classname_single_image ) ) ) );
+		$gallery            = ( true === $attributes['fullScreenOnClick'] && isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ) ? $this->render_dialog() : '';
+		$html               = sprintf(
 			'<div %1$s>
 				%2$s
 				%3$s
 			</div>',
 			$wrapper_attributes,
-			$this->remove_div_wrapper( $content ),
+			$content,
 			$gallery
 		);
 		$number_of_thumbnails = $block->attributes['thumbnailsNumberOfThumbnails'] ?? 0;
