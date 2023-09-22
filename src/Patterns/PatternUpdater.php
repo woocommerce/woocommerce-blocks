@@ -57,6 +57,10 @@ class PatternUpdater {
 
 		$patterns_with_images_and_content = $this->get_patterns_with_content( $patterns_with_images );
 
+		if ( is_wp_error( $patterns_with_images_and_content ) ) {
+			return new WP_Error( 'failed_to_set_pattern_content', __( 'Failed to set the pattern content.', 'woo-gutenberg-products-block' ) );
+		}
+
 		if ( get_option( self::WC_BLOCKS_PATTERNS_CONTENT ) === $patterns_with_images_and_content ) {
 			return true;
 		}
