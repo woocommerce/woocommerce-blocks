@@ -71,6 +71,7 @@ class ProductGalleryPager extends AbstractBlock {
 					$html
 				);
 			}
+			return '';
 		}
 	}
 
