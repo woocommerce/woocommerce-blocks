@@ -296,13 +296,13 @@ const CheckoutProcessor = () => {
 						} );
 				} catch {
 					let errorMessage = __(
-						'Something went wrong, but your order may still have been placed. Please check your email inbox before retrying.',
+						'Something went wrong when placing the order. Check your email for order updates before retrying.',
 						'woo-gutenberg-products-block'
 					);
 
 					if ( customerId !== 0 ) {
 						errorMessage = __(
-							'Something went wrong, but your order may still have been placed. Please check your email inbox or your order history in the "My Account" area before retrying.',
+							"Something went wrong when placing the order. Check your account's order history or your email for order updates before retrying.",
 							'woo-gutenberg-products-block'
 						);
 					}
