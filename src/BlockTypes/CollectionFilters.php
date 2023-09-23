@@ -148,20 +148,14 @@ final class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_aggregated_collection_data( $block ) {
-		$collection_data_params = array();
-		$inner_blocks           = array();
+		$inner_blocks = $this->get_inner_blocks_recursive( $block->inner_blocks );
 
-		do {
-			$inner_blocks = array_merge(
-				$this->get_inner_blocks_recursive( $block->inner_blocks->current() ),
-				$inner_blocks
-			);
-			$block->inner_blocks->next();
-		} while ( $block->inner_blocks->valid() );
-
-		foreach ( $this->collection_data_params_mapping as $key => $block_name ) {
-			$collection_data_params[ $key ] = ( in_array( $block_name, $inner_blocks, true ) );
-		}
+		$collection_data_params = array_map(
+			function( $block_name ) use ( $inner_blocks ) {
+				return in_array( $block_name, $inner_blocks, true );
+			},
+			$this->collection_data_params_mapping
+		);
 
 		if ( empty( array_filter( $collection_data_params ) ) ) {
 			return array();
@@ -189,18 +183,22 @@ final class CollectionFilters extends AbstractBlock {
 	/**
 	 * Get all inner blocks recursively.
 	 *
-	 * @param WP_Block $block The block to get inner blocks from.
-	 * @param array    $results The results array.
+	 * @param WP_Block_List $inner_blocks The block to get inner blocks from.
+	 * @param array         $results      The results array.
 	 *
 	 * @return array
 	 */
-	private function get_inner_blocks_recursive( $block, $results = array() ) {
-		$results[] = $block->name;
-		if ( ! empty( $block->inner_blocks ) ) {
-			foreach ( $block->inner_blocks as $inner_block ) {
-				$results = $this->get_inner_blocks_recursive( $inner_block, $results );
+	private function get_inner_blocks_recursive( $inner_blocks, &$results = array() ) {
+		if ( is_a( $inner_blocks, 'WP_Block_List' ) ) {
+			foreach ( $inner_blocks as $inner_block ) {
+				$results[] = $inner_block->name;
+				$this->get_inner_blocks_recursive(
+					$inner_block->inner_blocks,
+					$results
+				);
 			}
 		}
+
 		return $results;
 	}
 
