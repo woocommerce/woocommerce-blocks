@@ -16,18 +16,7 @@ class PatternsHelper {
 	 * @return array The pattern content.
 	 */
 	public static function get_pattern_content( string $pattern_slug ) {
-		$dictionary = get_option( PatternUpdater::WC_BLOCKS_PATTERNS_CONTENT );
-		if ( empty( $dictionary ) ) {
-			$dictionary = self::get_patterns_dictionary();
-		}
-
-		$pattern = null;
-		foreach ( $dictionary as $item ) {
-			if ( $item['slug'] === $pattern_slug ) {
-				$pattern = $item;
-				break;
-			}
-		}
+		$pattern = self::get_patterns_dictionary( $pattern_slug );
 
 		if ( empty( $pattern ) ) {
 			return array();
@@ -48,18 +37,7 @@ class PatternsHelper {
 	 * @return array The pattern images.
 	 */
 	public static function get_pattern_images( string $pattern_slug ): array {
-		$dictionary = get_option( PatternUpdater::WC_BLOCKS_PATTERNS_CONTENT );
-		if ( empty( $dictionary ) ) {
-			return array();
-		}
-
-		$pattern = null;
-		foreach ( $dictionary as $item ) {
-			if ( $item['slug'] === $pattern_slug ) {
-				$pattern = $item;
-				break;
-			}
-		}
+		$pattern = self::get_patterns_dictionary( $pattern_slug );
 
 		if ( empty( $pattern ) ) {
 			return array();
@@ -114,15 +92,41 @@ class PatternsHelper {
 	/**
 	 * Get the Patterns Dictionary.
 	 *
+	 * @param string|null $pattern_slug The pattern slug.
+	 *
 	 * @return mixed|WP_Error|null
 	 */
-	private static function get_patterns_dictionary() {
-		$patterns_dictionary = plugin_dir_path( __FILE__ ) . 'dictionary.json';
+	private static function get_patterns_dictionary( $pattern_slug = null ) {
+		$patterns_dictionary = get_option( PatternUpdater::WC_BLOCKS_PATTERNS_CONTENT );
 
-		if ( ! file_exists( $patterns_dictionary ) ) {
+		if ( ! empty( $patterns_dictionary ) ) {
+			if ( empty( $pattern_slug ) ) {
+				return $patterns_dictionary;
+			}
+
+			foreach ( $patterns_dictionary as $pattern_dictionary ) {
+				if ( $pattern_dictionary['slug'] === $pattern_slug ) {
+					return $pattern_dictionary;
+				}
+			}
+		}
+
+		$patterns_dictionary_file = plugin_dir_path( __FILE__ ) . 'dictionary.json';
+
+		if ( ! file_exists( $patterns_dictionary_file ) ) {
 			return new WP_Error( 'missing_patterns_dictionary', __( 'The patterns dictionary is missing.', 'woo-gutenberg-products-block' ) );
 		}
 
-		return wp_json_file_decode( $patterns_dictionary, array( 'associative' => true ) );
+		$patterns_dictionary = wp_json_file_decode( $patterns_dictionary_file, array( 'associative' => true ) );
+
+		if ( ! empty( $pattern_slug ) ) {
+			foreach ( $patterns_dictionary as $pattern_dictionary ) {
+				if ( $pattern_dictionary['slug'] === $pattern_slug ) {
+					return $pattern_dictionary;
+				}
+			}
+		}
+
+		return $patterns_dictionary;
 	}
 }
