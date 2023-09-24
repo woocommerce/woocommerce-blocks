@@ -210,14 +210,6 @@ final class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_formatted_products_params( $query ) {
-		$query = wp_parse_args(
-			$query,
-			array(
-				'taxQuery'              => array(),
-				'woocommerceAttributes' => array(),
-			)
-		);
-
 		$params = array();
 
 		if ( empty( $query['isProductCollectionBlock'] ) ) {
@@ -228,12 +220,18 @@ final class CollectionFilters extends AbstractBlock {
 		 * The following params can be passed directly to Store API endpoints.
 		 */
 		$shared_params = array( 'exclude', 'offset', 'order', 'serach' );
+		array_walk(
+			$shared_params,
+			function( $key ) use ( $query, &$params ) {
+				$params[ $key ] = $query[ $key ] ?? '';
+			}
+		);
 
 		/**
 		 * The following params just need to transform the key, their value can
 		 * be passed as it is to the Store API.
 		 */
-		$param_keys_mapping = array(
+		$mapped_params = array(
 			'orderBy'                       => 'orderby',
 			'pages'                         => 'page',
 			'parents'                       => 'parent',
@@ -242,37 +240,44 @@ final class CollectionFilters extends AbstractBlock {
 			'woocommerceOnSale'             => 'on_sale',
 			'woocommerceHandPickedProducts' => 'include',
 		);
-
-		/**
-		 * Process params whose value can be passed as it is to the Store API.
-		 */
-		foreach ( $query as $key => $value ) {
-			if ( in_array( $key, $shared_params, true ) ) {
-				$params[ $key ] = $value;
-			} elseif ( isset( $param_keys_mapping[ $key ] ) ) {
-				$params[ $param_keys_mapping[ $key ] ] = $value;
+		array_walk(
+			$mapped_params,
+			function( $mapped_key, $original_key ) use ( $query, &$params ) {
+				$params[ $mapped_key ] = $query[ $original_key ] ?? '';
 			}
-		}
+		);
 
 		/**
 		 * The value of taxQuery and woocommerceAttributes need additional
 		 * transformation to the shape that Store API accepts.
 		 */
-		foreach ( $query['taxQuery'] as $taxonomy => $value ) {
-			if ( 'product_cat' === $taxonomy ) {
-				$key = 'category';
-			} elseif ( 'product_tag' === $taxonomy ) {
-				$key = 'tag';
-			} else {
-				$key = '_unstable_tax_' . $taxonomy;
-			}
+		$taxonomy_mapper = function( $key ) {
+			$mapping = array(
+				'product_tag' => 'tag',
+				'product_cat' => 'category',
+			);
 
-			$params[ $key ] = implode( ',', $value );
+			return $mapping[ $key ] ?? '_unstable_tax_' . $key;
+		};
+
+		if ( is_array( $query['taxQuery'] ) ) {
+			array_walk(
+				$query['taxQuery'],
+				function( $terms, $taxonomy ) use ( $taxonomy_mapper, &$params ) {
+					$params[ $taxonomy_mapper( $taxonomy ) ] = implode( ',', $terms );
+				}
+			);
 		}
-		foreach ( $query['woocommerceAttributes'] as $attribute ) {
-			$params['attributes'][] = array(
-				'attribute' => $attribute['taxonomy'],
-				'term_id'   => $attribute['termId'],
+
+		if ( is_array( $query['woocommerceAttributes'] ) ) {
+			array_walk(
+				$query['woocommerceAttributes'],
+				function( $attribute ) use ( &$params ) {
+					$params['attributes'][] = array(
+						'attribute' => $attribute['taxonomy'],
+						'term_id'   => $attribute['termId'],
+					);
+				}
 			);
 		}
 
@@ -281,11 +286,7 @@ final class CollectionFilters extends AbstractBlock {
 		 * status. We need to pass the catalog_visibility param to the Store
 		 * API to make sure the product visibility is correct.
 		 */
-		if ( is_search() ) {
-			$params['catalog_visibility'] = 'catalog';
-		} else {
-			$params['catalog_visibility'] = 'visible';
-		}
+		$params['catalog_visibility'] = is_search() ? 'catalog' : 'visible';
 
 		return array_filter( $params );
 	}
