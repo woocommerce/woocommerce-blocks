@@ -1,4 +1,12 @@
+// @ts-nocheck
+
+/**
+ * External dependencies
+ */
 import { h } from 'preact';
+/**
+ * Internal dependencies
+ */
 import { directivePrefix as p } from './constants';
 
 const ignoreAttr = `data-${ p }-ignore`;
@@ -34,7 +42,7 @@ export function toVdom( root ) {
 		if ( nodeType === 3 ) return [ node.data ];
 		if ( nodeType === 4 ) {
 			const next = treeWalker.nextSibling();
-			node.replaceWith( new Text( node.nodeValue ) );
+			node.replaceWith( new window.Text( node.nodeValue ) );
 			return [ node.nodeValue, next ];
 		}
 		if ( nodeType === 8 || nodeType === 7 ) {
