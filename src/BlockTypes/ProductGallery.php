@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\ProductGalleryUtils;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
 /**
@@ -13,6 +14,15 @@ class ProductGallery extends AbstractBlock {
 	 * @var string
 	 */
 	protected $block_name = 'product-gallery';
+
+	/**
+	 *  Register the context
+	 *
+	 * @return string[]
+	 */
+	protected function get_block_type_uses_context() {
+		return [ 'postId' ];
+	}
 
 	/**
 	 * Return the dialog content.
@@ -62,10 +72,19 @@ class ProductGallery extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+		$post_id                = $block->context['postId'] ?? '';
+		$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail', array() );
+		$classname_single_image = '';
 		// This is a temporary solution. We have to refactor this code when the block will have to be addable on every page/post https://github.com/woocommerce/woocommerce-blocks/issues/10882.
 		global $product;
+
+		if ( count( $product_gallery_images ) < 2 ) {
+			// The gallery consists of a single image.
+			$classname_single_image = 'is-single-product-gallery-image';
+		}
+
 		$classname          = $attributes['className'] ?? '';
-		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
+		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'wc-block-product-gallery %1$s %2$s', $classname, $classname_single_image ) ) ) );
 		$gallery            = ( true === $attributes['fullScreenOnClick'] && isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ) ? $this->render_dialog() : '';
 		$html               = sprintf(
 			'<div %1$s>
@@ -73,11 +92,13 @@ class ProductGallery extends AbstractBlock {
 				%3$s
 			</div>',
 			$wrapper_attributes,
-			$this->remove_div_wrapper( $content ),
+			$content,
 			$gallery
 		);
 
-		$p = new \WP_HTML_Tag_Processor( $html );
+		$post_id = $block->context['postId'] ?? '';
+		$product = wc_get_product( $post_id );
+		$p       = new \WP_HTML_Tag_Processor( $html );
 
 		if ( $p->next_tag() ) {
 			$p->set_attribute( 'data-wc-interactive', true );
@@ -96,20 +117,5 @@ class ProductGallery extends AbstractBlock {
 		}
 
 		return $html;
-	}
-
-	/**
-	 * Get the Interactivity API's view script handle for this block type.
-	 *
-	 * @param string $key Data to get, or default to everything.
-	 */
-	protected function get_block_type_script( $key = null ) {
-		$script = [
-			'handle'       => 'wc-' . $this->block_name . '-frontend',
-			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-frontend' ),
-			'dependencies' => [ 'wc-interactivity' ],
-		];
-
-		return $key ? $script[ $key ] : $script;
 	}
 }
