@@ -42,6 +42,138 @@ The following filters are available for line items:
 
 Each of these filters has the following arguments passed to it: `{ context: 'cart', cartItem: CartItem }` ([CartItem](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L113))
 
+### itemName
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust item name of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  itemName: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return '🪴 ' + value + ' 🪴';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268245369-6cd0aad9-4a7e-45e1-915b-3294db101246.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267216388-08bc3af0-6290-4ec4-b7f5-5ee21d66ed7f.png"> |
+
+### cartItemPrice
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust cart item price of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  cartItemPrice: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return '<price/> for all items';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268245369-6cd0aad9-4a7e-45e1-915b-3294db101246.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267218100-6f427b42-f985-4724-a537-8f83d9eff84a.png"> |
+
+### cartItemClass
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust cart item class of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  cartItemClass: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return 'my-custom-class';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268705467-6059c77a-6375-4087-a3e5-485d7077ac54.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267219896-58ed0551-998b-4309-bc22-3f7be84565d6.png"> |
+
+### subtotalPriceFormat
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust subtotal price format of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  subtotalPriceFormat: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return '<price/> per item';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268294925-a014c8d7-4c26-4a0a-8f4c-f74a8240bbb4.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267226443-67f089bd-95d0-49f8-81f4-df2fec1a3d69.png"> |
+
+### showRemoveItemLink
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Show remove item link of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  showRemoveItemLink: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return false;
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268295858-ec76f525-e2cf-468c-9634-ae9e84e5aa48.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268295935-3171cd92-33f1-4182-b875-bc7e422771a0.png"> |
+
+### saleBadgePriceFormat
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust sale badge price format of the cart line items.
+registerCheckoutFilters( 'example-extension', {
+  saleBadgePriceFormat: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Cart context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'cart' ) {
+      return value;
+    }
+    return '<price/> per item';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268295858-ec76f525-e2cf-468c-9634-ae9e84e5aa48.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267230515-d5e9d791-2429-4cac-b4fb-106a3dbe07ce.png"> |
+
 ## Order Summary Items
 
 In the Checkout block, there is a sidebar that contains a summary of what the customer is about to purchase. There are some filters available to modify the way certain elements are displayed on each item. The sale badges are not shown here, so those filters are not applied in the Order Summary.
@@ -57,6 +189,102 @@ In the Checkout block, there is a sidebar that contains a summary of what the cu
 
 Each of these filters has the following additional arguments passed to it: `{ context: 'summary', cartItem: CartItem }` ([CartItem](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/c00da597efe4c16fcf5481c213d8052ec5df3766/assets/js/type-defs/cart.ts#L113))
 
+### subtotalPriceFormat
+
+A code snippet to adjust subtotal price format of the order summary items can be found below:
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust subtotal price format of the order summary items.
+registerCheckoutFilters( 'example-extension', {
+  subtotalPriceFormat: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Summary context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'summary' ) {
+      return value;
+    }
+    return '<price/> per item';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/6242098/268092313-d981f064-f274-4175-8291-1671ed55535b.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267265204-7afbbe1a-de1a-4696-a2d9-881de3016060.png"> |
+
+### itemName
+
+A code snippet to adjust the item name of the order summary items can be found below:
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust item name of the order summary items.
+registerCheckoutFilters( 'example-extension', {
+  itemName: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Summary context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'summary' ) {
+      return value;
+    }
+    return '🪴 ' + value + ' 🪴';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/6242098/268092313-d981f064-f274-4175-8291-1671ed55535b.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267250835-6f4dade5-b4fe-4e55-a639-61b85f41ef28.png"> |
+
+### cartItemPrice
+
+A code snippet to adjust the cart item price of the order summary items can be found below:
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust cart item price of the order summary items.
+registerCheckoutFilters( 'example-extension', {
+  cartItemPrice: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Summary context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'summary' ) {
+      return value;
+    }
+    return '<price/> for all items';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/6242098/268092313-d981f064-f274-4175-8291-1671ed55535b.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267262765-a0d9e26c-51c0-4101-ae80-b626f8dd1f00.png"> |
+
+### cartItemClass
+
+A code snippet to adjust the cart item class of the order summary items can be found below:
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust cart item class of the order summary items.
+registerCheckoutFilters( 'example-extension', {
+  cartItemClass: ( value, extensions, args ) => {
+    // Return early since this filter is not being applied in the Summary context.
+    // We must return the original value we received here.
+    if ( args?.context !== 'summary' ) {
+      return value;
+    }
+    return 'my-custom-class';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/6242098/268092313-d981f064-f274-4175-8291-1671ed55535b.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267264072-cd665949-ef82-497d-8c88-7391082dc431.png"> |
+
 ## Totals footer item (in Mini-Cart, Cart and Checkout)
 
 The word 'Total' that precedes the amount due, present in both the Cart _and_ Checkout blocks, is also passed through filters.
@@ -66,6 +294,21 @@ The word 'Total' that precedes the amount due, present in both the Cart _and_ Ch
 | `totalLabel` | This is the label for the cart total. It defaults to 'Total' (or the word for 'Total' if using translations). | `string`    |
 
 There are no additional arguments passed to this filter.
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust the total label.
+registerCheckoutFilters( 'example-extension', {
+  totalLabel: ( value, extensions, args ) => {
+    return 'Deposit due today';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/3323310/267275008-91bd6aeb-4824-4f8c-80ec-79bc63185bc6.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267274984-721e0be5-31a6-4190-947c-326462d6fd98.png"> |
 
 ## Coupons
 
@@ -96,6 +339,32 @@ CartCoupon {
 }
 ```
 
+A code snippet to replace coupon label for matching coupon(s) can be found below:
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Replace coupon label for matching coupon(s).
+registerCheckoutFilters( 'example-extension', {
+    coupons: ( coupons ) => {
+        return coupons.map( ( coupon ) => {
+            // Regex to match autocoupon then unlimited undersores and numbers
+            if ( ! coupon.label.match( /autocoupon(?:_\d+)+/ ) ) {
+                return coupon;
+            }
+            return {
+                ...coupon,
+                label: 'Automatic coupon',
+            };
+        } );
+    }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="789" alt="image" src="https://user-images.githubusercontent.com/3323310/267266272-bb6ff77e-7c40-46f7-8d66-a7825ea78fff.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267266261-029f993a-cf32-4f9b-abb5-af05df2477cd.png"> |
+
 ## Proceed to Checkout Button Label
 
 The Cart block contains a button which is labelled 'Proceed to Checkout' by default. It can be changed using the following filter.
@@ -103,6 +372,34 @@ The Cart block contains a button which is labelled 'Proceed to Checkout' by defa
 | Filter name                    | Description                                         | Return type |
 | ------------------------------ | --------------------------------------------------- | ----------- |
 | `proceedToCheckoutButtonLabel` | The wanted label of the Proceed to Checkout button. | `string`    |
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust the proceed to checkout button label.
+registerCheckoutFilters( 'example-extension', {
+  proceedToCheckoutButtonLabel: ( value, extensions, args ) => {
+    if ( ! args?.cart.items ) {
+      return value;
+    }
+ 
+    const isSunglassesInCart = args?.cart.items.some(
+      ( item ) => item.name === 'Sunglasses'
+    );
+ 
+    // Return the default value if sunglasses is not in the cart.
+    if ( ! isSunglassesInCart ) {
+      return value;
+    }
+ 
+    return 'Proceed to 😎 checkout';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://user-images.githubusercontent.com/6242098/268078493-9e338a2e-953f-4e1f-b547-ad5b4343b4bb.png"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267269678-2d2ccd6b-edb4-4bec-952d-19dcae105fdd.png"> |
 
 ## Proceed to Checkout Button Link
 
@@ -112,6 +409,32 @@ The Cart block contains a button which is labelled 'Proceed to Checkout' and lin
 | ----------------------------- | ----------------------------------------------------------- | ----------- |
 | `proceedToCheckoutButtonLink` | The URL that the Proceed to Checkout button should link to. | `string`    |
 
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust the proceed to checkout button link.
+registerCheckoutFilters( 'example-extension', {
+  proceedToCheckoutButtonLink: ( value, extensions, args ) => {
+    if ( ! args?.cart.items ) {
+      return value;
+    }
+ 
+    const isSunglassesInCart = args?.cart.items.some(
+      ( item ) => item.name === 'Sunglasses'
+    );
+ 
+    // Return the default value if sunglasses is not in the cart.
+    if ( ! isSunglassesInCart ) {
+      return value;
+    }
+ 
+    return '/sunglasses-checkout';
+  }
+} );
+```
+
+<img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267270560-2964d529-771d-4d00-9fff-646b15d59cbf.png">
+
 ## Place Order Button Label
 
 The Checkout block contains a button which is labelled 'Place Order' by default, but can be changed using the following filter. This filter has the current cart passed to it in the third parameter.
@@ -119,6 +442,21 @@ The Checkout block contains a button which is labelled 'Place Order' by default,
 | Filter name             | Description                                 | Return type |
 | ----------------------- | ------------------------------------------- | ----------- |
 | `placeOrderButtonLabel` | The wanted label of the Place Order button. | `string`    |
+
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Adjust the place order button label.
+registerCheckoutFilters( 'example-extension', {
+  placeOrderButtonLabel: ( value, extensions, args ) => {
+    return '💰 Pay now 💰';
+  }
+} );
+```
+
+| Before                                                                                                                                   | After                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="761" alt="image" src="https://github.com/masteradhoc/woocommerce-blocks/assets/6242098/5703a5a6-39f4-4c29-a176-1a80412e3de9"> | <img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267271739-3a8babc4-2848-424b-bc4a-8137eb2b2746.png"> |
 
 ## Additional Cart Checkout inner block types
 
@@ -200,6 +538,8 @@ registerCheckoutFilters( 'newsletter-plugin', {
 	},
 } );
 ```
+
+<img width="761" alt="image" src="https://user-images.githubusercontent.com/3323310/267215471-816eb52a-b052-4d98-a69e-e96b01dffd6a.png">
 
 ### Changing the wording of the Totals label in the Mini-Cart, Cart and Checkout
 
@@ -291,21 +631,37 @@ registerCheckoutFilters( 'automatic-coupon-extension', {
 
 If you want to prevent a coupon apply notice from appearing, you can use the `showApplyCouponNotice` filter. If it returns `false` then the notice will not be created.
 
+```ts
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Prevent a couponCode called '10off' from creating a notice when it gets applied.
+registerCheckoutFilters( 'example-extension', {
+  showApplyCouponNotice: ( value, extensions, args ) => {
+    return args?.couponCode === '10off' ? false : value;
+  }
+} );
+```
+
+| Before                                                                                                         | After                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| <img width="599" alt="image" src="https://github.com/masteradhoc/woocommerce-blocks/assets/6242098/b091a815-5e6b-45a2-8d2b-d55196afd59e">  | <img width="599" alt="image" src="https://github.com/masteradhoc/woocommerce-blocks/assets/6242098/b967b04b-4065-4aa7-8d16-8ab311c1ccbb"> |
+
 The same can be done with the `showRemoveCouponNotice` filter to prevent a notice when a coupon is removed from the cart.
 
 ```ts
-import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
-
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+ 
+// Prevent a couponCode called '10off' from creating a notice when it gets removed.
 registerCheckoutFilters( 'example-extension', {
-	showApplyCouponNotice: ( value, extensions, { couponCode } ) => {
-		// Prevent a couponCode called '10off' from creating a notice.
-		return couponCode === '10off' ? false : value;
-	},
-	showRemoveCouponNotice: ( value, _, { couponCode } ) => {
-		return couponCode === '10off' ? false : value;
-	},
+  showRemoveCouponNotice: ( value, extensions, args ) => {
+    return args?.couponCode === '10off' ? false : value;
+  }
 } );
 ```
+
+| Before                                                                                                         | After                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| <img width="598" alt="image" src="https://github.com/woocommerce/woocommerce-blocks/assets/6242098/276a7ece-2189-4636-9f65-4c1fb925c57e"> | <img width="600" alt="image" src="https://github.com/woocommerce/woocommerce-blocks/assets/6242098/1c9cf2c3-83ac-4c0c-bb28-314235ec9247"> |
 
 ### Hide the "Remove item" link on a cart item
 
@@ -367,3 +723,4 @@ The error will also be shown in your console.
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/checkout-block/available-filters.md)
 
 <!-- /FEEDBACK -->
+

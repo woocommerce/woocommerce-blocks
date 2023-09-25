@@ -176,6 +176,7 @@ final class BlockTypesController {
 			'Breadcrumbs',
 			'CatalogSorting',
 			'ClassicTemplate',
+			'ClassicShortcode',
 			'CustomerAccount',
 			'FeaturedCategory',
 			'FeaturedProduct',
@@ -189,11 +190,13 @@ final class BlockTypesController {
 			'ProductButton',
 			'ProductCategories',
 			'ProductCategory',
+			'ProductCollection',
 			'ProductImage',
 			'ProductImageGallery',
 			'ProductNew',
 			'ProductOnSale',
 			'ProductPrice',
+			'ProductTemplate',
 			'ProductQuery',
 			'ProductAverageRating',
 			'ProductRating',
@@ -217,6 +220,18 @@ final class BlockTypesController {
 			'ProductDetails',
 			'SingleProduct',
 			'StockFilter',
+			'PageContentWrapper',
+			'OrderConfirmation\Status',
+			'OrderConfirmation\Summary',
+			'OrderConfirmation\Totals',
+			'OrderConfirmation\TotalsWrapper',
+			'OrderConfirmation\Downloads',
+			'OrderConfirmation\DownloadsWrapper',
+			'OrderConfirmation\BillingAddress',
+			'OrderConfirmation\ShippingAddress',
+			'OrderConfirmation\BillingWrapper',
+			'OrderConfirmation\ShippingWrapper',
+			'OrderConfirmation\AdditionalInformation',
 		];
 
 		$block_types = array_merge(
@@ -227,11 +242,12 @@ final class BlockTypesController {
 		);
 
 		if ( Package::feature()->is_experimental_build() ) {
-			$block_types[] = 'ProductCollection';
-			$block_types[] = 'ProductTemplate';
 			$block_types[] = 'ProductGallery';
 			$block_types[] = 'ProductGalleryLargeImage';
+			$block_types[] = 'ProductGalleryLargeImageNextPrevious';
+			$block_types[] = 'ProductGalleryPager';
 			$block_types[] = 'ProductGalleryThumbnails';
+			$block_types[] = 'CollectionFilters';
 		}
 
 		/**
@@ -261,7 +277,17 @@ final class BlockTypesController {
 					'ClassicTemplate',
 					'ProductResultsCount',
 					'ProductDetails',
-					'StoreNotices',
+					'OrderConfirmation\Status',
+					'OrderConfirmation\Summary',
+					'OrderConfirmation\Totals',
+					'OrderConfirmation\TotalsWrapper',
+					'OrderConfirmation\Downloads',
+					'OrderConfirmation\DownloadsWrapper',
+					'OrderConfirmation\BillingAddress',
+					'OrderConfirmation\ShippingAddress',
+					'OrderConfirmation\BillingWrapper',
+					'OrderConfirmation\ShippingWrapper',
+					'OrderConfirmation\AdditionalInformation',
 				]
 			);
 		}

@@ -65,6 +65,44 @@ export class EditorUtils {
 		);
 	}
 
+	async closeModalByName( name: string ) {
+		const isModalOpen = await this.page.getByLabel( name ).isVisible();
+
+		// eslint-disable-next-line playwright/no-conditional-in-test
+		if ( isModalOpen ) {
+			await this.page
+				.getByLabel( name )
+				.getByRole( 'button', { name: 'Close' } )
+				.click();
+		}
+	}
+	async replaceBlockByBlockName( name: string, nameToInsert: string ) {
+		await this.page.evaluate(
+			( { name: _name, nameToInsert: _nameToInsert } ) => {
+				const blocks = window.wp.data
+					.select( 'core/block-editor' )
+					.getBlocks();
+				const firstMatchingBlock = blocks
+					.flatMap(
+						( {
+							innerBlocks,
+						}: {
+							innerBlocks: BlockRepresentation[];
+						} ) => innerBlocks
+					)
+					.find(
+						( block: BlockRepresentation ) => block.name === _name
+					);
+				const { clientId } = firstMatchingBlock;
+				const block = window.wp.blocks.createBlock( _nameToInsert );
+				window.wp.data
+					.dispatch( 'core/block-editor' )
+					.replaceBlock( clientId, block );
+			},
+			{ name, nameToInsert }
+		);
+	}
+
 	async getBlockRootClientId( clientId: string ) {
 		return this.page.evaluate< string | null, string >( ( id ) => {
 			return window.wp.data
@@ -184,5 +222,109 @@ export class EditorUtils {
 		await this.page
 			.locator( '.edit-site-canvas-spinner' )
 			.waitFor( { state: 'hidden' } );
+	}
+
+	async setLayoutOption(
+		option:
+			| 'Align Top'
+			| 'Align Bottom'
+			| 'Align Middle'
+			| 'Stretch to Fill'
+	) {
+		const button = this.page.locator(
+			"button[aria-label='Change vertical alignment']"
+		);
+
+		await button.click();
+
+		await this.page.getByText( option ).click();
+	}
+
+	async setAlignOption(
+		option: 'Align Left' | 'Align Center' | 'Align Right' | 'None'
+	) {
+		const button = this.page.locator( "button[aria-label='Align']" );
+
+		await button.click();
+
+		await this.page.getByText( option ).click();
+	}
+
+	async saveTemplate() {
+		await Promise.all( [
+			this.editor.saveSiteEditorEntities(),
+			this.editor.page.waitForResponse(
+				( response ) =>
+					response.url().includes( 'wp-json/wp/v2/templates/' ) ||
+					response.url().includes( 'wp-json/wp/v2/template-parts/' )
+			),
+		] );
+	}
+
+	async closeWelcomeGuideModal() {
+		const isModalOpen = await this.page
+			.getByRole( 'dialog', { name: 'Welcome to the site editor' } )
+			.locator( 'div' )
+			.filter( {
+				hasText:
+					'Edit your siteDesign everything on your site — from the header right down to the',
+			} )
+			.nth( 2 )
+			.isVisible();
+
+		// eslint-disable-next-line playwright/no-conditional-in-test
+		if ( isModalOpen ) {
+			await this.page
+				.getByRole( 'button', { name: 'Get started' } )
+				.click();
+		}
+	}
+
+	async transformIntoBlocks() {
+		const isNotTransformedIntoBlocks = await this.page
+			.frameLocator( 'iframe[name="editor-canvas"]' )
+			.getByRole( 'button', { name: 'Transform into blocks' } )
+			.count();
+
+		if ( isNotTransformedIntoBlocks ) {
+			await this.page
+				.frameLocator( 'iframe[name="editor-canvas"]' )
+				.getByRole( 'group' )
+				.click();
+			await this.page
+				.frameLocator( 'iframe[name="editor-canvas"]' )
+				.getByRole( 'button', { name: 'Transform into blocks' } )
+				.click();
+
+			// save changes
+			await this.saveSiteEditorEntities();
+		}
+	}
+
+	// This method is the same as the one in @wordpress/e2e-test-utils-playwright. But for some reason
+	// it doesn't work as expected when imported from there. For its first run we get the following error:
+	// Error: locator.waitFor: Target closed
+	async saveSiteEditorEntities() {
+		const editorTopBar = this.page.getByRole( 'region', {
+			name: 'Editor top bar',
+		} );
+		const savePanel = this.page.getByRole( 'region', {
+			name: 'Save panel',
+		} );
+
+		// First Save button in the top bar.
+		await editorTopBar
+			.getByRole( 'button', { name: 'Save', exact: true } )
+			.click();
+
+		// Second Save button in the entities panel.
+		await savePanel
+			.getByRole( 'button', { name: 'Save', exact: true } )
+			.click();
+
+		await this.page
+			.getByRole( 'button', { name: 'Dismiss this notice' } )
+			.getByText( 'Site updated.' )
+			.waitFor();
 	}
 }

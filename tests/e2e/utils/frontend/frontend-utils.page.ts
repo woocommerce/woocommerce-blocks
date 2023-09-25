@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { RequestUtils } from '@wordpress/e2e-test-utils-playwright';
 
 export class FrontendUtils {
@@ -27,14 +27,21 @@ export class FrontendUtils {
 	}
 
 	async addToCart( itemName = '' ) {
+		await this.page.waitForLoadState( 'domcontentloaded' );
 		if ( itemName !== '' ) {
 			await this.page
-				.getByLabel( `Add “${ itemName }” to your cart` )
+				.getByRole( 'button', {
+					name: `Add “${ itemName }” to your cart`,
+				} )
 				.click();
-			await this.page.waitForResponse( /add_to_cart|batch/ );
-			return;
+		} else {
+			await this.page.click( 'text=Add to cart' );
 		}
-		await this.page.click( 'text=Add to cart' );
+
+		await this.page.waitForResponse( ( request ) => {
+			const url = request.url();
+			return url.includes( 'add_to_cart' ) || url.includes( 'batch' );
+		} );
 	}
 
 	async goToCheckout() {
@@ -110,5 +117,58 @@ export class FrontendUtils {
 		}
 
 		return firstBlockIndex < secondBlockIndex;
+	}
+
+	async isBlockEarlierThanGroupBlock(
+		containerBlock: Locator,
+		firstBlock: string
+	) {
+		if ( ! containerBlock ) {
+			throw new Error( 'Container block not found.' );
+		}
+
+		const childBlocks: Locator = containerBlock.locator( '> div' );
+
+		let firstBlockIndex = -1;
+		let secondBlockIndex = -1;
+
+		for ( let i = 0; i < ( await childBlocks.count() ); i++ ) {
+			const blockName = await childBlocks
+				.nth( i )
+				.getAttribute( 'data-block-name' );
+			const isGroupBlock = await childBlocks
+				.nth( i )
+				.evaluate( ( node ) =>
+					node.classList.contains( 'wp-block-group' )
+				);
+
+			if ( blockName === firstBlock ) {
+				firstBlockIndex = i;
+			}
+
+			if ( isGroupBlock ) {
+				secondBlockIndex = i;
+			}
+
+			if ( firstBlockIndex !== -1 && secondBlockIndex !== -1 ) {
+				break;
+			}
+		}
+
+		if ( firstBlockIndex === -1 || secondBlockIndex === -1 ) {
+			throw new Error( 'Both blocks must exist within the editor' );
+		}
+
+		return firstBlockIndex < secondBlockIndex;
+	}
+
+	/**
+	 * Playwright selectText causes flaky tests when running on local
+	 * development machine. This method is more reliable on both environments.
+	 */
+	async selectTextInput( locator: Locator ) {
+		await locator.click();
+		await locator.press( 'End' );
+		await locator.press( 'Shift+Home' );
 	}
 }

@@ -17,11 +17,29 @@ class OrderConfirmationTemplate extends AbstractPageTemplate {
 	}
 
 	/**
+	 * Initialization method.
+	 */
+	protected function init() {
+		parent::init();
+		add_action( 'wp_before_admin_bar_render', array( $this, 'remove_edit_page_link' ) );
+	}
+
+	/**
+	 * Remove edit page from admin bar.
+	 */
+	public function remove_edit_page_link() {
+		if ( $this->is_active_template() ) {
+			global $wp_admin_bar;
+			$wp_admin_bar->remove_menu( 'edit' );
+		}
+	}
+
+	/**
 	 * Returns the page object assigned to this template/page.
 	 *
 	 * @return \WP_Post|null Post object or null.
 	 */
-	public static function get_placeholder_page() {
+	protected function get_placeholder_page() {
 		return null;
 	}
 

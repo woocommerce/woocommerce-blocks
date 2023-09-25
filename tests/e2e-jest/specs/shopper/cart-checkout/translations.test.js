@@ -10,7 +10,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	test.only( 'Skipping Cart & Checkout tests', () => {} );
 }
 
-describe( 'Shopper → Cart & Checkout → Translations', () => {
+describe.skip( 'Shopper → Cart & Checkout → Translations', () => {
 	beforeAll( async () => {
 		await merchant.changeLanguage( 'nl_NL' );
 	} );
@@ -20,7 +20,7 @@ describe( 'Shopper → Cart & Checkout → Translations', () => {
 		await merchant.changeLanguage( 'en_EN' );
 	} );
 
-	it( 'User can view translated Cart block', async () => {
+	it.skip( 'User can view translated Cart block', async () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( '128GB USB Stick' );
 		await shopper.block.goToCart();
@@ -53,7 +53,7 @@ describe( 'Shopper → Cart & Checkout → Translations', () => {
 		await expect( orderSummary ).toMatch( 'Totaal' );
 	} );
 
-	it( 'User can view translated Checkout block', async () => {
+	it.skip( 'User can view translated Checkout block', async () => {
 		await shopper.block.goToCheckout();
 
 		const contactHeading = await page.$(

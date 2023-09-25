@@ -15,7 +15,7 @@
     -   [Passed Parameters](#passed-parameters-3)
     -   [Key](#key-3)
 
-To see how to add your data to Store API using ExtendSchema, [check this document](./extend-rest-api-add-data.md). If you want to add a new endpoint, [check this document](./extend-rest-api-new-endpoint.md).
+To see how to add your data to Store API using ExtendSchema, [check this document](./extend-rest-api-add-data.md). If you want to add a new endpoint, [check this document](../../../internal-developers/rest-api/extend-rest-api-new-endpoint.md).
 
 This is a list of available endpoints that you can extend. For other endpoints, [see here](./../../../../src/StoreApi/README.md).
 
@@ -80,3 +80,4 @@ The main products endpoint is extensible via ExtendSchema. The data is available
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/rest-api/available-endpoints-to-extend.md)
 
 <!-- /FEEDBACK -->
+

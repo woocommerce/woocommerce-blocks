@@ -5,14 +5,17 @@
  * Categories: WooCommerce
  * Block Types: core/query/woocommerce/product-query
  */
+
+use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
+$content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/featured-products-5-item-grid' );
 ?>
 <!-- wp:heading {"textAlign":"center","level":3} -->
 <h3 class="wp-block-heading has-text-align-center">
-	<?php esc_html_e( 'Shop new arrivals', 'woo-gutenberg-products-block' ); ?>
+	<?php echo esc_html( $content['titles'][0]['default'] ); ?>
 </h3>
 <!-- /wp:heading -->
 
-<!-- wp:query {"queryId":3,"query":{"perPage":"5","pages":0,"offset":"5","postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","outofstock","onbackorder"]}, "displayLayout":{"type":"flex","columns":5}, "namespace":"woocommerce/product-query","align":"wide","layout":{"type":"constrained"}} -->
+<!-- wp:query {"query":{"perPage":"5","pages":0,"offset":"5","postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":false,"__woocommerceAttributes":[],"__woocommerceStockStatus":["instock","outofstock","onbackorder"]}, "displayLayout":{"type":"flex","columns":5}, "namespace":"woocommerce/product-query","align":"wide","layout":{"type":"constrained"}} -->
 <div class="wp-block-query alignwide">
 	<!-- wp:post-template {"align":"wide","className":"products-block-post-template","__woocommerceNamespace":"woocommerce/product-query/product-template"} -->
 	<!-- wp:woocommerce/product-image {"imageSizing":"thumbnail","isDescendentOfQueryLoop":true} /-->
