@@ -23,14 +23,14 @@ $image4 = PatternsHelper::get_image_url( $images, 3, 'images/pattern-placeholder
 <div class="wp-block-columns alignwide">
 	<!-- wp:column {"style":{"layout":{"type":"constrained"}} -->
 	<div class="wp-block-column">
-		<!-- wp:image {"align":"full","scale":"cover","sizeSlug":"full","linkDestination":"none"} -->
+		<!-- wp:image {"align":"full","aspectRatio":"9/16","scale":"cover","sizeSlug":"full","linkDestination":"none"} -->
 		<figure class="wp-block-image alignfull size-full">
-			<img src="<?php echo esc_url( $image1 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in the featured products pattern. 1 out of 4.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo esc_url( $image1 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in the featured products pattern. 1 out of 4.', 'woo-gutenberg-products-block' ); ?>" style="aspect-ratio:9/16;object-fit:cover"/>
 		</figure>
 		<!-- /wp:image -->
 
-		<!-- wp:columns {"style":{"spacing":{"blockGap":{"top":"0"},"margin":{"top":"5px","bottom":"0"}}}} -->
-		<div class="wp-block-columns" style="margin-top:5px;margin-bottom:0">
+		<!-- wp:columns {"isStackedOnMobile":false,"style":{"spacing":{"blockGap":{"top":"0"},"margin":{"top":"5px","bottom":"0"}}}} -->
+		<div class="wp-block-columns is-not-stacked-on-mobile" style="margin-top:5px;margin-bottom:0">
 			<!-- wp:column {"width":"67%","style":{"typography":{"fontWeight":"600"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
 			<div class="wp-block-column" style="font-weight:600;flex-basis:67%">
 				<!-- wp:paragraph {"fontSize":"small"} -->
@@ -41,8 +41,8 @@ $image4 = PatternsHelper::get_image_url( $images, 3, 'images/pattern-placeholder
 
 			<!-- wp:column {"width":"33%","layout":{"type":"constrained","justifyContent":"right"}} -->
 			<div class="wp-block-column" style="flex-basis:33%">
-				<!-- wp:paragraph {"align":"left","fontSize":"small"} -->
-				<p class="has-text-align-left has-small-font-size"><?php esc_html_e( 'from $1.99', 'woo-gutenberg-products-block' ); ?></p>
+				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
+				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $1.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -53,9 +53,9 @@ $image4 = PatternsHelper::get_image_url( $images, 3, 'images/pattern-placeholder
 
 	<!-- wp:column {"style":{"layout":{"type":"constrained"}} -->
 	<div class="wp-block-column">
-		<!-- wp:image {"align":"full","scale":"cover","sizeSlug":"full","linkDestination":"none"} -->
+		<!-- wp:image {"align":"full","aspectRatio":"9/16","scale":"cover","sizeSlug":"full","linkDestination":"none"} -->
 		<figure class="wp-block-image alignfull size-full">
-			<img src="<?php echo esc_url( $image2 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in the featured products pattern. 2 out of 4.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo esc_url( $image2 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in the featured products pattern. 2 out of 4.', 'woo-gutenberg-products-block' ); ?>" style="aspect-ratio:9/16;object-fit:cover"/>
 		</figure>
 		<!-- /wp:image -->
 
@@ -71,8 +71,8 @@ $image4 = PatternsHelper::get_image_url( $images, 3, 'images/pattern-placeholder
 
 			<!-- wp:column {"width":"33%","layout":{"type":"constrained","justifyContent":"right"}} -->
 			<div class="wp-block-column" style="flex-basis:33%">
-				<!-- wp:paragraph {"align":"left","fontSize":"small"} -->
-				<p class="has-text-align-left has-small-font-size"><?php esc_html_e( 'from $2.99', 'woo-gutenberg-products-block' ); ?></p>
+				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
+				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $2.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -83,9 +83,9 @@ $image4 = PatternsHelper::get_image_url( $images, 3, 'images/pattern-placeholder
 
 	<!-- wp:column {"style":{"layout":{"type":"constrained"}} -->
 	<div class="wp-block-column">
-		<!-- wp:image {"align":"full","scale":"cover","sizeSlug":"full","linkDestination":"none"} -->
+		<!-- wp:image {"align":"full","aspectRatio":"9/16","scale":"cover","sizeSlug":"full","linkDestination":"none"} -->
 		<figure class="wp-block-image alignfull size-full">
-			<img src="<?php echo esc_url( $image3 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in the featured products pattern. 3 out of 4.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo esc_url( $image3 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in the featured products pattern. 3 out of 4.', 'woo-gutenberg-products-block' ); ?>" style="aspect-ratio:9/16;object-fit:cover"/>
 		</figure>
 		<!-- /wp:image -->
 
@@ -101,8 +101,8 @@ $image4 = PatternsHelper::get_image_url( $images, 3, 'images/pattern-placeholder
 
 			<!-- wp:column {"width":"33%","layout":{"type":"constrained","justifyContent":"right"}} -->
 			<div class="wp-block-column" style="flex-basis:33%">
-				<!-- wp:paragraph {"align":"left","fontSize":"small"} -->
-				<p class="has-text-align-left has-small-font-size"><?php esc_html_e( 'from $0.99', 'woo-gutenberg-products-block' ); ?></p>
+				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
+				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $0.99', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
@@ -113,9 +113,9 @@ $image4 = PatternsHelper::get_image_url( $images, 3, 'images/pattern-placeholder
 
 	<!-- wp:column {"style":{"layout":{"type":"constrained"}} -->
 	<div class="wp-block-column">
-		<!-- wp:image {"align":"full","scale":"cover","sizeSlug":"full","linkDestination":"none"} -->
+		<!-- wp:image {"align":"full","aspectRatio":"9/16","scale":"cover","sizeSlug":"full","linkDestination":"none"} -->
 		<figure class="wp-block-image alignfull size-full">
-			<img src="<?php echo esc_url( $image4 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in the featured products pattern. 4 out of 4.', 'woo-gutenberg-products-block' ); ?>" />
+			<img src="<?php echo esc_url( $image4 ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in the featured products pattern. 4 out of 4.', 'woo-gutenberg-products-block' ); ?>" style="aspect-ratio:9/16;object-fit:cover"/>
 		</figure>
 		<!-- /wp:image -->
 
@@ -124,15 +124,15 @@ $image4 = PatternsHelper::get_image_url( $images, 3, 'images/pattern-placeholder
 			<!-- wp:column {"width":"67%","style":{"typography":{"fontWeight":"600"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
 			<div class="wp-block-column" style="font-weight:600;flex-basis:67%">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><?php echo esc_html( $content['descriptions'][0]['default'] ); ?></p>
+				<p class="has-small-font-size"><?php echo esc_html( $content['descriptions'][3]['default'] ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
 
 			<!-- wp:column {"width":"33%","layout":{"type":"constrained","justifyContent":"right"}} -->
 			<div class="wp-block-column" style="flex-basis:33%">
-				<!-- wp:paragraph {"align":"left","fontSize":"small"} -->
-				<p class="has-text-align-left has-small-font-size"><?php esc_html_e( 'from $1.49', 'woo-gutenberg-products-block' ); ?></p>
+				<!-- wp:paragraph {"align":"right","fontSize":"small"} -->
+				<p class="has-text-align-right has-small-font-size"><?php esc_html_e( 'from $1.49', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->
