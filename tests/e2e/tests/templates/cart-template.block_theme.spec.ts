@@ -21,7 +21,7 @@ test.describe( 'Test the cart template', async () => {
 		await expect(
 			page
 				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h1:has-text("Cart")' )
+				.locator( 'h2:has-text("Cart")' )
 				.first()
 		).toBeVisible();
 	} );
@@ -38,12 +38,12 @@ test.describe( 'Test the cart template', async () => {
 		await editor.page.getByRole( 'button', { name: /Cart/i } ).click();
 		await editorUtils.enterEditMode();
 		await expect(
-			editor.canvas.locator( 'h1:has-text("Cart")' ).first()
+			editor.canvas.locator( 'h2:has-text("Cart")' ).first()
 		).toBeVisible();
 		await editor.openDocumentSettingsSidebar();
 		await page.getByRole( 'button', { name: 'Edit template' } ).click();
 		await expect(
-			editor.canvas.locator( 'h1:has-text("Cart")' ).first()
+			editor.canvas.locator( 'h2:has-text("Cart")' ).first()
 		).toBeVisible();
 	} );
 
@@ -53,7 +53,7 @@ test.describe( 'Test the cart template', async () => {
 		await expect(
 			admin.page
 				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h1:has-text("Cart")' )
+				.locator( 'h2:has-text("Cart")' )
 				.first()
 		).toBeVisible();
 	} );
