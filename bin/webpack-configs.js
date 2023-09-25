@@ -940,10 +940,76 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 		},
 		plugins: [
 			...getSharedPlugins( {
-				bundleAnalyzerReportTitle: 'WP directives',
+				bundleAnalyzerReportTitle: 'Interactivity API',
 			} ),
 			new ProgressBarPlugin(
-				getProgressBarPluginConfig( 'WP directives' )
+				getProgressBarPluginConfig( 'Interactivity API' )
+			),
+		],
+		module: {
+			rules: [
+				{
+					test: /\.(j|t)sx?$/,
+					exclude: /node_modules/,
+					use: [
+						{
+							loader: require.resolve( 'babel-loader' ),
+							options: {
+								cacheDirectory:
+									process.env.BABEL_CACHE_DIRECTORY || true,
+								babelrc: false,
+								configFile: false,
+								presets: [
+									[
+										'@babel/preset-react',
+										{
+											runtime: 'automatic',
+											importSource: 'preact',
+										},
+									],
+								],
+								// Required until Webpack is updated to ^5.0.0
+								plugins: [
+									'@babel/plugin-proposal-optional-chaining',
+									'@babel/plugin-proposal-class-properties',
+								],
+							},
+						},
+					],
+				},
+			],
+		},
+	};
+};
+
+const getInteractivityScriptsConfig = ( options = {} ) => {
+	const { alias, resolvePlugins = [] } = options;
+	return {
+		entry: {
+			'store-notices-interactivity':
+				'./assets/js/blocks/store-notices/frontend.jsx',
+		},
+		output: {
+			filename: '[name].js',
+			path: path.resolve( __dirname, '../build/' ),
+			jsonpFunction: 'webpackWcBlocksJsonp',
+		},
+		resolve: {
+			alias: {
+				...alias,
+				react: 'preact/compat',
+				'react-dom': 'preact/compat',
+				'@wordpress/element': 'preact/compat',
+			},
+			plugins: resolvePlugins,
+			extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
+		},
+		plugins: [
+			...getSharedPlugins( {
+				bundleAnalyzerReportTitle: 'Interactivity Scripts',
+			} ),
+			new ProgressBarPlugin(
+				getProgressBarPluginConfig( 'Interactivity Scripts' )
 			),
 		],
 		module: {
@@ -991,4 +1057,5 @@ module.exports = {
 	getSiteEditorConfig,
 	getStylingConfig,
 	getInteractivityAPIConfig,
+	getInteractivityScriptsConfig,
 };

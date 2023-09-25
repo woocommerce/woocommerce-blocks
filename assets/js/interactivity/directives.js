@@ -245,4 +245,44 @@ export default () => {
 			} );
 		}
 	);
+
+	// data-wc-html
+	directive(
+		'html',
+		( {
+			directives: {
+				html: { default: html },
+			},
+			element,
+			evaluate,
+			context,
+		} ) => {
+			const contextValue = useContext( context );
+			element.props.dangerouslySetInnerHTML = {
+				__html: evaluate( html, {
+					context: contextValue,
+				} ),
+			};
+		}
+	);
+
+	// data-wc-comp
+	directive(
+		'comp',
+		( {
+			directives: {
+				comp: { default: comp },
+			},
+			element,
+			evaluate,
+			context,
+		} ) => {
+			const contextValue = useContext( context );
+			element.props.children = {
+				__html: evaluate( comp, {
+					context: contextValue,
+				} ),
+			};
+		}
+	);
 };

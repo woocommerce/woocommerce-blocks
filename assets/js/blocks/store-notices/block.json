@@ -6,6 +6,7 @@
 	"category": "woocommerce",
 	"keywords": [ "WooCommerce" ],
 	"supports": {
+		"interactivity": true,
 		"multiple": false,
 		"align": [ "wide", "full" ]
 	},
@@ -17,5 +18,6 @@
 	},
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
-	"$schema": "https://schemas.wp.org/trunk/block.json"
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"viewScript": "wc-store-notices-interactivity-frontend"
 }

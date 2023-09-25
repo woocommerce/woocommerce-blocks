@@ -6,8 +6,6 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { store as interactivityStore } from '@woocommerce/interactivity';
 import { dispatch, select, subscribe } from '@wordpress/data';
 import { Cart } from '@woocommerce/type-defs/cart';
-import { createRoot } from '@wordpress/element';
-import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
 type Context = {
 	woocommerce: {
@@ -38,30 +36,8 @@ type Store = {
 	state: State;
 	context: Context;
 	selectors: any;
+	actions: any;
 	ref: HTMLElement;
-};
-
-const storeNoticeClass = '.wc-block-store-notices';
-
-const createNoticeContainer = () => {
-	const noticeContainer = document.createElement( 'div' );
-	noticeContainer.classList.add( storeNoticeClass.replace( '.', '' ) );
-	return noticeContainer;
-};
-
-const injectNotice = ( domNode: Element, errorMessage: string ) => {
-	const root = createRoot( domNode );
-
-	root.render(
-		<NoticeBanner status="error" onRemove={ () => root.unmount() }>
-			{ errorMessage }
-		</NoticeBanner>
-	);
-
-	domNode?.scrollIntoView( {
-		behavior: 'smooth',
-		inline: 'nearest',
-	} );
 };
 
 const getProductById = ( cartState: Cart | undefined, productId: number ) => {
@@ -141,13 +117,7 @@ interactivityStore(
 		actions: {
 			woocommerce: {
 				addToCart: async ( store: Store ) => {
-					const { context, selectors, ref } = store;
-
-					if ( ! ref.classList.contains( 'ajax_add_to_cart' ) ) {
-						return;
-					}
-
-					context.woocommerce.isLoading = true;
+					const { context, actions, selectors, ref } = store;
 
 					// Allow 3rd parties to validate and quit early.
 					// https://github.com/woocommerce/woocommerce/blob/154dd236499d8a440edf3cde712511b56baa8e45/plugins/woocommerce/client/legacy/js/frontend/add-to-cart.js/#L74-L77
@@ -164,8 +134,10 @@ interactivityStore(
 							{ detail: [ false, false, ref ] }
 						);
 						document.body.dispatchEvent( ajaxNotSentEvent );
-						return true;
+						return;
 					}
+
+					context.woocommerce.isLoading = true;
 
 					try {
 						await dispatch( storeKey ).addItemToCart(
@@ -180,27 +152,11 @@ interactivityStore(
 								store
 							);
 					} catch ( error ) {
-						const storeNoticeBlock =
-							document.querySelector( storeNoticeClass );
-
-						if ( ! storeNoticeBlock ) {
-							document
-								.querySelector( '.entry-content' )
-								?.prepend( createNoticeContainer() );
-						}
-
-						const domNode =
-							storeNoticeBlock ??
-							document.querySelector( storeNoticeClass );
-
-						if ( domNode ) {
-							injectNotice( domNode, error.message );
-						}
-
-						// We don't care about errors blocking execution, but will
-						// console.error for troubleshooting.
-						// eslint-disable-next-line no-console
-						console.error( error );
+						actions.woocommerce.addNotice?.(
+							store,
+							error.message,
+							'error'
+						);
 					} finally {
 						context.woocommerce.displayViewCart = true;
 						context.woocommerce.isLoading = false;

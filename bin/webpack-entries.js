@@ -176,7 +176,7 @@ const entries = {
 		'mini-cart-component':
 			'./assets/js/blocks/mini-cart/component-frontend.tsx',
 		'product-button-interactivity':
-			'./assets/js/atomic/blocks/product-elements/button/frontend.tsx',
+			'./assets/js/atomic/blocks/product-elements/button/frontend.ts',
 	},
 	payments: {
 		'wc-payment-method-cheque':

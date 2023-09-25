@@ -4,6 +4,10 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
 
+add_action( 'template_redirect', function () {
+	wc_add_notice( __( 'Sorry there was a problem.', 'woocommerce' ), 'error' );
+} );
+
 /**
  * StoreNotices class.
  */
@@ -41,8 +45,39 @@ class StoreNotices extends AbstractBlock {
 			$classname .= " align{$attributes['align']}";
 		}
 
+		wc_store(
+			array(
+				'state' => array(
+					'woocommerce' => array(
+						'dismissServerNotices' => false,
+						'notice' => array(
+							"message" => "",
+							"status" => "default",
+						),
+					),
+				),
+				'selectors' => array(
+					'woocommerce' => array(
+						'noticeClassNames' => '',
+					),
+				),
+			),
+		);
+
 		return sprintf(
-			'<div class="woocommerce wc-block-store-notices %1$s %2$s">%3$s</div>',
+			'<div data-wc-interactive class="woocommerce wc-block-store-notices %1$s %2$s">
+				<div data-wc-bind--hidden="state.woocommerce.dismissServerNotices">
+					%3$s
+				</div>
+				<div data-wc-bind--hidden="state.woocommerce.notice.message">
+					<div
+						data-wc-bind--class="selectors.woocommerce.noticeClassNames"
+					>
+						<span data-wc-text="selectors.woocommerce.noticeIcon"></span>
+						<span data-wc-text="state.woocommerce.notice.message"></span>
+					</div>
+				</div>
+			</div>',
 			esc_attr( $classes_and_styles['classes'] ),
 			esc_attr( $classname ),
 			wc_kses_notice( $notices )
@@ -55,7 +90,13 @@ class StoreNotices extends AbstractBlock {
 	 * @param string $key Data to get, or default to everything.
 	 */
 	protected function get_block_type_script( $key = null ) {
-		return null;
+		$script = [
+			'handle'       => 'wc-' . $this->block_name . '-interactivity-frontend',
+			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-interactivity' ),
+			'dependencies' => [ 'wc-interactivity' ],
+		];
+
+		return $key ? $script[ $key ] : $script;
 	}
 
 	/**
