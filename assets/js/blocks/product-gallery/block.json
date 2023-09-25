@@ -13,13 +13,16 @@
 		"interactivity": true
 	},
 	"textdomain": "woo-gutenberg-products-block",
+	"usesContext": [ "postId" ],
 	"providesContext": {
 		"thumbnailsPosition": "thumbnailsPosition",
 		"thumbnailsNumberOfThumbnails": "thumbnailsNumberOfThumbnails",
 		"productGalleryClientId": "productGalleryClientId",
 		"nextPreviousButtonsPosition": "nextPreviousButtonsPosition",
-		"pagerDisplayMode": "pagerDisplayMode"
+		"pagerDisplayMode": "pagerDisplayMode",
+		"hoverZoom": "hoverZoom"
 	},
+	"usesContext": [ "postId" ],
 	"attributes": {
 		"thumbnailsPosition": {
 			"type": "string",
@@ -43,16 +46,20 @@
 		},
 		"hoverZoom": {
 			"type": "boolean",
-			"default": false
+			"default": true
 		},
 		"fullScreenOnClick": {
 			"type": "boolean",
-			"default": false
+			"default": true
 		},
 		"nextPreviousButtonsPosition":{
 			"type": "string",
 			"default": "insideTheImage"
+		},
+		"mode": {
+			"type": "string",
+			"default": "standard"
 		}
 	},
-	"viewScript": "wc-product-gallery-interactivity-frontend"
+	"viewScript": "wc-product-gallery-frontend"
 }
