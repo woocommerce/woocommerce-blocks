@@ -1,9 +1,8 @@
-// @ts-nocheck
-
 /**
  * External dependencies
  */
 import { deepSignal } from 'deepsignal';
+import { resetScope, getScope, setScope } from './hooks';
 
 const isObject = ( item ) =>
 	item && typeof item === 'object' && ! Array.isArray( item );
@@ -11,7 +10,14 @@ const isObject = ( item ) =>
 const deepMerge = ( target, source ) => {
 	if ( isObject( target ) && isObject( source ) ) {
 		for ( const key in source ) {
-			if ( isObject( source[ key ] ) ) {
+			if (
+				typeof Object.getOwnPropertyDescriptor( source, key )?.get ===
+				'function'
+			) {
+				Object.defineProperty( target, key, {
+					get: Object.getOwnPropertyDescriptor( source, key ).get,
+				} );
+			} else if ( isObject( source[ key ] ) ) {
 				if ( ! target[ key ] ) Object.assign( target, { [ key ]: {} } );
 				deepMerge( target[ key ], source[ key ] );
 			} else {
@@ -39,8 +45,64 @@ const getSerializedState = () => {
 
 export const afterLoads = new Set();
 
-const rawState = getSerializedState();
-export const rawStore = { state: deepSignal( rawState ) };
+// const rawState = getSerializedState();
+// export const rawStore = { state: deepSignal( rawState ) };
+
+export const stores = new Map();
+export const rawStates = new Map();
+
+const storeHandlers = {
+	get: ( target, key, receiver ) => {
+		const result = Reflect.get( target, key, receiver );
+
+		if ( typeof result === 'undefined' ) {
+			target[ key ] = {};
+			return target[ key ];
+		}
+
+		if ( typeof result === 'function' ) {
+			return ( ...args ) => {
+				result( ...args );
+			};
+		}
+
+		return result;
+	},
+};
+
+const actionHandlers = {
+	get: ( target, key, receiver ) => {
+		const result = Reflect.get( target, key, receiver );
+		if ( result?.constructor?.name === 'GeneratorFunction' ) {
+			return async ( ...args ) => {
+				const scope = getScope();
+				const gen = result( ...args );
+				const iterate = async ( iteration ) => {
+					resetScope();
+					if ( iteration.done ) return iteration.value;
+					const res = await iteration.value;
+					setScope( scope );
+					return await iterate( gen.next( res ) );
+				};
+				try {
+					return iterate( gen.next() );
+				} catch ( e ) {
+					resetScope();
+					throw e;
+				}
+			};
+		}
+		if ( typeof result === 'function' ) {
+			const scope = getScope();
+			return ( ...args ) => {
+				setScope( scope );
+				result( ...args );
+				resetScope();
+			};
+		}
+		return result;
+	},
+};
 
 /**
  * @typedef StoreProps Properties object passed to `store`.
@@ -97,8 +159,46 @@ export const rawStore = { state: deepSignal( rawState ) };
  * @param {StoreProps}   properties Properties to be added to the global store.
  * @param {StoreOptions} [options]  Options passed to the `store` call.
  */
-export const store = ( { state, ...block }, { afterLoad } = {} ) => {
-	deepMerge( rawStore, block );
-	deepMerge( rawState, state );
+
+interface StoreOptions {
+	afterLoad?: () => any;
+}
+
+export function store< S extends object = {} >(
+	namespace: string,
+	storePart?: S,
+	options?: StoreOptions
+): S;
+export function store< T extends object >(
+	namespace: string,
+	storePart?: T,
+	options?: StoreOptions
+): T;
+
+export function store(
+	namespace: string,
+	{ state = {}, actions = {}, ...block }: any = {},
+	{ afterLoad }: StoreOptions = {}
+) {
+	if ( ! stores.has( namespace ) ) {
+		rawStates.set( namespace, state );
+		stores.set(
+			namespace,
+			new Proxy(
+				{
+					state: deepSignal( state ),
+					actions: new Proxy( actions, actionHandlers ),
+					...block,
+				},
+				storeHandlers
+			)
+		);
+	} else {
+		deepMerge( stores.get( namespace ), block );
+		deepMerge( rawStates.get( namespace ), state );
+	}
+
 	if ( afterLoad ) afterLoads.add( afterLoad );
-};
+
+	return stores.get( namespace );
+}

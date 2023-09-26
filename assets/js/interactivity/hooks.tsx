@@ -4,11 +4,11 @@
  * External dependencies
  */
 import { h, options, createContext, cloneElement } from 'preact';
-import { useRef, useCallback } from 'preact/hooks';
+import { useRef, useCallback, useContext } from 'preact/hooks';
 /**
  * Internal dependencies
  */
-import { rawStore as store } from './store';
+import { stores } from './store';
 
 /** @typedef {import('preact').VNode} VNode */
 /** @typedef {typeof context} Context */
@@ -38,6 +38,23 @@ import { rawStore as store } from './store';
 
 // Main context.
 const context = createContext( {} );
+
+let currentScope = null;
+
+export const getContext = < T extends object >( namespace: string ): T => {
+	return currentScope.context[ namespace ];
+};
+
+export const getElementRef = () => currentScope.elementRef.current;
+
+export const getScope = () => currentScope;
+
+export const setScope = ( scope ) => {
+	currentScope = scope;
+};
+export const resetScope = () => {
+	currentScope = null;
+};
 
 // WordPress Directives.
 const directiveCallbacks = {};
@@ -114,29 +131,25 @@ export const directive = ( name, callback, { priority = 10 } = {} ) => {
 };
 
 // Resolve the path to some property of the store object.
-const resolve = ( path, ctx ) => {
-	let current = { ...store, context: ctx };
+const resolve = ( path, namespace ) => {
+	let current = {
+		...stores.get( namespace ),
+		context: currentScope.context[ namespace ],
+	};
 	path.split( '.' ).forEach( ( p ) => ( current = current[ p ] ) );
 	return current;
 };
 
 // Generate the evaluate function.
 const getEvaluate =
-	( { ref } = {} ) =>
-	( path, extraArgs = {} ) => {
+	( { namespace } = {} ) =>
+	( path, ...args ) => {
 		// If path starts with !, remove it and save a flag.
 		const hasNegationOperator =
 			path[ 0 ] === '!' && !! ( path = path.slice( 1 ) );
-		const value = resolve( path, extraArgs.context );
-		const returnValue =
-			typeof value === 'function'
-				? value( {
-						ref: ref.current,
-						...store,
-						...extraArgs,
-				  } )
-				: value;
-		return hasNegationOperator ? ! returnValue : returnValue;
+		const value = resolve( path, namespace );
+		const result = typeof value === 'function' ? value( ...args ) : value;
+		return hasNegationOperator ? ! result : result;
 	};
 
 // Separate directives by priority. The resulting array contains objects
@@ -162,18 +175,23 @@ const Directives = ( {
 	element,
 	evaluate,
 	originalProps,
-	elemRef,
+	elementRef,
 } ) => {
 	// Initialize the DOM reference.
 	// eslint-disable-next-line react-hooks/rules-of-hooks
-	elemRef = elemRef || useRef( null );
+	elementRef = elementRef || useRef( null );
 
 	// Create a reference to the evaluate function using the DOM reference.
 	// eslint-disable-next-line react-hooks/rules-of-hooks, react-hooks/exhaustive-deps
-	evaluate = evaluate || useCallback( getEvaluate( { ref: elemRef } ), [] );
+	evaluate =
+		evaluate ||
+		useCallback(
+			getEvaluate( { elementRef, namespace: directives.namespace } ),
+			[]
+		);
 
 	// Create a fresh copy of the vnode element.
-	element = cloneElement( element, { ref: elemRef } );
+	element = cloneElement( element, { ref: elementRef } );
 
 	// Recursively render the wrapper for the next priority level.
 	const children =
@@ -184,7 +202,7 @@ const Directives = ( {
 				element={ element }
 				evaluate={ evaluate }
 				originalProps={ originalProps }
-				elemRef={ elemRef }
+				elementRef={ elementRef }
 			/>
 		) : (
 			element
@@ -193,10 +211,14 @@ const Directives = ( {
 	const props = { ...originalProps, children };
 	const directiveArgs = { directives, props, element, context, evaluate };
 
+	setScope( { context: useContext( context ), elementRef } );
+
 	for ( const directiveName of currentPriorityLevel ) {
 		const wrapper = directiveCallbacks[ directiveName ]?.( directiveArgs );
 		if ( wrapper !== undefined ) props.children = wrapper;
 	}
+
+	resetScope();
 
 	return props.children;
 };

@@ -12,6 +12,7 @@ import { directivePrefix as p } from './constants';
 const ignoreAttr = `data-${ p }-ignore`;
 const islandAttr = `data-${ p }-interactive`;
 const fullPrefix = `data-${ p }-`;
+let namespace = null;
 
 // Regular expression for directive parsing.
 const directiveParser = new RegExp(
@@ -68,6 +69,10 @@ export function toVdom( root ) {
 					ignore = true;
 				} else if ( n === islandAttr ) {
 					island = true;
+					try {
+						const val = JSON.parse( attributes[ i ].value );
+						namespace = val?.namespace ?? null;
+					} catch ( e ) {}
 				} else {
 					hasDirectives = true;
 					let val = attributes[ i ].value;
@@ -94,7 +99,10 @@ export function toVdom( root ) {
 			];
 		if ( island ) hydratedIslands.add( node );
 
-		if ( hasDirectives ) props.__directives = directives;
+		if ( hasDirectives ) {
+			props.__directives = directives;
+			directives.namespace = namespace;
+		}
 
 		let child = treeWalker.firstChild();
 		if ( child ) {

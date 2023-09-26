@@ -943,6 +943,7 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 								babelrc: false,
 								configFile: false,
 								presets: [
+									'@babel/preset-typescript',
 									[
 										'@babel/preset-react',
 										{

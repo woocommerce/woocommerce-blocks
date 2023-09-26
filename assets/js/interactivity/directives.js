@@ -17,7 +17,7 @@ import { deepSignal, peek } from 'deepsignal';
  */
 import { createPortal } from './portals';
 import { useSignalEffect } from './utils';
-import { directive } from './hooks';
+import { directive, setScope, resetScope, getScope } from './hooks';
 import { SlotProvider, Slot, Fill } from './slots';
 
 const isObject = ( item ) =>
@@ -43,24 +43,21 @@ export default () => {
 		'context',
 		( {
 			directives: {
-				context: { default: newContext },
+				context: { default: context },
+				namespace,
 			},
 			props: { children },
-			context: inheritedContext,
+			context: inherited,
 		} ) => {
-			const { Provider } = inheritedContext;
-			const inheritedValue = useContext( inheritedContext );
-			const currentValue = useRef( deepSignal( {} ) );
-			currentValue.current = useMemo( () => {
-				const newValue = deepSignal( newContext );
-				mergeDeepSignals( newValue, inheritedValue );
-				mergeDeepSignals( currentValue.current, newValue, true );
-				return currentValue.current;
-			}, [ newContext, inheritedValue ] );
+			const { Provider } = inherited;
+			const inheritedValue = useContext( inherited );
+			const value = useMemo( () => {
+				const localValue = deepSignal( { [ namespace ]: context } );
+				mergeDeepSignals( localValue, inheritedValue );
+				return localValue;
+			}, [ context, inheritedValue ] );
 
-			return (
-				<Provider value={ currentValue.current }>{ children }</Provider>
-			);
+			return <Provider value={ value }>{ children }</Provider>;
 		},
 		{ priority: 5 }
 	);
@@ -70,12 +67,15 @@ export default () => {
 		return createPortal( children, document.body );
 	} );
 
-	// data-wc-effect--[name]
-	directive( 'effect', ( { directives: { effect }, context, evaluate } ) => {
-		const contextValue = useContext( context );
-		Object.values( effect ).forEach( ( path ) => {
-			useSignalEffect( () => {
-				return evaluate( path, { context: contextValue } );
+	// data-wc-watch--[name]
+	directive( 'watch', ( { directives: { watch }, evaluate } ) => {
+		const scope = getScope();
+		Object.values( watch ).forEach( ( path ) => {
+			useSignalEffect( async () => {
+				setScope( scope );
+				const result = await evaluate( path );
+				resetScope();
+				return result;
 			} );
 		} );
 	} );
@@ -83,36 +83,40 @@ export default () => {
 	// data-wc-layout-init--[name]
 	directive(
 		'layout-init',
-		( {
-			directives: { 'layout-init': layoutInit },
-			context,
-			evaluate,
-		} ) => {
-			const contextValue = useContext( context );
+		( { directives: { 'layout-init': layoutInit }, evaluate } ) => {
+			const scope = getScope();
 			Object.values( layoutInit ).forEach( ( path ) => {
 				useLayoutEffect( () => {
-					return evaluate( path, { context: contextValue } );
+					setScope( scope );
+					const result = evaluate( path );
+					resetScope();
+					return result;
 				}, [] );
 			} );
 		}
 	);
 
 	// data-wc-init--[name]
-	directive( 'init', ( { directives: { init }, context, evaluate } ) => {
-		const contextValue = useContext( context );
+	directive( 'init', ( { directives: { init }, evaluate } ) => {
+		const scope = getScope();
 		Object.values( init ).forEach( ( path ) => {
 			useEffect( () => {
-				return evaluate( path, { context: contextValue } );
+				setScope( scope );
+				const result = evaluate( path );
+				resetScope();
+				return result;
 			}, [] );
 		} );
 	} );
 
 	// data-wc-on--[event]
-	directive( 'on', ( { directives: { on }, element, evaluate, context } ) => {
-		const contextValue = useContext( context );
+	directive( 'on', ( { directives: { on }, element, evaluate } ) => {
+		const scope = getScope();
 		Object.entries( on ).forEach( ( [ name, path ] ) => {
 			element.props[ `on${ name }` ] = ( event ) => {
-				evaluate( path, { event, context: contextValue } );
+				setScope( scope );
+				evaluate( path, event );
+				resetScope();
 			};
 		} );
 	} );
@@ -120,19 +124,12 @@ export default () => {
 	// data-wc-class--[classname]
 	directive(
 		'class',
-		( {
-			directives: { class: className },
-			element,
-			evaluate,
-			context,
-		} ) => {
-			const contextValue = useContext( context );
+		( { directives: { class: className }, element, evaluate } ) => {
 			Object.keys( className )
 				.filter( ( n ) => n !== 'default' )
 				.forEach( ( name ) => {
 					const result = evaluate( className[ name ], {
 						className: name,
-						context: contextValue,
 					} );
 					const currentClass = element.props.class || '';
 					const classFinder = new RegExp(
@@ -198,113 +195,102 @@ export default () => {
 	};
 
 	// data-wc-style--[style-key]
-	directive(
-		'style',
-		( { directives: { style }, element, evaluate, context } ) => {
-			const contextValue = useContext( context );
-			Object.keys( style )
-				.filter( ( n ) => n !== 'default' )
-				.forEach( ( key ) => {
-					const result = evaluate( style[ key ], {
-						key,
-						context: contextValue,
-					} );
-					element.props.style = element.props.style || {};
-					if ( typeof element.props.style === 'string' )
-						element.props.style = cssStringToObject(
-							element.props.style
-						);
-					if ( ! result ) delete element.props.style[ key ];
-					else element.props.style[ key ] = result;
-
-					useEffect( () => {
-						// This seems necessary because Preact doesn't change the styles on
-						// the hydration, so we have to do it manually. It doesn't need deps
-						// because it only needs to do it the first time.
-						if ( ! result ) {
-							element.ref.current.style.removeProperty( key );
-						} else {
-							element.ref.current.style[ key ] = result;
-						}
-					}, [] );
+	directive( 'style', ( { directives: { style }, element, evaluate } ) => {
+		Object.keys( style )
+			.filter( ( n ) => n !== 'default' )
+			.forEach( ( key ) => {
+				const result = evaluate( style[ key ], {
+					key,
 				} );
-		}
-	);
+				element.props.style = element.props.style || {};
+				if ( typeof element.props.style === 'string' )
+					element.props.style = cssStringToObject(
+						element.props.style
+					);
+				if ( ! result ) delete element.props.style[ key ];
+				else element.props.style[ key ] = result;
+
+				useEffect( () => {
+					// This seems necessary because Preact doesn't change the styles on
+					// the hydration, so we have to do it manually. It doesn't need deps
+					// because it only needs to do it the first time.
+					if ( ! result ) {
+						element.ref.current.style.removeProperty( key );
+					} else {
+						element.ref.current.style[ key ] = result;
+					}
+				}, [] );
+			} );
+	} );
 
 	// data-wc-bind--[attribute]
-	directive(
-		'bind',
-		( { directives: { bind }, element, context, evaluate } ) => {
-			const contextValue = useContext( context );
-			Object.entries( bind )
-				.filter( ( n ) => n !== 'default' )
-				.forEach( ( [ attribute, path ] ) => {
-					const result = evaluate( path, {
-						context: contextValue,
-					} );
-					element.props[ attribute ] = result;
-					// Preact doesn't handle the `role` attribute properly, as it doesn't remove it when `null`.
-					// We need this workaround until the following issue is solved:
-					// https://github.com/preactjs/preact/issues/4136
-					useLayoutEffect( () => {
-						if (
-							attribute === 'role' &&
-							( result === null || result === undefined )
-						) {
-							element.ref.current.removeAttribute( attribute );
-						}
-					}, [ attribute, result ] );
+	directive( 'bind', ( { directives: { bind }, element, evaluate } ) => {
+		Object.entries( bind )
+			.filter( ( n ) => n !== 'default' )
+			.forEach( ( [ attribute, path ] ) => {
+				const result = evaluate( path );
+				element.props[ attribute ] = result;
+				// Preact doesn't handle the `role` attribute properly, as it doesn't remove it when `null`.
+				// We need this workaround until the following issue is solved:
+				// https://github.com/preactjs/preact/issues/4136
+				useLayoutEffect( () => {
+					if (
+						attribute === 'role' &&
+						( result === null || result === undefined )
+					) {
+						element.ref.current.removeAttribute( attribute );
+					}
+				}, [ attribute, result ] );
 
-					// This seems necessary because Preact doesn't change the attributes
-					// on the hydration, so we have to do it manually. It doesn't need
-					// deps because it only needs to do it the first time.
-					useEffect( () => {
-						const el = element.ref.current;
+				// This seems necessary because Preact doesn't change the attributes
+				// on the hydration, so we have to do it manually. It doesn't need
+				// deps because it only needs to do it the first time.
+				useEffect( () => {
+					const el = element.ref.current;
 
-						// We set the value directly to the corresponding
-						// HTMLElement instance property excluding the following
-						// special cases.
-						// We follow Preact's logic: https://github.com/preactjs/preact/blob/ea49f7a0f9d1ff2c98c0bdd66aa0cbc583055246/src/diff/props.js#L110-L129
-						if (
-							attribute !== 'width' &&
-							attribute !== 'height' &&
-							attribute !== 'href' &&
-							attribute !== 'list' &&
-							attribute !== 'form' &&
-							// Default value in browsers is `-1` and an empty string is
-							// cast to `0` instead
-							attribute !== 'tabIndex' &&
-							attribute !== 'download' &&
-							attribute !== 'rowSpan' &&
-							attribute !== 'colSpan' &&
-							attribute !== 'role' &&
-							attribute in el
-						) {
-							try {
-								el[ attribute ] =
-									result === null || result === undefined
-										? ''
-										: result;
-								return;
-							} catch ( err ) {}
-						}
-						// aria- and data- attributes have no boolean representation.
-						// A `false` value is different from the attribute not being
-						// present, so we can't remove it.
-						// We follow Preact's logic: https://github.com/preactjs/preact/blob/ea49f7a0f9d1ff2c98c0bdd66aa0cbc583055246/src/diff/props.js#L131C24-L136
-						if (
-							result !== null &&
-							result !== undefined &&
-							( result !== false || attribute[ 4 ] === '-' )
-						) {
-							el.setAttribute( attribute, result );
-						} else {
-							el.removeAttribute( attribute );
-						}
-					}, [] );
-				} );
-		}
-	);
+					// We set the value directly to the corresponding
+					// HTMLElement instance property excluding the following
+					// special cases.
+					// We follow Preact's logic: https://github.com/preactjs/preact/blob/ea49f7a0f9d1ff2c98c0bdd66aa0cbc583055246/src/diff/props.js#L110-L129
+					if (
+						attribute !== 'width' &&
+						attribute !== 'height' &&
+						attribute !== 'href' &&
+						attribute !== 'list' &&
+						attribute !== 'form' &&
+						// Default value in browsers is `-1` and an empty string is
+						// cast to `0` instead
+						attribute !== 'tabIndex' &&
+						attribute !== 'download' &&
+						attribute !== 'rowSpan' &&
+						attribute !== 'colSpan' &&
+						attribute !== 'role' &&
+						attribute in el
+					) {
+						try {
+							el[ attribute ] =
+								result === null || result === undefined
+									? ''
+									: result;
+							return;
+						} catch ( err ) {}
+					}
+					// aria- and data- attributes have no boolean representation.
+					// A `false` value is different from the attribute not being
+					// present, so we can't remove it.
+					// We follow Preact's logic: https://github.com/preactjs/preact/blob/ea49f7a0f9d1ff2c98c0bdd66aa0cbc583055246/src/diff/props.js#L131C24-L136
+					if (
+						result !== null &&
+						result !== undefined &&
+						( result !== false || attribute[ 4 ] === '-' )
+					) {
+						el.setAttribute( attribute, result );
+					} else {
+						el.removeAttribute( attribute );
+					}
+				}, [] );
+			} );
+	} );
 
 	// data-wc-navigation-link
 	directive(
@@ -375,12 +361,8 @@ export default () => {
 			},
 			element,
 			evaluate,
-			context,
 		} ) => {
-			const contextValue = useContext( context );
-			element.props.children = evaluate( text, {
-				context: contextValue,
-			} );
+			element.props.children = evaluate( text );
 		}
 	);
 
@@ -434,10 +416,8 @@ export default () => {
 			},
 			props: { children },
 			evaluate,
-			context,
 		} ) => {
-			const contextValue = useContext( context );
-			const slot = evaluate( fill, { context: contextValue } );
+			const slot = evaluate( fill );
 			return <Fill slot={ slot }>{ children }</Fill>;
 		},
 		{ priority: 4 }
