@@ -44,6 +44,7 @@ test.describe( 'Shopper → Order Confirmation', () => {
 		} );
 		await editorUtils.enterEditMode();
 		await editorUtils.closeWelcomeGuideModal();
+		await editorUtils.closePageEditingModal();
 		await editorUtils.transformIntoBlocks();
 	} );
 

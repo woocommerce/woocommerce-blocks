@@ -8,25 +8,7 @@ const templatePath = 'woocommerce/woocommerce//page-checkout';
 const templateType = 'wp_template';
 
 test.describe( 'Test the checkout template', async () => {
-	test( 'Template can be opened in the site editor', async ( {
-		admin,
-		page,
-		editorUtils,
-	} ) => {
-		await admin.visitAdminPage( 'site-editor.php' );
-		await editorUtils.waitForSiteEditorFinishLoading();
-		await page.getByRole( 'button', { name: /Templates/i } ).click();
-		await page.getByRole( 'button', { name: /Page: Checkout/i } ).click();
-		await editorUtils.enterEditMode();
-		await expect(
-			page
-				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h1:has-text("Checkout block")' )
-				.first()
-		).toBeVisible();
-	} );
-
-	test( 'Template can be accessed from the page editor', async ( {
+	test( 'Page can be accessed from the site editor', async ( {
 		admin,
 		editor,
 		page,
@@ -37,6 +19,8 @@ test.describe( 'Test the checkout template', async () => {
 		await editor.page.getByRole( 'button', { name: /Pages/i } ).click();
 		await editor.page.getByRole( 'button', { name: /Checkout/i } ).click();
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
+		await editorUtils.closePageEditingModal();
 		await expect(
 			editor.canvas.locator( 'h1:has-text("Checkout block")' ).first()
 		).toBeVisible();
@@ -44,6 +28,26 @@ test.describe( 'Test the checkout template', async () => {
 		await page.getByRole( 'button', { name: 'Edit template' } ).click();
 		await expect(
 			editor.canvas.locator( 'h1:has-text("Checkout block")' ).first()
+		).toBeVisible();
+	} );
+
+	test( 'Template can be opened in the site editor', async ( {
+		admin,
+		page,
+		editorUtils,
+	} ) => {
+		await admin.visitAdminPage( 'site-editor.php' );
+		await editorUtils.waitForSiteEditorFinishLoading();
+		await page.getByRole( 'button', { name: /Templates/i } ).click();
+		await page.getByRole( 'button', { name: /Page: Checkout/i } ).click();
+		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
+		await editorUtils.closePageEditingModal();
+		await expect(
+			page
+				.frameLocator( 'iframe[title="Editor canvas"i]' )
+				.locator( 'h1:has-text("Checkout block")' )
+				.first()
 		).toBeVisible();
 	} );
 
@@ -76,6 +80,8 @@ test.describe( 'Test editing the checkout template', async () => {
 		await page.getByRole( 'button', { name: /Templates/i } ).click();
 		await page.getByRole( 'button', { name: /Page: Checkout/i } ).click();
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
+		await editorUtils.closePageEditingModal();
 		await editor.setContent(
 			'<!-- wp:woocommerce/classic-shortcode {"shortcode":"checkout"} /-->'
 		);

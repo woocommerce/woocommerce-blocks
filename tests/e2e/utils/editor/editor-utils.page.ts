@@ -266,8 +266,7 @@ export class EditorUtils {
 			.getByRole( 'dialog', { name: 'Welcome to the site editor' } )
 			.locator( 'div' )
 			.filter( {
-				hasText:
-					'Edit your siteDesign everything on your site — from the header right down to the',
+				hasText: 'Edit your site',
 			} )
 			.nth( 2 )
 			.isVisible();
@@ -277,6 +276,22 @@ export class EditorUtils {
 			await this.page
 				.getByRole( 'button', { name: 'Get started' } )
 				.click();
+		}
+	}
+
+	async closePageEditingModal() {
+		const isModalOpen = await this.page
+			.getByRole( 'dialog', { name: 'Editing a page' } )
+			.locator( 'div' )
+			.filter( {
+				hasText: 'Editing a page',
+			} )
+			.nth( 2 )
+			.isVisible();
+
+		// eslint-disable-next-line playwright/no-conditional-in-test
+		if ( isModalOpen ) {
+			await this.page.getByRole( 'button', { name: 'Continue' } ).click();
 		}
 	}
 
