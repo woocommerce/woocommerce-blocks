@@ -1,5 +1,5 @@
 [{
-  "align": "left"
+  "align": "left","lock":{"move":false,"remove":false}
 }, {
   "align": "center"
 }, {

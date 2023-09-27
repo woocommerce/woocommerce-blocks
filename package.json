@@ -225,6 +225,7 @@
 		"markdown-it": "13.0.1",
 		"merge-config": "2.0.0",
 		"mini-css-extract-plugin": "2.7.6",
+		"mustache": "^4.2.0",
 		"patch-package": "6.4.7",
 		"postcss": "8.4.27",
 		"postcss-loader": "7.3.3",
