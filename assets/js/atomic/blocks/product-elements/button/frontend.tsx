@@ -65,9 +65,6 @@ const getTextButton = (
 const { state, selectors } = store< Store >(
 	'woo',
 	{
-		state: {
-			inTheCartText: '### in cart', // TODO replace with SSR version
-		},
 		selectors: {
 			get numberOfItemsInTheCart() {
 				const { productId } = getContext();
@@ -115,7 +112,7 @@ const { state, selectors } = store< Store >(
 			},
 		},
 		actions: {
-			addToCart: function* () {
+			*addToCart() {
 				const context = getContext();
 				const { productId, quantityToAdd } = context;
 
@@ -131,6 +128,7 @@ const { state, selectors } = store< Store >(
 					context.temporaryNumberOfItems =
 						selectors.numberOfItemsInTheCart;
 				} catch ( error ) {
+					// eslint-disable-next-line no-console
 					console.error( error );
 				} finally {
 					context.displayViewCart = true;
