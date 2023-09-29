@@ -204,10 +204,15 @@ const { state, selectors } = store< Store >(
 	}
 );
 
+interface WooTestCtx {
+	addToCartTextSuffix: string;
+}
+
 store( 'woo-test', {
 	selectors: {
 		get addToCartText(): string {
-			return `${ selectors.addToCartText } !!!`;
+			const ctx = getContextFn< WooTestCtx >( 'woo-test' );
+			return `${ selectors.addToCartText } ${ ctx.addToCartTextSuffix }`;
 		},
 	},
 } );
