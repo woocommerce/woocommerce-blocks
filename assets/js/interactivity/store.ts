@@ -157,7 +157,7 @@ interface StoreOptions {
 
 export function store< S extends object = {} >(
 	namespace: string,
-	storePart?: S,
+	storePart?: Partial< S >,
 	options?: StoreOptions
 ): S;
 export function store< T extends object >(
