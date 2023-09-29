@@ -108,16 +108,13 @@ class ProductButton extends AbstractBlock {
 				)
 			);
 
-			wc_store(
+			wc_initial_state(
+				'woocommerce',
 				array(
-					'state' => array(
-						'woocommerce' => array(
-							'inTheCartText' => sprintf(
-								/* translators: %s: product number. */
-								__( '%s in cart', 'woo-gutenberg-products-block' ),
-								'###'
-							),
-						),
+					'inTheCartText' => sprintf(
+						/* translators: %s: product number. */
+						__( '%s in cart', 'woo-gutenberg-products-block' ),
+						'###'
 					),
 				)
 			);
@@ -168,7 +165,7 @@ class ProductButton extends AbstractBlock {
 			}
 
 			$interactive = array(
-				'namespace' => 'woo'
+				'namespace' => 'woo',
 			);
 
 			$div_directives = '
