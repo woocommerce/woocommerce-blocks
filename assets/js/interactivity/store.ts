@@ -27,14 +27,14 @@ const deepMerge = ( target, source ) => {
 	}
 };
 
-const getSerializedState = () => {
+const parseInitialState = () => {
 	const storeTag = document.querySelector(
-		`script[type="application/json"]#wc-interactivity-store-data`
+		`script[type="application/json"]#wc-interactivity-initial-state`
 	);
-	if ( ! storeTag ) return {};
+	if ( ! storeTag?.textContent ) return {};
 	try {
-		const { state } = JSON.parse( storeTag.textContent );
-		if ( isObject( state ) ) return state;
+		const initialState = JSON.parse( storeTag.textContent );
+		if ( isObject( initialState ) ) return initialState;
 		throw Error( 'Parsed state is not an object' );
 	} catch ( e ) {
 		// eslint-disable-next-line no-console
@@ -44,10 +44,6 @@ const getSerializedState = () => {
 };
 
 export const afterLoads = new Set();
-
-// const rawState = getSerializedState();
-// export const rawStore = { state: deepSignal( rawState ) };
-
 export const stores = new Map();
 export const rawStates = new Map();
 export const rawActions = new Map();
@@ -199,3 +195,8 @@ export function store(
 
 	return stores.get( namespace );
 }
+
+// Parse and populate the initial state.
+Object.entries( parseInitialState() ).forEach( ( [ namespace, state ] ) => {
+	store( namespace, { state } );
+} );
