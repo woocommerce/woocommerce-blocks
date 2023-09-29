@@ -203,3 +203,11 @@ const { state, selectors } = store< Store >(
 		},
 	}
 );
+
+store( 'woo-test', {
+	selectors: {
+		get addToCartText(): string {
+			return `${ selectors.addToCartText } !!!`;
+		},
+	},
+} );

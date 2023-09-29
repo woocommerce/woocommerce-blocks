@@ -179,7 +179,7 @@ class ProductButton extends AbstractBlock {
 			';
 
 			$span_button_directives = '
-				data-wc-text="selectors.addToCartText"
+				data-wc-text="woo-test::selectors.addToCartText"
 				data-wc-class--wc-block-slide-in="selectors.slideInAnimation"
 				data-wc-class--wc-block-slide-out="selectors.slideOutAnimation"
 				data-wc-on--animationend="actions.handleAnimationEnd"
