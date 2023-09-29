@@ -151,13 +151,17 @@ const actionHandlers = {
  * @param {StoreOptions} [options]  Options passed to the `store` call.
  */
 
+type DeepPartial< T > = T extends object
+	? { [ P in keyof T ]?: DeepPartial< T[ P ] > }
+	: T;
+
 interface StoreOptions {
 	afterLoad?: () => any;
 }
 
 export function store< S extends object = {} >(
 	namespace: string,
-	storePart?: Partial< S >,
+	storePart?: DeepPartial< S >,
 	options?: StoreOptions
 ): S;
 export function store< T extends object >(
