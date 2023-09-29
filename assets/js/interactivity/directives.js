@@ -19,6 +19,7 @@ import { createPortal } from './portals';
 import { useSignalEffect } from './utils';
 import { directive, setScope, resetScope, getScope } from './hooks';
 import { SlotProvider, Slot, Fill } from './slots';
+import { $$namespace } from './vdom';
 
 const isObject = ( item ) =>
 	item && typeof item === 'object' && ! Array.isArray( item );
@@ -52,7 +53,9 @@ export default () => {
 			const { Provider } = inherited;
 			const inheritedValue = useContext( inherited );
 			const value = useMemo( () => {
-				const localValue = deepSignal( { [ namespace ]: context } );
+				const localValue = deepSignal( {
+					[ context[ $$namespace ] || namespace ]: context,
+				} );
 				mergeDeepSignals( localValue, inheritedValue );
 				return localValue;
 			}, [ context, inheritedValue ] );

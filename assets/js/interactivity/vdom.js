@@ -28,6 +28,8 @@ const directiveParser = new RegExp(
 	'i' // Case insensitive.
 );
 
+export const $$namespace = Symbol( 'namespace' );
+
 export const hydratedIslands = new WeakSet();
 
 // Recursive function that transforms a DOM tree into vDOM.
@@ -77,7 +79,9 @@ export function toVdom( root ) {
 					hasDirectives = true;
 					let val = attributes[ i ].value;
 					try {
-						val = JSON.parse( val );
+						const [ json, ns ] = val.split( '::' ).reverse();
+						val = JSON.parse( json );
+						if ( ns ) val[ $$namespace ] = ns;
 					} catch ( e ) {}
 					const [ , prefix, suffix ] = directiveParser.exec( n );
 					directives[ prefix ] = directives[ prefix ] || {};
