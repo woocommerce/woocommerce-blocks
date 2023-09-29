@@ -109,7 +109,7 @@ class ProductButton extends AbstractBlock {
 			);
 
 			wc_initial_state(
-				'woocommerce',
+				'woo',
 				array(
 					'inTheCartText' => sprintf(
 						/* translators: %s: product number. */
