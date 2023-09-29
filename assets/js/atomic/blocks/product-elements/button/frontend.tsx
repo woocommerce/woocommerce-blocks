@@ -2,13 +2,13 @@
  * External dependencies
  */
 import { store, getContext as getContextFn } from '@woocommerce/interactivity';
-import { dispatch, select, subscribe } from '@wordpress/data';
+import { select, subscribe } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { Cart } from '@woocommerce/type-defs/cart';
 // import { createRoot } from '@wordpress/element';
 // import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
-interface Context {
+export interface Context {
 	isLoading: boolean;
 	addToCartText: string;
 	productId: number;
@@ -24,7 +24,7 @@ enum AnimationStatus {
 	SLIDE_IN = 'SLIDE-IN',
 }
 
-interface Store {
+export interface Store {
 	state: {
 		cart?: Cart;
 		inTheCartText?: string;
@@ -40,6 +40,7 @@ interface Store {
 	actions: {
 		addToCart: () => void;
 		handleAnimationEnd: ( event: AnimationEvent ) => void;
+		__addToCart: () => void;
 	};
 	callbacks: {
 		startAnimation: () => void;
@@ -62,7 +63,7 @@ const getTextButton = (
 	return inTheCart.replace( '###', numberOfItems.toString() );
 };
 
-const { state, selectors } = store< Store >(
+const { state, selectors, actions } = store< Store >(
 	'woo',
 	{
 		selectors: {
@@ -73,14 +74,6 @@ const { state, selectors } = store< Store >(
 			},
 			get hasCartLoaded(): boolean {
 				return !! state.cart;
-			},
-			get slideInAnimation() {
-				const { animationStatus } = getContext();
-				return animationStatus === AnimationStatus.SLIDE_IN;
-			},
-			get slideOutAnimation() {
-				const { animationStatus } = getContext();
-				return animationStatus === AnimationStatus.SLIDE_OUT;
 			},
 			get addToCartText(): string {
 				const context = getContext();
@@ -113,61 +106,11 @@ const { state, selectors } = store< Store >(
 		},
 		actions: {
 			*addToCart() {
-				const context = getContext();
-				const { productId, quantityToAdd } = context;
-
-				context.isLoading = true;
-
-				try {
-					yield dispatch( storeKey ).addItemToCart(
-						productId,
-						quantityToAdd
-					);
-
-					// After the cart is updated, sync the temporary number of items again.
-					context.temporaryNumberOfItems =
-						selectors.numberOfItemsInTheCart;
-				} catch ( error ) {
-					// eslint-disable-next-line no-console
-					console.error( error );
-				} finally {
-					context.displayViewCart = true;
-					context.isLoading = false;
-				}
-			},
-			handleAnimationEnd: ( event ) => {
-				const context = getContext();
-				if ( event.animationName === 'slideOut' ) {
-					// When the first part of the animation (slide-out) ends, we move
-					// to the second part (slide-in).
-					context.animationStatus = AnimationStatus.SLIDE_IN;
-				} else if ( event.animationName === 'slideIn' ) {
-					// When the second part of the animation ends, we update the
-					// temporary number of items to sync it with the cart and reset the
-					// animation status so it can be triggered again.
-					context.temporaryNumberOfItems =
-						selectors.numberOfItemsInTheCart;
-					context.animationStatus = AnimationStatus.IDLE;
-				}
+				yield import( './frontend-add-to-cart' );
+				yield actions.__addToCart();
 			},
 		},
 		callbacks: {
-			startAnimation: () => {
-				const context = getContext();
-				// We start the animation if the cart has loaded, the temporary number
-				// of items is out of sync with the number of items in the cart, the
-				// button is not loading (because that means the user started the
-				// interaction) and the animation hasn't started yet.
-				if (
-					selectors.hasCartLoaded &&
-					context.temporaryNumberOfItems !==
-						selectors.numberOfItemsInTheCart &&
-					! context.isLoading &&
-					context.animationStatus === AnimationStatus.IDLE
-				) {
-					context.animationStatus = AnimationStatus.SLIDE_OUT;
-				}
-			},
 			syncTemporaryNumberOfItemsOnLoad: () => {
 				const context = getContext();
 				// If the cart has loaded when we instantiate this element, we sync
