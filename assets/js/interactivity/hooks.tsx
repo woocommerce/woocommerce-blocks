@@ -9,6 +9,7 @@ import { useRef, useCallback, useContext } from 'preact/hooks';
  * Internal dependencies
  */
 import { stores } from './store';
+import { nsPathParser } from './vdom';
 
 /** @typedef {import('preact').VNode} VNode */
 /** @typedef {typeof context} Context */
@@ -144,7 +145,7 @@ const resolve = ( path, namespace ) => {
 const getEvaluate =
 	( { namespace: defaultNs } = {} ) =>
 	( fullPath, ...args ) => {
-		let [ path, namespace = defaultNs ] = fullPath.split( '::' ).reverse();
+		let [ path, namespace = defaultNs ] = nsPathParser( fullPath );
 		// If path starts with !, remove it and save a flag.
 		const hasNegationOperator =
 			path[ 0 ] === '!' && !! ( path = path.slice( 1 ) );
