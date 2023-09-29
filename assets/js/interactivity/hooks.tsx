@@ -142,8 +142,9 @@ const resolve = ( path, namespace ) => {
 
 // Generate the evaluate function.
 const getEvaluate =
-	( { namespace } = {} ) =>
-	( path, ...args ) => {
+	( { namespace: defaultNs } = {} ) =>
+	( fullPath, ...args ) => {
+		let [ path, namespace = defaultNs ] = fullPath.split( '::' ).reverse();
 		// If path starts with !, remove it and save a flag.
 		const hasNegationOperator =
 			path[ 0 ] === '!' && !! ( path = path.slice( 1 ) );
