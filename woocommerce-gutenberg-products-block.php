@@ -285,3 +285,11 @@ function woocommerce_blocks_plugin_outdated_notice() {
 }
 
 add_action( 'admin_notices', 'woocommerce_blocks_plugin_outdated_notice' );
+
+function insert_shopping_cart_hooked_block( $hooked_blocks, $position, $anchor_block, $context ) {
+	if ( 'after' === $position && 'core/navigation' === $anchor_block && /** $context is header template part **/ ) {
+		$hooked_blocks[] = 'woocommerce/mini-cart';
+	}
+	return $hooked_blocks;
+}
+add_filter( 'hooked_block_types', 'insert_shopping_cart_hooked_block', 10, 4 );
