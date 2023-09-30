@@ -74,7 +74,7 @@ class MiniCart extends AbstractBlock {
 		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
 		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 2 );
 		add_action( 'wp_loaded', array( $this, 'register_auto_insert' ) );
-		add_filter( 'hooked_block_types', 'insert_shopping_cart_hooked_block', 10, 4 );
+		add_filter( 'hooked_block_types', array( $this, 'insert_shopping_cart_hooked_block', 10, 4 ) );
 	}
 
 	public function insert_shopping_cart_hooked_block( $hooked_blocks, $position, $anchor_block, $context ) {
