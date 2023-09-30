@@ -112,7 +112,7 @@ class CartAddItem extends AbstractCartRoute {
 				'id'             => $request['id'],
 				'quantity'       => $request['quantity'],
 				'variation'      => $request['variation'],
-				'cart_item_data' => [],
+				'cart_item_data' => $request['cart_item_data'] ?? [],
 			),
 			$request
 		);
