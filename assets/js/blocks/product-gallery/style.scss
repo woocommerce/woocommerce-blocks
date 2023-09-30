@@ -109,6 +109,11 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 	margin-right: 15px;
 }
 
+.wc-block-product-gallery-large-image-next-previous--button {
+	padding: 0;
+	border: none;
+}
+
 // Next/Previous Buttons Outside the Image Settings
 #{$gallery-next-previous-outside-image} .wc-block-product-gallery-large-image-next-previous-left--outside-image {
 	bottom: 0;
