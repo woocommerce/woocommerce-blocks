@@ -282,8 +282,8 @@ final class CollectionFilters extends AbstractBlock {
 		}
 
 		/**
-		 * Product Collection determine the product visibility based on stock
-		 * status. We need to pass the catalog_visibility param to the Store
+		 * Product Collection determines the product visibility based on stock
+		 * statuses. We need to pass the catalog_visibility param to the Store
 		 * API to make sure the product visibility is correct.
 		 */
 		$params['catalog_visibility'] = is_search() ? 'catalog' : 'visible';
