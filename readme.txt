@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.3
 Tested up to: 6.3
 Requires PHP: 7.3
-Stable tag: 11.0.0
+Stable tag: 11.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -80,6 +80,46 @@ Yes you can! Join in on our [GitHub repository](https://github.com/woocommerce/w
 Release and roadmap notes available on the [WooCommerce Developers Blog](https://woocommerce.wordpress.com/2019/01/15/woocommerce-blocks-1-3-0-release-notes/)
 
 == Changelog ==
+
+= 11.2.0 - 2023-09-25 =
+
+#### Enhancements
+
+- Remove order and checkout order endpoints experimental flag. ([11022](https://github.com/woocommerce/woocommerce-blocks/pull/11022))
+- Ensure the content of the patterns is also AI-generated. ([10997](https://github.com/woocommerce/woocommerce-blocks/pull/10997))
+- Product Collection: Transfer layout options from Toolbar to Inspector controls. ([10922](https://github.com/woocommerce/woocommerce-blocks/pull/10922))
+- Add pattern chooser in Product Collection. ([10876](https://github.com/woocommerce/woocommerce-blocks/pull/10876))
+- Product Gallery: Lock the Sale Badge and the Next/Prev Buttons. ([10869](https://github.com/woocommerce/woocommerce-blocks/pull/10869))
+- Refactor Cart and Checkout Page Templates. ([10773](https://github.com/woocommerce/woocommerce-blocks/pull/10773))
+-  Blockified Order Confirmation. ([10056](https://github.com/woocommerce/woocommerce-blocks/pull/10056))
+
+#### Bug Fixes
+
+- Product Gallery: Fix the Product Gallery Thumbnails on click. ([11032](https://github.com/woocommerce/woocommerce-blocks/pull/11032))
+- WooExpress: Fix Checkout and Cart Blocks Editor Crash. ([11024](https://github.com/woocommerce/woocommerce-blocks/pull/11024))
+- Product Gallery: Fix zoom animation on large Image. ([11023](https://github.com/woocommerce/woocommerce-blocks/pull/11023))
+- Fix: Password Protection not respected on single product template. ([10999](https://github.com/woocommerce/woocommerce-blocks/pull/10999))
+- Product Gallery Pager: Remove the Pager markup if there's only one image. ([10998](https://github.com/woocommerce/woocommerce-blocks/pull/10998))
+- Related Products: Hide the block outside of Single Product Template and Single Product block. ([10978](https://github.com/woocommerce/woocommerce-blocks/pull/10978))
+- Single Product: Fix the Align setting. ([10977](https://github.com/woocommerce/woocommerce-blocks/pull/10977))
+- Hide unexpected bullet point in Product Collection on Storefront. ([10945](https://github.com/woocommerce/woocommerce-blocks/pull/10945))
+- Add custom regex for validating Nicaraguan postal codes. ([10928](https://github.com/woocommerce/woocommerce-blocks/pull/10928))
+- Update `postcode-validator` to 3.8.15 to validate "new" Taiwanese postcodes. ([10924](https://github.com/woocommerce/woocommerce-blocks/pull/10924))
+- BlockTemplatesController: Check that $attributes['theme'] value isset before operating on it. ([10879](https://github.com/woocommerce/woocommerce-blocks/pull/10879))
+- Product Gallery: CSS styling tightening up. ([10867](https://github.com/woocommerce/woocommerce-blocks/pull/10867))
+- Checkout Block: Prevent changes in the selected shipping method when new rates are added or removed. ([10457](https://github.com/woocommerce/woocommerce-blocks/pull/10457))
+
+= 11.1.2 - 2023-09-27 =
+
+#### Bug Fixes
+
+- Improved escaping [565cd04](https://github.com/woocommerce/woocommerce-blocks/commit/565cd0461dbcc21fa04f77a736da443fc56a054d)
+
+= 11.1.1 - 2023-09-20 =
+
+#### Bug Fixes
+
+- Improved escaping around attributes [bb37d05](https://github.com/woocommerce/woocommerce-blocks/commit/bb37d056bccccd714fa6617c5da6f50d54837f41)
 
 = 11.1.0 - 2023-09-11 =
 

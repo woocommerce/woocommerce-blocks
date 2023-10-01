@@ -12,12 +12,10 @@ import { CartCheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-comp
 import { NoPaymentMethodsNotice } from '@woocommerce/editor-components/no-payment-methods-notice';
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 import { DefaultNotice } from '@woocommerce/editor-components/default-notice';
-import { TemplateNotice } from '@woocommerce/editor-components/template-notice';
-import { IncompatiblePaymentGatewaysNotice } from '@woocommerce/editor-components/incompatible-payment-gateways-notice';
+import { IncompatibleExtensionsNotice } from '@woocommerce/editor-components/incompatible-extension-notice';
 import { useSelect } from '@wordpress/data';
 import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { useState } from '@wordpress/element';
-import { getSetting } from '@woocommerce/settings';
 
 declare module '@wordpress/editor' {
 	let store: StoreDescriptor;
@@ -39,17 +37,15 @@ const withSidebarNotices = createHigherOrderComponent(
 			isSelected: isBlockSelected,
 		} = props;
 
-		const isBlockTheme = getSetting( 'isBlockTheme' );
-
 		const [
-			isIncompatiblePaymentGatewaysNoticeDismissed,
-			setIsIncompatiblePaymentGatewaysNoticeDismissed,
+			isIncompatibleExtensionsNoticeDismissed,
+			setIsIncompatibleExtensionsNoticeDismissed,
 		] = useState( true );
 
-		const toggleIncompatiblePaymentGatewaysNoticeDismissedStatus = (
+		const toggleIncompatibleExtensionsNoticeDismissedStatus = (
 			isDismissed: boolean
 		) => {
-			setIsIncompatiblePaymentGatewaysNoticeDismissed( isDismissed );
+			setIsIncompatibleExtensionsNoticeDismissed( isDismissed );
 		};
 
 		const { isCart, isCheckout, isPaymentMethodsBlock, hasPaymentMethods } =
@@ -95,9 +91,9 @@ const withSidebarNotices = createHigherOrderComponent(
 		return (
 			<>
 				<InspectorControls>
-					<IncompatiblePaymentGatewaysNotice
+					<IncompatibleExtensionsNotice
 						toggleDismissedStatus={
-							toggleIncompatiblePaymentGatewaysNoticeDismissedStatus
+							toggleIncompatibleExtensionsNoticeDismissedStatus
 						}
 						block={
 							isCheckout
@@ -106,17 +102,9 @@ const withSidebarNotices = createHigherOrderComponent(
 						}
 					/>
 
-					{ isBlockTheme ? (
-						<TemplateNotice
-							block={ isCheckout ? 'checkout' : 'cart' }
-						/>
-					) : (
-						<DefaultNotice
-							block={ isCheckout ? 'checkout' : 'cart' }
-						/>
-					) }
+					<DefaultNotice block={ isCheckout ? 'checkout' : 'cart' } />
 
-					{ isIncompatiblePaymentGatewaysNoticeDismissed ? (
+					{ isIncompatibleExtensionsNoticeDismissed ? (
 						<CartCheckoutSidebarCompatibilityNotice
 							block={ isCheckout ? 'checkout' : 'cart' }
 						/>

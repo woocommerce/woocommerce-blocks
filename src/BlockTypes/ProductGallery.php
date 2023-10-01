@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\Utils\ProductGalleryUtils;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
 /**
@@ -13,6 +14,36 @@ class ProductGallery extends AbstractBlock {
 	 * @var string
 	 */
 	protected $block_name = 'product-gallery';
+
+	/**
+	 *  Register the context
+	 *
+	 * @return string[]
+	 */
+	protected function get_block_type_uses_context() {
+		return [ 'postId' ];
+	}
+
+	/**
+	 * Inject dialog into the product gallery HTML.
+	 *
+	 * @param string $gallery_html The gallery HTML.
+	 * @param string $dialog_html  The dialog HTML.
+	 *
+	 * @return string
+	 */
+	protected function inject_dialog( $gallery_html, $dialog_html ) {
+
+		// Find the position of the last </div>.
+		$pos = strrpos( $gallery_html, '</div>' );
+
+		if ( false !== $pos ) {
+			// Inject the dialog_html at the correct position.
+			$html = substr_replace( $gallery_html, $dialog_html, $pos, 0 );
+
+			return $html;
+		}
+	}
 
 	/**
 	 * Return the dialog content.
@@ -38,21 +69,6 @@ class ProductGallery extends AbstractBlock {
 		return $gallery_dialog;
 	}
 
-
-	/**
-	 * This function remove the div wrapper.
-	 * The content has a <div> with the class wp-block-woocommerce-product-gallery>.
-	 * We don't need since that we add it in the render method.
-	 *
-	 * @param string $content Block content.
-	 * @return string Rendered block type output.
-	 */
-	private function remove_div_wrapper( $content ) {
-		$parsed_string = preg_replace( '/<div class="wp-block-woocommerce-product-gallery">/', '', $content );
-		$parsed_string = preg_replace( '/<\/div>$/', '', $parsed_string );
-		return $parsed_string;
-	}
-
 	/**
 	 * Include and render the block.
 	 *
@@ -62,22 +78,24 @@ class ProductGallery extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+		$post_id                = $block->context['postId'] ?? '';
+		$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail', array() );
+		$classname_single_image = '';
 		// This is a temporary solution. We have to refactor this code when the block will have to be addable on every page/post https://github.com/woocommerce/woocommerce-blocks/issues/10882.
 		global $product;
-		$classname          = $attributes['className'] ?? '';
-		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-		$gallery            = ( true === $attributes['fullScreenOnClick'] && isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ) ? $this->render_dialog() : '';
-		$html               = sprintf(
-			'<div %1$s>
-				%2$s
-				%3$s
-			</div>',
-			$wrapper_attributes,
-			$this->remove_div_wrapper( $content ),
-			$gallery
-		);
 
-		$p = new \WP_HTML_Tag_Processor( $html );
+		if ( count( $product_gallery_images ) < 2 ) {
+			// The gallery consists of a single image.
+			$classname_single_image = 'is-single-product-gallery-image';
+		}
+
+		$classname = $attributes['className'] ?? '';
+		$dialog    = ( true === $attributes['fullScreenOnClick'] && isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ) ? $this->render_dialog() : '';
+		$post_id   = $block->context['postId'] ?? '';
+		$product   = wc_get_product( $post_id );
+
+		$html = $this->inject_dialog( $content, $dialog );
+		$p    = new \WP_HTML_Tag_Processor( $html );
 
 		if ( $p->next_tag() ) {
 			$p->set_attribute( 'data-wc-interactive', true );
@@ -92,24 +110,11 @@ class ProductGallery extends AbstractBlock {
 					)
 				)
 			);
+			$p->add_class( $classname );
+			$p->add_class( $classname_single_image );
 			$html = $p->get_updated_html();
 		}
 
 		return $html;
-	}
-
-	/**
-	 * Get the Interactivity API's view script handle for this block type.
-	 *
-	 * @param string $key Data to get, or default to everything.
-	 */
-	protected function get_block_type_script( $key = null ) {
-		$script = [
-			'handle'       => 'wc-' . $this->block_name . '-frontend',
-			'path'         => $this->asset_api->get_block_asset_build_path( $this->block_name . '-frontend' ),
-			'dependencies' => [ 'wc-interactivity' ],
-		];
-
-		return $key ? $script[ $key ] : $script;
 	}
 }
