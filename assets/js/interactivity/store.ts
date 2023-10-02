@@ -45,8 +45,6 @@ const parseInitialState = () => {
 
 export const afterLoads = new Set();
 export const stores = new Map();
-export const rawStates = new Map();
-export const rawActions = new Map();
 
 const storeHandlers = {
 	get: ( target, key, receiver ) => {
@@ -176,8 +174,6 @@ export function store(
 	{ afterLoad }: StoreOptions = {}
 ) {
 	if ( ! stores.has( namespace ) ) {
-		rawStates.set( namespace, state );
-		rawActions.set( namespace, actions );
 		stores.set(
 			namespace,
 			new Proxy(
@@ -190,9 +186,10 @@ export function store(
 			)
 		);
 	} else {
-		deepMerge( stores.get( namespace ), block );
-		deepMerge( rawActions.get( namespace ), actions );
-		deepMerge( rawStates.get( namespace ), state );
+		const target = stores.get( namespace );
+		deepMerge( target, block );
+		deepMerge( target.actions, actions );
+		deepMerge( target.state, state );
 	}
 
 	if ( afterLoad ) afterLoads.add( afterLoad );
