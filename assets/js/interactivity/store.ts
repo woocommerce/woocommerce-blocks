@@ -45,6 +45,7 @@ const parseInitialState = () => {
 
 export const afterLoads = new Set();
 export const stores = new Map();
+export const privateStores = new Map();
 
 const storeHandlers = {
 	get: ( target, key, receiver ) => {
@@ -195,6 +196,47 @@ export function store(
 	if ( afterLoad ) afterLoads.add( afterLoad );
 
 	return stores.get( namespace );
+}
+
+interface PrivateStoreOptions extends StoreOptions {
+	unlock?: Symbol | typeof privateStoreConsent;
+}
+
+const privateStoreConsent =
+	'I know using a private store means my plugin will inevitably break on the next store release.';
+
+export function privateStore(
+	namespace: string,
+	{ state = {}, actions = {}, unlock: _, ...block }: any = {},
+	{ afterLoad, unlock }: PrivateStoreOptions = {}
+) {
+	if ( ! privateStores.has( namespace ) ) {
+		privateStores.set(
+			namespace,
+			new Proxy(
+				{
+					state: deepSignal( state ),
+					actions: new Proxy( actions, actionHandlers ),
+					...block,
+					unlock: Symbol( `privateStore(${ namespace })` ),
+				},
+				storeHandlers
+			)
+		);
+	} else {
+		const target = privateStores.get( namespace );
+		if ( unlock !== target.unlock && unlock !== privateStoreConsent ) {
+			throw new Error();
+		}
+
+		deepMerge( target, block );
+		deepMerge( target.actions, actions );
+		deepMerge( target.state, state );
+	}
+
+	if ( afterLoad ) afterLoads.add( afterLoad );
+
+	return privateStores.get( namespace );
 }
 
 // Parse and populate the initial state.
