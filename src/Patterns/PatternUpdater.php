@@ -96,13 +96,26 @@ class PatternUpdater {
 				continue;
 			}
 
-			$images = $this->get_images_for_pattern( $pattern, $vertical_images );
+			list($images, $alts) = $this->get_images_for_pattern( $pattern, $vertical_images );
 			if ( empty( $images ) ) {
 				$patterns_with_images[] = $pattern;
 				continue;
 			}
 
-			$pattern['images']      = $images;
+			$pattern['images'] = $images;
+
+			foreach ( $images as $i => $image ) {
+				foreach ( $pattern['content'] as $x => $content ) {
+					foreach ( $content as $y => $item ) {
+						$alts[ $i ] = $alts[ $i ] ?? 'it should be the most generic text possible related to the store description';
+
+						$ai_prompt = str_replace( "{image.$i}", $alts[ $i ], $pattern['content'][ $x ][ $y ]['ai_prompt'] );
+
+						$pattern['content'][ $x ][ $y ]['ai_prompt'] = $ai_prompt;
+					}
+				}
+			}
+
 			$patterns_with_images[] = $pattern;
 		}
 
@@ -192,9 +205,10 @@ class PatternUpdater {
 	 * @param array $pattern The array representing the pattern.
 	 * @param array $vertical_images The array of vertical images.
 	 *
-	 * @return string[]
+	 * @return array An array containing an array of the images in the first position and their alts in the second.
 	 */
 	private function get_images_for_pattern( array $pattern, array $vertical_images ): array {
+		$alts   = array();
 		$images = array();
 		if ( count( $vertical_images ) < $pattern['images_total'] ) {
 			return $images;
@@ -203,10 +217,11 @@ class PatternUpdater {
 		foreach ( $vertical_images as $vertical_image ) {
 			if ( $pattern['images_format'] === $this->get_image_format( $vertical_image ) ) {
 				$images[] = str_replace( 'http://', 'https://', $vertical_image['guid'] );
+				$alts[]   = $vertical_image['meta']['pexels_object']['alt'] ?? '';
 			}
 		}
 
-		return $images;
+		return array( $images, $alts );
 	}
 
 	/**
