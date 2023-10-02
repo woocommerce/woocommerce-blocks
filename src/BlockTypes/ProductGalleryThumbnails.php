@@ -48,7 +48,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	 * @return string
 	 */
 	protected function generate_view_all_html( $remaining_thumbnails_count ) {
-		return '<div class="wc-block-product-gallery-thumbnails__thumbnail__overlay" data-wc-on--click="actions.woocommerce.handleClick"><span class="wc-block-product-gallery-thumbnails__thumbnail__remaining-thumbnails-count">+' . esc_html( $remaining_thumbnails_count ) . '</span><span class="wc-block-product-gallery-thumbnails__thumbnail__view-all">' . __( 'View all', 'woo-gutenberg-products-block' ) . '</span></div>';
+		return '<div class="wc-block-product-gallery-thumbnails__thumbnail__overlay wc-block-product-gallery-dialog-on-click" data-wc-on--click="actions.woocommerce.handleClick"><span class="wc-block-product-gallery-thumbnails__thumbnail__remaining-thumbnails-count wc-block-product-gallery-dialog-on-click">+' . esc_html( $remaining_thumbnails_count ) . '</span><span class="wc-block-product-gallery-thumbnails__thumbnail__view-all wc-block-product-gallery-dialog-on-click">' . __( 'View all', 'woo-gutenberg-products-block' ) . '</span></div>';
 	}
 
 	/**

@@ -223,9 +223,8 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		align-items: center;
 		justify-content: center;
 		position: absolute;
-		background-color: rgba(0, 0, 0, 0.3);
+		background-color: rgba(0, 0, 0, 0.4);
 		top: 0;
-		left: 0;
 		width: 100%;
 		height: 100%;
 
@@ -235,6 +234,7 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		}
 
 		.wc-block-product-gallery-thumbnails__thumbnail__view-all {
+			@include font-size(smaller);
 			text-decoration: underline;
 		}
 
