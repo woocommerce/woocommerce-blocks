@@ -5,7 +5,8 @@
  */
 import registerDirectives from './directives';
 import { init } from './router';
-import { rawStore, afterLoads } from './store';
+import { afterLoads } from './store';
+
 export { store } from './store';
 export { directive, getContext, getElementRef } from './hooks';
 export { navigate, prefetch } from './router';
@@ -16,5 +17,5 @@ export { deepSignal } from 'deepsignal';
 document.addEventListener( 'DOMContentLoaded', async () => {
 	registerDirectives();
 	await init();
-	afterLoads.forEach( ( afterLoad ) => afterLoad( rawStore ) );
+	afterLoads.forEach( ( afterLoad ) => afterLoad() );
 } );
