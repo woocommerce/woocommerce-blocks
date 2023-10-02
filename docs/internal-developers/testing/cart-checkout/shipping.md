@@ -1,13 +1,5 @@
 # Shipping <!-- omit in toc -->
 
-## Table of Contents <!-- omit in toc -->
-
-- [Setup](#setup)
-- [What to test](#what-to-test)
-    - [With shipping zones available](#with-shipping-zones-available)
-    - [If you don't have any shipping zones set up and/or shipping is disabled](#if-you-dont-have-any-shipping-zones-set-up-andor-shipping-is-disabled)
-    - [If you don't have any shipping zones set up, but shipping is enabled](#if-you-dont-have-any-shipping-zones-set-up-but-shipping-is-enabled)
-
 ## Setup
 
 -   You will need to setup shipping zones for a couple of countries.
@@ -31,13 +23,13 @@
 -   [ ] The rate you select in Cart should still be selected in Checkout.
 -   [ ] Updating your shipping address in Checkout should give you live updates about rates in your cart.
 
-### If you don't have any shipping zones set up and/or shipping is disabled
+### If you don't have any shipping zones set up, and shipping is disabled
 
 -   [ ] You should only see the billing form in both editor and frontend for the Checkout Block.
 -   [ ] The shipping options step should not be visible.
 -   [ ] The shipping cost should not be visible in the sidebar.
 
-### If you don't have any shipping zones set up, but shipping is enabled
+### If you don't have any shipping zones set up, and shipping is enabled
 
 -   [ ] In the editor, Checkout Block will show you a placeholder promoting you to set up shipping zones.
 
