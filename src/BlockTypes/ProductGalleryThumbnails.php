@@ -41,6 +41,38 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	}
 
 	/**
+	 * Generate the View All markup.
+	 *
+	 * @param int $remaining_thumbnails_count The number of thumbnails that are not displayed.
+	 *
+	 * @return string
+	 */
+	protected function generate_view_all_html( $remaining_thumbnails_count ) {
+		return '<div class="wc-block-product-gallery-thumbnails__thumbnail__overlay" data-wc-on--click="actions.woocommerce.handleClick"><span class="wc-block-product-gallery-thumbnails__thumbnail__remaining-thumbnails-count">+' . esc_html( $remaining_thumbnails_count ) . '</span><span class="wc-block-product-gallery-thumbnails__thumbnail__view-all">' . __( 'View all', 'woo-gutenberg-products-block' ) . '</span></div>';
+	}
+
+	/**
+	 * Inject View All markup into the product thumbnail HTML.
+	 *
+	 * @param string $thumbnail_html The thumbnail HTML.
+	 * @param string $view_all_html  The view all HTML.
+	 *
+	 * @return string
+	 */
+	protected function inject_view_all( $thumbnail_html, $view_all_html ) {
+
+		// Find the position of the last </div>.
+		$pos = strrpos( $thumbnail_html, '</div>' );
+
+		if ( false !== $pos ) {
+			// Inject the view_all_html at the correct position.
+			$html = substr_replace( $thumbnail_html, $view_all_html, $pos, 0 );
+
+			return $html;
+		}
+	}
+
+	/**
 	 * Include and render the block.
 	 *
 	 * @param array    $attributes Block attributes. Default empty array.
@@ -74,15 +106,22 @@ class ProductGalleryThumbnails extends AbstractBlock {
 							break;
 						}
 
-						$processor = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
+						// If it's the last thumbnail and the number of product gallery images is greater than the number of thumbnails settings output the View All markup.
+						if ( $thumbnails_count === $number_of_thumbnails && count( $product_gallery_images ) > $number_of_thumbnails ) {
+							$remaining_thumbnails_count = count( $product_gallery_images ) - $number_of_thumbnails;
+							$product_gallery_image_html = $this->inject_view_all( $product_gallery_image_html, $this->generate_view_all_html( $remaining_thumbnails_count ) );
+							$html                      .= $product_gallery_image_html;
+						} else {
+							$processor = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
 
-						if ( $processor->next_tag( 'img' ) ) {
-							$processor->set_attribute(
-								'data-wc-on--click',
-								'actions.woocommerce.thumbnails.handleClick'
-							);
+							if ( $processor->next_tag( 'img' ) ) {
+								$processor->set_attribute(
+									'data-wc-on--click',
+									'actions.woocommerce.thumbnails.handleClick'
+								);
 
-							$html .= $processor->get_updated_html();
+								$html .= $processor->get_updated_html();
+							}
 						}
 
 						$thumbnails_count++;
