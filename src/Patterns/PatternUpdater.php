@@ -104,17 +104,14 @@ class PatternUpdater {
 
 			$pattern['images'] = $images;
 
-			foreach ( $images as $i => $image ) {
-				foreach ( $pattern['content'] as $x => $content ) {
-					foreach ( $content as $y => $item ) {
-						$alts[ $i ] = $alts[ $i ] ?? 'it should be the most generic text possible related to the store description';
+			$string = wp_json_encode( $pattern );
 
-						$ai_prompt = str_replace( "{image.$i}", $alts[ $i ], $pattern['content'][ $x ][ $y ]['ai_prompt'] );
-
-						$pattern['content'][ $x ][ $y ]['ai_prompt'] = $ai_prompt;
-					}
-				}
+			foreach ( $alts as $i => $alt ) {
+				$alt    = empty( $alt ) ? 'the text should be related to the store description but generic' : $alt;
+				$string = str_replace( "{image.$i}", $alt, $string );
 			}
+
+			$pattern = json_decode( $string, true );
 
 			$patterns_with_images[] = $pattern;
 		}
@@ -145,7 +142,7 @@ class PatternUpdater {
 		$patterns_with_content = $patterns;
 
 		$prompts = array();
-		foreach ( $patterns_with_content as $key => $pattern ) {
+		foreach ( $patterns_with_content as $pattern ) {
 			$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing the content of the "%s" pattern: %s.\n', get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY ), $pattern['name'], wp_json_encode( $pattern['content'] ) );
 			$prompt .= "Replace the titles, descriptions and button texts in each 'default' key using the prompt in the corresponding 'ai_prompt' key by a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The response should be only a JSON string, with absolutely no intro or explanations.";
 
@@ -211,10 +208,8 @@ class PatternUpdater {
 		$alts   = array();
 		$images = array();
 		if ( count( $vertical_images ) < $pattern['images_total'] ) {
-			return $images;
+			return array( $images, $alts );
 		}
-
-		$vertical_images = array_slice( $vertical_images, 0, $pattern['images_total'] );
 
 		foreach ( $vertical_images as $vertical_image ) {
 			if ( $pattern['images_format'] === $this->get_image_format( $vertical_image ) ) {

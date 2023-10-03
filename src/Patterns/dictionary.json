@@ -509,7 +509,7 @@
 			],
 			"descriptions": [
 				{
-					"default": "All items are 100% hand-made, using the potter’s wheel or traditional techniques.\n\nTimeless style.\n\nEarthy, organic feel.\n\nEnduring quality.\n\nUnique, one-of-a-kind pieces.",
+					"default": "All items are 100% hand-made, using the potter’s wheel or traditional techniques.Timeless style.\n\nEarthy, organic feel.\n\nEnduring quality.\n\nUnique, one-of-a-kind pieces.",
 					"ai_prompt": "A description of the products"
 				},
 				{
