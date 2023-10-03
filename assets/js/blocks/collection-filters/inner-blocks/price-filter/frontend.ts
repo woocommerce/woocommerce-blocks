@@ -56,13 +56,26 @@ store( {
 	actions: {
 		filters: {
 			setMinPrice: ( { state, event }: InputActionProps ) => {
-				const value = parseFloat( event.target.value ) || 0;
-				state.filters.minPrice = value;
+				const value = parseFloat( event.target.value );
+				state.filters.minPrice = Math.min(
+					Number.isNaN( value ) ? state.filters.minRange : value,
+					state.filters.maxRange - 1
+				);
+				state.filters.maxPrice = Math.max(
+					state.filters.maxPrice,
+					state.filters.minPrice + 1
+				);
 			},
 			setMaxPrice: ( { state, event }: InputActionProps ) => {
-				const value =
-					parseFloat( event.target.value ) || state.filters.maxRange;
-				state.filters.maxPrice = value;
+				const value = parseFloat( event.target.value );
+				state.filters.maxPrice = Math.max(
+					Number.isNaN( value ) ? state.filters.maxRange : value,
+					state.filters.minRange + 1
+				);
+				state.filters.minPrice = Math.min(
+					state.filters.minPrice,
+					state.filters.maxPrice - 1
+				);
 			},
 			updateProducts: ( { state }: InputActionProps ) => {
 				navigate( getHrefWithFilters( { state } ) );
