@@ -214,6 +214,8 @@ class PatternUpdater {
 			return $images;
 		}
 
+		$vertical_images = array_slice( $vertical_images, 0, $pattern['images_total'] );
+
 		foreach ( $vertical_images as $vertical_image ) {
 			if ( $pattern['images_format'] === $this->get_image_format( $vertical_image ) ) {
 				$images[] = str_replace( 'http://', 'https://', $vertical_image['guid'] );
