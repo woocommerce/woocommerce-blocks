@@ -96,6 +96,10 @@ const blocks = {
 	'collection-filters': {
 		isExperimental: true,
 	},
+	'collection-stock-filter': {
+		isExperimental: true,
+		customDir: 'collection-filters/inner-blocks/stock-filter',
+	},
 	'order-confirmation-summary': {
 		customDir: 'order-confirmation/summary',
 	},
