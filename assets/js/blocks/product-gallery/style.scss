@@ -26,7 +26,7 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		width: calc(100vw - 100px);
 		border: none;
 		border-radius: 10px;
-		height: 90vh;
+		height: calc(100vh - 100px);
 		top: 0;
 		margin-top: $gap-largest;
 		margin-bottom: $gap-largest;
@@ -67,6 +67,11 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		margin: 0 auto;
 		z-index: 1;
 		transition: all 0.1s linear;
+
+		dialog & {
+			max-height: 80vh;
+			width: auto;
+		}
 
 		// Keep the order in this way. The hoverZoom class should override the full-screen-on-click class when both are applied.
 		&.wc-block-woocommerce-product-gallery-large-image__image--full-screen-on-click {
@@ -199,6 +204,15 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 
 // Thumbnails
 #{$thumbnails} {
+
+	dialog & {
+		height: calc(100vh - 160px);
+		overflow-y: scroll;
+		display: flex;
+		flex-flow: column wrap;
+		justify-content: flex-start;
+	}
+
 	img {
 		cursor: pointer;
 	}
@@ -213,6 +227,15 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		height: 100px;
 		margin: 5px;
 
+		dialog & {
+			width: auto;
+			height: auto;
+			margin: 5px;
+			max-width: 90px;
+			max-height: 90px;
+			min-width: 40px;
+			min-height: 40px;
+		}
 	}
 }
 
