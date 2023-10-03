@@ -122,10 +122,10 @@ class ProductGallery extends AbstractBlock {
 		}
 
 		$number_of_thumbnails = $block->attributes['thumbnailsNumberOfThumbnails'] ?? 0;
-		$classname = $attributes['className'] ?? '';
-		$dialog    = ( true === $attributes['fullScreenOnClick'] && isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ) ? $this->render_dialog() : '';
-		$post_id   = $block->context['postId'] ?? '';
-		$product   = wc_get_product( $post_id );
+		$classname            = $attributes['className'] ?? '';
+		$dialog               = ( true === $attributes['fullScreenOnClick'] && isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ) ? $this->render_dialog() : '';
+		$post_id              = $block->context['postId'] ?? '';
+		$product              = wc_get_product( $post_id );
 
 		$html = $this->inject_dialog( $content, $dialog );
 		$p    = new \WP_HTML_Tag_Processor( $html );
