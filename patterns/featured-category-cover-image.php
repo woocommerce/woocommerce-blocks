@@ -26,8 +26,8 @@ $image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholder
 
 		<!-- wp:buttons {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}}} -->
 		<div class="wp-block-buttons" style="margin-top:var(--wp--preset--spacing--30);margin-bottom:var(--wp--preset--spacing--30)">
-			<!-- wp:button {"fontSize":"small"} -->
-			<div class="wp-block-button has-custom-font-size has-small-font-size">
+			<!-- wp:button -->
+			<div class="wp-block-button">
 				<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="wp-block-button__link wp-element-button">
 					<?php echo esc_html( $content['buttons'][0]['default'] ); ?>
 				</a>
