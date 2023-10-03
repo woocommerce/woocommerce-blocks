@@ -20,8 +20,8 @@ $image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholder
 		<h3 class="wp-block-heading"><?php echo esc_html( $content['titles'][0]['default'] ); ?></h3>
 		<!-- /wp:heading -->
 
-		<!-- wp:paragraph {"fontSize":"medium"} -->
-		<p class="has-medium-font-size"><?php echo esc_html( $content['descriptions'][0]['default'] ); ?></p>
+		<!-- wp:paragraph -->
+		<p><?php echo esc_html( $content['descriptions'][0]['default'] ); ?></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:buttons {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}}} -->
