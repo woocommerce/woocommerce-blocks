@@ -107,7 +107,7 @@ class PatternUpdater {
 			$string = wp_json_encode( $pattern );
 
 			foreach ( $alts as $i => $alt ) {
-				$alt    = empty( $alt ) ? 'the text should be related to the store description but generic' : $alt;
+				$alt    = empty( $alt ) ? 'the text should be related to the store description but generic enough to adapt to any image' : $alt;
 				$string = str_replace( "{image.$i}", $alt, $string );
 			}
 
