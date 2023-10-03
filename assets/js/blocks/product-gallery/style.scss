@@ -107,9 +107,12 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 	width: 100%;
 	height: 100%;
 
-	svg {
+	button {
+		cursor: pointer;
 		z-index: 3;
 		pointer-events: all;
+		padding: 0;
+		border: none;
 	}
 
 	.is-vertically-aligned-top {
@@ -143,11 +146,6 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 
 .wc-block-product-gallery-large-image-next-previous-right--inside-image {
 	margin-right: 15px;
-}
-
-.wc-block-product-gallery-large-image-next-previous--button {
-	padding: 0;
-	border: none;
 }
 
 // Next/Previous Buttons Outside the Image Settings
@@ -220,4 +218,3 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 
 	}
 }
-
