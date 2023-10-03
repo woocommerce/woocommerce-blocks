@@ -67,6 +67,14 @@ const { state, selectors, actions } = store< Store >(
 	'woo',
 	{
 		selectors: {
+			get slideInAnimation() {
+				const { animationStatus } = getContext();
+				return animationStatus === AnimationStatus.SLIDE_IN;
+			},
+			get slideOutAnimation() {
+				const { animationStatus } = getContext();
+				return animationStatus === AnimationStatus.SLIDE_OUT;
+			},
 			get numberOfItemsInTheCart() {
 				const { productId } = getContext();
 				const product = getProductById( state.cart, productId );
@@ -109,6 +117,21 @@ const { state, selectors, actions } = store< Store >(
 				yield import( './frontend-add-to-cart' );
 				yield actions.__addToCart();
 			},
+			handleAnimationEnd: ( event: AnimationEvent ) => {
+				const context = getContext();
+				if ( event.animationName === 'slideOut' ) {
+					// When the first part of the animation (slide-out) ends, we move
+					// to the second part (slide-in).
+					context.animationStatus = AnimationStatus.SLIDE_IN;
+				} else if ( event.animationName === 'slideIn' ) {
+					// When the second part of the animation ends, we update the
+					// temporary number of items to sync it with the cart and reset the
+					// animation status so it can be triggered again.
+					context.temporaryNumberOfItems =
+						selectors.numberOfItemsInTheCart;
+					context.animationStatus = AnimationStatus.IDLE;
+				}
+			},
 		},
 		callbacks: {
 			syncTemporaryNumberOfItemsOnLoad: () => {
@@ -120,6 +143,22 @@ const { state, selectors, actions } = store< Store >(
 				if ( selectors.hasCartLoaded ) {
 					context.temporaryNumberOfItems =
 						selectors.numberOfItemsInTheCart;
+				}
+			},
+			startAnimation: () => {
+				const context = getContext();
+				// We start the animation if the cart has loaded, the temporary number
+				// of items is out of sync with the number of items in the cart, the
+				// button is not loading (because that means the user started the
+				// interaction) and the animation hasn't started yet.
+				if (
+					selectors.hasCartLoaded &&
+					context.temporaryNumberOfItems !==
+						selectors.numberOfItemsInTheCart &&
+					! context.isLoading &&
+					context.animationStatus === AnimationStatus.IDLE
+				) {
+					context.animationStatus = AnimationStatus.SLIDE_OUT;
 				}
 			},
 		},
