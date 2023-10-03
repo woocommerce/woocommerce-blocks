@@ -87,11 +87,11 @@ class ProductGalleryLargeImage extends AbstractBlock {
 
 		return strtr(
 			'<div class="wc-block-product-gallery-large-image wp-block-woocommerce-product-gallery-large-image" {directives}>
-				{visible_main_image}
-				{main_images}
-				<div class="wc-block-woocommerce-product-gallery-large-image__content">
-					{content}
+				<div class="wc-block-product-gallery-large-image__container">
+					{visible_main_image}
+					{main_images}
 				</div>
+					{content}
 			</div>',
 			array(
 				'{visible_main_image}' => $visible_main_image,
@@ -118,9 +118,9 @@ class ProductGalleryLargeImage extends AbstractBlock {
 	 */
 	private function get_main_images_html( $context, $product_id ) {
 		$attributes = array(
-			'data-wc-bind--hidden' => '!selectors.woocommerce.isSelected',
-			'hidden'               => true,
-			'class'                => 'wc-block-woocommerce-product-gallery-large-image__image',
+			'data-wc-bind--style' => 'selectors.woocommerce.productGalleryLargeImage.styles',
+			'data-wc-effect'      => 'effects.woocommerce.scrollInto',
+			'class'               => 'wc-block-woocommerce-product-gallery-large-image__image',
 
 		);
 
@@ -130,7 +130,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 
 		if ( $context['hoverZoom'] ) {
 			$attributes['class']              .= ' wc-block-woocommerce-product-gallery-large-image__image--hoverZoom';
-			$attributes['data-wc-bind--style'] = 'selectors.woocommerce.styles';
+			$attributes['data-wc-bind--style'] = 'selectors.woocommerce.productGalleryLargeImage.styles';
 		}
 
 		$main_images = ProductGalleryUtils::get_product_gallery_images(

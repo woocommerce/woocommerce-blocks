@@ -3,6 +3,11 @@
  */
 import { store as interactivityStore } from '@woocommerce/interactivity';
 
+/**
+ * Internal dependencies
+ */
+import { ProductGallerySelectors } from '../../frontend';
+
 type Context = {
 	woocommerce: {
 		styles: {
@@ -17,19 +22,24 @@ type Context = {
 
 type Store = {
 	context: Context;
-	selectors: typeof productButtonSelectors;
+	selectors: typeof productButtonSelectors & ProductGallerySelectors;
 	ref: HTMLElement;
 };
 
 const productButtonSelectors = {
 	woocommerce: {
-		styles: ( { context }: Store ) => {
-			const { styles } = context.woocommerce;
+		productGalleryLargeImage: {
+			styles: ( { context }: Store ) => {
+				const { styles } = context.woocommerce;
 
-			return Object.entries( styles ).reduce( ( acc, [ key, value ] ) => {
-				const style = `${ key }:${ value };`;
-				return acc.length > 0 ? `${ acc } ${ style }` : style;
-			}, '' );
+				return Object.entries( styles ).reduce(
+					( acc, [ key, value ] ) => {
+						const style = `${ key }:${ value };`;
+						return acc.length > 0 ? `${ acc } ${ style }` : style;
+					},
+					''
+				);
+			},
 		},
 	},
 };
@@ -74,6 +84,19 @@ interactivityStore(
 				} ) => {
 					if ( ( event.target as HTMLElement ).tagName === 'IMG' ) {
 						context.woocommerce.isDialogOpen = true;
+					}
+				},
+			},
+		},
+		effects: {
+			woocommerce: {
+				scrollInto: ( store: Store ) => {
+					if ( store.selectors?.woocommerce?.isSelected( store ) ) {
+						store.ref.scrollIntoView( {
+							behavior: 'smooth',
+							block: 'nearest',
+							inline: 'center',
+						} );
 					}
 				},
 			},
