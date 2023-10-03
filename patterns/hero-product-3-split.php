@@ -15,7 +15,7 @@ $images  = PatternsHelper::get_pattern_images( 'woocommerce-blocks/hero-product-
 	<!-- wp:column {"width":"66.66%"} -->
 	<div class="wp-block-column" style="flex-basis:66.66%">
 		<!-- wp:media-text {"mediaPosition":"right","mediaId":1,"mediaLink":"<?php echo esc_url( plugins_url( 'images/pattern-placeholders/hand-guitar-finger-tshirt-clothing-rack.png', dirname( __FILE__ ) ) ); ?>","mediaType":"image"} -->
-		<div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile has-base-2-background-color has-background">
+		<div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile">
 			<div class="wp-block-media-text__content">
 				<!-- wp:group {"style":{"spacing":{"margin":{"top":"20px","bottom":"20px"}}},"layout":{"type":"flex","orientation":"vertical"}} -->
 				<div class="wp-block-group" style="margin-top:20px;margin-bottom:20px;">
