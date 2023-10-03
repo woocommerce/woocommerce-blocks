@@ -51,6 +51,7 @@ final class BlockTypesController {
 		add_filter( 'render_block', array( $this, 'add_data_attributes' ), 10, 2 );
 		add_action( 'woocommerce_login_form_end', array( $this, 'redirect_to_field' ) );
 		add_filter( 'widget_types_to_hide_from_legacy_widget_block', array( $this, 'hide_legacy_widgets_with_block_equivalent' ) );
+		add_action( 'woocommerce_delete_product_transients', array( $this, 'delete_product_transients' ) );
 	}
 
 	/**
@@ -160,6 +161,13 @@ final class BlockTypesController {
 	}
 
 	/**
+	 * Delete product transients when a product is deleted.
+	 */
+	public function delete_product_transients() {
+		delete_transient( 'wc_blocks_has_downloadable_product' );
+	}
+
+	/**
 	 * Get list of block types.
 	 *
 	 * @return array
@@ -176,6 +184,7 @@ final class BlockTypesController {
 			'Breadcrumbs',
 			'CatalogSorting',
 			'ClassicTemplate',
+			'ClassicShortcode',
 			'CustomerAccount',
 			'FeaturedCategory',
 			'FeaturedProduct',
@@ -219,6 +228,18 @@ final class BlockTypesController {
 			'ProductDetails',
 			'SingleProduct',
 			'StockFilter',
+			'PageContentWrapper',
+			'OrderConfirmation\Status',
+			'OrderConfirmation\Summary',
+			'OrderConfirmation\Totals',
+			'OrderConfirmation\TotalsWrapper',
+			'OrderConfirmation\Downloads',
+			'OrderConfirmation\DownloadsWrapper',
+			'OrderConfirmation\BillingAddress',
+			'OrderConfirmation\ShippingAddress',
+			'OrderConfirmation\BillingWrapper',
+			'OrderConfirmation\ShippingWrapper',
+			'OrderConfirmation\AdditionalInformation',
 		];
 
 		$block_types = array_merge(
@@ -264,7 +285,17 @@ final class BlockTypesController {
 					'ClassicTemplate',
 					'ProductResultsCount',
 					'ProductDetails',
-					'StoreNotices',
+					'OrderConfirmation\Status',
+					'OrderConfirmation\Summary',
+					'OrderConfirmation\Totals',
+					'OrderConfirmation\TotalsWrapper',
+					'OrderConfirmation\Downloads',
+					'OrderConfirmation\DownloadsWrapper',
+					'OrderConfirmation\BillingAddress',
+					'OrderConfirmation\ShippingAddress',
+					'OrderConfirmation\BillingWrapper',
+					'OrderConfirmation\ShippingWrapper',
+					'OrderConfirmation\AdditionalInformation',
 				]
 			);
 		}
