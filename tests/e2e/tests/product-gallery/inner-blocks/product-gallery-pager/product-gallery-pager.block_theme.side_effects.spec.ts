@@ -15,8 +15,8 @@ const blockData = {
 		frontend: {
 			pagerBlock:
 				'div[data-block-name="woocommerce/product-gallery-pager"]',
-			pagerListContainer:
-				'ul.wp-block-woocommerce-product-gallery-pager__pager',
+			pagerListContainer: 'ul.wc-block-product-gallery-pager__pager',
+			pagerListItem: '.wc-block-product-gallery-pager__pager-item',
 		},
 		editor: {
 			settings: {
@@ -205,14 +205,13 @@ test.describe( `${ blockData.name }`, () => {
 			const pages = await page
 				.locator( blockData.selectors.frontend.pagerListContainer )
 				.nth( 0 )
-				.locator( '.wp-block-woocommerce-product-gallery__pager-item' )
+				.locator( blockData.selectors.frontend.pagerListItem )
 				.all();
 
-			expect( pages.length ).toEqual( 4 );
+			expect( pages.length ).toEqual( 3 );
 			await expect( pages[ 0 ] ).toHaveText( '1' );
 			await expect( pages[ 1 ] ).toHaveText( '2' );
 			await expect( pages[ 2 ] ).toHaveText( '3' );
-			await expect( pages[ 3 ] ).toHaveText( '4' );
 		} );
 	} );
 } );

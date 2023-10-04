@@ -114,9 +114,9 @@ class ProductGalleryPager extends AbstractBlock {
 
 			$is_first_pager_item = 0 === $key;
 			$pager_item          = sprintf(
-				'<li class="wc-block-product-gallery-pager__item %2$s">%1$s</li>',
+				'<li class="wc-block-product-gallery-pager__pager-item %2$s">%1$s</li>',
 				'dots' === $pager_display_mode ? $this->get_dot_icon( $is_first_pager_item ) : $key + 1,
-				$is_first_pager_item ? 'wc-block-woocommerce-product-gallery__pager-item--is-active' : ''
+				$is_first_pager_item ? 'wc-block-product-gallery-pager__pager-item--is-active' : ''
 			);
 			$p                   = new \WP_HTML_Tag_Processor( $pager_item );
 
@@ -134,7 +134,7 @@ class ProductGalleryPager extends AbstractBlock {
 					'actions.woocommerce.handleSelectImage'
 				);
 				$p->set_attribute(
-					'data-wc-class--wc-block-woocommerce-product-gallery__pager-item--is-active',
+					'data-wc-class--wc-block-product-gallery-pager__pager-item--is-active',
 					'selectors.woocommerce.isSelected'
 				);
 				$html .= $p->get_updated_html();
