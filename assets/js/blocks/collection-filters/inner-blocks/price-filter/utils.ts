@@ -25,8 +25,8 @@ export const getFormattedPrice = ( results: unknown[] ) => {
 		return {
 			minPrice: 0,
 			maxPrice: 0,
-			displayedMinPrice: formatPrice( 0, currencyWithoutDecimal ),
-			displayedMaxPrice: formatPrice( 0, currencyWithoutDecimal ),
+			formattedMinPrice: formatPrice( 0, currencyWithoutDecimal ),
+			formattedMaxPrice: formatPrice( 0, currencyWithoutDecimal ),
 		};
 	}
 
@@ -48,7 +48,7 @@ export const getFormattedPrice = ( results: unknown[] ) => {
 	return {
 		minPrice,
 		maxPrice,
-		displayedMinPrice: formatPrice( minPrice, currencyWithoutDecimal ),
-		displayedMaxPrice: formatPrice( maxPrice, currencyWithoutDecimal ),
+		formattedMinPrice: formatPrice( minPrice, currencyWithoutDecimal ),
+		formattedMaxPrice: formatPrice( maxPrice, currencyWithoutDecimal ),
 	};
 };

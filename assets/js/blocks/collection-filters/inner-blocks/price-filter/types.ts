@@ -4,32 +4,33 @@
 import { HTMLElementEvent } from '@woocommerce/types';
 import { BlockEditProps } from '@wordpress/blocks';
 
-export interface PriceFilterState {
-	filters: {
-		minPrice: number;
-		maxPrice: number;
-		minRange: number;
-		maxRange: number;
-		rangeStyle: string;
-		isMinActive: boolean;
-		isMaxActive: boolean;
+type PriceFilterState = {
+	minPrice: number;
+	maxPrice: number;
+	minRange: number;
+	maxRange: number;
+	rangeStyle: string;
+	isMinActive: boolean;
+	isMaxActive: boolean;
+	formattedMinPrice: string;
+	formattedMaxPrice: string;
+};
+
+export type StateProps = {
+	state: {
+		filters: PriceFilterState;
 	};
-}
+};
 
-export interface InputActionProps {
-	state: PriceFilterState;
+export type ActionProps = StateProps & {
 	event: HTMLElementEvent< HTMLInputElement >;
-}
+};
 
-export interface BlockAttributes {
+export type BlockAttributes = {
 	showInputFields: boolean;
 	inlineInput: boolean;
-}
+};
 
 export type EditProps = BlockEditProps< BlockAttributes >;
 
-export type BlockProps = Partial< PriceFilterState[ 'filters' ] > &
-	BlockAttributes & {
-		displayedMinPrice: string;
-		displayedMaxPrice: string;
-	};
+export type BlockProps = Partial< PriceFilterState > & BlockAttributes;

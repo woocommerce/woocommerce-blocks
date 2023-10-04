@@ -12,8 +12,8 @@ import './style.scss';
 export const PriceSlider = ( {
 	minPrice,
 	maxPrice,
-	displayedMinPrice,
-	displayedMaxPrice,
+	formattedMinPrice,
+	formattedMaxPrice,
 	showInputFields,
 	inlineInput,
 }: BlockProps ) => {
@@ -26,7 +26,7 @@ export const PriceSlider = ( {
 			onChange={ onChange }
 		/>
 	) : (
-		<span>{ displayedMinPrice }</span>
+		<span>{ formattedMinPrice }</span>
 	);
 
 	const priceMax = showInputFields ? (
@@ -37,7 +37,7 @@ export const PriceSlider = ( {
 			onChange={ onChange }
 		/>
 	) : (
-		<span>{ displayedMaxPrice }</span>
+		<span>{ formattedMaxPrice }</span>
 	);
 	return (
 		<div
