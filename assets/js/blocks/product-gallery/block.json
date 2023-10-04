@@ -13,13 +13,15 @@
 		"interactivity": true
 	},
 	"textdomain": "woo-gutenberg-products-block",
+	"usesContext": [ "postId" ],
 	"providesContext": {
 		"thumbnailsPosition": "thumbnailsPosition",
 		"thumbnailsNumberOfThumbnails": "thumbnailsNumberOfThumbnails",
 		"productGalleryClientId": "productGalleryClientId",
 		"nextPreviousButtonsPosition": "nextPreviousButtonsPosition",
 		"pagerDisplayMode": "pagerDisplayMode",
-		"hoverZoom": "hoverZoom"
+		"hoverZoom": "hoverZoom",
+		"fullScreenOnClick": "fullScreenOnClick"
 	},
 	"usesContext": [ "postId" ],
 	"attributes": {

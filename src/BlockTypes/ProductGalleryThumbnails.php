@@ -23,6 +23,15 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return null
+	 */
+	protected function get_block_type_style() {
+		return null;
+	}
+
+	/**
 	 *  Register the context
 	 *
 	 * @return string[]
@@ -54,7 +63,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 
 			if ( $product ) {
 				$post_thumbnail_id      = $product->get_image_id();
-				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail', array() );
+				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail', array(), 'wc-block-product-gallery-thumbnails__thumbnail' );
 				if ( $product_gallery_images && $post_thumbnail_id ) {
 					$html                 = '';
 					$number_of_thumbnails = isset( $block->context['thumbnailsNumberOfThumbnails'] ) ? $block->context['thumbnailsNumberOfThumbnails'] : 3;
@@ -65,11 +74,9 @@ class ProductGalleryThumbnails extends AbstractBlock {
 							break;
 						}
 
-						$html .= '<div class="wp-block-woocommerce-product-gallery-thumbnails__thumbnail">';
-
 						$processor = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
 
-						if ( $processor->next_tag() ) {
+						if ( $processor->next_tag( 'img' ) ) {
 							$processor->set_attribute(
 								'data-wc-on--click',
 								'actions.woocommerce.thumbnails.handleClick'
@@ -78,13 +85,11 @@ class ProductGalleryThumbnails extends AbstractBlock {
 							$html .= $processor->get_updated_html();
 						}
 
-						$html .= '</div>';
-
 						$thumbnails_count++;
 					}
 
 					return sprintf(
-						'<div class="wc-block-components-product-gallery-thumbnails wp-block-woocommerce-product-gallery-thumbnails %1$s" style="%2$s">
+						'<div class="wc-block-product-gallery-thumbnails wp-block-woocommerce-product-gallery-thumbnails %1$s" style="%2$s">
 							%3$s
 						</div>',
 						esc_attr( $classes_and_styles['classes'] ),
