@@ -19,14 +19,14 @@ const withDefaultAttributes = createHigherOrderComponent(
 			componentDidMount() {
 				const { block, setAttributes } = this.props;
 
-				if ( block.name.startsWith( 'woocommerce/' ) ) {
+				if ( block?.name?.startsWith( 'woocommerce/' ) ) {
 					setAttributes( this.getAttributesWithDefaults() );
 				}
 			}
 
 			componentDidUpdate() {
 				if (
-					this.props.block.name.startsWith( 'woocommerce/' ) &&
+					this.props.block?.name?.startsWith( 'woocommerce/' ) &&
 					! this.mounted
 				) {
 					this.mounted = true;
@@ -39,7 +39,7 @@ const withDefaultAttributes = createHigherOrderComponent(
 
 				if (
 					! this.mounted &&
-					this.props.block.name.startsWith( 'woocommerce/' ) &&
+					this.props.block?.name?.startsWith( 'woocommerce/' ) &&
 					typeof blockType.attributes !== 'undefined' &&
 					typeof blockType.defaults !== 'undefined'
 				) {
