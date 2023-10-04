@@ -33,4 +33,6 @@ export type BlockAttributes = {
 
 export type EditProps = BlockEditProps< BlockAttributes >;
 
-export type BlockProps = Partial< PriceFilterState > & BlockAttributes;
+export type FilterComponentProps = BlockEditProps< BlockAttributes > & {
+	collectionData: Partial< PriceFilterState >;
+};

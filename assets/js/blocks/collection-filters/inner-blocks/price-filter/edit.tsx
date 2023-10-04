@@ -11,7 +11,6 @@ import FilterResetButton from '@woocommerce/base-components/filter-reset-button'
  */
 import { getFormattedPrice } from './utils';
 import { EditProps } from './types';
-import { Inspector } from './inspector';
 import { PriceSlider } from './price-slider';
 
 const Edit = ( props: EditProps ) => {
@@ -24,12 +23,11 @@ const Edit = ( props: EditProps ) => {
 
 	return (
 		<div { ...blockProps }>
-			<Inspector { ...props } />
 			<Disabled>
 				<div className="controls">
 					<PriceSlider
-						{ ...props.attributes }
-						{ ...getFormattedPrice( results ) }
+						{ ...props }
+						collectionData={ getFormattedPrice( results ) }
 					/>
 				</div>
 				<div className="actions">

@@ -6,17 +6,17 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import { BlockProps } from '../types';
+import { FilterComponentProps } from '../types';
+import { Inspector } from './inspector';
 import './style.scss';
 
 export const PriceSlider = ( {
-	minPrice,
-	maxPrice,
-	formattedMinPrice,
-	formattedMaxPrice,
-	showInputFields,
-	inlineInput,
-}: BlockProps ) => {
+	collectionData,
+	...editProps
+}: FilterComponentProps ) => {
+	const { showInputFields, inlineInput } = editProps.attributes;
+	const { minPrice, maxPrice, formattedMinPrice, formattedMaxPrice } =
+		collectionData;
 	const onChange = () => null;
 	const priceMin = showInputFields ? (
 		<input
@@ -40,34 +40,37 @@ export const PriceSlider = ( {
 		<span>{ formattedMaxPrice }</span>
 	);
 	return (
-		<div
-			className={ classNames( 'price-slider', {
-				'inline-input': inlineInput && showInputFields,
-			} ) }
-		>
-			<div className="range">
-				<div className="range-bar"></div>
-				<input
-					type="range"
-					className="min"
-					min={ minPrice }
-					max={ maxPrice }
-					value={ minPrice }
-					onChange={ onChange }
-				/>
-				<input
-					type="range"
-					className="max"
-					min={ minPrice }
-					max={ maxPrice }
-					value={ maxPrice }
-					onChange={ onChange }
-				/>
+		<>
+			<Inspector { ...editProps } />
+			<div
+				className={ classNames( 'price-slider', {
+					'inline-input': inlineInput && showInputFields,
+				} ) }
+			>
+				<div className="range">
+					<div className="range-bar"></div>
+					<input
+						type="range"
+						className="min"
+						min={ minPrice }
+						max={ maxPrice }
+						value={ minPrice }
+						onChange={ onChange }
+					/>
+					<input
+						type="range"
+						className="max"
+						min={ minPrice }
+						max={ maxPrice }
+						value={ maxPrice }
+						onChange={ onChange }
+					/>
+				</div>
+				<div className="text">
+					{ priceMin }
+					{ priceMax }
+				</div>
 			</div>
-			<div className="text">
-				{ priceMin }
-				{ priceMax }
-			</div>
-		</div>
+		</>
 	);
 };
