@@ -130,50 +130,83 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 	 * @return string The HTML for the generated button.
 	 */
 	protected function get_button( $button_type, $context ) {
-		if ( 'previous' === $button_type ) {
-			return sprintf(
-				'<button class="wc-block-product-gallery-large-image-next-previous--button wc-block-product-gallery-large-image-next-previous-left--%1$s">
-					<svg xmlns="http://www.w3.org/2000/svg" width="49" height="48" viewBox="0 0 49 48" fill="none">
-						<g filter="url(#filter0_b_397_11356)">
-							<rect x="0.5" width="48" height="48" rx="5" fill="black" fill-opacity="0.5"/>
-							<path d="M28.1 12L30.5 14L21.3 24L30.5 34L28.1 36L17.3 24L28.1 12Z" fill="white"/>
-						</g>
-						<defs>
-							<filter id="filter0_b_397_11356" x="-9.5" y="-10" width="68" height="68" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-								<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-								<feGaussianBlur in="BackgroundImageFix" stdDeviation="5"/>
-								<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_397_11356"/>
-								<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_397_11356" result="shape"/>
-							</filter>
-						</defs>
-					</svg>
-				</button>',
-				$this->get_class_suffix( $context )
-			);
+		$next_icon_path     = "M28.1 12L30.5 14L21.3 24L30.5 34L28.1 36L17.3 24L28.1 12Z";
+		$previous_button_icon_path = "M21.7001 12L19.3 14L28.5 24L19.3 34L21.7001 36L32.5 24L21.7001 12Z";
+		$icon_path = $previous_button_icon_path;
+		$button_side_class = 'left';
+
+		if ( 'insideTheImage' === $context['nextPreviousButtonsPosition'] ) {
+			return $this->get_inside_button( $button_type, $context );
 		}
 
+		return $this->get_outside_button( $button_type, $context );
+	}
+
+	protected function get_inside_button( $button_type, $context ) {
+		$previous_button_icon_path = "M28.1 12L30.5 14L21.3 24L30.5 34L28.1 36L17.3 24L28.1 12Z";
+		$next_button_icon_path     = "M21.7001 12L19.3 14L28.5 24L19.3 34L21.7001 36L32.5 24L21.7001 12Z";
+		$icon_path = $previous_button_icon_path;
+		$button_side_class = 'left';
+
 		if ( 'next' === $button_type ) {
-			return sprintf(
-				'
-				<button class="wc-block-product-gallery-large-image-next-previous--button wc-block-product-gallery-large-image-next-previous-right--%1$s">
-					<svg  xmlns="http://www.w3.org/2000/svg" width="49" height="48" viewBox="0 0 49 48" fill="none">
-						<g filter="url(#filter0_b_397_11354)">
-							<rect x="0.5" width="48" height="48" rx="5" fill="black" fill-opacity="0.5"/>
-							<path d="M21.7001 12L19.3 14L28.5 24L19.3 34L21.7001 36L32.5 24L21.7001 12Z" fill="white"/>
-						</g>
-						<defs>
-							<filter id="filter0_b_397_11354" x="-9.5" y="-10" width="68" height="68" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-								<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-								<feGaussianBlur in="BackgroundImageFix" stdDeviation="5"/>
-								<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_397_11354"/>
-								<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_397_11354" result="shape"/>
-							</filter>
-						</defs>
-					</svg>
-				</button>
-			',
-				$this->get_class_suffix( $context )
-			);
+			$icon_path = $next_button_icon_path;
+			$button_side_class = 'right';
 		}
+
+		return sprintf(
+			'<button class="wc-block-product-gallery-large-image-next-previous--button wc-block-product-gallery-large-image-next-previous-%1$s--%2$s">
+				<svg  xmlns="http://www.w3.org/2000/svg" width="49" height="48" viewBox="0 0 49 48" fill="none">
+					<g filter="url(#filter0_b_397_11354)">
+						<rect x="0.5" width="48" height="48" rx="5" fill="black" fill-opacity="0.5"/>
+						<path d="%3$s" fill="white"/>
+					</g>
+					<defs>
+						<filter id="filter0_b_397_11354" x="-9.5" y="-10" width="68" height="68" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+							<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+							<feGaussianBlur in="BackgroundImageFix" stdDeviation="5"/>
+							<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_397_11354"/>
+							<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_397_11354" result="shape"/>
+						</filter>
+					</defs>
+				</svg>
+			</button>',
+			$button_side_class,
+			$this->get_class_suffix( $context ),
+			$icon_path
+		);
+
+	}
+
+	protected function get_outside_button( $button_type, $context ) {
+		$next_button_icon_path     = "M4.56666 0L0.766663 3.16667L15.3333 19L0.766663 34.8333L4.56666 38L21.6667 19L4.56666 0Z";
+		$previous_button_icon_path = "M17.7 0L21.5 3.16667L6.93334 19L21.5 34.8333L17.7 38L0.600002 19L17.7 0Z";
+		$icon_path = $previous_button_icon_path;
+		$button_side_class = 'left';
+
+		if ( 'next' === $button_type ) {
+			$icon_path = $next_button_icon_path;
+			$button_side_class = 'right';
+		}
+
+		return sprintf(
+			'<button class="wc-block-product-gallery-large-image-next-previous--button wc-block-product-gallery-large-image-next-previous-%1$s--%2$s">
+				<svg
+					width="22"
+					height="38"
+					viewBox="0 0 22 38"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path
+						d="%3$s"
+						fill="black"
+					/>
+				</svg>
+			</button>',
+			$button_side_class,
+			$this->get_class_suffix( $context ),
+			$icon_path
+		);
+
 	}
 }

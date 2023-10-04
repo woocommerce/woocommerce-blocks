@@ -113,6 +113,7 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		pointer-events: all;
 		padding: 0;
 		border: none;
+		background: none;
 	}
 
 	.is-vertically-aligned-top {
