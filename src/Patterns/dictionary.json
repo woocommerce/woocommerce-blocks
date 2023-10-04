@@ -268,6 +268,12 @@
 					"default": "Our early autumn collection is here.",
 					"ai_prompt": "A description of the product collection"
 				}
+			],
+			"buttons": [
+				{
+					"default": "Shop now",
+					"ai_prompt": "The button text to go to the product collection page"
+				}
 			]
 		}
 	},
@@ -575,6 +581,32 @@
 				{
 					"default": "In the end the couch wasn't exactly what I was looking for but my experience with the Burrow team was excellent. First in providing a discount when the couch was delayed, then timely feedback and updates as the...\n\n~ Anna W.",
 					"ai_prompt": "A description of the testimonial"
+				}
+			]
+		}
+	},
+	{
+		"name": "Featured Category Cover Image",
+		"slug": "woocommerce-blocks/featured-category-cover-image",
+		"images_total": 1,
+		"images_format": "landscape",
+		"content": {
+			"titles": [
+				{
+					"default": "100% natural denim",
+					"ai_prompt": "A description for a product"
+				}
+			],
+			"descriptions": [
+				{
+					"default": "Only the finest goes into our products. You deserve it.",
+					"ai_prompt": "An impact phrase that advertises the products"
+				}
+			],
+			"buttons": [
+				{
+					"default": "Shop jeans",
+					"ai_prompt": "The button text to go to the shop page"
 				}
 			]
 		}
