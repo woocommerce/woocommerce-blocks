@@ -21,10 +21,6 @@ export interface InputActionProps {
 	event: HTMLElementEvent< HTMLInputElement >;
 }
 
-export interface MouseActionProps extends InputActionProps {
-	event: InputActionProps[ 'event' ] & MouseEvent;
-}
-
 export interface BlockAttributes {
 	showInputFields: boolean;
 	inlineInput: boolean;

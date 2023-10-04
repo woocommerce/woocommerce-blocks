@@ -144,7 +144,6 @@ final class CollectionPriceFilter extends AbstractBlock {
 					class="range"
 					style="<?php echo esc_attr( $range_style ); ?>"
 					data-wc-bind--style="state.filters.rangeStyle"
-					data-wc-on--mousemove="actions.filters.updateActiveHandle"
 				>
 					<div class="range-bar"></div>
 					<input

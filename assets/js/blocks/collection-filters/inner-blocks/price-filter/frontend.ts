@@ -7,7 +7,7 @@ import { formatPrice, getCurrency } from '@woocommerce/price-format';
 /**
  * Internal dependencies
  */
-import { InputActionProps, MouseActionProps, PriceFilterState } from './types';
+import { InputActionProps, PriceFilterState } from './types';
 
 const getHrefWithFilters = ( { state }: { state: PriceFilterState } ) => {
 	const { minPrice, maxPrice } = state.filters;
@@ -84,18 +84,6 @@ store( {
 				state.filters.minPrice = 0;
 				state.filters.maxPrice = state.filters.maxRange;
 				navigate( getHrefWithFilters( { state } ) );
-			},
-			updateActiveHandle: ( { state, event }: MouseActionProps ) => {
-				const { minPrice, maxPrice, maxRange } = state.filters;
-				const { target, offsetX } = event;
-				const xPos = offsetX / target.offsetWidth;
-				const minPos = minPrice / maxRange;
-				const maxPos = maxPrice / maxRange;
-
-				state.filters.isMinActive =
-					Math.abs( xPos - minPos ) < Math.abs( xPos - maxPos );
-
-				state.filters.isMaxActive = ! state.filters.isMinActive;
 			},
 		},
 	},
