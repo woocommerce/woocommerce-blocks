@@ -3,7 +3,6 @@
  * Title: Product Collection: Featured Products 5 Columns
  * Slug: woocommerce-blocks/product-collection-featured-products-5-columns
  * Categories: WooCommerce
- * Block Types: core/query/woocommerce/product-query
  */
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
