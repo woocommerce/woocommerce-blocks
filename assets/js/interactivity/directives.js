@@ -44,23 +44,27 @@ export default () => {
 		'context',
 		( {
 			directives: {
-				context: { default: context },
+				context: { default: newContext },
 				namespace,
 			},
 			props: { children },
-			context: inherited,
+			context: inheritedContext,
 		} ) => {
-			const { Provider } = inherited;
-			const inheritedValue = useContext( inherited );
-			const value = useMemo( () => {
-				const localValue = deepSignal( {
-					[ context[ $$namespace ] || namespace ]: context,
+			const { Provider } = inheritedContext;
+			const inheritedValue = useContext( inheritedContext );
+			const currentValue = useRef( deepSignal( {} ) );
+			currentValue.current = useMemo( () => {
+				const newValue = deepSignal( {
+					[ newContext[ $$namespace ] || namespace ]: newContext,
 				} );
-				mergeDeepSignals( localValue, inheritedValue );
-				return localValue;
-			}, [ context, inheritedValue ] );
+				mergeDeepSignals( newValue, inheritedValue );
+				mergeDeepSignals( currentValue.current, newValue, true );
+				return currentValue.current;
+			}, [ newContext, inheritedValue ] );
 
-			return <Provider value={ value }>{ children }</Provider>;
+			return (
+				<Provider value={ currentValue.current }>{ children }</Provider>
+			);
 		},
 		{ priority: 5 }
 	);
@@ -308,7 +312,7 @@ export default () => {
 			useEffect( () => {
 				// Prefetch the page if it is in the directive options.
 				if ( link?.prefetch ) {
-					prefetch( href );
+					// prefetch( href );
 				}
 			} );
 
