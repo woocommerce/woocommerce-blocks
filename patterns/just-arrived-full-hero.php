@@ -15,9 +15,7 @@ $content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/just-arrived
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
 		<div class="wp-block-group">
 			<!-- wp:heading {"anchor":"just-arrived"} -->
-			<h2 class="wp-block-heading" id="just-arrived">
-				<?php echo esc_html( $content['titles'][0]['default'] ); ?>
-			</h2>
+			<h2 class="wp-block-heading" id="just-arrived"><?php echo esc_html( $content['titles'][0]['default'] ); ?></h2>
 			<!-- /wp:heading -->
 
 			<!-- wp:paragraph -->
