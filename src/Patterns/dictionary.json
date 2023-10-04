@@ -356,6 +356,30 @@
 		}
 	},
 	{
+		"name": "1:1 Image 4-Column Product Row",
+		"slug": "woocommerce-blocks/product-query-1-1-image-4-column-products-row",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+				}
+			]
+		}
+	},
+	{
+		"name": "Minimal 5-Column Product Row",
+		"slug": "woocommerce-blocks/product-query-minimal-5-column-products-row",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+				}
+			]
+		}
+	},
+	{
 		"name": "Featured Products 2 Columns",
 		"slug": "woocommerce-blocks/featured-products-2-columns",
 		"content": {
@@ -547,6 +571,10 @@
 				{
 					"default": "Awesome couch and great buying experience",
 					"ai_prompt": "A title that advertises the third testimonial"
+				},
+				{
+					"default": "What our customers say",
+					"ai_prompt": "A title that advertises the set of testimonials"
 				}
 			],
 			"descriptions": [
