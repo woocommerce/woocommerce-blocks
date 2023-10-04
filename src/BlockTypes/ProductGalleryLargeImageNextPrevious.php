@@ -130,11 +130,6 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 	 * @return string The HTML for the generated button.
 	 */
 	protected function get_button( $button_type, $context ) {
-		$next_icon_path     = "M28.1 12L30.5 14L21.3 24L30.5 34L28.1 36L17.3 24L28.1 12Z";
-		$previous_button_icon_path = "M21.7001 12L19.3 14L28.5 24L19.3 34L21.7001 36L32.5 24L21.7001 12Z";
-		$icon_path = $previous_button_icon_path;
-		$button_side_class = 'left';
-
 		if ( 'insideTheImage' === $context['nextPreviousButtonsPosition'] ) {
 			return $this->get_inside_button( $button_type, $context );
 		}
@@ -145,11 +140,11 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 	protected function get_inside_button( $button_type, $context ) {
 		$previous_button_icon_path = "M28.1 12L30.5 14L21.3 24L30.5 34L28.1 36L17.3 24L28.1 12Z";
 		$next_button_icon_path     = "M21.7001 12L19.3 14L28.5 24L19.3 34L21.7001 36L32.5 24L21.7001 12Z";
-		$icon_path = $previous_button_icon_path;
-		$button_side_class = 'left';
+		$icon_path                 = $previous_button_icon_path;
+		$button_side_class         = 'left';
 
 		if ( 'next' === $button_type ) {
-			$icon_path = $next_button_icon_path;
+			$icon_path         = $next_button_icon_path;
 			$button_side_class = 'right';
 		}
 
@@ -180,11 +175,11 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 	protected function get_outside_button( $button_type, $context ) {
 		$next_button_icon_path     = "M4.56666 0L0.766663 3.16667L15.3333 19L0.766663 34.8333L4.56666 38L21.6667 19L4.56666 0Z";
 		$previous_button_icon_path = "M17.7 0L21.5 3.16667L6.93334 19L21.5 34.8333L17.7 38L0.600002 19L17.7 0Z";
-		$icon_path = $previous_button_icon_path;
-		$button_side_class = 'left';
+		$icon_path                 = $previous_button_icon_path;
+		$button_side_class         = 'left';
 
 		if ( 'next' === $button_type ) {
-			$icon_path = $next_button_icon_path;
+			$icon_path         = $next_button_icon_path;
 			$button_side_class = 'right';
 		}
 
