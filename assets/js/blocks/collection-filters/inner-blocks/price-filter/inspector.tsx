@@ -26,7 +26,7 @@ export const Inspector = ( { attributes, setAttributes }: EditProps ) => {
 			>
 				<ToggleGroupControl
 					label={ __(
-						'Price Range Selector',
+						'Price Slider',
 						'woo-gutenberg-products-block'
 					) }
 					value={ showInputFields ? 'editable' : 'text' }
