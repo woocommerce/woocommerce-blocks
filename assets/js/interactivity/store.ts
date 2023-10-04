@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { deepSignal } from 'deepsignal';
+import { computed } from '@preact/signals';
 import { resetScope, getScope, setScope } from './hooks';
 
 const isObject = ( item ) =>
@@ -56,6 +57,32 @@ const storeHandlers = {
 			return target[ key ];
 		}
 
+		return result;
+	},
+};
+
+const stateHandlers = {
+	get: ( target, key, receiver ) => {
+		const getter = Object.getOwnPropertyDescriptor( target, key )?.get;
+		if ( getter ) {
+			const scope = getScope();
+			if ( scope ) {
+				scope.getters = scope.getters || new Map();
+				if ( ! scope.getters.has( getter ) ) {
+					scope.getters.set(
+						getter,
+						computed( () => {
+							setScope( scope );
+							const result = getter.call( target );
+							// resetScope(); // maybe scope should be a stack?
+							return result;
+						} )
+					);
+				}
+				return scope.getters.get( getter ).value;
+			}
+		}
+		const result = Reflect.get( target, key, receiver );
 		return result;
 	},
 };
@@ -179,7 +206,7 @@ export function store(
 			namespace,
 			new Proxy(
 				{
-					state: deepSignal( state ),
+					state: new Proxy( deepSignal( state ), stateHandlers ),
 					actions: new Proxy( actions, actionHandlers ),
 					...block,
 				},

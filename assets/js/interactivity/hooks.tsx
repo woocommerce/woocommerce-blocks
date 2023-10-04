@@ -46,7 +46,7 @@ export const getContext = < T extends object >( namespace: string ): T => {
 	return currentScope.context[ namespace ];
 };
 
-export const getElementRef = () => currentScope.elementRef.current;
+export const getElementRef = () => currentScope.ref.current;
 
 export const getScope = () => currentScope;
 
@@ -175,25 +175,21 @@ const Directives = ( {
 	directives,
 	priorityLevels: [ currentPriorityLevel, ...nextPriorityLevels ],
 	element,
-	evaluate,
 	originalProps,
-	elementRef,
+	previousScope = {},
 } ) => {
-	// Initialize the DOM reference.
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	elementRef = elementRef || useRef( null );
-
-	// Create a reference to the evaluate function using the DOM reference.
-	// eslint-disable-next-line react-hooks/rules-of-hooks, react-hooks/exhaustive-deps
-	evaluate =
-		evaluate ||
-		useCallback(
-			getEvaluate( { elementRef, namespace: directives.namespace } ),
-			[]
-		);
+	// Initialize the scope of this element. These scopes are different per each
+	// level because each level has a different context, but they share the same
+	// element ref, evaluate and props.
+	const scope = useRef( {} ).current;
+	scope.context = useContext( context );
+	scope.ref = previousScope.ref || useRef( null );
+	scope.evaluate =
+		previousScope.evaluate ||
+		useCallback( getEvaluate( { namespace: directives.namespace } ), [] );
 
 	// Create a fresh copy of the vnode element.
-	element = cloneElement( element, { ref: elementRef } );
+	element = cloneElement( element, { ref: scope.ref } );
 
 	// Recursively render the wrapper for the next priority level.
 	const children =
@@ -202,18 +198,23 @@ const Directives = ( {
 				directives={ directives }
 				priorityLevels={ nextPriorityLevels }
 				element={ element }
-				evaluate={ evaluate }
 				originalProps={ originalProps }
-				elementRef={ elementRef }
+				previousScope={ scope }
 			/>
 		) : (
 			element
 		);
 
 	const props = { ...originalProps, children };
-	const directiveArgs = { directives, props, element, context, evaluate };
+	const directiveArgs = {
+		directives,
+		props,
+		element,
+		context,
+		evaluate: scope.evaluate,
+	};
 
-	setScope( { context: useContext( context ), elementRef } );
+	setScope( scope );
 
 	for ( const directiveName of currentPriorityLevel ) {
 		const wrapper = directiveCallbacks[ directiveName ]?.( directiveArgs );
