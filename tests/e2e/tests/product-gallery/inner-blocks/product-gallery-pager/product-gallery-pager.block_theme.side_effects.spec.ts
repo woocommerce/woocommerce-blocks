@@ -29,7 +29,7 @@ const blockData = {
 		},
 	},
 	slug: 'single-product',
-	productPage: '/product/v-neck-t-shirt/',
+	productPage: '/product/hoodie/',
 };
 
 const test = base.extend< { pageObject: ProductGalleryPage } >( {
