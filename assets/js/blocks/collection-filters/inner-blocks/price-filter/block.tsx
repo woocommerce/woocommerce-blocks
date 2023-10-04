@@ -8,7 +8,7 @@ import FilterResetButton from '@woocommerce/base-components/filter-reset-button'
  * Internal dependencies
  */
 import { BlockProps } from './types';
-import { PriceSlider } from './components/price-slider';
+import { PriceSlider } from './price-slider';
 
 const Block = ( props: BlockProps ) => {
 	return (

@@ -6,7 +6,7 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import { BlockProps } from '../../types';
+import { BlockProps } from '../types';
 import './style.scss';
 
 export const PriceSlider = ( {
