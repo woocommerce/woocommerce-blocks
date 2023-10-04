@@ -13,7 +13,7 @@ import ErrorPlaceholder, {
 	ErrorObject,
 } from '@woocommerce/editor-components/error-placeholder';
 
-import { PRODUCTS_STORE_NAME } from '@woocommerce/data';
+import { PRODUCTS_STORE_NAME, Product } from '@woocommerce/data';
 import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
@@ -57,7 +57,7 @@ const Editor = ( {
 		if ( ! isPreview ) {
 			return null;
 		}
-		return select( PRODUCTS_STORE_NAME ).getProducts( {
+		return select( PRODUCTS_STORE_NAME ).getProducts< Array< Product > >( {
 			per_page: 1,
 		} );
 	} );
