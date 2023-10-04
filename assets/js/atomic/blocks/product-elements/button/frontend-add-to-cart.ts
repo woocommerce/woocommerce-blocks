@@ -12,7 +12,7 @@ import type { Context, Store } from './frontend';
 
 const getContext = () => getContextFn< Context >( 'woo' );
 
-const { selectors } = store< Store >( 'woo', {
+const { state } = store< Store >( 'woo', {
 	actions: {
 		*__addToCart() {
 			const context = getContext();
@@ -27,8 +27,7 @@ const { selectors } = store< Store >( 'woo', {
 				);
 
 				// After the cart is updated, sync the temporary number of items again.
-				context.temporaryNumberOfItems =
-					selectors.numberOfItemsInTheCart;
+				context.temporaryNumberOfItems = state.numberOfItemsInTheCart;
 			} catch ( error ) {
 				// eslint-disable-next-line no-console
 				console.error( error );

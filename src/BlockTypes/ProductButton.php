@@ -180,9 +180,9 @@ class ProductButton extends AbstractBlock {
 
 			$span_button_directives = '
 				data-wc-context=\'woo-test::{ "emoji": "💰" }\'
-				data-wc-text="woo-test::selectors.addToCartText"
-				data-wc-class--wc-block-slide-in="selectors.slideInAnimation"
-				data-wc-class--wc-block-slide-out="selectors.slideOutAnimation"
+				data-wc-text="woo-test::state.addToCartText"
+				data-wc-class--wc-block-slide-in="state.slideInAnimation"
+				data-wc-class--wc-block-slide-out="state.slideOutAnimation"
 				data-wc-on--animationend="actions.handleAnimationEnd"
 				data-wc-watch="callbacks.startAnimation"
 				data-wc-layout-init="callbacks.syncTemporaryNumberOfItemsOnLoad"
@@ -266,7 +266,7 @@ class ProductButton extends AbstractBlock {
 		return sprintf(
 			'<span
 				hidden
-				data-wc-bind--hidden="!selectors.displayViewCart"
+				data-wc-bind--hidden="!state.displayViewCart"
 			>
 				<a
 					href="%1$s"

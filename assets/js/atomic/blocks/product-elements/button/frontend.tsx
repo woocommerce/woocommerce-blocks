@@ -28,8 +28,6 @@ export interface Store {
 	state: {
 		cart?: Cart;
 		inTheCartText?: string;
-	};
-	selectors: {
 		numberOfItemsInTheCart: number;
 		hasCartLoaded: boolean;
 		slideInAnimation: boolean;
@@ -63,10 +61,10 @@ const getTextButton = (
 	return inTheCart.replace( '###', numberOfItems.toString() );
 };
 
-const { state, selectors, actions } = store< Store >(
+const { state, actions } = store< Store >(
 	'woo',
 	{
-		selectors: {
+		state: {
 			get slideInAnimation() {
 				const { animationStatus } = getContext();
 				return animationStatus === AnimationStatus.SLIDE_IN;
@@ -100,16 +98,16 @@ const { state, selectors, actions } = store< Store >(
 				return getTextButton(
 					context.addToCartText,
 					state.inTheCartText!,
-					selectors.numberOfItemsInTheCart
+					state.numberOfItemsInTheCart
 				);
 			},
 			get displayViewCart(): boolean {
 				const context = getContext();
 				if ( ! context.displayViewCart ) return false;
-				if ( ! selectors.hasCartLoaded ) {
+				if ( ! state.hasCartLoaded ) {
 					return context.temporaryNumberOfItems > 0;
 				}
-				return selectors.numberOfItemsInTheCart > 0;
+				return state.numberOfItemsInTheCart > 0;
 			},
 		},
 		actions: {
@@ -128,7 +126,7 @@ const { state, selectors, actions } = store< Store >(
 					// temporary number of items to sync it with the cart and reset the
 					// animation status so it can be triggered again.
 					context.temporaryNumberOfItems =
-						selectors.numberOfItemsInTheCart;
+						state.numberOfItemsInTheCart;
 					context.animationStatus = AnimationStatus.IDLE;
 				}
 			},
@@ -140,9 +138,9 @@ const { state, selectors, actions } = store< Store >(
 				// the temporary number of items with the number of items in the cart
 				// to avoid triggering the animation. We do this only once, but we
 				// use useLayoutEffect to avoid the useEffect flickering.
-				if ( selectors.hasCartLoaded ) {
+				if ( state.hasCartLoaded ) {
 					context.temporaryNumberOfItems =
-						selectors.numberOfItemsInTheCart;
+						state.numberOfItemsInTheCart;
 				}
 			},
 			startAnimation: () => {
@@ -152,9 +150,9 @@ const { state, selectors, actions } = store< Store >(
 				// button is not loading (because that means the user started the
 				// interaction) and the animation hasn't started yet.
 				if (
-					selectors.hasCartLoaded &&
+					state.hasCartLoaded &&
 					context.temporaryNumberOfItems !==
-						selectors.numberOfItemsInTheCart &&
+						state.numberOfItemsInTheCart &&
 					! context.isLoading &&
 					context.animationStatus === AnimationStatus.IDLE
 				) {
@@ -178,7 +176,7 @@ const { state, selectors, actions } = store< Store >(
 			// This selector triggers a fetch of the Cart data. It is done in a
 			// `requestIdleCallback` to avoid potential performance issues.
 			requestIdleCallback( () => {
-				if ( ! selectors.hasCartLoaded ) {
+				if ( ! state.hasCartLoaded ) {
 					select( storeKey ).getCartData();
 				}
 			} );
@@ -191,10 +189,10 @@ interface WooTestCtx {
 }
 
 store( 'woo-test', {
-	selectors: {
+	state: {
 		get addToCartText(): string {
 			const ctx = getContextFn< WooTestCtx >( 'woo-test' );
-			return `${ selectors.addToCartText } ${ ctx.emoji }`;
+			return `${ state.addToCartText } ${ ctx.emoji }`;
 		},
 	},
 } );
