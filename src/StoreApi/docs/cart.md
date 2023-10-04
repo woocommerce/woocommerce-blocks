@@ -45,13 +45,13 @@ All endpoints under `/cart` (listed in this doc) return responses in the same fo
 			"backorders_allowed": false,
 			"show_backorder_badge": false,
 			"sold_individually": false,
-			"permalink": "http://local.wordpress.test/product/beanie-with-logo/",
+			"permalink": "https://local.wordpress.test/product/beanie-with-logo/",
 			"images": [
 				{
 					"id": 61,
-					"src": "http://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1.jpg",
-					"thumbnail": "http://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-450x450.jpg",
-					"srcset": "http://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1.jpg 800w, http://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-450x450.jpg 450w, http://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-100x100.jpg 100w, http://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-600x600.jpg 600w, http://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-300x300.jpg 300w, http://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-150x150.jpg 150w, http://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-768x768.jpg 768w",
+					"src": "https://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1.jpg",
+					"thumbnail": "https://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-450x450.jpg",
+					"srcset": "https://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1.jpg 800w, https://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-450x450.jpg 450w, https://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-100x100.jpg 100w, https://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-600x600.jpg 600w, https://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-300x300.jpg 300w, https://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-150x150.jpg 150w, https://local.wordpress.test/wp-content/uploads/2023/03/beanie-with-logo-1-768x768.jpg 768w",
 					"sizes": "(max-width: 800px) 100vw, 800px",
 					"name": "beanie-with-logo-1.jpg",
 					"alt": ""
@@ -112,13 +112,13 @@ All endpoints under `/cart` (listed in this doc) return responses in the same fo
 			"backorders_allowed": false,
 			"show_backorder_badge": false,
 			"sold_individually": false,
-			"permalink": "http://local.wordpress.test/product/belt/",
+			"permalink": "https://local.wordpress.test/product/belt/",
 			"images": [
 				{
 					"id": 51,
-					"src": "http://local.wordpress.test/wp-content/uploads/2023/03/belt-2.jpg",
-					"thumbnail": "http://local.wordpress.test/wp-content/uploads/2023/03/belt-2-450x450.jpg",
-					"srcset": "http://local.wordpress.test/wp-content/uploads/2023/03/belt-2.jpg 801w, http://local.wordpress.test/wp-content/uploads/2023/03/belt-2-450x450.jpg 450w, http://local.wordpress.test/wp-content/uploads/2023/03/belt-2-100x100.jpg 100w, http://local.wordpress.test/wp-content/uploads/2023/03/belt-2-600x600.jpg 600w, http://local.wordpress.test/wp-content/uploads/2023/03/belt-2-300x300.jpg 300w, http://local.wordpress.test/wp-content/uploads/2023/03/belt-2-150x150.jpg 150w, http://local.wordpress.test/wp-content/uploads/2023/03/belt-2-768x768.jpg 768w",
+					"src": "https://local.wordpress.test/wp-content/uploads/2023/03/belt-2.jpg",
+					"thumbnail": "https://local.wordpress.test/wp-content/uploads/2023/03/belt-2-450x450.jpg",
+					"srcset": "https://local.wordpress.test/wp-content/uploads/2023/03/belt-2.jpg 801w, https://local.wordpress.test/wp-content/uploads/2023/03/belt-2-450x450.jpg 450w, https://local.wordpress.test/wp-content/uploads/2023/03/belt-2-100x100.jpg 100w, https://local.wordpress.test/wp-content/uploads/2023/03/belt-2-600x600.jpg 600w, https://local.wordpress.test/wp-content/uploads/2023/03/belt-2-300x300.jpg 300w, https://local.wordpress.test/wp-content/uploads/2023/03/belt-2-150x150.jpg 150w, https://local.wordpress.test/wp-content/uploads/2023/03/belt-2-768x768.jpg 768w",
 					"sizes": "(max-width: 801px) 100vw, 801px",
 					"name": "belt-2.jpg",
 					"alt": ""
