@@ -3,7 +3,6 @@
  * Title: Product Collection 5 Columns
  * Slug: woocommerce-blocks/product-collection-5-columns
  * Categories: WooCommerce
- * Block Types: core/query/woocommerce/product-query
  */
 ?>
 <!-- wp:woocommerce/product-collection {"query":{"perPage":5,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":false,"taxQuery":{},"parents":[],"isProductCollectionBlock":true,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","outofstock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[]},"tagName":"div","displayLayout":{"type":"flex","columns":5},"align":"wide"} -->
