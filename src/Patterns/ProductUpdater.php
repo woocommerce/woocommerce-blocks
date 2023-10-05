@@ -7,6 +7,55 @@ namespace Automattic\WooCommerce\Blocks\Patterns;
  */
 class ProductUpdater {
 
+	public function generate_content() {
+		$allow_ai_connection = get_option( 'woocommerce_blocks_allow_ai_connection' );
+
+		if ( ! $allow_ai_connection ) {
+			return new \WP_Error( 'ai_connection_not_allowed',
+				__( 'AI content generation is not allowed on this store. Update your store settings if you wish to enable this feature.',
+					'woocommerce' ) );
+		}
+
+		$placeholder_images = $this->fetch_product_images();
+
+		if ( is_wp_error( $placeholder_images ) ) {
+			return $placeholder_images;
+		}
+
+		$products                 = $this->get_placeholder_products();
+		$products_default_content = $this->get_default_product_content_with_images( $placeholder_images );
+
+		$responses = $this->generate_product_content( $products_default_content );
+
+		foreach ( $responses as $key => $response ) {
+			if ( is_wp_error( $response ) || empty( $response ) ) {
+				continue;
+			}
+
+			if ( ! isset( $response['completion'] ) ) {
+				continue;
+			}
+
+			$product_content = json_decode( $response['completion'], true );
+			if ( is_null( $product_content ) ) {
+				continue;
+			}
+
+			$i = 0;
+			foreach ( $products as $product ) {
+				$this->update_product_content( $product, $product_content[ $i ] );
+				++ $i;
+			}
+		}
+	}
+
+	public function get_placeholder_products() {
+		//@ TODO: Fetch the relevant products from the store.
+		$products = [];
+
+		return $products;
+	}
+
 	/**
 	 * @param $product
 	 * @param $ai_generated_product_content
