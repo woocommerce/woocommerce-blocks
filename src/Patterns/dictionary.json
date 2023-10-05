@@ -356,6 +356,42 @@
 		}
 	},
 	{
+		"name": "Product Gallery",
+		"slug": "woocommerce-blocks/product-query-product-gallery",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Collection 4 Columns",
+		"slug": "woocommerce-blocks/product-collection-4-columns",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Collection 5 Columns",
+		"slug": "woocommerce-blocks/product-collection-5-columns",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+				}
+			]
+		}
+	},
+	{
 		"name": "Featured Products 2 Columns",
 		"slug": "woocommerce-blocks/featured-products-2-columns",
 		"content": {
@@ -547,6 +583,10 @@
 				{
 					"default": "Awesome couch and great buying experience",
 					"ai_prompt": "A title that advertises the third testimonial"
+				},
+				{
+					"default": "What our customers say",
+					"ai_prompt": "A title that advertises the set of testimonials"
 				}
 			],
 			"descriptions": [
@@ -607,6 +647,18 @@
 				{
 					"default": "Shop jeans",
 					"ai_prompt": "The button text to go to the shop page"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Collection: Featured Products 5 Columns",
+		"slug": "woocommerce-blocks/product-collection-featured-products-5-columns",
+		"content": {
+			"titles": [
+				{
+					"default": "Shop new arrivals",
+					"ai_prompt": "An impact phrase that advertises the newest additions to the store"
 				}
 			]
 		}
