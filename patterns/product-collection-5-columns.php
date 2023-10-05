@@ -18,7 +18,7 @@ $content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/product-coll
 	<!-- wp:woocommerce/product-collection {"query":{"perPage":5,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":false,"taxQuery":{},"parents":[],"isProductCollectionBlock":true,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","outofstock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[]},"tagName":"div","displayLayout":{"type":"flex","columns":5},"align":"wide"} -->
 	<div class="wp-block-woocommerce-product-collection alignwide">
 		<!-- wp:woocommerce/product-template -->
-		<!-- wp:woocommerce/product-image {"imageSizing":"thumbnail","isDescendentOfQueryLoop":true} /-->
+		<!-- wp:woocommerce/product-image {"aspectRatio":"3/5","imageSizing":"thumbnail","isDescendentOfQueryLoop":true} /-->
 
 		<!-- wp:columns -->
 		<div class="wp-block-columns">
