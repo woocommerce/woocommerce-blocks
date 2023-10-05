@@ -36,13 +36,6 @@ const getHrefWithFilters = ( { state }: StateProps ) => {
 store( {
 	state: {
 		filters: {
-			rangeStyle: ( { state }: StateProps ) => {
-				const { minPrice, maxPrice, maxRange } = state.filters;
-				return [
-					`--low: ${ ( 100 * minPrice ) / maxRange }%`,
-					`--high: ${ ( 100 * maxPrice ) / maxRange }%`,
-				].join( ';' );
-			},
 			formattedMinPrice: ( { state }: StateProps ) => {
 				const { minPrice } = state.filters;
 				return formatPrice( minPrice, getCurrency( { minorUnit: 0 } ) );

@@ -131,7 +131,7 @@ final class CollectionFilters extends AbstractBlock {
 		$context['isCollectionFiltersInnerBlock'] = true;
 
 		if (
-			isset( $parsed_block['blockName'] ) ||
+			isset( $parsed_block['blockName'] ) &&
 			in_array( $parsed_block['blockName'], $this->collection_data_params_mapping, true )
 		) {
 			$context['collectionData'] = $this->current_response;

@@ -10,9 +10,6 @@
 	],
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
-	"viewScript": [
-		"wc-collection-price-filter-block-frontend"
-	],
 	"ancestor": [
 		"woocommerce/product-collection"
 	],
@@ -20,13 +17,12 @@
 		"interactivity": true
 	},
 	"attributes": {
-		"showInputFields": {
-			"type": "boolean",
-			"default": true
-		},
-		"inlineInput": {
-			"type": "boolean",
-			"default": false
+		"filterData": {
+			"type": "object",
+			"default": {}
 		}
+	},
+	"providesContext": {
+		"filterData": "filterData"
 	}
 }

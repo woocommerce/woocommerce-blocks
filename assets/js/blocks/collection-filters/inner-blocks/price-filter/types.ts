@@ -4,7 +4,7 @@
 import { HTMLElementEvent } from '@woocommerce/types';
 import { BlockEditProps } from '@wordpress/blocks';
 
-type PriceFilterState = {
+export type PriceFilterState = {
 	minPrice: number;
 	maxPrice: number;
 	minRange: number;
@@ -27,8 +27,7 @@ export type ActionProps = StateProps & {
 };
 
 export type BlockAttributes = {
-	showInputFields: boolean;
-	inlineInput: boolean;
+	filterData: Partial< PriceFilterState >;
 };
 
 export type EditProps = BlockEditProps< BlockAttributes >;

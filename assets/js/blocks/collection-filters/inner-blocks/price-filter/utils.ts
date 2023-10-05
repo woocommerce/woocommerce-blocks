@@ -25,6 +25,8 @@ export const getFormattedPrice = ( results: unknown[] ) => {
 		return {
 			minPrice: 0,
 			maxPrice: 0,
+			minRange: 0,
+			maxRange: 0,
 			formattedMinPrice: formatPrice( 0, currencyWithoutDecimal ),
 			formattedMaxPrice: formatPrice( 0, currencyWithoutDecimal ),
 		};
@@ -48,6 +50,8 @@ export const getFormattedPrice = ( results: unknown[] ) => {
 	return {
 		minPrice,
 		maxPrice,
+		minRange: minPrice,
+		maxRange: maxPrice,
 		formattedMinPrice: formatPrice( minPrice, currencyWithoutDecimal ),
 		formattedMaxPrice: formatPrice( maxPrice, currencyWithoutDecimal ),
 	};

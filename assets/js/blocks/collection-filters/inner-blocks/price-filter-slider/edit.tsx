@@ -1,8 +1,9 @@
 /**
  * External dependencies
  */
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/block-editor';
+import classNames from 'classnames';
 import {
 	PanelBody,
 	ToggleControl,
@@ -15,11 +16,44 @@ import {
 /**
  * Internal dependencies
  */
-import { EditProps } from '../types';
+import { EditProps } from './types';
 
-export const Inspector = ( { attributes, setAttributes }: EditProps ) => {
+const Edit = ( { attributes, setAttributes, context }: EditProps ) => {
 	const { showInputFields, inlineInput } = attributes;
-	return (
+	const { minPrice, maxPrice, formattedMinPrice, formattedMaxPrice } =
+		context.filterData;
+
+	const onChange = () => null;
+
+	const blockProps = useBlockProps( {
+		className: classNames( {
+			'inline-input': inlineInput && showInputFields,
+		} ),
+	} );
+
+	const priceMin = showInputFields ? (
+		<input
+			className="min"
+			type="text"
+			value={ minPrice }
+			onChange={ onChange }
+		/>
+	) : (
+		<span>{ formattedMinPrice }</span>
+	);
+
+	const priceMax = showInputFields ? (
+		<input
+			className="max"
+			type="text"
+			value={ maxPrice }
+			onChange={ onChange }
+		/>
+	) : (
+		<span>{ formattedMaxPrice }</span>
+	);
+
+	const Inspector = () => (
 		<InspectorControls>
 			<PanelBody
 				title={ __( 'Settings', 'woo-gutenberg-products-block' ) }
@@ -70,4 +104,35 @@ export const Inspector = ( { attributes, setAttributes }: EditProps ) => {
 			</PanelBody>
 		</InspectorControls>
 	);
+
+	return (
+		<div { ...blockProps }>
+			<Inspector />
+			<div className="range">
+				<div className="range-bar"></div>
+				<input
+					type="range"
+					className="min"
+					min={ minPrice }
+					max={ maxPrice }
+					value={ minPrice }
+					onChange={ onChange }
+				/>
+				<input
+					type="range"
+					className="max"
+					min={ minPrice }
+					max={ maxPrice }
+					value={ maxPrice }
+					onChange={ onChange }
+				/>
+			</div>
+			<div className="text">
+				{ priceMin }
+				{ priceMax }
+			</div>
+		</div>
+	);
 };
+
+export default Edit;

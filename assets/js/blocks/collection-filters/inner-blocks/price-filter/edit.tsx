@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { useBlockProps } from '@wordpress/block-editor';
+import { useEffect } from '@wordpress/element';
+import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 import { useCollectionData } from '@woocommerce/base-context/hooks';
 import { Disabled } from '@wordpress/components';
 import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
@@ -9,11 +10,10 @@ import FilterResetButton from '@woocommerce/base-components/filter-reset-button'
 /**
  * Internal dependencies
  */
-import { getFormattedPrice } from './utils';
 import { EditProps } from './types';
-import { PriceSlider } from './price-slider';
+import { getFormattedPrice } from './utils';
 
-const Edit = ( props: EditProps ) => {
+const Edit = ( { setAttributes }: EditProps ) => {
 	const blockProps = useBlockProps();
 	const { results } = useCollectionData( {
 		queryPrices: true,
@@ -21,15 +21,21 @@ const Edit = ( props: EditProps ) => {
 		queryState: {},
 	} );
 
+	useEffect( () => {
+		setAttributes( {
+			filterData: getFormattedPrice( results ),
+		} );
+	}, [ results, setAttributes ] );
+
 	return (
 		<div { ...blockProps }>
+			<InnerBlocks
+				template={ [
+					[ 'woocommerce/collection-price-filter-slider' ],
+				] }
+				renderAppender={ () => null }
+			/>
 			<Disabled>
-				<div className="controls">
-					<PriceSlider
-						{ ...props }
-						collectionData={ getFormattedPrice( results ) }
-					/>
-				</div>
 				<div className="actions">
 					<FilterResetButton onClick={ () => false } />
 				</div>

@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"name": "woocommerce/collection-price-filter-slider",
+	"version": "1.0.0",
+	"title": "Collection Price Filter Slider",
+	"description": "The Slider view for the Price Filter block",
+	"category": "woocommerce",
+	"keywords": [
+		"WooCommerce"
+	],
+	"textdomain": "woo-gutenberg-products-block",
+	"apiVersion": 2,
+	"ancestor": [
+		"woocommerce/collection-price-filter"
+	],
+	"supports": {
+		"interactivity": true,
+		"inserter": false
+	},
+	"usesContext": [
+		"filterData"
+	],
+	"attributes": {
+		"showInputFields": {
+			"type": "boolean",
+			"default": true
+		},
+		"inlineInput": {
+			"type": "boolean",
+			"default": false
+		}
+	}
+}

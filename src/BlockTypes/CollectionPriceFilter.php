@@ -1,8 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
-use stdClass;
-
 /**
  * CollectionPriceFilter class.
  */
@@ -19,6 +17,40 @@ final class CollectionPriceFilter extends AbstractBlock {
 	const MAX_PRICE_QUERY_VAR = 'max_price';
 
 	/**
+	 * Initialize this block type.
+	 *
+	 * - Hook into WP lifecycle.
+	 * - Register the block with WordPress.
+	 */
+	protected function initialize() {
+		parent::initialize();
+		add_action( 'render_block_context', array( $this, 'modify_inner_blocks_context' ), 10, 3 );
+	}
+
+	/**
+	 * Modify the context of inner blocks.
+	 *
+	 * @param array    $context The block context.
+	 * @param array    $parsed_block The parsed block.
+	 * @param WP_Block $parent_block The parent block.
+	 * @return array
+	 */
+	public function modify_inner_blocks_context( $context, $parsed_block, $parent_block ) {
+		if (
+			is_admin() ||
+			! is_a( $parent_block, 'WP_Block' ) ||
+			"woocommerce/{$this->block_name}" !== $parent_block->name ||
+			empty( $parent_block->context['collectionData']['price_range'] )
+		) {
+			return $context;
+		}
+
+		$context['filterData'] = $this->get_filter_data( $parent_block->context['collectionData'] );
+
+		return $context;
+	}
+
+	/**
 	 * Render the block.
 	 *
 	 * @param array    $attributes Block attributes.
@@ -32,25 +64,10 @@ final class CollectionPriceFilter extends AbstractBlock {
 			return $content;
 		}
 
-		$price_range = $block->context['collectionData']['price_range'];
-
-		$wrapper_attributes = get_block_wrapper_attributes();
-		$min_range          = $price_range->min_price / 10 ** $price_range->currency_minor_unit;
-		$max_range          = $price_range->max_price / 10 ** $price_range->currency_minor_unit;
-		$min_price          = intval( get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range ) );
-		$max_price          = intval( get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range ) );
-
-		$data = array(
-			'minPrice' => $min_price,
-			'maxPrice' => $max_price,
-			'minRange' => $min_range,
-			'maxRange' => $max_range,
-		);
-
 		wc_store(
 			array(
 				'state' => array(
-					'filters' => $data,
+					'filters' => $this->get_filter_data( $block->context['collectionData'] ),
 				),
 			)
 		);
@@ -64,120 +81,46 @@ final class CollectionPriceFilter extends AbstractBlock {
 			__( 'Reset filter', 'woo-gutenberg-products-block' ),
 		);
 
+		$inner_blocks_output = array_reduce(
+			iterator_to_array( $block->inner_blocks ),
+			function( $output, $block ) {
+				$output .= $block->render();
+				return $output;
+			},
+			''
+		);
+
 		return sprintf(
 			'<div %1$s>
-				<div class="controls">%2$s</div>
+				%2$s
 				<div class="actions">
 					%3$s
 				</div>
 			</div>',
-			$wrapper_attributes,
-			$this->get_price_slider( $data, $attributes ),
+			get_block_wrapper_attributes(),
+			$inner_blocks_output,
 			$filter_reset_button
 		);
 	}
 
 	/**
-	 * Get the price slider HTML.
+	 * Prepare filter data for Interactivity API and inner blocks.
 	 *
-	 * @param array $store_data The data passing to Interactivity Store.
-	 * @param array $attributes Block attributes.
+	 * @param array $collection_data The collection data.
+	 * @return string
 	 */
-	private function get_price_slider( $store_data, $attributes ) {
-		list (
-			'showInputFields' => $show_input_fields,
-			'inlineInput' => $inline_input
-		) = $attributes;
-		list (
+	private function get_filter_data( $collection_data ) {
+		$price_range = $collection_data['price_range'];
+		$min_range   = $price_range->min_price / 10 ** $price_range->currency_minor_unit;
+		$max_range   = $price_range->max_price / 10 ** $price_range->currency_minor_unit;
+		$min_price   = intval( get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range ) );
+		$max_price   = intval( get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range ) );
+
+		return array(
 			'minPrice' => $min_price,
 			'maxPrice' => $max_price,
 			'minRange' => $min_range,
 			'maxRange' => $max_range,
-		) = $store_data;
-
-		// CSS variables for the range bar style.
-		$__low       = 100 * $min_price / $max_range;
-		$__high      = 100 * $max_price / $max_range;
-		$range_style = "--low: $__low%; --high: $__high%";
-
-		$formatted_min_price = wc_price( $min_price, array( 'decimals' => 0 ) );
-		$formatted_max_price = wc_price( $max_price, array( 'decimals' => 0 ) );
-
-		$classes = $show_input_fields && $inline_input ? 'price-slider inline-input' : 'price-slider';
-
-		$price_min = $show_input_fields ?
-			sprintf(
-				'<input
-					class="min"
-					type="text"
-					value="%d"
-					data-wc-bind--value="state.filters.minPrice"
-					data-wc-on--input="actions.filters.setMinPrice"
-					data-wc-on--change="actions.filters.updateProducts"
-				/>',
-				esc_attr( $min_price )
-			) : sprintf(
-				'<span data-wc-text="state.filters.formattedMinPrice">%s</span>',
-				esc_attr( $formatted_min_price )
-			);
-
-		$price_max = $show_input_fields ?
-			sprintf(
-				'<input
-					class="max"
-					type="text"
-					value="%d"
-					data-wc-bind--value="state.filters.maxPrice"
-					data-wc-on--input="actions.filters.setMaxPrice"
-					data-wc-on--change="actions.filters.updateProducts"
-				/>',
-				esc_attr( $max_price )
-			) : sprintf(
-				'<span data-wc-text="state.filters.formattedMaxPrice">%s</span>',
-				esc_attr( $formatted_max_price )
-			);
-
-		ob_start();
-		?>
-			<div class="<?php echo esc_attr( $classes ); ?>">
-				<div
-					class="range"
-					style="<?php echo esc_attr( $range_style ); ?>"
-					data-wc-bind--style="state.filters.rangeStyle"
-				>
-					<div class="range-bar"></div>
-					<input
-						type="range"
-						class="min"
-						min="<?php echo esc_attr( $min_range ); ?>"
-						max="<?php echo esc_attr( $max_range ); ?>"
-						value="<?php echo esc_attr( $min_price ); ?>"
-						data-wc-bind--max="state.filters.maxRange"
-						data-wc-bind--value="state.filters.minPrice"
-						data-wc-class--active="state.filters.isMinActive"
-						data-wc-on--input="actions.filters.setMinPrice"
-						data-wc-on--change="actions.filters.updateProducts"
-					>
-					<input
-						type="range"
-						class="max"
-						min="<?php echo esc_attr( $min_range ); ?>"
-						max="<?php echo esc_attr( $max_range ); ?>"
-						value="<?php echo esc_attr( $max_price ); ?>"
-						data-wc-bind--max="state.filters.maxRange"
-						data-wc-bind--value="state.filters.maxPrice"
-						data-wc-class--active="state.filters.isMaxActive"
-						data-wc-on--input="actions.filters.setMaxPrice"
-						data-wc-on--change="actions.filters.updateProducts"
-					>
-				</div>
-				<div class="text">
-					<?php // $price_min and $price_max are escapsed in the sprintf() calls above. ?>
-					<?php echo $price_min; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					<?php echo $price_max; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				</div>
-			</div>
-		<?php
-		return ob_get_clean();
+		);
 	}
 }
