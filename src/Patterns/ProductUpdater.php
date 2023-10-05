@@ -50,28 +50,28 @@ class ProductUpdater {
 
 		return [
 			[
-				'title'       => 'Product 1',
-				'description' => 'Product 1 description',
+				'title'       => 'A product title',
+				'description' => 'A product description',
 				'image'       => $placeholder_images[0] ?? $default_image,
 			],
 			[
-				'title'       => 'Product 2',
-				'description' => 'Product 2 description',
+				'title'       => 'A product title',
+				'description' => 'A product description',
 				'image'       => $placeholder_images[1] ?? $default_image,
 			],
 			[
-				'title'       => 'Product 3',
-				'description' => 'Product 3 description',
+				'title'       => 'A product title',
+				'description' => 'A product description',
 				'image'       => $placeholder_images[2] ?? $default_image,
 			],
 			[
-				'title'       => 'Product 4',
-				'description' => 'Product 4 description',
+				'title'       => 'A product title',
+				'description' => 'A product description',
 				'image'       => $placeholder_images[3] ?? $default_image,
 			],
 			[
-				'title'       => 'Product 5',
-				'description' => 'Product 5 description',
+				'title'       => 'A product title',
+				'description' => 'A product description',
 				'image'       => $placeholder_images[4] ?? $default_image,
 			],
 		];
