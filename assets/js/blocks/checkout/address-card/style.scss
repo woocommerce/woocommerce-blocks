@@ -1,5 +1,5 @@
 .wc-block-components-address-card {
-	border: 1px solid $form-step-border;
+	border: 1px solid $universal-border-light;
 	font-size: 0.875em;
 	padding: em($gap-small);
 	margin: 0;
@@ -7,10 +7,6 @@
 	display: flex;
 	justify-content: flex-start;
 	align-items: flex-start;
-
-	.has-dark-controls & {
-		border-color: $form-step-border-dark;
-	}
 
 	address {
 		margin: 0;
