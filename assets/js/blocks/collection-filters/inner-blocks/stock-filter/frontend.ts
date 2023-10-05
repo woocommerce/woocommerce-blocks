@@ -19,6 +19,11 @@ const getUrl = ( { state } ) => {
 interactivityStore(
 	// @ts-expect-error: Store function isn't typed.
 	{
+		state: {
+			filters: {
+				stockStatus: '',
+			},
+		},
 		actions: {
 			filters: {
 				updateProducts: ( { state, event } ) => {
