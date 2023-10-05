@@ -41,7 +41,6 @@ const Block = ( {
 	const {
 		setBillingAddress,
 		shippingAddress,
-		billingAddress,
 		useShippingAsBilling,
 		setUseShippingAsBilling,
 	} = useCheckoutAddress();
@@ -49,13 +48,19 @@ const Block = ( {
 
 	// Syncs the billing address with the shipping address.
 	const syncBillingWithShipping = () => {
-		setBillingAddress( {
+		const syncValues: Partial< BillingAddress > = {
 			...shippingAddress,
-			email: billingAddress.email,
-			phone: showPhoneField
-				? shippingAddress.phone
-				: billingAddress.phone,
-		} as BillingAddress );
+		};
+
+		if ( ! showPhoneField ) {
+			delete syncValues.phone;
+		}
+
+		if ( showCompanyField ) {
+			delete syncValues.company;
+		}
+
+		setBillingAddress( syncValues );
 	};
 
 	// Run this on first render to ensure addresses sync if needed (this is not re-ran when toggling the checkbox).
