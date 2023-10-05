@@ -31,7 +31,7 @@ $image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholder
 			<div class="wp-block-buttons">
 				<!-- wp:button -->
 				<div class="wp-block-button">
-					<a class="wp-block-button__link wp-element-button"><?php echo esc_html( $content['buttons'][0]['default'] ); ?></a>
+					<a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>"><?php echo esc_html( $content['buttons'][0]['default'] ); ?></a>
 				</div>
 				<!-- /wp:button -->
 			</div>
