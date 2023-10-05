@@ -36,6 +36,8 @@ class ProductUpdater {
 	}
 
 	/**
+	 * Fetch the default content for the dummy products.
+	 *
 	 * @param $placeholder_images
 	 *
 	 * @return array[]
@@ -50,27 +52,27 @@ class ProductUpdater {
 			[
 				'title'       => 'Product 1',
 				'description' => 'Product 1 description',
-				'image'       => isset( $placeholder_images[0] ) ?? $default_image,
+				'image'       => $placeholder_images[0] ?? $default_image,
 			],
 			[
 				'title'       => 'Product 2',
 				'description' => 'Product 2 description',
-				'image'       => isset( $placeholder_images[1] ) ?? $default_image,
+				'image'       => $placeholder_images[1] ?? $default_image,
 			],
 			[
 				'title'       => 'Product 3',
 				'description' => 'Product 3 description',
-				'image'       => isset( $placeholder_images[2] ) ?? $default_image,
+				'image'       => $placeholder_images[2] ?? $default_image,
 			],
 			[
 				'title'       => 'Product 4',
 				'description' => 'Product 4 description',
-				'image'       => isset( $placeholder_images[3] ) ?? $default_image,
+				'image'       => $placeholder_images[3] ?? $default_image,
 			],
 			[
 				'title'       => 'Product 5',
 				'description' => 'Product 5 description',
-				'image'       => isset( $placeholder_images[4] ) ?? $default_image,
+				'image'       => $placeholder_images[4] ?? $default_image,
 			],
 		];
 	}
