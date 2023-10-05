@@ -17,6 +17,10 @@
 		"interactivity": true
 	},
 	"attributes": {
+		"filterStyle": {
+			"type": "string",
+			"default": "woocommerce/collection-price-filter-slider"
+		},
 		"filterData": {
 			"type": "object",
 			"default": {}

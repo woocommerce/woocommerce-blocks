@@ -1,19 +1,28 @@
 /**
  * External dependencies
  */
-import { useEffect } from '@wordpress/element';
-import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { useEffect, useState } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
+import {
+	InnerBlocks,
+	InspectorControls,
+	useBlockProps,
+} from '@wordpress/block-editor';
 import { useCollectionData } from '@woocommerce/base-context/hooks';
-import { Disabled } from '@wordpress/components';
+import { Disabled, PanelBody, SelectControl } from '@wordpress/components';
 import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
+import { __ } from '@wordpress/i18n';
+import { getBlockTypes, createBlock } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
-import { EditProps } from './types';
+import { EditProps, SelectOption } from './types';
 import { getFormattedPrice } from './utils';
 
-const Edit = ( { setAttributes }: EditProps ) => {
+const Edit = ( { clientId, attributes, setAttributes }: EditProps ) => {
+	const { replaceInnerBlocks } = useDispatch( 'core/block-editor' );
+	const [ options, setOptions ] = useState< SelectOption[] >();
 	const blockProps = useBlockProps();
 	const { results } = useCollectionData( {
 		queryPrices: true,
@@ -27,12 +36,44 @@ const Edit = ( { setAttributes }: EditProps ) => {
 		} );
 	}, [ results, setAttributes ] );
 
+	useEffect( () => {
+		setOptions(
+			getBlockTypes()
+				.filter( ( block ) =>
+					block?.ancestor?.includes(
+						'woocommerce/collection-price-filter'
+					)
+				)
+				.map( ( block ) => ( {
+					label: block.title,
+					value: block.name,
+				} ) )
+		);
+	}, [] );
+
 	return (
 		<div { ...blockProps }>
+			<InspectorControls>
+				<PanelBody
+					title={ __( 'Settings', 'woo-gutenberg-products-block' ) }
+				>
+					<SelectControl
+						label={ __( 'Style', 'woo-gutenberg-products-block' ) }
+						value={ attributes.filterStyle }
+						options={ options }
+						onChange={ ( filterStyle ) => {
+							setAttributes( {
+								filterStyle,
+							} );
+							replaceInnerBlocks( clientId, [
+								createBlock( filterStyle ),
+							] );
+						} }
+					></SelectControl>
+				</PanelBody>
+			</InspectorControls>
 			<InnerBlocks
-				template={ [
-					[ 'woocommerce/collection-price-filter-slider' ],
-				] }
+				template={ [ [ attributes.filterStyle ] ] }
 				renderAppender={ () => null }
 			/>
 			<Disabled>

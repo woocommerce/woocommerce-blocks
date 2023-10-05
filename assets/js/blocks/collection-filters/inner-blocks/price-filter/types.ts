@@ -9,9 +9,6 @@ export type PriceFilterState = {
 	maxPrice: number;
 	minRange: number;
 	maxRange: number;
-	rangeStyle: string;
-	isMinActive: boolean;
-	isMaxActive: boolean;
 	formattedMinPrice: string;
 	formattedMaxPrice: string;
 };
@@ -27,11 +24,13 @@ export type ActionProps = StateProps & {
 };
 
 export type BlockAttributes = {
+	filterStyle: string;
 	filterData: Partial< PriceFilterState >;
 };
 
 export type EditProps = BlockEditProps< BlockAttributes >;
 
-export type FilterComponentProps = BlockEditProps< BlockAttributes > & {
-	collectionData: Partial< PriceFilterState >;
+export type SelectOption = {
+	label: string;
+	value: string;
 };
