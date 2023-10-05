@@ -36,20 +36,6 @@ $content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/product-coll
 		</div>
 		<!-- /wp:columns -->
 		<!-- /wp:woocommerce/product-template -->
-
-		<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->
-		<!-- wp:query-pagination-previous /-->
-
-		<!-- wp:query-pagination-numbers /-->
-
-		<!-- wp:query-pagination-next /-->
-		<!-- /wp:query-pagination -->
-
-		<!-- wp:query-no-results -->
-		<!-- wp:paragraph {"placeholder":"Add text or blocks that will display when a query returns no results."} -->
-		<p></p>
-		<!-- /wp:paragraph -->
-		<!-- /wp:query-no-results -->
 	</div>
 	<!-- /wp:woocommerce/product-collection -->
 </div>
