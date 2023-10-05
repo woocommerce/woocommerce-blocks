@@ -356,8 +356,8 @@
 		}
 	},
 	{
-		"name": "1:1 Image 4-Column Product Row",
-		"slug": "woocommerce-blocks/product-query-1-1-image-4-column-products-row",
+		"name": "Product Collection 4 Columns",
+		"slug": "woocommerce-blocks/product-collection-4-columns",
 		"content": {
 			"titles": [
 				{
@@ -369,7 +369,7 @@
 	},
 	{
 		"name": "Minimal 5-Column Product Row",
-		"slug": "woocommerce-blocks/product-query-minimal-5-column-products-row",
+		"slug": "woocommerce-blocks/product-collection-5-columns",
 		"content": {
 			"titles": [
 				{
