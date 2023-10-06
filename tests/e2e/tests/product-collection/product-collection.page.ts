@@ -68,11 +68,18 @@ class ProductCollectionPage {
 		this.editorUtils = editorUtils;
 	}
 
+	async chooseDefaultCollection() {
+		await this.page
+			.getByRole( 'button', { name: 'Use default collection' } )
+			.click();
+	}
+
 	async createNewPostAndInsertBlock() {
 		await this.admin.createNewPost( { legacyCanvas: true } );
 		await this.editor.insertBlock( {
 			name: this.BLOCK_NAME,
 		} );
+		await this.chooseDefaultCollection();
 		await this.refreshLocators( 'editor' );
 	}
 
@@ -96,6 +103,8 @@ class ProductCollectionPage {
 			'core/query',
 			'woocommerce/product-collection'
 		);
+
+		await this.chooseDefaultCollection();
 
 		await this.editor.saveSiteEditorEntities();
 	}
