@@ -23,4 +23,11 @@
 			column-count: 1;
 		}
 	}
+
+	.block-editor-block-preview__container {
+		height: 200px;
+		align-items: flex-start;
+		border: 1px solid $input-border-gray;
+		border-radius: 4px;
+	}
 }
