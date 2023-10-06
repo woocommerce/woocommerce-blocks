@@ -41,20 +41,29 @@ import { nsPathParser } from './vdom';
 const context = createContext( {} );
 
 let currentScope = null;
+let currentNamespace = null;
 
-export const getContext = < T extends object >( namespace: string ): T => {
+export const getContext = < T extends object >(
+	namespace: string = currentNamespace
+): T => {
 	return currentScope.context[ namespace ];
 };
 
 export const getElementRef = () => currentScope.ref.current;
 
 export const getScope = () => currentScope;
-
 export const setScope = ( scope ) => {
 	currentScope = scope;
 };
 export const resetScope = () => {
 	currentScope = null;
+};
+
+export const setNamespace = ( namespace ) => {
+	currentNamespace = namespace;
+};
+export const resetNamespace = () => {
+	currentNamespace = null;
 };
 
 // WordPress Directives.
