@@ -74,7 +74,7 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		display: flex;
 		overflow-x: hidden;
 		scroll-snap-type: x mandatory;
-		scroll-behavior: smooth;
+		scroll-behavior: auto;
 	}
 
 	#{$gallery-next-previous-inside-image} & .wc-block-woocommerce-product-gallery-large-image__container {

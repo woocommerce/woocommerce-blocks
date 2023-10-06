@@ -44,6 +44,8 @@ const productButtonSelectors = {
 	},
 };
 
+let isDialogStatusChanged = false;
+
 interactivityStore(
 	// @ts-expect-error: Store function isn't typed.
 	{
@@ -91,12 +93,53 @@ interactivityStore(
 		effects: {
 			woocommerce: {
 				scrollInto: ( store: Store ) => {
-					if ( store.selectors?.woocommerce?.isSelected( store ) ) {
+					// Scroll to the selected image with a smooth animation.
+					if (
+						store.selectors?.woocommerce?.isSelected( store ) &&
+						store.context.woocommerce.isDialogOpen ===
+							isDialogStatusChanged
+					) {
 						store.ref.scrollIntoView( {
 							behavior: 'smooth',
 							block: 'nearest',
 							inline: 'center',
 						} );
+					}
+
+					// Scroll to the selected image when the dialog is being opened without an animation.
+					if (
+						store.context.woocommerce.isDialogOpen &&
+						store.context.woocommerce.isDialogOpen !==
+							isDialogStatusChanged &&
+						store.selectors?.woocommerce?.isSelected( store ) &&
+						store.ref.tagName === 'IMG' &&
+						store.ref.closest( 'dialog' )
+					) {
+						store.ref.scrollIntoView( {
+							behavior: 'instant',
+							block: 'nearest',
+							inline: 'center',
+						} );
+
+						isDialogStatusChanged =
+							store.context.woocommerce.isDialogOpen;
+					}
+
+					// Scroll to the selected image when the dialog is being closed without an animation.
+					if (
+						! store.context.woocommerce.isDialogOpen &&
+						store.context.woocommerce.isDialogOpen !==
+							isDialogStatusChanged &&
+						store.selectors?.woocommerce?.isSelected( store ) &&
+						store.ref.tagName === 'IMG'
+					) {
+						store.ref.scrollIntoView( {
+							behavior: 'instant',
+							block: 'nearest',
+							inline: 'center',
+						} );
+						isDialogStatusChanged =
+							store.context.woocommerce.isDialogOpen;
 					}
 				},
 			},
