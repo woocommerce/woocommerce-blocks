@@ -14,9 +14,9 @@ $pattern_description = $content['descriptions'][0]['default'] ?? '';
 $pattern_button      = $content['buttons'][0]['default'] ?? '';
 $pattern_image       = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/plant-in-vase.jpg' );
 ?>
-<!-- wp:cover {"url":"<?php echo esc_url( $pattern_image ); ?>","dimRatio":20,"minHeight":739,"contentPosition":"center right","align":"wide","style":{"spacing":{"padding":{"right":"4em"}}}} -->
+<!-- wp:cover {"url":"<?php echo esc_url( $pattern_image ); ?>","dimRatio":30,"minHeight":739,"contentPosition":"center right","align":"wide","style":{"spacing":{"padding":{"right":"4em"}}}} -->
 <div class="wp-block-cover alignwide has-custom-content-position is-position-center-right" style="padding-right:4em;min-height:739px">
-	<span aria-hidden="true" class="wp-block-cover__background has-background-dim-20 has-background-dim"></span>
+	<span aria-hidden="true" class="wp-block-cover__background has-background-dim-30 has-background-dim"></span>
 	<img class="wp-block-cover__image-background" alt="" src="<?php echo esc_url( $pattern_image ); ?>" data-object-fit="cover"/>
 	<div class="wp-block-cover__inner-container">
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
