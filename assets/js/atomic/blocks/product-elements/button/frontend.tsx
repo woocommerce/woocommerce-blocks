@@ -128,7 +128,7 @@ const { state, actions } = store< Store >( 'woo', {
 	},
 	callbacks: {
 		syncTemporaryNumberOfItemsOnLoad: () => {
-			const context = getContext< Context >( 'woo' );
+			const context = getContext< Context >();
 			// If the cart has loaded when we instantiate this element, we sync
 			// the temporary number of items with the number of items in the cart
 			// to avoid triggering the animation. We do this only once, but we
@@ -138,7 +138,7 @@ const { state, actions } = store< Store >( 'woo', {
 			}
 		},
 		startAnimation: () => {
-			const context = getContext< Context >( 'woo' );
+			const context = getContext< Context >();
 			// We start the animation if the cart has loaded, the temporary number
 			// of items is out of sync with the number of items in the cart, the
 			// button is not loading (because that means the user started the
