@@ -52,26 +52,32 @@ const parseInitialState = () => {
 
 export const stores = new Map();
 
-const namespaces = new WeakMap();
+const objToProxy = new WeakMap();
+const proxyToNs = new WeakMap();
 
-const storeHandlers = {
-	get: ( target, key, receiver ) => {
-		const result = Reflect.get( target, key, receiver );
+const proxify = ( obj: any, ns: string ) => {
+	if ( ! objToProxy.has( obj ) ) {
+		const proxy = new Proxy( obj, handlers );
+		objToProxy.set( obj, proxy );
+		proxyToNs.set( proxy, ns );
+	}
 
-		if ( typeof result === 'undefined' ) {
-			target[ key ] = {};
-			return target[ key ];
-		}
-
-		const ns = namespaces.get( receiver );
-		namespaces.set( result, ns );
-
-		return result;
-	},
+	return objToProxy.get( obj );
 };
 
-const stateHandlers = {
+const handlers = {
 	get: ( target, key, receiver ) => {
+		const ns = proxyToNs.get( receiver );
+
+		// Check if the proxy is the store root and no prop with that name
+		// exist. In that case, return an empty object for the prop requested.
+		if ( receiver === stores.get( ns ) && ! ( key in target ) ) {
+			const obj = {};
+			target[ key ] = obj;
+			return proxify( obj, ns );
+		}
+
+		// Check if the property is a getter.
 		const getter = Object.getOwnPropertyDescriptor( target, key )?.get;
 		if ( getter ) {
 			const scope = getScope();
@@ -81,7 +87,7 @@ const stateHandlers = {
 					scope.getters.set(
 						getter,
 						computed( () => {
-							setNamespace( namespaces.get( receiver ) );
+							setNamespace( ns );
 							setScope( scope );
 							const result = getter.call( target );
 							// resetScope(); // maybe scope should be a stack?
@@ -93,14 +99,10 @@ const stateHandlers = {
 				return scope.getters.get( getter ).value;
 			}
 		}
-		const result = Reflect.get( target, key, receiver );
-		return result;
-	},
-};
 
-const actionHandlers = {
-	get: ( target, key, receiver ) => {
 		const result = Reflect.get( target, key, receiver );
+
+		// Check if the property is a generator.
 		if ( result?.constructor?.name === 'GeneratorFunction' ) {
 			return async ( ...args ) => {
 				const scope = getScope();
@@ -110,7 +112,7 @@ const actionHandlers = {
 					resetNamespace();
 					if ( iteration.done ) return iteration.value;
 					const res = await iteration.value;
-					setNamespace( namespaces.get( receiver ) );
+					setNamespace( proxyToNs.get( receiver ) );
 					setScope( scope );
 					return await iterate( gen.next( res ) );
 				};
@@ -123,16 +125,22 @@ const actionHandlers = {
 				}
 			};
 		}
+
+		// Check if the property is a function.
 		if ( typeof result === 'function' ) {
 			const scope = getScope();
 			return ( ...args ) => {
-				setNamespace( namespaces.get( receiver ) );
+				setNamespace( proxyToNs.get( receiver ) );
 				setScope( scope );
 				result( ...args );
 				resetScope();
 				resetNamespace();
 			};
 		}
+
+		// Check if the property is an object.
+		if ( isObject( result ) ) return proxify( result, ns );
+
 		return result;
 	},
 };
@@ -208,26 +216,18 @@ export function store< T extends object >(
 
 export function store(
 	namespace: string,
-	{ state = {}, actions = {}, ...block }: any = {},
+	{ state = {}, ...block }: any = {},
 	{}: StoreOptions = {}
 ) {
 	if ( ! stores.has( namespace ) ) {
 		stores.set(
 			namespace,
-			new Proxy(
-				{
-					state: new Proxy( deepSignal( state ), stateHandlers ),
-					actions: new Proxy( actions, actionHandlers ),
-					...block,
-				},
-				storeHandlers
-			)
+			new Proxy( { state: deepSignal( state ), ...block }, handlers )
 		);
-		namespaces.set( stores.get( namespace ), namespace );
+		proxyToNs.set( stores.get( namespace ), namespace );
 	} else {
 		const target = stores.get( namespace );
 		deepMerge( target, block );
-		deepMerge( target.actions, actions );
 		deepMerge( target.state, state );
 	}
 
