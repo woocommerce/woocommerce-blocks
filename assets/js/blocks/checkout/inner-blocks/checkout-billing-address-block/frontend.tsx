@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useRef } from '@wordpress/element';
+import { useRef, useEffect } from '@wordpress/element';
 import { withFilteredAttributes } from '@woocommerce/shared-hocs';
 import { FormStep } from '@woocommerce/base-components/cart-checkout';
 import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
@@ -51,7 +51,13 @@ const FrontendBlock = ( {
 	} = useCheckoutAddress();
 
 	// If initial state was true, force editing to true so address fields are visible if the useShippingAsBilling option is unchecked.
-	const initialUseShippingAsBilling = useRef( useShippingAsBilling );
+	const toggledUseShippingAsBilling = useRef( useShippingAsBilling );
+
+	useEffect( () => {
+		if ( useShippingAsBilling ) {
+			toggledUseShippingAsBilling.current = true;
+		}
+	}, [ useShippingAsBilling ] );
 
 	if ( ! showBillingFields && ! useBillingAsShipping ) {
 		return null;
@@ -80,7 +86,7 @@ const FrontendBlock = ( {
 				showCompanyField={ showCompanyField }
 				showPhoneField={ showPhoneField }
 				requirePhoneField={ requirePhoneField }
-				forceEditing={ initialUseShippingAsBilling.current }
+				forceEditing={ toggledUseShippingAsBilling.current }
 			/>
 			{ children }
 		</FormStep>
