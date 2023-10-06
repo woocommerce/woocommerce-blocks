@@ -4,7 +4,6 @@
 import { useState, useCallback } from '@wordpress/element';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import { useCheckoutAddress, useStoreEvents } from '@woocommerce/base-context';
-import { home } from '@wordpress/icons';
 import type {
 	ShippingAddress,
 	AddressField,
@@ -14,6 +13,7 @@ import type {
 /**
  * Internal dependencies
  */
+import AddressWrapper from '../../address-wrapper';
 import PhoneNumber from '../../phone-number';
 import AddressCard from '../../address-card';
 
@@ -68,45 +68,64 @@ const CustomerAddress = ( {
 		]
 	);
 
-	return (
-		<>
-			{ hasAddress && ! editing && (
-				<AddressCard
-					address={ shippingAddress }
-					target="shipping"
-					onEdit={ () => {
-						setEditing( true );
-					} }
-					icon={ home }
+	const renderAddressCardComponent = useCallback(
+		() => (
+			<AddressCard
+				address={ shippingAddress }
+				target="shipping"
+				onEdit={ () => {
+					setEditing( true );
+				} }
+			/>
+		),
+		[ shippingAddress ]
+	);
+
+	const renderAddressFormComponent = useCallback(
+		() => (
+			<>
+				<AddressForm
+					id="shipping"
+					type="shipping"
+					onChange={ onChangeAddress }
+					values={ shippingAddress }
+					fields={ addressFieldKeys }
+					fieldConfig={ addressFieldsConfig }
 				/>
-			) }
-			{ ( editing || ! hasAddress ) && (
-				<>
-					<AddressForm
-						id="shipping"
-						type="shipping"
-						onChange={ onChangeAddress }
-						values={ shippingAddress }
-						fields={ addressFieldKeys }
-						fieldConfig={ addressFieldsConfig }
+				{ showPhoneField && (
+					<PhoneNumber
+						id="shipping-phone"
+						errorId={ 'shipping_phone' }
+						isRequired={ requirePhoneField }
+						value={ shippingAddress.phone }
+						onChange={ ( value ) => {
+							setShippingPhone( value );
+							dispatchCheckoutEvent( 'set-phone-number', {
+								step: 'shipping',
+							} );
+						} }
 					/>
-					{ showPhoneField && (
-						<PhoneNumber
-							id="shipping-phone"
-							errorId={ 'shipping_phone' }
-							isRequired={ requirePhoneField }
-							value={ shippingAddress.phone }
-							onChange={ ( value ) => {
-								setShippingPhone( value );
-								dispatchCheckoutEvent( 'set-phone-number', {
-									step: 'shipping',
-								} );
-							} }
-						/>
-					) }
-				</>
-			) }
-		</>
+				) }
+			</>
+		),
+		[
+			addressFieldKeys,
+			addressFieldsConfig,
+			dispatchCheckoutEvent,
+			onChangeAddress,
+			requirePhoneField,
+			setShippingPhone,
+			shippingAddress,
+			showPhoneField,
+		]
+	);
+
+	return (
+		<AddressWrapper
+			isEditing={ editing }
+			addressCard={ renderAddressCardComponent }
+			addressForm={ renderAddressFormComponent }
+		/>
 	);
 };
 

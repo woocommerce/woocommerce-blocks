@@ -1,7 +1,7 @@
 .wc-block-components-address-card {
-	border: 1px solid $universal-border-light;
-	font-size: 0.875em;
-	padding: em($gap-small);
+	border: 1px solid $universal-border;
+	@include font-size(regular);
+	padding: $gap;
 	margin: 0;
 	border-radius: 4px;
 	display: flex;
@@ -11,7 +11,6 @@
 	address {
 		margin: 0;
 		font-style: normal;
-		color: $gray-700;
 
 		.wc-block-components-address-card__address-section {
 			display: block;
@@ -29,16 +28,14 @@
 			&:last-child {
 				margin-bottom: 0;
 			}
+			&:first-child {
+				font-weight: bold;
+			}
 		}
 	}
 }
-.wc-block-components-address-card__icon {
-	width: 1em;
-	font-size: 2em;
-	margin: 0 0.15em 0 -0.1em;
-	position: relative;
-	vertical-align: top;
-}
 .wc-block-components-address-card__edit {
 	margin: 0 0 0 auto;
+	text-decoration: none;
+	@include font-size(small);
 }

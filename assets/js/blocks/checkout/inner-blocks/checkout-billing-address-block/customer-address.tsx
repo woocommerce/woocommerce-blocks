@@ -4,7 +4,6 @@
 import { useState, useCallback } from '@wordpress/element';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import { useCheckoutAddress, useStoreEvents } from '@woocommerce/base-context';
-import { receipt } from '@wordpress/icons';
 import type {
 	BillingAddress,
 	AddressField,
@@ -14,6 +13,7 @@ import type {
 /**
  * Internal dependencies
  */
+import AddressWrapper from '../../address-wrapper';
 import PhoneNumber from '../../phone-number';
 import AddressCard from '../../address-card';
 
@@ -63,51 +63,72 @@ const CustomerAddress = ( {
 		]
 	);
 
-	return (
-		<>
-			{ hasAddress && ! editing && (
-				<AddressCard
-					address={ billingAddress }
-					target="billing"
-					onEdit={ () => {
-						setEditing( true );
-					} }
-					icon={ receipt }
+	const renderAddressCardComponent = useCallback(
+		() => (
+			<AddressCard
+				address={ billingAddress }
+				target="billing"
+				onEdit={ () => {
+					setEditing( true );
+				} }
+			/>
+		),
+		[ billingAddress ]
+	);
+
+	const renderAddressFormComponent = useCallback(
+		() => (
+			<>
+				<AddressForm
+					id="billing"
+					type="billing"
+					onChange={ onChangeAddress }
+					values={ billingAddress }
+					fields={ addressFieldKeys }
+					fieldConfig={ addressFieldsConfig }
 				/>
-			) }
-			{ ( editing || ! hasAddress ) && (
-				<>
-					<AddressForm
-						id="billing"
-						type="billing"
-						onChange={ onChangeAddress }
-						values={ billingAddress }
-						fields={ addressFieldKeys }
-						fieldConfig={ addressFieldsConfig }
-					/>
-					{ showPhoneField && (
-						<PhoneNumber
-							id="billing-phone"
-							errorId={ 'billing_phone' }
-							isRequired={ requirePhoneField }
-							value={ billingAddress.phone }
-							onChange={ ( value ) => {
-								setBillingPhone( value );
+				{ showPhoneField && (
+					<PhoneNumber
+						id="billing-phone"
+						errorId={ 'billing_phone' }
+						isRequired={ requirePhoneField }
+						value={ billingAddress.phone }
+						onChange={ ( value ) => {
+							setBillingPhone( value );
+							dispatchCheckoutEvent( 'set-phone-number', {
+								step: 'billing',
+							} );
+							if ( useBillingAsShipping ) {
+								setShippingPhone( value );
 								dispatchCheckoutEvent( 'set-phone-number', {
-									step: 'shipping',
+									step: 'billing',
 								} );
-								if ( useBillingAsShipping ) {
-									setShippingPhone( value );
-									dispatchCheckoutEvent( 'set-phone-number', {
-										step: 'shipping',
-									} );
-								}
-							} }
-						/>
-					) }
-				</>
-			) }
-		</>
+							}
+						} }
+					/>
+				) }
+			</>
+		),
+		[
+			addressFieldKeys,
+			addressFieldsConfig,
+			billingAddress,
+			dispatchCheckoutEvent,
+			onChangeAddress,
+			requirePhoneField,
+			setBillingPhone,
+			setShippingPhone,
+			showPhoneField,
+			useBillingAsShipping,
+		]
+	);
+
+	return (
+		<AddressWrapper
+			isEditing={ editing }
+			addressCard={ renderAddressCardComponent }
+			addressForm={ renderAddressFormComponent }
+		/>
 	);
 };
 
