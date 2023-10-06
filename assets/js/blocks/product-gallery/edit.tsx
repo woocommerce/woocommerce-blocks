@@ -134,24 +134,6 @@ export const Edit = ( {
 
 	return (
 		<div { ...blockProps }>
-			{ /* <InspectorControls>
-				<ProductGalleryPagerBlockSettings
-					context={ {
-						productGalleryClientId: clientId,
-						pagerDisplayMode: attributes.pagerDisplayMode,
-					} }
-				/>
-				<ProductGalleryThumbnailsBlockSettings
-					attributes={ attributes }
-					setAttributes={ setAttributes }
-					context={ {
-						productGalleryClientId: clientId,
-						thumbnailsPosition: attributes.thumbnailsPosition,
-						thumbnailsNumberOfThumbnails:
-							attributes.thumbnailsNumberOfThumbnails,
-					} }
-				/>
-			</InspectorControls> */ }
 			<InspectorControls>
 				<ProductGalleryBlockSettings
 					attributes={ attributes }
@@ -167,14 +149,6 @@ export const Edit = ( {
 					} }
 				/>
 			</InspectorControls>
-			{ /* <InspectorControls>
-				<ProductGalleryNextPreviousBlockSettings
-					context={ {
-						...attributes,
-						productGalleryClientId: clientId,
-					} }
-				/>
-			</InspectorControls> */ }
 			<InnerBlocks
 				allowedBlocks={ [
 					'woocommerce/product-gallery-large-image',
