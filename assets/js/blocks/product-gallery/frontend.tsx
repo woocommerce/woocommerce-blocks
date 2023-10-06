@@ -36,7 +36,7 @@ interface Actions {
 interface Store {
 	state: State;
 	context: Context;
-	selectors: Selectors;
+	selectors: ProductGallerySelectors;
 	actions: Actions;
 	ref?: HTMLElement;
 }

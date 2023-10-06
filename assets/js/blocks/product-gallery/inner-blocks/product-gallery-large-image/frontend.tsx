@@ -50,7 +50,7 @@ let isDialogStatusChanged = false;
 interactivityStore(
 	// @ts-expect-error: Store function isn't typed.
 	{
-		selectors: productButtonSelectors,
+		selectors: productGalleryLargeImageSelectors,
 		actions: {
 			woocommerce: {
 				handleMouseMove: ( {
