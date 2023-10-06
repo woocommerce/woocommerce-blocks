@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { store, getContext as getContextFn } from '@woocommerce/interactivity';
+import { store, getContext } from '@woocommerce/interactivity';
 import { select, subscribe } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { Cart } from '@woocommerce/type-defs/cart';
@@ -46,8 +46,6 @@ export interface Store {
 	};
 }
 
-const getContext = () => getContextFn< Context >( 'woo' );
-
 const getProductById = ( cartState: Cart | undefined, productId: number ) => {
 	return cartState?.items.find( ( item ) => item.id === productId );
 };
@@ -66,15 +64,15 @@ const { state, actions } = store< Store >(
 	{
 		state: {
 			get slideInAnimation() {
-				const { animationStatus } = getContext();
+				const { animationStatus } = getContext< Context >();
 				return animationStatus === AnimationStatus.SLIDE_IN;
 			},
 			get slideOutAnimation() {
-				const { animationStatus } = getContext();
+				const { animationStatus } = getContext< Context >();
 				return animationStatus === AnimationStatus.SLIDE_OUT;
 			},
 			get numberOfItemsInTheCart() {
-				const { productId } = getContext();
+				const { productId } = getContext< Context >();
 				const product = getProductById( state.cart, productId );
 				return product?.quantity || 0;
 			},
@@ -82,7 +80,7 @@ const { state, actions } = store< Store >(
 				return !! state.cart;
 			},
 			get addToCartText(): string {
-				const context = getContext();
+				const context = getContext< Context >();
 				// We use the temporary number of items when there's no animation, or the
 				// second part of the animation hasn't started.
 				if (
@@ -102,7 +100,7 @@ const { state, actions } = store< Store >(
 				);
 			},
 			get displayViewCart(): boolean {
-				const context = getContext();
+				const context = getContext< Context >();
 				if ( ! context.displayViewCart ) return false;
 				if ( ! state.hasCartLoaded ) {
 					return context.temporaryNumberOfItems > 0;
@@ -116,7 +114,7 @@ const { state, actions } = store< Store >(
 				yield actions.__addToCart();
 			},
 			handleAnimationEnd: ( event: AnimationEvent ) => {
-				const context = getContext();
+				const context = getContext< Context >();
 				if ( event.animationName === 'slideOut' ) {
 					// When the first part of the animation (slide-out) ends, we move
 					// to the second part (slide-in).
@@ -133,7 +131,7 @@ const { state, actions } = store< Store >(
 		},
 		callbacks: {
 			syncTemporaryNumberOfItemsOnLoad: () => {
-				const context = getContext();
+				const context = getContext< Context >( 'woo' );
 				// If the cart has loaded when we instantiate this element, we sync
 				// the temporary number of items with the number of items in the cart
 				// to avoid triggering the animation. We do this only once, but we
@@ -144,7 +142,7 @@ const { state, actions } = store< Store >(
 				}
 			},
 			startAnimation: () => {
-				const context = getContext();
+				const context = getContext< Context >( 'woo' );
 				// We start the animation if the cart has loaded, the temporary number
 				// of items is out of sync with the number of items in the cart, the
 				// button is not loading (because that means the user started the
@@ -191,7 +189,7 @@ interface WooTestCtx {
 store( 'woo-test', {
 	state: {
 		get addToCartText(): string {
-			const ctx = getContextFn< WooTestCtx >( 'woo-test' );
+			const ctx = getContext< WooTestCtx >();
 			return `${ state.addToCartText } ${ ctx.emoji }`;
 		},
 	},
