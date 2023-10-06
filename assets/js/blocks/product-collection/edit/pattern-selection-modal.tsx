@@ -162,7 +162,7 @@ const PatternSelectionModal = ( props: {
 			isFullScreen
 		>
 			<div className="wc-blocks-product-collection__selection-content">
-				<p className="wc-blocks-product-collection__selection-content">
+				<p className="wc-blocks-product-collection__selection-modal-subtitle">
 					{ __(
 						"Pick what products are shown. Don't worry, you can switch and tweak this collection any time.",
 						'woo-gutenberg-products-block'
