@@ -19,12 +19,12 @@ $third_description  = $content['descriptions'][2]['default'] ?? '';
 ?>
 <!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}},"layout":{"type":"constrained","justifyContent":"left"}} -->
 <div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30)">
-	<!-- wp:heading {"level":3} -->
-	<h3 class="wp-block-heading"><?php echo esc_html( $main_header ); ?></h3>
+	<!-- wp:heading {"level":3,"style":{"spacing":{"padding":{"right":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
+	<h3 class="wp-block-heading" style="padding-right:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)"><?php echo esc_html( $main_header ); ?></h3>
 	<!-- /wp:heading -->
 
-	<!-- wp:columns {"align":"full"} -->
-	<div class="wp-block-columns alignfull">
+	<!-- wp:columns {"align":"full","style":{"spacing":{"padding":{"right":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
+	<div class="wp-block-columns alignfull" style="padding-right:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)">
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:paragraph -->
