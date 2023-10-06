@@ -58,35 +58,31 @@ export const ProductGalleryPagerBlockSettings = ( {
 	const { updateBlockAttributes } = useDispatch( blockEditorStore );
 
 	return (
-		<PanelBody
-			className="wc-block-editor-product-gallery-pager-settings"
-			title={ __( 'Pager', 'woo-gutenberg-products-block' ) }
+		<ToggleGroupControl
+			label={ __( 'Pager', 'woo-gutenberg-products-block' ) }
+			style={ {
+				width: '100%',
+			} }
+			onChange={ ( value: PagerDisplayModes ) => {
+				updateBlockAttributes( productGalleryClientId, {
+					pagerDisplayMode: value,
+				} );
+			} }
+			help={ getHelpText( pagerDisplayMode ) }
+			value={ pagerDisplayMode }
 		>
-			<ToggleGroupControl
-				style={ {
-					width: '100%',
-				} }
-				onChange={ ( value: PagerDisplayModes ) => {
-					updateBlockAttributes( productGalleryClientId, {
-						pagerDisplayMode: value,
-					} );
-				} }
-				help={ getHelpText( pagerDisplayMode ) }
-				value={ pagerDisplayMode }
-			>
-				<ToggleGroupControlOption
-					value={ PagerDisplayModes.OFF }
-					label={ __( 'Off', 'woo-gutenberg-products-block' ) }
-				/>
-				<ToggleGroupControlOption
-					value={ PagerDisplayModes.DOTS }
-					label={ <PagerSettingsDotIcon /> }
-				/>
-				<ToggleGroupControlOption
-					value={ PagerDisplayModes.DIGITS }
-					label={ <PagerSettingsDigitsIcon /> }
-				/>
-			</ToggleGroupControl>
-		</PanelBody>
+			<ToggleGroupControlOption
+				value={ PagerDisplayModes.OFF }
+				label={ __( 'Off', 'woo-gutenberg-products-block' ) }
+			/>
+			<ToggleGroupControlOption
+				value={ PagerDisplayModes.DOTS }
+				label={ <PagerSettingsDotIcon /> }
+			/>
+			<ToggleGroupControlOption
+				value={ PagerDisplayModes.DIGITS }
+				label={ <PagerSettingsDigitsIcon /> }
+			/>
+		</ToggleGroupControl>
 	);
 };

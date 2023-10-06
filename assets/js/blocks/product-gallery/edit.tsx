@@ -19,11 +19,8 @@ import {
 	getInnerBlocksLockAttributes,
 	getClassNameByNextPreviousButtonsPosition,
 } from './utils';
-import { ProductGalleryThumbnailsBlockSettings } from './inner-blocks/product-gallery-thumbnails/block-settings';
-import { ProductGalleryPagerBlockSettings } from './inner-blocks/product-gallery-pager/settings';
 import { ProductGalleryBlockSettings } from './block-settings/index';
 import type { ProductGalleryAttributes } from './types';
-import { ProductGalleryNextPreviousBlockSettings } from './inner-blocks/product-gallery-large-image-next-previous/settings';
 
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
@@ -137,7 +134,7 @@ export const Edit = ( {
 
 	return (
 		<div { ...blockProps }>
-			<InspectorControls>
+			{ /* <InspectorControls>
 				<ProductGalleryPagerBlockSettings
 					context={ {
 						productGalleryClientId: clientId,
@@ -154,21 +151,30 @@ export const Edit = ( {
 							attributes.thumbnailsNumberOfThumbnails,
 					} }
 				/>
-			</InspectorControls>
+			</InspectorControls> */ }
 			<InspectorControls>
 				<ProductGalleryBlockSettings
 					attributes={ attributes }
 					setAttributes={ setAttributes }
+					context={ {
+						productGalleryClientId: clientId,
+						pagerDisplayMode: attributes.pagerDisplayMode,
+						thumbnailsPosition: attributes.thumbnailsPosition,
+						thumbnailsNumberOfThumbnails:
+							attributes.thumbnailsNumberOfThumbnails,
+						nextPreviousButtonsPosition:
+							attributes.nextPreviousButtonsPosition,
+					} }
 				/>
 			</InspectorControls>
-			<InspectorControls>
+			{ /* <InspectorControls>
 				<ProductGalleryNextPreviousBlockSettings
 					context={ {
 						...attributes,
 						productGalleryClientId: clientId,
 					} }
 				/>
-			</InspectorControls>
+			</InspectorControls> */ }
 			<InnerBlocks
 				allowedBlocks={ [
 					'woocommerce/product-gallery-large-image',
