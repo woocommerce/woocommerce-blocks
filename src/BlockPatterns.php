@@ -59,6 +59,27 @@ class BlockPatterns {
 			return;
 		}
 
+		if ( ! file_exists( $this->patterns_path ) ) {
+			return;
+		}
+
+		$paths_to_match = [
+			$this->patterns_path . '/*.php',   // matches PHP files in root directory.
+			$this->patterns_path . '/*/*.php', // matches PHP files in first-level subdirectories.
+		];
+
+		$files = [];
+		foreach ( $paths_to_match as $path ) {
+			$matches = glob( $path );
+			if ( is_array( $matches ) ) {
+				$files = array_merge( $files, $matches );
+			}
+		}
+
+		if ( empty( $files ) ) {
+			return;
+		}
+
 		$default_headers = array(
 			'title'         => 'Title',
 			'slug'          => 'Slug',
@@ -69,15 +90,6 @@ class BlockPatterns {
 			'blockTypes'    => 'Block Types',
 			'inserter'      => 'Inserter',
 		);
-
-		if ( ! file_exists( $this->patterns_path ) ) {
-			return;
-		}
-
-		$files = glob( $this->patterns_path . '/{,*/}*.php', GLOB_BRACE );
-		if ( ! $files ) {
-			return;
-		}
 
 		foreach ( $files as $file ) {
 			$pattern_data = get_file_data( $file, $default_headers );
