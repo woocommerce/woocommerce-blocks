@@ -3,7 +3,13 @@
  */
 import { deepSignal } from 'deepsignal';
 import { computed } from '@preact/signals';
-import { resetScope, getScope, setScope } from './hooks';
+import {
+	resetScope,
+	getScope,
+	setScope,
+	setNamespace,
+	resetNamespace,
+} from './hooks';
 
 const isObject = ( item ) =>
 	item && typeof item === 'object' && ! Array.isArray( item );
@@ -48,6 +54,8 @@ export const afterLoads = new Set();
 export const stores = new Map();
 export const privateStores = new Map();
 
+const namespaces = new WeakMap();
+
 const storeHandlers = {
 	get: ( target, key, receiver ) => {
 		const result = Reflect.get( target, key, receiver );
@@ -56,6 +64,9 @@ const storeHandlers = {
 			target[ key ] = {};
 			return target[ key ];
 		}
+
+		const ns = namespaces.get( receiver );
+		namespaces.set( result, ns );
 
 		return result;
 	},
@@ -72,9 +83,11 @@ const stateHandlers = {
 					scope.getters.set(
 						getter,
 						computed( () => {
+							setNamespace( namespaces.get( receiver ) );
 							setScope( scope );
 							const result = getter.call( target );
 							// resetScope(); // maybe scope should be a stack?
+							resetNamespace();
 							return result;
 						} )
 					);
@@ -96,14 +109,17 @@ const actionHandlers = {
 				const gen = result( ...args );
 				const iterate = async ( iteration ) => {
 					resetScope();
+					resetNamespace();
 					if ( iteration.done ) return iteration.value;
 					const res = await iteration.value;
+					setNamespace( namespaces.get( receiver ) );
 					setScope( scope );
 					return await iterate( gen.next( res ) );
 				};
 				try {
 					return iterate( gen.next() );
 				} catch ( e ) {
+					resetNamespace();
 					resetScope();
 					throw e;
 				}
@@ -112,9 +128,11 @@ const actionHandlers = {
 		if ( typeof result === 'function' ) {
 			const scope = getScope();
 			return ( ...args ) => {
+				setNamespace( namespaces.get( receiver ) );
 				setScope( scope );
 				result( ...args );
 				resetScope();
+				resetNamespace();
 			};
 		}
 		return result;
@@ -213,6 +231,7 @@ export function store(
 				storeHandlers
 			)
 		);
+		namespaces.set( stores.get( namespace ), namespace );
 	} else {
 		const target = stores.get( namespace );
 		deepMerge( target, block );
