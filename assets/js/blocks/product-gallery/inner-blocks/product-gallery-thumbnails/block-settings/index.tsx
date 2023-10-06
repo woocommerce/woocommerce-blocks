@@ -1,10 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	InspectorControls,
-	store as blockEditorStore,
-} from '@wordpress/block-editor';
+import { store as blockEditorStore } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { Icon } from '@wordpress/icons';
 import {
@@ -14,7 +11,6 @@ import {
 } from '@woocommerce/icons';
 import { useDispatch } from '@wordpress/data';
 import {
-	PanelBody,
 	RangeControl,
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore - Ignoring because `__experimentalToggleGroupControlOption` is not yet in the type definitions.

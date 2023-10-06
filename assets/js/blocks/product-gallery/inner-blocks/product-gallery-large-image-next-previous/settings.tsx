@@ -3,12 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch } from '@wordpress/data';
+import { store as blockEditorStore } from '@wordpress/block-editor';
 import {
-	InspectorControls,
-	store as blockEditorStore,
-} from '@wordpress/block-editor';
-import {
-	PanelBody,
 	// @ts-expect-error `__experimentalToggleGroupControl` is not yet in the type definitions.
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
