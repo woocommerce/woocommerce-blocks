@@ -22,11 +22,12 @@ type Context = {
 
 type Store = {
 	context: Context;
-	selectors: typeof productButtonSelectors & ProductGallerySelectors;
+	selectors: typeof productGalleryLargeImageSelectors &
+		ProductGallerySelectors;
 	ref: HTMLElement;
 };
 
-const productButtonSelectors = {
+const productGalleryLargeImageSelectors = {
 	woocommerce: {
 		productGalleryLargeImage: {
 			styles: ( { context }: Store ) => {
