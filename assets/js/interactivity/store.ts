@@ -50,7 +50,6 @@ const parseInitialState = () => {
 	return {};
 };
 
-export const afterLoads = new Set();
 export const stores = new Map();
 
 const namespaces = new WeakMap();
@@ -146,10 +145,6 @@ const actionHandlers = {
 
 /**
  * @typedef StoreOptions Options object.
- * @property {(store:any) => void} [afterLoad] Callback to be executed after the
- *                                             Interactivity API has been set up
- *                                             and the store is ready. It
- *                                             receives the store as argument.
  */
 
 /**
@@ -198,9 +193,7 @@ type DeepPartial< T > = T extends object
 	? { [ P in keyof T ]?: DeepPartial< T[ P ] > }
 	: T;
 
-interface StoreOptions {
-	afterLoad?: () => any;
-}
+interface StoreOptions {}
 
 export function store< S extends object = {} >(
 	namespace: string,
@@ -216,7 +209,7 @@ export function store< T extends object >(
 export function store(
 	namespace: string,
 	{ state = {}, actions = {}, ...block }: any = {},
-	{ afterLoad }: StoreOptions = {}
+	{}: StoreOptions = {}
 ) {
 	if ( ! stores.has( namespace ) ) {
 		stores.set(
@@ -237,8 +230,6 @@ export function store(
 		deepMerge( target.actions, actions );
 		deepMerge( target.state, state );
 	}
-
-	if ( afterLoad ) afterLoads.add( afterLoad );
 
 	return stores.get( namespace );
 }
