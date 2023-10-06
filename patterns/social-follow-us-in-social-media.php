@@ -28,7 +28,7 @@ $image4 = PatternsHelper::get_image_url( $images, 3, 'images/pattern-placeholder
 
 		<!-- wp:column {"verticalAlignment":"center","width":"25%"} -->
 		<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:25%">
-			<!-- wp:social-links {"iconColor":"contrast","openInNewTab":true,"style":{"spacing":{"blockGap":{"top":"0"}}},"className":"is-style-logos-only","layout":{"type":"flex","justifyContent":"space-between","orientation":"horizontal"}} -->
+			<!-- wp:social-links {"iconColor":"primary","openInNewTab":true,"style":{"spacing":{"blockGap":{"top":"0"}}},"className":"has-icon-color is-style-logos-only","layout":{"type":"flex","justifyContent":"space-between","orientation":"horizontal"}} -->
 			<ul class="wp-block-social-links has-icon-color is-style-logos-only">
 				<!-- wp:social-link {"url":"<?php echo esc_url( 'https://twitter.com/' ); ?>","service":"twitter"} /-->
 
