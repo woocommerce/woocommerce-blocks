@@ -45,8 +45,6 @@ const ProductCollectionPlaceholder = (
 	// @ts-expect-error Missing types in Gutenberg
 	const { replaceBlock } = useDispatch( blockEditorStore );
 
-	// TODO: This is temporary action that will be changed into
-	// "Add custom collection"
 	const addDefaultProductCollection = () => {
 		const defaultProductCollection = getDefaultProductCollection();
 		replaceBlock( clientId, defaultProductCollection );
