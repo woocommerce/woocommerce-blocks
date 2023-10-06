@@ -130,6 +130,7 @@ class ProductCollectionPage {
 		await this.editor.canvas.click( 'body' );
 
 		await this.editor.insertBlock( block );
+		await this.chooseDefaultCollection();
 		await this.editor.openDocumentSettingsSidebar();
 		await this.editor.saveSiteEditorEntities();
 	}
