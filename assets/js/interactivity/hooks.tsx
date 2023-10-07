@@ -152,14 +152,16 @@ const resolve = ( path, namespace ) => {
 
 // Generate the evaluate function.
 const getEvaluate =
-	( { namespace: defaultNs } = {} ) =>
+	( { namespace: defaultNs, scope } = {} ) =>
 	( fullPath, ...args ) => {
 		let [ path, namespace = defaultNs ] = nsPathParser( fullPath );
 		// If path starts with !, remove it and save a flag.
 		const hasNegationOperator =
 			path[ 0 ] === '!' && !! ( path = path.slice( 1 ) );
+		setScope( scope );
 		const value = resolve( path, namespace );
 		const result = typeof value === 'function' ? value( ...args ) : value;
+		resetScope();
 		return hasNegationOperator ? ! result : result;
 	};
 
@@ -193,9 +195,9 @@ const Directives = ( {
 	const scope = useRef( {} ).current;
 	scope.context = useContext( context );
 	scope.ref = previousScope.ref || useRef( null );
-	scope.evaluate =
-		previousScope.evaluate ||
-		useCallback( getEvaluate( { namespace: directives.namespace } ), [] );
+	scope.evaluate = useCallback(
+		getEvaluate( { namespace: directives.namespace, scope } )
+	);
 
 	// Create a fresh copy of the vnode element.
 	element = cloneElement( element, { ref: scope.ref } );
