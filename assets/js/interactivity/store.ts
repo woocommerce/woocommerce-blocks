@@ -5,19 +5,15 @@ import { deepSignal } from 'deepsignal';
 import { computed } from '@preact/signals';
 import { getScope, setScope, setNamespace, resetNamespace } from './hooks';
 
-const isObject = ( item ) =>
-	item && typeof item === 'object' && ! Array.isArray( item );
+const isObject = ( item: unknown ): boolean =>
+	!! item && typeof item === 'object' && ! Array.isArray( item );
 
-const deepMerge = ( target, source ) => {
+const deepMerge = ( target: any, source: any ) => {
 	if ( isObject( target ) && isObject( source ) ) {
 		for ( const key in source ) {
-			if (
-				typeof Object.getOwnPropertyDescriptor( source, key )?.get ===
-				'function'
-			) {
-				Object.defineProperty( target, key, {
-					get: Object.getOwnPropertyDescriptor( source, key ).get,
-				} );
+			const getter = Object.getOwnPropertyDescriptor( source, key )?.get;
+			if ( typeof getter === 'function' ) {
+				Object.defineProperty( target, key, { get: getter } );
 			} else if ( isObject( source[ key ] ) ) {
 				if ( ! target[ key ] ) Object.assign( target, { [ key ]: {} } );
 				deepMerge( target[ key ], source[ key ] );
@@ -60,7 +56,7 @@ const proxify = ( obj: any, ns: string ) => {
 };
 
 const handlers = {
-	get: ( target, key, receiver ) => {
+	get: ( target: any, key: string | symbol, receiver: any ) => {
 		const ns = proxyToNs.get( receiver );
 
 		// Check if the proxy is the store root and no prop with that name
@@ -101,7 +97,7 @@ const handlers = {
 
 		// Check if the property is a generator.
 		if ( result?.constructor?.name === 'GeneratorFunction' ) {
-			return async ( ...args ) => {
+			return async ( ...args: unknown[] ) => {
 				const scope = getScope();
 				const gen: Generator< any > = result( ...args );
 
@@ -129,7 +125,7 @@ const handlers = {
 		// Check if the property is a function.
 		// Actions always run in the current scope.
 		if ( typeof result === 'function' ) {
-			return ( ...args ) => {
+			return ( ...args: unknown[] ) => {
 				setNamespace( ns );
 				try {
 					result( ...args );
