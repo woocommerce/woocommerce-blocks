@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { store, getContext as getContextFn } from '@woocommerce/interactivity';
+import { store, getContext } from '@woocommerce/interactivity';
 import { dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
@@ -10,12 +10,10 @@ import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
  */
 import type { Context, Store } from './frontend';
 
-const getContext = () => getContextFn< Context >( 'woo' );
-
 const { state } = store< Store >( 'woo', {
 	actions: {
 		*__addToCart() {
-			const context = getContext();
+			const context = getContext< Context >();
 			const { productId, quantityToAdd } = context;
 
 			context.isLoading = true;
