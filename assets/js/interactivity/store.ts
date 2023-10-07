@@ -3,13 +3,7 @@
  */
 import { deepSignal } from 'deepsignal';
 import { computed } from '@preact/signals';
-import {
-	resetScope,
-	getScope,
-	setScope,
-	setNamespace,
-	resetNamespace,
-} from './hooks';
+import { getScope, setScope, setNamespace, resetNamespace } from './hooks';
 
 const isObject = ( item ) =>
 	item && typeof item === 'object' && ! Array.isArray( item );
@@ -87,12 +81,15 @@ const handlers = {
 					scope.getters.set(
 						getter,
 						computed( () => {
+							const prevScope = getScope();
 							setNamespace( ns );
 							setScope( scope );
-							const result = getter.call( target );
-							// resetScope(); // maybe scope should be a stack?
-							resetNamespace();
-							return result;
+							try {
+								return getter.call( target );
+							} finally {
+								setScope( prevScope );
+								resetNamespace();
+							}
 						} )
 					);
 				}
@@ -106,35 +103,39 @@ const handlers = {
 		if ( result?.constructor?.name === 'GeneratorFunction' ) {
 			return async ( ...args ) => {
 				const scope = getScope();
-				const gen = result( ...args );
-				const iterate = async ( iteration ) => {
-					resetScope();
-					resetNamespace();
-					if ( iteration.done ) return iteration.value;
-					const res = await iteration.value;
-					setNamespace( proxyToNs.get( receiver ) );
+				const gen: Generator< any > = result( ...args );
+
+				let value: any;
+				let it: IteratorResult< any >;
+
+				while ( true ) {
+					const prevScope = getScope();
+					setNamespace( ns );
 					setScope( scope );
-					return await iterate( gen.next( res ) );
-				};
-				try {
-					return iterate( gen.next() );
-				} catch ( e ) {
-					resetNamespace();
-					resetScope();
-					throw e;
+					try {
+						it = gen.next( value );
+					} finally {
+						setScope( prevScope );
+						resetNamespace();
+					}
+					value = await it.value;
+					if ( it.done ) break;
 				}
+
+				return value;
 			};
 		}
 
 		// Check if the property is a function.
+		// Actions always run in the current scope.
 		if ( typeof result === 'function' ) {
-			const scope = getScope();
 			return ( ...args ) => {
-				setNamespace( proxyToNs.get( receiver ) );
-				setScope( scope );
-				result( ...args );
-				resetScope();
-				resetNamespace();
+				setNamespace( ns );
+				try {
+					result( ...args );
+				} finally {
+					resetNamespace();
+				}
 			};
 		}
 
