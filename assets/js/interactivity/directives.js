@@ -17,7 +17,7 @@ import { deepSignal, peek } from 'deepsignal';
  */
 import { createPortal } from './portals';
 import { useSignalEffect } from './utils';
-import { directive, setScope, resetScope, getScope } from './hooks';
+import { directive } from './hooks';
 import { SlotProvider, Slot, Fill } from './slots';
 import { $$namespace } from './vdom';
 
@@ -76,13 +76,10 @@ export default () => {
 
 	// data-wc-watch--[name]
 	directive( 'watch', ( { directives: { watch }, evaluate } ) => {
-		const scope = getScope();
 		Object.values( watch ).forEach( ( path ) => {
 			useSignalEffect( async () => {
-				setScope( scope );
-				const result = await evaluate( path );
-				resetScope();
-				return result;
+				const result = evaluate( path );
+				return await result;
 			} );
 		} );
 	} );
@@ -91,12 +88,9 @@ export default () => {
 	directive(
 		'layout-init',
 		( { directives: { 'layout-init': layoutInit }, evaluate } ) => {
-			const scope = getScope();
 			Object.values( layoutInit ).forEach( ( path ) => {
 				useLayoutEffect( () => {
-					setScope( scope );
 					const result = evaluate( path );
-					resetScope();
 					return result;
 				}, [] );
 			} );
@@ -105,12 +99,9 @@ export default () => {
 
 	// data-wc-init--[name]
 	directive( 'init', ( { directives: { init }, evaluate } ) => {
-		const scope = getScope();
 		Object.values( init ).forEach( ( path ) => {
 			useEffect( () => {
-				setScope( scope );
 				const result = evaluate( path );
-				resetScope();
 				return result;
 			}, [] );
 		} );
@@ -118,12 +109,9 @@ export default () => {
 
 	// data-wc-on--[event]
 	directive( 'on', ( { directives: { on }, element, evaluate } ) => {
-		const scope = getScope();
 		Object.entries( on ).forEach( ( [ name, path ] ) => {
 			element.props[ `on${ name }` ] = ( event ) => {
-				setScope( scope );
 				evaluate( path, event );
-				resetScope();
 			};
 		} );
 	} );
