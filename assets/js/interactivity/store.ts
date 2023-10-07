@@ -114,7 +114,13 @@ const handlers = {
 						setScope( prevScope );
 						resetNamespace();
 					}
-					value = await it.value;
+
+					try {
+						value = await it.value;
+					} catch ( e ) {
+						gen.throw( e );
+					}
+
 					if ( it.done ) break;
 				}
 
