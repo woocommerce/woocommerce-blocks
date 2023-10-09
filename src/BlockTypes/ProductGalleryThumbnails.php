@@ -37,7 +37,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	 * @return string[]
 	 */
 	protected function get_block_type_uses_context() {
-		return [ 'productGalleryClientId', 'postId', 'thumbnailsNumberOfThumbnails', 'thumbnailsPosition' ];
+		return [ 'productGalleryClientId', 'postId', 'thumbnailsNumberOfThumbnails', 'thumbnailsPosition', 'mode' ];
 	}
 
 	/**
@@ -108,15 +108,17 @@ class ProductGalleryThumbnails extends AbstractBlock {
 				if ( $product_gallery_images && $post_thumbnail_id ) {
 					$html                 = '';
 					$number_of_thumbnails = isset( $block->context['thumbnailsNumberOfThumbnails'] ) ? $block->context['thumbnailsNumberOfThumbnails'] : 3;
+					$mode                 = $block->context['mode'] ?? '';
 					$thumbnails_count     = 1;
 
 					foreach ( $product_gallery_images as $product_gallery_image_html ) {
-						if ( $thumbnails_count > $number_of_thumbnails ) {
+						// Limit the number of thumbnails only in the standard mode (and not in dialog).
+						if ( 'standard' === $mode && $thumbnails_count > $number_of_thumbnails ) {
 							break;
 						}
 
-						// If it's the last thumbnail and the number of product gallery images is greater than the number of thumbnails settings output the View All markup.
-						if ( $thumbnails_count === $number_of_thumbnails && count( $product_gallery_images ) > $number_of_thumbnails ) {
+						// If not in dialog and it's the last thumbnail and the number of product gallery images is greater than the number of thumbnails settings output the View All markup.
+						if ( 'standard' === $mode && $thumbnails_count === $number_of_thumbnails && count( $product_gallery_images ) > $number_of_thumbnails ) {
 							$remaining_thumbnails_count = count( $product_gallery_images ) - $number_of_thumbnails;
 							$product_gallery_image_html = $this->inject_view_all( $product_gallery_image_html, $this->generate_view_all_html( $remaining_thumbnails_count ) );
 							$html                      .= $product_gallery_image_html;
