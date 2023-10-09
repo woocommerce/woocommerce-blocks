@@ -111,6 +111,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fixed PHP notice that would appear if an API endpoint failed to load. ([11128](https://github.com/woocommerce/woocommerce-blocks/pull/11128))
 - Made error icon on checkout match text color. ([11127](https://github.com/woocommerce/woocommerce-blocks/pull/11127))
 - Fix a PHP error that was occurring when the WooCommerce Product Add-ons or the WooCommerce Product Bundles plugins were enabled. ([11082](https://github.com/woocommerce/woocommerce-blocks/pull/11082))
+- Resolved an issue where the Single Product block did not respect the WooCommerce setting for redirecting to the cart page after successful addition. ([11151](https://github.com/woocommerce/woocommerce-blocks/pull/11151))
 
 = 11.2.0 - 2023-09-25 =
 
