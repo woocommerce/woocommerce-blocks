@@ -40,30 +40,30 @@ import { nsPathParser } from './vdom';
 // Main context.
 const context = createContext( {} );
 
-let currentScope = null;
-let currentNamespace = null;
+let scopeStack: any[] = [];
+let namespaceStack: string[] = [];
 
-export const getContext = < T extends object >(
-	namespace: string = currentNamespace
-): T => {
-	return currentScope.context[ namespace ];
+export const getContext = < T extends object >( namespace?: string ): T => {
+	const [ currentNamespace ] = namespaceStack.slice( -1 );
+	return getScope()?.context[ namespace || currentNamespace ];
 };
 
-export const getElementRef = () => currentScope.ref.current;
+export const getElementRef = () => getScope()?.ref.current;
 
-export const getScope = () => currentScope;
+export const getScope = () => scopeStack.slice( -1 )[ 0 ];
+
 export const setScope = ( scope ) => {
-	currentScope = scope;
+	scopeStack.push( scope );
 };
 export const resetScope = () => {
-	currentScope = null;
+	scopeStack.pop();
 };
 
-export const setNamespace = ( namespace ) => {
-	currentNamespace = namespace;
+export const setNamespace = ( namespace: string ) => {
+	namespaceStack.push( namespace );
 };
 export const resetNamespace = () => {
-	currentNamespace = null;
+	namespaceStack.pop();
 };
 
 // WordPress Directives.
@@ -144,7 +144,7 @@ export const directive = ( name, callback, { priority = 10 } = {} ) => {
 const resolve = ( path, namespace ) => {
 	let current = {
 		...stores.get( namespace ),
-		context: currentScope.context[ namespace ],
+		context: getScope().context[ namespace ],
 	};
 	path.split( '.' ).forEach( ( p ) => ( current = current[ p ] ) );
 	return current;
