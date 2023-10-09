@@ -172,7 +172,7 @@ class FeatureGating {
 	 */
 	public function is_block_templates_controller_refactor_enabled() {
 		$conf = parse_ini_file( __DIR__ . '/../../../blocks.ini' );
-		return $this->is_development_environment() && true === (bool) $conf['use_block_templates_controller_refactor'];
+		return $this->is_development_environment() && isset( $conf['use_block_templates_controller_refactor'] ) && true === (bool) $conf['use_block_templates_controller_refactor'];
 	}
 
 }
