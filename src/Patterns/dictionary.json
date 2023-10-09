@@ -256,6 +256,8 @@
 	{
 		"name": "Just Arrived Full Hero",
 		"slug": "woocommerce-blocks/just-arrived-full-hero",
+		"images_total": 1,
+		"images_format": "landscape",
 		"content": {
 			"titles": [
 				{
@@ -351,6 +353,54 @@
 				{
 					"default": "More new products",
 					"ai_prompt": "The button text to go to the product collection page"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Gallery",
+		"slug": "woocommerce-blocks/product-query-product-gallery",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Collection 3 Columns",
+		"slug": "woocommerce-blocks/product-collection-3-columns",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Collection 4 Columns",
+		"slug": "woocommerce-blocks/product-collection-4-columns",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Collection 5 Columns",
+		"slug": "woocommerce-blocks/product-collection-5-columns",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
 				}
 			]
 		}
@@ -476,14 +526,14 @@
 		}
 	},
 	{
-		"name": "Social: Follow us in social media",
+		"name": "Social: Follow us on social media",
 		"slug": "woocommerce-blocks/social-follow-us-in-social-media",
 		"images_total": 4,
 		"images_format": "landscape",
 		"content": {
 			"titles": [
 				{
-					"default": "Follow us in social media",
+					"default": "Follow us on social media",
 					"ai_prompt": "An phrase that advertises the social media accounts"
 				}
 			]
@@ -536,6 +586,10 @@
 		"slug": "woocommerce-blocks/testimonials-3-columns",
 		"content": {
 			"titles": [
+				{
+					"default": "What our customers say",
+					"ai_prompt": "A title that advertises the set of testimonials"
+				},
 				{
 					"default": "Great experience",
 					"ai_prompt": "A title that advertises the first testimonial"
