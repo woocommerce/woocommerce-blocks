@@ -3,7 +3,13 @@
  */
 import { deepSignal } from 'deepsignal';
 import { computed } from '@preact/signals';
-import { getScope, setScope, setNamespace, resetNamespace } from './hooks';
+import {
+	getScope,
+	setScope,
+	resetScope,
+	setNamespace,
+	resetNamespace,
+} from './hooks';
 
 const isObject = ( item: unknown ): boolean =>
 	!! item && typeof item === 'object' && ! Array.isArray( item );
@@ -77,13 +83,12 @@ const handlers = {
 					scope.getters.set(
 						getter,
 						computed( () => {
-							const prevScope = getScope();
 							setNamespace( ns );
 							setScope( scope );
 							try {
 								return getter.call( target );
 							} finally {
-								setScope( prevScope );
+								resetScope();
 								resetNamespace();
 							}
 						} )
@@ -105,13 +110,12 @@ const handlers = {
 				let it: IteratorResult< any >;
 
 				while ( true ) {
-					const prevScope = getScope();
 					setNamespace( ns );
 					setScope( scope );
 					try {
 						it = gen.next( value );
 					} finally {
-						setScope( prevScope );
+						resetScope();
 						resetNamespace();
 					}
 
