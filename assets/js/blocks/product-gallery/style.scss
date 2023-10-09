@@ -104,7 +104,7 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 			margin-right: $outside-image-offset;
 		}
 
-		// Reset the margin of the inner blocks when the Next/Previous buttons are outside the image.
+		// Unset the margin of the inner blocks when the Next/Previous buttons are inside the image.
 		#{$gallery-next-previous-inside-image}  & > * {
 			margin-left: unset;
 			margin-right: unset;
