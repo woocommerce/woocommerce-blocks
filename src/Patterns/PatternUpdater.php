@@ -33,12 +33,13 @@ class PatternUpdater {
 	/**
 	 * Creates the patterns content for the given vertical.
 	 *
-	 * @param  int    $vertical_id  The vertical id.
-	 * @param  Client $verticals_api_client  The verticals API client.
+	 * @param int    $vertical_id The vertical id.
+	 * @param Client $verticals_api_client The verticals API client.
+	 * @param string $business_description The business description.
 	 *
 	 * @return bool|WP_Error
 	 */
-	public function create_patterns_content( $vertical_id, $verticals_api_client ) {
+	public function create_patterns_content( $vertical_id, $verticals_api_client, $business_description = '' ) {
 		if ( ! is_int( $vertical_id ) ) {
 			return new WP_Error( 'invalid_vertical_id', __( 'The vertical id is invalid.', 'woo-gutenberg-products-block' ) );
 		}
@@ -55,7 +56,7 @@ class PatternUpdater {
 			return new WP_Error( 'failed_to_set_pattern_images', __( 'Failed to set the pattern images.', 'woo-gutenberg-products-block' ) );
 		}
 
-		$patterns_with_images_and_content = $this->get_patterns_with_content( $patterns_with_images );
+		$patterns_with_images_and_content = $this->get_patterns_with_content( $patterns_with_images, $business_description );
 
 		if ( is_wp_error( $patterns_with_images_and_content ) ) {
 			return new WP_Error( 'failed_to_set_pattern_content', __( 'Failed to set the pattern content.', 'woo-gutenberg-products-block' ) );
@@ -122,11 +123,12 @@ class PatternUpdater {
 	/**
 	 * Returns the patterns with AI generated content.
 	 *
-	 * @param array $patterns The array of patterns.
+	 * @param array  $patterns The array of patterns.
+	 * @param string $business_description The business description.
 	 *
 	 * @return array|WP_Error The patterns with AI generated content.
 	 */
-	public function get_patterns_with_content( array $patterns ) {
+	private function get_patterns_with_content( array $patterns, string $business_description ) {
 		$site_id = $this->ai_connection->get_site_id();
 
 		if ( is_wp_error( $site_id ) ) {
@@ -143,7 +145,7 @@ class PatternUpdater {
 
 		$prompts = array();
 		foreach ( $patterns_with_content as $pattern ) {
-			$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing the content of the "%s" pattern: %s.\n', get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY ), $pattern['name'], wp_json_encode( $pattern['content'] ) );
+			$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing the content of the "%s" pattern: %s.\n', $business_description, $pattern['name'], wp_json_encode( $pattern['content'] ) );
 			$prompt .= "Replace the titles, descriptions and button texts in each 'default' key using the prompt in the corresponding 'ai_prompt' key by a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The response should be only a JSON string, with absolutely no intro or explanations.";
 
 			$prompts[] = $prompt;
