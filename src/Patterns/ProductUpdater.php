@@ -7,6 +7,9 @@ namespace Automattic\WooCommerce\Blocks\Patterns;
  */
 class ProductUpdater {
 
+	/**
+	 * @return array|WP_Error|int|string|void|\WP_Error
+	 */
 	public function generate_content() {
 		$allow_ai_connection = get_option( 'woocommerce_blocks_allow_ai_connection' );
 
@@ -22,7 +25,14 @@ class ProductUpdater {
 			return $placeholder_images;
 		}
 
-		$products                 = $this->get_placeholder_products();
+		$products = $this->get_placeholder_products();
+
+		while ( count( $products ) < 5 ) {
+			$this->create_new_product();
+
+			$products = $this->get_placeholder_products();
+		}
+
 		$products_default_content = $this->get_default_product_content_with_images( $placeholder_images );
 
 		$responses = $this->generate_product_content( $products_default_content );
@@ -49,11 +59,49 @@ class ProductUpdater {
 		}
 	}
 
-	public function get_placeholder_products() {
-		//@ TODO: Fetch the relevant products from the store.
-		$products = [];
+	public function create_new_product() {
+		$product = new \WC_Product();
 
-		return $products;
+		$product->set_name( 'My Awesome Product' );
+		$product->set_status( 'publish' );
+		$product->set_description( 'Product description' );
+		$product->set_price( 25 );
+		$product->set_regular_price( 25 );
+
+		$product_id = $product->save();
+
+		return add_post_meta( $product_id, '_headstart_post', true );
+	}
+
+	public function get_placeholder_products() {
+		$product_query = array(
+			'post_type' => 'product',
+			'post_status' => 'publish',
+			'fields' => 'ids',
+			'meta_query' => array(
+				'relation' => 'AND',
+				array(
+					'key' => '_headstart_post',
+					'compare' => 'EXISTS'
+				)
+			)
+		);
+
+		$product_ids = get_posts( $product_query );
+
+		return array_map( function( $product_id ) {
+			return wc_get_product( $product_id );
+		}, $product_ids );
+	}
+
+	public function create_hash_for_ai_modified_product( $product ) {
+		if ( ! $product instanceof \WC_Product ) {
+			return false;
+		}
+
+		$content = $product->get_name() . $product->get_description() . $product->get_image_id();
+
+		return add_post_meta( $product->get_id(), '_ai_generated_content', $content );
 	}
 
 	/**
