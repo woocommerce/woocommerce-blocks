@@ -30,12 +30,9 @@ const directiveParser = new RegExp(
 
 const nsPathRegExp = /^([\w-]+)::(.+)$/;
 
-export const nsPathParser = ( str ) => {
-	const [ , ns, path ] = nsPathRegExp.exec( str ) ?? [];
-	return [ path || str, ns ];
+const nsValueParser = ( value ) => {
+	return nsPathRegExp.exec( value )?.slice( 1 ) ?? [ namespace, value ];
 };
-
-export const $$namespace = Symbol( 'namespace' );
 
 export const hydratedIslands = new WeakSet();
 
@@ -84,15 +81,18 @@ export function toVdom( root ) {
 					} catch ( e ) {}
 				} else {
 					hasDirectives = true;
-					let val = attributes[ i ].value;
+					let [ ns, val ] = nsValueParser( attributes[ i ].value );
 					try {
-						const [ json, ns ] = nsPathParser( val );
-						val = JSON.parse( json );
-						if ( ns && val ) val[ $$namespace ] = ns;
+						val = JSON.parse( val );
 					} catch ( e ) {}
-					const [ , prefix, suffix ] = directiveParser.exec( n );
-					directives[ prefix ] = directives[ prefix ] || {};
-					directives[ prefix ][ suffix || 'default' ] = val;
+					const [ , prefix, suffix = 'default' ] =
+						directiveParser.exec( n );
+					directives[ prefix ] = directives[ prefix ] || [];
+					directives[ prefix ].push( {
+						namespace: ns,
+						value: val,
+						suffix,
+					} );
 				}
 			} else if ( n === 'ref' ) {
 				continue;
