@@ -5,6 +5,7 @@
  */
 import { h, options, createContext, cloneElement } from 'preact';
 import { useRef, useCallback, useContext } from 'preact/hooks';
+import { deepSignal } from 'deepsignal';
 /**
  * Internal dependencies
  */
@@ -40,6 +41,30 @@ import { nsPathParser } from './vdom';
 // Main context.
 const context = createContext( {} );
 
+const immutableMap = new WeakMap();
+const deepImmutable = < T extends Object = {} >( target: T ): T => {
+	if ( immutableMap.has( target ) ) {
+		return immutableMap.get( target );
+	}
+	const proxy = new Proxy( target, {
+		get( target, prop ) {
+			const value = Reflect.get< any, string | symbol >( target, prop );
+			if ( !! value && typeof value === 'object' ) {
+				return deepImmutable( value );
+			}
+			return value;
+		},
+		set() {
+			throw Error( 'Cannot modify a deep immutable object.' );
+		},
+		deleteProperty() {
+			throw Error( 'Cannot modify a deep immutable object.' );
+		},
+	} );
+	immutableMap.set( target, proxy );
+	return proxy;
+};
+
 let scopeStack: any[] = [];
 let namespaceStack: string[] = [];
 
@@ -48,7 +73,19 @@ export const getContext = < T extends object >( namespace?: string ): T => {
 	return getScope()?.context[ namespace || currentNamespace ];
 };
 
-export const getElementRef = () => getScope()?.ref.current;
+export const getElement = () => {
+	if ( ! getScope() ) {
+		throw Error(
+			'Cannot call `getElement()` outside getters and actions used by directives.'
+		);
+	}
+	const { ref, state, props } = getScope();
+	return Object.freeze( {
+		ref: ref.current,
+		state: state.current,
+		props: deepImmutable( props ),
+	} );
+};
 
 export const getScope = () => scopeStack.slice( -1 )[ 0 ];
 
@@ -191,10 +228,12 @@ const Directives = ( {
 } ) => {
 	// Initialize the scope of this element. These scopes are different per each
 	// level because each level has a different context, but they share the same
-	// element ref, evaluate and props.
+	// element ref, state and props.
 	const scope = useRef( {} ).current;
 	scope.context = useContext( context );
 	scope.ref = previousScope.ref || useRef( null );
+	scope.state = previousScope.state || useRef( deepSignal( {} ) );
+	scope.props = element?.props || originalProps;
 	scope.evaluate = useCallback(
 		getEvaluate( { namespace: directives.namespace, scope } )
 	);

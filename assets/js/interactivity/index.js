@@ -7,7 +7,7 @@ import registerDirectives from './directives';
 import { init } from './router';
 
 export { store } from './store';
-export { directive, getContext, getElementRef } from './hooks';
+export { directive, getContext, getElement } from './hooks';
 export { navigate, prefetch } from './router';
 export { h as createElement } from 'preact';
 export { useEffect, useContext, useMemo } from 'preact/hooks';
