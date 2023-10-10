@@ -256,6 +256,8 @@
 	{
 		"name": "Just Arrived Full Hero",
 		"slug": "woocommerce-blocks/just-arrived-full-hero",
+		"images_total": 1,
+		"images_format": "landscape",
 		"content": {
 			"titles": [
 				{
@@ -267,6 +269,12 @@
 				{
 					"default": "Our early autumn collection is here.",
 					"ai_prompt": "A description of the product collection"
+				}
+			],
+			"buttons": [
+				{
+					"default": "Shop now",
+					"ai_prompt": "The button text to go to the product collection page"
 				}
 			]
 		}
@@ -345,6 +353,54 @@
 				{
 					"default": "More new products",
 					"ai_prompt": "The button text to go to the product collection page"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Gallery",
+		"slug": "woocommerce-blocks/product-query-product-gallery",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Collection 3 Columns",
+		"slug": "woocommerce-blocks/product-collection-3-columns",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Collection 4 Columns",
+		"slug": "woocommerce-blocks/product-collection-4-columns",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Collection 5 Columns",
+		"slug": "woocommerce-blocks/product-collection-5-columns",
+		"content": {
+			"titles": [
+				{
+					"default": "Our newest arrivals",
+					"ai_prompt": "An impact phrase that advertises the displayed product collection"
 				}
 			]
 		}
@@ -470,14 +526,14 @@
 		}
 	},
 	{
-		"name": "Social: Follow us in social media",
+		"name": "Social: Follow us on social media",
 		"slug": "woocommerce-blocks/social-follow-us-in-social-media",
 		"images_total": 4,
 		"images_format": "landscape",
 		"content": {
 			"titles": [
 				{
-					"default": "Follow us in social media",
+					"default": "Follow us on social media",
 					"ai_prompt": "An phrase that advertises the social media accounts"
 				}
 			]
@@ -531,6 +587,10 @@
 		"content": {
 			"titles": [
 				{
+					"default": "What our customers say",
+					"ai_prompt": "A title that advertises the set of testimonials"
+				},
+				{
 					"default": "Great experience",
 					"ai_prompt": "A title that advertises the first testimonial"
 				},
@@ -575,6 +635,44 @@
 				{
 					"default": "In the end the couch wasn't exactly what I was looking for but my experience with the Burrow team was excellent. First in providing a discount when the couch was delayed, then timely feedback and updates as the...\n\n~ Anna W.",
 					"ai_prompt": "A description of the testimonial"
+				}
+			]
+		}
+	},
+	{
+		"name": "Featured Category Cover Image",
+		"slug": "woocommerce-blocks/featured-category-cover-image",
+		"images_total": 1,
+		"images_format": "landscape",
+		"content": {
+			"titles": [
+				{
+					"default": "100% natural denim",
+					"ai_prompt": "A description for a product"
+				}
+			],
+			"descriptions": [
+				{
+					"default": "Only the finest goes into our products. You deserve it.",
+					"ai_prompt": "An impact phrase that advertises the products"
+				}
+			],
+			"buttons": [
+				{
+					"default": "Shop jeans",
+					"ai_prompt": "The button text to go to the shop page"
+				}
+			]
+		}
+	},
+	{
+		"name": "Product Collection: Featured Products 5 Columns",
+		"slug": "woocommerce-blocks/product-collection-featured-products-5-columns",
+		"content": {
+			"titles": [
+				{
+					"default": "Shop new arrivals",
+					"ai_prompt": "An impact phrase that advertises the newest additions to the store"
 				}
 			]
 		}
