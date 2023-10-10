@@ -13,7 +13,8 @@ const block = {
 	class: '.wp-block-search',
 };
 
-describe( `${ block.name } Block`, () => {
+// These tests are skipped and previously relied on GUTENBERG_EDITOR_CONTEXT.
+describe.skip( `${ block.name } Block`, () => {
 	it( 'inserting Product Search block renders the core/search variation', async () => {
 		await switchUserToAdmin();
 

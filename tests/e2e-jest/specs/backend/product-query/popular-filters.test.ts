@@ -79,7 +79,8 @@ const selectPopularFilter = async ( filter: string ) => {
 	}
 };
 
-describe( 'Product Query > Popular Filters', () => {
+// These tests are skipped and previously relied on GUTENBERG_EDITOR_CONTEXT.
+describe.skip( 'Product Query > Popular Filters', () => {
 	let $popularFiltersPanel: ElementHandle< Node >;
 	beforeEach( async () => {
 		/**

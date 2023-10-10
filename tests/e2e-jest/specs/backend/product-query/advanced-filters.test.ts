@@ -27,7 +27,8 @@ import {
 	selectToken,
 } from './common';
 
-describe( `${ block.name } > Advanced Filters`, () => {
+// These tests are skipped and previously relied on GUTENBERG_EDITOR_CONTEXT.
+describe.skip( `${ block.name } > Advanced Filters`, () => {
 	let $productFiltersPanel: ElementHandle< Node >;
 	const defaultCount = getFixtureProductsData().length;
 	const saleCount = getFixtureProductsData( 'sale_price' ).length;

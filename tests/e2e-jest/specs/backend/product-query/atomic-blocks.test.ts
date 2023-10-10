@@ -20,7 +20,8 @@ import {
 	getEditorProductElementNodesCount,
 } from './common';
 
-describe( `${ block.name } > Atomic blocks`, () => {
+// These tests are skipped and previously relied on GUTENBERG_EDITOR_CONTEXT.
+describe.skip( `${ block.name } > Atomic blocks`, () => {
 	beforeEach( async () => {
 		await resetProductQueryBlockPage();
 	} );

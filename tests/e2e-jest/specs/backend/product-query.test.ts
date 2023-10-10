@@ -23,7 +23,8 @@ const block = {
 	class: '.wp-block-query',
 };
 
-describe( `${ block.name } Block`, () => {
+// These tests are skipped and previously relied on GUTENBERG_EDITOR_CONTEXT.
+describe.skip( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );

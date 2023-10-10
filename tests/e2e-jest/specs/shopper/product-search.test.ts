@@ -4,7 +4,8 @@
 import { shopper } from '../../../utils';
 import { getTextContent } from '../../page-utils';
 
-describe( `Shopper → Product Search`, () => {
+// These tests are skipped and previously relied on GUTENBERG_EDITOR_CONTEXT.
+describe.skip( `Shopper → Product Search`, () => {
 	beforeEach( async () => {
 		await shopper.block.goToBlockPage( 'Product Search' );
 		await page.waitForSelector( '.wp-block-search' );
