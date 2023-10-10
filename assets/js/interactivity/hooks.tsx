@@ -189,9 +189,9 @@ const resolve = ( path, namespace ) => {
 
 // Generate the evaluate function.
 const getEvaluate =
-	( { namespace: defaultNs, scope } = {} ) =>
-	( fullPath, ...args ) => {
-		let [ path, namespace = defaultNs ] = nsPathParser( fullPath );
+	( { scope } = {} ) =>
+	( entry, ...args ) => {
+		let { value: path, namespace } = entry;
 		// If path starts with !, remove it and save a flag.
 		const hasNegationOperator =
 			path[ 0 ] === '!' && !! ( path = path.slice( 1 ) );
@@ -234,9 +234,7 @@ const Directives = ( {
 	scope.ref = previousScope.ref || useRef( null );
 	scope.state = previousScope.state || useRef( deepSignal( {} ) );
 	scope.props = element?.props || originalProps;
-	scope.evaluate = useCallback(
-		getEvaluate( { namespace: directives.namespace, scope } )
-	);
+	scope.evaluate = useCallback( getEvaluate( { scope } ) );
 
 	// Create a fresh copy of the vnode element.
 	element = cloneElement( element, { ref: scope.ref } );

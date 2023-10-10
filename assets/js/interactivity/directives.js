@@ -19,7 +19,6 @@ import { createPortal } from './portals';
 import { useSignalEffect } from './utils';
 import { directive } from './hooks';
 import { SlotProvider, Slot, Fill } from './slots';
-import { $$namespace } from './vdom';
 
 const isObject = ( item ) =>
 	item && typeof item === 'object' && ! Array.isArray( item );
@@ -43,27 +42,35 @@ export default () => {
 	directive(
 		'context',
 		( {
-			directives: {
-				context: { default: newContext },
-				namespace,
-			},
+			directives: { context },
 			props: { children },
 			context: inheritedContext,
 		} ) => {
-			const { Provider } = inheritedContext;
-			const inheritedValue = useContext( inheritedContext );
-			const currentValue = useRef( deepSignal( {} ) );
-			currentValue.current = useMemo( () => {
-				const newValue = deepSignal( {
-					[ newContext[ $$namespace ] || namespace ]: newContext,
-				} );
-				mergeDeepSignals( newValue, inheritedValue );
-				mergeDeepSignals( currentValue.current, newValue, true );
-				return currentValue.current;
-			}, [ newContext, inheritedValue ] );
+			return context.reduceRight(
+				( toReturn, { namespace, value: newContext } ) => {
+					const { Provider } = inheritedContext;
+					const inheritedValue = useContext( inheritedContext );
+					const currentValue = useRef( deepSignal( {} ) );
+					currentValue.current = useMemo( () => {
+						const newValue = deepSignal( {
+							[ namespace ]: newContext,
+						} );
+						mergeDeepSignals( newValue, inheritedValue );
+						mergeDeepSignals(
+							currentValue.current,
+							newValue,
+							true
+						);
+						return currentValue.current;
+					}, [ newContext, inheritedValue ] );
 
-			return (
-				<Provider value={ currentValue.current }>{ children }</Provider>
+					return (
+						<Provider value={ currentValue.current }>
+							{ toReturn }
+						</Provider>
+					);
+				},
+				[ children ]
 			);
 		},
 		{ priority: 5 }
@@ -76,9 +83,9 @@ export default () => {
 
 	// data-wc-watch--[name]
 	directive( 'watch', ( { directives: { watch }, evaluate } ) => {
-		Object.values( watch ).forEach( ( path ) => {
+		watch.forEach( ( entry ) => {
 			useSignalEffect( async () => {
-				const result = evaluate( path );
+				const result = evaluate( entry );
 				return await result;
 			} );
 		} );
@@ -88,9 +95,9 @@ export default () => {
 	directive(
 		'layout-init',
 		( { directives: { 'layout-init': layoutInit }, evaluate } ) => {
-			Object.values( layoutInit ).forEach( ( path ) => {
+			layoutInit.forEach( ( entry ) => {
 				useLayoutEffect( () => {
-					const result = evaluate( path );
+					const result = evaluate( entry );
 					return result;
 				}, [] );
 			} );
@@ -99,9 +106,9 @@ export default () => {
 
 	// data-wc-init--[name]
 	directive( 'init', ( { directives: { init }, evaluate } ) => {
-		Object.values( init ).forEach( ( path ) => {
+		init.forEach( ( entry ) => {
 			useEffect( () => {
-				const result = evaluate( path );
+				const result = evaluate( entry );
 				return result;
 			}, [] );
 		} );
@@ -109,9 +116,9 @@ export default () => {
 
 	// data-wc-on--[event]
 	directive( 'on', ( { directives: { on }, element, evaluate } ) => {
-		Object.entries( on ).forEach( ( [ name, path ] ) => {
-			element.props[ `on${ name }` ] = ( event ) => {
-				evaluate( path, event );
+		on.forEach( ( entry ) => {
+			element.props[ `on${ entry.suffix }` ] = ( event ) => {
+				evaluate( entry, event );
 			};
 		} );
 	} );
@@ -120,12 +127,11 @@ export default () => {
 	directive(
 		'class',
 		( { directives: { class: className }, element, evaluate } ) => {
-			Object.keys( className )
-				.filter( ( n ) => n !== 'default' )
-				.forEach( ( name ) => {
-					const result = evaluate( className[ name ], {
-						className: name,
-					} );
+			className
+				.filter( ( { suffix } ) => suffix !== 'default' )
+				.forEach( ( entry ) => {
+					const name = entry.suffix;
+					const result = evaluate( entry, { className: name } );
 					const currentClass = element.props.class || '';
 					const classFinder = new RegExp(
 						`(^|\\s)${ name }(\\s|$)`,
@@ -191,12 +197,11 @@ export default () => {
 
 	// data-wc-style--[style-key]
 	directive( 'style', ( { directives: { style }, element, evaluate } ) => {
-		Object.keys( style )
-			.filter( ( n ) => n !== 'default' )
-			.forEach( ( key ) => {
-				const result = evaluate( style[ key ], {
-					key,
-				} );
+		style
+			.filter( ( { suffix } ) => suffix !== 'default' )
+			.forEach( ( entry ) => {
+				const key = entry.suffix;
+				const result = evaluate( entry, { key } );
 				element.props.style = element.props.style || {};
 				if ( typeof element.props.style === 'string' )
 					element.props.style = cssStringToObject(
@@ -220,10 +225,10 @@ export default () => {
 
 	// data-wc-bind--[attribute]
 	directive( 'bind', ( { directives: { bind }, element, evaluate } ) => {
-		Object.entries( bind )
-			.filter( ( n ) => n !== 'default' )
-			.forEach( ( [ attribute, path ] ) => {
-				const result = evaluate( path );
+		bind.filter( ( { suffix } ) => suffix !== 'default' ).forEach(
+			( entry ) => {
+				const attribute = entry.suffix;
+				const result = evaluate( entry );
 				element.props[ attribute ] = result;
 				// Preact doesn't handle the `role` attribute properly, as it doesn't remove it when `null`.
 				// We need this workaround until the following issue is solved:
@@ -284,19 +289,22 @@ export default () => {
 						el.removeAttribute( attribute );
 					}
 				}, [] );
-			} );
+			}
+		);
 	} );
 
 	// data-wc-navigation-link
 	directive(
 		'navigation-link',
 		( {
-			directives: {
-				'navigation-link': { default: link },
-			},
+			directives: { 'navigation-link': navigationLink },
 			props: { href },
 			element,
 		} ) => {
+			const { value: link } = navigationLink.find(
+				( { suffix } ) => suffix === 'default'
+			);
+
 			useEffect( () => {
 				// Prefetch the page if it is in the directive options.
 				if ( link?.prefetch ) {
@@ -348,31 +356,20 @@ export default () => {
 	);
 
 	// data-wc-text
-	directive(
-		'text',
-		( {
-			directives: {
-				text: { default: text },
-			},
-			element,
-			evaluate,
-		} ) => {
-			element.props.children = evaluate( text );
-		}
-	);
+	directive( 'text', ( { directives: { text }, element, evaluate } ) => {
+		const entry = text.find( ( { suffix } ) => suffix === 'default' );
+		element.props.children = evaluate( entry );
+	} );
 
 	// data-wc-slot
 	directive(
 		'slot',
-		( {
-			directives: {
-				slot: { default: slot },
-			},
-			props: { children },
-			element,
-		} ) => {
-			const name = typeof slot === 'string' ? slot : slot.name;
-			const position = slot.position || 'children';
+		( { directives: { slot }, props: { children }, element } ) => {
+			const { value } = slot.find(
+				( { suffix } ) => suffix === 'default'
+			);
+			const name = typeof value === 'string' ? value : value.name;
+			const position = value.position || 'children';
 
 			if ( position === 'before' ) {
 				return (
@@ -405,14 +402,9 @@ export default () => {
 	// data-wc-fill
 	directive(
 		'fill',
-		( {
-			directives: {
-				fill: { default: fill },
-			},
-			props: { children },
-			evaluate,
-		} ) => {
-			const slot = evaluate( fill );
+		( { directives: { fill }, props: { children }, evaluate } ) => {
+			const entry = fill.find( ( { suffix } ) => suffix === 'default' );
+			const slot = evaluate( entry );
 			return <Fill slot={ slot }>{ children }</Fill>;
 		},
 		{ priority: 4 }
