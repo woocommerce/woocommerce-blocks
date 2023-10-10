@@ -53,6 +53,13 @@ class ProductUpdater {
 
 			$i = 0;
 			foreach ( $products as $product ) {
+				$current_product_hash = $this->get_hash_for_product( $product );
+				$ai_modified_product_hash = $this->get_hash_for_ai_modified_product( $product );
+				// If the store owner modified the product, we don't want to override the content.
+				if ( $current_product_hash !== $ai_modified_product_hash ) {
+					continue;
+				}
+
 				$this->update_product_content( $product, $product_content[ $i ] );
 				++ $i;
 			}
@@ -70,7 +77,7 @@ class ProductUpdater {
 
 		$product_id = $product->save();
 
-		return add_post_meta( $product_id, '_headstart_post', true );
+		return update_post_meta( $product_id, '_headstart_post', true );
 	}
 
 	public function get_placeholder_products() {
@@ -94,14 +101,30 @@ class ProductUpdater {
 		}, $product_ids );
 	}
 
+	public function get_hash_for_product( $product ) {
+		if ( ! $product instanceof \WC_Product ) {
+			return false;
+		}
+
+		return md5( $product->get_name() . $product->get_description() . $product->get_image_id() );
+	}
+
+	public function get_hash_for_ai_modified_product( $product ) {
+		if ( ! $product instanceof \WC_Product ) {
+			return false;
+		}
+
+		return get_post_meta( $product->get_id(), '_ai_generated_content', true );
+	}
+
 	public function create_hash_for_ai_modified_product( $product ) {
 		if ( ! $product instanceof \WC_Product ) {
 			return false;
 		}
 
-		$content = $product->get_name() . $product->get_description() . $product->get_image_id();
+		$content = $this->get_hash_for_product( $product );
 
-		return add_post_meta( $product->get_id(), '_ai_generated_content', $content );
+		return update_post_meta( $product->get_id(), '_ai_generated_content', $content );
 	}
 
 	/**
