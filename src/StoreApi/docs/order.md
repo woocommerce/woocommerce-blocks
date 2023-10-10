@@ -2,12 +2,26 @@
 
 ## Table of Contents <!-- omit in toc -->
 
+-   [Get Order](#get-order)
 -   [Responses](#responses)
     -   [Order Response](#order-response)
     -   [Error Response](#error-response)
--   [Get Order](#get-order)
 
 The order API returns the pay-for-order order.
+
+## Get Order
+
+```http
+GET /order/{ORDER_ID}?key={KEY}&billing_email={BILLING_EMAIL}
+```
+
+There is one required parameter for this endpoint which is `key`. `billing_email` must be added for guest orders.
+
+```sh
+curl "https://example-store.com/wp-json/wc/store/v1/order/{ORDER_ID}?key={KEY}&billing_email={BILLING_EMAIL}"
+```
+
+Returns the full order object response (see [Order Response](#order-response)).
 
 ## Responses
 
@@ -230,27 +244,13 @@ If an order action cannot be performed, an error response will be returned. This
 }
 ```
 
-## Get Order
-
-```http
-GET /order/{ORDER_ID}?key={KEY}&billing_email={BILLING_EMAIL}
-```
-
-There is one required parameter for this endpoint which is `key`. `billing_email` must be added for guest orders.
-
-```sh
-curl "https://example-store.com/wp-json/wc/store/v1/order/{ORDER_ID}?key={KEY}&billing_email={BILLING_EMAIL}"
-```
-
-Returns the full order object response (see [Order Response](#order-response)).
-
 <!-- FEEDBACK -->
 
 ---
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/docs/cart.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./src/StoreApi/docs/order.md)
 
 <!-- /FEEDBACK -->
 
