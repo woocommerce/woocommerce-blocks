@@ -3,39 +3,39 @@
 namespace Automattic\WooCommerce\Blocks\Patterns;
 
 /**
- *
+ * Pattern Images class.
  */
 class ProductUpdater {
 
 	/**
-	 * @return array|WP_Error|int|string|void|\WP_Error
+	 * Generate AI content and assign AI-managed images to Products.
+	 *
+	 * @param array $vertical_images The vertical images.
+	 *
+	 * @return void
 	 */
-	public function generate_content() {
-		$allow_ai_connection = get_option( 'woocommerce_blocks_allow_ai_connection' );
+	public function generate_content( $vertical_images ) {
+		$real_products = $this->get_real_product_ids();
 
-		if ( ! $allow_ai_connection ) {
-			return new \WP_Error( 'ai_connection_not_allowed',
-				__( 'AI content generation is not allowed on this store. Update your store settings if you wish to enable this feature.',
-					'woocommerce' ) );
+		if ( count( $real_products ) > 0 ) {
+			return;
 		}
 
-		$placeholder_images = $this->fetch_product_images();
+		$ai_selected_products_images = $this->get_images_information( $vertical_images );
 
-		if ( is_wp_error( $placeholder_images ) ) {
-			return $placeholder_images;
-		}
+		$dummy_products       = $this->get_dummy_products();
+		$dummy_products_count = count( $dummy_products );
 
-		$products = $this->get_placeholder_products();
-
-		while ( count( $products ) < 5 ) {
+		while ( $dummy_products_count < 5 ) {
 			$this->create_new_product();
 
-			$products = $this->get_placeholder_products();
+			$dummy_products       = $this->get_dummy_products();
+			$dummy_products_count = count( $dummy_products );
 		}
 
-		$products_default_content = $this->get_default_product_content_with_images( $placeholder_images );
+		$products_information_list = $this->assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images );
 
-		$responses = $this->generate_product_content( $products_default_content );
+		$responses = $this->generate_product_content( $products_information_list );
 
 		foreach ( $responses as $key => $response ) {
 			if ( is_wp_error( $response ) || empty( $response ) ) {
@@ -47,25 +47,32 @@ class ProductUpdater {
 			}
 
 			$product_content = json_decode( $response['completion'], true );
+
 			if ( is_null( $product_content ) ) {
 				continue;
 			}
 
 			$i = 0;
-			foreach ( $products as $product ) {
-				$current_product_hash = $this->get_hash_for_product( $product );
-				$ai_modified_product_hash = $this->get_hash_for_ai_modified_product( $product );
+			foreach ( $dummy_products as $dummy_product ) {
+				$current_product_hash     = $this->get_hash_for_product( $dummy_product );
+				$ai_modified_product_hash = $this->get_hash_for_ai_modified_product( $dummy_product );
+
 				// If the store owner modified the product, we don't want to override the content.
 				if ( $current_product_hash !== $ai_modified_product_hash ) {
 					continue;
 				}
 
-				$this->update_product_content( $product, $product_content[ $i ] );
+				$this->update_product_content( $dummy_product, $product_content[ $i ] );
 				++ $i;
 			}
 		}
 	}
 
+	/**
+	 * Creates a new product and assigns the _headstart_post meta to it.
+	 *
+	 * @return bool|int
+	 */
 	public function create_new_product() {
 		$product = new \WC_Product();
 
@@ -80,27 +87,64 @@ class ProductUpdater {
 		return update_post_meta( $product_id, '_headstart_post', true );
 	}
 
-	public function get_placeholder_products() {
+	/**
+	 * Return all existing products that have the _headstart_post meta assigned to them.
+	 *
+	 * @return array
+	 */
+	public function get_dummy_products() {
 		$product_query = array(
-			'post_type' => 'product',
+			'post_type'   => 'product',
 			'post_status' => 'publish',
-			'fields' => 'ids',
-			'meta_query' => array(
+			'fields'      => 'ids',
+			'meta_query'  => array(
 				'relation' => 'AND',
 				array(
-					'key' => '_headstart_post',
-					'compare' => 'EXISTS'
-				)
-			)
+					'key'     => '_headstart_post',
+					'compare' => 'EXISTS',
+				),
+			),
 		);
 
 		$product_ids = get_posts( $product_query );
 
-		return array_map( function( $product_id ) {
-			return wc_get_product( $product_id );
-		}, $product_ids );
+		return array_map(
+			function( $product_id ) {
+				return wc_get_product( $product_id );
+			},
+			$product_ids
+		);
 	}
 
+	/**
+	 * Get the ID of products that don't have the _headstart_post meta assigned to them.
+	 *
+	 * @return array
+	 */
+	public function get_real_product_ids() {
+		$product_query = array(
+			'post_type'   => [ 'product', 'product_variation' ],
+			'post_status' => 'publish',
+			'fields'      => 'ids',
+			'meta_query'  => array(
+				'relation' => 'AND',
+				array(
+					'key'     => '_headstart_post',
+					'compare' => 'NOT EXISTS',
+				),
+			),
+		);
+
+		return get_posts( $product_query );
+	}
+
+	/**
+	 * Return the hash for a product based on its name, description and image_id.
+	 *
+	 * @param \WC_Product $product The product.
+	 *
+	 * @return false|string
+	 */
 	public function get_hash_for_product( $product ) {
 		if ( ! $product instanceof \WC_Product ) {
 			return false;
@@ -109,6 +153,13 @@ class ProductUpdater {
 		return md5( $product->get_name() . $product->get_description() . $product->get_image_id() );
 	}
 
+	/**
+	 * Return the hash for a product that had its content AI-generated.
+	 *
+	 * @param \WC_Product $product The product.
+	 *
+	 * @return false|mixed
+	 */
 	public function get_hash_for_ai_modified_product( $product ) {
 		if ( ! $product instanceof \WC_Product ) {
 			return false;
@@ -117,6 +168,13 @@ class ProductUpdater {
 		return get_post_meta( $product->get_id(), '_ai_generated_content', true );
 	}
 
+	/**
+	 * Create a hash with the AI-generated content and save it as a meta for the product.
+	 *
+	 * @param \WC_Product $product The product.
+	 *
+	 * @return bool|int
+	 */
 	public function create_hash_for_ai_modified_product( $product ) {
 		if ( ! $product instanceof \WC_Product ) {
 			return false;
@@ -128,8 +186,10 @@ class ProductUpdater {
 	}
 
 	/**
-	 * @param $product
-	 * @param $ai_generated_product_content
+	 * Update the product content with the AI-generated content.
+	 *
+	 * @param \WC_Product $product The product.
+	 * @param array       $ai_generated_product_content The AI-generated content.
 	 *
 	 * @return string|void
 	 */
@@ -156,13 +216,13 @@ class ProductUpdater {
 	}
 
 	/**
-	 * Fetch the default content for the dummy products.
+	 * Assigns the default content for the products.
 	 *
-	 * @param $placeholder_images
+	 * @param array $ai_selected_products_images The images information.
 	 *
 	 * @return array[]
 	 */
-	public function get_default_product_content_with_images( $placeholder_images ) {
+	public function assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images ) {
 		$default_image = [
 			'src' => esc_url( 'images/block-placeholders/product-image-gallery.svg' ),
 			'alt' => 'The placeholder for a product image.',
@@ -172,50 +232,39 @@ class ProductUpdater {
 			[
 				'title'       => 'A product title',
 				'description' => 'A product description',
-				'image'       => $placeholder_images[0] ?? $default_image,
+				'image'       => $ai_selected_products_images[0] ?? $default_image,
 			],
 			[
 				'title'       => 'A product title',
 				'description' => 'A product description',
-				'image'       => $placeholder_images[1] ?? $default_image,
+				'image'       => $ai_selected_products_images[1] ?? $default_image,
 			],
 			[
 				'title'       => 'A product title',
 				'description' => 'A product description',
-				'image'       => $placeholder_images[2] ?? $default_image,
+				'image'       => $ai_selected_products_images[2] ?? $default_image,
 			],
 			[
 				'title'       => 'A product title',
 				'description' => 'A product description',
-				'image'       => $placeholder_images[3] ?? $default_image,
+				'image'       => $ai_selected_products_images[3] ?? $default_image,
 			],
 			[
 				'title'       => 'A product title',
 				'description' => 'A product description',
-				'image'       => $placeholder_images[4] ?? $default_image,
+				'image'       => $ai_selected_products_images[4] ?? $default_image,
 			],
 		];
 	}
 
 	/**
-	 * @return array|WP_Error|int|string|\WP_Error
+	 * Get the images information.
+	 *
+	 * @param array $vertical_images The vertical images.
+	 *
+	 * @return array
 	 */
-	public function fetch_product_images() {
-		$verticals_selector = new \Automattic\WooCommerce\Blocks\Verticals\VerticalsSelector();
-
-		$vertical_id = ( $verticals_selector )->get_vertical_id();
-
-		if ( is_wp_error( $vertical_id ) ) {
-			return $vertical_id;
-		}
-
-		if ( ! is_int( $vertical_id ) ) {
-			return new \WP_Error( 'invalid_vertical_id', __( 'The vertical id is invalid.', 'woo-gutenberg-products-block' ) );
-		}
-
-		$placeholder_images = [];
-		$vertical_images = ( new \Automattic\WooCommerce\Blocks\Verticals\Client() )->get_vertical_images( $vertical_id );
-
+	public function get_images_information( $vertical_images ) {
 		if ( is_wp_error( $vertical_images ) ) {
 			return [
 				'src' => esc_url( 'images/block-placeholders/product-image-gallery.svg' ),
@@ -223,7 +272,8 @@ class ProductUpdater {
 			];
 		}
 
-		$count = 0;
+		$count              = 0;
+		$placeholder_images = [];
 		foreach ( $vertical_images as $vertical_image ) {
 			if ( $count >= 5 ) {
 				break;
@@ -248,7 +298,9 @@ class ProductUpdater {
 	}
 
 	/**
-	 * @param $products_default_content
+	 * Generate the product content.
+	 *
+	 * @param array $products_default_content The default content for the products.
 	 *
 	 * @return array|int|string|\WP_Error
 	 */
@@ -273,7 +325,7 @@ class ProductUpdater {
 			return new \WP_Error( 'missing_store_description', __( 'The store description is required to generate the content for your site.', 'woo-gutenberg-products-block' ) );
 		}
 
-		$prompt = [ sprintf( 'Given the following store description: "%1s" and the assigned value for the alt property in the json bellow, generate new titles and descriptions for each one of the products listed bellow and assign them as the new values for the json: %2s. The response should be only a JSON string, with no intro or explanations.', $store_description, json_encode( $products_default_content ) ) ];
+		$prompt = [ sprintf( 'Given the following store description: "%1s" and the assigned value for the alt property in the json bellow, generate new titles and descriptions for each one of the products listed bellow and assign them as the new values for the json: %2s. The response should be only a JSON string, with no intro or explanations.', $store_description, wp_json_encode( $products_default_content ) ) ];
 
 		return $ai_connection->fetch_ai_responses( $token, $prompt );
 	}
