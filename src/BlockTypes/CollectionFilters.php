@@ -134,7 +134,9 @@ final class CollectionFilters extends AbstractBlock {
 			isset( $parsed_block['blockName'] ) &&
 			in_array( $parsed_block['blockName'], $this->collection_data_params_mapping, true )
 		) {
+			// We might not need collectionData anymore
 			$context['collectionData'] = $this->current_response;
+			$context['filterData'] = $this->get_filter_data( $this->current_response );
 		}
 
 		return $context;
@@ -289,5 +291,28 @@ final class CollectionFilters extends AbstractBlock {
 		$params['catalog_visibility'] = is_search() ? 'catalog' : 'visible';
 
 		return array_filter( $params );
+	}
+
+	/**
+	 * Prepare filter data for Interactivity API and inner blocks.
+	 *
+	 * @param array $collection_data The collection data.
+	 * @return string
+	 */
+	private function get_filter_data( $collection_data ) {
+		$price_range = $collection_data['price_range'];
+		$min_range   = $price_range->min_price / 10 ** $price_range->currency_minor_unit;
+		$max_range   = $price_range->max_price / 10 ** $price_range->currency_minor_unit;
+		$min_price   = intval( get_query_var( 'min_price', $min_range ) );
+		$max_price   = intval( get_query_var( 'max_price', $max_range ) );
+
+		return array(
+			'minPrice' => $min_price,
+			'maxPrice' => $max_price,
+			'formattedMinPrice' => wc_price( $min_price, array( 'decimals' => 0 ) ),
+			'formattedMaxPrice' => wc_price( $max_price, array( 'decimals' => 0 ) ),
+			'minRange' => $min_range,
+			'maxRange' => $max_range,
+		);
 	}
 }

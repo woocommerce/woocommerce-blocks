@@ -33,6 +33,8 @@ final class CollectionPriceFilterSlider extends AbstractBlock {
 		list (
 			'minPrice' => $min_price,
 			'maxPrice' => $max_price,
+			'formattedMinPrice' => $formatted_min_price,
+			'formattedMaxPrice' => $formatted_max_price,
 			'minRange' => $min_range,
 			'maxRange' => $max_range,
 		) = $block->context['filterData'];
@@ -46,9 +48,6 @@ final class CollectionPriceFilterSlider extends AbstractBlock {
 		$__low       = 100 * $min_price / $max_range;
 		$__high      = 100 * $max_price / $max_range;
 		$range_style = "--low: $__low%; --high: $__high%";
-
-		$formatted_min_price = wc_price( $min_price, array( 'decimals' => 0 ) );
-		$formatted_max_price = wc_price( $max_price, array( 'decimals' => 0 ) );
 
 		$wrapper_attributes = get_block_wrapper_attributes(
 			array(

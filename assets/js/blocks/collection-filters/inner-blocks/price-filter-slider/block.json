@@ -11,11 +11,10 @@
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
 	"ancestor": [
-		"woocommerce/collection-price-filter"
+		"woocommerce/product-collection"
 	],
 	"supports": {
-		"interactivity": true,
-		"inserter": false
+		"interactivity": true
 	},
 	"usesContext": [
 		"filterData"
