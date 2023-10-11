@@ -20,14 +20,15 @@ class ProductUpdater {
 		if ( count( $real_products ) > 0 ) {
 			return;
 		}
-		$dummy_products = $this->get_dummy_products();
 
-		$dummy_products_count = count( $dummy_products );
-		while ( $dummy_products_count < 6 ) {
+		$dummy_products                = $this->get_dummy_products();
+		$dummy_products_count          = count( $dummy_products );
+		$expected_dummy_products_count = 6;
+		$products_to_create            = max( 0, $expected_dummy_products_count - $dummy_products_count );
+
+		while ( $products_to_create > 0 ) {
 			$this->create_new_product();
-
-			$dummy_products       = $this->get_dummy_products();
-			$dummy_products_count = count( $dummy_products );
+			$products_to_create--;
 		}
 
 		// Identify dummy products that need to have their content updated.
