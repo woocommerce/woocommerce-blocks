@@ -116,7 +116,6 @@
 
 	&.has-error label {
 		color: $alert-red;
-		opacity: 1;
 
 		.has-dark-controls & {
 			color: color.adjust($alert-red, $lightness: 30%);
