@@ -23,4 +23,16 @@
 			column-count: 1;
 		}
 	}
+
+	.block-editor-block-preview__container {
+		height: 200px;
+		align-items: flex-start;
+		border: 1px solid $input-border-gray;
+		border-radius: 4px;
+		padding-top: $gap;
+	}
+}
+
+.wc-blocks-product-collection__selection-modal-subtitle {
+	margin-bottom: $gap-large;
 }

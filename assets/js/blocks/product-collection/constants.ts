@@ -3,6 +3,7 @@
  */
 import { getSetting } from '@woocommerce/settings';
 import { objectOmit } from '@woocommerce/utils';
+import { type InnerBlockTemplate } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -15,6 +16,9 @@ import {
 	ProductCollectionDisplayLayout,
 	LayoutOptions,
 } from './types';
+
+import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
+import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 import { getDefaultValueOfInheritQueryFromTemplate } from './utils';
 
 export const STOCK_STATUS_OPTIONS = getSetting< Record< string, string > >(
@@ -89,3 +93,72 @@ export const DEFAULT_FILTERS: Partial< ProductCollectionQuery > = {
 	taxQuery: DEFAULT_QUERY.taxQuery,
 	woocommerceHandPickedProducts: [],
 };
+
+/**
+ * Default inner block templates for the product collection block.
+ * Exported for use in different collections, e.g., 'New Arrivals' collection.
+ */
+export const INNER_BLOCKS_PRODUCT_TEMPLATE: InnerBlockTemplate = [
+	'woocommerce/product-template',
+	{},
+	[
+		[
+			'woocommerce/product-image',
+			{
+				imageSizing: ImageSizing.THUMBNAIL,
+			},
+		],
+		[
+			'core/post-title',
+			{
+				textAlign: 'center',
+				level: 3,
+				fontSize: 'medium',
+				style: {
+					spacing: {
+						margin: {
+							bottom: '0.75rem',
+							top: '0',
+						},
+					},
+				},
+				isLink: true,
+				__woocommerceNamespace: PRODUCT_TITLE_ID,
+			},
+		],
+		[
+			'woocommerce/product-price',
+			{
+				textAlign: 'center',
+				fontSize: 'small',
+			},
+		],
+		[
+			'woocommerce/product-button',
+			{
+				textAlign: 'center',
+				fontSize: 'small',
+			},
+		],
+	],
+];
+
+export const INNER_BLOCKS_PAGINATION_TEMPLATE: InnerBlockTemplate = [
+	'core/query-pagination',
+	{
+		layout: {
+			type: 'flex',
+			justifyContent: 'center',
+		},
+	},
+];
+
+export const INNER_BLOCKS_NO_RESULTS_TEMPLATE: InnerBlockTemplate = [
+	'core/query-no-results',
+];
+
+export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
+	INNER_BLOCKS_PRODUCT_TEMPLATE,
+	INNER_BLOCKS_PAGINATION_TEMPLATE,
+	INNER_BLOCKS_NO_RESULTS_TEMPLATE,
+];

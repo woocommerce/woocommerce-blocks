@@ -12,8 +12,8 @@ import {
 /**
  * Internal dependencies
  */
-import { DisplayLayoutControlProps } from '../types';
-import { getDefaultDisplayLayout } from '../constants';
+import { DisplayLayoutControlProps } from '../../types';
+import { getDefaultDisplayLayout } from '../../constants';
 
 const ColumnsControl = ( props: DisplayLayoutControlProps ) => {
 	const { type, columns } = props.displayLayout;

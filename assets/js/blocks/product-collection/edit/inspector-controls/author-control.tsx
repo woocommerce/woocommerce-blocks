@@ -13,7 +13,7 @@ import {
 /**
  * Internal dependencies
  */
-import { QueryControlProps } from '../types';
+import { QueryControlProps } from '../../types';
 
 interface Author {
 	id: string;
