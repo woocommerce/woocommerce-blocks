@@ -19,7 +19,7 @@ const Block = ( { className }: { className: string } ): JSX.Element | null => {
 	return (
 		<TotalsWrapper className={ className }>
 			<TotalsShipping
-				showCalculator={ getSetting(
+				showCalculator={ getSetting< boolean >(
 					'isShippingCalculatorEnabled',
 					true
 				) }
