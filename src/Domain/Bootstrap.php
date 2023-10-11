@@ -6,6 +6,7 @@ use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 use Automattic\WooCommerce\Blocks\AssetsController;
 use Automattic\WooCommerce\Blocks\BlockPatterns;
 use Automattic\WooCommerce\Blocks\BlockTemplatesController;
+use Automattic\WooCommerce\Blocks\BlockTemplatesRefactorController;
 use Automattic\WooCommerce\Blocks\BlockTypesController;
 use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
 use Automattic\WooCommerce\Blocks\Domain\Services\Notices;
@@ -34,6 +35,7 @@ use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
+use Automattic\WooCommerce\Blocks\SingleProductTemplateController;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ArchiveProductTemplatesCompatibility;
 
@@ -146,6 +148,8 @@ class Bootstrap {
 			$this->container->get( BlockPatterns::class );
 			$this->container->get( BlockTypesController::class );
 			$this->container->get( BlockTemplatesController::class );
+			$this->container->get( BlockTemplatesRefactorController::class );
+			$this->container->get( SingleProductTemplateController::class );
 			$this->container->get( ProductSearchResultsTemplate::class );
 			$this->container->get( ProductAttributeTemplate::class );
 			$this->container->get( CartTemplate::class );
@@ -285,6 +289,18 @@ class Bootstrap {
 			BlockTemplatesController::class,
 			function ( Container $container ) {
 				return new BlockTemplatesController( $container->get( Package::class ) );
+			}
+		);
+		$this->container->register(
+			BlockTemplatesRefactorController::class,
+			function ( Container $container ) {
+				return new BlockTemplatesRefactorController( $container->get( Package::class ) );
+			}
+		);
+		$this->container->register(
+			SingleProductTemplateController::class,
+			function ( Container $container ) {
+				return new SingleProductTemplateController( $container->get( Package::class ) );
 			}
 		);
 		$this->container->register(
