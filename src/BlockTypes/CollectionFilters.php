@@ -244,34 +244,43 @@ final class CollectionFilters extends AbstractBlock {
 			return $mapping[ $key ] ?? '_unstable_tax_' . $key;
 		};
 
-		foreach ( $query as $key => $value ) {
-			if ( in_array( $key, $shared_params, true ) ) {
-				$params[ $key ] = $value;
-			}
-
-			if ( in_array( $key, array_keys( $mapped_params ) ) ) {
-				$params[ $mapped_params[ $key ] ] = $value;
-			}
-
-			/**
-			 * The value of taxQuery and woocommerceAttributes need additional
-			 * transformation to the shape that Store API accepts.
-			 */
-			if ( 'taxQuery' === $key && is_array( $value ) ) {
-				foreach ( $value as $taxonomy => $terms ) {
-					$params[ $taxonomy_mapper( $taxonomy ) ] = implode( ',', $terms );
+		array_walk(
+			$query,
+			function( $value, $key ) use ( $shared_params, $mapped_params, $taxonomy_mapper, &$params ) {
+				if ( in_array( $key, $shared_params, true ) ) {
+					$params[ $key ] = $value;
 				}
-			}
 
-			if ( 'woocommerceAttributes' === $key && is_array( $value ) ) {
-				foreach ( $value as $attribute ) {
-					$params['attributes'][] = array(
-						'attribute' => $attribute['taxonomy'],
-						'term_id'   => $attribute['termId'],
+				if ( in_array( $key, array_keys( $mapped_params ), true ) ) {
+					$params[ $mapped_params[ $key ] ] = $value;
+				}
+
+				/**
+				 * The value of taxQuery and woocommerceAttributes need additional
+				 * transformation to the shape that Store API accepts.
+				 */
+				if ( 'taxQuery' === $key && is_array( $value ) ) {
+					array_walk(
+						$value,
+						function( $terms, $taxonomy ) use ( $taxonomy_mapper, &$params ) {
+							$params[ $taxonomy_mapper( $taxonomy ) ] = implode( ',', $terms );
+						}
+					);
+				}
+
+				if ( 'woocommerceAttributes' === $key && is_array( $value ) ) {
+					array_walk(
+						$value,
+						function( $attribute ) use ( &$params ) {
+							$params['attributes'][] = array(
+								'attribute' => $attribute['taxonomy'],
+								'term_id'   => $attribute['termId'],
+							);
+						}
 					);
 				}
 			}
-		}
+		);
 
 		/**
 		 * Product Collection determines the product visibility based on stock
