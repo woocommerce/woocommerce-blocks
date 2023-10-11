@@ -105,6 +105,10 @@ class Patterns extends AbstractRoute {
 		$business_description = sanitize_text_field( wp_unslash( $request['business_description'] ) );
 		$vertical_id          = ( new VerticalsSelector() )->get_vertical_id( $business_description );
 
+		if ( empty( $business_description ) ) {
+			$business_description = get_option( 'woo_ai_describe_store_description' );
+		}
+
 		if ( is_wp_error( $vertical_id ) ) {
 			$response = $this->error_to_response( $vertical_id );
 		} else {
@@ -115,7 +119,7 @@ class Patterns extends AbstractRoute {
 				$response = $this->error_to_response( $populate_patterns );
 			}
 
-			$populate_products = ( new ProductUpdater() )->generate_content( $vertical_images );
+			$populate_products = ( new ProductUpdater() )->generate_content( $vertical_images, $business_description );
 
 			if ( is_wp_error( $populate_products ) ) {
 				$response = $this->error_to_response( $populate_products );
