@@ -88,7 +88,6 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		return strtr(
 			'<div class="wc-block-product-gallery-large-image wp-block-woocommerce-product-gallery-large-image" {directives}>
 				<div class="wc-block-product-gallery-large-image__container">
-					{visible_main_image}
 					{main_images}
 				</div>
 					{content}
@@ -137,16 +136,18 @@ class ProductGalleryLargeImage extends AbstractBlock {
 			$product_id,
 			'full',
 			$attributes,
-			'wc-block-woocommerce-product-gallery-large-image__container'
+			'wc-block-product-gallery-large-image__image-element'
 		);
 
-		$visible_main_image           = array_shift( $main_images );
-		$visible_main_image_processor = new \WP_HTML_Tag_Processor( $visible_main_image );
-		$visible_main_image_processor->next_tag();
-		$visible_main_image_processor->remove_attribute( 'hidden' );
-		$visible_main_image = $visible_main_image_processor->get_updated_html();
+		$main_image_with_wrapper = array_map(
+			function( $main_image_element ) {
+				return "<div class='wc-block-product-gallery-large-image__wrapper'>" . $main_image_element . '</div>';
+			},
+			$main_images
+		);
 
-		return array( $visible_main_image, $main_images );
+		$visible_main_image = array_shift( $main_images );
+		return array( $visible_main_image, $main_image_with_wrapper );
 
 	}
 
