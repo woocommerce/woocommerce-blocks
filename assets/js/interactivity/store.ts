@@ -47,6 +47,7 @@ const parseInitialState = () => {
 };
 
 export const stores = new Map();
+const storeLocks = new Map();
 
 const objToProxy = new WeakMap();
 const proxyToNs = new WeakMap();
@@ -208,7 +209,12 @@ type DeepPartial< T > = T extends object
 	? { [ P in keyof T ]?: DeepPartial< T[ P ] > }
 	: T;
 
-interface StoreOptions {}
+interface StoreOptions {
+	lock?: boolean | string;
+}
+
+const universalUnlock =
+	'I know using a private store means my plugin will inevitably break on the next store release.';
 
 export function store< S extends object = {} >(
 	namespace: string,
@@ -224,15 +230,43 @@ export function store< T extends object >(
 export function store(
 	namespace: string,
 	{ state = {}, ...block }: any = {},
-	{}: StoreOptions = {}
+	{ lock = false }: StoreOptions = {}
 ) {
 	if ( ! stores.has( namespace ) ) {
+		// Lock the store if the passed lock is different from the universal
+		// unlock. Once the lock is set (either false, true, or a given string),
+		// it cannot change.
+		if ( lock !== universalUnlock ) {
+			storeLocks.set( namespace, lock );
+		}
 		stores.set(
 			namespace,
 			new Proxy( { state: deepSignal( state ), ...block }, handlers )
 		);
 		proxyToNs.set( stores.get( namespace ), namespace );
 	} else {
+		// Lock the store if it wasn't locked yet and the passed lock is
+		// different from the universal unlock. If no lock is given, the store
+		// will be public and won't accept any lock from now on.
+		if ( ! storeLocks.has( namespace ) && lock !== universalUnlock ) {
+			storeLocks.set( namespace, lock );
+		} else {
+			const storeLock = storeLocks.get( namespace );
+			const isLockValid =
+				lock === universalUnlock ||
+				( lock !== true && lock === storeLock );
+
+			if ( ! isLockValid ) {
+				if ( ! storeLock ) {
+					throw Error( 'Cannot lock a public store' );
+				} else {
+					throw Error(
+						'Cannot unlock a private store with an invalid lock code'
+					);
+				}
+			}
+		}
+
 		const target = stores.get( namespace );
 		deepMerge( target, block );
 		deepMerge( target.state, state );
