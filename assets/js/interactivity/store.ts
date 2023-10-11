@@ -139,7 +139,7 @@ const handlers = {
 			return ( ...args: unknown[] ) => {
 				setNamespace( ns );
 				try {
-					result( ...args );
+					return result( ...args );
 				} finally {
 					resetNamespace();
 				}
