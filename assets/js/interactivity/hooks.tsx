@@ -10,7 +10,6 @@ import { deepSignal } from 'deepsignal';
  * Internal dependencies
  */
 import { stores } from './store';
-import { nsPathParser } from './vdom';
 
 /** @typedef {import('preact').VNode} VNode */
 /** @typedef {typeof context} Context */
