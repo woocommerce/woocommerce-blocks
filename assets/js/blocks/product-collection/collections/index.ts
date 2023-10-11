@@ -11,9 +11,10 @@ import {
  * Internal dependencies
  */
 import newArrivals from './new-arrivals';
+import productRecommendations from './product-recommendations';
 import blockJson from '../block.json';
 
-const collections: BlockVariation[] = [ newArrivals ];
+const collections: BlockVariation[] = [ newArrivals, productRecommendations ];
 
 const registerCollections = () => {
 	collections.forEach( ( collection ) => {
