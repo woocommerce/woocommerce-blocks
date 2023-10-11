@@ -94,11 +94,14 @@ interactivityStore(
 		effects: {
 			woocommerce: {
 				scrollInto: ( store: Store ) => {
+					if ( ! store.selectors.woocommerce.isSelected( store ) ) {
+						return;
+					}
+
 					// Scroll to the selected image with a smooth animation.
 					if (
-						store.selectors?.woocommerce?.isSelected( store ) &&
 						store.context.woocommerce.isDialogOpen ===
-							isDialogStatusChanged
+						isDialogStatusChanged
 					) {
 						store.ref.scrollIntoView( {
 							behavior: 'smooth',
@@ -112,7 +115,6 @@ interactivityStore(
 						store.context.woocommerce.isDialogOpen &&
 						store.context.woocommerce.isDialogOpen !==
 							isDialogStatusChanged &&
-						store.selectors?.woocommerce?.isSelected( store ) &&
 						store.ref.tagName === 'IMG' &&
 						store.ref.closest( 'dialog' )
 					) {
@@ -131,7 +133,6 @@ interactivityStore(
 						! store.context.woocommerce.isDialogOpen &&
 						store.context.woocommerce.isDialogOpen !==
 							isDialogStatusChanged &&
-						store.selectors?.woocommerce?.isSelected( store ) &&
 						store.ref.tagName === 'IMG'
 					) {
 						store.ref.scrollIntoView( {
