@@ -115,7 +115,6 @@ interactivityStore(
 						store.context.woocommerce.isDialogOpen &&
 						store.context.woocommerce.isDialogOpen !==
 							isDialogStatusChanged &&
-						store.ref.tagName === 'IMG' &&
 						store.ref.closest( 'dialog' )
 					) {
 						store.ref.scrollIntoView( {
@@ -132,8 +131,7 @@ interactivityStore(
 					if (
 						! store.context.woocommerce.isDialogOpen &&
 						store.context.woocommerce.isDialogOpen !==
-							isDialogStatusChanged &&
-						store.ref.tagName === 'IMG'
+							isDialogStatusChanged
 					) {
 						store.ref.scrollIntoView( {
 							behavior: 'instant',
