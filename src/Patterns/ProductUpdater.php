@@ -10,18 +10,25 @@ class ProductUpdater {
 	/**
 	 * Generate AI content and assign AI-managed images to Products.
 	 *
-	 * @param array $vertical_images The vertical images.
+	 * @param array  $vertical_images The vertical images.
+	 * @param string $business_description The business description.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function generate_content( $vertical_images ) {
-		$real_products = $this->get_real_product_ids();
+	public function generate_content( $vertical_images, $business_description ) {
+		$last_business_description = get_option( 'last_business_description_with_ai_content_generated' );
 
-		if ( count( $real_products ) > 0 ) {
-			return;
+		if ( $last_business_description === $business_description ) {
+			return true;
 		}
 
-		$dummy_products                = $this->get_dummy_products();
+		$real_products = $this->fetch_product_ids();
+
+		if ( count( $real_products ) > 0 ) {
+			return true;
+		}
+
+		$dummy_products                = $this->fetch_product_ids( 'dummy' );
 		$dummy_products_count          = count( $dummy_products );
 		$expected_dummy_products_count = 6;
 		$products_to_create            = max( 0, $expected_dummy_products_count - $dummy_products_count );
@@ -32,23 +39,35 @@ class ProductUpdater {
 		}
 
 		// Identify dummy products that need to have their content updated.
+		$dummy_product_ids = $this->fetch_product_ids( 'dummy' );
+
+		$dummy_products = array_map(
+			function ( $product ) {
+				return wc_get_product( $product->ID );
+			},
+			$dummy_product_ids
+		);
+
 		$dummy_products_to_update = [];
 		foreach ( $dummy_products as $dummy_product ) {
 			$current_product_hash     = $this->get_hash_for_product( $dummy_product );
 			$ai_modified_product_hash = $this->get_hash_for_ai_modified_product( $dummy_product );
 
-			$dummy_product = wc_get_product( $dummy_product->get_id() );
 			$date_created  = $dummy_product->get_date_created()->date( 'Y-m-d H:i:s' );
 			$date_modified = $dummy_product->get_date_modified()->date( 'Y-m-d H:i:s' );
 
-			// If the store owner modified the product, we don't want to override the content.
-			if ( ( $date_created === $date_modified && is_null( $ai_modified_product_hash ) ) || ( $current_product_hash !== $ai_modified_product_hash && ! is_null( $ai_modified_product_hash ) ) ) {
+			$timestamp_created  = strtotime( $date_created );
+			$timestamp_modified = strtotime( $date_modified );
+
+			$dummy_product_not_modified = abs( $timestamp_modified - $timestamp_created ) < 60;
+
+			if ( $current_product_hash === $ai_modified_product_hash || $dummy_product_not_modified ) {
 				$dummy_products_to_update[] = $dummy_product;
 			}
 		}
 
 		if ( empty( $dummy_products_to_update ) ) {
-			return;
+			return true;
 		}
 
 		$ai_selected_products_images = $this->get_images_information( $vertical_images );
@@ -74,9 +93,11 @@ class ProductUpdater {
 			$i = 0;
 			foreach ( $dummy_products_to_update as $dummy_product ) {
 				$this->update_product_content( $dummy_product, $product_content[ $i ] );
-				++ $i;
+				++$i;
 			}
 		}
+
+		update_option( 'last_business_description_with_ai_content_generated', $business_description );
 	}
 
 	/**
@@ -101,52 +122,21 @@ class ProductUpdater {
 	/**
 	 * Return all existing products that have the _headstart_post meta assigned to them.
 	 *
-	 * @return array
-	 */
-	public function get_dummy_products() {
-		$product_query = array(
-			'post_type'   => 'product',
-			'post_status' => 'publish',
-			'fields'      => 'ids',
-			'meta_query'  => array(
-				'relation' => 'AND',
-				array(
-					'key'     => '_headstart_post',
-					'compare' => 'EXISTS',
-				),
-			),
-		);
-
-		$product_ids = get_posts( $product_query );
-
-		return array_map(
-			function( $product_id ) {
-				return wc_get_product( $product_id );
-			},
-			$product_ids
-		);
-	}
-
-	/**
-	 * Get the ID of products that don't have the _headstart_post meta assigned to them.
+	 * @param string $type The type of products to fetch.
 	 *
 	 * @return array
 	 */
-	public function get_real_product_ids() {
-		$product_query = array(
-			'post_type'   => [ 'product', 'product_variation' ],
-			'post_status' => 'publish',
-			'fields'      => 'ids',
-			'meta_query'  => array(
-				'relation' => 'AND',
-				array(
-					'key'     => '_headstart_post',
-					'compare' => 'NOT EXISTS',
-				),
-			),
-		);
+	public function fetch_product_ids( $type = 'user_created' ) {
+		global $wpdb;
 
-		return get_posts( $product_query );
+		if ( 'user_created' === $type ) {
+			// @todo update to comply with DRY principles.
+			$query = "SELECT ID FROM {$wpdb->posts} WHERE ID NOT IN ( SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish' ) AND post_type = 'product' AND post_status = 'publish'";
+		} else {
+			$query = "SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish'";
+		}
+
+		return $wpdb->get_results( $wpdb->prepare( $query, '_headstart_post' ) );
 	}
 
 	/**
@@ -213,6 +203,9 @@ class ProductUpdater {
 			return;
 		}
 
+		set_time_limit( 60 );
+		wp_raise_memory_limit( 'image' );
+
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -271,6 +264,11 @@ class ProductUpdater {
 				'description' => 'A product description',
 				'image'       => $ai_selected_products_images[4] ?? $default_image,
 			],
+			[
+				'title'       => 'A product title',
+				'description' => 'A product description',
+				'image'       => $ai_selected_products_images[5] ?? $default_image,
+			],
 		];
 	}
 
@@ -296,7 +294,7 @@ class ProductUpdater {
 				break;
 			}
 
-			$src = $vertical_image['meta']['pexels_object']['src']['medium'] ?? 'images/block-placeholders/product-image-gallery.svg';
+			$src = $vertical_image['meta']['pexels_object']['src']['large'] ?? 'images/block-placeholders/product-image-gallery.svg';
 			$alt = $vertical_image['meta']['pexels_object']['alt'] ?? 'The placeholder for a product image.';
 
 			$placeholder_images[] = [
