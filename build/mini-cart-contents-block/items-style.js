@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebpackWcBlocksJsonp=self.webpackChunkwebpackWcBlocksJsonp||[]).push([[6575],{41594:(c,e,s)=>{s.r(e),s.d(e,{default:()=>k});var a=s(69307),l=s(89814),n=s.n(l);const k=({children:c,className:e})=>(0,a.createElement)("div",{className:n()(e,"wc-block-mini-cart__items"),tabIndex:-1},c)}}]);
