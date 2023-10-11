@@ -131,7 +131,7 @@ class ProductUpdater {
 
 		if ( 'user_created' === $type ) {
 			// @todo update to comply with DRY principles.
-			$query = "SELECT ID FROM {$wpdb->posts} WHERE ID NOT IN ( SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish' ) AND post_type = 'product' AND post_status = 'publish'";
+			$query = "SELECT ID FROM {$wpdb->posts} WHERE ID NOT IN ( SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish' ) AND post_type = 'product' AND post_status = 'publish' LIMIT 6";
 		} else {
 			$query = "SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish'";
 		}
@@ -234,7 +234,7 @@ class ProductUpdater {
 	 */
 	public function assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images ) {
 		$default_image = [
-			'src' => esc_url( 'images/block-placeholders/product-image-gallery.svg' ),
+			'src' => esc_url( plugins_url( 'woocommerce-blocks/images/block-placeholders/product-image-gallery.svg' ) ),
 			'alt' => 'The placeholder for a product image.',
 		];
 
@@ -338,6 +338,6 @@ class ProductUpdater {
 
 		$prompt = [ sprintf( 'Given the following store description: "%1s" and the assigned value for the alt property in the json bellow, generate new titles and descriptions for each one of the products listed bellow and assign them as the new values for the json: %2s. The response should be only a JSON string, with no intro or explanations.', $store_description, wp_json_encode( $products_default_content ) ) ];
 
-		return $ai_connection->fetch_ai_responses( $token, $prompt );
+		return $ai_connection->fetch_ai_responses( $token, $prompt, 60 );
 	}
 }
