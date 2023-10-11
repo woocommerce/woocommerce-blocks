@@ -216,9 +216,6 @@ class ProductUpdater {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		$product->get_image_id();
-		the_post_thumbnail_url();
-
 		$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
 
 		if ( is_wp_error( $product_image_id ) ) {
