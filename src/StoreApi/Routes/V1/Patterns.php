@@ -3,6 +3,7 @@
 namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
+use Automattic\WooCommerce\Blocks\Patterns\ProductUpdater;
 use Automattic\WooCommerce\Blocks\Verticals\Client;
 use Automattic\WooCommerce\Blocks\Verticals\VerticalsSelector;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
@@ -107,10 +108,17 @@ class Patterns extends AbstractRoute {
 		if ( is_wp_error( $vertical_id ) ) {
 			$response = $this->error_to_response( $vertical_id );
 		} else {
-			$populate_images = ( new PatternUpdater() )->create_patterns_content( $vertical_id, new Client() );
+			$vertical_images   = ( new Client() )->get_vertical_images( $vertical_id );
+			$populate_patterns = ( new PatternUpdater() )->generate_content( $vertical_images );
 
-			if ( is_wp_error( $populate_images ) ) {
-				$response = $this->error_to_response( $populate_images );
+			if ( is_wp_error( $populate_patterns ) ) {
+				$response = $this->error_to_response( $populate_patterns );
+			}
+
+			$populate_products = ( new ProductUpdater() )->generate_content( $vertical_images );
+
+			if ( is_wp_error( $populate_products ) ) {
+				$response = $this->error_to_response( $populate_products );
 			}
 		}
 
