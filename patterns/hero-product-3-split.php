@@ -47,8 +47,8 @@ $images  = PatternsHelper::get_pattern_images( 'woocommerce-blocks/hero-product-
 	</div>
 	<!-- /wp:column -->
 
-	<!-- wp:column {"verticalAlignment":"center","width":"33.33%"} -->
-	<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:33.33%">
+	<!-- wp:column {"verticalAlignment":"center","width":"30%","style":{"spacing":{"padding":{"right":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
+	<div class="wp-block-column is-vertically-aligned-center" style="padding-right:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30);flex-basis:30%">
 		<!-- wp:paragraph -->
 		<p><strong><?php echo esc_html( $content['titles'][1]['default'] ); ?></strong></p>
 		<!-- /wp:paragraph -->
