@@ -33,18 +33,11 @@ class PatternUpdater {
 	/**
 	 * Creates the patterns content for the given vertical.
 	 *
-	 * @param  int    $vertical_id  The vertical id.
-	 * @param  Client $verticals_api_client  The verticals API client.
+	 * @param array|WP_Error $vertical_images The array of vertical images.
 	 *
 	 * @return bool|WP_Error
 	 */
-	public function create_patterns_content( $vertical_id, $verticals_api_client ) {
-		if ( ! is_int( $vertical_id ) ) {
-			return new WP_Error( 'invalid_vertical_id', __( 'The vertical id is invalid.', 'woo-gutenberg-products-block' ) );
-		}
-
-		$vertical_images = $verticals_api_client->get_vertical_images( $vertical_id );
-
+	public function generate_content( $vertical_images ) {
 		if ( is_wp_error( $vertical_images ) ) {
 			return $vertical_images;
 		}
