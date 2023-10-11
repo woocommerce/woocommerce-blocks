@@ -20,20 +20,38 @@ class ProductUpdater {
 		if ( count( $real_products ) > 0 ) {
 			return;
 		}
+		$dummy_products = $this->get_dummy_products();
 
-		$ai_selected_products_images = $this->get_images_information( $vertical_images );
-
-		$dummy_products       = $this->get_dummy_products();
 		$dummy_products_count = count( $dummy_products );
-
-		while ( $dummy_products_count < 5 ) {
+		while ( $dummy_products_count < 6 ) {
 			$this->create_new_product();
 
 			$dummy_products       = $this->get_dummy_products();
 			$dummy_products_count = count( $dummy_products );
 		}
 
-		$products_information_list = $this->assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images );
+		// Identify dummy products that need to have their content updated.
+		$dummy_products_to_update = [];
+		foreach ( $dummy_products as $dummy_product ) {
+			$current_product_hash     = $this->get_hash_for_product( $dummy_product );
+			$ai_modified_product_hash = $this->get_hash_for_ai_modified_product( $dummy_product );
+
+			$dummy_product = wc_get_product( $dummy_product->get_id() );
+			$date_created  = $dummy_product->get_date_created()->date( 'Y-m-d H:i:s' );
+			$date_modified = $dummy_product->get_date_modified()->date( 'Y-m-d H:i:s' );
+
+			// If the store owner modified the product, we don't want to override the content.
+			if ( ( $date_created === $date_modified && is_null( $ai_modified_product_hash ) ) || ( $current_product_hash !== $ai_modified_product_hash && ! is_null( $ai_modified_product_hash ) ) ) {
+				$dummy_products_to_update[] = $dummy_product;
+			}
+		}
+
+		if ( empty( $dummy_products_to_update ) ) {
+			return;
+		}
+
+		$ai_selected_products_images = $this->get_images_information( $vertical_images );
+		$products_information_list   = $this->assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images );
 
 		$responses = $this->generate_product_content( $products_information_list );
 
@@ -53,15 +71,7 @@ class ProductUpdater {
 			}
 
 			$i = 0;
-			foreach ( $dummy_products as $dummy_product ) {
-				$current_product_hash     = $this->get_hash_for_product( $dummy_product );
-				$ai_modified_product_hash = $this->get_hash_for_ai_modified_product( $dummy_product );
-
-				// If the store owner modified the product, we don't want to override the content.
-				if ( $current_product_hash !== $ai_modified_product_hash ) {
-					continue;
-				}
-
+			foreach ( $dummy_products_to_update as $dummy_product ) {
 				$this->update_product_content( $dummy_product, $product_content[ $i ] );
 				++ $i;
 			}
@@ -82,9 +92,9 @@ class ProductUpdater {
 		$product->set_price( 25 );
 		$product->set_regular_price( 25 );
 
-		$product_id = $product->save();
+		$saved_product = $product->save();
 
-		return update_post_meta( $product_id, '_headstart_post', true );
+		return update_post_meta( $saved_product, '_headstart_post', true );
 	}
 
 	/**
@@ -202,6 +212,13 @@ class ProductUpdater {
 			return;
 		}
 
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		$product->get_image_id();
+		the_post_thumbnail_url();
+
 		$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
 
 		if ( is_wp_error( $product_image_id ) ) {
@@ -213,6 +230,8 @@ class ProductUpdater {
 		$product->set_image_id( $product_image_id );
 
 		$product->save();
+
+		$this->create_hash_for_ai_modified_product( $product );
 	}
 
 	/**
@@ -275,20 +294,16 @@ class ProductUpdater {
 		$count              = 0;
 		$placeholder_images = [];
 		foreach ( $vertical_images as $vertical_image ) {
-			if ( $count >= 5 ) {
+			if ( $count >= 6 ) {
 				break;
 			}
 
-			if ( ! isset( $vertical_image['guid'] ) ) {
-				continue;
-			}
-
-			$src = str_replace( 'http://', 'https://', $vertical_image['guid'] );
+			$src = $vertical_image['meta']['pexels_object']['src']['medium'] ?? 'images/block-placeholders/product-image-gallery.svg';
 			$alt = $vertical_image['meta']['pexels_object']['alt'] ?? 'The placeholder for a product image.';
 
 			$placeholder_images[] = [
 				'src' => esc_url( $src ),
-				'alt' => $alt,
+				'alt' => esc_attr( $alt ),
 			];
 
 			++ $count;
