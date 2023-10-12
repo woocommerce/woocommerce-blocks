@@ -2,24 +2,34 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { Notice, ExternalLink } from '@wordpress/components';
-import { createInterpolateElement, useEffect } from '@wordpress/element';
+import { Notice, ExternalLink, Button } from '@wordpress/components';
+import {
+	createInterpolateElement,
+	useEffect,
+	useState,
+} from '@wordpress/element';
 import { Alert } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
+import { useDispatch } from '@wordpress/data';
+import { createBlock } from '@wordpress/blocks';
+
 /**
  * Internal dependencies
  */
 import { useCombinedIncompatibilityNotice } from './use-combined-incompatibility-notice';
+import { Modal, ModalFooter } from './modal';
 import './editor.scss';
 
 interface ExtensionNoticeProps {
 	toggleDismissedStatus: ( status: boolean ) => void;
 	block: 'woocommerce/cart' | 'woocommerce/checkout';
+	clientId: string;
 }
 
 export function IncompatibleExtensionsNotice( {
 	toggleDismissedStatus,
 	block,
+	clientId,
 }: ExtensionNoticeProps ) {
 	const [
 		isVisible,
@@ -27,6 +37,10 @@ export function IncompatibleExtensionsNotice( {
 		incompatiblePaymentMethods,
 		numberOfIncompatiblePaymentMethods,
 	] = useCombinedIncompatibilityNotice( block );
+	const [ isOpen, setOpen ] = useState( false );
+	const openModal = () => setOpen( true );
+	const closeModal = () => setOpen( false );
+	const { replaceBlock } = useDispatch( 'core/block-editor' );
 
 	useEffect( () => {
 		toggleDismissedStatus( ! isVisible );
@@ -36,15 +50,26 @@ export function IncompatibleExtensionsNotice( {
 		return null;
 	}
 
-	// console.log( incompatiblePaymentMethods );
+	const switchButtonLabel =
+		block === 'woocommerce/cart'
+			? __( 'Switch to classic cart', 'woo-gutenberg-products-block' )
+			: __(
+					'Switch to classic checkout',
+					'woo-gutenberg-products-block'
+			  );
+	const blockLabel = block === 'woocommerce/cart' ? 'cart' : 'checkout';
 
 	const noticeContent = (
 		<>
 			{ numberOfIncompatiblePaymentMethods > 1
 				? createInterpolateElement(
-						__(
-							'The following extensions may be incompatible with the block-based checkout. <a>Learn more</a>',
-							'woo-gutenberg-products-block'
+						sprintf(
+							// translators: %s is the name of the parent block.
+							__(
+								'The following extensions may be incompatible with the block-based %s. <a>Learn more</a>',
+								'woo-gutenberg-products-block'
+							),
+							blockLabel
 						),
 						{
 							a: (
@@ -54,12 +79,13 @@ export function IncompatibleExtensionsNotice( {
 				  )
 				: createInterpolateElement(
 						sprintf(
-							// translators: %s is the name of the extension that is incompatible with the block-based checkout.
+							// translators: %1$s is the name of the extension, %2$s is the name of the parent block.
 							__(
-								'<strong>%s</strong> may be incompatible with the block-based checkout. <a>Learn more</a>',
+								'<strong>%1$s</strong> may be incompatible with the block-based %2$s. <a>Learn more</a>',
 								'woo-gutenberg-products-block'
 							),
-							Object.values( incompatiblePaymentMethods )[ 0 ]
+							Object.values( incompatiblePaymentMethods )[ 0 ],
+							blockLabel
 						),
 						{
 							strong: <strong />,
@@ -98,6 +124,72 @@ export function IncompatibleExtensionsNotice( {
 								)
 							) }
 						</ul>
+					) }
+					<Button variant={ 'primary' } onClick={ openModal }>
+						{ switchButtonLabel }
+					</Button>
+					{ isOpen && (
+						<Modal
+							title={ switchButtonLabel }
+							onRequestClose={ closeModal }
+						>
+							<p>
+								{ sprintf(
+									// translators: %s is the name of the parent block.
+									__(
+										'If you turn off the new %1$s it will be replaced with the classic %1$s shortcode. This means you may lose:',
+										'woo-gutenberg-products-block'
+									),
+									blockLabel
+								) }
+							</p>
+							<ul>
+								<li>
+									{ __(
+										'Customizations and updates to the block',
+										'woo-gutenberg-products-block'
+									) }
+								</li>
+								<li>
+									{ __(
+										'Additional local pickup options created for the new cart/checkout',
+										'woo-gutenberg-products-block'
+									) }
+								</li>
+							</ul>
+							<ModalFooter>
+								<Button
+									variant="primary"
+									onClick={ () => {
+										replaceBlock(
+											clientId,
+											createBlock(
+												'woocommerce/classic-shortcode',
+												{
+													shortcode:
+														block ===
+														'woocommerce/checkout'
+															? 'checkout'
+															: 'cart',
+												}
+											)
+										);
+										closeModal();
+									} }
+								>
+									{ switchButtonLabel }
+								</Button>{ ' ' }
+								<Button
+									variant="secondary"
+									onClick={ closeModal }
+								>
+									{ __(
+										'Cancel',
+										'woo-gutenberg-products-block'
+									) }
+								</Button>
+							</ModalFooter>
+						</Modal>
 					) }
 				</div>
 			</div>
