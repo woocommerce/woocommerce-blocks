@@ -50,7 +50,7 @@ const onClickCallback = ( {
 };
 
 const getTitle = () => {
-	return __( 'Checkout Shortcode', 'woo-gutenberg-products-block' );
+	return __( 'Checkout Checkout', 'woo-gutenberg-products-block' );
 };
 
 const getDescription = () => {

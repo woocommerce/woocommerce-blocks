@@ -20,7 +20,7 @@ import {
 	ExternalLink,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { box, Icon } from '@wordpress/icons';
+import { shortcode, Icon } from '@wordpress/icons';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useState, createInterpolateElement } from '@wordpress/element';
 import { store as noticesStore } from '@wordpress/notices';
@@ -35,7 +35,7 @@ import { TEMPLATES, TYPES } from './constants';
 import { getTemplateDetailsBySlug } from './utils';
 import * as blockifiedCheckout from './checkout';
 import * as blockifiedCart from './cart';
-
+import metadata from './block.json';
 import type { BlockifiedTemplateConfig } from './types';
 
 type Attributes = {
@@ -253,39 +253,13 @@ const Edit = ( { clientId, attributes }: BlockEditProps< Attributes > ) => {
 	);
 };
 
-registerBlockType( 'woocommerce/classic-shortcode', {
-	title: __( 'Classic Shortcode', 'woo-gutenberg-products-block' ),
+const settings = {
 	icon: (
-		<Icon icon={ box } className="wc-block-editor-components-block-icon" />
+		<Icon
+			icon={ shortcode }
+			className="wc-block-editor-components-block-icon"
+		/>
 	),
-	category: 'woocommerce',
-	apiVersion: 2,
-	keywords: [ __( 'WooCommerce', 'woo-gutenberg-products-block' ) ],
-	description: __(
-		'Renders classic WooCommerce shortcodes.',
-		'woo-gutenberg-products-block'
-	),
-
-	supports: {
-		align: true,
-		html: false,
-		multiple: false,
-		reusable: false,
-		inserter: false,
-	},
-	attributes: {
-		/**
-		 * Shortcode attribute is used to determine which shortcode gets rendered.
-		 */
-		shortcode: {
-			type: 'string',
-			default: 'any',
-		},
-		align: {
-			type: 'string',
-			default: 'wide',
-		},
-	},
 	edit: ( {
 		attributes,
 		clientId,
@@ -300,4 +274,29 @@ registerBlockType( 'woocommerce/classic-shortcode', {
 		);
 	},
 	save: () => null,
-} );
+	variations: [
+		{
+			name: 'checkout',
+			title: __( 'Classic Checkout', 'woo-gutenberg-products-block' ),
+			attributes: {
+				shortcode: 'checkout',
+			},
+			isActive: ( blockAttributes, variationAttributes ) =>
+				blockAttributes.shortcode === variationAttributes.shortcode,
+			scope: [ 'inserter', 'transform' ],
+		},
+		{
+			name: 'cart',
+			title: __( 'Classic Cart', 'woo-gutenberg-products-block' ),
+			attributes: {
+				shortcode: 'cart',
+			},
+			isActive: ( blockAttributes, variationAttributes ) =>
+				blockAttributes.shortcode === variationAttributes.shortcode,
+			scope: [ 'inserter', 'transform' ],
+			isDefault: true,
+		},
+	],
+};
+
+registerBlockType( metadata, settings );
