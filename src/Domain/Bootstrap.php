@@ -16,7 +16,6 @@ use Automattic\WooCommerce\Blocks\Domain\Services\Hydration;
 use Automattic\WooCommerce\Blocks\InboxNotifications;
 use Automattic\WooCommerce\Blocks\Installer;
 use Automattic\WooCommerce\Blocks\Migration;
-use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
 use Automattic\WooCommerce\Blocks\Payments\Api as PaymentsApi;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\BankTransfer;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\CashOnDelivery;
@@ -66,13 +65,6 @@ class Bootstrap {
 	 * @var Migration
 	 */
 	private $migration;
-
-	/**
-	 * Holds the Block Patterns instance
-	 *
-	 * @var BlockPatterns
-	 */
-	private $block_patterns;
 
 	/**
 	 * Constructor
