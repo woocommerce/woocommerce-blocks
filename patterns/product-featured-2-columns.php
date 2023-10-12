@@ -34,14 +34,7 @@ $first_button      = $content['buttons'][0]['default'] ?? '';
 					<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"textAlign":"right","fontSize":"small","style":{"spacing":{"margin":{"bottom":"0rem","top":"0"}}}} /--></div>
 				<!-- /wp:column --></div>
 			<!-- /wp:columns -->
-
 			<!-- /wp:post-template -->
-
-			<!-- wp:query-no-results -->
-			<!-- wp:paragraph {"placeholder":"Add text or blocks that will display when a query returns no results."} -->
-			<p></p>
-			<!-- /wp:paragraph -->
-			<!-- /wp:query-no-results -->
 		</div>
 		<!-- /wp:query -->
 	</div>
