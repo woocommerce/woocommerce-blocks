@@ -16,6 +16,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\Hydration;
 use Automattic\WooCommerce\Blocks\InboxNotifications;
 use Automattic\WooCommerce\Blocks\Installer;
 use Automattic\WooCommerce\Blocks\Migration;
+use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
 use Automattic\WooCommerce\Blocks\Payments\Api as PaymentsApi;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\BankTransfer;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\CashOnDelivery;
@@ -30,6 +31,7 @@ use Automattic\WooCommerce\Blocks\Templates\ClassicTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
+use Automattic\WooCommerce\Blocks\Verticals\VerticalsSelector;
 use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\StoreApi;
@@ -58,13 +60,19 @@ class Bootstrap {
 	 */
 	private $package;
 
-
 	/**
 	 * Holds the Migration instance
 	 *
 	 * @var Migration
 	 */
 	private $migration;
+
+	/**
+	 * Holds the Block Patterns instance
+	 *
+	 * @var BlockPatterns
+	 */
+	private $block_patterns;
 
 	/**
 	 * Constructor
@@ -106,6 +114,7 @@ class Bootstrap {
 		if ( $this->package->get_version() !== $this->package->get_version_stored_on_db() ) {
 			$this->migration->run_migrations();
 			$this->package->set_version_stored_on_db();
+			$this->update_patterns_content();
 		}
 
 		add_action(
@@ -528,5 +537,21 @@ class Bootstrap {
 				return new CashOnDelivery( $asset_api );
 			}
 		);
+	}
+
+	/**
+	 * Update the patterns content if the store description is present.
+	 *
+	 * @return void
+	 */
+	private function update_patterns_content() {
+		$block_patterns = $this->container->get( BlockPatterns::class );
+
+		$store_description = get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY );
+		if ( ! $store_description ) {
+			return;
+		}
+
+		$block_patterns->update_patterns_content( $store_description );
 	}
 }
