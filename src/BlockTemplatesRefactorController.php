@@ -68,10 +68,24 @@ class BlockTemplatesRefactorController {
 		$slugs              = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
 		$templates_from_woo = $this->get_block_templates_from_woocommerce( $slugs, array(), $template_type );
 		$templates_from_db  = $this->get_block_templates_from_db( $slugs, $template_type );
-		$test               = array_merge( $query_result, $templates_from_db, $templates_from_woo );
-		return $test;
+		$all_templates      = array_merge( $query_result, $templates_from_db, $templates_from_woo );
+		if ( isset( $all_templates ) && count( $all_templates ) === 0 ) {
+			return $all_templates;
+		}
+		return $this->render_template( end( $all_templates ), $all_templates );
 	}
 
+	/**
+	 * Renders the template.
+	 *
+	 * @param WP_Template         $template_to_render The template to render.
+	 * @param WP_Block_Template[] $all_templates An array of templates to render that matches the query.
+	 *
+	 * @return WP_Block_Template[] An array of found templates.
+	 */
+	public function render_template( $template_to_render, $all_templates ) {
+		return $all_templates;
+	}
 
 
 	/**

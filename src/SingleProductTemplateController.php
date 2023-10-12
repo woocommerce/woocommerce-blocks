@@ -1,20 +1,29 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
-use Automattic\WooCommerce\Blocks\Domain\Package;
-use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
+use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 
 
 /**
- * BlockTypesController class.
+ * SingleProductTemplateController class.
  *
  * @internal
  */
 class SingleProductTemplateController extends BlockTemplatesRefactorController {
 
-	public function manipulate() {
-		do_action( 'qm/debug', 'ci entro' );
-
+	/**
+	 * Renders the template.
+	 *
+	 * @param WP_Template         $template_to_render The template to render.
+	 * @param WP_Block_Template[] $all_templates An array of templates to render that matches the query.
+	 *
+	 * @return WP_Block_Template[] An array of found templates.
+	 */
+	public function manipulate_template( $template_to_render, $all_templates ) {
+		if ( is_singular( 'product' ) ) {
+			return SingleProductTemplateCompatibility::add_compatibility_layer( $template_to_render );
+		}
+		return $all_templates;
 	}
 
 }
