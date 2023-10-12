@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks;
 
 use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\Utils\BlockTemplatesUtilsRefactor;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 
 
@@ -48,6 +49,8 @@ class BlockTemplatesRefactorController {
 	 */
 	protected function init() {
 		add_filter( 'get_block_templates', array( $this, 'add_block_templates' ), 10, 3 );
+		// This is necessary for the REST API used by the Site Editor to update a specific template.
+		add_filter( 'get_block_file_template', array( $this, 'get_block_template_by_id' ), 10, 3 );
 		add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 	}
 
@@ -104,7 +107,18 @@ class BlockTemplatesRefactorController {
 		);
 	}
 
-
+	/**
+	 * Ensure that the template with the highest priority is returned.
+	 * The priority is as follows:
+	 * 1. Custom templates
+	 * 2. Theme templates
+	 * 3. Plugin templates
+	 *
+	 * @param WP_Block_Template $current_template Current to template.
+	 * @param WP_Block_Template $template_to_compare An array of query vars.
+	 *
+	 * @return boolean
+	 */
 	private function has_high_priority( $current_template, $template_to_compare ) {
 		$priority_source = array(
 			'plugin' => 0,
@@ -116,7 +130,7 @@ class BlockTemplatesRefactorController {
 		$template_to_compare_source = $template_to_compare->source;
 
 		if ( $current_template_source === $template_to_compare_source ) {
-			return str_contains( $current_template->slug, 'woocommerce' ) ? $template_to_compare : $current_template;
+			return str_contains( $current_template->id, 'woocommerce' ) ? $template_to_compare : $current_template;
 		}
 
 		return ( $priority_source[ $current_template_source ] > $priority_source[ $template_to_compare_source ] ) ? $current_template : $template_to_compare;
@@ -147,23 +161,37 @@ class BlockTemplatesRefactorController {
 	 * @return array Templates from the WooCommerce blocks plugin directory.
 	 */
 	public function get_block_templates_from_woocommerce( $slugs, $already_found_templates, $template_type = 'wp_template' ) {
-		$directory      = BlockTemplateUtils::get_templates_directory( $template_type );
-		$template_files = BlockTemplateUtils::get_template_paths( $directory );
+		$directory      = BlockTemplatesUtilsRefactor::get_templates_directory( $template_type );
+		$template_files = BlockTemplatesUtilsRefactor::get_template_paths( $directory );
 		$templates      = array();
 
 		foreach ( $template_files as $template_file ) {
-			$template_slug = BlockTemplateUtils::generate_template_slug_from_path( $template_file );
-			// This template does not have a slug we're looking for. Skip it.
-			if ( is_array( $slugs ) && count( $slugs ) > 0 && ! in_array( $template_slug, $slugs, true ) ) {
-				continue;
-			}
-
-			$template_object = BlockTemplateUtils::create_new_block_template_object( $template_file, $template_type, $template_slug );
-			$template_built  = BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
+			$template_slug   = BlockTemplatesUtilsRefactor::generate_template_slug_from_path( $template_file );
+			$template_object = BlockTemplatesUtilsRefactor::create_new_block_template_object( $template_file, $template_type, $template_slug );
+			$template_built  = BlockTemplatesUtilsRefactor::build_template_result_from_file( $template_object, $template_type );
 			$templates[]     = $template_built;
 		}
 
 		return $templates;
+	}
+
+		/**
+		 * Gets the templates by id.
+		 *
+		 * @param null   $_value An array of slugs to filter templates by. Templates whose slug does not match will not be returned.
+		 * @param string $id Template id.
+		 * @param string $template_type wp_template or wp_template_part.
+		 *
+		 * @return WP_Block_Template|null
+		 */
+	public function get_block_template_by_id( $_value, $id, $template_type = 'wp_template' ) {
+		$templates = $this->get_block_templates_from_woocommerce( array(), array(), $template_type );
+		foreach ( $templates as $template ) {
+			if ( $template->id === $id ) {
+				$template->title = 'lollone';
+				return $template;
+			}
+		}
 	}
 
 }
