@@ -96,10 +96,7 @@ export default () => {
 		'layout-init',
 		( { directives: { 'layout-init': layoutInit }, evaluate } ) => {
 			layoutInit.forEach( ( entry ) => {
-				useLayoutEffect( () => {
-					const result = evaluate( entry );
-					return result;
-				}, [] );
+				useLayoutEffect( () => evaluate( entry ), [] );
 			} );
 		}
 	);
@@ -107,10 +104,7 @@ export default () => {
 	// data-wc-init--[name]
 	directive( 'init', ( { directives: { init }, evaluate } ) => {
 		init.forEach( ( entry ) => {
-			useEffect( () => {
-				const result = evaluate( entry );
-				return result;
-			}, [] );
+			useEffect( () => evaluate( entry ), [] );
 		} );
 	} );
 

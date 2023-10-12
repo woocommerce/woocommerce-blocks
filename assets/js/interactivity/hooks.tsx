@@ -40,37 +40,36 @@ import { stores } from './store';
 // Main context.
 const context = createContext( {} );
 
+// Wrap the element props to prevent modifications.
 const immutableMap = new WeakMap();
+const immutableError = () => {
+	throw new Error(
+		'Please use `data-wp-bind` to modify the attributes of an element.'
+	);
+};
+const immutableHandlers = {
+	get( target, key, receiver ) {
+		const value = Reflect.get( target, key, receiver );
+		return !! value && typeof value === 'object'
+			? deepImmutable( value )
+			: value;
+	},
+	set: immutableError,
+	deleteProperty: immutableError,
+};
 const deepImmutable = < T extends Object = {} >( target: T ): T => {
-	if ( immutableMap.has( target ) ) {
-		return immutableMap.get( target );
-	}
-	const proxy = new Proxy( target, {
-		get( target, prop ) {
-			const value = Reflect.get< any, string | symbol >( target, prop );
-			if ( !! value && typeof value === 'object' ) {
-				return deepImmutable( value );
-			}
-			return value;
-		},
-		set() {
-			throw Error( 'Cannot modify a deep immutable object.' );
-		},
-		deleteProperty() {
-			throw Error( 'Cannot modify a deep immutable object.' );
-		},
-	} );
-	immutableMap.set( target, proxy );
-	return proxy;
+	if ( ! immutableMap.has( target ) )
+		immutableMap.set( target, new Proxy( target, immutableHandlers ) );
+	return immutableMap.get( target );
 };
 
+// Store stacks for the current scope and the default namespaces and export APIs
+// to interact with them.
 let scopeStack: any[] = [];
 let namespaceStack: string[] = [];
 
-export const getContext = < T extends object >( namespace?: string ): T => {
-	const [ currentNamespace ] = namespaceStack.slice( -1 );
-	return getScope()?.context[ namespace || currentNamespace ];
-};
+export const getContext = < T extends object >( namespace?: string ): T =>
+	getScope()?.context[ namespace || namespaceStack.slice( -1 ) ];
 
 export const getElement = () => {
 	if ( ! getScope() ) {
@@ -217,7 +216,7 @@ const getPriorityLevels = ( directives ) => {
 		.map( ( [ , arr ] ) => arr );
 };
 
-// Priority level wrapper.
+// Component that wraps each priority level of directives of an element.
 const Directives = ( {
 	directives,
 	priorityLevels: [ currentPriorityLevel, ...nextPriorityLevels ],
@@ -233,7 +232,7 @@ const Directives = ( {
 	scope.ref = previousScope.ref || useRef( null );
 	scope.state = previousScope.state || useRef( deepSignal( {} ) );
 	scope.props = element?.props || originalProps;
-	scope.evaluate = useCallback( getEvaluate( { scope } ) );
+	scope.evaluate = useCallback( getEvaluate( { scope } ), [] );
 
 	// Create a fresh copy of the vnode element.
 	element = cloneElement( element, { ref: scope.ref } );
