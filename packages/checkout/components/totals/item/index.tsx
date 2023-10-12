@@ -3,7 +3,7 @@
  */
 import classnames from 'classnames';
 import { isValidElement } from '@wordpress/element';
-import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-monetary-amount';
+import { FormattedMonetaryAmount } from '@woocommerce/blocks-components';
 import type { ReactElement, ReactNode } from 'react';
 import type { Currency } from '@woocommerce/price-format';
 
