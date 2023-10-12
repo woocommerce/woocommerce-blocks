@@ -1,7 +1,7 @@
 /**
- * Internal dependencies
+ * External dependencies
  */
-import { ProductCollectionQuery } from '../product-collection/types';
+import { ProductCollectionQuery } from '@woocommerce/blocks/product-collection/types';
 
 function taxonomyMapper( taxonomy: string ) {
 	const map: Record< string, string > = {
@@ -13,6 +13,10 @@ function taxonomyMapper( taxonomy: string ) {
 }
 
 export function formatQuery( query: ProductCollectionQuery ) {
+	if ( ! query ) {
+		return {};
+	}
+
 	const sharedParams: Array< keyof ProductCollectionQuery > = [
 		'exclude',
 		'offset',
