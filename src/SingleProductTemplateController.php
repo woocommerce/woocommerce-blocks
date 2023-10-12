@@ -19,9 +19,11 @@ class SingleProductTemplateController extends BlockTemplatesRefactorController {
 	 *
 	 * @return WP_Block_Template[] An array of found templates.
 	 */
-	public function manipulate_template( $template_to_render, $all_templates ) {
+	public function render_template( $template_to_render, $all_templates ) {
 		if ( is_singular( 'product' ) ) {
-			return SingleProductTemplateCompatibility::add_compatibility_layer( $template_to_render );
+			$update_content              = SingleProductTemplateCompatibility::add_compatibility_layer( $template_to_render->content );
+			$template_to_render->content = $update_content;
+			return $template_to_render;
 		}
 		return $all_templates;
 	}

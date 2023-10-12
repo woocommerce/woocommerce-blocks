@@ -64,15 +64,63 @@ class BlockTemplatesRefactorController {
 		return BlockTemplateUtils::get_block_templates_from_db( $slugs, $template_type );
 	}
 
+	/**
+	 * Adds block templates to the query result.
+	 *
+	 * @param WP_Block_Template[] $query_result An array of templates to render that matches the query.
+	 * @param array               $query An array of query vars.
+	 * @param string              $template_type wp_template or wp_template_part.
+	 *
+	 * @return WP_Block_Template[] An array of found templates.
+	 */
 	public function add_block_templates( $query_result, $query, $template_type ) {
-		$slugs              = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
-		$templates_from_woo = $this->get_block_templates_from_woocommerce( $slugs, array(), $template_type );
-		$templates_from_db  = $this->get_block_templates_from_db( $slugs, $template_type );
-		$all_templates      = array_merge( $query_result, $templates_from_db, $templates_from_woo );
-		if ( isset( $all_templates ) && count( $all_templates ) === 0 ) {
+		$slugs               = isset( $query['slug__in'] ) ? $query['slug__in'] : array();
+		$templates_from_woo  = $this->get_block_templates_from_woocommerce( $slugs, array(), $template_type );
+		$templates_from_db   = $this->get_block_templates_from_db( $slugs, $template_type );
+		$all_templates       = array_merge( $query_result, $templates_from_woo, $templates_from_db );
+		$organized_templates = $this->organize_templates( $all_templates );
+		if ( ! isset( $all_templates ) || isset( $all_templates ) && count( $all_templates ) === 0 ) {
 			return $all_templates;
 		}
-		return $this->render_template( end( $all_templates ), $all_templates );
+		$templates = $this->render_template( end( $organized_templates ), $organized_templates );
+
+		return is_array( $templates ) ? $templates : array( $templates );
+	}
+
+	private function organize_templates( $all_templates ) {
+		return array_reduce(
+			$all_templates,
+			function( $carry, $template ) {
+				$current_template = $carry[ $template->slug ] ?? null;
+				if ( ! $current_template ) {
+					$carry[ $template->slug ] = $template;
+					return $carry;
+				}
+
+				$carry[ $template->slug ] = $this->has_high_priority( $current_template, $template );
+				return $carry;
+			},
+			array()
+		);
+	}
+
+
+	private function has_high_priority( $current_template, $template_to_compare ) {
+		$priority_source = array(
+			'plugin' => 0,
+			'theme'  => 1,
+			'custom' => 2,
+		);
+
+		$current_template_source    = $current_template->source;
+		$template_to_compare_source = $template_to_compare->source;
+
+		if ( $current_template_source === $template_to_compare_source ) {
+			return str_contains( $current_template->slug, 'woocommerce' ) ? $template_to_compare : $current_template;
+		}
+
+		return ( $priority_source[ $current_template_source ] > $priority_source[ $template_to_compare_source ] ) ? $current_template : $template_to_compare;
+
 	}
 
 	/**
