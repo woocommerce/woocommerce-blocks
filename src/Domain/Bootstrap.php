@@ -106,7 +106,6 @@ class Bootstrap {
 		if ( $this->package->get_version() !== $this->package->get_version_stored_on_db() ) {
 			$this->migration->run_migrations();
 			$this->package->set_version_stored_on_db();
-			$this->update_patterns_content();
 		}
 
 		add_action(
@@ -529,21 +528,5 @@ class Bootstrap {
 				return new CashOnDelivery( $asset_api );
 			}
 		);
-	}
-
-	/**
-	 * Update the patterns content if the store description is present.
-	 *
-	 * @return void
-	 */
-	private function update_patterns_content() {
-		$block_patterns = $this->container->get( BlockPatterns::class );
-
-		$store_description = get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY );
-		if ( ! $store_description ) {
-			return;
-		}
-
-		$block_patterns->update_patterns_content( $store_description );
 	}
 }
