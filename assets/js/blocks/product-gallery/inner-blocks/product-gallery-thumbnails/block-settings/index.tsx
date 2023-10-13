@@ -52,6 +52,8 @@ export const ProductGalleryThumbnailsBlockSettings = ( {
 }: ProductGalleryThumbnailsSettingsProps ) => {
 	const maxNumberOfThumbnails = 8;
 	const minNumberOfThumbnails = 2;
+	const thumbnailsMaxNumberOfColumnsMax = 4;
+	const thumbnailsMaxNumberOfColumnsMin = 1;
 	const { productGalleryClientId } = context;
 	// @ts-expect-error @wordpress/block-editor/store types not provided
 	const { updateBlockAttributes } = useDispatch( blockEditorStore );
@@ -98,24 +100,44 @@ export const ProductGalleryThumbnailsBlockSettings = ( {
 				/>
 			</ToggleGroupControl>
 			{ context.thumbnailsPosition !== ThumbnailsPosition.OFF && (
-				<RangeControl
-					label={ __(
-						'Number of Thumbnails',
-						'woo-gutenberg-products-block'
-					) }
-					value={ context.thumbnailsNumberOfThumbnails }
-					onChange={ ( value: number ) =>
-						updateBlockAttributes( productGalleryClientId, {
-							thumbnailsNumberOfThumbnails: value,
-						} )
-					}
-					help={ __(
-						'Choose how many thumbnails (2-8) will display. If more images exist, a “View all” button will display.',
-						'woo-gutenberg-products-block'
-					) }
-					max={ maxNumberOfThumbnails }
-					min={ minNumberOfThumbnails }
-				/>
+				<>
+					<RangeControl
+						label={ __(
+							'Number of Thumbnails',
+							'woo-gutenberg-products-block'
+						) }
+						value={ context.thumbnailsNumberOfThumbnails }
+						onChange={ ( value: number ) =>
+							updateBlockAttributes( productGalleryClientId, {
+								thumbnailsNumberOfThumbnails: value,
+							} )
+						}
+						help={ __(
+							'Choose how many thumbnails (2-8) will display. If more images exist, a “View all” button will display.',
+							'woo-gutenberg-products-block'
+						) }
+						max={ maxNumberOfThumbnails }
+						min={ minNumberOfThumbnails }
+					/>
+					<RangeControl
+						label={ __(
+							'Maximum number of columns',
+							'woo-gutenberg-products-block'
+						) }
+						value={ context.thumbnailsMaxNumberOfColumns }
+						onChange={ ( value: number ) =>
+							updateBlockAttributes( productGalleryClientId, {
+								thumbnailsMaxNumberOfColumns: value,
+							} )
+						}
+						help={ __(
+							'Select the highest number of columns for displaying Thumbnails.',
+							'woo-gutenberg-products-block'
+						) }
+						max={ thumbnailsMaxNumberOfColumnsMax }
+						min={ thumbnailsMaxNumberOfColumnsMin }
+					/>
+				</>
 			) }
 		</>
 	);

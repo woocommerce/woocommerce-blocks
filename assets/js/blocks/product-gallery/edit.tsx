@@ -144,6 +144,8 @@ export const Edit = ( {
 						thumbnailsPosition: attributes.thumbnailsPosition,
 						thumbnailsNumberOfThumbnails:
 							attributes.thumbnailsNumberOfThumbnails,
+						thumbnailsMaxNumberOfColumns:
+							attributes.thumbnailsMaxNumberOfColumns,
 						nextPreviousButtonsPosition:
 							attributes.nextPreviousButtonsPosition,
 					} }

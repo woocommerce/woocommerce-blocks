@@ -17,6 +17,7 @@
 	"providesContext": {
 		"thumbnailsPosition": "thumbnailsPosition",
 		"thumbnailsNumberOfThumbnails": "thumbnailsNumberOfThumbnails",
+		"thumbnailsMaxNumberOfColumns": "thumbnailsMaxNumberOfColumns",
 		"productGalleryClientId": "productGalleryClientId",
 		"nextPreviousButtonsPosition": "nextPreviousButtonsPosition",
 		"pagerDisplayMode": "pagerDisplayMode",
@@ -32,6 +33,10 @@
 		"thumbnailsNumberOfThumbnails": {
 			"type": "number",
 			"default": 3
+		},
+		"thumbnailsMaxNumberOfColumns": {
+			"type": "number",
+			"default": 1
 		},
 		"pagerDisplayMode": {
 			"type": "string",

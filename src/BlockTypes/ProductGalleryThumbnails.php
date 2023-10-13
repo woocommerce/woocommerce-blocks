@@ -37,7 +37,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	 * @return string[]
 	 */
 	protected function get_block_type_uses_context() {
-		return [ 'productGalleryClientId', 'postId', 'thumbnailsNumberOfThumbnails', 'thumbnailsPosition' ];
+		return [ 'productGalleryClientId', 'postId', 'thumbnailsNumberOfThumbnails', 'thumbnailsMaxNumberOfColumns', 'thumbnailsPosition' ];
 	}
 
 	/**
@@ -64,28 +64,39 @@ class ProductGalleryThumbnails extends AbstractBlock {
 			if ( $product ) {
 				$post_thumbnail_id      = $product->get_image_id();
 				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail', array(), 'wc-block-product-gallery-thumbnails__thumbnail' );
+
 				if ( $product_gallery_images && $post_thumbnail_id ) {
-					$html                 = '';
-					$number_of_thumbnails = isset( $block->context['thumbnailsNumberOfThumbnails'] ) ? $block->context['thumbnailsNumberOfThumbnails'] : 3;
-					$thumbnails_count     = 1;
+					$html                  = '';
+					$number_of_thumbnails  = isset( $block->context['thumbnailsNumberOfThumbnails'] ) ? $block->context['thumbnailsNumberOfThumbnails'] : 3;
+					$max_number_of_columns = isset( $block->context['thumbnailsMaxNumberOfColumns'] ) ? $block->context['thumbnailsMaxNumberOfColumns'] : 1;
 
-					foreach ( $product_gallery_images as $product_gallery_image_html ) {
-						if ( $thumbnails_count > $number_of_thumbnails ) {
-							break;
+					$base_images_per_group = (int) floor( $number_of_thumbnails / $max_number_of_columns );
+					$extra_images          = $number_of_thumbnails - ( $base_images_per_group * $max_number_of_columns );
+
+					for ( $i = 0; $i < $max_number_of_columns; $i++ ) {
+						// Distribute extra images to the initial groups.
+						$current_images_per_group = $base_images_per_group + ( $i < $extra_images ? 1 : 0 );
+
+						$current_group_images = array_splice( $product_gallery_images, 0, $current_images_per_group );
+
+						if ( $max_number_of_columns > 1 && count( $current_group_images ) > 0 ) {
+							$html .= '<div class="wc-block-product-gallery-thumbnails__wrapper">';
 						}
 
-						$processor = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
-
-						if ( $processor->next_tag( 'img' ) ) {
-							$processor->set_attribute(
-								'data-wc-on--click',
-								'actions.woocommerce.thumbnails.handleClick'
-							);
-
-							$html .= $processor->get_updated_html();
+						foreach ( $current_group_images as $product_gallery_image_html ) {
+							$processor = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
+							if ( $processor->next_tag( 'img' ) ) {
+								$processor->set_attribute(
+									'data-wc-on--click',
+									'actions.woocommerce.thumbnails.handleClick'
+								);
+								$html .= $processor->get_updated_html();
+							}
 						}
 
-						$thumbnails_count++;
+						if ( $max_number_of_columns > 1 && count( $current_group_images ) > 0 ) {
+							$html .= '</div>';
+						}
 					}
 
 					return sprintf(
@@ -98,6 +109,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 					);
 				}
 			}
+
 			return;
 		}
 	}

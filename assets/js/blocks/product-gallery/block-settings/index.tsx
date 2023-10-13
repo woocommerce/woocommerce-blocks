@@ -24,6 +24,7 @@ export const ProductGalleryBlockSettings = ( {
 		pagerDisplayMode,
 		nextPreviousButtonsPosition,
 		thumbnailsNumberOfThumbnails,
+		thumbnailsMaxNumberOfColumns,
 		thumbnailsPosition,
 	} = context;
 	return (
@@ -47,6 +48,7 @@ export const ProductGalleryBlockSettings = ( {
 					context={ {
 						productGalleryClientId,
 						thumbnailsNumberOfThumbnails,
+						thumbnailsMaxNumberOfColumns,
 						thumbnailsPosition,
 					} }
 				/>

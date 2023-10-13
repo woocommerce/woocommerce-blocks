@@ -15,6 +15,7 @@ export interface ProductGalleryBlockAttributes {
 export interface ProductGalleryThumbnailsBlockAttributes {
 	thumbnailsPosition: ThumbnailsPosition;
 	thumbnailsNumberOfThumbnails: number;
+	thumbnailsMaxNumberOfColumns: number;
 	productGalleryClientId: string;
 }
 
@@ -43,6 +44,7 @@ export interface ProductGalleryThumbnailsSettingsProps {
 export type ProductGalleryContext = {
 	thumbnailsPosition: ThumbnailsPosition;
 	thumbnailsNumberOfThumbnails: number;
+	thumbnailsMaxNumberOfColumns: number;
 	productGalleryClientId: string;
 	pagerDisplayMode: PagerDisplayModes;
 } & ProductGalleryNextPreviousBlockAttributes;
@@ -62,6 +64,7 @@ export type ProductGalleryThumbnailsContext = Pick<
 	| 'productGalleryClientId'
 	| 'thumbnailsPosition'
 	| 'thumbnailsNumberOfThumbnails'
+	| 'thumbnailsMaxNumberOfColumns'
 >;
 
 export type ProductGalleryAttributes = ProductGalleryThumbnailsBlockAttributes &
