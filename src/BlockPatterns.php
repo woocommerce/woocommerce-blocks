@@ -223,7 +223,7 @@ class BlockPatterns {
 	 */
 	public function schedule_on_plugin_update( $upgrader_object, $options ) {
 		if ( 'update' === $options['action'] && 'plugin' === $options['type'] ) {
-			if ( isset( $options['plugin'] ) && ( 'woocommerce-blocks/woocommerce-gutenberg-products-block.php' === $options['plugin'] || 'woocommerce/woocommerce.php' === $options['plugin'] ) ) {
+			if ( isset( $options['plugin'] ) && ( str_contains( $options['plugin'], 'woocommerce-gutenberg-products-block.php' ) || str_contains( $options['plugin'], 'woocommerce.php' ) ) ) {
 				$business_description = get_option( 'woo_ai_describe_store_description' );
 
 				if ( $business_description ) {
