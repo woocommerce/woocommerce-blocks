@@ -202,9 +202,10 @@ class ProductUpdater {
 		if ( ! isset( $ai_generated_product_content['image']['src'] ) || ! isset( $ai_generated_product_content['image']['alt'] ) || ! isset( $ai_generated_product_content['title'] ) || ! isset( $ai_generated_product_content['description'] ) ) {
 			return;
 		}
-
+		// Since the media_sideload_image function can take longer to complete
+		// the process of downloading the external image and uploading it
+		// to the media library, we need to ensure the request doesn't timeout.
 		set_time_limit( 60 );
-		wp_raise_memory_limit( 'image' );
 
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -294,8 +295,16 @@ class ProductUpdater {
 				break;
 			}
 
-			$src = $vertical_image['meta']['pexels_object']['src']['large'] ?? 'images/block-placeholders/product-image-gallery.svg';
-			$alt = $vertical_image['meta']['pexels_object']['alt'] ?? 'The placeholder for a product image.';
+			if ( isset( $vertical_image['meta']['pexels_object']['src']['large'] ) ) {
+				$src = $vertical_image['meta']['pexels_object']['src']['large'];
+				$alt = $vertical_image['meta']['pexels_object']['alt'] ?? 'The placeholder for a product image.';
+			} elseif ( isset( $vertical_image['guid'] ) ) {
+				$src = $vertical_image['guid'];
+				$alt = $vertical_image['meta']['pexels_object']['alt'] ?? 'The placeholder for a product image.';
+			} else {
+				$src = 'images/pattern-placeholders/white-texture-floor-wall-gray-tile.jpg';
+				$alt = 'The placeholder for a product image.';
+			}
 
 			$placeholder_images[] = [
 				'src' => esc_url( $src ),
@@ -336,7 +345,7 @@ class ProductUpdater {
 			return new \WP_Error( 'missing_store_description', __( 'The store description is required to generate the content for your site.', 'woo-gutenberg-products-block' ) );
 		}
 
-		$prompt = [ sprintf( 'Given the following store description: "%1s" and the assigned value for the alt property in the json bellow, generate new titles and descriptions for each one of the products listed bellow and assign them as the new values for the json: %2s. The response should be only a JSON string, with no intro or explanations.', $store_description, wp_json_encode( $products_default_content ) ) ];
+		$prompt = [ sprintf( 'Given the following store description: "%1s" and the assigned value for the alt property in the json bellow, generate new titles and descriptions for each one of the products listed bellow and assign them as the new values for the json: %2s. Each one of the titles should be unique and no numbers are allowed. The response should be only a JSON string, with no intro or explanations.', $store_description, wp_json_encode( $products_default_content ) ) ];
 
 		return $ai_connection->fetch_ai_responses( $token, $prompt, 60 );
 	}
