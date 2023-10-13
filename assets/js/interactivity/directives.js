@@ -84,10 +84,7 @@ export default () => {
 	// data-wc-watch--[name]
 	directive( 'watch', ( { directives: { watch }, evaluate } ) => {
 		watch.forEach( ( entry ) => {
-			useSignalEffect( async () => {
-				const result = evaluate( entry );
-				return await result;
-			} );
+			useSignalEffect( () => evaluate( entry ) );
 		} );
 	} );
 
