@@ -7,11 +7,11 @@
 | perPage                       | Number                                                | 9        | Number of products per page                                                                                                                  |
 | pages                         | Number                                                | 0        | Total number of pages Product Collection should allow to browse                                                                              |
 | offset                        | Number                                                | 0        | Offset of products when starting pagination                                                                                                  |
-| postType                      | 'product' | 'post'                                    | product' | The type of posts to fetch. It's 'product' by default and it's very unlikely to change that                                                  |
+| postType                      | 'product' or 'post'                                   | 'product'| The type of posts to fetch. It's 'product' by default and it's very unlikely to change that                                                  |
 | isProductCollectionBlock      | Boolean                                               | true     | Specifies that the query is from Product Collection block. There's no case in which it should be changed                                     |
 | inherit                       | Boolean                                               | true     | Define it the query should inherit from template query or not. If yes, all the other filters are ignored                                     |
-| order                         | 'asc' | 'desc'                                        | asc'     | Determines if the order is ascending or descending                                                                                           |
-| orderBy                       | 'title' | 'date' | 'popularity' | 'rating'            | title'   | Allows to choose the ordering from presets                                                                                                   |
+| order                         | 'asc' or 'desc'                                       | asc'     | Determines if the order is ascending or descending                                                                                           |
+| orderBy                       | 'title' or 'date' or 'popularity' or 'rating'         | title'   | Allows to choose the ordering from presets                                                                                                   |
 | author                        | String                                                | -        | To be removed. Filter products by the author of the product (post)                                                                           |
 | search                        | String                                                | -        | Filter the products by keyword                                                                                                              |
 | exclude                       | ProductID[]                                           | []       | Specified products won't be displayed as results even if they match other filters. There's no UI representation of this filter at the moment |
@@ -21,7 +21,7 @@
 | woocommerceAttributes         | [ { termId: TermID, taxonomy: Taxonomy } ]            | []       | Display products with specific attributes                                                                                                    |
 | taxQuery                      | { product_cat: CategoriesId[], product_tag: TagID[] } | {}       | Filter products from specific categories and/or tags                                                                                         |
 | parents                       | Array                                                 | []       | ???                                                                                                                                          |
-| sticky                        | '' | 'only' | String                                  | ''       | ???                                                                                                                                          |
+| sticky                        | '' ir 'only' or String                                | ''       | ???                                                                                                                                          |
 
 ## Example attributes shape
 
