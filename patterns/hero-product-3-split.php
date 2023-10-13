@@ -22,8 +22,8 @@ $fourth_description = $content['descriptions'][3]['default'] ?? '';
 $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 ?>
 
-<!-- wp:columns {"align":"wide","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"}}}} -->
-<div class="wp-block-columns alignwide" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
+<!-- wp:columns {"align":"full","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"}}}} -->
+<div class="wp-block-columns alignfull" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
 	<!-- wp:column {"width":"66.66%"} -->
 	<div class="wp-block-column" style="flex-basis:66.66%">
 		<!-- wp:media-text {"mediaPosition":"right","mediaId":1,"mediaLink":"<?php echo esc_url( plugins_url( 'images/pattern-placeholders/hand-guitar-finger-tshirt-clothing-rack.png', dirname( __FILE__ ) ) ); ?>","mediaType":"image"} -->
@@ -59,8 +59,8 @@ $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 	</div>
 	<!-- /wp:column -->
 
-	<!-- wp:column {"verticalAlignment":"center","width":"33.33%"} -->
-	<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:33.33%">
+	<!-- wp:column {"verticalAlignment":"center","width":"30%","style":{"spacing":{"padding":{"right":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
+	<div class="wp-block-column is-vertically-aligned-center" style="padding-right:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30);flex-basis:30%">
 		<!-- wp:paragraph -->
 		<p><strong><?php echo esc_html( $second_title ); ?></strong></p>
 		<!-- /wp:paragraph -->

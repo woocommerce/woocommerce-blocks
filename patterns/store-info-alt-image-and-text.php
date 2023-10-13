@@ -41,7 +41,7 @@ $button = $content['buttons'][0]['default'] ?? '';
 		<!-- wp:column {"verticalAlignment":"center","width":"50%"} -->
 		<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:50%">
 			<!-- wp:paragraph {"placeholder":"Content…","style":{"typography":{"textTransform":"uppercase"}}} -->
-			<p style="text-transform:uppercase"><?php echo esc_html( $first_title ); ?></p>
+			<p style="text-transform:uppercase"><?php esc_html_e( 'The goods', 'woo-gutenberg-products-block' ); ?></p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:heading {"level":3,"style":{"spacing":{"margin":{"top":"0","bottom":"0"}}}} -->
@@ -51,25 +51,6 @@ $button = $content['buttons'][0]['default'] ?? '';
 			<!-- wp:paragraph -->
 			<p><?php echo esc_html( $first_description ); ?></p>
 			<!-- /wp:paragraph -->
-
-			<!-- wp:list -->
-			<ul><!-- wp:list-item -->
-				<li><?php esc_html_e( 'Timeless style.', 'woo-gutenberg-products-block' ); ?></li>
-				<!-- /wp:list-item -->
-
-				<!-- wp:list-item -->
-				<li><?php esc_html_e( 'Earthy, organic feel.', 'woo-gutenberg-products-block' ); ?></li>
-				<!-- /wp:list-item -->
-
-				<!-- wp:list-item -->
-				<li><?php esc_html_e( 'Enduring quality.', 'woo-gutenberg-products-block' ); ?></li>
-				<!-- /wp:list-item -->
-
-				<!-- wp:list-item -->
-				<li><?php esc_html_e( 'Unique, one-of-a-kind pieces.', 'woo-gutenberg-products-block' ); ?></li>
-				<!-- /wp:list-item -->
-			</ul>
-			<!-- /wp:list -->
 		</div>
 		<!-- /wp:column -->
 	</div>
