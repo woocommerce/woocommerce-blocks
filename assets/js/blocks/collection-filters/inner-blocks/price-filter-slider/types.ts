@@ -15,6 +15,6 @@ export type BlockAttributes = {
 
 export type EditProps = BlockEditProps< BlockAttributes > & {
 	context: {
-		filterData: Partial< PriceFilterState >;
+		collectionData: Partial< PriceFilterState >;
 	};
 };
