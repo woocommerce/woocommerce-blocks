@@ -21,10 +21,10 @@ final class CollectionFilters extends AbstractBlock {
 	 * @var array
 	 */
 	protected $collection_data_params_mapping = array(
-		'calculate_price_range'         => 'collection-price-filter',
-		'calculate_stock_status_counts' => 'collection-stock-filter',
-		'calculate_attribute_counts'    => 'collection-attribute-filter',
-		'calculate_rating_counts'       => 'collection-rating-filter',
+		'calculate_price_range'         => 'price',
+		'calculate_stock_status_counts' => 'stock',
+		'calculate_attribute_counts'    => 'attribute',
+		'calculate_rating_counts'       => 'rating',
 	);
 
 	/**
@@ -123,17 +123,10 @@ final class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_aggregated_collection_data( $block ) {
-		$inner_blocks = $this->get_inner_blocks_recursive( $block->inner_blocks );
-
+		$inner_filter_types     = $this->get_inner_filter_types_recursive( $block->inner_blocks );
 		$collection_data_params = array_map(
-			function( $block_name ) use ( $inner_blocks ) {
-				return array_reduce(
-					$inner_blocks,
-					function( $acc, $inner_block ) use ( $block_name ) {
-						return $acc || strpos( $inner_block, $block_name ) !== false;
-					},
-					false
-				);
+			function( $filter_type ) use ( $inner_filter_types ) {
+				return in_array( $filter_type, $inner_filter_types, true );
 			},
 			$this->collection_data_params_mapping
 		);
@@ -142,12 +135,10 @@ final class CollectionFilters extends AbstractBlock {
 			return array();
 		}
 
-		$products_params = $this->get_formatted_products_params( $block->context['query'] );
-
 		$response = Package::container()->get( Hydration::class )->get_rest_api_response_data(
 			add_query_arg(
 				array_merge(
-					$products_params,
+					$this->get_formatted_products_params( $block->context['query'] ),
 					$collection_data_params,
 				),
 				'/wc/store/v1/products/collection-data'
@@ -169,12 +160,13 @@ final class CollectionFilters extends AbstractBlock {
 	 *
 	 * @return array
 	 */
-	private function get_inner_blocks_recursive( $inner_blocks, &$results = array() ) {
+	private function get_inner_filter_types_recursive( $inner_blocks, &$results = array() ) {
 		if ( is_a( $inner_blocks, 'WP_Block_List' ) ) {
 			foreach ( $inner_blocks as $inner_block ) {
-				dd( $inner_block );
-				$results[] = $inner_block->name;
-				$this->get_inner_blocks_recursive(
+				if ( isset( $inner_block->attributes['filterType'] ) ) {
+					$results[] = $inner_block->attributes['filterType'];
+				}
+				$this->get_inner_filter_types_recursive(
 					$inner_block->inner_blocks,
 					$results
 				);

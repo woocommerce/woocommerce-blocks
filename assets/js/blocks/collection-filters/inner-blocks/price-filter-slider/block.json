@@ -20,6 +20,10 @@
 		"filterData"
 	],
 	"attributes": {
+		"filterType": {
+			"type": "string",
+			"default": "price"
+		},
 		"showInputFields": {
 			"type": "boolean",
 			"default": true

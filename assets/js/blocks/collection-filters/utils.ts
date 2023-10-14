@@ -61,23 +61,26 @@ export function getFilterData( collectionData ) {
 	return getFormattedPrice( collectionData );
 }
 
-function getInnerBlocksName( block ) {
+function getInnerFilterBlockTypes( block ) {
 	return block.innerBlocks.reduce( ( acc, innerBlock ) => {
-		return acc.concat( innerBlock.name, getInnerBlocksName( innerBlock ) );
+		return acc.concat(
+			innerBlock.attributes?.filterType,
+			getInnerFilterBlockTypes( innerBlock )
+		);
 	}, [] );
 }
 
 export function getQueryParams( block ) {
-	const innerBlocksName = getInnerBlocksName( block );
+	const innerFilterBlockTypes = getInnerFilterBlockTypes( block );
 	const map = {
-		queryPrices: 'woocommerce/collection-price-filter',
-		queryAttributes: 'woocommerce/collection-attribute-filter',
-		queryStock: 'woocommerce/collection-stock-filter',
-		queryRating: 'woocommerce/collection-rating-filter',
+		queryPrices: 'price',
+		queryAttributes: 'attribute',
+		queryStock: 'stock',
+		queryRating: 'rating',
 	};
 
 	return Object.entries( map ).reduce( ( acc, [ key, value ] ) => {
-		acc[ key ] = innerBlocksName.some( ( name ) => name.includes( value ) );
+		acc[ key ] = innerFilterBlockTypes.includes( value );
 		return acc;
 	}, {} );
 }
