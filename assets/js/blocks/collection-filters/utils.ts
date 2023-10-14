@@ -61,17 +61,17 @@ export function getFilterData( collectionData ) {
 	return getFormattedPrice( collectionData );
 }
 
-function getInnerFilterBlockTypes( block ) {
+function getInnerFilterTypes( block ) {
 	return block.innerBlocks.reduce( ( acc, innerBlock ) => {
 		return acc.concat(
 			innerBlock.attributes?.filterType,
-			getInnerFilterBlockTypes( innerBlock )
+			getInnerFilterTypes( innerBlock )
 		);
 	}, [] );
 }
 
 export function getQueryParams( block ) {
-	const innerFilterBlockTypes = getInnerFilterBlockTypes( block );
+	const innerFilterTypes = getInnerFilterTypes( block );
 	const map = {
 		queryPrices: 'price',
 		queryAttributes: 'attribute',
@@ -80,7 +80,7 @@ export function getQueryParams( block ) {
 	};
 
 	return Object.entries( map ).reduce( ( acc, [ key, value ] ) => {
-		acc[ key ] = innerFilterBlockTypes.includes( value );
+		acc[ key ] = innerFilterTypes.includes( value );
 		return acc;
 	}, {} );
 }
