@@ -2,19 +2,15 @@
  * External dependencies
  */
 import { BlockEditProps } from '@wordpress/blocks';
-
-/**
- * Internal dependencies
- */
-import { PriceFilterState } from '../price-filter/types';
+import { PriceFilterState } from '@woocommerce/blocks/collection-filters/types';
 
 export type BlockAttributes = {
 	showInputFields: boolean;
 	inlineInput: boolean;
 };
 
-export type EditProps = BlockEditProps< BlockAttributes > & {
+export interface EditProps extends BlockEditProps< BlockAttributes > {
 	context: {
-		collectionData: Partial< PriceFilterState >;
+		filterData: Partial< PriceFilterState >;
 	};
-};
+}

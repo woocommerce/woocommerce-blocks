@@ -16,10 +16,10 @@ import {
 /**
  * Internal dependencies
  */
+import { EditProps } from './types';
 
-const Edit = ( { attributes, setAttributes, context } ) => {
+const Edit = ( { attributes, setAttributes, context }: EditProps ) => {
 	const { showInputFields, inlineInput } = attributes;
-	console.log( context );
 	const { minPrice, maxPrice, formattedMinPrice, formattedMaxPrice } =
 		context.filterData;
 
