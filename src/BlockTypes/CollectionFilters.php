@@ -21,10 +21,10 @@ final class CollectionFilters extends AbstractBlock {
 	 * @var array
 	 */
 	protected $collection_data_params_mapping = array(
-		'calculate_price_range'         => 'woocommerce/collection-price-filter',
-		'calculate_stock_status_counts' => 'woocommerce/collection-stock-filter',
-		'calculate_attribute_counts'    => 'woocommerce/collection-attribute-filter',
-		'calculate_rating_counts'       => 'woocommerce/collection-rating-filter',
+		'calculate_price_range'         => 'collection-price-filter',
+		'calculate_stock_status_counts' => 'collection-stock-filter',
+		'calculate_attribute_counts'    => 'collection-attribute-filter',
+		'calculate_rating_counts'       => 'collection-rating-filter',
 	);
 
 	/**
@@ -89,17 +89,10 @@ final class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	public function modify_inner_blocks_context( $context, $parsed_block, $parent_block ) {
-		if ( is_admin() || ! is_a( $parent_block, 'WP_Block' ) ) {
-			return $context;
-		}
-
-		/**
-		 * Bail if the current block is not a direct child of CollectionFilters
-		 * and the parent block doesn't have our custom context.
-		 */
 		if (
-			"woocommerce/{$this->block_name}" !== $parent_block->name &&
-			empty( $parent_block->context['isCollectionFiltersInnerBlock'] )
+			is_admin() ||
+			! is_a( $parent_block, 'WP_Block' ) ||
+			! isset( $context['filterData'] )
 		) {
 			return $context;
 		}
@@ -115,23 +108,7 @@ final class CollectionFilters extends AbstractBlock {
 			);
 		}
 
-		if ( empty( $this->current_response ) ) {
-			return $context;
-		}
-
-		/**
-		 * We target only filter blocks, but they can be nested inside other
-		 * blocks like Group/Row for layout purposes. We pass this custom light
-		 * weight context (instead of full CollectionData response) to all inner
-		 * blocks of current CollectionFilters to find and iterate inner filter
-		 * blocks.
-		 */
-		$context['isCollectionFiltersInnerBlock'] = true;
-
-		if (
-			isset( $parsed_block['blockName'] ) &&
-			in_array( $parsed_block['blockName'], $this->collection_data_params_mapping, true )
-		) {
+		if ( ! empty( $this->current_response ) ) {
 			$context['filterData'] = $this->current_response;
 		}
 
@@ -195,6 +172,7 @@ final class CollectionFilters extends AbstractBlock {
 	private function get_inner_blocks_recursive( $inner_blocks, &$results = array() ) {
 		if ( is_a( $inner_blocks, 'WP_Block_List' ) ) {
 			foreach ( $inner_blocks as $inner_block ) {
+				dd( $inner_block );
 				$results[] = $inner_block->name;
 				$this->get_inner_blocks_recursive(
 					$inner_block->inner_blocks,
