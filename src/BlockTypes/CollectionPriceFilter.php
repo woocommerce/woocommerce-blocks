@@ -4,14 +4,14 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 /**
  * CollectionPriceFilter class.
  */
-final class CollectionPriceFilterSlider extends AbstractBlock {
+final class CollectionPriceFilter extends AbstractBlock {
 
 	/**
 	 * Block name.
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'collection-price-filter-slider';
+	protected $block_name = 'collection-price-filter';
 
 	/**
 	 * Render the block.

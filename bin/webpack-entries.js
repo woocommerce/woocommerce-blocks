@@ -96,8 +96,8 @@ const blocks = {
 	'collection-filters': {
 		isExperimental: true,
 	},
-	'collection-price-filter-slider': {
-		customDir: 'collection-filters/inner-blocks/price-filter-slider',
+	'collection-price-filter': {
+		customDir: 'collection-filters/inner-blocks/price-filter',
 		isExperimental: true,
 	},
 	'order-confirmation-summary': {
