@@ -3,15 +3,10 @@
  */
 import { store } from '@woocommerce/interactivity';
 
-type StateProps = {
-	state: {
-		filters: {
-			minPrice: number;
-			maxPrice: number;
-			maxRange: number;
-		};
-	};
-};
+/**
+ * Internal dependencies
+ */
+import { StateProps } from './types';
 
 store( {
 	state: {

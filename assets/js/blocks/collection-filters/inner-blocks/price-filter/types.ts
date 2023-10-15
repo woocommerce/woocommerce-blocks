@@ -14,3 +14,9 @@ export interface EditProps extends BlockEditProps< BlockAttributes > {
 		filterData: Partial< PriceFilterState >;
 	};
 }
+
+export type StateProps = {
+	state: {
+		filters: PriceFilterState;
+	};
+};

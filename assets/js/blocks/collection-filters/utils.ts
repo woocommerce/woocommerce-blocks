@@ -12,13 +12,14 @@ import {
 	Currency,
 	isString,
 } from '@woocommerce/types';
+import { BlockInstance } from '@wordpress/blocks';
 
-const formatPriceInt = ( price: string | number, currency: Currency ) => {
+function formatPriceInt( price: string | number, currency: Currency ) {
 	const priceInt = typeof price === 'number' ? price : parseInt( price, 10 );
 	return priceInt / 10 ** currency.minorUnit;
-};
+}
 
-export function getFormattedPrice( results: unknown[] ) {
+function getFormattedPrice( results: unknown[] ) {
 	const currencyWithoutDecimal = getCurrency( { minorUnit: 0 } );
 
 	if ( ! objectHasProp( results, 'price_range' ) ) {
@@ -57,12 +58,8 @@ export function getFormattedPrice( results: unknown[] ) {
 	};
 }
 
-export function getFilterData( collectionData ) {
-	return getFormattedPrice( collectionData );
-}
-
-function getInnerFilterTypes( block ) {
-	return block.innerBlocks.reduce( ( acc, innerBlock ) => {
+function getInnerFilterTypes( block: BlockInstance ): string[] {
+	return block.innerBlocks.reduce< string[] >( ( acc, innerBlock ) => {
 		return acc.concat(
 			innerBlock.attributes?.filterType,
 			getInnerFilterTypes( innerBlock )
@@ -70,7 +67,13 @@ function getInnerFilterTypes( block ) {
 	}, [] );
 }
 
-export function getQueryParams( block ) {
+export function getFilterData( collectionData: unknown[] ) {
+	return getFormattedPrice( collectionData );
+}
+
+export function getQueryParams( block: BlockInstance | null ) {
+	if ( ! block ) return {};
+
 	const innerFilterTypes = getInnerFilterTypes( block );
 	const map = {
 		queryPrices: 'price',
@@ -79,8 +82,11 @@ export function getQueryParams( block ) {
 		queryRating: 'rating',
 	};
 
-	return Object.entries( map ).reduce( ( acc, [ key, value ] ) => {
-		acc[ key ] = innerFilterTypes.includes( value );
-		return acc;
-	}, {} );
+	return Object.entries( map ).reduce< Record< string, boolean > >(
+		( acc, [ key, value ] ) => {
+			acc[ key ] = innerFilterTypes.includes( value );
+			return acc;
+		},
+		{}
+	);
 }
