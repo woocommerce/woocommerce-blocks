@@ -81,6 +81,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.3.1 - 2023-10-16 =
+
+#### Bug Fixes
+
+- All Products: fix error during rendering on the frontend. ([11263](https://github.com/woocommerce/woocommerce-blocks/pull/11263))
+
 = 11.3.0 - 2023-10-09 =
 
 #### Enhancements
