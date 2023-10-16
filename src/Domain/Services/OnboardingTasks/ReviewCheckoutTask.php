@@ -23,7 +23,7 @@ class ReviewCheckoutTask extends Task {
 	 * @return string
 	 */
 	public function get_title() {
-		return __( 'Review the shopper checkout experience', 'woo-gutenberg-products-block' );
+		return __( 'Review your shopper\'s checkout experience', 'woo-gutenberg-products-block' );
 	}
 
 	/**
@@ -32,7 +32,7 @@ class ReviewCheckoutTask extends Task {
 	 * @return string
 	 */
 	public function get_content() {
-		return __( 'Make sure cart and checkout flows are configured correctly for your shoppers.', 'woo-gutenberg-products-block' );
+		return '';
 	}
 
 	/**
@@ -45,12 +45,12 @@ class ReviewCheckoutTask extends Task {
 	}
 
 	/**
-	 * Check if a task is dismissable.
+	 * Additional Info.
 	 *
-	 * @return bool
+	 * @return string
 	 */
-	public function is_dismissable() {
-		return false;
+	public function get_additional_info() {
+		return __( 'Make sure cart and checkout flows are configured correctly for your shoppers.', 'woo-gutenberg-products-block' );
 	}
 
 	/**
@@ -59,7 +59,40 @@ class ReviewCheckoutTask extends Task {
 	 * @return bool
 	 */
 	public function is_complete() {
-		return false;
+		return $this->is_visited();
+	}
+
+	/**
+	 * Check if the store uses blocks on the cart or checkout page.
+	 *
+	 * @return boolean
+	 */
+	private function has_cart_block() {
+		$cart_page_id   = wc_get_page_id( 'cart' );
+		$has_block_cart = $cart_page_id && has_block( 'woocommerce/cart', $cart_page_id );
+
+		return $has_block_cart;
+	}
+
+	/**
+	 * Check if the store uses blocks on the cart or checkout page.
+	 *
+	 * @return boolean
+	 */
+	private function has_checkout_block() {
+		$cart_page_id   = wc_get_page_id( 'cart' );
+		$has_block_cart = $cart_page_id && has_block( 'woocommerce/cart', $cart_page_id );
+
+		return $has_block_cart;
+	}
+
+	/**
+	 * Check if the store uses blocks on the cart or checkout page.
+	 *
+	 * @return boolean
+	 */
+	private function has_cart_or_checkout_block() {
+		return $this->has_cart_block() || $this->has_checkout_block();
 	}
 
 	/**
@@ -68,9 +101,7 @@ class ReviewCheckoutTask extends Task {
 	 * @return bool
 	 */
 	public function can_view() {
-		$checkout_page_id = wc_get_page_id( 'checkout' );
-
-		return $checkout_page_id > 0;
+		return $this->has_cart_or_checkout_block();
 	}
 
 	/**
@@ -79,8 +110,8 @@ class ReviewCheckoutTask extends Task {
 	 * @return string
 	 */
 	public function get_action_url() {
-		$checkout_page_id = wc_get_page_id( 'checkout' );
+		$page_id = $this->has_cart_block() ? wc_get_page_id( 'cart' ) : wc_get_page_id( 'checkout' );
 
-		return admin_url( 'site-editor.php?postType=page&postId=' . $checkout_page_id );
+		return admin_url( 'site-editor.php?postType=page&postId=' . $page_id );
 	}
 }
