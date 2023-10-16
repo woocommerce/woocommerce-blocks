@@ -142,7 +142,7 @@ export function IncompatibleExtensionsNotice( {
 								{ sprintf(
 									// translators: %s is the name of the parent block.
 									__(
-										'If you turn off the new %1$s it will be replaced with the classic %1$s shortcode. This means you may lose:',
+										'If you continue, the %1$s block will be replaced with the classic %1$s shortcode. This means you may lose:',
 										'woo-gutenberg-products-block'
 									),
 									blockLabel
@@ -165,6 +165,7 @@ export function IncompatibleExtensionsNotice( {
 							<ModalFooter>
 								<Button
 									variant="primary"
+									isDestructive={ true }
 									onClick={ () => {
 										replaceBlock(
 											clientId,

@@ -21,17 +21,10 @@
 			min-width: max-content;
 		}
 	}
-	.wc-blocks-incompatible-extensions-notice__element {
-		display: flex;
-		align-items: center;
-		position: relative;
-
-		&::before {
-			content: "•";
-			position: absolute;
-			left: -13px;
-			font-size: 1.2rem;
-		}
+	ul {
+		margin: 0 0 1em 1.5em;
+		padding: 0;
+		list-style: disc outside;
 	}
 }
 
