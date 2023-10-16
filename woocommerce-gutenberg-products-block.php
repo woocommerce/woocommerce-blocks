@@ -18,28 +18,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-woocommerce_store_api_register_endpoint_data(
-	array(
-		'endpoint'        => ProductSchema::IDENTIFIER,
-		'namespace'       => 'my_plugin_namespace',
-		'data_callback'   => function( $product ) {
-			return array(
-				'my_meta_data' => get_post_meta( $product->get_id(), 'my_meta_data', true ),
-			);
-		},
-		'schema_callback' => function() {
-			return array(
-				'properties' => array(
-					'my_meta_data' => array(
-						'type' => 'string',
-					),
-				),
-			);
-		},
-		'schema_type'     => ARRAY_A,
-	)
-);
-
 $minimum_wp_version = '6.3';
 
 if ( ! defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
