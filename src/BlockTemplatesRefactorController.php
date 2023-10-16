@@ -63,12 +63,13 @@ class BlockTemplatesRefactorController {
 	 * @return int[]|\WP_Post[] An array of found templates.
 	 */
 	public function get_block_templates_from_db( $slugs = array(), $template_type = 'wp_template' ) {
-		wc_deprecated_function( 'BlockTemplatesController::get_block_templates_from_db()', '7.8', '\Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils::get_block_templates_from_db()' );
 		return BlockTemplateUtils::get_block_templates_from_db( $slugs, $template_type );
 	}
 
 	/**
-	 * Adds block templates to the query result.
+	 * Adds block templates to the query result. This function is used to render the template on the frontend.
+	 * Also is used to return the list of all the templates via the REST API for the Site Editor.
+	 * We don't want to apply any changes when the REST API is used.
 	 *
 	 * @param WP_Block_Template[] $query_result An array of templates to render that matches the query.
 	 * @param array               $query An array of query vars.
@@ -82,7 +83,8 @@ class BlockTemplatesRefactorController {
 		$templates_from_db   = $this->get_block_templates_from_db( $slugs, $template_type );
 		$all_templates       = array_merge( $query_result, $templates_from_woo, $templates_from_db );
 		$organized_templates = $this->organize_templates( $all_templates );
-		if ( ! isset( $all_templates ) || isset( $all_templates ) && count( $all_templates ) === 0 ) {
+
+		if ( ! isset( $all_templates ) || isset( $all_templates ) && count( $all_templates ) === 0 || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
 			return $all_templates;
 		}
 		$templates = $this->render_template( end( $organized_templates ), $organized_templates );
@@ -90,6 +92,13 @@ class BlockTemplatesRefactorController {
 		return is_array( $templates ) ? $templates : array( $templates );
 	}
 
+	/**
+	 * Organize templates by priority.
+	 *
+	 * @param WP_Block_Template[] $all_templates An array of templates to render that matches the query.
+	 *
+	 * @return WP_Block_Template[] An array of found templates.
+	 */
 	private function organize_templates( $all_templates ) {
 		return array_reduce(
 			$all_templates,
@@ -166,6 +175,12 @@ class BlockTemplatesRefactorController {
 		$templates      = array();
 
 		foreach ( $template_files as $template_file ) {
+			$template_slug = BlockTemplatesUtilsRefactor::generate_template_slug_from_path( $template_file );
+
+			// This template does not have a slug we're looking for. Skip it.
+			if ( is_array( $slugs ) && count( $slugs ) > 0 && ! in_array( $template_slug, $slugs, true ) ) {
+				continue;
+			}
 			$template_slug   = BlockTemplatesUtilsRefactor::generate_template_slug_from_path( $template_file );
 			$template_object = BlockTemplatesUtilsRefactor::create_new_block_template_object( $template_file, $template_type, $template_slug );
 			$template_built  = BlockTemplatesUtilsRefactor::build_template_result_from_file( $template_object, $template_type );
@@ -175,23 +190,43 @@ class BlockTemplatesRefactorController {
 		return $templates;
 	}
 
-		/**
-		 * Gets the templates by id.
-		 *
-		 * @param null   $_value An array of slugs to filter templates by. Templates whose slug does not match will not be returned.
-		 * @param string $id Template id.
-		 * @param string $template_type wp_template or wp_template_part.
-		 *
-		 * @return WP_Block_Template|null
-		 */
-	public function get_block_template_by_id( $_value, $id, $template_type = 'wp_template' ) {
+	/**
+	 * Gets the templates by id.
+	 * This is necessary for the REST API used by the Site Editor to update a specific template.
+	 *
+	 * @param null   $_null .
+	 * @param string $id Template id.
+	 * @param string $template_type wp_template or wp_template_part.
+	 *
+	 * @return WP_Block_Template|null
+	 */
+	public function get_block_template_by_id( $_null, $id, $template_type = 'wp_template' ) {
 		$templates = $this->get_block_templates_from_woocommerce( array(), array(), $template_type );
-		foreach ( $templates as $template ) {
-			if ( $template->id === $id ) {
-				$template->title = 'lollone';
-				return $template;
-			}
+
+		// array_values is necessary to reset the index.
+		$template = array_values(
+			array_filter(
+				$templates,
+				function( $template ) use ( $id ) {
+					return $template->id === $id;
+				}
+			)
+		);
+		if ( isset( $template ) && isset( $template[0] ) ) {
+			return $this->update_template_data_rest_api( $template[0] );
 		}
+		return $_null;
+	}
+
+	/**
+	 * Update template data for the REST API. This is necessary for the Site Editor to update a specific template.
+	 *
+	 * @param WP_Block_Template $template template.
+	 *
+	 * @return WP_Block_Template|null
+	 */
+	public function update_template_data_rest_api( $template ) {
+		return $template;
 	}
 
 }

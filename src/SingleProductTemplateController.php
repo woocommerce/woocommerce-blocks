@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
+use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 
 
@@ -10,6 +11,32 @@ use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
  * @internal
  */
 class SingleProductTemplateController extends BlockTemplatesRefactorController {
+	/**
+	 * Template Title.
+	 *
+	 * @var string
+	 */
+	private $template_title;
+
+
+	/**
+	 * Template Description.
+	 *
+	 * @var string
+	 */
+	private $template_description;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Package $package An instance of Package.
+	 */
+	public function __construct( Package $package ) {
+		parent::__construct( $package );
+		$this->template_title       = _x( 'Single Product', 'Template name', 'woo-gutenberg-products-block' );
+		$this->template_description = __( 'Displays a single product.', 'woo-gutenberg-products-block' );
+
+	}
 
 	/**
 	 * Renders the template.
@@ -26,6 +53,20 @@ class SingleProductTemplateController extends BlockTemplatesRefactorController {
 			return $template_to_render;
 		}
 		return $all_templates;
+	}
+
+
+	/**
+	 * Update template data for the REST API. This is necessary for the Site Editor to update a specific template.
+	 *
+	 * @param WP_Block_Template $template template.
+	 *
+	 * @return WP_Block_Template|null
+	 */
+	public function update_template_data_rest_api( $template ) {
+		$template->title       = $this->template_title;
+		$template->description = $this->template_description;
+		return $template;
 	}
 
 }
