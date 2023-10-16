@@ -283,7 +283,7 @@ const settings = {
 			},
 			isActive: ( blockAttributes, variationAttributes ) =>
 				blockAttributes.shortcode === variationAttributes.shortcode,
-			scope: [ 'inserter', 'transform' ],
+			scope: [ 'inserter' ],
 		},
 		{
 			name: 'cart',
@@ -293,7 +293,7 @@ const settings = {
 			},
 			isActive: ( blockAttributes, variationAttributes ) =>
 				blockAttributes.shortcode === variationAttributes.shortcode,
-			scope: [ 'inserter', 'transform' ],
+			scope: [ 'inserter' ],
 			isDefault: true,
 		},
 	],
