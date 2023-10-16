@@ -74,19 +74,27 @@ const withSidebarNotices = createHigherOrderComponent(
 			);
 
 			const currentBlockName = getBlockName( clientId );
+			const parentBlockIsCart =
+				Object.keys( parents ).includes( 'woocommerce/cart' );
+			const parentBlockIsCheckout = Object.keys( parents ).includes(
+				'woocommerce/checkout'
+			);
 			const currentBlockIsCart =
-				Object.keys( parents ).includes( 'woocommerce/cart' ) ||
-				currentBlockName === 'woocommerce/cart';
+				currentBlockName === 'woocommerce/cart' || parentBlockIsCart;
 			const currentBlockIsCheckout =
-				Object.keys( parents ).includes( 'woocommerce/checkout' ) ||
-				currentBlockName === 'woocommerce/checkout';
+				currentBlockName === 'woocommerce/checkout' ||
+				parentBlockIsCheckout;
+			const targetParentBlock = currentBlockIsCart
+				? 'woocommerce/cart'
+				: 'woocommerce/checkout';
 
 			return {
 				isCart: currentBlockIsCart,
 				isCheckout: currentBlockIsCheckout,
-				parentId: currentBlockIsCart
-					? parents[ 'woocommerce/cart' ]
-					: parents[ 'woocommerce/checkout' ],
+				parentId:
+					currentBlockName === targetParentBlock
+						? clientId
+						: parents[ targetParentBlock ],
 				isPaymentMethodsBlock:
 					currentBlockName === 'woocommerce/checkout-payment-block',
 				hasPaymentMethods:
