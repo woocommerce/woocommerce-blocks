@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classNames from 'classnames';
-import Label from '@woocommerce/base-components/label';
+import { Label } from '@woocommerce/blocks-components';
 import { withInstanceId } from '@wordpress/compose';
 import type { ChangeEventHandler } from 'react';
 
