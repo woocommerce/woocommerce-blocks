@@ -66,7 +66,7 @@ export function IncompatibleExtensionsNotice( {
 						sprintf(
 							// translators: %s is the name of the parent block.
 							__(
-								'The following extensions may be incompatible with the block-based %s. <a>Learn more</a>',
+								'Some extensions do not yet support the new %s and may impact the shopper experience. <a>Learn more</a>',
 								'woo-gutenberg-products-block'
 							),
 							blockLabel
@@ -81,7 +81,7 @@ export function IncompatibleExtensionsNotice( {
 						sprintf(
 							// translators: %1$s is the name of the extension, %2$s is the name of the parent block.
 							__(
-								'<strong>%1$s</strong> may be incompatible with the block-based %2$s. <a>Learn more</a>',
+								'<strong>%1$s</strong> does not yet support the new %2$s and may impact the shopper experience. <a>Learn more</a>',
 								'woo-gutenberg-products-block'
 							),
 							Object.values( incompatiblePaymentMethods )[ 0 ],
