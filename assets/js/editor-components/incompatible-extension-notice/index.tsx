@@ -10,7 +10,7 @@ import {
 } from '@wordpress/element';
 import { Alert } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
-import { useDispatch } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 
 /**
@@ -41,6 +41,11 @@ export function IncompatibleExtensionsNotice( {
 	const openModal = () => setOpen( true );
 	const closeModal = () => setOpen( false );
 	const { replaceBlock } = useDispatch( 'core/block-editor' );
+	const { getBlocks, selectBlock } = useSelect( ( select ) => {
+		return {
+			getBlocks: select( 'core/block-editor' ).getBlocks,
+		};
+	}, [] );
 
 	useEffect( () => {
 		toggleDismissedStatus( ! isVisible );
@@ -174,6 +179,19 @@ export function IncompatibleExtensionsNotice( {
 												}
 											)
 										);
+										const blocks = getBlocks();
+
+										const shortcodeBlock = blocks.find(
+											( foundBlock ) =>
+												foundBlock.name ===
+												'woocommerce/classic-shortcode'
+										);
+
+										if ( shortcodeBlock ) {
+											selectBlock(
+												shortcodeBlock.clientId
+											);
+										}
 										closeModal();
 									} }
 								>
