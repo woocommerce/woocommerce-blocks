@@ -156,7 +156,10 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 							} }
 						>
 							<BlockPreview
-								blocks={ getBlockifiedTemplate( attributes ) }
+								blocks={ getBlockifiedTemplate( {
+									...attributes,
+									isPreview: true,
+								} ) }
 								viewportWidth={ 1200 }
 								additionalStyles={ [
 									{
