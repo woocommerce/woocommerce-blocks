@@ -2,7 +2,7 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Checkout](#checkout)
+-   [Products](#products)
     -   [Use Cases](#use-cases)
     -   [Example](#example)
 -   [Cart](#cart)
@@ -11,7 +11,7 @@
 -   [Cart Items](#cart-items)
     -   [Use Cases](#use-cases-2)
     -   [Example](#example-2)
--   [Products](#products)
+-   [Checkout](#checkout)
     -   [Use Cases](#use-cases-3)
     -   [Example](#example-3)
 
@@ -19,46 +19,43 @@ Some endpoints of the Store API are extensible via a class called `ExtendSchema`
 
 For more information about extending the Store API, you may also be interested in:
 
--   [The full list of available endpoints, including those that cannot currently be extended](../../../internal-developers/rest-api/extend-rest-api.md)
 -   [How to add your data to Store API using `ExtendSchema`](./extend-rest-api-add-data.md)
 -   [How to add a new endpoint](../../../internal-developers/rest-api/extend-rest-api-new-endpoint.md)
 
 Below is a list of available endpoints that you can extend using `ExtendSchema`, as well as some example use-cases.
 
-## Checkout
+## Products
 
-The `wc/store/checkout` endpoint is extensible via ExtendSchema. Additional data is available via the `extensions` key in the response.
+The main `wc/store/products` endpoint is extensible via ExtendSchema. The data is available via the `extensions` key for each `product` in the response array.
 
-This endpoint can be extended using the `CheckoutSchema::IDENTIFIER` key. For this endpoint, your `data_callback` and `schema_callback` functions are passed no additional parameters.
+This endpoint can be extended using the `ProductSchema::IDENTIFIER` key. For this endpoint, your `data_callback` callback function is passed `$product` as a parameter. Your `schema_callback` function is passed no additional parameters; all products should share the same schema.
 
 ### Use Cases
 
-This endpoint is useful for adding additional data to the checkout page, such as a custom payment method which requires additional data to be collected from the user or server.
-
-Important: Do **not** reveal any sensitive data in this endpoint, as it is publicly accessible. This includes private keys for payment services.
+This endpoint is useful for adding additional data about individual products. This could be some meta data, additional pricing, or anything else to support custom blocks or components on the products page.
 
 ### Example
 
 ```php
 woocommerce_store_api_register_endpoint_data(
 	array(
-		'endpoint' => CheckoutSchema::IDENTIFIER,
-		'namespace' => 'my_plugin_namespace',
-		'data_callback' => function() {
+		'endpoint'        => ProductSchema::IDENTIFIER,
+		'namespace'       => 'my_plugin_namespace',
+		'data_callback'   => function( $product ) {
 			return array(
-				'foo' => 'bar',
+				'my_meta_data' => get_post_meta( $product->get_id(), 'my_meta_data', true ),
 			);
 		},
 		'schema_callback' => function() {
 			return array(
 				'properties' => array(
-					'foo' => array(
+					'my_meta_data' => array(
 						'type' => 'string',
 					),
 				),
 			);
-		}
-		'schema_type' => ARRAY_A,
+		},
+		'schema_type'     => ARRAY_A,
 	)
 );
 ```
@@ -78,9 +75,9 @@ This endpoint is useful for adding additional data to the cart page, for example
 ```php
 woocommerce_store_api_register_endpoint_data(
 	array(
-		'endpoint' => CartSchema::IDENTIFIER,
-		'namespace' => 'my_plugin_namespace',
-		'data_callback' => function() {
+		'endpoint'        => CartSchema::IDENTIFIER,
+		'namespace'       => 'my_plugin_namespace',
+		'data_callback'   => function() {
 			return array(
 				'foo' => 'bar',
 			);
@@ -93,8 +90,8 @@ woocommerce_store_api_register_endpoint_data(
 					),
 				),
 			);
-		}
-		'schema_type' => ARRAY_A,
+		},
+		'schema_type'     => ARRAY_A,
 	)
 );
 ```
@@ -114,9 +111,9 @@ This endpoint is useful for adding additional data about individual cart items. 
 ```php
 woocommerce_store_api_register_endpoint_data(
 	array(
-		'endpoint' => CartItemSchema::IDENTIFIER,
-		'namespace' => 'my_plugin_namespace',
-		'data_callback' => function( $cart_item ) {
+		'endpoint'        => CartItemSchema::IDENTIFIER,
+		'namespace'       => 'my_plugin_namespace',
+		'data_callback'   => function( $cart_item ) {
 			$product = $cart_item['data'];
 			return array(
 				'my_meta_data' => get_post_meta( $product->get_id(), 'my_meta_data', true ),
@@ -130,44 +127,46 @@ woocommerce_store_api_register_endpoint_data(
 					),
 				),
 			);
-		}
-		'schema_type' => ARRAY_A,
+		},
+		'schema_type'     => ARRAY_A,
 	)
 );
 ```
 
-## Products
+## Checkout
 
-The main `wc/store/products` endpoint is extensible via ExtendSchema. The data is available via the `extensions` key for each `product` in the response array.
+The `wc/store/checkout` endpoint is extensible via ExtendSchema. Additional data is available via the `extensions` key in the response.
 
-This endpoint can be extended using the `ProductSchema::IDENTIFIER` key. For this endpoint, your `data_callback` callback function is passed `$product` as a parameter. Your `schema_callback` function is passed no additional parameters; all products should share the same schema.
+This endpoint can be extended using the `CheckoutSchema::IDENTIFIER` key. For this endpoint, your `data_callback` and `schema_callback` functions are passed no additional parameters.
 
 ### Use Cases
 
-This endpoint is useful for adding additional data about individual products. This could be some meta data, additional pricing, or anything else to support custom blocks or components on the products page.
+This endpoint is useful for adding additional data to the checkout page, such as a custom payment method which requires additional data to be collected from the user or server.
+
+⚠ **Important: Do **not** reveal any sensitive data in this endpoint, as it is publicly accessible. This includes private keys for payment services.**
 
 ### Example
 
 ```php
 woocommerce_store_api_register_endpoint_data(
 	array(
-		'endpoint' => ProductSchema::IDENTIFIER,
-		'namespace' => 'my_plugin_namespace',
-		'data_callback' => function( $product ) {
+		'endpoint'        => CheckoutSchema::IDENTIFIER,
+		'namespace'       => 'my_plugin_namespace',
+		'data_callback'   => function() {
 			return array(
-				'my_meta_data' => get_post_meta( $product->get_id(), 'my_meta_data', true ),
+				'foo' => 'bar',
 			);
 		},
 		'schema_callback' => function() {
 			return array(
 				'properties' => array(
-					'my_meta_data' => array(
+					'foo' => array(
 						'type' => 'string',
 					),
 				),
 			);
-		}
-		'schema_type' => ARRAY_A,
+		},
+		'schema_type'     => ARRAY_A,
 	)
 );
 ```
