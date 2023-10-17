@@ -50,7 +50,7 @@ const multipleOccurranceScenarios: Scenario[] = [
 	{
 		title: 'Before Shop Loop Item Title',
 		dataTestId: 'woocommerce_before_shop_loop_item_title',
-		content: ' Hook: woocommerce_before_shop_loop_item_title',
+		content: 'Hook: woocommerce_before_shop_loop_item_title',
 		amount: 16,
 	},
 	{
@@ -118,14 +118,12 @@ test.describe( 'Compatibility Layer with Product Collection block', () => {
 				test( `${ scenario.title } is attached to the page`, async ( {
 					pageObject,
 				} ) => {
-					await test.step( scenario.title, async () => {
-						const hooks = pageObject.locateByTestId(
-							scenario.dataTestId
-						);
+					const hooks = pageObject.locateByTestId(
+						scenario.dataTestId
+					);
 
-						await expect( hooks ).toHaveCount( scenario.amount );
-						await expect( hooks ).toHaveText( scenario.content );
-					} );
+					await expect( hooks ).toHaveCount( scenario.amount );
+					await expect( hooks ).toHaveText( scenario.content );
 				} );
 			}
 
@@ -133,16 +131,14 @@ test.describe( 'Compatibility Layer with Product Collection block', () => {
 				test( `${ scenario.title } is attached to the page`, async ( {
 					pageObject,
 				} ) => {
-					await test.step( scenario.title, async () => {
-						const hooks = pageObject.locateByTestId(
-							scenario.dataTestId
-						);
+					const hooks = pageObject.locateByTestId(
+						scenario.dataTestId
+					);
 
-						await expect( hooks ).toHaveCount( scenario.amount );
-						await expect( hooks.first() ).toHaveText(
-							scenario.content
-						);
-					} );
+					await expect( hooks ).toHaveCount( scenario.amount );
+					await expect( hooks.first() ).toHaveText(
+						scenario.content
+					);
 				} );
 			}
 		}
