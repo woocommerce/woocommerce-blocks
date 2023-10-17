@@ -6,8 +6,6 @@ use Automattic\WooCommerce\Blocks\AI\Connection;
 use Automattic\WooCommerce\Blocks\Images\Pexels;
 use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
 use Automattic\WooCommerce\Blocks\Patterns\ProductUpdater;
-use Automattic\WooCommerce\Blocks\Verticals\Client;
-use Automattic\WooCommerce\Blocks\Verticals\VerticalsSelector;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 
 /**
