@@ -8,7 +8,7 @@ import type { MouseEventHandler } from 'react';
  * Internal dependencies
  */
 import './style.scss';
-import Label from '../../../../../packages/components/label';
+import Label from '../../../../../packages/components/label'; // Imported like this because importing from the components package loads the data stores unnecessarily - not a problem in the front end but would require a lot of unit test rewrites to prevent breaking tests due to incorrect mocks.
 
 interface LoadMoreButtonProps {
 	onClick: MouseEventHandler;
