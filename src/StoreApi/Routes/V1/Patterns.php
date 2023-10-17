@@ -2,6 +2,8 @@
 
 namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 
+use Automattic\WooCommerce\Blocks\AI\Connection;
+use Automattic\WooCommerce\Blocks\Images\Pexels;
 use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
 use Automattic\WooCommerce\Blocks\Patterns\ProductUpdater;
 use Automattic\WooCommerce\Blocks\Verticals\Client;
@@ -103,23 +105,37 @@ class Patterns extends AbstractRoute {
 		}
 
 		$business_description = sanitize_text_field( wp_unslash( $request['business_description'] ) );
-		$vertical_id          = ( new VerticalsSelector() )->get_vertical_id( $business_description );
 
 		if ( empty( $business_description ) ) {
 			$business_description = get_option( 'woo_ai_describe_store_description' );
 		}
 
-		if ( is_wp_error( $vertical_id ) ) {
-			$response = $this->error_to_response( $vertical_id );
+		$ai_connection = new Connection();
+
+		$site_id = $ai_connection->get_site_id();
+
+		if ( is_wp_error( $site_id ) ) {
+			return $site_id;
+		}
+
+		$token = $ai_connection->get_jwt_token( $site_id );
+
+		if ( is_wp_error( $token ) ) {
+			return $token;
+		}
+
+		$images = ( new Pexels() )->get_images( $ai_connection, $token, $business_description );
+
+		if ( is_wp_error( $images ) ) {
+			$response = $this->error_to_response( $images );
 		} else {
-			$vertical_images   = ( new Client() )->get_vertical_images( $vertical_id );
-			$populate_patterns = ( new PatternUpdater() )->generate_content( $vertical_images, $business_description );
+			$populate_patterns = ( new PatternUpdater() )->generate_content( $ai_connection, $token, $images, $business_description );
 
 			if ( is_wp_error( $populate_patterns ) ) {
 				$response = $this->error_to_response( $populate_patterns );
 			}
 
-			$populate_products = ( new ProductUpdater() )->generate_content( $vertical_images, $business_description );
+			$populate_products = ( new ProductUpdater() )->generate_content( $ai_connection, $token, $images, $business_description );
 
 			if ( is_wp_error( $populate_products ) ) {
 				$response = $this->error_to_response( $populate_products );
