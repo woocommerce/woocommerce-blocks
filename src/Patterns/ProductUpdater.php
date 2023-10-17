@@ -317,13 +317,13 @@ class ProductUpdater {
 				break;
 			}
 
-			if ( ! isset( $image['src']['alt'] ) || ! isset( $image['src']['large'] ) ) {
+			if ( ! isset( $image['alt'] ) || ! isset( $image['src']['large'] ) ) {
 				continue;
 			}
 
 			$placeholder_images[] = [
 				'src' => esc_url( $image['src']['large'] ),
-				'alt' => esc_attr( $image['src']['alt'] ),
+				'alt' => esc_attr( $image['alt'] ),
 			];
 
 			++ $count;

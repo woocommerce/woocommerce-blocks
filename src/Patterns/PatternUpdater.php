@@ -189,12 +189,12 @@ class PatternUpdater {
 		}
 
 		foreach ( $selected_images as $selected_image ) {
-			if ( ! isset( $selected_image['src']['alt'] ) || ! isset( $selected_image['src']['large'] ) ) {
+			if ( ! isset( $selected_image['alt'] ) || ! isset( $selected_image['src']['large'] ) ) {
 				continue;
 			}
 
 			$images[] = $selected_image['src']['large'];
-			$alts[]   = $selected_image['src']['alt'];
+			$alts[]   = $selected_image['alt'];
 		}
 
 		return array( $images, $alts );
