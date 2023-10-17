@@ -7,7 +7,7 @@ import {
 	CartShippingPackageShippingRate,
 } from '@woocommerce/type-defs/cart';
 import { Component } from '@wordpress/element';
-import { RadioControlOption } from '@woocommerce/blocks-components';
+import { type RadioControlOptionType } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies
@@ -28,7 +28,7 @@ interface ExperimentalOrderLocalPickupPackagesProps {
 	renderPickupLocation: (
 		option: CartShippingPackageShippingRate,
 		packageCount: number
-	) => RadioControlOption;
+	) => RadioControlOptionType;
 }
 const Slot = ( {
 	extensions,

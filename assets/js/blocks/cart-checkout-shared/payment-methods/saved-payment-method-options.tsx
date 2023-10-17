@@ -6,7 +6,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { noticeContexts } from '@woocommerce/base-context';
 import {
 	RadioControl,
-	RadioControlOption,
+	type RadioControlOptionType,
 } from '@woocommerce/blocks-components';
 import {
 	usePaymentMethodInterface,
@@ -89,7 +89,7 @@ const SavedPaymentMethodOptions = () => {
 	const { removeNotice } = useDispatch( 'core/notices' );
 	const { dispatchCheckoutEvent } = useStoreEvents();
 
-	const options = useMemo< RadioControlOption[] >( () => {
+	const options = useMemo< RadioControlOptionType[] >( () => {
 		const types = Object.keys( savedPaymentMethods );
 
 		// Get individual payment methods from saved payment methods and put them into a unique array.

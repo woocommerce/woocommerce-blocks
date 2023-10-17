@@ -3,4 +3,5 @@ export {
 	default as RadioControl,
 	RadioControlOption,
 	RadioControlOptionLayout,
+	type RadioControlOptionType,
 } from './radio-control';
