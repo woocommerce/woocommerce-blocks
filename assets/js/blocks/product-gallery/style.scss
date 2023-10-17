@@ -30,7 +30,7 @@ $thumbnail-size: 50px;
 		width: calc(100vw - 100px);
 		border: none;
 		border-radius: 10px;
-		height: 90vh;
+		height: calc(100vh - 100px);
 		top: 0;
 		margin-top: $gap-largest;
 		margin-bottom: $gap-largest;
@@ -89,6 +89,11 @@ $thumbnail-size: 50px;
 
 		&[hidden] {
 			display: none;
+		}
+
+		.wc-block-product-gallery-dialog__overlay & {
+			max-height: calc(100vh - 148px);
+			width: auto;
 		}
 	}
 
