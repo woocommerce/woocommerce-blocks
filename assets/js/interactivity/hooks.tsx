@@ -228,14 +228,14 @@ const Directives = ( {
 	// level because each level has a different context, but they share the same
 	// element ref, state and props.
 	const scope = useRef( {} ).current;
+	scope.evaluate = useCallback( getEvaluate( { scope } ), [] );
 	scope.context = useContext( context );
 	scope.ref = previousScope.ref || useRef( null );
 	scope.state = previousScope.state || useRef( deepSignal( {} ) );
-	scope.props = element?.props || originalProps;
-	scope.evaluate = useCallback( getEvaluate( { scope } ), [] );
 
-	// Create a fresh copy of the vnode element.
+	// Create a fresh copy of the vnode element and add the props to the scope.
 	element = cloneElement( element, { ref: scope.ref } );
+	scope.props = element.props;
 
 	// Recursively render the wrapper for the next priority level.
 	const children =
