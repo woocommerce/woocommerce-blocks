@@ -13,16 +13,18 @@ $image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholder
 $image2 = PatternsHelper::get_image_url( $images, 1, 'images/pattern-placeholders/living-room.png' );
 $image3 = PatternsHelper::get_image_url( $images, 2, 'images/pattern-placeholders/living-room-sofa.png' );
 $image4 = PatternsHelper::get_image_url( $images, 3, 'images/pattern-placeholders/dining-room.png' );
+
+$social_title = $content['titles'][0]['default'] ?? '';
 ?>
 
-<!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30","left":"var:preset|spacing|30","right":"var:preset|spacing|30"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)">
+<!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"var:preset|spacing|30","right":"var:preset|spacing|30"},"margin":{"top":"0px","bottom":"80px"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignwide" style="margin-top:0px;margin-bottom:80px;padding-top:0;padding-right:var(--wp--preset--spacing--30);padding-bottom:0;padding-left:var(--wp--preset--spacing--30)">
 	<!-- wp:columns {"verticalAlignment":null,"align":"wide"} -->
 	<div class="wp-block-columns alignwide">
 		<!-- wp:column {"verticalAlignment":"bottom","width":"75%","layout":{"type":"constrained"}} -->
 		<div class="wp-block-column is-vertically-aligned-bottom" style="flex-basis:75%">
 			<!-- wp:heading {"level":3,"align":"wide"} -->
-			<h3 class="wp-block-heading alignwide"><?php echo esc_html( $content['titles'][0]['default'] ); ?></h3>
+			<h3 class="wp-block-heading alignwide"><?php echo esc_html( $social_title ); ?></h3>
 			<!-- /wp:heading --></div>
 		<!-- /wp:column -->
 
