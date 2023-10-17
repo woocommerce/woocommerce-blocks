@@ -17,6 +17,8 @@ const collection = {
 	title: 'New Arrivals',
 	icon: <Icon icon={ 'star-filled' } />,
 	description: 'Display a grid of your newest products.',
+	keywords: [ 'newest products' ],
+	scope: [],
 };
 
 const attributes = {
