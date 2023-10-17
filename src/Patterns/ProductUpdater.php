@@ -2,6 +2,8 @@
 
 namespace Automattic\WooCommerce\Blocks\Patterns;
 
+use Automattic\WooCommerce\Blocks\AI\Connection;
+use WP_Error;
 /**
  * Pattern Images class.
  */
@@ -10,12 +12,14 @@ class ProductUpdater {
 	/**
 	 * Generate AI content and assign AI-managed images to Products.
 	 *
-	 * @param array  $vertical_images The vertical images.
-	 * @param string $business_description The business description.
+	 * @param Connection $ai_connection The AI connection.
+	 * @param string     $token The JWT token.
+	 * @param array      $images The array of images.
+	 * @param string     $business_description The business description.
 	 *
-	 * @return bool|\WP_Error True if the content was generated successfully, WP_Error otherwise.
+	 * @return bool|WP_Error True if the content was generated successfully, WP_Error otherwise.
 	 */
-	public function generate_content( $vertical_images, $business_description ) {
+	public function generate_content( $ai_connection, $token, $images, $business_description ) {
 		$last_business_description = get_option( 'last_business_description_with_ai_content_generated' );
 
 		if ( $last_business_description === $business_description ) {
@@ -70,10 +74,10 @@ class ProductUpdater {
 			return true;
 		}
 
-		$ai_selected_products_images = $this->get_images_information( $vertical_images );
+		$ai_selected_products_images = $this->get_images_information( $images );
 		$products_information_list   = $this->assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images );
 
-		$responses = $this->generate_product_content( $products_information_list );
+		$responses = $this->generate_product_content( $ai_connection, $token, $products_information_list );
 
 		foreach ( $responses as $key => $response ) {
 			if ( is_wp_error( $response ) ) {
@@ -286,12 +290,19 @@ class ProductUpdater {
 	/**
 	 * Get the images information.
 	 *
-	 * @param array $vertical_images The vertical images.
+	 * @param array $images The array of images.
 	 *
 	 * @return array
 	 */
-	public function get_images_information( $vertical_images ) {
-		if ( is_wp_error( $vertical_images ) ) {
+	public function get_images_information( $images ) {
+		if ( is_wp_error( $images ) ) {
+			return [
+				'src' => esc_url( 'images/block-placeholders/product-image-gallery.svg' ),
+				'alt' => 'The placeholder for a product image.',
+			];
+		}
+
+		if ( ! isset( $images['photos'] ) ) {
 			return [
 				'src' => esc_url( 'images/block-placeholders/product-image-gallery.svg' ),
 				'alt' => 'The placeholder for a product image.',
@@ -300,25 +311,19 @@ class ProductUpdater {
 
 		$count              = 0;
 		$placeholder_images = [];
-		foreach ( $vertical_images as $vertical_image ) {
+		$images             = $images['photos'];
+		foreach ( $images as $image ) {
 			if ( $count >= 6 ) {
 				break;
 			}
 
-			if ( isset( $vertical_image['meta']['pexels_object']['src']['large'] ) ) {
-				$src = $vertical_image['meta']['pexels_object']['src']['large'];
-				$alt = $vertical_image['meta']['pexels_object']['alt'] ?? 'The placeholder for a product image.';
-			} elseif ( isset( $vertical_image['guid'] ) ) {
-				$src = $vertical_image['guid'];
-				$alt = $vertical_image['meta']['pexels_object']['alt'] ?? 'The placeholder for a product image.';
-			} else {
-				$src = 'images/pattern-placeholders/white-texture-floor-wall-gray-tile.jpg';
-				$alt = 'The placeholder for a product image.';
+			if ( ! isset( $image['src']['alt'] ) || ! isset( $image['src']['large'] ) ) {
+				continue;
 			}
 
 			$placeholder_images[] = [
-				'src' => esc_url( $src ),
-				'alt' => esc_attr( $alt ),
+				'src' => esc_url( $image['src']['large'] ),
+				'alt' => esc_attr( $image['src']['alt'] ),
 			];
 
 			++ $count;
@@ -330,25 +335,13 @@ class ProductUpdater {
 	/**
 	 * Generate the product content.
 	 *
-	 * @param array $products_default_content The default content for the products.
+	 * @param Connection $ai_connection The AI connection.
+	 * @param string     $token The JWT token.
+	 * @param array      $products_default_content The default content for the products.
 	 *
 	 * @return array|int|string|\WP_Error
 	 */
-	public function generate_product_content( $products_default_content ) {
-		$ai_connection = new \Automattic\WooCommerce\Blocks\AI\Connection();
-
-		$site_id = $ai_connection->get_site_id();
-
-		if ( is_wp_error( $site_id ) ) {
-			return $site_id;
-		}
-
-		$token = $ai_connection->get_jwt_token( $site_id );
-
-		if ( is_wp_error( $token ) ) {
-			return $token;
-		}
-
+	public function generate_product_content( $ai_connection, $token, $products_default_content ) {
 		$store_description = get_option( 'woo_ai_describe_store_description' );
 
 		if ( ! $store_description ) {
