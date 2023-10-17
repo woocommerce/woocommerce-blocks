@@ -1,12 +1,14 @@
 /**
  * External dependencies
  */
-import { RadioControlOption } from '@woocommerce/base-components/radio-control/types';
+import {
+	RadioControl,
+	RadioControlOption,
+} from '@woocommerce/blocks-components';
 import { CartShippingPackageShippingRate } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
-import RadioControl from '../../radio-control';
 
 interface LocalPickupSelectProps {
 	title?: string | undefined;

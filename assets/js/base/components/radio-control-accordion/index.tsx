@@ -3,11 +3,11 @@
  */
 import classnames from 'classnames';
 import { withInstanceId } from '@wordpress/compose';
+import { RadioControlOption } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies
  */
-import RadioControlOption from '../radio-control/option';
 
 interface RadioControlAccordionProps {
 	className?: string;

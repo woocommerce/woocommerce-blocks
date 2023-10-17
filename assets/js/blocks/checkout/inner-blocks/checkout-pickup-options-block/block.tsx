@@ -14,7 +14,7 @@ import FormattedMonetaryAmount from '@woocommerce/base-components/formatted-mone
 import { decodeEntities } from '@wordpress/html-entities';
 import { getSetting } from '@woocommerce/settings';
 import { Icon, mapMarker } from '@wordpress/icons';
-import type { RadioControlOption } from '@woocommerce/base-components/radio-control/types';
+import type { RadioControlOption } from '@woocommerce/blocks-components';
 import { CartShippingPackageShippingRate } from '@woocommerce/types';
 import {
 	isPackageRateCollectable,

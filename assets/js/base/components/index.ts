@@ -24,7 +24,6 @@ export * from './product-name';
 export * from './product-price';
 export * from './product-rating';
 export * from './quantity-selector';
-export * from './radio-control';
 export * from './radio-control-accordion';
 export * from './read-more';
 export * from './reviews';

@@ -7,7 +7,7 @@ import {
 	CartShippingPackageShippingRate,
 } from '@woocommerce/type-defs/cart';
 import { Component } from '@wordpress/element';
-import { RadioControlOption } from '@woocommerce/base-components/radio-control/types';
+import { RadioControlOption } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies

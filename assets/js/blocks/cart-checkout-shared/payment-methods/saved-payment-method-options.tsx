@@ -4,7 +4,10 @@
 import { useMemo, cloneElement } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { noticeContexts } from '@woocommerce/base-context';
-import RadioControl from '@woocommerce/base-components/radio-control';
+import {
+	RadioControl,
+	RadioControlOption,
+} from '@woocommerce/blocks-components';
 import {
 	usePaymentMethodInterface,
 	useStoreEvents,
@@ -13,7 +16,6 @@ import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
 import { isNull } from '@woocommerce/types';
-import { RadioControlOption } from '@woocommerce/base-components/radio-control/types';
 
 /**
  * Internal dependencies
