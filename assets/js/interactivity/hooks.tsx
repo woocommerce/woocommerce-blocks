@@ -80,7 +80,7 @@ export const getElement = () => {
 	const { ref, state, props } = getScope();
 	return Object.freeze( {
 		ref: ref.current,
-		state: state.current,
+		state: state,
 		props: deepImmutable( props ),
 	} );
 };
@@ -231,7 +231,7 @@ const Directives = ( {
 	scope.evaluate = useCallback( getEvaluate( { scope } ), [] );
 	scope.context = useContext( context );
 	scope.ref = previousScope.ref || useRef( null );
-	scope.state = previousScope.state || useRef( deepSignal( {} ) );
+	scope.state = previousScope.state || useRef( deepSignal( {} ) ).current;
 
 	// Create a fresh copy of the vnode element and add the props to the scope.
 	element = cloneElement( element, { ref: scope.ref } );
