@@ -51,6 +51,7 @@ const storeLocks = new Map();
 
 const objToProxy = new WeakMap();
 const proxyToNs = new WeakMap();
+const scopeToGetters = new WeakMap();
 
 const proxify = ( obj: any, ns: string ) => {
 	if ( ! objToProxy.has( obj ) ) {
@@ -72,9 +73,11 @@ const handlers = {
 		if ( getter ) {
 			const scope = getScope();
 			if ( scope ) {
-				scope.getters = scope.getters || new Map();
-				if ( ! scope.getters.has( getter ) ) {
-					scope.getters.set(
+				const getters =
+					scopeToGetters.get( scope ) ||
+					scopeToGetters.set( scope, new Map() ).get( scope );
+				if ( ! getters.has( getter ) ) {
+					getters.set(
 						getter,
 						computed( () => {
 							setNamespace( ns );
@@ -88,7 +91,7 @@ const handlers = {
 						} )
 					);
 				}
-				return scope.getters.get( getter ).value;
+				return getters.get( getter ).value;
 			}
 		}
 
@@ -209,10 +212,6 @@ const handlers = {
  * @param {StoreOptions} [options]  Options passed to the `store` call.
  */
 
-type DeepPartial< T > = T extends object
-	? { [ P in keyof T ]?: DeepPartial< T[ P ] > }
-	: T;
-
 interface StoreOptions {
 	lock?: boolean | string;
 }
@@ -222,7 +221,7 @@ const universalUnlock =
 
 export function store< S extends object = {} >(
 	namespace: string,
-	storePart?: DeepPartial< S >,
+	storePart?: S,
 	options?: StoreOptions
 ): S;
 export function store< T extends object >(

@@ -46,31 +46,23 @@ export default () => {
 			props: { children },
 			context: inheritedContext,
 		} ) => {
-			return context.reduceRight(
-				( toReturn, { namespace, value: newContext } ) => {
-					const { Provider } = inheritedContext;
-					const inheritedValue = useContext( inheritedContext );
-					const currentValue = useRef( deepSignal( {} ) );
-					currentValue.current = useMemo( () => {
-						const newValue = deepSignal( {
-							[ namespace ]: newContext,
-						} );
-						mergeDeepSignals( newValue, inheritedValue );
-						mergeDeepSignals(
-							currentValue.current,
-							newValue,
-							true
-						);
-						return currentValue.current;
-					}, [ newContext, inheritedValue ] );
+			const { Provider } = inheritedContext;
+			const inheritedValue = useContext( inheritedContext );
+			const currentValue = useRef( deepSignal( {} ) );
+			const passedValues = context.map( ( { value } ) => value );
 
-					return (
-						<Provider value={ currentValue.current }>
-							{ toReturn }
-						</Provider>
-					);
-				},
-				[ children ]
+			currentValue.current = useMemo( () => {
+				const newValue = context
+					.map( ( c ) => deepSignal( { [ c.namespace ]: c.value } ) )
+					.reduceRight( mergeDeepSignals );
+
+				mergeDeepSignals( newValue, inheritedValue );
+				mergeDeepSignals( currentValue.current, newValue, true );
+				return currentValue.current;
+			}, [ inheritedValue, ...passedValues ] );
+
+			return (
+				<Provider value={ currentValue.current }>{ children }</Provider>
 			);
 		},
 		{ priority: 5 }
@@ -84,10 +76,7 @@ export default () => {
 	// data-wc-watch--[name]
 	directive( 'watch', ( { directives: { watch }, evaluate } ) => {
 		watch.forEach( ( entry ) => {
-			useSignalEffect( async () => {
-				const result = evaluate( entry );
-				return await result;
-			} );
+			useSignalEffect( () => evaluate( entry ) );
 		} );
 	} );
 
