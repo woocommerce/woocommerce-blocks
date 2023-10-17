@@ -2,7 +2,7 @@
 
 ```http
 GET /products/attributes/:id/terms
-GET /products/attributes/:id/terms&orderby=slug
+GET /products/attributes/:id/terms?orderby=slug
 ```
 
 | Attribute | Type    | Required | Description                                                                                 |
