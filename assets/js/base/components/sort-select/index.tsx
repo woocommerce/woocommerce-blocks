@@ -2,7 +2,6 @@
  * External dependencies
  */
 import classNames from 'classnames';
-import { Label } from '@woocommerce/blocks-components';
 import { withInstanceId } from '@wordpress/compose';
 import type { ChangeEventHandler } from 'react';
 
@@ -10,6 +9,7 @@ import type { ChangeEventHandler } from 'react';
  * Internal dependencies
  */
 import './style.scss';
+import Label from '../../../../../packages/components/label';
 
 interface SortSelectProps {
 	/**

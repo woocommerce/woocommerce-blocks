@@ -2,13 +2,13 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Label } from '@woocommerce/blocks-components';
 import type { MouseEventHandler } from 'react';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import Label from '../../../../../packages/components/label';
 
 interface LoadMoreButtonProps {
 	onClick: MouseEventHandler;
