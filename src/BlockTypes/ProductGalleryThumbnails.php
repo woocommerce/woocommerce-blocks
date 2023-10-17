@@ -82,6 +82,35 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	}
 
 	/**
+	 * Check if the thumbnails should be limited.
+	 *
+	 * @param string $mode                 Mode of the gallery. Expected values: 'standard'.
+	 * @param int    $thumbnails_count     Current count of processed thumbnails.
+	 * @param int    $number_of_thumbnails Number of thumbnails configured to display.
+	 *
+	 * @return bool
+	 */
+	protected function should_limit_thumbnails( $mode, $thumbnails_count, $number_of_thumbnails ) {
+		return 'standard' === $mode && $thumbnails_count > $number_of_thumbnails;
+	}
+
+	/**
+	 * Check if View All markup should be displayed.
+	 *
+	 * @param string $mode                   Mode of the gallery. Expected values: 'standard'.
+	 * @param int    $thumbnails_count       Current count of processed thumbnails.
+	 * @param array  $product_gallery_images Array of product gallery image HTML strings.
+	 * @param int    $number_of_thumbnails   Number of thumbnails configured to display.
+	 *
+	 * @return bool
+	 */
+	protected function should_display_view_all( $mode, $thumbnails_count, $product_gallery_images, $number_of_thumbnails ) {
+		return 'standard' === $mode &&
+		$thumbnails_count === $number_of_thumbnails &&
+		count( $product_gallery_images ) > $number_of_thumbnails;
+	}
+
+	/**
 	 * Include and render the block.
 	 *
 	 * @param array    $attributes Block attributes. Default empty array.
@@ -113,12 +142,12 @@ class ProductGalleryThumbnails extends AbstractBlock {
 
 					foreach ( $product_gallery_images as $product_gallery_image_html ) {
 						// Limit the number of thumbnails only in the standard mode (and not in dialog).
-						if ( 'standard' === $mode && $thumbnails_count > $number_of_thumbnails ) {
+						if ( $this->should_limit_thumbnails( $mode, $thumbnails_count, $number_of_thumbnails ) ) {
 							break;
 						}
 
 						// If not in dialog and it's the last thumbnail and the number of product gallery images is greater than the number of thumbnails settings output the View All markup.
-						if ( 'standard' === $mode && $thumbnails_count === $number_of_thumbnails && count( $product_gallery_images ) > $number_of_thumbnails ) {
+						if ( $this->should_display_view_all( $mode, $thumbnails_count, $product_gallery_images, $number_of_thumbnails ) ) {
 							$remaining_thumbnails_count = count( $product_gallery_images ) - $number_of_thumbnails;
 							$product_gallery_image_html = $this->inject_view_all( $product_gallery_image_html, $this->generate_view_all_html( $remaining_thumbnails_count ) );
 							$html                      .= $product_gallery_image_html;
