@@ -51,6 +51,7 @@ const storeLocks = new Map();
 
 const objToProxy = new WeakMap();
 const proxyToNs = new WeakMap();
+const scopeToGetters = new WeakMap();
 
 const proxify = ( obj: any, ns: string ) => {
 	if ( ! objToProxy.has( obj ) ) {
@@ -72,9 +73,11 @@ const handlers = {
 		if ( getter ) {
 			const scope = getScope();
 			if ( scope ) {
-				scope.getters = scope.getters || new Map();
-				if ( ! scope.getters.has( getter ) ) {
-					scope.getters.set(
+				const getters =
+					scopeToGetters.get( scope ) ||
+					scopeToGetters.set( scope, new Map() ).get( scope );
+				if ( ! getters.has( getter ) ) {
+					getters.set(
 						getter,
 						computed( () => {
 							setNamespace( ns );
@@ -88,7 +91,7 @@ const handlers = {
 						} )
 					);
 				}
-				return scope.getters.get( getter ).value;
+				return getters.get( getter ).value;
 			}
 		}
 
