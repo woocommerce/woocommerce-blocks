@@ -1,11 +1,11 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
+use Automattic\WooCommerce\Blocks\AI\Connection;
+use Automattic\WooCommerce\Blocks\Images\Pexels;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
 use Automattic\WooCommerce\Blocks\Patterns\ProductUpdater;
-use Automattic\WooCommerce\Blocks\Verticals\Client;
-use Automattic\WooCommerce\Blocks\Verticals\VerticalsSelector;
 
 /**
  * Registers patterns under the `./patterns/` directory and updates their content.
@@ -244,16 +244,38 @@ class BlockPatterns {
 			);
 		}
 
-		$vertical_id = ( new VerticalsSelector() )->get_vertical_id( $value );
+		$ai_connection = new Connection();
 
-		if ( is_wp_error( $vertical_id ) ) {
-			return $vertical_id;
+		$site_id = $ai_connection->get_site_id();
+
+		if ( is_wp_error( $site_id ) ) {
+			return $site_id->get_error_message();
 		}
 
-		$vertical_images      = ( new Client() )->get_vertical_images( $vertical_id );
-		$business_description = get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY );
+		$token = $ai_connection->get_jwt_token( $site_id );
 
-		( new PatternUpdater() )->generate_content( $vertical_images, $business_description );
-		( new ProductUpdater() )->generate_content( $vertical_images, $business_description );
+		if ( is_wp_error( $token ) ) {
+			return $token->get_error_message();
+		}
+
+		$business_description = get_option( 'woo_ai_describe_store_description' );
+
+		$images = ( new Pexels() )->get_images( $ai_connection, $token, $business_description );
+
+		if ( is_wp_error( $images ) ) {
+			return $images->get_error_message();
+		}
+
+		$populate_patterns = ( new PatternUpdater() )->generate_content( $ai_connection, $token, $images, $business_description );
+
+		if ( is_wp_error( $populate_patterns ) ) {
+			return $populate_patterns->get_error_message();
+		}
+
+		$populate_products = ( new ProductUpdater() )->generate_content( $ai_connection, $token, $images, $business_description );
+
+		if ( is_wp_error( $populate_products ) ) {
+			return $populate_products->get_error_message();
+		}
 	}
 }
