@@ -13,7 +13,7 @@ class ProductUpdater {
 	 * @param array  $vertical_images The vertical images.
 	 * @param string $business_description The business description.
 	 *
-	 * @return bool
+	 * @return bool|\WP_Error True if the content was generated successfully, WP_Error otherwise.
 	 */
 	public function generate_content( $vertical_images, $business_description ) {
 		$last_business_description = get_option( 'last_business_description_with_ai_content_generated' );
@@ -76,8 +76,12 @@ class ProductUpdater {
 		$responses = $this->generate_product_content( $products_information_list );
 
 		foreach ( $responses as $key => $response ) {
-			if ( is_wp_error( $response ) || empty( $response ) ) {
-				continue;
+			if ( is_wp_error( $response ) ) {
+				return $response;
+			}
+
+			if ( empty( $response ) ) {
+				return new \WP_Error( 'empty_response', __( 'The response from the AI service was empty.', 'woo-gutenberg-products-block' ) );
 			}
 
 			if ( ! isset( $response['completion'] ) ) {
@@ -97,7 +101,13 @@ class ProductUpdater {
 			}
 		}
 
-		update_option( 'last_business_description_with_ai_content_generated', $business_description );
+		$update_option = update_option( 'last_business_description_with_ai_content_generated', $business_description );
+
+		if ( ! $update_option ) {
+			return new \WP_Error( 'update_option_failed', __( 'The option last_business_description_with_ai_content_generated could not be updated.', 'woo-gutenberg-products-block' ) );
+		}
+
+		return $update_option;
 	}
 
 	/**

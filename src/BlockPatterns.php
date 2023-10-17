@@ -250,9 +250,10 @@ class BlockPatterns {
 			return $vertical_id;
 		}
 
-		$vertical_images = ( new Client() )->get_vertical_images( $vertical_id );
+		$vertical_images      = ( new Client() )->get_vertical_images( $vertical_id );
+		$business_description = get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY );
 
-		( new PatternUpdater() )->generate_content( $vertical_images );
-		( new ProductUpdater() )->generate_content( $vertical_images );
+		( new PatternUpdater() )->generate_content( $vertical_images, $business_description );
+		( new ProductUpdater() )->generate_content( $vertical_images, $business_description );
 	}
 }
