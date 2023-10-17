@@ -56,30 +56,43 @@ const conversionConfig: { [ key: string ]: BlockifiedTemplateConfig } = {
 	fallback: blockifiedFallbackConfig,
 };
 
-const pickBlockClientIds = ( blocks: Array< BlockInstance > ) =>
-	blocks.reduce< Array< string > >( ( acc, block ) => {
-		if ( block.name === 'core/template-part' ) {
-			return acc;
-		}
+const pickBlockClientId = ( blocks: Array< BlockInstance > ) => {
+	const groupBlock = blocks.find(
+		( block ) =>
+			block.name === 'core/group' &&
+			block.innerBlocks.some(
+				( innerBlock ) =>
+					innerBlock.name === 'woocommerce/cart' ||
+					innerBlock.name === 'woocommerce/checkout'
+			)
+	);
 
-		return [ ...acc, block.clientId ];
-	}, [] );
+	if ( groupBlock ) {
+		return (
+			groupBlock.innerBlocks.find( ( block ) => {
+				return (
+					block.name === 'woocommerce/cart' ||
+					block.name === 'woocommerce/checkout'
+				);
+			} )?.clientId || ''
+		);
+	}
+};
 
 const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 	const { getButtonLabel, onClickCallback, getBlockifiedTemplate } =
 		blockifyConfig;
 
 	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false );
-	const { replaceBlock, selectBlock, replaceBlocks } =
-		useDispatch( blockEditorStore );
+
+	const { replaceBlock, selectBlock } = useDispatch( blockEditorStore );
+	const { createInfoNotice } = useDispatch( noticesStore );
 
 	const { getBlocks } = useSelect( ( sel ) => {
 		return {
 			getBlocks: sel( blockEditorStore ).getBlocks,
 		};
 	}, [] );
-
-	const { createInfoNotice } = useDispatch( noticesStore );
 
 	return (
 		<div className="wp-block-woocommerce-classic-shortcode__placeholder-migration-button-container">
@@ -95,7 +108,7 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 					} );
 					createInfoNotice(
 						__(
-							'Template transformed into blocks!',
+							'Classic shortcode transformed into blocks!',
 							'woo-gutenberg-products-block'
 						),
 						{
@@ -106,29 +119,17 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 										'woo-gutenberg-products-block'
 									),
 									onClick: () => {
-										const clientIds = pickBlockClientIds(
+										const blockClientId = pickBlockClientId(
 											getBlocks()
 										);
-
-										replaceBlocks(
-											clientIds,
+										replaceBlock(
+											blockClientId,
 											createBlock(
-												'core/group',
+												'woocommerce/classic-shortcode',
 												{
-													layout: {
-														inherit: true,
-														type: 'constrained',
-													},
-												},
-												[
-													createBlock(
-														'woocommerce/classic-shortcode',
-														{
-															shortcode:
-																attributes.shortcode,
-														}
-													),
-												]
+													shortcode:
+														attributes.shortcode,
+												}
 											)
 										);
 									},

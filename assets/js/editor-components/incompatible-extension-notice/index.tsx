@@ -12,6 +12,9 @@ import { Alert } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
+import { store as noticesStore } from '@wordpress/notices';
+import { store as coreStore } from '@wordpress/core-data';
+import { store as blockEditorStore } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -40,10 +43,12 @@ export function IncompatibleExtensionsNotice( {
 	const [ isOpen, setOpen ] = useState( false );
 	const openModal = () => setOpen( true );
 	const closeModal = () => setOpen( false );
-	const { replaceBlock } = useDispatch( 'core/block-editor' );
+	const { createInfoNotice } = useDispatch( noticesStore );
+	const { replaceBlock } = useDispatch( blockEditorStore );
+	const { undo } = useDispatch( coreStore );
 	const { getBlocks, selectBlock } = useSelect( ( select ) => {
 		return {
-			getBlocks: select( 'core/block-editor' ).getBlocks,
+			getBlocks: select( blockEditorStore ).getBlocks,
 		};
 	}, [] );
 
@@ -102,6 +107,29 @@ export function IncompatibleExtensionsNotice( {
 		</>
 	);
 
+	const getShortcodeBlockClientId = () => {
+		const blocks = getBlocks();
+
+		const shortcodeBlock = blocks.find(
+			( foundBlock ) =>
+				foundBlock.name === 'woocommerce/classic-shortcode'
+		);
+
+		if ( shortcodeBlock ) {
+			return shortcodeBlock.clientId;
+		}
+
+		return '';
+	};
+
+	const selectClassicShortcodeBlock = () => {
+		const blockClientId = getShortcodeBlockClientId();
+
+		if ( blockClientId ) {
+			selectBlock( blockClientId );
+		}
+	};
+
 	return (
 		<Notice
 			className="wc-blocks-incompatible-extensions-notice"
@@ -130,7 +158,7 @@ export function IncompatibleExtensionsNotice( {
 							) }
 						</ul>
 					) }
-					<Button variant={ 'primary' } onClick={ openModal }>
+					<Button variant={ 'secondary' } onClick={ openModal }>
 						{ switchButtonLabel }
 					</Button>
 					{ isOpen && (
@@ -148,19 +176,21 @@ export function IncompatibleExtensionsNotice( {
 									blockLabel
 								) }
 							</p>
-							<ul>
+							<ul className="cross-list">
 								<li>
 									{ __(
 										'Customizations and updates to the block',
 										'woo-gutenberg-products-block'
 									) }
 								</li>
-								<li>
-									{ __(
-										'Additional local pickup options created for the new cart/checkout',
-										'woo-gutenberg-products-block'
-									) }
-								</li>
+								{ block === 'woocommerce/checkout' && (
+									<li>
+										{ __(
+											'Additional local pickup options created for the new cart/checkout',
+											'woo-gutenberg-products-block'
+										) }
+									</li>
+								) }
 							</ul>
 							<ModalFooter>
 								<Button
@@ -180,19 +210,27 @@ export function IncompatibleExtensionsNotice( {
 												}
 											)
 										);
-										const blocks = getBlocks();
-
-										const shortcodeBlock = blocks.find(
-											( foundBlock ) =>
-												foundBlock.name ===
-												'woocommerce/classic-shortcode'
+										selectClassicShortcodeBlock();
+										createInfoNotice(
+											__(
+												'The new checkout experience was disabled.',
+												'woo-gutenberg-products-block'
+											),
+											{
+												actions: [
+													{
+														label: __(
+															'Undo',
+															'woo-gutenberg-products-block'
+														),
+														onClick: () => {
+															undo();
+														},
+													},
+												],
+												type: 'snackbar',
+											}
 										);
-
-										if ( shortcodeBlock ) {
-											selectBlock(
-												shortcodeBlock.clientId
-											);
-										}
 										closeModal();
 									} }
 								>
