@@ -110,8 +110,9 @@ class ReviewCheckoutTask extends Task {
 	 * @return string
 	 */
 	public function get_action_url() {
-		$page_id = $this->has_cart_block() ? wc_get_page_id( 'cart' ) : wc_get_page_id( 'checkout' );
-
-		return admin_url( 'site-editor.php?postType=page&postId=' . $page_id );
+		if ( $this->has_cart_block() ) {
+			return admin_url( 'site-editor.php?postType=page&postId=' . wc_get_page_id( 'cart' ) . '&focus=cart&canvas=edit' );
+		}
+		return admin_url( 'site-editor.php?postType=page&postId=' . wc_get_page_id( 'checkout' ) . '&focus=checkout&canvas=edit' );
 	}
 }
