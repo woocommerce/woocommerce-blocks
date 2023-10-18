@@ -15,6 +15,7 @@ import { createBlock } from '@wordpress/blocks';
 import { store as noticesStore } from '@wordpress/notices';
 import { store as coreStore } from '@wordpress/core-data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
+import { recordEvent } from '@woocommerce/tracks';
 
 /**
  * Internal dependencies
@@ -29,6 +30,15 @@ interface ExtensionNoticeProps {
 	clientId: string;
 }
 
+/**
+ * Shows a notice when there are incompatible extensions.
+ *
+ * Tracks events:
+ * - switch_to_classic_shortcode_click
+ * - switch_to_classic_shortcode_confirm
+ * - switch_to_classic_shortcode_cancel
+ * - switch_to_classic_shortcode_undo
+ */
 export function IncompatibleExtensionsNotice( {
 	toggleDismissedStatus,
 	block,
@@ -44,9 +54,9 @@ export function IncompatibleExtensionsNotice( {
 	const openModal = () => setOpen( true );
 	const closeModal = () => setOpen( false );
 	const { createInfoNotice } = useDispatch( noticesStore );
-	const { replaceBlock } = useDispatch( blockEditorStore );
+	const { replaceBlock, selectBlock } = useDispatch( blockEditorStore );
 	const { undo } = useDispatch( coreStore );
-	const { getBlocks, selectBlock } = useSelect( ( select ) => {
+	const { getBlocks } = useSelect( ( select ) => {
 		return {
 			getBlocks: select( blockEditorStore ).getBlocks,
 		};
@@ -152,7 +162,18 @@ export function IncompatibleExtensionsNotice( {
 							) }
 						</ul>
 					) }
-					<Button variant={ 'secondary' } onClick={ openModal }>
+					<Button
+						variant={ 'secondary' }
+						onClick={ () => {
+							recordEvent( 'switch_to_classic_shortcode_click', {
+								shortcode:
+									block === 'woocommerce/checkout'
+										? 'checkout'
+										: 'cart',
+							} );
+							openModal();
+						} }
+					>
 						{ switchButtonLabel }
 					</Button>
 					{ isOpen && (
@@ -179,6 +200,16 @@ export function IncompatibleExtensionsNotice( {
 												}
 											)
 										);
+										recordEvent(
+											'switch_to_classic_shortcode_confirm',
+											{
+												shortcode:
+													block ===
+													'woocommerce/checkout'
+														? 'checkout'
+														: 'cart',
+											}
+										);
 										selectClassicShortcodeBlock();
 										createInfoNotice(
 											__(
@@ -194,6 +225,16 @@ export function IncompatibleExtensionsNotice( {
 														),
 														onClick: () => {
 															undo();
+															recordEvent(
+																'switch_to_classic_shortcode_undo',
+																{
+																	shortcode:
+																		block ===
+																		'woocommerce/checkout'
+																			? 'checkout'
+																			: 'cart',
+																}
+															);
 														},
 													},
 												],
@@ -207,7 +248,19 @@ export function IncompatibleExtensionsNotice( {
 								</Button>{ ' ' }
 								<Button
 									variant="secondary"
-									onClick={ closeModal }
+									onClick={ () => {
+										recordEvent(
+											'switch_to_classic_shortcode_cancel',
+											{
+												shortcode:
+													block ===
+													'woocommerce/checkout'
+														? 'checkout'
+														: 'cart',
+											}
+										);
+										closeModal();
+									} }
 								>
 									{ __(
 										'Cancel',
