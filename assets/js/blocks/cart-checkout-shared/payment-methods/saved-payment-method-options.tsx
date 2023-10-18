@@ -4,10 +4,7 @@
 import { useMemo, cloneElement } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { noticeContexts } from '@woocommerce/base-context';
-import {
-	RadioControl,
-	type RadioControlOptionType,
-} from '@woocommerce/blocks-components';
+import { RadioControl } from '@woocommerce/blocks-components';
 import {
 	usePaymentMethodInterface,
 	useStoreEvents,
@@ -22,6 +19,7 @@ import { isNull } from '@woocommerce/types';
  */
 import { getCanMakePaymentArg } from '../../../data/payment/utils/check-payment-methods';
 import { CustomerPaymentMethodConfiguration } from '../../../data/payment/types';
+import type { RadioControlOption } from '../../../../../packages/components/radio-control/types';
 
 /**
  * Returns the option object for a cc or echeck saved payment method token.
@@ -89,7 +87,7 @@ const SavedPaymentMethodOptions = () => {
 	const { removeNotice } = useDispatch( 'core/notices' );
 	const { dispatchCheckoutEvent } = useStoreEvents();
 
-	const options = useMemo< RadioControlOptionType[] >( () => {
+	const options = useMemo< RadioControlOption[] >( () => {
 		const types = Object.keys( savedPaymentMethods );
 
 		// Get individual payment methods from saved payment methods and put them into a unique array.
