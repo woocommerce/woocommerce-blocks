@@ -110,6 +110,6 @@ class Pexels {
 			return new \WP_Error( 'pexels_api_error', __( 'Request to the Pexels API failed.', 'woo-gutenberg-products-block' ), $error_data );
 		}
 
-		return $response_body;
+		return $response_body['photos'] ?? $response_body;
 	}
 }

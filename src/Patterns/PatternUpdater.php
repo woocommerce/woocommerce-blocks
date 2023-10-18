@@ -58,11 +58,11 @@ class PatternUpdater {
 	/**
 	 * Returns the patterns with images.
 	 *
-	 * @param array $images The array of images.
+	 * @param array $selected_images The array of images.
 	 *
 	 * @return array|WP_Error The patterns with images.
 	 */
-	private function get_patterns_with_images( $images ) {
+	private function get_patterns_with_images( $selected_images ) {
 		$patterns_dictionary = $this->get_patterns_dictionary();
 
 		if ( is_wp_error( $patterns_dictionary ) ) {
@@ -77,7 +77,7 @@ class PatternUpdater {
 				continue;
 			}
 
-			list( $images, $alts ) = $this->get_images_for_pattern( $pattern, $images );
+			list( $images, $alts ) = $this->get_images_for_pattern( $pattern, $selected_images );
 			if ( empty( $images ) ) {
 				$patterns_with_images[] = $pattern;
 				continue;
@@ -183,7 +183,6 @@ class PatternUpdater {
 	private function get_images_for_pattern( array $pattern, array $selected_images ): array {
 		$alts   = array();
 		$images = array();
-
 		if ( count( $selected_images ) < $pattern['images_total'] ) {
 			return array( $images, $alts );
 		}

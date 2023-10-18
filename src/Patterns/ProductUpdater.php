@@ -302,16 +302,8 @@ class ProductUpdater {
 			];
 		}
 
-		if ( ! isset( $images['photos'] ) ) {
-			return [
-				'src' => esc_url( 'images/block-placeholders/product-image-gallery.svg' ),
-				'alt' => 'The placeholder for a product image.',
-			];
-		}
-
 		$count              = 0;
 		$placeholder_images = [];
-		$images             = $images['photos'];
 		foreach ( $images as $image ) {
 			if ( $count >= 6 ) {
 				break;
