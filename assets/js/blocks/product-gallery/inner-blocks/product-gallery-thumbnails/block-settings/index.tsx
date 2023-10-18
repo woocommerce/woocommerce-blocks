@@ -54,6 +54,8 @@ export const ProductGalleryThumbnailsBlockSettings = ( {
 	const minNumberOfThumbnails = 2;
 	const thumbnailsMaxNumberOfColumnsMax = 4;
 	const thumbnailsMaxNumberOfColumnsMin = 1;
+	const thumbnailsMinNumberOfColumnsMax = 4;
+	const thumbnailsMinNumberOfColumnsMin = 1;
 	const { productGalleryClientId } = context;
 	// @ts-expect-error @wordpress/block-editor/store types not provided
 	const { updateBlockAttributes } = useDispatch( blockEditorStore );
@@ -136,6 +138,24 @@ export const ProductGalleryThumbnailsBlockSettings = ( {
 						) }
 						max={ thumbnailsMaxNumberOfColumnsMax }
 						min={ thumbnailsMaxNumberOfColumnsMin }
+					/>
+					<RangeControl
+						label={ __(
+							'Minimum number of columns',
+							'woo-gutenberg-products-block'
+						) }
+						value={ context.thumbnailsMinNumberOfColumns }
+						onChange={ ( value: number ) =>
+							updateBlockAttributes( productGalleryClientId, {
+								thumbnailsMinNumberOfColumns: value,
+							} )
+						}
+						help={ __(
+							'Select the lowest number of columns for displaying Thumbnails.',
+							'woo-gutenberg-products-block'
+						) }
+						max={ thumbnailsMinNumberOfColumnsMax }
+						min={ thumbnailsMinNumberOfColumnsMin }
 					/>
 				</>
 			) }

@@ -25,6 +25,7 @@ export const ProductGalleryBlockSettings = ( {
 		nextPreviousButtonsPosition,
 		thumbnailsNumberOfThumbnails,
 		thumbnailsMaxNumberOfColumns,
+		thumbnailsMinNumberOfColumns,
 		thumbnailsPosition,
 	} = context;
 	return (
@@ -49,6 +50,7 @@ export const ProductGalleryBlockSettings = ( {
 						productGalleryClientId,
 						thumbnailsNumberOfThumbnails,
 						thumbnailsMaxNumberOfColumns,
+						thumbnailsMinNumberOfColumns,
 						thumbnailsPosition,
 					} }
 				/>

@@ -237,7 +237,19 @@ $thumbnail-size: 50px;
 
 	#{$gallery}[data-thumbnails-max-number-of-columns] & {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax($thumbnail-size, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax($thumbnail-size, 1fr));
 		gap: 0 $thumbnails-gap;
+	}
+
+	#{$gallery}[data-thumbnails-min-number-of-columns='2'] & {
+		min-width: calc(($thumbnail-size * 2) + ($thumbnails-gap * 1));
+	}
+
+	#{$gallery}[data-thumbnails-min-number-of-columns='3'] & {
+		min-width: calc(($thumbnail-size * 3) + ($thumbnails-gap * 2));
+	}
+
+	#{$gallery}[data-thumbnails-min-number-of-columns='4'] & {
+		min-width: calc(($thumbnail-size * 4) + ($thumbnails-gap * 3));
 	}
 }

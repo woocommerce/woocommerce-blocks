@@ -37,7 +37,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	 * @return string[]
 	 */
 	protected function get_block_type_uses_context() {
-		return [ 'productGalleryClientId', 'postId', 'thumbnailsNumberOfThumbnails', 'thumbnailsMaxNumberOfColumns', 'thumbnailsPosition' ];
+		return [ 'productGalleryClientId', 'postId', 'thumbnailsNumberOfThumbnails', 'thumbnailsMaxNumberOfColumns', 'thumbnailsMinNumberOfColumns', 'thumbnailsPosition' ];
 	}
 
 	/**

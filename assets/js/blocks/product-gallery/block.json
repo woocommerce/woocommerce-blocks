@@ -18,6 +18,7 @@
 		"thumbnailsPosition": "thumbnailsPosition",
 		"thumbnailsNumberOfThumbnails": "thumbnailsNumberOfThumbnails",
 		"thumbnailsMaxNumberOfColumns": "thumbnailsMaxNumberOfColumns",
+		"thumbnailsMinNumberOfColumns": "thumbnailsMinNumberOfColumns",
 		"productGalleryClientId": "productGalleryClientId",
 		"nextPreviousButtonsPosition": "nextPreviousButtonsPosition",
 		"pagerDisplayMode": "pagerDisplayMode",
@@ -35,6 +36,10 @@
 			"default": 3
 		},
 		"thumbnailsMaxNumberOfColumns": {
+			"type": "number",
+			"default": 1
+		},
+		"thumbnailsMinNumberOfColumns": {
 			"type": "number",
 			"default": 1
 		},
