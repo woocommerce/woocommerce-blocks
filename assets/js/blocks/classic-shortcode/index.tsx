@@ -17,6 +17,7 @@ import {
 	Placeholder,
 	Popover,
 	ExternalLink,
+	TabbableContainer,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { shortcode, Icon } from '@wordpress/icons';
@@ -73,7 +74,7 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 	}, [] );
 
 	return (
-		<div className="wp-block-woocommerce-classic-shortcode__placeholder-migration-button-container">
+		<TabbableContainer className="wp-block-woocommerce-classic-shortcode__placeholder-migration-button-container">
 			<Button
 				variant="primary"
 				onClick={ () => {
@@ -133,6 +134,7 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 				onMouseEnter={ () => setIsPopoverOpen( true ) }
 				onMouseLeave={ () => setIsPopoverOpen( false ) }
 				text={ getButtonLabel ? getButtonLabel() : '' }
+				tabIndex={ 0 }
 			>
 				{ isPopoverOpen && (
 					<Popover resize={ false } placement="right-end">
@@ -167,13 +169,13 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 				variant="secondary"
 				href="https://woocommerce.com/document/cart-checkout-blocks-support-status/"
 				target="_blank"
+				tabIndex={ 0 }
 			>
 				{ __( 'Learn more', 'woo-gutenberg-products-block' ) }
 			</Button>
-		</div>
+		</TabbableContainer>
 	);
 };
-
 const Edit = ( { clientId, attributes }: BlockEditProps< Attributes > ) => {
 	const blockProps = useBlockProps();
 
