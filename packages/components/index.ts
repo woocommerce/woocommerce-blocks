@@ -5,3 +5,5 @@ export {
 	RadioControlOptionLayout,
 	type RadioControlOptionType,
 } from './radio-control';
+
+export { default as RadioControlAccordion } from './radio-control-accordion';
