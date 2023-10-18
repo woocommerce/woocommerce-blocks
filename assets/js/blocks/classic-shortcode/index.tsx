@@ -24,6 +24,7 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { useState, createInterpolateElement } from '@wordpress/element';
 import { store as noticesStore } from '@wordpress/notices';
 import { woo } from '@woocommerce/icons';
+import { findBlock } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -54,33 +55,6 @@ const conversionConfig: { [ key: string ]: BlockifiedTemplateConfig } = {
 	[ TYPES.cart ]: blockifiedCart,
 	[ TYPES.checkout ]: blockifiedCheckout,
 	fallback: blockifiedFallbackConfig,
-};
-
-const pickBlockClientId = ( blocks: Array< BlockInstance > ) => {
-	const targetBlocks = [ 'woocommerce/cart', 'woocommerce/checkout' ];
-	const parentBlock = blocks.find(
-		( block ) =>
-			( block.name === 'core/group' &&
-				block.innerBlocks.some( ( innerBlock ) =>
-					targetBlocks.includes( innerBlock.name )
-				) ) ||
-			targetBlocks.includes( block.name )
-	);
-
-	if ( ! parentBlock ) {
-		return '';
-	}
-
-	if ( parentBlock.name === 'core/group' ) {
-		const cartCheckoutBlock = parentBlock.innerBlocks.find(
-			( innerBlock ) => {
-				return targetBlocks.includes( innerBlock.name );
-			}
-		);
-		return cartCheckoutBlock?.clientId || '';
-	}
-
-	return parentBlock.clientId;
 };
 
 const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
@@ -123,11 +97,24 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 										'woo-gutenberg-products-block'
 									),
 									onClick: () => {
-										const blockClientId = pickBlockClientId(
-											getBlocks()
-										);
+										const targetBlocks = [
+											'woocommerce/cart',
+											'woocommerce/checkout',
+										];
+										const cartCheckoutBlock = findBlock( {
+											blocks: getBlocks(),
+											findCondition: (
+												foundBlock: BlockInstance
+											) =>
+												targetBlocks.includes(
+													foundBlock.name
+												),
+										} );
+										if ( ! cartCheckoutBlock ) {
+											return;
+										}
 										replaceBlock(
-											blockClientId,
+											cartCheckoutBlock.clientId,
 											createBlock(
 												'woocommerce/classic-shortcode',
 												{

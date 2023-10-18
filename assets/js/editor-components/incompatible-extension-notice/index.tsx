@@ -11,11 +11,12 @@ import {
 import { Alert } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { createBlock } from '@wordpress/blocks';
+import { createBlock, BlockInstance } from '@wordpress/blocks';
 import { store as noticesStore } from '@wordpress/notices';
 import { store as coreStore } from '@wordpress/core-data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 import { recordEvent } from '@woocommerce/tracks';
+import { findBlock } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -111,26 +112,15 @@ export function IncompatibleExtensionsNotice( {
 		</>
 	);
 
-	const getShortcodeBlockClientId = () => {
-		const blocks = getBlocks();
-
-		const shortcodeBlock = blocks.find(
-			( foundBlock ) =>
-				foundBlock.name === 'woocommerce/classic-shortcode'
-		);
-
-		if ( shortcodeBlock ) {
-			return shortcodeBlock.clientId;
-		}
-
-		return '';
-	};
-
 	const selectClassicShortcodeBlock = () => {
-		const blockClientId = getShortcodeBlockClientId();
+		const classicShortcodeBlock = findBlock( {
+			blocks: getBlocks(),
+			findCondition: ( foundBlock: BlockInstance ) =>
+				foundBlock.name === 'woocommerce/classic-shortcode',
+		} );
 
-		if ( blockClientId ) {
-			selectBlock( blockClientId );
+		if ( classicShortcodeBlock ) {
+			selectBlock( classicShortcodeBlock.clientId );
 		}
 	};
 
