@@ -7,7 +7,6 @@ import {
 	registerBlockType,
 } from '@wordpress/blocks';
 import type { BlockEditProps } from '@wordpress/blocks';
-import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import {
 	useBlockProps,
 	BlockPreview,
@@ -31,6 +30,7 @@ import { woo } from '@woocommerce/icons';
  */
 import './editor.scss';
 import './style.scss';
+import { CartPlaceholder, CheckoutPlaceholder } from './placeholder';
 import { TEMPLATES, TYPES } from './constants';
 import { getTemplateDetailsBySlug } from './utils';
 import * as blockifiedCheckout from './checkout';
@@ -195,7 +195,7 @@ const Edit = ( { clientId, attributes }: BlockEditProps< Attributes > ) => {
 		TEMPLATES
 	);
 	const templateTitle = attributes.shortcode;
-	const templatePlaceholder = templateDetails?.placeholder ?? 'fallback';
+	const templatePlaceholder = templateDetails?.placeholder ?? 'cart';
 	const templateType = templateDetails?.type ?? 'fallback';
 
 	const { isConversionPossible, getDescription, getTitle, blockifyConfig } =
@@ -225,11 +225,11 @@ const Edit = ( { clientId, attributes }: BlockEditProps< Attributes > ) => {
 		<div { ...blockProps }>
 			<Placeholder className="wp-block-woocommerce-classic-shortcode__placeholder">
 				<div className="wp-block-woocommerce-classic-shortcode__placeholder-wireframe">
-					<img
-						className="wp-block-woocommerce-classic-shortcode__placeholder-image"
-						src={ `${ WC_BLOCKS_IMAGE_URL }template-placeholders/${ templatePlaceholder }.svg` }
-						alt={ templateTitle }
-					/>
+					{ templatePlaceholder === 'cart' ? (
+						<CartPlaceholder />
+					) : (
+						<CheckoutPlaceholder />
+					) }
 				</div>
 				<div className="wp-block-woocommerce-classic-shortcode__placeholder-copy">
 					<div className="wp-block-woocommerce-classic-shortcode__placeholder-copy__icon-container">
