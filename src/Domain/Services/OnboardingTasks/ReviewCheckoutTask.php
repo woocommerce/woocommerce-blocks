@@ -110,9 +110,10 @@ class ReviewCheckoutTask extends Task {
 	 * @return string
 	 */
 	public function get_action_url() {
-		if ( $this->has_cart_block() ) {
-			return admin_url( 'site-editor.php?postType=page&postId=' . wc_get_page_id( 'cart' ) . '&focus=cart&canvas=edit' );
-		}
-		return admin_url( 'site-editor.php?postType=page&postId=' . wc_get_page_id( 'checkout' ) . '&focus=checkout&canvas=edit' );
+		$base_url = wc_current_theme_is_fse_theme() ? 'site-editor.php?postType=page&postId=' : 'post.php?action=edit&post=';
+		$page_id  = $this->has_cart_block() ? wc_get_page_id( 'cart' ) : wc_get_page_id( 'checkout' );
+		$focus    = $this->has_cart_block() ? 'cart' : 'checkout';
+
+		return admin_url( $base_url . absint( $page_id ) . '&focus=' . $focus . '&canvas=edit' );
 	}
 }
