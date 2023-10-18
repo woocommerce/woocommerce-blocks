@@ -67,7 +67,10 @@ export function IncompatibleExtensionsNotice( {
 					'Switch to classic checkout',
 					'woo-gutenberg-products-block'
 			  );
-	const blockLabel = block === 'woocommerce/cart' ? 'cart' : 'checkout';
+	const blockLabel =
+		block === 'woocommerce/cart'
+			? __( 'cart', 'woo-gutenberg-products-block' )
+			: __( 'checkout', 'woo-gutenberg-products-block' );
 
 	const noticeContent = (
 		<>
