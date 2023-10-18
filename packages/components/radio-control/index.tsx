@@ -53,5 +53,4 @@ const RadioControl = ( {
 
 export default RadioControl;
 export { default as RadioControlOption } from './option';
-export { type RadioControlOption as RadioControlOptionType } from './types';
 export { default as RadioControlOptionLayout } from './option-layout';
