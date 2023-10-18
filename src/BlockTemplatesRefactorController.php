@@ -67,9 +67,7 @@ class BlockTemplatesRefactorController {
 	}
 
 	/**
-	 * Adds block templates to the query result. This function is used to render the template on the frontend.
-	 * Also is used to return the list of all the templates via the REST API for the Site Editor.
-	 * We don't want to apply any changes when the REST API is used.
+	 * Adds block templates to the query result. This function is used to return the list of all the templates via the REST API for the Site Editor. We don't want to apply any changes when the REST API is used.
 	 *
 	 * @param WP_Block_Template[] $query_result An array of templates to render that matches the query.
 	 * @param array               $query An array of query vars.

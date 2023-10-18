@@ -38,6 +38,17 @@ class SingleProductTemplateController extends BlockTemplatesRefactorController {
 
 	}
 
+	private $template_title;
+	private $template_description;
+
+
+	public function __construct( Package $package ) {
+		parent::__construct( $package );
+		$this->template_title       = _x( 'Single Product', 'Template name', 'woo-gutenberg-products-block' );
+		$this->template_description = __( 'Displays a single product.', 'woo-gutenberg-products-block' );
+
+	}
+
 	/**
 	 * Renders the template.
 	 *
