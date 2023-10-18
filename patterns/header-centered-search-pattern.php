@@ -39,7 +39,7 @@
 
 	<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center"}} -->
 	<div class="wp-block-group">
-		<!-- wp:navigation {"style":{"typography":{"fontStyle":"normal","fontWeight":"400"}}} /-->
+		<!-- wp:navigation {"style":{"typography":{"fontStyle":"normal","fontWeight":"400"},"spacing":{"blockGap":"30px"}}} /-->
 	</div>
 	<!-- /wp:group -->
 
