@@ -192,10 +192,38 @@ class PatternUpdater {
 				continue;
 			}
 
-			$images[] = $selected_image['src']['large'];
+			$images[] = $this->select_image_src_based_on_format( $pattern, $selected_image );
 			$alts[]   = $selected_image['alt'];
 		}
 
 		return array( $images, $alts );
+	}
+
+	/**
+	 * Returns the image src based on the pattern format.
+	 *
+	 * @param array $pattern The pattern information stored in the patterns dictionary.
+	 * @param array $selected_image The selected image to be assigned to the pattern.
+	 *
+	 * @return mixed
+	 */
+	private function select_image_src_based_on_format( $pattern, $selected_image ) {
+		if ( ! isset( $pattern['images_format'] ) ) {
+			$src = $selected_image['src']['large'];
+		} else {
+			switch ( $pattern['images_format'] ) {
+				case 'landscape':
+					$src = $selected_image['src']['landscape'];
+					break;
+				case 'portrait':
+					$src = $selected_image['src']['portrait'];
+					break;
+				default:
+					$src = $selected_image['src']['large'];
+					break;
+			}
+		}
+
+		return $src;
 	}
 }
