@@ -57,26 +57,30 @@ const conversionConfig: { [ key: string ]: BlockifiedTemplateConfig } = {
 };
 
 const pickBlockClientId = ( blocks: Array< BlockInstance > ) => {
-	const groupBlock = blocks.find(
+	const targetBlocks = [ 'woocommerce/cart', 'woocommerce/checkout' ];
+	const parentBlock = blocks.find(
 		( block ) =>
-			block.name === 'core/group' &&
-			block.innerBlocks.some(
-				( innerBlock ) =>
-					innerBlock.name === 'woocommerce/cart' ||
-					innerBlock.name === 'woocommerce/checkout'
-			)
+			( block.name === 'core/group' &&
+				block.innerBlocks.some( ( innerBlock ) =>
+					targetBlocks.includes( innerBlock.name )
+				) ) ||
+			targetBlocks.includes( block.name )
 	);
 
-	if ( groupBlock ) {
-		return (
-			groupBlock.innerBlocks.find( ( block ) => {
-				return (
-					block.name === 'woocommerce/cart' ||
-					block.name === 'woocommerce/checkout'
-				);
-			} )?.clientId || ''
-		);
+	if ( ! parentBlock ) {
+		return '';
 	}
+
+	if ( parentBlock.name === 'core/group' ) {
+		const cartCheckoutBlock = parentBlock.innerBlocks.find(
+			( innerBlock ) => {
+				return targetBlocks.includes( innerBlock.name );
+			}
+		);
+		return cartCheckoutBlock?.clientId || '';
+	}
+
+	return parentBlock.clientId;
 };
 
 const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
