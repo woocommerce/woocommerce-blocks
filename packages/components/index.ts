@@ -1,5 +1,7 @@
 export { default as CheckboxList } from './checkbox-list';
 export { Chip, RemovableChip } from './chip';
+export { default as Combobox } from './combobox';
+export type { ComboboxProps } from './combobox';
 export { default as FormStep } from './form-step';
 export { default as FormattedMonetaryAmount } from './formatted-monetary-amount';
 export { default as Label } from './label';
