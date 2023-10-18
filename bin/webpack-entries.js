@@ -91,6 +91,10 @@ const blocks = {
 	'reviews-by-product': {
 		customDir: 'reviews/reviews-by-product',
 	},
+	'collection-price-filter': {
+		customDir: 'collection-filters/inner-blocks/price-filter',
+		isExperimental: true,
+	},
 	'single-product': {},
 	'stock-filter': {},
 	'collection-filters': {
@@ -191,6 +195,7 @@ const entries = {
 		wcBlocksSharedHocs: './assets/js/shared/hocs/index.js',
 		priceFormat: './packages/prices/index.js',
 		blocksCheckout: './packages/checkout/index.js',
+		blocksComponents: './packages/components/index.js',
 	},
 	main: {
 		// Shared blocks code
