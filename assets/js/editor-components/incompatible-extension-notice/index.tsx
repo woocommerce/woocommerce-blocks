@@ -20,7 +20,7 @@ import { store as blockEditorStore } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { useCombinedIncompatibilityNotice } from './use-combined-incompatibility-notice';
-import { Modal, ModalFooter } from './modal';
+import { Modal, ModalFooter, ModalContent } from './modal';
 import './editor.scss';
 
 interface ExtensionNoticeProps {
@@ -67,22 +67,14 @@ export function IncompatibleExtensionsNotice( {
 					'Switch to classic checkout',
 					'woo-gutenberg-products-block'
 			  );
-	const blockLabel =
-		block === 'woocommerce/cart'
-			? __( 'cart', 'woo-gutenberg-products-block' )
-			: __( 'checkout', 'woo-gutenberg-products-block' );
 
 	const noticeContent = (
 		<>
 			{ numberOfIncompatiblePaymentMethods > 1
 				? createInterpolateElement(
-						sprintf(
-							// translators: %s is the name of the parent block.
-							__(
-								'Some extensions do not yet support the new %s and may impact the shopper experience. <a>Learn more</a>',
-								'woo-gutenberg-products-block'
-							),
-							blockLabel
+						__(
+							'Some extensions do not yet support the new cart and checkout blocks. This may impact the shopper experience. <a>Learn more</a>',
+							'woo-gutenberg-products-block'
 						),
 						{
 							a: (
@@ -92,13 +84,12 @@ export function IncompatibleExtensionsNotice( {
 				  )
 				: createInterpolateElement(
 						sprintf(
-							// translators: %1$s is the name of the extension, %2$s is the name of the parent block.
+							// translators: %s is the name of the extension.
 							__(
-								'<strong>%1$s</strong> does not yet support the new %2$s and may impact the shopper experience. <a>Learn more</a>',
+								'<strong>%s</strong> does not yet support the new cart and checkout blocks. This may impact the shopper experience. <a>Learn more</a>',
 								'woo-gutenberg-products-block'
 							),
-							Object.values( incompatiblePaymentMethods )[ 0 ],
-							blockLabel
+							Object.values( incompatiblePaymentMethods )[ 0 ]
 						),
 						{
 							strong: <strong />,
@@ -169,32 +160,7 @@ export function IncompatibleExtensionsNotice( {
 							title={ switchButtonLabel }
 							onRequestClose={ closeModal }
 						>
-							<p>
-								{ sprintf(
-									// translators: %s is the name of the parent block.
-									__(
-										'If you continue, the %1$s block will be replaced with the classic %1$s shortcode. This means you may lose:',
-										'woo-gutenberg-products-block'
-									),
-									blockLabel
-								) }
-							</p>
-							<ul className="cross-list">
-								<li>
-									{ __(
-										'Customizations and updates to the block',
-										'woo-gutenberg-products-block'
-									) }
-								</li>
-								{ block === 'woocommerce/checkout' && (
-									<li>
-										{ __(
-											'Additional local pickup options created for the new cart/checkout',
-											'woo-gutenberg-products-block'
-										) }
-									</li>
-								) }
-							</ul>
+							<ModalContent blockType={ block } />
 							<ModalFooter>
 								<Button
 									variant="primary"

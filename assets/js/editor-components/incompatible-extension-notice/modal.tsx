@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __ } from '@wordpress/i18n';
 import styled from '@emotion/styled';
 import { Modal as ModalComponent } from '@wordpress/components';
 
@@ -45,6 +46,44 @@ export const Modal = styled( ModalComponent )`
 		}
 	}
 `;
+
+export const ModalContent = ( {
+	blockType = 'woocommerce/cart',
+}: {
+	blockType: 'woocommerce/cart' | 'woocommerce/checkout';
+} ): JSX.Element => {
+	const message =
+		blockType === 'woocommerce/cart'
+			? __(
+					'If you continue, the cart block will be replaced with the classic cart shortcode. This means you may lose:',
+					'woo-gutenberg-products-block'
+			  )
+			: __(
+					'If you continue, the checkout block will be replaced with the classic checkout shortcode. This means you may lose:',
+					'woo-gutenberg-products-block'
+			  );
+	return (
+		<>
+			<p>{ message }</p>
+			<ul className="cross-list">
+				<li>
+					{ __(
+						'Customizations and updates to the block',
+						'woo-gutenberg-products-block'
+					) }
+				</li>
+				{ blockType === 'woocommerce/checkout' && (
+					<li>
+						{ __(
+							'Additional local pickup options created for the new checkout',
+							'woo-gutenberg-products-block'
+						) }
+					</li>
+				) }
+			</ul>
+		</>
+	);
+};
 
 export const ModalFooter = styled.div`
 	display: flex;
