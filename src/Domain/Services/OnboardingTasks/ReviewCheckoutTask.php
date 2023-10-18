@@ -69,7 +69,7 @@ class ReviewCheckoutTask extends Task {
 	 */
 	private function has_cart_block() {
 		$cart_page_id   = wc_get_page_id( 'cart' );
-		$has_block_cart = $cart_page_id && has_block( 'woocommerce/cart', $cart_page_id );
+		$has_block_cart = $cart_page_id && ( has_block( 'woocommerce/cart', $cart_page_id ) || has_block( 'woocommerce/classic-shortcode', $cart_page_id ) );
 
 		return $has_block_cart;
 	}
@@ -81,7 +81,7 @@ class ReviewCheckoutTask extends Task {
 	 */
 	private function has_checkout_block() {
 		$cart_page_id   = wc_get_page_id( 'cart' );
-		$has_block_cart = $cart_page_id && has_block( 'woocommerce/cart', $cart_page_id );
+		$has_block_cart = $cart_page_id && ( has_block( 'woocommerce/cart', $cart_page_id ) || has_block( 'woocommerce/classic-shortcode', $cart_page_id ) );
 
 		return $has_block_cart;
 	}
