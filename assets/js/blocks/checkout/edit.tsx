@@ -21,9 +21,9 @@ import {
 } from '@wordpress/components';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 import { getQueryArg } from '@wordpress/url';
-import { dispatch } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -72,17 +72,20 @@ export const Edit = ( {
 	} = attributes;
 
 	// This focuses on the block when a certain query param is found. This is used on the link from the task list.
-	const focus = getQueryArg( window.location.href, 'focus' );
+	const focus = useRef( getQueryArg( window.location.href, 'focus' ) );
 
 	useEffect( () => {
-		if ( focus === 'checkout' ) {
+		if (
+			focus.current === 'checkout' &&
+			! select( 'core/block-editor' ).hasSelectedBlock()
+		) {
 			dispatch( 'core/block-editor' ).selectBlock( clientId );
 			dispatch( 'core/interface' ).enableComplementaryArea(
 				'core/edit-site',
 				'edit-site/block-inspector'
 			);
 		}
-	}, [ clientId, focus ] );
+	}, [ clientId ] );
 
 	const defaultTemplate = [
 		[ 'woocommerce/checkout-fields-block', {}, [] ],
