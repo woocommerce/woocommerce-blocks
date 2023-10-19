@@ -10,12 +10,14 @@ import { ProductGallerySelectors } from '../../frontend';
 
 type Context = {
 	woocommerce: {
-		styles: {
-			// eslint-disable-next-line @typescript-eslint/naming-convention
-			'transform-origin': string;
-			transform: string;
-			transition: string;
-		};
+		styles:
+			| {
+					// eslint-disable-next-line @typescript-eslint/naming-convention
+					'transform-origin': string;
+					transform: string;
+					transition: string;
+			  }
+			| undefined;
 		isDialogOpen: boolean;
 	};
 };
@@ -33,7 +35,7 @@ const productGalleryLargeImageSelectors = {
 			styles: ( { context }: Store ) => {
 				const { styles } = context.woocommerce;
 
-				return Object.entries( styles ).reduce(
+				return Object.entries( styles ?? [] ).reduce(
 					( acc, [ key, value ] ) => {
 						const style = `${ key }:${ value };`;
 						return acc.length > 0 ? `${ acc } ${ style }` : style;
