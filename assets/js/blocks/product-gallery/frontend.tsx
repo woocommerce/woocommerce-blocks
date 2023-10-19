@@ -30,6 +30,12 @@ interface Actions {
 		thumbnails: {
 			handleClick: ( context: Context ) => void;
 		};
+		handlePreviousImageButtonClick: {
+			( store: Store ): void;
+		};
+		handleNextImageButtonClick: {
+			( store: Store ): void;
+		};
 	};
 }
 
@@ -41,10 +47,57 @@ interface Store {
 	ref?: HTMLElement;
 }
 
+interface Event {
+	keyCode: number;
+}
+
 type SelectorsStore = Pick< Store, 'context' | 'selectors' | 'ref' >;
 
 interactivityApiStore( {
 	state: {},
+	effects: {
+		woocommerce: {
+			keyboardAccess: ( store: Store ) => {
+				const { context, actions } = store;
+				let allowNavigation = true;
+
+				const handleKeyEvents = ( event: Event ) => {
+					if (
+						! allowNavigation ||
+						! context.woocommerce.isDialogOpen
+					) {
+						return;
+					}
+
+					// Disable navigation for a brief period to prevent spamming
+					allowNavigation = false;
+
+					setTimeout( () => {
+						allowNavigation = true;
+					}, 300 );
+
+					// Check if the esc key is pressed.
+					if ( event.keyCode === 27 ) {
+						context.woocommerce.isDialogOpen = false;
+					}
+
+					// Check if left arrow key is pressed.
+					if ( event.keyCode === 37 ) {
+						actions.woocommerce.handlePreviousImageButtonClick(
+							store
+						);
+					}
+
+					// Check if right arrow key is pressed.
+					if ( event.keyCode === 39 ) {
+						actions.woocommerce.handleNextImageButtonClick( store );
+					}
+				};
+
+				document.addEventListener( 'keydown', handleKeyEvents );
+			},
+		},
+	},
 	selectors: {
 		woocommerce: {
 			isSelected: ( { context }: Store ) => {
