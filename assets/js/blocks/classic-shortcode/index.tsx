@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
+import {
+	BlockInstance,
+	createBlock,
+	registerBlockType,
+} from '@wordpress/blocks';
 import type { BlockEditProps } from '@wordpress/blocks';
 import {
 	useBlockProps,
@@ -21,6 +25,7 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { useState, createInterpolateElement } from '@wordpress/element';
 import { store as noticesStore } from '@wordpress/notices';
 import { woo } from '@woocommerce/icons';
+import { findBlock } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -86,6 +91,42 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 							'woo-gutenberg-products-block'
 						),
 						{
+							actions: [
+								{
+									label: __(
+										'Undo',
+										'woo-gutenberg-products-block'
+									),
+									onClick: () => {
+										const targetBlocks = [
+											'woocommerce/cart',
+											'woocommerce/checkout',
+										];
+										const cartCheckoutBlock = findBlock( {
+											blocks: getBlocks(),
+											findCondition: (
+												foundBlock: BlockInstance
+											) =>
+												targetBlocks.includes(
+													foundBlock.name
+												),
+										} );
+										if ( ! cartCheckoutBlock ) {
+											return;
+										}
+										replaceBlock(
+											cartCheckoutBlock.clientId,
+											createBlock(
+												'woocommerce/classic-shortcode',
+												{
+													shortcode:
+														attributes.shortcode,
+												}
+											)
+										);
+									},
+								},
+							],
 							type: 'snackbar',
 						}
 					);
