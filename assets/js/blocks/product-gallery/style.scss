@@ -75,6 +75,7 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		overflow-x: hidden;
 		scroll-snap-type: x mandatory;
 		scroll-behavior: auto;
+		align-items: center;
 	}
 
 	#{$gallery-next-previous-inside-image} & .wc-block-product-gallery-large-image__image-element {
