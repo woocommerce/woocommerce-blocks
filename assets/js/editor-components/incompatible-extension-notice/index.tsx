@@ -2,7 +2,13 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { Notice, ExternalLink, Button } from '@wordpress/components';
+import {
+	Notice,
+	ExternalLink,
+	Button,
+	TabbableContainer,
+	Modal,
+} from '@wordpress/components';
 import {
 	createInterpolateElement,
 	useEffect,
@@ -22,7 +28,7 @@ import { findBlock } from '@woocommerce/utils';
  * Internal dependencies
  */
 import { useCombinedIncompatibilityNotice } from './use-combined-incompatibility-notice';
-import { Modal, ModalFooter, ModalContent } from './modal';
+import { ModalContent } from './modal';
 import './editor.scss';
 
 interface ExtensionNoticeProps {
@@ -76,6 +82,14 @@ export function IncompatibleExtensionsNotice( {
 			? __( 'Switch to classic cart', 'woo-gutenberg-products-block' )
 			: __(
 					'Switch to classic checkout',
+					'woo-gutenberg-products-block'
+			  );
+
+	const snackbarLabel =
+		block === 'woocommerce/cart'
+			? __( 'Switched to classic cart.', 'woo-gutenberg-products-block' )
+			: __(
+					'Switched to classic checkout.',
 					'woo-gutenberg-products-block'
 			  );
 
@@ -168,11 +182,13 @@ export function IncompatibleExtensionsNotice( {
 					</Button>
 					{ isOpen && (
 						<Modal
+							size="medium"
 							title={ switchButtonLabel }
 							onRequestClose={ closeModal }
+							className="wc-blocks-incompatible-extensions-notice-modal-content"
 						>
 							<ModalContent blockType={ block } />
-							<ModalFooter>
+							<TabbableContainer className="wc-blocks-incompatible-extensions-notice-modal-actions">
 								<Button
 									variant="primary"
 									isDestructive={ true }
@@ -201,36 +217,30 @@ export function IncompatibleExtensionsNotice( {
 											}
 										);
 										selectClassicShortcodeBlock();
-										createInfoNotice(
-											__(
-												'The new checkout experience was disabled.',
-												'woo-gutenberg-products-block'
-											),
-											{
-												actions: [
-													{
-														label: __(
-															'Undo',
-															'woo-gutenberg-products-block'
-														),
-														onClick: () => {
-															undo();
-															recordEvent(
-																'switch_to_classic_shortcode_undo',
-																{
-																	shortcode:
-																		block ===
-																		'woocommerce/checkout'
-																			? 'checkout'
-																			: 'cart',
-																}
-															);
-														},
+										createInfoNotice( snackbarLabel, {
+											actions: [
+												{
+													label: __(
+														'Undo',
+														'woo-gutenberg-products-block'
+													),
+													onClick: () => {
+														undo();
+														recordEvent(
+															'switch_to_classic_shortcode_undo',
+															{
+																shortcode:
+																	block ===
+																	'woocommerce/checkout'
+																		? 'checkout'
+																		: 'cart',
+															}
+														);
 													},
-												],
-												type: 'snackbar',
-											}
-										);
+												},
+											],
+											type: 'snackbar',
+										} );
 										closeModal();
 									} }
 								>
@@ -260,7 +270,7 @@ export function IncompatibleExtensionsNotice( {
 										'woo-gutenberg-products-block'
 									) }
 								</Button>
-							</ModalFooter>
+							</TabbableContainer>
 						</Modal>
 					) }
 				</div>
