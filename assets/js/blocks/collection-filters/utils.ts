@@ -3,15 +3,6 @@
  */
 import { ProductCollectionQuery } from '@woocommerce/blocks/product-collection/types';
 
-function taxonomyMapper( taxonomy: string ) {
-	const map: Record< string, string > = {
-		product_tag: 'tag',
-		product_cat: 'cat',
-	};
-
-	return taxonomy in map ? map[ taxonomy ] : `_unstable_tax_${ taxonomy }`;
-}
-
 export function formatQuery( query: ProductCollectionQuery ) {
 	if ( ! query ) {
 		return {};
@@ -34,7 +25,36 @@ export function formatQuery( query: ProductCollectionQuery ) {
 		{ key: 'woocommerceHandPickedProducts', map: 'include' },
 	];
 
-	return Object.assign(
+	function mapTaxonomy( taxonomy: string ) {
+		const map: Record< string, string > = {
+			product_tag: 'tag',
+			product_cat: 'cat',
+		};
+
+		return map[ taxonomy ] || `_unstable_tax_${ taxonomy }`;
+	}
+
+	function getTaxQueryMap( taxQuery: ProductCollectionQuery[ 'taxQuery' ] ) {
+		return Object.entries( taxQuery ).map( ( [ taxonomy, terms ] ) => ( {
+			[ mapTaxonomy( taxonomy ) ]: terms,
+		} ) );
+	}
+
+	function getAttributeQuery(
+		woocommerceAttributes: ProductCollectionQuery[ 'woocommerceAttributes' ]
+	) {
+		if ( ! woocommerceAttributes ) {
+			return {};
+		}
+		return {
+			attributes: woocommerceAttributes.map( ( attribute ) => ( {
+				attribute: attribute.taxonomy,
+				term_id: attribute.termId,
+			} ) ),
+		};
+	}
+
+	const test = Object.assign(
 		{},
 		...sharedParams.map(
 			( key ) => key in query && { [ key ]: query[ key ] }
@@ -43,14 +63,8 @@ export function formatQuery( query: ProductCollectionQuery ) {
 			( param ) =>
 				param.key in query && { [ param.map ]: query[ param.key ] }
 		),
-		...Object.entries( query.taxQuery ).map( ( [ taxonomy, terms ] ) => ( {
-			[ taxonomyMapper( taxonomy ) ]: terms,
-		} ) ),
-		'woocommerceAttributes' in query && {
-			attributes: query.woocommerceAttributes.map( ( attribute ) => ( {
-				attribute: attribute.taxonomy,
-				term_id: attribute.termId,
-			} ) ),
-		}
+		...getTaxQueryMap( query.taxQuery ),
+		getAttributeQuery( query.woocommerceAttributes )
 	);
+	return test;
 }
