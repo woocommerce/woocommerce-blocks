@@ -181,49 +181,45 @@ class PatternUpdater {
 	 * @return array An array containing an array of the images in the first position and their alts in the second.
 	 */
 	private function get_images_for_pattern( array $pattern, array $selected_images ): array {
-		$alts   = array();
-		$images = array();
-		if ( count( $selected_images ) < $pattern['images_total'] ) {
-			return array( $images, $alts );
-		}
-
 		foreach ( $selected_images as $selected_image ) {
-			if ( ! isset( $selected_image['alt'] ) || ! isset( $selected_image['src']['large'] ) ) {
+			if ( ! isset( $selected_image['title'] ) ) {
 				continue;
 			}
 
-			$images[] = $this->select_image_src_based_on_format( $pattern, $selected_image );
-			$alts[]   = $selected_image['alt'];
+			if ( ! isset( $selected_image['URL'] ) ) {
+				continue;
+			}
+
+			if ( str_contains( '.jpeg', $selected_image['title'] ) ) {
+				continue;
+			}
+
+			$expected_image_format = $pattern['images_format'] ?? 'none';
+			$selected_image_format = $this->get_selected_image_format( $selected_image );
+
+			if ( $selected_image_format !== $expected_image_format ) {
+				continue;
+			}
+
+			$images[] = $selected_image['URL'];
+			$alts[]   = $selected_image['title'];
 		}
 
 		return array( $images, $alts );
 	}
 
 	/**
-	 * Returns the image src based on the pattern format.
+	 * Returns the selected image format. Defaults to landscape.
 	 *
-	 * @param array $pattern The pattern information stored in the patterns dictionary.
 	 * @param array $selected_image The selected image to be assigned to the pattern.
 	 *
 	 * @return mixed
 	 */
-	private function select_image_src_based_on_format( $pattern, $selected_image ) {
-		if ( ! isset( $pattern['images_format'] ) ) {
-			$src = $selected_image['src']['large'];
-		} else {
-			switch ( $pattern['images_format'] ) {
-				case 'landscape':
-					$src = $selected_image['src']['landscape'];
-					break;
-				case 'portrait':
-					$src = $selected_image['src']['portrait'];
-					break;
-				default:
-					$src = $selected_image['src']['large'];
-					break;
-			}
+	private function get_selected_image_format( $selected_image ) {
+		if ( ! isset( $selected_image['width'], $selected_image['height'] ) ) {
+			return 'landscape';
 		}
 
-		return $src;
+		return $selected_image['width'] === $selected_image['height'] ? 'square' : ( $selected_image['width'] < $selected_image['height'] ? 'portrait' : 'landscape' );
 	}
 }

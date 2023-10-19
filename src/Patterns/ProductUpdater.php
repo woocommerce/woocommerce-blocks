@@ -20,12 +20,6 @@ class ProductUpdater {
 	 * @return bool|WP_Error True if the content was generated successfully, WP_Error otherwise.
 	 */
 	public function generate_content( $ai_connection, $token, $images, $business_description ) {
-		$last_business_description = get_option( 'last_business_description_with_ai_content_generated' );
-
-		if ( $last_business_description === $business_description ) {
-			return true;
-		}
-
 		$real_products = $this->fetch_product_ids();
 
 		if ( count( $real_products ) > 0 ) {
@@ -105,13 +99,7 @@ class ProductUpdater {
 			}
 		}
 
-		$update_option = update_option( 'last_business_description_with_ai_content_generated', $business_description );
-
-		if ( ! $update_option ) {
-			return new \WP_Error( 'update_option_failed', __( 'The option last_business_description_with_ai_content_generated could not be updated.', 'woo-gutenberg-products-block' ) );
-		}
-
-		return $update_option;
+		return true;
 	}
 
 	/**
@@ -309,13 +297,13 @@ class ProductUpdater {
 				break;
 			}
 
-			if ( ! isset( $image['alt'] ) || ! isset( $image['src']['large'] ) ) {
+			if ( ! isset( $image['title'] ) || ! isset( $image['URL'] ) ) {
 				continue;
 			}
 
 			$placeholder_images[] = [
-				'src' => esc_url( $image['src']['large'] ),
-				'alt' => esc_attr( $image['alt'] ),
+				'src' => esc_url( $image['URL'] ),
+				'alt' => esc_attr( $image['title'] ),
 			];
 
 			++ $count;

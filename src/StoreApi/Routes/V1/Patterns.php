@@ -108,6 +108,19 @@ class Patterns extends AbstractRoute {
 			$business_description = get_option( 'woo_ai_describe_store_description' );
 		}
 
+		$last_business_description = get_option( 'last_business_description_with_ai_content_generated' );
+
+		if ( $last_business_description === $business_description ) {
+			return rest_ensure_response(
+				$this->prepare_item_for_response(
+					[
+						'ai_content_generated' => true,
+					],
+					$request
+				)
+			);
+		}
+
 		$ai_connection = new Connection();
 
 		$site_id = $ai_connection->get_site_id();
@@ -137,6 +150,10 @@ class Patterns extends AbstractRoute {
 
 			if ( is_wp_error( $populate_products ) ) {
 				$response = $this->error_to_response( $populate_products );
+			}
+
+			if ( true === $populate_patterns && true === $populate_products ) {
+				update_option( 'last_business_description_with_ai_content_generated', $business_description );
 			}
 		}
 

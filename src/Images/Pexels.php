@@ -12,7 +12,7 @@ class Pexels {
 	/**
 	 * The Pexels API endpoint.
 	 */
-	const ENDPOINT = 'https://api.pexels.com/v1/search';
+	const EXTERNAL_MEDIA_PEXELS_ENDPOINT = '/wpcom/v2/external-media/list/pexels';
 
 	/**
 	 * Returns the list of images for the given search criteria.
@@ -31,15 +31,7 @@ class Pexels {
 			return $search_term;
 		}
 
-		$request_url = add_query_arg(
-			array(
-				'query'    => $search_term,
-				'per_page' => $per_page,
-			),
-			self::ENDPOINT
-		);
-
-		return $this->request( esc_url( $request_url ) );
+		return $this->request( $search_term );
 	}
 
 	/**
@@ -54,7 +46,7 @@ class Pexels {
 	 * @return mixed|\WP_Error
 	 */
 	private function define_search_term( $ai_connection, $token, $business_description ) {
-		$prompt = 'Select a keyword that better describes the following business: ' . $business_description;
+		$prompt = sprintf( 'Summarize the following text in just a couple of words; the response should be only a string, with no introductions or explanations: %s', $business_description );
 
 		$response = $ai_connection->fetch_ai_response( $token, $prompt );
 
@@ -68,48 +60,28 @@ class Pexels {
 	/**
 	 * Make a request to the Pexels API.
 	 *
-	 * @param string $url The endpoint URL.
+	 * @param string $search_term The search term to use.
 	 *
 	 * @return array|\WP_Error The response body, or WP_Error if the request failed.
 	 */
-	private function request( string $url ) {
-		$auth = defined( 'STOCK_IMAGES_PEXELS_API_KEY' ) ? STOCK_IMAGES_PEXELS_API_KEY : null;
+	private function request( string $search_term ) {
+		$request = new \WP_REST_Request( 'GET', self::EXTERNAL_MEDIA_PEXELS_ENDPOINT );
 
-		if ( ! $auth ) {
-			return new \WP_Error( 'pexels_api_error', __( 'Unable to fetch images from the Pexels API: tru again later.', 'woo-gutenberg-products-block' ) );
+		$request->set_param( 'search', esc_html( $search_term ) );
+		$request->set_param( 'number', 50 );
+
+		$response      = rest_do_request( $request );
+		$response_data = $response->get_data();
+
+		if ( $response->is_error() ) {
+			$error_msg = [
+				'code' => $response->get_status(),
+				'data' => $response_data,
+			];
+
+			return new \WP_Error( 'pexels_api_error', __( 'Request to the Pexels API failed.', 'woo-gutenberg-products-block' ), $error_msg );
 		}
 
-		$response = wp_remote_get(
-			$url,
-			array(
-				'headers' => array( 'Authorization' => $auth ),
-				'timeout' => 30,
-			)
-		);
-
-		$response_code = wp_remote_retrieve_response_code( $response );
-		$response_body = json_decode( wp_remote_retrieve_body( $response ), true );
-
-		$error_data = array();
-		if ( is_wp_error( $response ) ) {
-			$error_data['code']    = $response->get_error_code();
-			$error_data['message'] = $response->get_error_message();
-		}
-
-		if ( 200 !== $response_code ) {
-			$error_data['status'] = $response_code;
-			if ( isset( $response_body['message'] ) ) {
-				$error_data['message'] = $response_body['message'];
-			}
-			if ( isset( $response_body['code'] ) ) {
-				$error_data['code'] = $response_body['code'];
-			}
-		}
-
-		if ( ! empty( $error_data ) ) {
-			return new \WP_Error( 'pexels_api_error', __( 'Request to the Pexels API failed.', 'woo-gutenberg-products-block' ), $error_data );
-		}
-
-		return $response_body['photos'] ?? $response_body;
+		return $response_data['media'] ?? $response_data;
 	}
 }
