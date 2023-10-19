@@ -87,7 +87,7 @@ const ConvertTemplate = ( { blockifyConfig, clientId, attributes } ) => {
 					} );
 					createInfoNotice(
 						__(
-							'Classic shortcode transformed into blocks!',
+							'Classic shortcode transformed to blocks.',
 							'woo-gutenberg-products-block'
 						),
 						{
