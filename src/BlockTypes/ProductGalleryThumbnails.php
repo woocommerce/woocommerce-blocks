@@ -16,7 +16,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	protected $block_name = 'product-gallery-thumbnails';
 
 	/**
-	 * It isn't necessary register block assets because it is a server side block.
+	 * It isn't necessary to register block assets because it is a server-side block.
 	 */
 	protected function register_block_type_assets() {
 		return null;
@@ -32,7 +32,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	}
 
 	/**
-	 *  Register the context
+	 * Register the context
 	 *
 	 * @return string[]
 	 */
@@ -63,53 +63,74 @@ class ProductGalleryThumbnails extends AbstractBlock {
 
 			if ( $product ) {
 				$post_thumbnail_id      = $product->get_image_id();
-				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail', array(), 'wc-block-product-gallery-thumbnails__thumbnail' );
+				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, array( 800, 800 ), array(), 'wc-block-product-gallery-thumbnails__thumbnail' );
 
 				if ( $product_gallery_images && $post_thumbnail_id ) {
 					$html                  = '';
 					$number_of_thumbnails  = isset( $block->context['thumbnailsNumberOfThumbnails'] ) ? $block->context['thumbnailsNumberOfThumbnails'] : 3;
-					$max_number_of_columns = isset( $block->context['thumbnailsMaxNumberOfColumns'] ) ? $block->context['thumbnailsMaxNumberOfColumns'] : 1;
+					$max_number_of_columns = isset( $block->context['thumbnailsMaxNumberOfColumns'] ) ? $block->context['thumbnailsMaxNumberOfColumns'] : 4;
 
-					$base_images_per_group = (int) floor( $number_of_thumbnails / $max_number_of_columns );
-					$extra_images          = $number_of_thumbnails - ( $base_images_per_group * $max_number_of_columns );
+					if ( 'bottom' === $block->context['thumbnailsPosition'] ) {
+						$product_gallery_images = array_slice( $product_gallery_images, 0, $number_of_thumbnails );
 
-					for ( $i = 0; $i < $max_number_of_columns; $i++ ) {
-						// Distribute extra images to the initial groups.
-						$current_images_per_group = $base_images_per_group + ( $i < $extra_images ? 1 : 0 );
+						$images_remaining = count( $product_gallery_images );
+						while ( $images_remaining > 0 ) {
+							$current_images_per_group = min( $max_number_of_columns, $images_remaining );
+							$current_group_images     = array_splice( $product_gallery_images, 0, $current_images_per_group );
 
-						$current_group_images = array_splice( $product_gallery_images, 0, $current_images_per_group );
-
-						if ( $max_number_of_columns > 1 && count( $current_group_images ) > 0 ) {
 							$html .= '<div class="wc-block-product-gallery-thumbnails__wrapper">';
-						}
-
-						foreach ( $current_group_images as $product_gallery_image_html ) {
-							$processor = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
-							if ( $processor->next_tag( 'img' ) ) {
-								$processor->set_attribute(
-									'data-wc-on--click',
-									'actions.woocommerce.thumbnails.handleClick'
-								);
-								$html .= $processor->get_updated_html();
+							foreach ( $current_group_images as $product_gallery_image_html ) {
+								$processor = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
+								if ( $processor->next_tag( 'img' ) ) {
+									$processor->set_attribute(
+										'data-wc-on--click',
+										'actions.woocommerce.thumbnails.handleClick'
+									);
+									$html .= $processor->get_updated_html();
+								}
 							}
+							$html             .= '</div>';
+							$images_remaining -= $current_images_per_group;
 						}
+					} else {
+						$base_images_per_group = (int) floor( $number_of_thumbnails / $max_number_of_columns );
+						$extra_images          = $number_of_thumbnails - ( $base_images_per_group * $max_number_of_columns );
 
-						if ( $max_number_of_columns > 1 && count( $current_group_images ) > 0 ) {
-							$html .= '</div>';
+						for ( $i = 0; $i < $max_number_of_columns; $i++ ) {
+							$current_images_per_group = $base_images_per_group + ( $i < $extra_images ? 1 : 0 );
+							$current_group_images     = array_splice( $product_gallery_images, 0, $current_images_per_group );
+
+							if ( $max_number_of_columns > 1 && count( $current_group_images ) > 0 ) {
+								$html .= '<div class="wc-block-product-gallery-thumbnails__wrapper">';
+							}
+
+							foreach ( $current_group_images as $product_gallery_image_html ) {
+								$processor = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
+								if ( $processor->next_tag( 'img' ) ) {
+									$processor->set_attribute(
+										'data-wc-on--click',
+										'actions.woocommerce.thumbnails.handleClick'
+									);
+									$html .= $processor->get_updated_html();
+								}
+							}
+
+							if ( $max_number_of_columns > 1 && count( $current_group_images ) > 0 ) {
+								$html .= '</div>';
+							}
 						}
 					}
 
 					return sprintf(
 						'<div class="wc-block-product-gallery-thumbnails wp-block-woocommerce-product-gallery-thumbnails %1$s" style="%2$s">
-							%3$s
-						</div>',
+                            %3$s
+                        </div>',
 						esc_attr( $classes_and_styles['classes'] ),
 						esc_attr( $classes_and_styles['styles'] ),
 						$html
 					);
 				}
 			}
-
 			return;
 		}
 	}

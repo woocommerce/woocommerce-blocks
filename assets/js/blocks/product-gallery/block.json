@@ -37,7 +37,7 @@
 		},
 		"thumbnailsMaxNumberOfColumns": {
 			"type": "number",
-			"default": 1
+			"default": 4
 		},
 		"thumbnailsMinNumberOfColumns": {
 			"type": "number",
