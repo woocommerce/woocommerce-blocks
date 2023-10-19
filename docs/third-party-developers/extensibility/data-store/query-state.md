@@ -5,8 +5,8 @@
 -   [Overview](#overview)
 -   [Usage](#usage)
 -   [Actions](#actions)
-    -   [setQueryValue](#setqueryvalue)
-    -   [setValueForQueryContext](#setvalueforquerycontext)
+    -   [setQueryValue( context, queryKey, value )](#setqueryvalue-context-querykey-value-)
+    -   [setValueForQueryContext( context ,value )](#setvalueforquerycontext-context-value-)
 
 ## Overview
 
