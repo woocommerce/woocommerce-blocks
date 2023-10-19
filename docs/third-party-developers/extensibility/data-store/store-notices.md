@@ -5,12 +5,10 @@
 -   [Overview](#overview)
 -   [Usage](#usage)
 -   [Actions](#actions)
-    -   [registerContainer](#registercontainer)
-    -   [unregisterContainer](#unregistercontainer)
+    -   [registerContainer( containerContext )](#registercontainer-containercontext-)
+    -   [unregisterContainer( containerContext )](#unregistercontainer-containercontext-)
 -   [Selectors](#selectors)
     -   [getRegisteredContainers](#getregisteredcontainers)
-        -   [_Returns_](#returns)
-        -   [_Example_](#example)
 
 ## Overview
 
@@ -72,11 +70,11 @@ dispatch( unregisterContainer( 'someContainerContext' ) );
 
 Returns the list of currently registered containers from the state.
 
-#### _Returns_
+#### _Returns_ <!-- omit in toc -->
 
 -   `string[]`: An array of strings with the registered container contexts.
 
-#### _Example_
+#### _Example_ <!-- omit in toc -->
 
 ```js
 const store = select( 'wc/store/store-notices' );
