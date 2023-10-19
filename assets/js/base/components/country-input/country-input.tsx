@@ -5,11 +5,11 @@ import { useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import classnames from 'classnames';
+import { Combobox } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies
  */
-import Combobox from '../combobox';
 import './style.scss';
 import type { CountryInputWithCountriesProps } from './CountryInputProps';
 

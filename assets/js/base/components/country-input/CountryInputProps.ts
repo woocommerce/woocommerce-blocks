@@ -1,7 +1,11 @@
 /**
+ * External dependencies
+ */
+import type { ComboboxProps } from '@woocommerce/blocks-components';
+
+/**
  * Internal dependencies
  */
-import { ComboboxProps } from '../combobox';
 import { countries } from './stories/countries-filler';
 
 export interface CountryInputProps extends Omit< ComboboxProps, 'options' > {

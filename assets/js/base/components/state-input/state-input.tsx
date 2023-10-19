@@ -6,11 +6,11 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { useCallback, useMemo, useEffect, useRef } from '@wordpress/element';
 import classnames from 'classnames';
 import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
+import { Combobox } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies
  */
-import Combobox from '../combobox';
 import './style.scss';
 import type { StateInputWithStatesProps } from './StateInputProps';
 
