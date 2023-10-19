@@ -63,7 +63,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 
 			if ( $product ) {
 				$post_thumbnail_id      = $product->get_image_id();
-				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, array( 800, 800 ), array(), 'wc-block-product-gallery-thumbnails__thumbnail' );
+				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'full', array(), 'wc-block-product-gallery-thumbnails__thumbnail' );
 
 				if ( $product_gallery_images && $post_thumbnail_id ) {
 					$html                  = '';
@@ -100,9 +100,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 							$current_images_per_group = $base_images_per_group + ( $i < $extra_images ? 1 : 0 );
 							$current_group_images     = array_splice( $product_gallery_images, 0, $current_images_per_group );
 
-							if ( $max_number_of_columns > 1 && count( $current_group_images ) > 0 ) {
-								$html .= '<div class="wc-block-product-gallery-thumbnails__wrapper">';
-							}
+							$html .= '<div class="wc-block-product-gallery-thumbnails__wrapper">';
 
 							foreach ( $current_group_images as $product_gallery_image_html ) {
 								$processor = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
@@ -115,9 +113,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 								}
 							}
 
-							if ( $max_number_of_columns > 1 && count( $current_group_images ) > 0 ) {
-								$html .= '</div>';
-							}
+							$html .= '</div>';
 						}
 					}
 
