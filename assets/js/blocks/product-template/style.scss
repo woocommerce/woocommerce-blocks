@@ -50,10 +50,10 @@ $min-product-width: 150px;
 		@for $i from 2 through 6 {
 			$gap-count: calc(#{ $i } - 1);
 			$total-gap-width: calc(#{ $gap-count } * #{ $grid-gap });
-			$grid-item--max-width: calc((100% - #{ $total-gap-width }) / #{ $i });
+			$max-product-width: calc((100% - #{ $total-gap-width }) / #{ $i });
 
 			&.columns-#{ $i } {
-				grid-template-columns: repeat(auto-fill, minmax(max(#{ $min-product-width }, #{ $grid-item--max-width }), 1fr));
+				grid-template-columns: repeat(auto-fill, minmax(max(#{ $min-product-width }, #{ $max-product-width }), 1fr));
 			}
 		}
 
