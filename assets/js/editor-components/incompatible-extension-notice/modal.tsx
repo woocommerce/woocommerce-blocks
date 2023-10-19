@@ -52,19 +52,25 @@ export const ModalContent = ( {
 }: {
 	blockType: 'woocommerce/cart' | 'woocommerce/checkout';
 } ): JSX.Element => {
-	const message =
-		blockType === 'woocommerce/cart'
-			? __(
-					'If you continue, the cart block will be replaced with the classic cart shortcode. This means you may lose:',
+	if ( blockType === 'woocommerce/cart' ) {
+		return (
+			<p>
+				{ __(
+					'If you continue, the cart block will be replaced with the classic experience powered by shortcode. This means that you may lose customizations and updates you did to the cart block.',
 					'woo-gutenberg-products-block'
-			  )
-			: __(
-					'If you continue, the checkout block will be replaced with the classic checkout shortcode. This means you may lose:',
-					'woo-gutenberg-products-block'
-			  );
+				) }
+			</p>
+		);
+	}
+
 	return (
 		<>
-			<p>{ message }</p>
+			<p>
+				{ __(
+					'If you continue, the checkout block be replaced with the classic experience powered by shortcode. This means that you may lose:',
+					'woo-gutenberg-products-block'
+				) }
+			</p>
 			<ul className="cross-list">
 				<li>
 					{ __(
@@ -72,14 +78,12 @@ export const ModalContent = ( {
 						'woo-gutenberg-products-block'
 					) }
 				</li>
-				{ blockType === 'woocommerce/checkout' && (
-					<li>
-						{ __(
-							'Additional local pickup options created for the new checkout',
-							'woo-gutenberg-products-block'
-						) }
-					</li>
-				) }
+				<li>
+					{ __(
+						'Additional local pickup options created for the new checkout',
+						'woo-gutenberg-products-block'
+					) }
+				</li>
 			</ul>
 		</>
 	);

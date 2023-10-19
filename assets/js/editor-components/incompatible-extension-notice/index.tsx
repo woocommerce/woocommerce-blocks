@@ -84,7 +84,7 @@ export function IncompatibleExtensionsNotice( {
 			{ numberOfIncompatiblePaymentMethods > 1
 				? createInterpolateElement(
 						__(
-							'Some extensions do not yet support the new cart and checkout blocks. This may impact the shopper experience. <a>Learn more</a>',
+							'Some active extensions do not yet support this block. This may impact the shopper experience. <a>Learn more</a>',
 							'woo-gutenberg-products-block'
 						),
 						{
@@ -97,7 +97,7 @@ export function IncompatibleExtensionsNotice( {
 						sprintf(
 							// translators: %s is the name of the extension.
 							__(
-								'<strong>%s</strong> does not yet support the new cart and checkout blocks. This may impact the shopper experience. <a>Learn more</a>',
+								'<strong>%s</strong> does not yet support this block. This may impact the shopper experience. <a>Learn more</a>',
 								'woo-gutenberg-products-block'
 							),
 							Object.values( incompatiblePaymentMethods )[ 0 ]
@@ -234,7 +234,10 @@ export function IncompatibleExtensionsNotice( {
 										closeModal();
 									} }
 								>
-									{ switchButtonLabel }
+									{ __(
+										'Switch',
+										'woo-gutenberg-products-block'
+									) }
 								</Button>{ ' ' }
 								<Button
 									variant="secondary"
