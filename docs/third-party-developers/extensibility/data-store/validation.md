@@ -1,12 +1,9 @@
-# wc/store/validation
+# Validation Store <!-- omit in toc -->
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
 -   [Overview](#overview)
--   [Selectors](#selectors)
-    -   [getValidationError](#getvalidationerror)
-    -   [getValidationErrorId](#getvalidationerrorid)
-    -   [hasValidationErrors](#hasvalidationerrors)
+-   [Usage](#usage)
 -   [Actions](#actions)
     -   [clearValidationError](#clearvalidationerror)
     -   [clearValidationErrors](#clearvalidationerrors)
@@ -14,6 +11,10 @@
     -   [hideValidationError](#hidevalidationerror)
     -   [showValidationError](#showvalidationerror)
     -   [showAllValidationErrors](#showallvalidationerrors)
+-   [Selectors](#selectors)
+    -   [getValidationError](#getvalidationerror)
+    -   [getValidationErrorId](#getvalidationerrorid)
+    -   [hasValidationErrors](#hasvalidationerrors)
 
 ## Overview
 
@@ -38,73 +39,40 @@ An example of how the data should be structured:
 
 When the checkout process begins, it will check if this data store has any entries, and if so, it will stop the checkout process from proceeding. It will also show any errors that are hidden. Setting an error to hidden will not clear it from the data store!
 
-## Selectors
+## Usage
 
-### getValidationError
-
-Returns the validation error.
-
-#### _Parameters_
-
--   _errorId_ `string` - The error ID to get validation errors for.
-
-#### Example
+To utilize this store you will import the `CART_STORE_KEY` in any module referencing it. Assuming `@woocommerce/block-data` is registered as an external pointing to `wc.wcBlocksData` you can import the key via:
 
 ```js
-const store = select( 'wc/store/validation' );
-const billingFirstNameError = store.getValidationError( 'billing-first-name' );
+import { CART_STORE_KEY } from '@woocommerce/block-data';
 ```
-
-#### _Returns_
-
--   `object`: The validation error which is an object containing _message_ (`string`) and _hidden_ (`boolean`).
-
-### getValidationErrorId
-
-Gets a validation error ID for use in HTML which can be used as a CSS selector, or to reference an error message. This will return the error ID prefixed with `validate-error-`, unless the validation error has `hidden` set to true, or the validation error does not exist in the store.
-
-#### _Parameters_
-
--   _errorId_ `string` - The error ID to get the validation error ID for.
-
-#### _Returns_
-
--   `string`: The validation error ID for use in HTML.
-
-### hasValidationErrors
-
-Returns true if validation errors occurred, and false otherwise.
-
-#### _Returns_
-
--   `boolean`: Whether validation errors occurred.
 
 ## Actions
 
-### clearValidationError
+### clearValidationError( errorId )
 
 Clears a validation error.
 
-#### _Parameters_
+#### _Parameters_ <!-- omit in toc -->
 
--   _errorId_ `string` - The error ID to clear validation errors for.
+-   _errorId_ `string`: The error ID to clear validation errors for.
 
-#### Example
+#### _Example_ <!-- omit in toc -->
 
 ```js
 const store = dispatch( 'wc/store/validation' );
 store.clearValidationError( 'billing-first-name' );
 ```
 
-### clearValidationErrors
+### clearValidationErrors( errors )
 
 Clears multiple validation errors at once. If no error IDs are passed, all validation errors will be cleared.
 
-#### _Parameters_
+#### _Parameters_ <!-- omit in toc -->
 
--   _errors_ `string[] | undefined` - The error IDs to clear validation errors for. This can be undefined, and if it is, all validation errors will be cleared.
+-   _errors_ `string[]` or `undefined`: The error IDs to clear validation errors for. This can be undefined, and if it is, all validation errors will be cleared.
 
-#### Example
+#### _Example_ <!-- omit in toc -->
 
 1. This will clear only the validation errors passed in the array.
 
@@ -124,15 +92,15 @@ const store = dispatch( 'wc/store/validation' );
 store.clearValidationErrors();
 ```
 
-### setValidationErrors
-
-#### _Parameters_
-
--   _errors_ `object`: An object containing new validation errors, the keys of the object are the validation error IDs, and the values should be objects containing _message_ (`string`) and _hidden_ `boolean`.
+### setValidationErrors( errors )
 
 Sets the validation errors. The entries in _errors_ will be _added_ to the list of validation errors. Any entries that already exist in the list will be _updated_ with the new values.
 
-#### Example
+#### _Parameters_ <!-- omit in toc -->
+
+-   _errors_ `object`: The new validation errors, the keys of the object are the validation error IDs, and the values should be objects containing _message_ `string` and _hidden_ `boolean`.
+
+#### _Example_ <!-- omit in toc -->
 
 ```js
 const { dispatch } = wp.data;
@@ -150,15 +118,15 @@ setValidationErrors( {
 } );
 ```
 
-### hideValidationError
+### hideValidationError( errorId )
 
 Hides a validation error by setting the `hidden` property to `true`. This will _not_ clear it from the data store!
 
-#### _Parameters_
+#### _Parameters_ <!-- omit in toc -->
 
 -   _errorId_ `string`: The error ID to hide.
 
-#### Example
+#### _Example_ <!-- omit in toc -->
 
 ```js
 const { dispatch } = wp.data;
@@ -167,15 +135,15 @@ const { hideValidationError } = dispatch( 'wc/store/validation' );
 hideValidationError( 'billing-first-name' );
 ```
 
-### showValidationError
+### showValidationError( errorId )
 
 Shows a validation error by setting the `hidden` property to `false`.
 
-#### _Parameters_
+#### _Parameters_ <!-- omit in toc -->
 
 -   _errorId_ `string`: The error ID to show.
 
-#### Example
+#### _Example_ <!-- omit in toc -->
 
 ```js
 const { dispatch } = wp.data;
@@ -188,13 +156,69 @@ showValidationError( 'billing-first-name' );
 
 Shows all validation errors by setting the `hidden` property to `false`.
 
-#### Example
+#### _Example_ <!-- omit in toc -->
 
 ```js
 const { dispatch } = wp.data;
 const { showAllValidationErrors } = dispatch( 'wc/store/validation' );
 
 showAllValidationErrors();
+```
+
+## Selectors
+
+### getValidationError( errorId )
+
+Returns the validation error.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   _errorId_ `string`: The error ID to get validation errors for.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `object`: The validation error which is an object containing _message_ `string` and _hidden_ `boolean`.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/validation' );
+const billingFirstNameError = store.getValidationError( 'billing-first-name' );
+```
+
+### getValidationErrorId( errorId )
+
+Gets a validation error ID for use in HTML which can be used as a CSS selector, or to reference an error message. This will return the error ID prefixed with `validate-error-`, unless the validation error has `hidden` set to true, or the validation error does not exist in the store.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   _errorId_ `string`: The error ID to get the validation error ID for.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `string`: The validation error ID for use in HTML.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/validation' );
+const billingFirstNameErrorId =
+	store.getValidationErrorId( 'billing-first-name' );
+```
+
+### hasValidationErrors
+
+Returns true if validation errors occurred, and false otherwise.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `boolean`: Whether validation errors occurred.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/validation' );
+const hasValidationErrors = store.hasValidationErrors();
 ```
 
 <!-- FEEDBACK -->
@@ -206,4 +230,3 @@ showAllValidationErrors();
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/data-store/validation.md)
 
 <!-- /FEEDBACK -->
-
