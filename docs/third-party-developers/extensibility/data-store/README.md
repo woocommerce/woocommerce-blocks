@@ -27,7 +27,3 @@ The **[Validation Store (wc/store/validation)](validation.md)** ensures data val
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/data-store/README.md)
 
 <!-- /FEEDBACK -->
-
----
-
-Organizing the data stores in paragraph format like this can make the content more readable and give readers a quick overview of each store's purpose without having to navigate away from the page.
