@@ -13,7 +13,7 @@
 	<div class="wp-block-group alignfull sticky-header" style="margin-top:0px;margin-bottom:0px;padding-top:20px;padding-right:20px;padding-bottom:20px;padding-left:20px">
 		<!-- wp:group {"style":{"spacing":{"blockGap":"20px"}},"layout":{"type":"flex","flexWrap":"wrap"}} -->
 		<div class="wp-block-group">
-			<!-- wp:site-logo {"shouldSyncIcon":false} /-->
+			<!-- wp:site-logo {"width":60,"shouldSyncIcon":false} /-->
 			<!-- wp:site-title /-->
 		</div>
 		<!-- /wp:group -->
