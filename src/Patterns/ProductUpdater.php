@@ -215,7 +215,7 @@ class ProductUpdater {
 		// Since the media_sideload_image function can take longer to complete
 		// the process of downloading the external image and uploading it
 		// to the media library, we need to ensure the request doesn't timeout.
-		set_time_limit( 60 );
+		set_time_limit( 180 );
 
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
