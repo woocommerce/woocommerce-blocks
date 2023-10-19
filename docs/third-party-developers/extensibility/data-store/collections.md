@@ -5,10 +5,10 @@
 -   [Overview](#overview)
 -   [Usage](#usage)
 -   [Actions](#actions)
-    -   [`receiveCollection( namespace, resourceName, queryString, ids = [], items = [], replace = false )`](#receivecollection-namespace-resourcename-querystring-ids---items---replace--false-)
+    -   [receiveCollection( namespace, resourceName, queryString, ids = \[\], items = \[\], replace = false )](#receivecollection-namespace-resourcename-querystring-ids---items---replace--false-)
 -   [Selectors](#selectors)
-    -   [`getCollection( namespace, resourceName, query = null, ids=[] )`](#getcollection-namespace-resourcename-query--null-ids-)
-    -   [`getCollectionHeader( namespace, resourceName, header, query = null, ids = [])`](#getcollectionheader-namespace-resourcename-header-query--null-ids--)
+    -   [getCollection](#getcollection)
+    -   [getCollectionHeader](#getcollectionheader)
 
 ## Overview
 

@@ -18,11 +18,13 @@
     -   [getCouponBeingApplied](#getcouponbeingapplied)
     -   [isRemovingCoupon](#isremovingcoupon)
     -   [getCouponBeingRemoved](#getcouponbeingremoved)
-    -   [getCartItem](#getcartitem)
-    -   [isItemPendingQuantity](#isitempendingquantity)
-    -   [isItemPendingDelete](#isitempendingdelete)
+    -   [getCartItem( cartItemKey )](#getcartitem-cartitemkey-)
+    -   [isItemPendingQuantity( cartItemKey )](#isitempendingquantity-cartitemkey-)
+    -   [isItemPendingDelete( cartItemKey )](#isitempendingdelete-cartitemkey-)
     -   [isCustomerDataUpdating](#iscustomerdataupdating)
     -   [isShippingRateBeingSelected](#isshippingratebeingselected)
+    -   [getItemsPendingQuantityUpdate](#getitemspendingquantityupdate)
+    -   [getItemsPendingDelete](#getitemspendingdelete)
 
 ## Overview
 

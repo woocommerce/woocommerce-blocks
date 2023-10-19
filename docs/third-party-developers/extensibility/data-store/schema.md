@@ -5,10 +5,10 @@
 -   [Overview](#overview)
 -   [Usage](#usage)
 -   [Actions](#actions)
-    -   [receiveRoutes](#receiveroutes)
+    -   [receiveRoutes( routes, namespace)](#receiveroutes-routes-namespace)
 -   [Selectors](#selectors)
-    -   [getRoute](#getroute)
-    -   [getRoutes](#getroutes)
+    -   [getRoute( state, namespace, resourceName, ids = \[\] )](#getroute-state-namespace-resourcename-ids---)
+    -   [getRoutes( state, namespace )](#getroutes-state-namespace-)
 
 ## Overview
 
