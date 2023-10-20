@@ -314,12 +314,12 @@ class ProductUpdater {
 				break;
 			}
 
-			if ( ! isset( $image['title'] ) || ! isset( $image['URL'] ) ) {
+			if ( ! isset( $image['title'] ) || ! isset( $image['thumbnails']['medium'] ) ) {
 				continue;
 			}
 
 			$placeholder_images[] = [
-				'src' => esc_url( $image['URL'] ),
+				'src' => esc_url( $image['thumbnails']['medium'] ),
 				'alt' => esc_attr( $image['title'] ),
 			];
 
