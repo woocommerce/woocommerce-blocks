@@ -38,17 +38,6 @@ class SingleProductTemplateController extends BlockTemplatesRefactorController {
 
 	}
 
-	private $template_title;
-	private $template_description;
-
-
-	public function __construct( Package $package ) {
-		parent::__construct( $package );
-		$this->template_title       = _x( 'Single Product', 'Template name', 'woo-gutenberg-products-block' );
-		$this->template_description = __( 'Displays a single product.', 'woo-gutenberg-products-block' );
-
-	}
-
 	/**
 	 * Renders the template.
 	 *
@@ -75,7 +64,7 @@ class SingleProductTemplateController extends BlockTemplatesRefactorController {
 	 * @return WP_Block_Template|null
 	 */
 	public function update_template_data_rest_api( $template ) {
-		$template->title       = $this->template_title;
+		$template->title       = 'ciao';
 		$template->description = $this->template_description;
 		return $template;
 	}

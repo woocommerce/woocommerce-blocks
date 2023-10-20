@@ -83,7 +83,7 @@ class BlockTemplatesRefactorController {
 		$organized_templates = $this->organize_templates( $all_templates );
 
 		if ( ! isset( $all_templates ) || isset( $all_templates ) && count( $all_templates ) === 0 || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
-			return $all_templates;
+			return $organized_templates;
 		}
 		$templates = $this->render_template( end( $organized_templates ), $organized_templates );
 
