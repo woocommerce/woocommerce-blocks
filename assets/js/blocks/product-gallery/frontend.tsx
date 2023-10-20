@@ -53,6 +53,12 @@ interface Event {
 
 type SelectorsStore = Pick< Store, 'context' | 'selectors' | 'ref' >;
 
+enum Keys {
+	ESC = 27,
+	LEFT_ARROW = 37,
+	RIGHT_ARROW = 39,
+}
+
 interactivityApiStore( {
 	state: {},
 	effects: {
@@ -77,19 +83,19 @@ interactivityApiStore( {
 					} );
 
 					// Check if the esc key is pressed.
-					if ( event.keyCode === 27 ) {
+					if ( event.keyCode === Keys.ESC ) {
 						context.woocommerce.isDialogOpen = false;
 					}
 
 					// Check if left arrow key is pressed.
-					if ( event.keyCode === 37 ) {
+					if ( event.keyCode === Keys.LEFT_ARROW ) {
 						actions.woocommerce.handlePreviousImageButtonClick(
 							store
 						);
 					}
 
 					// Check if right arrow key is pressed.
-					if ( event.keyCode === 39 ) {
+					if ( event.keyCode === Keys.RIGHT_ARROW ) {
 						actions.woocommerce.handleNextImageButtonClick( store );
 					}
 				};
