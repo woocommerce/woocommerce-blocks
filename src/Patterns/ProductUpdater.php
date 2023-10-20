@@ -94,7 +94,7 @@ class ProductUpdater {
 				continue;
 			}
 
-			// This is required to allow the usage of media_sideload_image function outside the context of /wp-admin/.
+			// This is required to allow the usage of the media_sideload_image function outside the context of /wp-admin/.
 			// See https://developer.wordpress.org/reference/functions/media_sideload_image/ for more details.
 			require_once ABSPATH . 'wp-admin/includes/media.php';
 			require_once ABSPATH . 'wp-admin/includes/file.php';
