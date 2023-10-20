@@ -70,7 +70,7 @@ const ColumnsControl = ( props: DisplayLayoutToolbarProps ) => {
 				onDeselect={ onPanelDeselect }
 			>
 				<ToggleControl
-					checked={ shrinkColumns }
+					checked={ !! shrinkColumns }
 					label={ toggleLabel }
 					help={ toggleHelp }
 					onChange={ onToggleChange }
