@@ -130,13 +130,10 @@ class ProductUpdater {
 		global $wpdb;
 
 		if ( 'user_created' === $type ) {
-			// @todo update to comply with DRY principles.
-			$query = "SELECT ID FROM {$wpdb->posts} WHERE ID NOT IN ( SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish' ) AND post_type = 'product' AND post_status = 'publish' LIMIT 6";
-		} else {
-			$query = "SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish'";
+			return $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE ID NOT IN ( SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish' ) AND post_type = 'product' AND post_status = 'publish' LIMIT 6", '_headstart_post' ) );
 		}
 
-		return $wpdb->get_results( $wpdb->prepare( $query, '_headstart_post' ) );
+		return $wpdb->get_results( $wpdb->prepare( "SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish'", '_headstart_post' ) );
 	}
 
 	/**
@@ -291,12 +288,12 @@ class ProductUpdater {
 				break;
 			}
 
-			if ( ! isset( $image['title'] ) || ! isset( $image['thumbnails']['medium'] ) ) {
+			if ( ! isset( $image['title'] ) || ! isset( $image['URL'] ) ) {
 				continue;
 			}
 
 			$placeholder_images[] = [
-				'src' => esc_url( $image['thumbnails']['medium'] ),
+				'src' => esc_url( $image['URL'] ),
 				'alt' => esc_attr( $image['title'] ),
 			];
 
