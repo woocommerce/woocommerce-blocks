@@ -48,18 +48,13 @@ class ProductUpdater {
 
 		$dummy_products_to_update = [];
 		foreach ( $dummy_products as $dummy_product ) {
-			$current_product_hash     = $this->get_hash_for_product( $dummy_product );
-			$ai_modified_product_hash = $this->get_hash_for_ai_modified_product( $dummy_product );
+			if ( ! $dummy_product instanceof \WC_Product ) {
+				continue;
+			}
 
-			$date_created  = $dummy_product->get_date_created()->date( 'Y-m-d H:i:s' );
-			$date_modified = $dummy_product->get_date_modified()->date( 'Y-m-d H:i:s' );
+			$should_update_dummy_product = $this->should_update_dummy_product( $dummy_product );
 
-			$timestamp_created  = strtotime( $date_created );
-			$timestamp_modified = strtotime( $date_modified );
-
-			$dummy_product_not_modified = abs( $timestamp_modified - $timestamp_created ) < 60;
-
-			if ( $current_product_hash === $ai_modified_product_hash || $dummy_product_not_modified ) {
+			if ( $should_update_dummy_product ) {
 				$dummy_products_to_update[] = $dummy_product;
 			}
 		}
@@ -100,6 +95,39 @@ class ProductUpdater {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Verify if the dummy product should have its content generated and managed by AI.
+	 *
+	 * @param \WC_Product $dummy_product The dummy product.
+	 *
+	 * @return bool
+	 */
+	public function should_update_dummy_product( $dummy_product ): bool {
+		$current_product_hash     = $this->get_hash_for_product( $dummy_product );
+		$ai_modified_product_hash = $this->get_hash_for_ai_modified_product( $dummy_product );
+
+		$date_created  = $dummy_product->get_date_created();
+		$date_modified = $dummy_product->get_date_modified();
+
+		if ( ! $date_created instanceof \WC_DateTime || ! $date_modified instanceof \WC_DateTime ) {
+			return false;
+		}
+
+		$formatted_date_created  = $dummy_product->get_date_created()->date( 'Y-m-d H:i:s' );
+		$formatted_date_modified = $dummy_product->get_date_modified()->date( 'Y-m-d H:i:s' );
+
+		$timestamp_created  = strtotime( $formatted_date_created );
+		$timestamp_modified = strtotime( $formatted_date_modified );
+
+		$dummy_product_not_modified = abs( $timestamp_modified - $timestamp_created ) < 60;
+
+		if ( $current_product_hash === $ai_modified_product_hash || $dummy_product_not_modified ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -146,10 +174,6 @@ class ProductUpdater {
 	 * @return false|string
 	 */
 	public function get_hash_for_product( $product ) {
-		if ( ! $product instanceof \WC_Product ) {
-			return false;
-		}
-
 		return md5( $product->get_name() . $product->get_description() . $product->get_image_id() );
 	}
 
