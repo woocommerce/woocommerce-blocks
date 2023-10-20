@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import Title from '@woocommerce/base-components/title';
+import { Title } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies
