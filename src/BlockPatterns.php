@@ -232,7 +232,7 @@ class BlockPatterns {
 	 *
 	 * @param string $value The new value saved for the add_option_woo_ai_describe_store_description option.
 	 *
-	 * @return bool|int|string|\WP_Error
+	 * @return bool|string|\WP_Error
 	 */
 	public function update_patterns_content( $value ) {
 		$allow_ai_connection = get_option( 'woocommerce_blocks_allow_ai_connection' );
@@ -277,5 +277,7 @@ class BlockPatterns {
 		if ( is_wp_error( $populate_products ) ) {
 			return $populate_products->get_error_message();
 		}
+
+		return true;
 	}
 }
