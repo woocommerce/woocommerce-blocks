@@ -71,32 +71,30 @@ class ProductUpdater {
 		$ai_selected_products_images = $this->get_images_information( $images );
 		$products_information_list   = $this->assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images );
 
-		$responses = $this->generate_product_content( $ai_connection, $token, $products_information_list );
+		$response = $this->generate_product_content( $ai_connection, $token, $products_information_list );
 
-		foreach ( $responses as $key => $response ) {
-			if ( is_wp_error( $response ) ) {
-				return $response;
-			}
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
 
-			if ( empty( $response ) ) {
-				return new \WP_Error( 'empty_response', __( 'The response from the AI service was empty.', 'woo-gutenberg-products-block' ) );
-			}
+		if ( empty( $response ) || ! isset( $response['completion'] ) ) {
+			return new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
+		}
 
-			if ( ! isset( $response['completion'] ) ) {
-				continue;
-			}
+		$product_content = json_decode( $response['completion'], true );
 
-			$product_content = json_decode( $response['completion'], true );
+		if ( is_null( $product_content ) ) {
+			return new \WP_Error( 'invalid_json', __( 'The response from the AI service is not a valid JSON.', 'woo-gutenberg-products-block' ) );
+		}
 
-			if ( is_null( $product_content ) ) {
-				continue;
-			}
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-			$i = 0;
-			foreach ( $dummy_products_to_update as $dummy_product ) {
-				$this->update_product_content( $dummy_product, $product_content[ $i ] );
-				++$i;
-			}
+		$i = 0;
+		foreach ( $dummy_products_to_update as $dummy_product ) {
+			$this->update_product_content( $dummy_product, $product_content[ $i ] );
+			++$i;
 		}
 
 		return true;
@@ -209,10 +207,6 @@ class ProductUpdater {
 		// to the media library, we need to ensure the request doesn't timeout.
 		set_time_limit( 180 );
 
-		require_once ABSPATH . 'wp-admin/includes/media.php';
-		require_once ABSPATH . 'wp-admin/includes/file.php';
-		require_once ABSPATH . 'wp-admin/includes/image.php';
-
 		$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
 
 		if ( is_wp_error( $product_image_id ) ) {
@@ -285,7 +279,7 @@ class ProductUpdater {
 	public function get_images_information( $images ) {
 		if ( is_wp_error( $images ) ) {
 			return [
-				'src' => esc_url( 'images/block-placeholders/product-image-gallery.svg' ),
+				'src' => 'images/block-placeholders/product-image-gallery.svg',
 				'alt' => 'The placeholder for a product image.',
 			];
 		}
@@ -297,12 +291,12 @@ class ProductUpdater {
 				break;
 			}
 
-			if ( ! isset( $image['title'] ) || ! isset( $image['URL'] ) ) {
+			if ( ! isset( $image['title'] ) || ! isset( $image['thumbnails']['medium'] ) ) {
 				continue;
 			}
 
 			$placeholder_images[] = [
-				'src' => esc_url( $image['URL'] ),
+				'src' => esc_url( $image['thumbnails']['medium'] ),
 				'alt' => esc_attr( $image['title'] ),
 			];
 
@@ -328,8 +322,8 @@ class ProductUpdater {
 			return new \WP_Error( 'missing_store_description', __( 'The store description is required to generate the content for your site.', 'woo-gutenberg-products-block' ) );
 		}
 
-		$prompt = [ sprintf( 'Given the following store description: "%1s" and the assigned value for the alt property in the json bellow, generate new titles and descriptions for each one of the products listed bellow and assign them as the new values for the json: %2s. Each one of the titles should be unique and no numbers are allowed. The response should be only a JSON string, with no intro or explanations.', $store_description, wp_json_encode( $products_default_content ) ) ];
+		$prompt = sprintf( 'Given the following business description: "%1s" and the assigned value for the alt property in the json bellow, generate new titles and descriptions for each one of the products listed bellow and assign them as the new values for the json: %2s. Each one of the titles should be unique and no numbers are allowed. The response should be only a JSON string, with no intro or explanations.', $store_description, wp_json_encode( $products_default_content ) );
 
-		return $ai_connection->fetch_ai_responses( $token, $prompt, 60 );
+		return $ai_connection->fetch_ai_response( $token, $prompt, 30 );
 	}
 }
