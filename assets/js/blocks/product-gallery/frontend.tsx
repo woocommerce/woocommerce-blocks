@@ -64,17 +64,17 @@ interactivityApiStore( {
 				const handleKeyEvents = ( event: Event ) => {
 					if (
 						! allowNavigation ||
-						! context.woocommerce.isDialogOpen
+						! context.woocommerce?.isDialogOpen
 					) {
 						return;
 					}
 
-					// Disable navigation for a brief period to prevent spamming
+					// Disable navigation for a brief period to prevent spamming.
 					allowNavigation = false;
 
-					setTimeout( () => {
+					requestAnimationFrame( () => {
 						allowNavigation = true;
-					}, 300 );
+					} );
 
 					// Check if the esc key is pressed.
 					if ( event.keyCode === 27 ) {
