@@ -87,6 +87,8 @@ class ProductUpdater {
 			return new \WP_Error( 'invalid_json', __( 'The response from the AI service is not a valid JSON.', 'woo-gutenberg-products-block' ) );
 		}
 
+		// This is required to allow the usage of the media_sideload_image function outside the context of /wp-admin/.
+		// See https://developer.wordpress.org/reference/functions/media_sideload_image/ for more details.
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -202,7 +204,7 @@ class ProductUpdater {
 		// Since the media_sideload_image function can take longer to complete
 		// the process of downloading the external image and uploading it
 		// to the media library, we need to ensure the request doesn't timeout.
-		set_time_limit( 180 );
+		set_time_limit( 60 );
 
 		$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
 
