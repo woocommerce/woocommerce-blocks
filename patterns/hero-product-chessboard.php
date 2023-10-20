@@ -25,8 +25,8 @@ $fourth_description = $content['descriptions'][3]['default'] ?? '';
 $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 ?>
 
-<!-- wp:group {"align":"full","layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull">
+<!-- wp:group {"align":"full","style":{"spacing":{"margin":{"top":"0px","bottom":"80px"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull" style="margin-top:0px;margin-bottom:80px">
 	<!-- wp:columns {"align":"full","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"blockGap":{"top":"0","left":"0"}}}} -->
 	<div class="wp-block-columns alignfull" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
 		<!-- wp:column -->
@@ -35,6 +35,9 @@ $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 			<div class="wp-block-cover is-light">
 				<img class="wp-block-cover__image-background" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in a hero section. 1 out of 2.', 'woo-gutenberg-products-block' ); ?>" src="<?php echo esc_url( $image1 ); ?>" style="object-position:54% 52%" data-object-fit="cover" data-object-position="54% 52%"/>
 				<div class="wp-block-cover__inner-container">
+					<!-- wp:paragraph {"align":"center","placeholder":"Write title…","fontSize":"large"} -->
+						<p class="has-text-align-center has-large-font-size"> </p>
+					<!-- /wp:paragraph -->
 				</div>
 			</div>
 			<!-- /wp:cover -->
@@ -141,6 +144,9 @@ $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 			<div class="wp-block-cover">
 				<img class="wp-block-cover__image-background" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in a hero section. 2 out of 2.', 'woo-gutenberg-products-block' ); ?>" src="<?php echo esc_url( $image2 ); ?>" style="object-position:33% 6%" data-object-fit="cover" data-object-position="33% 6%"/>
 				<div class="wp-block-cover__inner-container">
+					<!-- wp:paragraph {"align":"center","placeholder":"Write title…","fontSize":"large"} -->
+						<p class="has-text-align-center has-large-font-size"> </p>
+					<!-- /wp:paragraph -->
 				</div>
 			</div>
 			<!-- /wp:cover -->
