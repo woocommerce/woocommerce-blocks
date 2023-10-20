@@ -3,14 +3,17 @@
  */
 import { ProductCollectionQuery } from '@woocommerce/blocks/product-collection/types';
 
-const sharedParams: Array< keyof ProductCollectionQuery > = [
+export const sharedParams: Array< keyof ProductCollectionQuery > = [
 	'exclude',
 	'offset',
 	'order',
 	'search',
 ];
 
-const mappedParams: { key: keyof ProductCollectionQuery; map: string }[] = [
+export const mappedParams: {
+	key: keyof ProductCollectionQuery;
+	map: string;
+}[] = [
 	{ key: 'orderBy', map: 'orderby' },
 	{ key: 'pages', map: 'page' },
 	{ key: 'parents', map: 'parent' },
