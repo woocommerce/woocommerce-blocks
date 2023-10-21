@@ -44,7 +44,7 @@ The **[Store-Notices Store (wc/store/store-notices)](store-notices.md)** is dedi
 import { STORE_NOTICES_STORE_KEY } from '@woocommerce/blocks-data';
 ```
 
-The **[Validation Store (wc/store/validation)](validation.md)** ensures data validation across the platform, ensuring data integrity and security. To access this store using a constant, you can use:
+The **[Validation Store (wc/store/validation)](validation.md)** holds data relating to validation errors, it is primarily used in the Cart and Checkout flows to ensure the Checkout doesn't continue while invalid data is present. To access this store using a constant, you can use:
 
 ```ts
 import { VALIDATION_STORE_KEY } from '@woocommerce/blocks-data';
