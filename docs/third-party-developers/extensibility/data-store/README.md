@@ -2,21 +2,53 @@
 
 This document provides an overview of the data stores registered with `wp.data` for use by various blocks. Store keys are exported as constants on the `wc.wcBlocksData` export (externally registered as `@woocommerce/block-data` and enqueued via handle `wc-blocks-data-store`). For any block using the store, it's recommended to import the store key rather than using the reference directly to ensure dependencies are extracted correctly. It is assumed readers have some familiarity with the `wp.data` API. You can read more about that [here](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-data/).
 
-The **[Cart Store (wc/store/cart)](cart.md)** is responsible for handling cart-related data and operations. The primary key for this store is CART_STORE_KEY.
+The **[Cart Store (wc/store/cart)](cart.md)** is responsible for handling cart-related data and operations. To access this store using a constant, you can use:
 
-The **[Checkout Store (wc/store/checkout)](checkout.md)** manages the checkout process, ensuring a seamless experience for users. The primary key for this store is CHECKOUT_STORE_KEY.
+```ts
+import { CART_STORE_KEY } from '@woocommerce/blocks-data';
+```
 
-The **[Collections Store (wc/store/collections)](collections.md)** holds data indexed by namespace, model name, and query string. The primary key for this store is COLLECTIONS_STORE_KEY.
+The **[Checkout Store (wc/store/checkout)](checkout.md)** manages the checkout process, ensuring a seamless experience for users. To access this store using a constant, you can use:
 
-The **[Payment Store (wc/store/payment)](payment.md)** deals with all payment-related data and transactions. The primary key for this store is PAYMENT_STORE_KEY.
+```ts
+import { CHECKOUT_STORE_KEY } from '@woocommerce/blocks-data';
+```
 
-The **[Query-State Store (wc/store/query-state)](query-state.md)** holds arbitrary values indexed by context and key. It's often used for tracking the state of query objects for a given context. The primary key for this store is QUERY_STATE_STORE_KEY.
+The **[Collections Store (wc/store/collections)](collections.md)** holds data indexed by namespace, model name, and query string. To access this store using a constant, you can use:
 
-The **[Schema Store (wc/store/schema)](schema.md)** is primarily used for accessing routes and has more of an internal usage. The primary key for this store is SCHEMA_STORE_KEY.
+```ts
+import { COLLECTIONS_STORE_KEY } from '@woocommerce/blocks-data';
+```
 
-The **[Store-Notices Store (wc/store/store-notices)](store-notices.md)** is dedicated to handling various store notices and alerts. The primary key for this store is STORE_NOTICES_STORE_KEY.
+The **[Payment Store (wc/store/payment)](payment.md)** deals with all payment-related data and transactions. To access this store using a constant, you can use:
 
-The **[Validation Store (wc/store/validation)](validation.md)** ensures data validation across the platform, ensuring data integrity and security. The primary key for this store is VALIDATION_STORE_KEY.
+```ts
+import { PAYMENT_STORE_KEY } from '@woocommerce/blocks-data';
+```
+
+The **[Query-State Store (wc/store/query-state)](query-state.md)** holds arbitrary values indexed by context and key. It's often used for tracking the state of query objects for a given context. To access this store using a constant, you can use:
+
+```ts
+import { QUERY_STATE_STORE_KEY } from '@woocommerce/blocks-data';
+```
+
+The **[Schema Store (wc/store/schema)](schema.md)** is primarily used for accessing routes and has more of an internal usage. To access this store using a constant, you can use:
+
+```ts
+import { SCHEMA_STORE_KEY } from '@woocommerce/blocks-data';
+```
+
+The **[Store-Notices Store (wc/store/store-notices)](store-notices.md)** is dedicated to handling various store notices and alerts. To access this store using a constant, you can use:
+
+```ts
+import { STORE_NOTICES_STORE_KEY } from '@woocommerce/blocks-data';
+```
+
+The **[Validation Store (wc/store/validation)](validation.md)** ensures data validation across the platform, ensuring data integrity and security. To access this store using a constant, you can use:
+
+```ts
+import { VALIDATION_STORE_KEY } from '@woocommerce/blocks-data';
+```
 
 <!-- FEEDBACK -->
 
