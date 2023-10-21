@@ -1,4 +1,4 @@
-# Collections Store <!-- omit in toc -->
+# Collections Store (`wc/store/collections`) <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 

@@ -1,4 +1,4 @@
-# Payment Store <!-- omit in toc -->
+# Payment Store (`wc/store/payment`) <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 

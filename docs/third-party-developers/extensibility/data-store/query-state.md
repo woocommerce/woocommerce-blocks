@@ -1,4 +1,4 @@
-# Query State Store <!-- omit in toc -->
+# Query State Store (`wc/store/query-state`) <!-- omit in toc -->
 
 ## Table of contents <!-- omit in toc -->
 

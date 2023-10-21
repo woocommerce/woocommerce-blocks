@@ -1,4 +1,4 @@
-# Schema Store
+# Schema Store (`wc/store/schema`) <!-- omit in toc -->
 
 ## Table of contents <!-- omit in toc -->
 

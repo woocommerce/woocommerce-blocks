@@ -1,4 +1,4 @@
-# Cart Store <!-- omit in toc -->
+# Cart Store (`wc/store/cart`) <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 
