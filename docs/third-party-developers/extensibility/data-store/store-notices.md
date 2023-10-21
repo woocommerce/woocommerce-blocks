@@ -1,4 +1,4 @@
-# Store-Notices Store <!-- omit in toc -->
+# Store-Notices Store (`wc/store/store-notices`) <!-- omit in toc -->
 
 ## Table of contents <!-- omit in toc -->
 

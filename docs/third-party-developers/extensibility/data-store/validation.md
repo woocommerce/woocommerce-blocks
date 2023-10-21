@@ -1,4 +1,4 @@
-# Validation Store <!-- omit in toc -->
+# Validation Store (`wc/store/validation`) <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 

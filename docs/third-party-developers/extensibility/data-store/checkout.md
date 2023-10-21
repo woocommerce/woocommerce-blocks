@@ -1,4 +1,4 @@
-# Checkout Store <!-- omit in toc -->
+# Checkout Store (`wc/store/checkout`) <!-- omit in toc -->
 
 ## Table of Contents <!-- omit in toc -->
 
