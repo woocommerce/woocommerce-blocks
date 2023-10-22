@@ -217,9 +217,9 @@ class PatternUpdater {
 	 */
 	private function get_selected_image_format( $selected_image ) {
 		if ( ! isset( $selected_image['width'], $selected_image['height'] ) ) {
-			return 'landscape';
+			return 'portrait';
 		}
 
-		return $selected_image['width'] === $selected_image['height'] ? 'square' : ( $selected_image['width'] < $selected_image['height'] ? 'portrait' : 'landscape' );
+		return $selected_image['width'] === $selected_image['height'] ? 'square' : ( $selected_image['width'] > $selected_image['height'] ? 'landscape' : 'portrait' );
 	}
 }
