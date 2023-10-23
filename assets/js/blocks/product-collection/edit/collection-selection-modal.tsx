@@ -11,6 +11,9 @@ import {
 	// @ts-expect-error Type definitions for this function are missing in Guteberg
 	store as blocksStore,
 	cloneBlock,
+	createBlock,
+	// @ts-expect-error Type definitions for this function are missing in Guteberg
+	createBlocksFromInnerBlocksTemplate,
 } from '@wordpress/blocks';
 /**
  * External dependencies
@@ -120,25 +123,32 @@ const PatternSelectionModal = ( props: {
 		return getBlockVariations( blockJson.name );
 	}, [] );
 
-	const applyCollection = () => {
-		const blocks = [];
-		// Collection overrides the current block completely
-		// so there's no need to apply current query to pattern
-		if ( chosenCollection ) {
-			replaceBlock( clientId, blocks );
-			return;
-		}
-
-		const newBlocks = blocks.map( updateQueryAttributeOfPattern );
-		replaceBlock( clientId, newBlocks );
-	};
-
 	const defaultCollection = blockCollections.length
 		? blockCollections[ 0 ].name
 		: '';
 
-	const [ chosenCollection, selectCollection ] =
+	const [ chosenCollectionName, selectCollectionName ] =
 		useState( defaultCollection );
+
+	const applyCollection = () => {
+		const chosenCollection = blockCollections.find(
+			( { name } ) => name === chosenCollectionName
+		);
+
+		// Collection overrides the current block completely
+		// so there's no need to apply current query to pattern
+		if ( chosenCollection ) {
+			const newBlock = createBlock(
+				blockJson.name,
+				chosenCollection.attributes,
+				createBlocksFromInnerBlocksTemplate(
+					chosenCollection.innerBlocks
+				)
+			);
+
+			replaceBlock( clientId, newBlock );
+		}
+	};
 
 	return (
 		<Modal
@@ -152,8 +162,8 @@ const PatternSelectionModal = ( props: {
 			// Once we will update to the latest version, ts-expect-error should be removed
 			isFullScreen
 		>
-			<div className="wc-blocks-product-collection__selection-content">
-				<p className="wc-blocks-product-collection__selection-modal-subtitle">
+			<div className="wc-blocks-product-collection__content">
+				<p className="wc-blocks-product-collection__subtitle">
 					{ __(
 						"Pick what products are shown. Don't worry, you can switch and tweak this collection any time.",
 						'woo-gutenberg-products-block'
@@ -162,12 +172,12 @@ const PatternSelectionModal = ( props: {
 				{ blockCollections.map(
 					( { name, title, icon, description } ) => (
 						<CollectionButton
-							active={ chosenCollection === name }
+							active={ chosenCollectionName === name }
 							key={ name }
 							title={ title }
 							description={ description }
 							icon={ icon }
-							onClick={ () => selectCollection( name ) }
+							onClick={ () => selectCollectionName( name ) }
 						/>
 					)
 				) }
@@ -176,7 +186,7 @@ const PatternSelectionModal = ( props: {
 					shownPatterns={ blockPatterns }
 					onClickPattern={ onClickPattern }
 				/> */ }
-				<div>
+				<div className="wc-blocks-product-collection__footer">
 					<Button
 						variant="tertiary"
 						onClick={ props.closePatternSelectionModal }
