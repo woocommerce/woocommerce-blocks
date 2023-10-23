@@ -64,7 +64,7 @@ class SingleProductTemplateController extends BlockTemplatesRefactorController {
 	 * @return WP_Block_Template|null
 	 */
 	public function update_template_data_rest_api( $template ) {
-		$template->title       = 'ciao';
+		$template->title       = $this->template_title;
 		$template->description = $this->template_description;
 		return $template;
 	}
