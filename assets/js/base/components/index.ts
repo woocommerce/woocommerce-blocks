@@ -10,7 +10,6 @@ export * from './filter-reset-button';
 export * from './filter-submit-button';
 export * from './form';
 export * from './form-token-field';
-export * from './label';
 export * from './load-more-button';
 export * from './loading-mask';
 export * from './noninteractive';
