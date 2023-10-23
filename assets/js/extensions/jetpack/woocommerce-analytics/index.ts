@@ -20,6 +20,21 @@ declare global {
 	}
 }
 
+interface StorePageDetails {
+	id: number;
+	title: string;
+	permalink: string;
+}
+
+interface StorePages {
+	checkout: StorePageDetails;
+	cart: StorePageDetails;
+	myaccount: StorePageDetails;
+	privacy: StorePageDetails;
+	shop: StorePageDetails;
+	terms: StorePageDetails;
+}
+
 /**
  * Check if the _wca object is valid and has a push property that is a function.
  *
@@ -48,21 +63,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	registerActions();
 } );
 
-interface StorePageDetails {
-	id: number;
-	title: string;
-	permalink: string;
-}
-
-interface StorePages {
-	checkout: StorePageDetails;
-	cart: StorePageDetails;
-	myaccount: StorePageDetails;
-	privacy: StorePageDetails;
-	shop: StorePageDetails;
-	terms: StorePageDetails;
-}
-
 export const cleanUrl = ( link: string ) => {
 	const url = link.split( '?' )[ 0 ];
 	if ( url.charAt( url.length - 1 ) !== '/' ) {
@@ -70,11 +70,13 @@ export const cleanUrl = ( link: string ) => {
 	}
 	return url;
 };
+
 const maybeTrackCheckoutPageView = ( cart: Cart ) => {
 	const storePages = getSetting< StorePages >( 'storePages', {} );
 	if ( ! objectHasProp( storePages, 'checkout' ) ) {
 		return;
 	}
+
 	if (
 		cleanUrl( storePages?.checkout?.permalink ) !==
 		cleanUrl( window.location.href )
@@ -85,10 +87,12 @@ const maybeTrackCheckoutPageView = ( cart: Cart ) => {
 	if ( ! isValidWCA( window._wca ) ) {
 		return;
 	}
+
 	const checkoutData = getSetting< Record< string, unknown > >(
 		'wc-blocks-jetpack-woocommerce-analytics_cart_checkout_info',
 		{}
 	);
+
 	window._wca.push( {
 		_en: 'woocommerceanalytics_checkout_view',
 		products_count: cart.items.length,
@@ -112,6 +116,7 @@ const maybeTrackCartPageView = ( cart: Cart ) => {
 	if ( ! objectHasProp( storePages, 'cart' ) ) {
 		return;
 	}
+
 	if (
 		cleanUrl( storePages?.cart?.permalink ) !==
 		cleanUrl( window.location.href )
@@ -122,10 +127,12 @@ const maybeTrackCartPageView = ( cart: Cart ) => {
 	if ( ! isValidWCA( window._wca ) ) {
 		return;
 	}
+
 	const checkoutData = getSetting< Record< string, unknown > >(
 		'wc-blocks-jetpack-woocommerce-analytics_cart_checkout_info',
 		{}
 	);
+
 	window._wca.push( {
 		_en: 'woocommerceanalytics_cart_view',
 		products_count: cart.items.length,
@@ -150,9 +157,11 @@ const maybeTrackOrderReceivedPageView = () => {
 		'wc-blocks-jetpack-woocommerce-analytics_order_received_properties',
 		false
 	);
+
 	if ( ! orderReceivedProps || ! isValidWCA( window._wca ) ) {
 		return;
 	}
+
 	window._wca.push( {
 		_en: 'woocommerceanalytics_order_confirmation_view',
 		...orderReceivedProps,
@@ -167,6 +176,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		maybeTrackOrderReceivedPageView();
 		return;
 	}
+
 	const hasCartLoaded = store.hasFinishedResolution( 'getCartTotals' );
 	if ( hasCartLoaded ) {
 		maybeTrackCartPageView( store.getCartData() );
