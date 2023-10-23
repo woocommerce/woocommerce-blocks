@@ -2,18 +2,15 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { Modal } from '@wordpress/components';
+import { Modal, Button } from '@wordpress/components';
 import { isEmpty } from '@woocommerce/types';
 import {
 	type BlockInstance,
 	// @ts-expect-error Type definitions for this function are missing in Guteberg
 	store as blocksStore,
 	cloneBlock,
-	createBlock,
-	// @ts-expect-error Type definitions for this function are missing in Guteberg
-	createBlocksFromInnerBlocksTemplate,
-	BlockVariation,
 } from '@wordpress/blocks';
 /**
  * External dependencies
@@ -61,22 +58,14 @@ const buildFinalQueryFromBlockAndPatternQuery = ( {
 	};
 };
 
-const mapCollectionToPattern = ( collection: BlockVariation ) => {
-	const { name, title, attributes, innerBlocks } = collection;
-	return {
-		name,
-		title,
-		blockTypes: [ blockJson.name ],
-		categories: [ 'WooCommerce' ],
-		collection: true,
-		blocks: [
-			createBlock(
-				blockJson.name,
-				attributes,
-				createBlocksFromInnerBlocksTemplate( innerBlocks )
-			),
-		],
-	};
+const CollectionButton = ( { active, title, icon, description, onClick } ) => {
+	const variant = active ? 'primary' : 'secondary';
+
+	return (
+		<Button variant={ variant } onClick={ onClick }>
+			{ title }: { description }
+		</Button>
+	);
 };
 
 const PatternSelectionModal = ( props: {
@@ -131,16 +120,11 @@ const PatternSelectionModal = ( props: {
 		return getBlockVariations( blockJson.name );
 	}, [] );
 
-	const collectionsAsPatterns = blockCollections.map(
-		mapCollectionToPattern
-	);
-
-	const onClickPattern = ( pattern, blocks: BlockInstance[] ) => {
-		const { collection } = pattern;
-
+	const applyCollection = () => {
+		const blocks = [];
 		// Collection overrides the current block completely
 		// so there's no need to apply current query to pattern
-		if ( collection ) {
+		if ( chosenCollection ) {
 			replaceBlock( clientId, blocks );
 			return;
 		}
@@ -148,6 +132,13 @@ const PatternSelectionModal = ( props: {
 		const newBlocks = blocks.map( updateQueryAttributeOfPattern );
 		replaceBlock( clientId, newBlocks );
 	};
+
+	const defaultCollection = blockCollections.length
+		? blockCollections[ 0 ].name
+		: '';
+
+	const [ chosenCollection, selectCollection ] =
+		useState( defaultCollection );
 
 	return (
 		<Modal
@@ -168,17 +159,34 @@ const PatternSelectionModal = ( props: {
 						'woo-gutenberg-products-block'
 					) }
 				</p>
-				<BlockPatternsList
-					blockPatterns={ [
-						...blockPatterns,
-						...collectionsAsPatterns,
-					] }
-					shownPatterns={ [
-						...blockPatterns,
-						...collectionsAsPatterns,
-					] }
+				{ blockCollections.map(
+					( { name, title, icon, description } ) => (
+						<CollectionButton
+							active={ chosenCollection === name }
+							key={ name }
+							title={ title }
+							description={ description }
+							icon={ icon }
+							onClick={ () => selectCollection( name ) }
+						/>
+					)
+				) }
+				{ /* <BlockPatternsList
+					blockPatterns={ blockPatterns }
+					shownPatterns={ blockPatterns }
 					onClickPattern={ onClickPattern }
-				/>
+				/> */ }
+				<div>
+					<Button
+						variant="tertiary"
+						onClick={ props.closePatternSelectionModal }
+					>
+						{ __( 'Cancel', 'woo-gutenberg-products-block' ) }
+					</Button>
+					<Button variant="primary" onClick={ applyCollection }>
+						{ __( 'Continue', 'woo-gutenberg-products-block' ) }
+					</Button>
+				</div>
 			</div>
 		</Modal>
 	);
