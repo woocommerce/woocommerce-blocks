@@ -37,7 +37,7 @@ const ColumnsControl = ( props: DisplayLayoutToolbarProps ) => {
 
 	const defaultLayout = getDefaultDisplayLayout();
 
-	const onToggleChange = ( value: boolean ) => {
+	const onShrinkColumnsToggleChange = ( value: boolean ) => {
 		props.setAttributes( {
 			displayLayout: {
 				...props.displayLayout,
@@ -73,7 +73,7 @@ const ColumnsControl = ( props: DisplayLayoutToolbarProps ) => {
 					checked={ !! shrinkColumns }
 					label={ toggleLabel }
 					help={ toggleHelp }
-					onChange={ onToggleChange }
+					onChange={ onShrinkColumnsToggleChange }
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
