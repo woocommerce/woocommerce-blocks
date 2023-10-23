@@ -27,7 +27,6 @@ export * from './reviews';
 export * from './sidebar-layout';
 export * from './snackbar-list';
 export * from './sort-select';
-export * from './spinner';
 export * from './state-input';
 export * from './summary';
 export * from './tabs';
