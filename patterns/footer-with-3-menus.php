@@ -43,31 +43,31 @@
 		</div>
 		<!-- /wp:column -->
 
-		<!-- wp:column {"verticalAlignment":"top","style":{"spacing":{"blockGap":"60px"}},"layout":{"type":"default"}} -->
-		<div class="wp-block-column is-vertically-aligned-top">
-			<!-- wp:group {"style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"blockGap":"var:preset|spacing|50"}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"right"}} -->
-			<div class="wp-block-group" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-				<!-- wp:search {"label":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","showLabel":false,"placeholder":"<?php esc_html_e( 'Search our store', 'woo-gutenberg-products-block' ); ?>","buttonText":"<?php esc_html_e( 'Search our store', 'woo-gutenberg-products-block' ); ?>","buttonUseIcon":true,"query":{"post_type":"product"}} /-->
+		<!-- wp:column {"width":"15%"} -->
+		<div class="wp-block-column" style="flex-basis:15%"></div>
+		<!-- /wp:column -->
 
-				<!-- wp:group {"style":{"spacing":{"blockGap":"0"}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"right"}} -->
-				<div class="wp-block-group">
-					<!-- wp:site-title {"style":{"typography":{"fontStyle":"normal","fontWeight":"700"}}} /-->
+		<!-- wp:column {"verticalAlignment":"stretch","width":"25%","style":{"spacing":{"blockGap":"60px"}},"layout":{"type":"default"}} -->
+		<div class="wp-block-column is-vertically-aligned-stretch" style="flex-basis:25%">
+			<!-- wp:search {"label":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","showLabel":false,"placeholder":"<?php esc_html_e( 'Search our store', 'woo-gutenberg-products-block' ); ?>","buttonText":"<?php esc_html_e( 'Search our store', 'woo-gutenberg-products-block' ); ?>","buttonUseIcon":true,"query":{"post_type":"product"}} /-->
 
-					<!-- wp:paragraph {"align":"right"} --><p class="has-text-align-right">
-						<?php
-						echo sprintf(
-							/* translators: Footer powered by text. %1$s being WordPress, %2$s being WooCommerce */
-							esc_html__(
-								'Powered by %1$s with %2$s',
-								'woo-gutenberg-products-block'
-							),
-							'<a href="https://wordpress.org" target="_blank" rel="noreferrer nofollow">WordPress</a>',
-							'<a href="https://woocommerce.com" target="_blank" rel="noreferrer nofollow">WooCommerce</a>'
-						);
-						?>
-					</p><!-- /wp:paragraph -->
-				</div>
-				<!-- /wp:group -->
+			<!-- wp:group {"style":{"spacing":{"blockGap":"0","padding":{"right":"0","left":"0"},"margin":{"top":"56px","bottom":"0"}}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"right"}} -->
+			<div class="wp-block-group" style="margin-top:56px;margin-bottom:0;padding-right:0;padding-left:0">
+				<!-- wp:site-title {"style":{"typography":{"fontStyle":"normal","fontWeight":"700"}}} /-->
+
+				<!-- wp:paragraph {"align":"right"} --><p class="has-text-align-right">
+					<?php
+					echo sprintf(
+					/* translators: Footer powered by text. %1$s being WordPress, %2$s being WooCommerce */
+						esc_html__(
+							'Powered by %1$s with %2$s',
+							'woo-gutenberg-products-block'
+						),
+						'<a href="https://wordpress.org" target="_blank" rel="noreferrer nofollow">WordPress</a>',
+						'<a href="https://woocommerce.com" target="_blank" rel="noreferrer nofollow">WooCommerce</a>'
+					);
+					?>
+				</p><!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:group -->
 		</div>
