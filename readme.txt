@@ -81,6 +81,59 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.4.0 - 2023-10-24 =
+
+#### Enhancements
+
+- Store Customization: Update the "Large Footer" pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11381)
+- Store Customization: Update the `Footer with 3 Menus` pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11356)
+- Store Customization: Update the Social pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11355)
+- Store Customization: Re-enable the `Product Hero 2 Column 2 Row` pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11346)
+- Product Collection: Shrink columns to fit. (https://github.com/woocommerce/woocommerce-blocks/pull/11320)
+- Store Customization: Adjust margins and paddings for the `Featured Category Triple`. (https://github.com/woocommerce/woocommerce-blocks/pull/11319)
+- Move `Spinner` to components package. (https://github.com/woocommerce/woocommerce-blocks/pull/11317)
+- Store Customization: Fix "Discount Banner" pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11315)
+- Move `RadioControl`and `RadioControlAccordion` components to components package. (https://github.com/woocommerce/woocommerce-blocks/pull/11312)
+- Store Customization: Fix the "Testimonials 3 Columns" title alignment. (https://github.com/woocommerce/woocommerce-blocks/pull/11281)
+- Store Customization: Fix pattern spacing in homepage template 3. (https://github.com/woocommerce/woocommerce-blocks/pull/11279)
+- Store Customization: Fix pattern spacing in homepage template 2. (https://github.com/woocommerce/woocommerce-blocks/pull/11278)
+- Store Customization: Fix pattern spacing in homepage template 1. (https://github.com/woocommerce/woocommerce-blocks/pull/11268)
+- Store Customization: Remove placeholder text from the image on the Hero Product Chessboard pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11250)
+- Move `FormStep` to the components package. (https://github.com/woocommerce/woocommerce-blocks/pull/11246)
+- Temporarily disable the `woocommerce-blocks/product-hero-2-col-2-row` pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11234)
+- Add: `menu-order` orderby option for Product Attribute Terms route. (https://github.com/woocommerce/woocommerce-blocks/pull/11232)
+- Move `FormattedMonetaryAmount` to the components package. (https://github.com/woocommerce/woocommerce-blocks/pull/11230)
+- Cart and Checkout block transforms for classic shortcodes. (https://github.com/woocommerce/woocommerce-blocks/pull/11228)
+- Use the <main> tag in Cart and Checkout templates. (https://github.com/woocommerce/woocommerce-blocks/pull/11224)
+- Move `Chip` and `RemovableChip` to components package. (https://github.com/woocommerce/woocommerce-blocks/pull/11223)
+- Use the <header> element for the checkout header. (https://github.com/woocommerce/woocommerce-blocks/pull/11222)
+- Move `CheckboxList` and create new `blocksComponents` package. (https://github.com/woocommerce/woocommerce-blocks/pull/11214)
+- Store Customization MVP: Add fallbacks to all the pattern titles, descriptions and buttons. (https://github.com/woocommerce/woocommerce-blocks/pull/11208)
+- Checkout Field Padding and Spacing. (https://github.com/woocommerce/woocommerce-blocks/pull/11207)
+- Make patterns full width and fix margin. (https://github.com/woocommerce/woocommerce-blocks/pull/11206)
+- Product Collection 5 Columns pattern: Update title and price to be rows instead of columns. (https://github.com/woocommerce/woocommerce-blocks/pull/11205)
+- Product Collection: Featured Products 5 Columns: Remove no results block. (https://github.com/woocommerce/woocommerce-blocks/pull/11198)
+- Add universal border radius for form elements and components. (https://github.com/woocommerce/woocommerce-blocks/pull/11193)
+- Update wording on checkout error message to try to prevent retries. (https://github.com/woocommerce/woocommerce-blocks/pull/10888)
+
+#### Bug Fixes
+
+- Remove hardcoded queryIds from patterns that include Product Collection. (https://github.com/woocommerce/woocommerce-blocks/pull/11290)
+- Fix: Mini-Cart block shows wrong total if theres multiple installs on the same domain. (https://github.com/woocommerce/woocommerce-blocks/pull/11257)
+- Fix inconsistent border focus styles. (https://github.com/woocommerce/woocommerce-blocks/pull/11203)
+- Product Gallery pattern: Use the Product Collection block. (https://github.com/woocommerce/woocommerce-blocks/pull/11194)
+- Recognise template parts after theme switch. (https://github.com/woocommerce/woocommerce-blocks/pull/11190)
+- Increase number of visible products when cart is empty. (https://github.com/woocommerce/woocommerce-blocks/pull/11182)
+- Fix a bug in which shipping phone field was not being synced to the billing field. (https://github.com/woocommerce/woocommerce-blocks/pull/10603)
+
+#### Documentation
+
+- Add order and checkout order endpoint documentation. (https://github.com/woocommerce/woocommerce-blocks/pull/11157)
+
+#### Various
+
+- Add Local Pickup event and Cart/Checkout page views events. (https://github.com/woocommerce/woocommerce-blocks/pull/11225)
+
 = 11.3.1 - 2023-10-16 =
 
 #### Bug Fixes
