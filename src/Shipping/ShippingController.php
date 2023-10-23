@@ -177,46 +177,6 @@ class ShippingController {
 	 * @return array|mixed The filtered settings with relevant items removed.
 	 */
 	public function remove_shipping_settings( $settings ) {
-
-		// Do not add the shipping calculator setting if the Cart block is not used on the WC cart page.
-		if ( CartCheckoutUtils::is_cart_block_default() ) {
-
-			// Ensure the 'Calculations' title is added to the `woocommerce_shipping_cost_requires_address` options
-			// group, since it is attached to the `woocommerce_enable_shipping_calc` option that gets removed if the
-			// Cart block is in use.
-			$calculations_title = '';
-
-			// Get Calculations title so we can add it to 'Hide shipping costs until an address is entered' option.
-			foreach ( $settings as $setting ) {
-				if ( 'woocommerce_enable_shipping_calc' === $setting['id'] ) {
-					$calculations_title = $setting['title'];
-					break;
-				}
-			}
-
-			// Add Calculations title to 'Hide shipping costs until an address is entered' option.
-			foreach ( $settings as $index => $setting ) {
-				if ( 'woocommerce_shipping_cost_requires_address' === $setting['id'] ) {
-					$settings[ $index ]['title']         = $calculations_title;
-					$settings[ $index ]['checkboxgroup'] = 'start';
-					break;
-				}
-			}
-
-			$settings = array_filter(
-				$settings,
-				function( $setting ) {
-					return ! in_array(
-						$setting['id'],
-						array(
-							'woocommerce_enable_shipping_calc',
-						),
-						true
-					);
-				}
-			);
-		}
-
 		if ( CartCheckoutUtils::is_checkout_block_default() && $this->local_pickup_enabled ) {
 			foreach ( $settings as $index => $setting ) {
 				if ( 'woocommerce_shipping_cost_requires_address' === $setting['id'] ) {
