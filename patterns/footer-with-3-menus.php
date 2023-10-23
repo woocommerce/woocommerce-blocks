@@ -43,12 +43,12 @@
 		</div>
 		<!-- /wp:column -->
 
-		<!-- wp:column {"width":"15%"} -->
-		<div class="wp-block-column" style="flex-basis:15%"></div>
+		<!-- wp:column {"width":"10%"} -->
+		<div class="wp-block-column" style="flex-basis:10%"></div>
 		<!-- /wp:column -->
 
-		<!-- wp:column {"verticalAlignment":"stretch","width":"25%","style":{"spacing":{"blockGap":"60px"}},"layout":{"type":"default"}} -->
-		<div class="wp-block-column is-vertically-aligned-stretch" style="flex-basis:25%">
+		<!-- wp:column {"verticalAlignment":"stretch","width":"30%","style":{"spacing":{"blockGap":"60px"}},"layout":{"type":"default"}} -->
+		<div class="wp-block-column is-vertically-aligned-stretch" style="flex-basis:30%">
 			<!-- wp:search {"label":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","showLabel":false,"placeholder":"<?php esc_html_e( 'Search our store', 'woo-gutenberg-products-block' ); ?>","buttonText":"<?php esc_html_e( 'Search our store', 'woo-gutenberg-products-block' ); ?>","buttonUseIcon":true,"query":{"post_type":"product"}} /-->
 
 			<!-- wp:group {"style":{"spacing":{"blockGap":"0","padding":{"right":"0","left":"0"},"margin":{"top":"56px","bottom":"0"}}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"right"}} -->
