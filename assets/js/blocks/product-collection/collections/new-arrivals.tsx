@@ -38,18 +38,7 @@ const attributes = {
 	collection: collection.name,
 };
 
-const innerBlocks: InnerBlockTemplate[] = [
-	[ 'core/heading', { textAlign: 'center', content: 'New Arrivals' } ],
-	[
-		'core/paragraph',
-		{
-			align: 'center',
-			content: 'Here are the latest products in our store',
-			style: { spacing: { margin: { bottom: 'var:preset|spacing|30' } } },
-		},
-	],
-	INNER_BLOCKS_PRODUCT_TEMPLATE,
-];
+const innerBlocks: InnerBlockTemplate[] = [ INNER_BLOCKS_PRODUCT_TEMPLATE ];
 
 export default {
 	...collection,
