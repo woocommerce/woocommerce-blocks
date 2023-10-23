@@ -11,7 +11,7 @@
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
 	"ancestor": [
-		"woocommerce/product-collection"
+		"woocommerce/collection-filters"
 	],
 	"supports": {
 		"interactivity": true
