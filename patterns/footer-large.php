@@ -15,7 +15,7 @@
 		<div class="wp-block-column" style="padding-right:50px;flex-basis:60%">
 			<!-- wp:group {"style":{"spacing":{"blockGap":"8px"}},"layout":{"type":"flex","orientation":"vertical"}} -->
 			<div class="wp-block-group">
-				<!-- wp:site-logo {"width":78} /-->
+				<!-- wp:site-logo {"width":60} /-->
 
 				<!-- wp:group {"style":{"spacing":{"margin":{"top":"40px","bottom":"40px"},"blockGap":"12px"}},"layout":{"type":"constrained"}} -->
 				<div class="wp-block-group" style="margin-top:40px;margin-bottom:40px">
@@ -29,7 +29,7 @@
 				</div>
 				<!-- /wp:group -->
 
-				<!-- wp:social-links {"size":"has-small-icon-size","className":"is-style-logos-only"} -->
+				<!-- wp:social-links {"size":"has-small-icon-size","style":{"spacing":{"blockGap":{"left":"16px"}}},"className":"is-style-logos-only"} -->
 				<ul class="wp-block-social-links has-small-icon-size is-style-logos-only">
 					<!-- wp:social-link {"url":"https://www.facebook.com","service":"facebook"} /-->
 					<!-- wp:social-link {"url":"https://www.twitter.com","service":"twitter"} /-->
