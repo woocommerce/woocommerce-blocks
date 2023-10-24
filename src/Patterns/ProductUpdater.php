@@ -19,12 +19,16 @@ class ProductUpdater {
 		$last_business_description = get_option( 'last_business_description_with_ai_content_generated' );
 
 		if ( $last_business_description === $business_description ) {
-			return true;
+			if ( is_string( $business_description ) && is_string( $last_business_description ) ) {
+				return true;
+			} else {
+				return new \WP_Error( 'business_description_not_found', __( 'No business description provided for generating AI content.', 'woo-gutenberg-products-block' ) );
+			}
 		}
 
 		$real_products = $this->fetch_product_ids();
 
-		if ( count( $real_products ) > 0 ) {
+		if ( is_array( $real_products ) && count( $real_products ) > 0 ) {
 			return true;
 		}
 
@@ -122,13 +126,14 @@ class ProductUpdater {
 	 * @return bool|int
 	 */
 	public function create_new_product() {
-		$product = new \WC_Product();
+		$product      = new \WC_Product();
+		$random_price = wp_rand( 5, 50 );
 
 		$product->set_name( 'My Awesome Product' );
 		$product->set_status( 'publish' );
 		$product->set_description( 'Product description' );
-		$product->set_price( 25 );
-		$product->set_regular_price( 25 );
+		$product->set_price( $random_price );
+		$product->set_regular_price( $random_price );
 
 		$saved_product = $product->save();
 
