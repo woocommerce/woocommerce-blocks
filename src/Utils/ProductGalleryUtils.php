@@ -6,6 +6,7 @@ namespace Automattic\WooCommerce\Blocks\Utils;
  * {@internal This class and its methods are not intended for public use.}
  */
 class ProductGalleryUtils {
+	const CROPPED_SIZE = 500;
 
 	/**
 	 * When requesting a full-size image, this function may return an array with a single image.
@@ -18,9 +19,10 @@ class ProductGalleryUtils {
 	 * @param string $size Image size.
 	 * @param array  $attributes Attributes.
 	 * @param string $wrapper_class Wrapper class.
+	 * @param bool   $crop_images Whether to crop images.
 	 * @return array
 	 */
-	public static function get_product_gallery_images( $post_id, $size = 'full', $attributes = array(), $wrapper_class = '' ) {
+	public static function get_product_gallery_images( $post_id, $size = 'full', $attributes = array(), $wrapper_class = '', $crop_images = false ) {
 		$product_gallery_images = array();
 		$product                = wc_get_product( $post_id );
 
@@ -29,6 +31,11 @@ class ProductGalleryUtils {
 
 			if ( 'full' === $size || 'full' !== $size && count( $all_product_gallery_image_ids ) > 1 ) {
 				foreach ( $all_product_gallery_image_ids as $product_gallery_image_id ) {
+					if ( $crop_images ) {
+						$product_gallery_image_id = self::get_cropped_image( $product_gallery_image_id );
+						$size = null;
+					}
+
 					$product_image_html = wp_get_attachment_image(
 						$product_gallery_image_id,
 						$size,
@@ -92,5 +99,54 @@ class ProductGalleryUtils {
 		}
 
 		return $unique_image_ids;
+	}
+
+	/**
+	 * Get and/or generates a cropped image for the main featured image.
+	 *
+	 * @param int $attachment_id Attachment ID.
+	 * @return int $post_id Post ID of the attachment.
+	 */
+	public static function get_cropped_image( $attachment_id ) {
+		$image_path = wp_get_original_image_path( $attachment_id );
+		$image_url  = wp_get_original_image_url( $attachment_id );
+
+		$image    = image_make_intermediate_size( $image_path, self::CROPPED_SIZE, self::CROPPED_SIZE, true );
+		$pathinfo = pathinfo( dirname( $image_path ) . '/' . $image['file'] );
+
+		$post_id = get_posts(
+			array(
+				'numberposts'    => 1,
+				'post_status'    => 'inherit',
+				'post_type'      => 'attachment',
+				'title'          => $pathinfo['filename'],
+				'post_mime_type' => $image['mime-type'],
+			)
+		);
+
+		$post_id = ! empty( $post_id ) ? $post_id[0]->ID : $post_id;
+
+		if ( ! $post_id ) {
+			$post_id = wp_insert_attachment(
+				array(
+					'guid'           => dirname( $image_url ) . '/' . $image['file'],
+					'post_title'     => basename( $pathinfo['filename'] ),
+					'post_status'    => 'inherit',
+					'post_name'      => basename( $pathinfo['filename'] ),
+					'post_mime_type' => $image['mime-type'],
+					'meta_input'     => array(
+						'_wp_attachment_metadata' => array(
+							'width'    => self::CROPPED_SIZE,
+							'height'   => self::CROPPED_SIZE,
+							'file'     => dirname( _wp_relative_upload_path( $image_path ) ) . '/' . $image['file'],
+							'filesize' => $image['filesize'],
+						)
+					)
+				),
+				dirname( $image_path ) . '/' . $image['file']
+			);
+		}
+
+		return $post_id;
 	}
 }
