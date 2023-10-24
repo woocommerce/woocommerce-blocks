@@ -16,6 +16,10 @@ class ProductUpdater {
 	 * @return bool|\WP_Error True if the content was generated successfully, WP_Error otherwise.
 	 */
 	public function generate_content( $vertical_images, $business_description ) {
+		if ( empty( $business_description ) ) {
+			return new \WP_Error( 'missing_business_description', __( 'No business description provided for generating AI content.', 'woo-gutenberg-products-block' ) );
+		}
+
 		$last_business_description = get_option( 'last_business_description_with_ai_content_generated' );
 
 		if ( $last_business_description === $business_description ) {
