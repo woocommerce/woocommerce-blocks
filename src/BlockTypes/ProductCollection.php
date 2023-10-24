@@ -207,7 +207,6 @@ class ProductCollection extends AbstractBlock {
 		$stock_status        = $request->get_param( 'woocommerceStockStatus' );
 		$product_attributes  = $request->get_param( 'woocommerceAttributes' );
 		$handpicked_products = $request->get_param( 'woocommerceHandPickedProducts' );
-		$args['author']      = $request->get_param( 'author' ) ?? '';
 
 		return $this->get_final_query_args(
 			$args,
@@ -297,7 +296,6 @@ class ProductCollection extends AbstractBlock {
 			'tax_query'      => array(),
 			'paged'          => $page,
 			's'              => $query['search'],
-			'author'         => $query['author'] ?? '',
 		);
 
 		$is_on_sale          = $query['woocommerceOnSale'] ?? false;
