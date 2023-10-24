@@ -207,6 +207,9 @@ class ProductCollection extends AbstractBlock {
 		$stock_status        = $request->get_param( 'woocommerceStockStatus' );
 		$product_attributes  = $request->get_param( 'woocommerceAttributes' );
 		$handpicked_products = $request->get_param( 'woocommerceHandPickedProducts' );
+		// This argument is required for the tests to PHP Unit Tests to run correctly.
+		// Most likely this argument is being accessed in the test environment image.
+		$args['author'] = '';
 
 		return $this->get_final_query_args(
 			$args,
