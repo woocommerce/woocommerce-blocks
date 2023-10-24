@@ -2,8 +2,9 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Overview](#overview)
+-   [Overview](#overview)- [Overview](#overview)
 -   [Usage](#usage)
+-   [Example](#example)
 -   [Actions](#actions)
     -   [clearValidationError( errorId )](#clearvalidationerror-errorid-)
     -   [clearValidationErrors( errors )](#clearvalidationerrors-errors-)
