@@ -171,10 +171,10 @@ class ShippingController {
 	}
 
 	/**
-	 * If the Checkout block Remove shipping settings from WC Core's admin panels that are now block settings.
+	 * When using the cart and checkout blocks this method is used to adjust core shipping settings via a filter hook.
 	 *
 	 * @param array $settings The default WC shipping settings.
-	 * @return array|mixed The filtered settings with relevant items removed.
+	 * @return array|mixed The filtered settings.
 	 */
 	public function remove_shipping_settings( $settings ) {
 		if ( CartCheckoutUtils::is_checkout_block_default() && $this->local_pickup_enabled ) {
