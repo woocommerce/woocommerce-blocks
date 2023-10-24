@@ -50,7 +50,7 @@ jobs:
       #     max_releases: 1
       - name: Get Date
         id: date
-        uses: actions/calculate-dates-and-times@v1.0.2
+        uses: lee-dohm/calculate-dates-and-times@v1.0.2
         with:
           format: 'YYYY-MM-DD'
           subtract: '1 day'
