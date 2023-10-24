@@ -80,18 +80,17 @@ const ProductTemplateEdit = ( {
 			author,
 			search,
 			exclude,
-			sticky,
 			inherit,
 			taxQuery,
-			parents,
 			pages,
 			...restQueryArgs
 		},
 		queryContext = [ { page: 1 } ],
 		templateSlug,
-		displayLayout: { type: layoutType, columns } = {
+		displayLayout: { type: layoutType, columns, shrinkColumns } = {
 			type: 'flex',
 			columns: 3,
+			shrinkColumns: false,
 		},
 	},
 	__unstableLayoutClassNames,
@@ -165,15 +164,6 @@ const ProductTemplateEdit = ( {
 			if ( exclude?.length ) {
 				query.exclude = exclude;
 			}
-			if ( parents?.length ) {
-				query.parent = parents;
-			}
-			// If sticky is not set, it will return all products in the results.
-			// If sticky is set to `only`, it will limit the results to sticky products only.
-			// If it is anything else, it will exclude sticky products from results. For the record the value stored is `exclude`.
-			if ( sticky ) {
-				query.sticky = sticky === 'only';
-			}
 			// If `inherit` is truthy, adjust conditionally the query to create a better preview.
 			if ( inherit ) {
 				if ( templateCategory ) {
@@ -200,11 +190,9 @@ const ProductTemplateEdit = ( {
 			search,
 			postType,
 			exclude,
-			sticky,
 			inherit,
 			templateSlug,
 			taxQuery,
-			parents,
 			restQueryArgs,
 		]
 	);
@@ -216,15 +204,21 @@ const ProductTemplateEdit = ( {
 			} ) ),
 		[ products ]
 	);
+
 	const hasLayoutFlex = layoutType === 'flex' && columns > 1;
+	let customClassName = '';
+	if ( hasLayoutFlex ) {
+		const dynamicGrid = `wc-block-product-template__responsive columns-${ columns }`;
+		const staticGrid = `is-flex-container columns-${ columns }`;
+
+		customClassName = shrinkColumns ? dynamicGrid : staticGrid;
+	}
+
 	const blockProps = useBlockProps( {
 		className: classnames(
 			__unstableLayoutClassNames,
 			'wc-block-product-template',
-			{
-				'is-flex-container': hasLayoutFlex,
-				[ `columns-${ columns }` ]: hasLayoutFlex,
-			}
+			customClassName
 		),
 	} );
 
