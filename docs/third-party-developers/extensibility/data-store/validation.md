@@ -47,6 +47,64 @@ To utilize this store you will import the `CART_STORE_KEY` in any module referen
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 ```
 
+## Example
+
+To better understand the Validation Store, let's use the required checkbox of the Terms and Conditions
+as an example. In the page editor, a merchant can define that a buyer must agree to the Terms and Conditions by making the checkbox required.
+
+![image](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-24-at-17.22.45.png)
+
+In WooCommerce Blocks, we're using a `useEffect` hook to check if the checkbox is required and if it is checked. If the checkbox is required and not checked, we're adding a validation error to the store. If the checkbox is required and checked, we're clearing the validation error from the store.
+
+```ts
+useEffect( () => {
+	if ( ! checkbox ) {
+		return;
+	}
+	if ( checked ) {
+		clearValidationError( validationErrorId );
+	} else {
+		setValidationErrors( {
+			[ validationErrorId ]: {
+				message: __(
+					'Please read and accept the terms and conditions.',
+					'woo-gutenberg-products-block'
+				),
+				hidden: true,
+			},
+		} );
+	}
+	return () => {
+		clearValidationError( validationErrorId );
+	};
+}, [
+	checkbox,
+	checked,
+	validationErrorId,
+	clearValidationError,
+	setValidationErrors,
+] );
+```
+
+By default, the validation error is hidden. This is because we don't want to show the error message until the buyer has tried to submit the form. Before submitting the checkout form, the validation message can already be seen in the Validation Store.
+
+![image](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-24-at-17.28.56.png)
+
+When a buyer submits the checkout form without checking the Terms and Conditions checkbox, the entry `hidden: true` will be changed to `hidden: false` and the validation message is shown.
+
+![image](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-24-at-17.33.01.png)
+
+In WooCommerce Blocks, we're checking if text input fields have a validation error using the following code:
+
+```ts
+const hasError = validationError?.message && ! validationError?.hidden;
+```
+
+> 💡 The main point to remember from this example is:
+>
+> -   `hidden: true` means there's a validation error, but it's kept from the user's view.
+> -   `hidden: false` indicates that the validation error is actively being shown to the user.
+
 ## Actions
 
 ### clearValidationError( errorId )
