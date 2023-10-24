@@ -20,14 +20,28 @@ class ProductUpdater {
 	 * @return bool|WP_Error True if the content was generated successfully, WP_Error otherwise.
 	 */
 	public function generate_content( $ai_connection, $token, $images, $business_description ) {
+		if ( empty( $business_description ) ) {
+			return new \WP_Error( 'missing_business_description', __( 'No business description provided for generating AI content.', 'woo-gutenberg-products-block' ) );
+		}
+
+		$last_business_description = get_option( 'last_business_description_with_ai_content_generated' );
+
+		if ( $last_business_description === $business_description ) {
+			if ( is_string( $business_description ) && is_string( $last_business_description ) ) {
+				return true;
+			} else {
+				return new \WP_Error( 'business_description_not_found', __( 'No business description provided for generating AI content.', 'woo-gutenberg-products-block' ) );
+			}
+		}
+
 		$real_products = $this->fetch_product_ids();
 
-		if ( count( $real_products ) > 0 ) {
+		if ( is_array( $real_products ) && count( $real_products ) > 0 ) {
 			return true;
 		}
 
-		$dummy_products                = $this->fetch_product_ids( 'dummy' );
-		$dummy_products_count          = count( $dummy_products );
+		$dummy_product_ids             = $this->fetch_product_ids( 'dummy' );
+		$dummy_products_count          = is_array( $dummy_product_ids ) ? count( $dummy_product_ids ) : 0;
 		$expected_dummy_products_count = 6;
 		$products_to_create            = max( 0, $expected_dummy_products_count - $dummy_products_count );
 
@@ -35,9 +49,6 @@ class ProductUpdater {
 			$this->create_new_product();
 			$products_to_create--;
 		}
-
-		// Identify dummy products that need to have their content updated.
-		$dummy_product_ids = $this->fetch_product_ids( 'dummy' );
 
 		$dummy_products = array_map(
 			function ( $product ) {
@@ -136,13 +147,14 @@ class ProductUpdater {
 	 * @return bool|int
 	 */
 	public function create_new_product() {
-		$product = new \WC_Product();
+		$product      = new \WC_Product();
+		$random_price = wp_rand( 5, 50 );
 
 		$product->set_name( 'My Awesome Product' );
 		$product->set_status( 'publish' );
 		$product->set_description( 'Product description' );
-		$product->set_price( 25 );
-		$product->set_regular_price( 25 );
+		$product->set_price( $random_price );
+		$product->set_regular_price( $random_price );
 
 		$saved_product = $product->save();
 
@@ -160,10 +172,10 @@ class ProductUpdater {
 		global $wpdb;
 
 		if ( 'user_created' === $type ) {
-			return $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE ID NOT IN ( SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish' ) AND post_type = 'product' AND post_status = 'publish' LIMIT 6", '_headstart_post' ) );
+			return $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE ID NOT IN ( SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish' ) AND post_type = 'product' AND post_status = 'publish' LIMIT 6", '_headstart_post' ), ARRAY_A );
 		}
 
-		return $wpdb->get_results( $wpdb->prepare( "SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish'", '_headstart_post' ) );
+		return $wpdb->get_results( $wpdb->prepare( "SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish'", '_headstart_post' ), ARRAY_A );
 	}
 
 	/**
