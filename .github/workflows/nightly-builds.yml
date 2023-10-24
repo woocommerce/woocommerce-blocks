@@ -58,7 +58,7 @@ jobs:
         uses: irongut/EditRelease@v1.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          id: untagged-5d05565b4bbf670ee9e0
+          id: 126393859
           body: "[PRs merged since last nightly build](https://github.com/woocommerce/woocommerce-blocks/pulls?q=is%3Apr+closed%3A%3E${{ steps.date.outputs.date }}+is%3Amerged)"
           spacing: 2
   # update:
