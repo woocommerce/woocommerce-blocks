@@ -297,7 +297,6 @@ class ProductCollection extends AbstractBlock {
 			'tax_query'      => array(),
 			'paged'          => $page,
 			's'              => $query['search'],
-			'author'         => $query['author'] ?? '',
 		);
 
 		$is_on_sale          = $query['woocommerceOnSale'] ?? false;
