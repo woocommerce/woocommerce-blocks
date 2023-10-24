@@ -121,7 +121,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix: Mini-Cart block shows wrong total if theres multiple installs on the same domain. (https://github.com/woocommerce/woocommerce-blocks/pull/11257)
 - Fix inconsistent border focus styles. (https://github.com/woocommerce/woocommerce-blocks/pull/11203)
 - Product Gallery pattern: Use the Product Collection block. (https://github.com/woocommerce/woocommerce-blocks/pull/11194)
-- Recognise template parts after theme switch. (https://github.com/woocommerce/woocommerce-blocks/pull/11190)
 - Increase number of visible products when cart is empty. (https://github.com/woocommerce/woocommerce-blocks/pull/11182)
 - Fix a bug in which shipping phone field was not being synced to the billing field. (https://github.com/woocommerce/woocommerce-blocks/pull/10603)
 - Always show the `Enable the shipping calculator on the cart page` option. (https://github.com/woocommerce/woocommerce-blocks/pull/11421)
