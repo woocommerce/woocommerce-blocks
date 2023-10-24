@@ -15,7 +15,7 @@
 		<div class="wp-block-column" style="padding-right:50px;flex-basis:60%">
 			<!-- wp:group {"style":{"spacing":{"blockGap":"8px"}},"layout":{"type":"flex","orientation":"vertical"}} -->
 			<div class="wp-block-group">
-				<!-- wp:site-logo {"width":60} /-->
+				<!-- wp:site-logo /-->
 
 				<!-- wp:group {"style":{"spacing":{"margin":{"top":"40px","bottom":"40px"},"blockGap":"12px"}},"layout":{"type":"constrained"}} -->
 				<div class="wp-block-group" style="margin-top:40px;margin-bottom:40px">
