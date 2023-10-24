@@ -125,6 +125,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Recognise template parts after theme switch. (https://github.com/woocommerce/woocommerce-blocks/pull/11190)
 - Increase number of visible products when cart is empty. (https://github.com/woocommerce/woocommerce-blocks/pull/11182)
 - Fix a bug in which shipping phone field was not being synced to the billing field. (https://github.com/woocommerce/woocommerce-blocks/pull/10603)
+- Always show the `Enable the shipping calculator on the cart page` option. (https://github.com/woocommerce/woocommerce-blocks/pull/11421)
 
 #### Documentation
 
