@@ -40,8 +40,13 @@ class ProductUpdater {
 			return true;
 		}
 
-		$dummy_product_ids             = $this->fetch_product_ids( 'dummy' );
-		$dummy_products_count          = is_array( $dummy_product_ids ) ? count( $dummy_product_ids ) : 0;
+		$dummy_products = $this->fetch_product_ids( 'dummy' );
+
+		if ( ! is_array( $dummy_products ) ) {
+			return new \WP_Error( 'failed_to_fetch_dummy_products', __( 'Failed to fetch dummy products.', 'woo-gutenberg-products-block' ) );
+		}
+
+		$dummy_products_count          = count( $dummy_products );
 		$expected_dummy_products_count = 6;
 		$products_to_create            = max( 0, $expected_dummy_products_count - $dummy_products_count );
 
@@ -50,11 +55,18 @@ class ProductUpdater {
 			$products_to_create--;
 		}
 
+		// Identify dummy products that need to have their content updated.
+		$dummy_products_ids = $this->fetch_product_ids( 'dummy' );
+
+		if ( ! is_array( $dummy_products_ids ) ) {
+			return new \WP_Error( 'failed_to_fetch_dummy_products', __( 'Failed to fetch dummy products.', 'woo-gutenberg-products-block' ) );
+		}
+
 		$dummy_products = array_map(
 			function ( $product ) {
 				return wc_get_product( $product->ID );
 			},
-			$dummy_product_ids
+			$dummy_products_ids
 		);
 
 		$dummy_products_to_update = [];
@@ -172,10 +184,10 @@ class ProductUpdater {
 		global $wpdb;
 
 		if ( 'user_created' === $type ) {
-			return $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE ID NOT IN ( SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish' ) AND post_type = 'product' AND post_status = 'publish' LIMIT 6", '_headstart_post' ), ARRAY_A );
+			return $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE ID NOT IN ( SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish' ) AND post_type = 'product' AND post_status = 'publish' LIMIT 6", '_headstart_post' ) );
 		}
 
-		return $wpdb->get_results( $wpdb->prepare( "SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish'", '_headstart_post' ), ARRAY_A );
+		return $wpdb->get_results( $wpdb->prepare( "SELECT p.ID FROM {$wpdb->posts} p JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id WHERE pm.meta_key = %s AND p.post_type = 'product' AND p.post_status = 'publish'", '_headstart_post' ) );
 	}
 
 	/**
