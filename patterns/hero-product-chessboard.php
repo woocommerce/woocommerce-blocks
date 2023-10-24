@@ -52,8 +52,8 @@ $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 				<h3 class="wp-block-heading has-text-align-left has-large-font-size" style="font-style:normal;font-weight:600"><?php echo esc_html( $fifth_title ); ?></h3>
 				<!-- /wp:heading -->
 
-				<!-- wp:paragraph {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|40"}},"typography":{"fontSize":"14px"}}} -->
-				<p style="margin-bottom:var(--wp--preset--spacing--40);font-size:14px"><?php echo esc_html( $fifth_description ); ?></p>
+				<!-- wp:paragraph {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|40"}}}} -->
+				<p style="margin-bottom:var(--wp--preset--spacing--40)"><?php echo esc_html( $fifth_description ); ?></p>
 				<!-- /wp:paragraph -->
 
 				<!-- wp:buttons -->
@@ -82,24 +82,24 @@ $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 				<div class="wp-block-columns">
 					<!-- wp:column -->
 					<div class="wp-block-column">
-						<!-- wp:heading {"level":5,"style":{"typography":{"textTransform":"capitalize","fontSize":"14px"}}} -->
-						<h5 class="wp-block-heading" style="font-size:14px;text-transform:capitalize"><?php echo esc_html( $second_title ); ?></h5>
+						<!-- wp:heading {"level":5,"style":{"typography":{"textTransform":"capitalize"}}, "fontSize": "large"} -->
+						<h5 class="wp-block-heading has-large-font-size" style="text-transform:capitalize"><?php echo esc_html( $second_title ); ?></h5>
 						<!-- /wp:heading -->
 
-						<!-- wp:paragraph {"style":{"typography":{"fontSize":"12px"},"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"var:preset|spacing|20","right":"0","bottom":"0","left":"0"}}}} -->
-						<p style="margin-top:var(--wp--preset--spacing--20);margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;font-size:12px"><?php echo esc_html( $second_description ); ?></p>
+						<!-- wp:paragraph {"style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"margin":{"top":"var:preset|spacing|20","right":"0","bottom":"0","left":"0"}}}} -->
+						<p style="margin-top:var(--wp--preset--spacing--20);margin-right:0;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;"><?php echo esc_html( $second_description ); ?></p>
 						<!-- /wp:paragraph -->
 					</div>
 					<!-- /wp:column -->
 
 					<!-- wp:column -->
 					<div class="wp-block-column">
-						<!-- wp:heading {"level":5,"style":{"typography":{"textTransform":"capitalize","fontSize":"14px"}}} -->
-						<h5 class="wp-block-heading" style="font-size:14px;text-transform:capitalize"><?php echo esc_html( $third_title ); ?></h5>
+						<!-- wp:heading {"level":5,"style":{"typography":{"textTransform":"capitalize"}, "fontSize": "large"}} -->
+						<h5 class="wp-block-heading has-large-font-size" style="text-transform:capitalize"><?php echo esc_html( $third_title ); ?></h5>
 						<!-- /wp:heading -->
 
-						<!-- wp:paragraph {"style":{"typography":{"fontSize":"12px"},"spacing":{"margin":{"top":"var:preset|spacing|20"}}}} -->
-						<p style="margin-top:var(--wp--preset--spacing--20);font-size:12px"><?php echo esc_html( $third_description ); ?></p>
+						<!-- wp:paragraph {"style":{"spacing":{"margin":{"top":"var:preset|spacing|20"}}}} -->
+						<p style="margin-top:var(--wp--preset--spacing--20)"><?php echo esc_html( $third_description ); ?></p>
 						<!-- /wp:paragraph -->
 					</div>
 					<!-- /wp:column -->
@@ -110,24 +110,24 @@ $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 				<div class="wp-block-columns">
 					<!-- wp:column -->
 					<div class="wp-block-column">
-						<!-- wp:heading {"level":5,"style":{"typography":{"textTransform":"capitalize","fontSize":"14px"}}} -->
-						<h5 class="wp-block-heading" style="font-size:14px;text-transform:capitalize"><?php echo esc_html( $fourth_title ); ?></h5>
+						<!-- wp:heading {"level":5,"style":{"typography":{"textTransform":"capitalize"}},"fontSize":"large"} -->
+						<h5 class="wp-block-heading has-large-font-size" style="text-transform:capitalize"><?php echo esc_html( $fourth_title ); ?></h5>
 						<!-- /wp:heading -->
 
-						<!-- wp:paragraph {"style":{"typography":{"fontSize":"12px"},"spacing":{"margin":{"top":"var:preset|spacing|20"}}}} -->
-						<p style="margin-top:var(--wp--preset--spacing--20);font-size:12px"><?php echo esc_html( $fourth_description ); ?></p>
+						<!-- wp:paragraph {"style":{"spacing":{"margin":{"top":"var:preset|spacing|20"}}}} -->
+						<p style="margin-top:var(--wp--preset--spacing--20)"><?php echo esc_html( $fourth_description ); ?></p>
 						<!-- /wp:paragraph -->
 					</div>
 					<!-- /wp:column -->
 
 					<!-- wp:column -->
 					<div class="wp-block-column">
-						<!-- wp:heading {"level":5,"style":{"typography":{"textTransform":"capitalize","fontSize":"14px"}}} -->
-						<h5 class="wp-block-heading" style="font-size:14px;text-transform:capitalize"><?php echo esc_html( $fifth_title ); ?></h5>
+						<!-- wp:heading {"level":5,"style":{"typography":{"textTransform":"capitalize"}},"fontSize":"large"} -->
+						<h5 class="wp-block-heading has-large-font-size" style="text-transform:capitalize"><?php echo esc_html( $fifth_title ); ?></h5>
 						<!-- /wp:heading -->
 
-						<!-- wp:paragraph {"style":{"typography":{"fontSize":"12px"},"spacing":{"margin":{"top":"var:preset|spacing|20","right":"0","bottom":"0","left":"0"}}}} -->
-						<p style="margin-top:var(--wp--preset--spacing--20);margin-right:0;margin-bottom:0;margin-left:0;font-size:12px"><?php echo esc_html( $fifth_description ); ?></p>
+						<!-- wp:paragraph {"style":{"spacing":{"margin":{"top":"var:preset|spacing|20","right":"0","bottom":"0","left":"0"}}}} -->
+						<p style="margin-top:var(--wp--preset--spacing--20);margin-right:0;margin-bottom:0;margin-left:0"><?php echo esc_html( $fifth_description ); ?></p>
 						<!-- /wp:paragraph -->
 					</div>
 					<!-- /wp:column -->
