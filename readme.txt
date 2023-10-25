@@ -81,6 +81,19 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.4.2 - 2023-10-25 =
+
+#### Enhancements
+
+- Improve the button size on the "Product Collection 4 Column" pattern. [11433](https://github.com/woocommerce/woocommerce-blocks/pull/11433)
+- Update the patterns content after a plugin update. [11210](https://github.com/woocommerce/woocommerce-blocks/pull/11210)
+- Improve the "Minimal header" pattern spacing and title. [11434](https://github.com/woocommerce/woocommerce-blocks/pull/11434)
+- Store Customization > Ensure dummy products can have AI-generated content. [11155](https://github.com/woocommerce/woocommerce-blocks/pull/11155)
+- Improve the Testimonials 3 columns pattern. [11430](https://github.com/woocommerce/woocommerce-blocks/pull/11430)
+- Add overlay to the "Featured Category Triple" pattern. [11428](https://github.com/woocommerce/woocommerce-blocks/pull/11428)
+- Improve the "Footer with 3 Menus" pattern. [11379](https://github.com/woocommerce/woocommerce-blocks/pull/11379)
+- Update the "Large footer" pattern. [11413](https://github.com/woocommerce/woocommerce-blocks/pull/11413)
+
 = 11.4.1 - 2023-10-25 =
 
 #### Bug Fixes
