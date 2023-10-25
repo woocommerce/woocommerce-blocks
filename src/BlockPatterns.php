@@ -53,8 +53,35 @@ class BlockPatterns {
 
 		add_action( 'init', array( $this, 'register_block_patterns' ) );
 		add_action( 'update_option_woo_ai_describe_store_description', array( $this, 'schedule_on_option_update' ), 10, 2 );
+		add_action( 'update_option_woo_ai_describe_store_description', array( $this, 'update_ai_connection_allowed_option' ), 10, 2 );
 		add_action( 'upgrader_process_complete', array( $this, 'schedule_on_plugin_update' ), 10, 2 );
 		add_action( 'woocommerce_update_patterns_content', array( $this, 'update_patterns_content' ) );
+	}
+
+	/**
+	 * Make sure the 'woocommerce_blocks_allow_ai_connection' option is set to true if the site is connected to AI.
+	 *
+	 * @param string $option The option name.
+	 * @param string $value The option value.
+	 *
+	 * @return bool
+	 */
+	public function update_ai_connection_allowed_option( $option, $value ): bool {
+		$ai_connection = new Connection();
+
+		$site_id = $ai_connection->get_site_id();
+
+		if ( is_wp_error( $site_id ) ) {
+			return update_option( 'woocommerce_blocks_allow_ai_connection', false );
+		}
+
+		$token = $ai_connection->get_jwt_token( $site_id );
+
+		if ( is_wp_error( $token ) ) {
+			return update_option( 'woocommerce_blocks_allow_ai_connection', false );
+		}
+
+		return update_option( 'woocommerce_blocks_allow_ai_connection', true );
 	}
 
 	/**
