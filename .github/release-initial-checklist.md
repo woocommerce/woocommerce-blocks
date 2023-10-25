@@ -43,6 +43,7 @@ The release pull request has been created! This checklist is a guide to follow f
     -   Test any UI changes in mobile and desktop views.
     -   Smoke test – test a cross section of core functionality.
 -   [ ] Ask the porters of Rubik and Kirigami to test the built zip as well and to approve the PR if everything looks good.
+    -   [ ] Confirm that all tests have successfully passed prior to giving PR approval.
 
 Each porter is responsible for testing the PRs that fall under the focus of their own team. Shared functionality should be tested by both porters. This means that the Rubik porter will mostly test checkout blocks and Store API endpoints, while the Kirigami porter will test the product related blocks and Store API endpoints.
 
