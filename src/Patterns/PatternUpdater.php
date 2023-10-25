@@ -120,7 +120,7 @@ class PatternUpdater {
 		$prompts = array();
 		foreach ( $patterns_with_content as $pattern ) {
 			$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing the content of the "%s" pattern: %s.\n', $business_description, $pattern['name'], wp_json_encode( $pattern['content'] ) );
-			$prompt .= "Replace the titles, descriptions and button texts in each 'default' key using the prompt in the corresponding 'ai_prompt' key by a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The response should be only a JSON string, with absolutely no intro or explanations.";
+			$prompt .= "Replace the titles, descriptions and button texts in each 'default' key using the prompt in the corresponding 'ai_prompt' key by a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The text should not be written in first-person. The response should be only a JSON string, with absolutely no intro or explanations.";
 
 			$prompts[] = $prompt;
 		}
@@ -181,6 +181,8 @@ class PatternUpdater {
 	 * @return array An array containing an array of the images in the first position and their alts in the second.
 	 */
 	private function get_images_for_pattern( array $pattern, array $selected_images ): array {
+		$images = array();
+		$alts   = array();
 		foreach ( $selected_images as $selected_image ) {
 			if ( ! isset( $selected_image['title'] ) ) {
 				continue;
