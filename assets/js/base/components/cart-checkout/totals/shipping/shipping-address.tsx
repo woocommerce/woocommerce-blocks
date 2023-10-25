@@ -34,7 +34,9 @@ export const ShippingAddress = ( {
 	);
 	const hasFormattedAddress = !! formatShippingAddress( shippingAddress );
 
-	// If we don't have formatted address, and we're not in the editor, don't show anything.
+	// If there is no default customer location set in the store, the customer hasn't provided their address,
+	// but a default shipping method is available for all locations,
+	// then the shipping calculator will be hidden to avoid confusion.
 	if ( ! hasFormattedAddress && ! isEditor ) {
 		return null;
 	}
