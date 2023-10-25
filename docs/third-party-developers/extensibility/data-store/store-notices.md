@@ -13,7 +13,7 @@
 
 ## Overview
 
-The Store-Notices Store manages the registration and tracking of notice containers within WooCommerce Blocks. By utilizing this store, developers can easily register or unregister containers, ensuring a seamless integration of notices.
+The Store-Notices Store allows to register and unregister containers for notices. This is useful for displaying notices in a specific location, such as a custom block.
 
 ## Usage
 
