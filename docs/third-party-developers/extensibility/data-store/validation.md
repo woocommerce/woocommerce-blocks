@@ -50,8 +50,7 @@ import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 ## Example
 
-To better understand the Validation Store, let's use the required checkbox of the Terms and Conditions
-as an example. In the page editor, a merchant can define that a buyer must agree to the Terms and Conditions by making the checkbox required.
+To better understand the Validation Store, let's use the required checkbox of the Terms and Conditions as an example. In the page editor, a merchant can define that a buyer must agree to the Terms and Conditions by making the checkbox required.
 
 ![image](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-24-at-17.22.45.png)
 
@@ -105,6 +104,56 @@ const hasError = validationError?.message && ! validationError?.hidden;
 >
 > -   `hidden: true` means there's a validation error, but it's kept from the user's view.
 > -   `hidden: false` indicates that the validation error is actively being shown to the user.
+
+In the example above, the `message` is hidden and only the text color is changed to red, highlighting that this field has a validation error.
+
+In some cases, it's desired to show the validation error message to the user. For example, if the buyer tries to submit the checkout form without filling in the required fields. An example can seen when leaving the first name, last name and address fileds empty:
+
+![image](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-25-at-18.28.30.png)
+
+In WooCommerce Blocks, the following function handles the display logic of the validation error message:
+
+```ts
+export const ValidationInputError = ( {
+	errorMessage = '',
+	propertyName = '',
+	elementId = '',
+}: ValidationInputErrorProps ): JSX.Element | null => {
+	const { validationError, validationErrorId } = useSelect( ( select ) => {
+		const store = select( VALIDATION_STORE_KEY );
+		return {
+			validationError: store.getValidationError( propertyName ),
+			validationErrorId: store.getValidationErrorId( elementId ),
+		};
+	} );
+
+	if ( ! errorMessage || typeof errorMessage !== 'string' ) {
+		if ( validationError?.message && ! validationError?.hidden ) {
+			errorMessage = validationError.message;
+		} else {
+			return null;
+		}
+	}
+
+	return (
+		<div className="wc-block-components-validation-error" role="alert">
+			<p id={ validationErrorId }>{ errorMessage }</p>
+		</div>
+	);
+};
+```
+
+A simplified version of the code snippet above would be the following:
+
+```js
+{
+	validationError?.hidden === false && (
+		<div className="wc-block-components-validation-error" role="alert">
+			<p>{ validationError?.message }</p>
+		</div>
+	);
+}
+```
 
 ## Actions
 
