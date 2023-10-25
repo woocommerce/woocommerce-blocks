@@ -31,7 +31,7 @@ class Pexels {
 			return $search_term;
 		}
 
-		return $this->request( $search_term );
+		return $this->request( $search_term, $per_page );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class Pexels {
 	 * @return mixed|\WP_Error
 	 */
 	private function define_search_term( $ai_connection, $token, $business_description ) {
-		$prompt = sprintf( 'Summarize the following text in just a couple of words; the response should be only a string, with no introductions or explanations: %s', $business_description );
+		$prompt = sprintf( 'Describe the product sold by a store in two words, based on the following description: %s', $business_description );
 
 		$response = $ai_connection->fetch_ai_response( $token, $prompt );
 
@@ -61,14 +61,15 @@ class Pexels {
 	 * Make a request to the Pexels API.
 	 *
 	 * @param string $search_term The search term to use.
+	 * @param int    $per_page The number of images to return.
 	 *
 	 * @return array|\WP_Error The response body, or WP_Error if the request failed.
 	 */
-	private function request( string $search_term ) {
+	private function request( string $search_term, $per_page = 50 ) {
 		$request = new \WP_REST_Request( 'GET', self::EXTERNAL_MEDIA_PEXELS_ENDPOINT );
 
 		$request->set_param( 'search', esc_html( $search_term ) );
-		$request->set_param( 'number', 50 );
+		$request->set_param( 'number', $per_page );
 
 		$response      = rest_do_request( $request );
 		$response_data = $response->get_data();
@@ -82,6 +83,12 @@ class Pexels {
 			return new \WP_Error( 'pexels_api_error', __( 'Request to the Pexels API failed.', 'woo-gutenberg-products-block' ), $error_msg );
 		}
 
-		return $response_data['media'] ?? $response_data;
+		$response = $response_data['media'] ?? $response_data;
+
+		if ( is_array( $response ) ) {
+			shuffle( $response );
+		}
+
+		return $response;
 	}
 }
