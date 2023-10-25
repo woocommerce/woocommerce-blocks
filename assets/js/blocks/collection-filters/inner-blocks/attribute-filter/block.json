@@ -17,7 +17,36 @@
 		"interactivity": true
 	},
 	"usesContext": [
-		"filterData"
+		"collectionData"
 	],
-	"attributes": {}
+	"attributes": {
+		"queryParam": {
+			"type": "object",
+			"default": {}
+		},
+		"attributeId": {
+			"type": "number",
+			"default": 0
+		},
+		"showCounts": {
+			"type": "boolean",
+			"default": false
+		},
+		"queryType": {
+			"type": "string",
+			"default": "or"
+		},
+		"displayStyle": {
+			"type": "string",
+			"default": "list"
+		},
+		"selectType": {
+			"type": "string",
+			"default": "multiple"
+		},
+		"isPreview": {
+			"type": "boolean",
+			"default": false
+		}
+	}
 }
