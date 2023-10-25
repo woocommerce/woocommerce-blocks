@@ -257,6 +257,7 @@ final class BlockTypesController {
 			$block_types[] = 'ProductGalleryThumbnails';
 			$block_types[] = 'CollectionFilters';
 			$block_types[] = 'CollectionPriceFilter';
+			$block_types[] = 'CollectionAttributeFilter';
 		}
 
 		/**
