@@ -180,4 +180,9 @@
 	.wp-block-button.aligncenter {
 		text-align: center;
 	}
+
+	// Theme-specific CSS
+	.theme-twentytwentyfour & {
+		border-radius: var(--wp--preset--spacing--20);
+	}
 }

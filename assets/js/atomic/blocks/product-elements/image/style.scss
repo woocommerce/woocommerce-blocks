@@ -51,6 +51,11 @@
 			margin: 0;
 		}
 	}
+
+	// Theme-specific CSS
+	.theme-twentytwentyfour & {
+		border-radius: var(--wp--preset--spacing--20);
+	}
 }
 
 .is-loading .wc-block-components-product-image {
