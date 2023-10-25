@@ -198,6 +198,10 @@ class ProductUpdater {
 	 * @return false|string
 	 */
 	public function get_hash_for_product( $product ) {
+		if ( ! $product instanceof \WC_Product ) {
+			return false;
+		}
+
 		return md5( $product->get_name() . $product->get_description() . $product->get_image_id() );
 	}
 
