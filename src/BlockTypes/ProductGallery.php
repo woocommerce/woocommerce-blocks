@@ -132,6 +132,7 @@ class ProductGallery extends AbstractBlock {
 
 		if ( $p->next_tag() ) {
 			$p->set_attribute( 'data-wc-interactive', true );
+			$p->set_attribute( 'data-wc-init--watch-changes-on-add-to-cart-form', 'effects.woocommerce.watchForChangesOnAddToCartForm' );
 			$p->set_attribute(
 				'data-wc-context',
 				wp_json_encode(
