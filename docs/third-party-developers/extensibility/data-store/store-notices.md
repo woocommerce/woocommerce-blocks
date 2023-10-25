@@ -4,6 +4,7 @@
 
 -   [Overview](#overview)
 -   [Usage](#usage)
+-   [Example](#example)
 -   [Actions](#actions)
     -   [registerContainer( containerContext )](#registercontainer-containercontext-)
     -   [unregisterContainer( containerContext )](#unregistercontainer-containercontext-)
