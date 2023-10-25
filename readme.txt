@@ -81,6 +81,10 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.4.1 - 2023-10-25 =
+
+- Regenerate package
+
 = 11.4.0 - 2023-10-24 =
 
 #### Enhancements
