@@ -44,10 +44,11 @@ $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 		</div>
 		<!-- /wp:column -->
 
+
 		<!-- wp:column {"verticalAlignment":"center","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"}}},"layout":{"type":"constrained"}} -->
 		<div class="wp-block-column is-vertically-aligned-center" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-			<!-- wp:group {"style":{"spacing":{"padding":{"top":"50px","right":"50px","bottom":"50px","left":"50px"}}},"layout":{"type":"flex","orientation":"vertical","verticalAlignment":"center","justifyContent":"stretch"}} -->
-			<div class="wp-block-group" style="padding-top:50px;padding-right:50px;padding-bottom:50px;padding-left:50px">
+			<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"0px","right":"60px","bottom":"0px","left":"60px"},"margin":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40"}}}} -->
+			<div class="wp-block-group alignfull" style="margin-top:var(--wp--preset--spacing--40);margin-bottom:var(--wp--preset--spacing--40);padding-top:0px;padding-right:60px;padding-bottom:0px;padding-left:60px">
 				<!-- wp:heading {"textAlign":"left","level":3} -->
 				<h3 class="wp-block-heading has-text-align-left has-large-font-size"><strong><?php echo esc_html( $fifth_title ); ?></strong></h3>
 				<!-- /wp:heading -->
@@ -56,8 +57,8 @@ $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 				<p style="margin-bottom:var(--wp--preset--spacing--40)"><?php echo esc_html( $fifth_description ); ?></p>
 				<!-- /wp:paragraph -->
 
-				<!-- wp:buttons -->
-				<div class="wp-block-buttons">
+				<!-- wp:buttons {"style":{"spacing":{"margin":{"top":"64px"}}}} -->
+				<div class="wp-block-buttons" style="margin-top:64px">
 					<!-- wp:button {"textAlign":"left"} -->
 					<div class="wp-block-button has-custom-font-size">
 						<a class="wp-block-button__link has-text-align-left wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">Shop now</a>
@@ -78,7 +79,7 @@ $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 		<div class="wp-block-column is-vertically-aligned-center" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
 			<!-- wp:group {"style":{"spacing":{"padding":{"top":"50px","right":"50px","bottom":"50px","left":"50px"}}},"layout":{"type":"flex","orientation":"vertical"}} -->
 			<div class="wp-block-group" style="padding-top:50px;padding-right:50px;padding-bottom:50px;padding-left:50px">
-				<!-- wp:columns -->
+				<!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"60px"}}}} -->
 				<div class="wp-block-columns">
 					<!-- wp:column -->
 					<div class="wp-block-column">
@@ -106,7 +107,7 @@ $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 				</div>
 				<!-- /wp:columns -->
 
-				<!-- wp:columns -->
+				<!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"60px"}}}} -->
 				<div class="wp-block-columns">
 					<!-- wp:column -->
 					<div class="wp-block-column">
