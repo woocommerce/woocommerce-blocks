@@ -12,6 +12,7 @@
 	}
 
 	img {
+		border-radius: inherit;
 		height: auto;
 		width: auto;
 		max-width: 100%;
@@ -23,6 +24,11 @@
 		&[alt=""] {
 			border: 1px solid $image-placeholder-border-color;
 		}
+	}
+
+	// Theme-specific CSS
+	.theme-twentytwentyfour & {
+		border-radius: var(--wp--preset--spacing--20);
 	}
 }
 .edit-post-visual-editor .editor-block-list__block .wc-block-grid__product-title,
