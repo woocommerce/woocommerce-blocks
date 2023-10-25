@@ -12,7 +12,7 @@
 
 ## Overview
 
-...
+The Collections Store allows to retrieve product-related collections within WooCommerce Blocks.
 
 ## Usage
 
