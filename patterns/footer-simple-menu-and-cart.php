@@ -13,7 +13,7 @@
 	<div class="wp-block-group alignfull" style="padding-right:0;padding-left:0">
 		<!-- wp:group {"style":{"spacing":{"blockGap":"24px"}},"layout":{"type":"flex","flexWrap":"wrap"}} -->
 		<div class="wp-block-group">
-			<!-- wp:search {"label":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","showLabel":false,"placeholder":"<?php esc_html_e( 'Search our store', 'woo-gutenberg-products-block' ); ?>","buttonText":"<?php esc_html_e( 'Search our store', 'woo-gutenberg-products-block' ); ?>","buttonUseIcon":true,"query":{"post_type":"product"},"style":{"layout":{"selfStretch":"fill","flexSize":null}}} /-->
+			<!-- wp:search {"label":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","showLabel":false,"placeholder":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","buttonText":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","buttonUseIcon":true,"query":{"post_type":"product"},"width":100,"widthUnit":"%"} /-->
 			<!-- wp:woocommerce/mini-cart /-->
 		</div>
 		<!-- /wp:group -->
