@@ -253,10 +253,11 @@ class ProductUpdater {
 		if ( ! isset( $ai_generated_product_content['image']['src'] ) || ! isset( $ai_generated_product_content['image']['alt'] ) || ! isset( $ai_generated_product_content['title'] ) || ! isset( $ai_generated_product_content['description'] ) ) {
 			return;
 		}
-		// Since the media_sideload_image function can take longer to complete
-		// the process of downloading the external image and uploading it
-		// to the media library, we need to ensure the request doesn't timeout.
+		// Since the media_sideload_image function is expensive and can take longer to complete
+		// the process of downloading the external image and uploading it to the media library,
+		// here we are increasing the time limit and the memory limit to avoid any issues.
 		set_time_limit( 60 );
+		wp_raise_memory_limit();
 
 		$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
 
