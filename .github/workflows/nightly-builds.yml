@@ -1,8 +1,11 @@
 name: Nightly builds
 
 on:
-  schedule:
-    - cron: '1 0 * * *' # Run at 12:01 AM UTC.
+  # schedule:
+  #   - cron: '1 0 * * *' # Run at 12:01 AM UTC.
+  push:
+    branches:
+      - update/add-PRs-to-nightly-release
   workflow_dispatch:
 
 env:
@@ -14,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build: [trunk]
+        build: [update/add-PRs-to-nightly-release]
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout Code
@@ -39,8 +42,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # 80943895 is the release ID of this nightly release https://github.com/woocommerce/woocommerce-blocks/releases/tag/nightly
-          upload_url: https://uploads.github.com/repos/${{ github.repository }}/releases/80943895/assets{?name,label}
-          release_id: 80943895
+          upload_url: https://uploads.github.com/repos/${{ github.repository }}/releases/126393859/assets{?name,label}
+          release_id: 126393859
           asset_path: woocommerce-gutenberg-products-block.zip
           asset_name: woocommerce-blocks-${{ matrix.build }}-nightly.zip
           asset_content_type: application/zip
@@ -55,16 +58,17 @@ jobs:
         uses: irongut/EditRelease@v1.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          id: 80943895
-          body: "[PRs merged since last nightly build](https://github.com/woocommerce/woocommerce-blocks/pulls?q=is%3Apr+closed%3A%3E${{ steps.date.outputs.date }}+is%3Amerged)"
-          spacing: 2
-  update:
-    name: Update nightly tag commit ref
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Update nightly tag
-        uses: richardsimko/github-tag-action@v1.0.7
-        with:
-          tag_name: nightly
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          id: 126393859
+          body: "Nightly release auto generated everyday at 12:01 AM UTC. \n\n[PRs merged since last nightly build](https://github.com/woocommerce/woocommerce-blocks/pulls?q=is%3Apr+closed%3A%3E${{ steps.date.outputs.date }}+is%3Amerged)"
+          spacing: 0
+          replacebody: true
+  # update:
+  #   name: Update nightly tag commit ref
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - name: Update nightly tag
+  #       uses: richardsimko/github-tag-action@v1.0.7
+  #       with:
+  #         tag_name: nightly
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
