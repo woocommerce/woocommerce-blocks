@@ -159,7 +159,6 @@ class ProductReviewSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_item_response( $review ) {
-		$context = ! empty( $request['context'] ) ? $request['context'] : 'view';
 		$rating  = get_comment_meta( $review->comment_ID, 'rating', true ) === '' ? null : (int) get_comment_meta( $review->comment_ID, 'rating', true );
 		$data    = [
 			'id'                     => (int) $review->comment_ID,
@@ -171,15 +170,11 @@ class ProductReviewSchema extends AbstractSchema {
 			'product_permalink'      => get_permalink( (int) $review->comment_post_ID ),
 			'product_image'          => $this->image_attachment_schema->get_item_response( get_post_thumbnail_id( (int) $review->comment_post_ID ) ),
 			'reviewer'               => $review->comment_author,
-			'review'                 => $review->comment_content,
+			'review'                 => wp_autop( $review->comment_content ),
 			'rating'                 => $rating,
 			'verified'               => wc_review_is_from_verified_owner( $review->comment_ID ),
 			'reviewer_avatar_urls'   => rest_get_avatar_urls( $review->comment_author_email ),
 		];
-
-		if ( 'view' === $context ) {
-			$data['review'] = wpautop( $data['review'] );
-		}
 
 		return $data;
 	}
