@@ -39,6 +39,10 @@
 		.wc-block-components-product-metadata {
 			@include font-size(regular);
 		}
+
+		&::after {
+			color: $gray-100;
+		}
 	}
 
 	.wc-block-components-order-summary-item__image,
@@ -64,6 +68,7 @@
 		border: 2px solid;
 		border-radius: 1em;
 		box-shadow: 0 0 0 2px #fff;
+		border-color: $gray-100;
 		color: #000;
 		display: flex;
 		line-height: 1;

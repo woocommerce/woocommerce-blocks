@@ -30,6 +30,9 @@
 			}
 		}
 	}
+	&::after {
+		color: $gray-100;
+	}
 }
 
 .wc-block-components-discounts-meta {

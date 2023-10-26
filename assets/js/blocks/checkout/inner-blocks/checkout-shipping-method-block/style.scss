@@ -21,13 +21,13 @@
 	background-color: transparent;
 	border: none;
 	box-shadow: none !important;
-	outline: 1px solid currentColor;
+	outline: 1px solid $gray-100;
 	border-radius: $universal-border-radius;
 	&.components-button:hover:not(:disabled),
 	&.components-button:focus:not(:disabled),
 	&:focus,
 	&:hover {
-		background-color: #d5d5d5;
+		background-color: transparent;
 		border-color: #d5d5d5;
 		color: #333;
 	}
