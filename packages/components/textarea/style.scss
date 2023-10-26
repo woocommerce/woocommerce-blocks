@@ -1,7 +1,7 @@
 .wc-block-components-textarea {
 	@include font-size(regular);
 	background-color: #fff;
-	border: 1px solid $input-border-gray;
+	border: 1px solid $gray-900;
 	border-radius: $universal-border-radius;
 	color: $input-text-active;
 	font-family: inherit;
