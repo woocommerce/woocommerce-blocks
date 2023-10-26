@@ -57,7 +57,9 @@ const CheckboxList = ( {
 					/* stylelint-disable */
 					width: Math.floor( Math.random() * 75 ) + 25 + '%',
 				} }
-			/>
+			>
+				&nbsp;
+			</li>
 		) );
 	}, [] );
 
