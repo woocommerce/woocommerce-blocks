@@ -29,10 +29,10 @@ const Edit = ( {
 	} );
 
 	const { results } = useCollectionData( {
-		...getQueryParams( currentBlock ),
-		queryPrices: true,
 		isEditor: true,
-		queryState: {},
+		queryState: {
+			...getQueryParams( currentBlock ),
+		},
 	} );
 
 	useEffect( () => {

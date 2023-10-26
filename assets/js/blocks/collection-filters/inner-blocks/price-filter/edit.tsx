@@ -20,6 +20,8 @@ import { EditProps } from './types';
 
 const Edit = ( { attributes, setAttributes, context }: EditProps ) => {
 	const { showInputFields, inlineInput } = attributes;
+	console.log( context );
+	return null;
 	const { minPrice, maxPrice, formattedMinPrice, formattedMaxPrice } =
 		context.filterData;
 

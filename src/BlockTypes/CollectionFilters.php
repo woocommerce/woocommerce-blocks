@@ -16,18 +16,6 @@ final class CollectionFilters extends AbstractBlock {
 	protected $block_name = 'collection-filters';
 
 	/**
-	 * Mapping inner blocks to CollectionData API parameters.
-	 *
-	 * @var array
-	 */
-	protected $collection_data_params_mapping = array(
-		'calculate_price_range'         => 'price',
-		'calculate_stock_status_counts' => 'stock',
-		'calculate_attribute_counts'    => 'attribute',
-		'calculate_rating_counts'       => 'rating',
-	);
-
-	/**
 	 * Cache the current response from the API.
 	 *
 	 * @var array
@@ -65,13 +53,6 @@ final class CollectionFilters extends AbstractBlock {
 		parent::enqueue_data( $attributes );
 
 		if ( ! is_admin() ) {
-			wc_store(
-				array(
-					'state' => array(
-						'filters' => $this->current_response,
-					),
-				)
-			);
 			/**
 			 * At this point, WP starts rendering the Collection Filters block,
 			 * we can safely unset the current response.
@@ -104,6 +85,7 @@ final class CollectionFilters extends AbstractBlock {
 		 */
 		if ( ! isset( $this->current_response ) ) {
 			$this->current_response = $this->get_aggregated_collection_data( $parent_block );
+			dd($this->current_response);
 		}
 
 		if ( ! empty( $this->current_response ) ) {
@@ -121,13 +103,7 @@ final class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_aggregated_collection_data( $block ) {
-		$inner_filter_types     = $this->get_inner_filter_types_recursive( $block->inner_blocks );
-		$collection_data_params = array_map(
-			function( $filter_type ) use ( $inner_filter_types ) {
-				return in_array( $filter_type, $inner_filter_types, true );
-			},
-			$this->collection_data_params_mapping
-		);
+		$collection_data_params  = $this->get_inner_filter_types_recursive( $block->inner_blocks );
 
 		if ( empty( array_filter( $collection_data_params ) ) ) {
 			return array();
@@ -161,8 +137,8 @@ final class CollectionFilters extends AbstractBlock {
 	private function get_inner_filter_types_recursive( $inner_blocks, &$results = array() ) {
 		if ( is_a( $inner_blocks, 'WP_Block_List' ) ) {
 			foreach ( $inner_blocks as $inner_block ) {
-				if ( isset( $inner_block->attributes['filterType'] ) ) {
-					$results[] = $inner_block->attributes['filterType'];
+				if ( ! empty( $inner_block->attributes['queryParam'] ) ) {
+					$results = array_merge( $results, $inner_block->attributes['queryParam'] );
 				}
 				$this->get_inner_filter_types_recursive(
 					$inner_block->inner_blocks,

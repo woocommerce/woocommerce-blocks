@@ -22,7 +22,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		if ( is_admin() || empty( $block->context['filterData'] ) ) {
+		if ( is_admin() || empty( $block->context['collectionData'] ) ) {
 			return $content;
 		}
 
@@ -30,6 +30,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 			'showInputFields' => $show_input_fields,
 			'inlineInput' => $inline_input
 		) = $attributes;
+
 		list (
 			'minPrice' => $min_price,
 			'maxPrice' => $max_price,
