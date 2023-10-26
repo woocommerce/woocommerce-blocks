@@ -93,6 +93,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Add overlay to the "Featured Category Triple" pattern. [11428](https://github.com/woocommerce/woocommerce-blocks/pull/11428)
 - Improve the "Footer with 3 Menus" pattern. [11379](https://github.com/woocommerce/woocommerce-blocks/pull/11379)
 - Update the "Large footer" pattern. [11413](https://github.com/woocommerce/woocommerce-blocks/pull/11413)
+- Improve the "Essential Header". [11449](https://github.com/woocommerce/woocommerce-blocks/pull/11449)
 
 = 11.4.1 - 2023-10-25 =
 
