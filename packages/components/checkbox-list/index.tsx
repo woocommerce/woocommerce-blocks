@@ -16,7 +16,7 @@ interface CheckboxListOptions {
 	value: string;
 }
 
-interface CheckboxListProps {
+export interface CheckboxListProps {
 	className?: string | undefined;
 	isLoading?: boolean | undefined;
 	isDisabled?: boolean | undefined;
