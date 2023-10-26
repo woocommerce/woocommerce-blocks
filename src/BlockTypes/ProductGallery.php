@@ -126,7 +126,7 @@ class ProductGallery extends AbstractBlock {
 		$dialog               = ( true === $attributes['fullScreenOnClick'] && isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ) ? $this->render_dialog() : '';
 		$post_id              = $block->context['postId'] ?? '';
 		$product              = wc_get_product( $post_id );
-		$product_id            = strval( $product->get_id() );
+		$product_id           = strval( $product->get_id() );
 
 		$html = $this->inject_dialog( $content, $dialog );
 		$p    = new \WP_HTML_Tag_Processor( $html );
