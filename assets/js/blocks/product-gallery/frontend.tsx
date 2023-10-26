@@ -13,6 +13,7 @@ interface Context {
 		imageId: string;
 		visibleImagesIds: string[];
 		isDialogOpen: boolean;
+		productId: string;
 	};
 }
 
@@ -65,7 +66,7 @@ interactivityApiStore( {
 		woocommerce: {
 			watchForChangesOnAddToCartForm: ( store: Store ) => {
 				const variableProductCartForm = document.querySelector(
-					'[data-product_id="16"]'
+					`form[data-product_id="${ store.context.woocommerce.productId }"]`
 				);
 
 				if ( ! variableProductCartForm ) {
