@@ -231,6 +231,11 @@
 			object-fit: contain;
 			object-position: left;
 		}
+
+		&::after {
+			color: $gray-100;
+
+		}
 	}
 
 	.wc-block-components-radio-control.disable-radio-control {

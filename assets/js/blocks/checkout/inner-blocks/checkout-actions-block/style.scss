@@ -21,6 +21,10 @@
 			}
 		}
 	}
+
+	&::after {
+		color: $gray-100;
+	}
 }
 
 .is-mobile {
