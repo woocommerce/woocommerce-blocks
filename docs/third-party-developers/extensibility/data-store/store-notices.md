@@ -1,4 +1,4 @@
-# Store-Notices Store (`wc/store/store-notices`) <!-- omit in toc -->
+# Store Notices Store (`wc/store/store-notices`) <!-- omit in toc -->
 
 ## Table of contents <!-- omit in toc -->
 
@@ -13,7 +13,7 @@
 
 ## Overview
 
-The Store-Notices Store allows to register and unregister containers for notices. This is useful for displaying notices in a specific location, such as a custom block.
+The Store Notices Store allows to register and unregister containers for notices. This is useful for displaying notices in a specific location, such as a custom block.
 
 ## Usage
 

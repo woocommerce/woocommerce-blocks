@@ -50,9 +50,9 @@ The **[Schema Store (wc/store/schema)](schema.md)** is primarily used for access
 import { SCHEMA_STORE_KEY } from '@woocommerce/blocks-data';
 ```
 
-## [Store-Notices Store (wc/store/store-notices)](store-notices.md)
+## [Store Notices Store (wc/store/store-notices)](store-notices.md)
 
-The **[Store-Notices Store (wc/store/store-notices)](store-notices.md)** is dedicated to handling various store notices and alerts. To access this store using a constant, you can use:
+The **[Store Notices Store (wc/store/store-notices)](store-notices.md)** is dedicated to handling various store notices and alerts. To access this store using a constant, you can use:
 
 ```ts
 import { STORE_NOTICES_STORE_KEY } from '@woocommerce/blocks-data';
