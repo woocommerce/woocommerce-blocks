@@ -17,11 +17,17 @@
 		"query"
 	],
 	"providesContext": {
-		"filterData": "filterData"
+		"collectionData": "collectionData"
 	},
 	"ancestor": [
 		"woocommerce/product-collection"
 	],
+	"attributes": {
+		"collectionData": {
+			"type": "object",
+			"default": {}
+		}
+	},
 	"apiVersion": 2,
 	"$schema": "https://schemas.wp.org/trunk/block.json"
 }

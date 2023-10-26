@@ -10,8 +10,11 @@ import { BlockEditProps } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { getFilterData, getQueryParams } from './utils';
-import { BlockAttributes } from './types';
+import { getQueryParams } from './utils';
+
+type BlockAttributes = {
+	collectionData: unknown[];
+};
 
 const Edit = ( {
 	clientId,
@@ -34,7 +37,7 @@ const Edit = ( {
 
 	useEffect( () => {
 		setAttributes( {
-			filterData: getFilterData( results ),
+			collectionData: results,
 		} );
 	}, [ results, setAttributes ] );
 

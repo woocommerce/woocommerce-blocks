@@ -11,7 +11,6 @@ import { isExperimentalBuild } from '@woocommerce/block-settings';
 import metadata from './block.json';
 import edit from './edit';
 import save from './save';
-import { getFilterData } from './utils';
 
 if ( isExperimentalBuild() ) {
 	registerBlockType( metadata, {
@@ -22,12 +21,6 @@ if ( isExperimentalBuild() ) {
 					className="wc-block-editor-components-block-icon"
 				/>
 			),
-		},
-		attributes: {
-			filterData: {
-				type: 'object',
-				default: getFilterData( [] ),
-			},
 		},
 		edit,
 		save,

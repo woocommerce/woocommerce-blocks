@@ -92,7 +92,7 @@ final class CollectionFilters extends AbstractBlock {
 		if (
 			is_admin() ||
 			! is_a( $parent_block, 'WP_Block' ) ||
-			! isset( $context['filterData'] )
+			! isset( $context['collectionData'] )
 		) {
 			return $context;
 		}
@@ -103,13 +103,11 @@ final class CollectionFilters extends AbstractBlock {
 		 * response for other inner blocks to use.
 		 */
 		if ( ! isset( $this->current_response ) ) {
-			$this->current_response = $this->get_filter_data(
-				$this->get_aggregated_collection_data( $parent_block )
-			);
+			$this->current_response = $this->get_aggregated_collection_data( $parent_block );
 		}
 
 		if ( ! empty( $this->current_response ) ) {
-			$context['filterData'] = $this->current_response;
+			$context['collectionData'] = $this->current_response;
 		}
 
 		return $context;
@@ -264,30 +262,4 @@ final class CollectionFilters extends AbstractBlock {
 		return array_filter( $params );
 	}
 
-	/**
-	 * Prepare filter data for Interactivity API and inner blocks.
-	 *
-	 * @param array $collection_data The collection data.
-	 * @return string
-	 */
-	private function get_filter_data( $collection_data ) {
-		if ( empty( $collection_data ) ) {
-			return array();
-		}
-
-		$price_range = $collection_data['price_range'];
-		$min_range   = $price_range->min_price / 10 ** $price_range->currency_minor_unit;
-		$max_range   = $price_range->max_price / 10 ** $price_range->currency_minor_unit;
-		$min_price   = intval( get_query_var( 'min_price', $min_range ) );
-		$max_price   = intval( get_query_var( 'max_price', $max_range ) );
-
-		return array(
-			'minPrice'          => $min_price,
-			'maxPrice'          => $max_price,
-			'formattedMinPrice' => wc_price( $min_price, array( 'decimals' => 0 ) ),
-			'formattedMaxPrice' => wc_price( $max_price, array( 'decimals' => 0 ) ),
-			'minRange'          => $min_range,
-			'maxRange'          => $max_range,
-		);
-	}
 }
