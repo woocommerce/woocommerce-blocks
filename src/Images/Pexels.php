@@ -6,6 +6,8 @@ use Automattic\WooCommerce\Blocks\AI\Connection;
 
 /**
  * Pexels API client.
+ *
+ * @internal
  */
 class Pexels {
 
@@ -86,8 +88,10 @@ class Pexels {
 
 		if ( is_array( $response ) ) {
 			shuffle( $response );
+
+			return $response;
 		}
 
-		return $response;
+		return array();
 	}
 }

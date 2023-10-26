@@ -215,7 +215,7 @@ class PatternUpdater {
 	 *
 	 * @param array $selected_image The selected image to be assigned to the pattern.
 	 *
-	 * @return mixed
+	 * @return string The selected image format.
 	 */
 	private function get_selected_image_format( $selected_image ) {
 		if ( ! isset( $selected_image['width'], $selected_image['height'] ) ) {
