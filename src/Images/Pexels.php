@@ -20,18 +20,17 @@ class Pexels {
 	 * @param Connection $ai_connection The AI connection.
 	 * @param string     $token The JWT token.
 	 * @param string     $business_description The business description.
-	 * @param int        $per_page The number of images to return.
 	 *
 	 * @return array|\WP_Error Array of images, or WP_Error if the request failed.
 	 */
-	public function get_images( $ai_connection, $token, $business_description, $per_page = 30 ) {
+	public function get_images( $ai_connection, $token, $business_description ) {
 		$search_term = $this->define_search_term( $ai_connection, $token, $business_description );
 
 		if ( is_wp_error( $search_term ) ) {
 			return $search_term;
 		}
 
-		return $this->request( $search_term, $per_page );
+		return $this->request( $search_term );
 	}
 
 	/**
@@ -65,7 +64,7 @@ class Pexels {
 	 *
 	 * @return array|\WP_Error The response body, or WP_Error if the request failed.
 	 */
-	private function request( string $search_term, $per_page = 50 ) {
+	private function request( string $search_term, int $per_page = 60 ) {
 		$request = new \WP_REST_Request( 'GET', self::EXTERNAL_MEDIA_PEXELS_ENDPOINT );
 
 		$request->set_param( 'search', esc_html( $search_term ) );
