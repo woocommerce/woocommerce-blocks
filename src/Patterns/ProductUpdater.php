@@ -396,6 +396,6 @@ class ProductUpdater {
 
 		$prompt = sprintf( 'Given the following business description: "%1s" and the assigned value for the alt property in the json bellow, generate new titles and descriptions for each one of the products listed bellow and assign them as the new values for the json: %2s. Each one of the titles should be unique and must be limited to 29 characters. The response should be only a JSON string, with no intro or explanations.', $store_description, wp_json_encode( $products_default_content ) );
 
-		return $ai_connection->fetch_ai_response( $token, $prompt, 30 );
+		return $ai_connection->fetch_ai_response( $token, $prompt, 60 );
 	}
 }
