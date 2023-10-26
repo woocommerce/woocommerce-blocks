@@ -57,7 +57,7 @@ export function formatQuery( query: ProductCollectionQuery ) {
 		return {};
 	}
 
-	const test = Object.assign(
+	return Object.assign(
 		{},
 		...sharedParams.map(
 			( key ) => key in query && { [ key ]: query[ key ] }
@@ -69,5 +69,4 @@ export function formatQuery( query: ProductCollectionQuery ) {
 		...getTaxQueryMap( query.taxQuery ),
 		getAttributeQuery( query.woocommerceAttributes )
 	);
-	return test;
 }
