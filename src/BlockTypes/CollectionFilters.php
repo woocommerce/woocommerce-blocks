@@ -72,6 +72,7 @@ final class CollectionFilters extends AbstractBlock {
 	public function modify_inner_blocks_context( $context, $parsed_block, $parent_block ) {
 		if (
 			is_admin() ||
+			( defined( 'REST_REQUEST' ) && REST_REQUEST ) ||
 			! is_a( $parent_block, 'WP_Block' ) ||
 			! isset( $context['collectionData'] )
 		) {
