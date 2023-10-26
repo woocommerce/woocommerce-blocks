@@ -94,6 +94,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Improve the "Footer with 3 Menus" pattern. [11379](https://github.com/woocommerce/woocommerce-blocks/pull/11379)
 - Update the "Large footer" pattern. [11413](https://github.com/woocommerce/woocommerce-blocks/pull/11413)
 - Improve the "Essential Header". [11449](https://github.com/woocommerce/woocommerce-blocks/pull/11449)
+- Improve the mobile view for the Minimal header pattern. [11463](https://github.com/woocommerce/woocommerce-blocks/pull/11463)
 
 = 11.4.1 - 2023-10-25 =
 
