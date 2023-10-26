@@ -92,16 +92,22 @@ class ProductUpdater {
 		$response = $this->generate_product_content( $ai_connection, $token, $products_information_list );
 
 		if ( is_wp_error( $response ) ) {
-			return $response;
+			$error_msg = $response;
+		} elseif ( empty( $response ) || ! isset( $response['completion'] ) ) {
+			$error_msg = new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
 		}
 
-		if ( empty( $response ) || ! isset( $response['completion'] ) ) {
-			return new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
+		if ( isset( $error_msg ) ) {
+			$this->update_dummy_products( $dummy_products_to_update, $products_information_list );
+
+			return $error_msg;
 		}
 
 		$product_content = json_decode( $response['completion'], true );
 
 		if ( is_null( $product_content ) ) {
+			$this->update_dummy_products( $dummy_products_to_update, $products_information_list );
+
 			return new \WP_Error( 'invalid_json', __( 'The response from the AI service is not a valid JSON.', 'woo-gutenberg-products-block' ) );
 		}
 
@@ -111,13 +117,27 @@ class ProductUpdater {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		$i = 0;
-		foreach ( $dummy_products_to_update as $dummy_product ) {
-			$this->update_product_content( $dummy_product, $product_content[ $i ] );
-			++$i;
-		}
+		$this->update_dummy_products( $dummy_products_to_update, $product_content );
 
 		return true;
+	}
+
+	/**
+	 * Update the dummy products with the content from the information list.
+	 *
+	 * @param array $dummy_products_to_update The dummy products to update.
+	 * @param array $products_information_list The products information list.
+	 */
+	public function update_dummy_products( $dummy_products_to_update, $products_information_list ) {
+		$i = 0;
+		foreach ( $dummy_products_to_update as $dummy_product ) {
+			if ( ! isset( $products_information_list[ $i ] ) ) {
+				continue;
+			}
+
+			$this->update_product_content( $dummy_product, $products_information_list[ $i ] );
+			++$i;
+		}
 	}
 
 	/**
@@ -374,7 +394,7 @@ class ProductUpdater {
 			return new \WP_Error( 'missing_store_description', __( 'The store description is required to generate the content for your site.', 'woo-gutenberg-products-block' ) );
 		}
 
-		$prompt = sprintf( 'Given the following business description: "%1s" and the assigned value for the alt property in the json bellow, generate new titles and descriptions for each one of the products listed bellow and assign them as the new values for the json: %2s. Each one of the titles should be unique and no numbers are allowed. The response should be only a JSON string, with no intro or explanations.', $store_description, wp_json_encode( $products_default_content ) );
+		$prompt = sprintf( 'Given the following business description: "%1s" and the assigned value for the alt property in the json bellow, generate new titles and descriptions for each one of the products listed bellow and assign them as the new values for the json: %2s. Each one of the titles should be unique and must be limited to 29 characters. The response should be only a JSON string, with no intro or explanations.', $store_description, wp_json_encode( $products_default_content ) );
 
 		return $ai_connection->fetch_ai_response( $token, $prompt, 30 );
 	}
