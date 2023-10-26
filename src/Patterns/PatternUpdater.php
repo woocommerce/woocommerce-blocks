@@ -196,7 +196,7 @@ class PatternUpdater {
 				continue;
 			}
 
-			$expected_image_format = $pattern['images_format'] ?? 'none';
+			$expected_image_format = $pattern['images_format'] ?? 'portrait';
 			$selected_image_format = $this->get_selected_image_format( $selected_image );
 
 			if ( $selected_image_format !== $expected_image_format ) {
