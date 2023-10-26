@@ -100,6 +100,10 @@ const blocks = {
 		isExperimental: true,
 		customDir: 'collection-filters/inner-blocks/stock-filter',
 	},
+	'collection-price-filter': {
+		customDir: 'collection-filters/inner-blocks/price-filter',
+		isExperimental: true,
+	},
 	'order-confirmation-summary': {
 		customDir: 'order-confirmation/summary',
 	},
@@ -195,6 +199,7 @@ const entries = {
 		wcBlocksSharedHocs: './assets/js/shared/hocs/index.js',
 		priceFormat: './packages/prices/index.js',
 		blocksCheckout: './packages/checkout/index.js',
+		blocksComponents: './packages/components/index.js',
 	},
 	main: {
 		// Shared blocks code

@@ -5,6 +5,8 @@ $next-previous: "#{$large-image}-next-previous";
 $next-previous-left-off: "#{$next-previous}-left--off";
 $next-previous-right-off: "#{$next-previous}-right--off";
 $gallery-next-previous-outside-image: "#{$gallery}[data-next-previous-buttons-position='outsideTheImage']:not(.is-single-product-gallery-image)";
+$gallery-next-previous-inside-image: "#{$gallery}:not([data-next-previous-buttons-position='outsideTheImage']:not(.is-single-product-gallery-image))";
+
 
 $outside-image-offset: 30px;
 $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
@@ -55,11 +57,35 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 	overflow: hidden;
 
 	// Restrict the width of the Large Image when the Next/Previous buttons are outside the image.
-	#{$gallery-next-previous-outside-image} & .wc-block-woocommerce-product-gallery-large-image__container {
+	#{$gallery-next-previous-outside-image} & .wc-block-product-gallery-large-image__image-element {
 		overflow: hidden;
+		margin: 0 auto;
 		max-width: $outside-image-max-width;
+	}
+
+	.wc-block-product-gallery-large-image__wrapper {
+		flex-shrink: 0;
+		max-width: 100%;
+		overflow: hidden;
+		width: 100%;
+	}
+
+	.wc-block-product-gallery-large-image__container {
+		display: flex;
+		overflow-x: hidden;
+		scroll-snap-type: x mandatory;
+		width: fit-content;
+		height: fit-content;
+		scroll-behavior: auto;
+		align-items: center;
+	}
+
+	#{$gallery-next-previous-inside-image} & .wc-block-product-gallery-large-image__image-element {
+		width: fit-content;
+		overflow: hidden;
 		margin: 0 auto;
 	}
+
 
 	img {
 		display: block;
@@ -67,6 +93,7 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 		margin: 0 auto;
 		z-index: 1;
 		transition: all 0.1s linear;
+		width: auto;
 
 		// Keep the order in this way. The hoverZoom class should override the full-screen-on-click class when both are applied.
 		&.wc-block-woocommerce-product-gallery-large-image__image--full-screen-on-click {
@@ -75,10 +102,6 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 
 		&.wc-block-woocommerce-product-gallery-large-image__image--hoverZoom {
 			cursor: zoom-in;
-		}
-
-		&[hidden] {
-			display: none;
 		}
 	}
 
@@ -95,6 +118,12 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 			margin-left: $outside-image-offset;
 			margin-right: $outside-image-offset;
 		}
+
+		// Unset the margin of the inner blocks when the Next/Previous buttons are inside the image.
+		#{$gallery-next-previous-inside-image}  & > * {
+			margin-left: unset;
+			margin-right: unset;
+		}
 	}
 }
 
@@ -107,9 +136,13 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 	width: 100%;
 	height: 100%;
 
-	svg {
+	button {
+		cursor: pointer;
 		z-index: 3;
 		pointer-events: all;
+		padding: 0;
+		border: none;
+		background: none;
 	}
 
 	.is-vertically-aligned-top {
@@ -186,13 +219,13 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 	padding: 0;
 }
 
-.wc-block-product-gallery-pager__item {
+.wc-block-product-gallery-pager__pager-item {
 	@include font-size(regular);
 	color: $gray-600;
 	cursor: pointer;
 }
 
-.wc-block-woocommerce-product-gallery__pager-item--is-active {
+.wc-block-product-gallery-pager__pager-item--is-active {
 	font-weight: bold;
 	color: $black;
 }
@@ -215,4 +248,3 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 
 	}
 }
-
