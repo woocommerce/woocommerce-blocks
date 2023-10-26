@@ -1,13 +1,20 @@
 /**
  * External dependencies
  */
-import { BlockEditProps } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
+import {
+	BlockEditProps,
+	createBlock,
+	// @ts-expect-error Missing types in Gutenberg
+	createBlocksFromInnerBlocksTemplate,
+} from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import { ProductCollectionAttributes, ProductCollectionQuery } from './types';
+import { DEFAULT_ATTRIBUTES, INNER_BLOCKS_TEMPLATE } from './constants';
+import blockJson from './block.json';
 
 /**
  * Sets the new query arguments of a Product Query block
@@ -51,3 +58,16 @@ export function getDefaultValueOfInheritQueryFromTemplate(): boolean {
 
 	return initialValue;
 }
+
+export const getDefaultProductCollection = () =>
+	createBlock(
+		blockJson.name,
+		{
+			...DEFAULT_ATTRIBUTES,
+			query: {
+				...DEFAULT_ATTRIBUTES.query,
+				inherit: getDefaultValueOfInheritQueryFromTemplate(),
+			},
+		},
+		createBlocksFromInnerBlocksTemplate( INNER_BLOCKS_TEMPLATE )
+	);

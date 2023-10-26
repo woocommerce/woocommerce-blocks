@@ -33,7 +33,10 @@ import type {
 	ProductCollectionAttributes,
 } from '../types';
 import { DEFAULT_QUERY } from '../constants';
-import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
+import {
+	getDefaultValueOfInheritQueryFromTemplate,
+	getDefaultProductCollection,
+} from '../utils';
 import blockJson from '../block.json';
 
 const buildFinalQueryFromBlockAndPatternQuery = ( {

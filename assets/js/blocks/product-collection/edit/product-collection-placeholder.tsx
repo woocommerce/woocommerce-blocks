@@ -8,33 +8,13 @@ import {
 } from '@wordpress/block-editor';
 import { Placeholder, Button } from '@wordpress/components';
 import { useDispatch } from '@wordpress/data';
-import {
-	createBlock,
-	// @ts-expect-error Missing types in Gutenberg
-	createBlocksFromInnerBlocksTemplate,
-} from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
-import Icon from '../icon';
 import type { ProductCollectionEditComponentProps } from '../types';
-import { DEFAULT_ATTRIBUTES, INNER_BLOCKS_TEMPLATE } from '../constants';
-import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
-import blockJson from '../block.json';
-
-const getDefaultProductCollection = () =>
-	createBlock(
-		blockJson.name,
-		{
-			...DEFAULT_ATTRIBUTES,
-			query: {
-				...DEFAULT_ATTRIBUTES.query,
-				inherit: getDefaultValueOfInheritQueryFromTemplate(),
-			},
-		},
-		createBlocksFromInnerBlocksTemplate( INNER_BLOCKS_TEMPLATE )
-	);
+import { getDefaultProductCollection } from '../utils';
+import Icon from '../icon';
 
 const ProductCollectionPlaceholder = (
 	props: ProductCollectionEditComponentProps
