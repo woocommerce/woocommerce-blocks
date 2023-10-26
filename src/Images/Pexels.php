@@ -45,7 +45,7 @@ class Pexels {
 	 * @return mixed|\WP_Error
 	 */
 	private function define_search_term( $ai_connection, $token, $business_description ) {
-		$prompt = sprintf( 'Describe the product sold by a store in two words, based on the following description: %s', $business_description );
+		$prompt = sprintf( 'Based on the description "%s", provide a one-word product description for the store\'s item. Do not include any adjectives or descriptions of the qualities of the product. The returned word should be simple.', $business_description );
 
 		$response = $ai_connection->fetch_ai_response( $token, $prompt );
 
@@ -64,7 +64,7 @@ class Pexels {
 	 *
 	 * @return array|\WP_Error The response body, or WP_Error if the request failed.
 	 */
-	private function request( string $search_term, int $per_page = 60 ) {
+	private function request( string $search_term, int $per_page = 90 ) {
 		$request = new \WP_REST_Request( 'GET', self::EXTERNAL_MEDIA_PEXELS_ENDPOINT );
 
 		$request->set_param( 'search', esc_html( $search_term ) );
