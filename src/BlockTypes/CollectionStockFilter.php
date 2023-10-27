@@ -61,7 +61,7 @@ final class CollectionStockFilter extends AbstractBlock {
 	/**
 	 * Stock filter HTML
 	 *
-	 * @param array    $datat	  Block data. Default empty array.
+	 * @param array    $data       Block data. Default empty array.
 	 * @param array    $attributes Block attributes. Default empty array.
 	 * @param WP_Block $block      Block instance.
 	 * @return string Rendered block type output.
@@ -71,7 +71,7 @@ final class CollectionStockFilter extends AbstractBlock {
 		$select_type    = $attributes['selectType'] ?? 'multiple';
 		$stock_statuses = wc_get_product_stock_status_options();
 		ob_start();
-	?>
+		?>
 			<div class="wc-block-stock-filter style-<?php echo esc_attr( $display_style ); ?>">
 				<?php if ( 'list' === $display_style ) : ?>
 					<ul class="wc-block-checkbox-list wc-block-components-checkbox-list wc-block-stock-filter-list">
@@ -95,7 +95,7 @@ final class CollectionStockFilter extends AbstractBlock {
 					<div class="wc-blocks-components-form-token-field-wrapper single-selection"><div class="components-form-token-field" tabindex="-1"><label for="components-form-token-input-1" class="components-form-token-field__label"></label><div class="components-form-token-field__input-container" tabindex="-1"><input id="components-form-token-input-1" type="text" autocomplete="off" placeholder="Select stock status" class="components-form-token-field__input" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-describedby="components-form-token-suggestions-howto-1" value=""></div></div></div><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="30" height="30" aria-hidden="true" focusable="false"><path d="M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z"></path></svg>
 				<?php endif; ?>
 			</div>
-	<?php
+		<?php
 		return ob_get_clean();
 	}
 }
