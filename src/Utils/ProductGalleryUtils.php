@@ -104,7 +104,7 @@ class ProductGalleryUtils {
 	}
 
 	/**
-	 * Generates the intermediate image sizes when needed
+	 * Generates the intermediate image sizes only when needed.
 	 *
 	 * @param int	 $attachment_id Attachment ID.
 	 * @param string $size Image size.
@@ -120,8 +120,9 @@ class ProductGalleryUtils {
 
 		/*
 		 * We need to check both if the size metadata exists and if the file exists.
+		 * Sometimes we can have orphaned image file and no metadata or vice versa.
 		 */
-		if ( image_get_intermediate_size( $attachment_id, $size ) && file_exists( $image_path ) ) {
+		if ( $metadata && file_exists( $image_path ) ) {
 			return;
 		}
 
