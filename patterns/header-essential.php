@@ -11,7 +11,7 @@
 <div class="wp-block-group alignfull" style="padding-top:40px;padding-right:40px;padding-bottom:40px;padding-left:40px">
 	<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
 	<div class="wp-block-group">
-		<!-- wp:site-logo /-->
+		<!-- wp:site-logo {"width":60} /-->
 	</div>
 	<!-- /wp:group -->
 
