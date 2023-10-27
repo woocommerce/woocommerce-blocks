@@ -26,14 +26,6 @@ const test = base.extend< { pageObject: CartPage } >( {
 } );
 
 test.describe( 'Shopper → Cart block', () => {
-	// test.beforeAll( async ( { frontendUtils } ) => {
-	// 	await frontendUtils.goToShop();
-	// 	await frontendUtils.emptyCart();
-	// 	await frontendUtils.addToCart( DISCOUNTED_PRODUCT_NAME );
-	// 	await frontendUtils.addToCart( REGULAR_PRICED_PRODUCT_NAME );
-	// 	await frontendUtils.goToCart();
-	// } );
-
 	test( 'The discount label is only visible next to the discounted product', async ( {
 		pageObject,
 		frontendUtils,
