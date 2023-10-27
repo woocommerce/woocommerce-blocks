@@ -91,10 +91,6 @@ const blocks = {
 	'reviews-by-product': {
 		customDir: 'reviews/reviews-by-product',
 	},
-	'collection-price-filter': {
-		customDir: 'collection-filters/inner-blocks/price-filter',
-		isExperimental: true,
-	},
 	'single-product': {},
 	'stock-filter': {},
 	'collection-filters': {
@@ -103,6 +99,10 @@ const blocks = {
 	'collection-stock-filter': {
 		isExperimental: true,
 		customDir: 'collection-filters/inner-blocks/stock-filter',
+	},
+	'collection-price-filter': {
+		customDir: 'collection-filters/inner-blocks/price-filter',
+		isExperimental: true,
 	},
 	'order-confirmation-summary': {
 		customDir: 'order-confirmation/summary',
