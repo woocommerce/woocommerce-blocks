@@ -133,7 +133,6 @@ class ProductGallery extends AbstractBlock {
 
 		if ( $p->next_tag() ) {
 			$p->set_attribute( 'data-wc-interactive', true );
-			$p->set_attribute( 'data-wc-init--watch-changes-on-add-to-cart-form', 'effects.woocommerce.watchForChangesOnAddToCartForm' );
 			$p->set_attribute(
 				'data-wc-context',
 				wp_json_encode(
@@ -147,6 +146,11 @@ class ProductGallery extends AbstractBlock {
 					)
 				)
 			);
+
+			if ( $product->is_type( 'variable' ) ) {
+				$p->set_attribute( 'data-wc-init--watch-changes-on-add-to-cart-form', 'effects.woocommerce.watchForChangesOnAddToCartForm' );
+			}
+
 			$p->add_class( $classname );
 			$p->add_class( $classname_single_image );
 			$html = $p->get_updated_html();
