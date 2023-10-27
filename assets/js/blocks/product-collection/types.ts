@@ -25,21 +25,19 @@ export enum LayoutOptions {
 export interface ProductCollectionDisplayLayout {
 	type: LayoutOptions;
 	columns: number;
+	shrinkColumns?: boolean;
 }
 
 export interface ProductCollectionQuery {
-	author: string;
 	exclude: string[];
 	inherit: boolean | null;
 	offset: number;
 	order: TProductCollectionOrder;
 	orderBy: TProductCollectionOrderBy;
 	pages: number;
-	parents: number[];
 	perPage: number;
 	postType: string;
 	search: string;
-	sticky: string;
 	taxQuery: Record< string, number[] >;
 	woocommerceOnSale: boolean;
 	/**
