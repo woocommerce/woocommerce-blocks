@@ -15,10 +15,10 @@ import type { Currency } from '@woocommerce/types';
  */
 import './style.scss';
 
-interface FormattedMonetaryAmountProps
-	extends Omit< NumberFormatProps, 'onValueChange' > {
+export interface FormattedMonetaryAmountProps
+	extends Omit< NumberFormatProps, 'onValueChange' | 'displayType' > {
 	className?: string;
-	displayType?: NumberFormatProps[ 'displayType' ];
+	displayType?: NumberFormatProps[ 'displayType' ] | undefined;
 	allowNegative?: boolean;
 	isAllowed?: ( formattedValue: NumberFormatValues ) => boolean;
 	value: number | string; // Value of money amount.
