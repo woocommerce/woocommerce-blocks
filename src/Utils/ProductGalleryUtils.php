@@ -6,7 +6,6 @@ namespace Automattic\WooCommerce\Blocks\Utils;
  * {@internal This class and its methods are not intended for public use.}
  */
 class ProductGalleryUtils {
-	const CROP_IMAGE_SIZE = 500;
 	const CROP_IMAGE_SIZE_NAME = '_woo_blocks_product_gallery_crop_full';
 
 	/**
@@ -106,8 +105,9 @@ class ProductGalleryUtils {
 	/**
 	 * Generates the intermediate image sizes only when needed.
 	 *
-	 * @param int	 $attachment_id Attachment ID.
+	 * @param int    $attachment_id Attachment ID.
 	 * @param string $size Image size.
+	 * @return void
 	 */
 	public static function maybe_generate_intermediate_image( $attachment_id, $size ) {
 		$metadata   = image_get_intermediate_size( $attachment_id, $size );
@@ -126,11 +126,16 @@ class ProductGalleryUtils {
 			return;
 		}
 
-		$image_path         = wp_get_original_image_path( $attachment_id );
-		$new_image_metadata = image_make_intermediate_size( $image_path, self::CROP_IMAGE_SIZE, self::CROP_IMAGE_SIZE, true );
-		$image_metadata     = wp_get_attachment_metadata( $attachment_id );
+		$image_path     = wp_get_original_image_path( $attachment_id );
+		$image_metadata = wp_get_attachment_metadata( $attachment_id );
 
-		$image_metadata['sizes'][$size] = $new_image_metadata;
+		/*
+		 * We want to take the minimum dimension of the image and
+		 * use that size as the crop size for the new image.
+		 */
+		$min_size                         = min( $image_metadata['width'], $image_metadata['height'] );
+		$new_image_metadata               = image_make_intermediate_size( $image_path, $min_size, $min_size, true );
+		$image_metadata['sizes'][ $size ] = $new_image_metadata;
 
 		wp_update_attachment_metadata( $attachment_id, $image_metadata );
 	}
