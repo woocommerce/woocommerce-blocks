@@ -17,13 +17,12 @@ import {
  * Internal dependencies
  */
 import { EditProps } from './types';
+import { getFormattedPrice } from './utils';
 
 const Edit = ( { attributes, setAttributes, context }: EditProps ) => {
 	const { showInputFields, inlineInput } = attributes;
-	console.log( context );
-	return null;
 	const { minPrice, maxPrice, formattedMinPrice, formattedMaxPrice } =
-		context.filterData;
+		getFormattedPrice( context.collectionData );
 
 	const onChange = () => null;
 
