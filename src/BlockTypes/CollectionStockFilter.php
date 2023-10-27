@@ -43,8 +43,10 @@ final class CollectionStockFilter extends AbstractBlock {
 		wc_store(
 			array(
 				'state' => array(
-					'filters'       => $stock_status_counts,
-					'activeFilters' => array(),
+					'filters' => array(
+						'stockStatus'   => $stock_status_counts,
+						'activeFilters' => '',
+					),
 				),
 			)
 		);
