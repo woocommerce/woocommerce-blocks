@@ -40,10 +40,10 @@ test.describe( 'Shopper → Cart block', () => {
 			DISCOUNTED_PRODUCT_NAME
 		);
 		await expect( discountedProductRow ).toBeVisible();
-		const capRegularPriceElement = discountedProductRow?.locator(
+		const capRegularPriceElement = discountedProductRow.locator(
 			'.wc-block-components-product-price__regular'
 		);
-		const capDiscountedPriceElement = discountedProductRow?.locator(
+		const capDiscountedPriceElement = discountedProductRow.locator(
 			'.wc-block-components-product-price__value.is-discounted'
 		);
 		await expect( capRegularPriceElement ).toBeVisible();
@@ -73,8 +73,33 @@ test.describe( 'Shopper → Cart block', () => {
 		);
 		await frontendUtils.goToShop();
 		await frontendUtils.emptyCart();
+		await frontendUtils.addToCart( DISCOUNTED_PRODUCT_NAME );
 		await frontendUtils.addToCart( REGULAR_PRICED_PRODUCT_NAME );
 		await frontendUtils.goToCart();
+
+		// Ensure no discount label is present on the products in the cart
+		const capRow = await pageObject.findProductRow(
+			DISCOUNTED_PRODUCT_NAME
+		);
+		await expect( capRow ).toBeVisible();
+		const capRegularPriceElement = capRow.locator(
+			'.wc-block-components-product-price__regular'
+		);
+		const capDiscountedPriceElement = capRow.locator(
+			'.wc-block-components-product-price__value.is-discounted'
+		);
+		await expect( capRegularPriceElement ).toBeHidden();
+		await expect( capDiscountedPriceElement ).toBeHidden();
+
+		// Locate the price element within the Cap product row
+		const capPriceElement = capRow
+			.locator( '.wc-block-components-product-price__value' )
+			.first();
+		await expect( capPriceElement ).toBeVisible();
+
+		// Get the text content of the price element and check the price
+		const capPriceText = await capPriceElement.textContent();
+		expect( capPriceText ).toBe( '$50.00' );
 
 		const hoodieRow = await pageObject.findProductRow(
 			REGULAR_PRICED_PRODUCT_NAME
@@ -90,13 +115,13 @@ test.describe( 'Shopper → Cart block', () => {
 		await expect( hoodieDiscountedPriceElement ).toBeHidden();
 
 		// Locate the price element within the Hoodie with Logo product row
-		const hoodiePriceElement = hoodieRow?.locator(
-			'.wc-block-components-product-price__value'
-		);
+		const hoodiePriceElement = hoodieRow
+			.locator( '.wc-block-components-product-price__value' )
+			.first();
 		await expect( hoodiePriceElement ).toBeVisible();
 
 		// Get the text content of the price element and check the price
-		const hoodiePriceText = await hoodiePriceElement?.textContent();
+		const hoodiePriceText = await hoodiePriceElement.textContent();
 		expect( hoodiePriceText ).toBe( '$50.00' );
 
 		await uninstallPluginFromPHPFile(
