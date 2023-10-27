@@ -6,31 +6,62 @@ import {
 	navigate,
 } from '@woocommerce/interactivity';
 
-const getUrl = ( { state } ) => {
-	const { stockStatus } = state.filters;
+/**
+ * Internal dependencies
+ */
+import { HTMLElementEvent } from '../../../../types';
+
+const getUrl = ( activeFilters: string ) => {
 	const url = new URL( window.location.href );
 	const { searchParams } = url;
 
-	searchParams.set( 'filter_stock_status', stockStatus );
+	searchParams.set( 'filter_stock_status', activeFilters );
 
 	return url.href;
 };
 
-interactivityStore(
-	// @ts-expect-error: Store function isn't typed.
-	{
-		state: {
-			filters: {
-				stockStatus: '',
+type StockFilterState = {
+	filters: {
+		stockStatus: string;
+		activeFilters: string;
+	};
+};
+
+type ActionProps = {
+	state: StockFilterState;
+	event: HTMLElementEvent< HTMLInputElement >;
+};
+
+interactivityStore( {
+	state: {
+		filters: {
+			stockStatus: '',
+			// comma separated list of active filters
+			activeFilters: '',
+		},
+	},
+	actions: {
+		filters: {
+			updateProducts: ( { state, event }: ActionProps ) => {
+				const activeFilters = state.filters.activeFilters.split( ',' );
+
+				// if checked and not already in activeFilters, add to activeFilters
+				// if not checked and in activeFilters, remove from activeFilters.
+				if ( event.target.checked ) {
+					if ( ! activeFilters.includes( event.target.value ) ) {
+						activeFilters.push( event.target.value );
+					}
+				} else {
+					const index = activeFilters.indexOf( event.target.value );
+					if ( index > -1 ) {
+						activeFilters.splice( index, 1 );
+					}
+				}
+
+				state.filters.activeFilters = activeFilters.join( ',' );
+
+				navigate( getUrl( state.filters.activeFilters ) );
 			},
 		},
-		actions: {
-			filters: {
-				updateProducts: ( { state, event } ) => {
-					state.filters.stockStatus = event.target.value;
-					navigate( getUrl( { state } ) );
-				},
-			},
-		},
-	}
-);
+	},
+} );

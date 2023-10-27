@@ -1,5 +1,10 @@
 @import "../../../shared/styles/style";
 
+//  Is this really the best way to do this?
+@import "../../../../../../packages/components/checkbox-list/style.scss";
+@import "../../../../../../packages/checkout/components/checkbox-control/style.scss";
+
+
 .wp-block-woocommerce-stock-filter {
 	h1,
 	h2,

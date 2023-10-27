@@ -19,8 +19,8 @@ final class CollectionStockFilter extends AbstractBlock {
 	 * Extra data passed through from server to client for block.
 	 *
 	 * @param array $stock_statuses  Any stock statuses that currently are available from the block.
-	 *                           Note, this will be empty in the editor context when the block is
-	 *                           not in the post content on editor load.
+	 *                               Note, this will be empty in the editor context when the block is
+	 *                               not in the post content on editor load.
 	 */
 	protected function enqueue_data( array $stock_statuses = [] ) {
 		parent::enqueue_data( $stock_statuses );
@@ -43,7 +43,8 @@ final class CollectionStockFilter extends AbstractBlock {
 		wc_store(
 			array(
 				'state' => array(
-					'filters' => $stock_status_counts,
+					'filters'       => $stock_status_counts,
+					'activeFilters' => array(),
 				),
 			)
 		);

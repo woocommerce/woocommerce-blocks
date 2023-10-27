@@ -3,14 +3,14 @@
  */
 import classnames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
-import type { BlockEditProps } from '@wordpress/blocks';
-import { ProductQueryContext as Context } from '@woocommerce/blocks/product-query/types';
 import { Disabled } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Icon, chevronDown } from '@wordpress/icons';
-import CheckboxList from '@woocommerce/base-components/checkbox-list';
+import { ProductQueryContext as Context } from '@woocommerce/blocks/product-query/types';
+import { CheckboxList } from '@woocommerce/blocks-components';
 import Label from '@woocommerce/base-components/filter-element-label';
 import FormTokenField from '@woocommerce/base-components/form-token-field';
+import type { BlockEditProps } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
