@@ -43,6 +43,7 @@ import {
 } from './components/placeholder';
 import { AttributeSelectControls } from './components/attribute-select-controls';
 import { getAttributeFromId } from './utils';
+import { Inspector } from './components/inspector-controls';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
@@ -73,7 +74,7 @@ const Edit = ( {
 		} );
 	}, [ queryType, setAttributes, attributeObject?.taxonomy ] );
 
-	const ToolbarControls = () => (
+	const Toolbar = () => (
 		<BlockControls>
 			<ToolbarGroup
 				controls={ [
@@ -120,7 +121,11 @@ const Edit = ( {
 
 	return (
 		<div { ...blockProps }>
-			<ToolbarControls />
+			<Toolbar />
+			<Inspector
+				attributes={ blockAttributes }
+				setAttributes={ setAttributes }
+			/>
 			Collection Attribute Filter
 		</div>
 	);
