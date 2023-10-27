@@ -6,6 +6,10 @@ table.wc-block-cart-items td {
 	// Remove borders on default themes.
 	border: 0;
 	margin: 0;
+
+	&::after {
+		color: $gray-100;
+	}
 }
 
 .editor-styles-wrapper table.wc-block-cart-items,
