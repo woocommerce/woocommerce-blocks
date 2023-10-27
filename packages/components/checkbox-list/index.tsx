@@ -58,6 +58,7 @@ const CheckboxList = ( {
 					width: Math.floor( Math.random() * 75 ) + 25 + '%',
 				} }
 			>
+				{ /* The &nbsp; is required to give the placeholder content and therefore height, without it the placeholder rows do not render */ }
 				&nbsp;
 			</li>
 		) );
