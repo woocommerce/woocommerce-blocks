@@ -13,6 +13,9 @@ final class CollectionPriceFilter extends AbstractBlock {
 	 */
 	protected $block_name = 'collection-price-filter';
 
+	const MIN_PRICE_QUERY_VAR = 'min_price';
+	const MAX_PRICE_QUERY_VAR = 'max_price';
+
 	/**
 	 * Render the block.
 	 *
@@ -22,23 +25,45 @@ final class CollectionPriceFilter extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		if ( is_admin() || empty( $block->context['collectionData'] ) ) {
+		if (
+			is_admin() ||
+			empty( $block->context['collectionData'] ) ||
+			empty( $block->context['collectionData']['price_range'] )
+		) {
 			return $content;
 		}
+
+		$price_range = $block->context['collectionData']['price_range'];
+
+		$wrapper_attributes  = get_block_wrapper_attributes();
+		$min_range           = $price_range->min_price / 10 ** $price_range->currency_minor_unit;
+		$max_range           = $price_range->max_price / 10 ** $price_range->currency_minor_unit;
+		$min_price           = intval( get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range ) );
+		$max_price           = intval( get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range ) );
+		$formatted_min_price = wc_price( $min_price, array( 'decimals' => 0 ) );
+		$formatted_max_price = wc_price( $max_price, array( 'decimals' => 0 ) );
+
+		$data = array(
+			'minPrice'          => $min_price,
+			'maxPrice'          => $max_price,
+			'minRange'          => $min_range,
+			'maxRange'          => $max_range,
+			'formattedMinPrice' => $formatted_min_price,
+			'formattedMaxPrice' => $formatted_max_price,
+		);
+
+		wc_store(
+			array(
+				'state' => array(
+					'filters' => $data,
+				),
+			)
+		);
 
 		list (
 			'showInputFields' => $show_input_fields,
 			'inlineInput' => $inline_input
 		) = $attributes;
-
-		list (
-			'minPrice' => $min_price,
-			'maxPrice' => $max_price,
-			'formattedMinPrice' => $formatted_min_price,
-			'formattedMaxPrice' => $formatted_max_price,
-			'minRange' => $min_range,
-			'maxRange' => $max_range,
-		) = $block->context['filterData'];
 
 		// Max range shouldn't be 0.
 		if ( ! $max_range ) {

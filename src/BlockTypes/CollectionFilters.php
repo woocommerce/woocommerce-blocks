@@ -70,26 +70,30 @@ final class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	public function modify_inner_blocks_context( $context, $parsed_block, $parent_block ) {
-		if (
-			is_admin() ||
-			( defined( 'REST_REQUEST' ) && REST_REQUEST ) ||
-			! is_a( $parent_block, 'WP_Block' ) ||
-			! isset( $context['collectionData'] )
-		) {
+		if ( is_admin() || ! is_a( $parent_block, 'WP_Block' ) ) {
 			return $context;
 		}
 
 		/**
-		 * The first time we reach here, WP is rendering the first direct child
-		 * of CollectionFilters block. We hydrate and cache the collection data
-		 * response for other inner blocks to use.
+		 * When the first direct child of Collection Filters is rendering, we
+		 * hydrate and cache the collection data response.
 		 */
-		if ( ! isset( $this->current_response ) ) {
+		if (
+			"woocommerce/{$this->block_name}" === $parent_block->name &&
+			! isset( $this->current_response )
+		) {
 			$this->current_response = $this->get_aggregated_collection_data( $parent_block );
-			dd($this->current_response);
 		}
 
-		if ( ! empty( $this->current_response ) ) {
+		if ( empty( $this->current_response ) ) {
+			return $context;
+		}
+
+		/**
+		 * Filter blocks use the collectionData context, so we only update that
+		 * specific context with fetched data.
+		 */
+		if ( isset( $context['collectionData'] ) ) {
 			$context['collectionData'] = $this->current_response;
 		}
 
@@ -104,7 +108,7 @@ final class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_aggregated_collection_data( $block ) {
-		$collection_data_params  = $this->get_inner_filter_types_recursive( $block->inner_blocks );
+		$collection_data_params = $this->get_inner_filter_types_recursive( $block->inner_blocks );
 
 		if ( empty( array_filter( $collection_data_params ) ) ) {
 			return array();
