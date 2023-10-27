@@ -6,7 +6,8 @@ namespace Automattic\WooCommerce\Blocks\Utils;
  * {@internal This class and its methods are not intended for public use.}
  */
 class ProductGalleryUtils {
-	const CROPPED_SIZE = 500;
+	const CROP_IMAGE_SIZE = 500;
+	const CROP_IMAGE_SIZE_NAME = '_woo_blocks_product_gallery_crop_full';
 
 	/**
 	 * When requesting a full-size image, this function may return an array with a single image.
@@ -30,10 +31,11 @@ class ProductGalleryUtils {
 			$all_product_gallery_image_ids = self::get_product_gallery_image_ids( $product );
 
 			if ( 'full' === $size || 'full' !== $size && count( $all_product_gallery_image_ids ) > 1 ) {
+				$size = $crop_images ? self::CROP_IMAGE_SIZE_NAME : $size;
+
 				foreach ( $all_product_gallery_image_ids as $product_gallery_image_id ) {
 					if ( $crop_images ) {
-						$product_gallery_image_id = self::get_cropped_image( $product_gallery_image_id );
-						$size = null;
+						self::maybe_generate_intermediate_image( $product_gallery_image_id, self::CROP_IMAGE_SIZE_NAME );
 					}
 
 					$product_image_html = wp_get_attachment_image(
@@ -102,51 +104,33 @@ class ProductGalleryUtils {
 	}
 
 	/**
-	 * Get and/or generates a cropped image for the main featured image.
+	 * Generates the intermediate image sizes when needed
 	 *
-	 * @param int $attachment_id Attachment ID.
-	 * @return int $post_id Post ID of the attachment.
+	 * @param int	 $attachment_id Attachment ID.
+	 * @param string $size Image size.
 	 */
-	public static function get_cropped_image( $attachment_id ) {
-		$image_path = wp_get_original_image_path( $attachment_id );
-		$image_url  = wp_get_original_image_url( $attachment_id );
+	public static function maybe_generate_intermediate_image( $attachment_id, $size ) {
+		$metadata   = image_get_intermediate_size( $attachment_id, $size );
+		$upload_dir = wp_upload_dir();
+		$image_path = '';
 
-		$image    = image_make_intermediate_size( $image_path, self::CROPPED_SIZE, self::CROPPED_SIZE, true );
-		$pathinfo = pathinfo( dirname( $image_path ) . '/' . $image['file'] );
-
-		$post_id = get_posts(
-			array(
-				'numberposts'    => 1,
-				'post_status'    => 'inherit',
-				'post_type'      => 'attachment',
-				'title'          => $pathinfo['filename'],
-				'post_mime_type' => $image['mime-type'],
-			)
-		);
-
-		$post_id = ! empty( $post_id ) ? $post_id[0]->ID : $post_id;
-
-		if ( ! $post_id ) {
-			$post_id = wp_insert_attachment(
-				array(
-					'guid'           => dirname( $image_url ) . '/' . $image['file'],
-					'post_title'     => basename( $pathinfo['filename'] ),
-					'post_status'    => 'inherit',
-					'post_name'      => basename( $pathinfo['filename'] ),
-					'post_mime_type' => $image['mime-type'],
-					'meta_input'     => array(
-						'_wp_attachment_metadata' => array(
-							'width'    => self::CROPPED_SIZE,
-							'height'   => self::CROPPED_SIZE,
-							'file'     => dirname( _wp_relative_upload_path( $image_path ) ) . '/' . $image['file'],
-							'filesize' => $image['filesize'],
-						)
-					)
-				),
-				dirname( $image_path ) . '/' . $image['file']
-			);
+		if ( $metadata ) {
+			$image_path = $upload_dir['basedir'] . '/' . $metadata['path'];
 		}
 
-		return $post_id;
+		/*
+		 * We need to check both if the size metadata exists and if the file exists.
+		 */
+		if ( image_get_intermediate_size( $attachment_id, $size ) && file_exists( $image_path ) ) {
+			return;
+		}
+
+		$image_path         = wp_get_original_image_path( $attachment_id );
+		$new_image_metadata = image_make_intermediate_size( $image_path, self::CROP_IMAGE_SIZE, self::CROP_IMAGE_SIZE, true );
+		$image_metadata     = wp_get_attachment_metadata( $attachment_id );
+
+		$image_metadata['sizes'][$size] = $new_image_metadata;
+
+		wp_update_attachment_metadata( $attachment_id, $image_metadata );
 	}
 }
