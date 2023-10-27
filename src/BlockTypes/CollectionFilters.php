@@ -172,7 +172,7 @@ final class CollectionFilters extends AbstractBlock {
 		/**
 		 * The following params can be passed directly to Store API endpoints.
 		 */
-		$shared_params = array( 'exclude', 'offset', 'order', 'serach' );
+		$shared_params = array( 'exclude', 'offset', 'order', 'search' );
 		array_walk(
 			$shared_params,
 			function( $key ) use ( $query, &$params ) {
