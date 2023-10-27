@@ -30,9 +30,15 @@
 		"isPreview": {
 			"type": "boolean",
 			"default": false
+		},
+		"queryParam": {
+			"type": "object",
+			"default": {
+				"calculate_stock_status_counts": "true"
+			}
 		}
 	},
-	"usesContext": [ "query", "queryId", "postId" ],
+	"usesContext": [ "query", "queryId", "postId", "collectionData" ],
 	"ancestor": [ "woocommerce/collection-filters" ],
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
