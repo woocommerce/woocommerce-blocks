@@ -55,6 +55,8 @@ type CustomFormattedMonetaryAmountProps = Omit<
  * FormattedMonetaryAmount component.
  *
  * Takes a price and returns a formatted price using the NumberFormat component.
+ *
+ * More detailed docs on the additional props can be found here:https://s-yadav.github.io/react-number-format/docs/intro
  */
 const FormattedMonetaryAmount = ( {
 	className,
