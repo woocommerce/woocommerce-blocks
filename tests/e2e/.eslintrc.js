@@ -1,5 +1,5 @@
 const rulesDirPlugin = require( 'eslint-plugin-rulesdir' );
-rulesDirPlugin.RULES_DIR = 'tests/e2e/wc-blocks-eslint-rules';
+rulesDirPlugin.RULES_DIR = `${ __dirname }/wc-blocks-eslint-rules`;
 
 const config = {
 	extends: [ '../../.eslintrc.js', 'plugin:playwright/recommended' ],
