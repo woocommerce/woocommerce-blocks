@@ -1,6 +1,6 @@
 @import "../../../shared/styles/style";
 
-//  Is this really the best way to do this?
+//  Import styles we need to render the checkbox list and checkbox control.
 @import "../../../../../../packages/components/checkbox-list/style.scss";
 @import "../../../../../../packages/checkout/components/checkbox-control/style.scss";
 
