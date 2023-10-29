@@ -95,7 +95,17 @@ final class CollectionStockFilter extends AbstractBlock {
 				<?php endif; ?>
 
 				<?php if ( 'dropdown' === $display_style ) : ?>
-					<div class="wc-blocks-components-form-token-field-wrapper single-selection"><div class="components-form-token-field" tabindex="-1"><label for="components-form-token-input-1" class="components-form-token-field__label"></label><div class="components-form-token-field__input-container" tabindex="-1"><input id="components-form-token-input-1" type="text" autocomplete="off" placeholder="Select stock status" class="components-form-token-field__input" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-describedby="components-form-token-suggestions-howto-1" value=""></div></div></div><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="30" height="30" aria-hidden="true" focusable="false"><path d="M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z"></path></svg>
+					<div class="wc-blocks-components-form-token-field-wrapper single-selection">
+						<div class="components-form-token-field" tabindex="-1">
+							<label for="components-form-token-input-1" class="components-form-token-field__label"></label>
+							<div class="components-form-token-field__input-container" tabindex="-1">
+								<input id="components-form-token-input-1" type="text" autocomplete="off" placeholder="Select stock status" class="components-form-token-field__input" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-describedby="components-form-token-suggestions-howto-1" value="">
+							</div>
+						</div>
+					</div>
+					<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="30" height="30" aria-hidden="true" focusable="false">
+						<path d="M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z"></path>
+					</svg>
 				<?php endif; ?>
 			</div>
 		<?php
