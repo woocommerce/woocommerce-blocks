@@ -83,9 +83,19 @@ final class CollectionStockFilter extends AbstractBlock {
 								<div class="wc-block-components-checkbox wc-block-checkbox-list__checkbox">
 									<label for="<?php echo esc_attr( $obj->status ); ?>">
 										<input id="<?php echo esc_attr( $obj->status ); ?>" class="wc-block-components-checkbox__input" type="checkbox" aria-invalid="false" data-wc-on--change="actions.filters.updateProducts" value="<?php echo esc_attr( $obj->status ); ?>">
-											<svg class="wc-block-components-checkbox__mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 20"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path></svg>
-											<span class="wc-block-components-checkbox__label"><?php echo esc_html( $stock_statuses[ $obj->status ] ); ?>
-												<span class="wc-filter-element-label-list-count"><span aria-hidden="true"><?php echo esc_html( $obj->count ); ?></span><span class="screen-reader-text"><?php printf( _n( '%s product', '%s products', $obj->count, 'woo-gutenberg-products-block' ), number_format_i18n( $obj->count ) ); ?></span></span>
+											<svg class="wc-block-components-checkbox__mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 20">
+												<path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path>
+											</svg>
+											<span class="wc-block-components-checkbox__label">
+												<?php echo esc_html( $stock_statuses[ $obj->status ] ); ?>
+												<span class="wc-filter-element-label-list-count">
+													<span aria-hidden="true">
+														<?php echo esc_html( $obj->count ); ?>
+													</span>
+													<span class="screen-reader-text">
+														<?php printf( _n( '%s product', '%s products', $obj->count, 'woo-gutenberg-products-block' ), number_format_i18n( $obj->count ) ); ?>
+													</span>
+												</span>
 											</span>
 									</label>
 								</div>
