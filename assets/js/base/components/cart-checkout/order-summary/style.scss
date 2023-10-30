@@ -41,7 +41,7 @@
 		}
 
 		&::after {
-			color: $gray-100;
+			color: $universal-border-light;
 		}
 	}
 
@@ -68,7 +68,7 @@
 		border: 2px solid;
 		border-radius: 1em;
 		box-shadow: 0 0 0 2px #fff;
-		border-color: $gray-100;
+		border-color: $universal-border-light;
 		color: #000;
 		display: flex;
 		line-height: 1;
