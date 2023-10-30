@@ -49,8 +49,8 @@ $fifth_description  = $content['descriptions'][4]['default'] ?? '';
 		<div class="wp-block-column is-vertically-aligned-center" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
 			<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"0px","right":"60px","bottom":"0px","left":"60px"},"margin":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40"}}}} -->
 			<div class="wp-block-group alignfull" style="margin-top:var(--wp--preset--spacing--40);margin-bottom:var(--wp--preset--spacing--40);padding-top:0px;padding-right:60px;padding-bottom:0px;padding-left:60px">
-				<!-- wp:heading {"textAlign":"left","level":3} -->
-				<h3 class="wp-block-heading has-text-align-left has-large-font-size"><strong><?php echo esc_html( $fifth_title ); ?></strong></h3>
+				<!-- wp:heading {"textAlign":"left","level":2} -->
+				<h2 class="wp-block-heading has-text-align-left has-large-font-size"><strong><?php echo esc_html( $fifth_title ); ?></strong></h3>
 				<!-- /wp:heading -->
 
 				<!-- wp:paragraph {"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|40"}}}} -->
