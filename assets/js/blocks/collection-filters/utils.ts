@@ -24,12 +24,12 @@ export const mappedParams: {
 ];
 
 function mapTaxonomy( taxonomy: string ) {
-	const map: Record< string, string > = {
+	const map = {
 		product_tag: 'tag',
 		product_cat: 'cat',
 	};
 
-	return map[ taxonomy ] || `_unstable_tax_${ taxonomy }`;
+	return map[ taxonomy as keyof typeof map ] || `_unstable_tax_${ taxonomy }`;
 }
 
 function getTaxQueryMap( taxQuery: ProductCollectionQuery[ 'taxQuery' ] ) {
