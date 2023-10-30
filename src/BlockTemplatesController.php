@@ -510,7 +510,7 @@ class BlockTemplatesController {
 					array_filter(
 						$already_found_templates,
 						function ( $template ) use ( $template_slug ) {
-							$template_obj = (object) $template; //phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.Found
+							$template_obj = (object) $template; //phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.Found
 							return $template_obj->slug === $template_slug;
 						}
 					)
