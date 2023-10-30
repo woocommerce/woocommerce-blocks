@@ -34,7 +34,7 @@
 		<exclude-pattern>src/*</exclude-pattern>
 	</rule>
 
-	<rule ref="WordPress.PHP.DisallowShortTernary.Found">
+	<rule ref="Universal.Operators.DisallowShortTernary">
 		<exclude-pattern>src/*</exclude-pattern>
 		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
@@ -67,7 +67,7 @@
 		<exclude name="Generic.Commenting.Todo.CommentFound"/>
 	</rule>
 
-	<rule ref="Generic.Arrays.DisallowShortArraySyntax.Found">
+	<rule ref="Universal.Arrays.DisallowShortArraySyntax.Found">
 		<exclude-pattern>src/*</exclude-pattern>
 	</rule>
 
