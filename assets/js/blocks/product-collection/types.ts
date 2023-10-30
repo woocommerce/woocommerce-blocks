@@ -25,10 +25,10 @@ export enum LayoutOptions {
 export interface ProductCollectionDisplayLayout {
 	type: LayoutOptions;
 	columns: number;
+	shrinkColumns?: boolean;
 }
 
 export interface ProductCollectionQuery {
-	author: string;
 	exclude: string[];
 	inherit: boolean | null;
 	offset: number;

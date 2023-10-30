@@ -77,7 +77,6 @@ const ProductTemplateEdit = ( {
 			offset = 0,
 			order,
 			orderBy,
-			author,
 			search,
 			exclude,
 			inherit,
@@ -87,9 +86,10 @@ const ProductTemplateEdit = ( {
 		},
 		queryContext = [ { page: 1 } ],
 		templateSlug,
-		displayLayout: { type: layoutType, columns } = {
+		displayLayout: { type: layoutType, columns, shrinkColumns } = {
 			type: 'flex',
 			columns: 3,
+			shrinkColumns: false,
 		},
 	},
 	__unstableLayoutClassNames,
@@ -154,9 +154,6 @@ const ProductTemplateEdit = ( {
 			if ( perPage ) {
 				query.per_page = perPage;
 			}
-			if ( author ) {
-				query.author = author;
-			}
 			if ( search ) {
 				query.search = search;
 			}
@@ -185,7 +182,6 @@ const ProductTemplateEdit = ( {
 			order,
 			orderBy,
 			clientId,
-			author,
 			search,
 			postType,
 			exclude,
@@ -203,15 +199,21 @@ const ProductTemplateEdit = ( {
 			} ) ),
 		[ products ]
 	);
+
 	const hasLayoutFlex = layoutType === 'flex' && columns > 1;
+	let customClassName = '';
+	if ( hasLayoutFlex ) {
+		const dynamicGrid = `wc-block-product-template__responsive columns-${ columns }`;
+		const staticGrid = `is-flex-container columns-${ columns }`;
+
+		customClassName = shrinkColumns ? dynamicGrid : staticGrid;
+	}
+
 	const blockProps = useBlockProps( {
 		className: classnames(
 			__unstableLayoutClassNames,
 			'wc-block-product-template',
-			{
-				'is-flex-container': hasLayoutFlex,
-				[ `columns-${ columns }` ]: hasLayoutFlex,
-			}
+			customClassName
 		),
 	} );
 
