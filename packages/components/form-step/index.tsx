@@ -2,12 +2,12 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { Title } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import Title from '../title';
 
 interface StepHeadingProps {
 	title: string;
