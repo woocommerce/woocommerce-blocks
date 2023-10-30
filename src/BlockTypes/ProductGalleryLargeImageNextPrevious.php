@@ -176,7 +176,6 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 			$this->get_class_suffix( $context ),
 			$icon_path
 		);
-
 	}
 
 	/**
@@ -216,6 +215,5 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 			$this->get_class_suffix( $context ),
 			$icon_path
 		);
-
 	}
 }

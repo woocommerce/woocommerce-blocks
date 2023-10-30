@@ -38,7 +38,7 @@ class CreateAccount {
 				// Add custom "new account" handler.
 				add_action(
 					'woocommerce_created_customer_notification',
-					function( $customer_id, $new_customer_data = array(), $password_generated = false ) use ( $wc_emails_instance ) {
+					function ( $customer_id, $new_customer_data = array(), $password_generated = false ) use ( $wc_emails_instance ) {
 						// If this is a block-based signup, send a new email with password reset link (no password in email).
 						if ( isset( $new_customer_data['source'] ) && 'store-api' === $new_customer_data['source'] ) {
 							$this->customer_new_account( $customer_id, $new_customer_data );

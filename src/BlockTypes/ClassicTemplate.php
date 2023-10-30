@@ -138,7 +138,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 
 		echo '<div class="wp-block-group">';
 
-		echo sprintf(
+		printf(
 			'<%1$s %2$s>%3$s</%1$s>',
 			'h1',
 			get_block_wrapper_attributes(), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -382,7 +382,7 @@ class ClassicTemplate extends AbstractDynamicBlock {
 
 		$filtered_values = array_filter(
 			$values_to_array,
-			function( $value ) use ( $stock_status ) {
+			function ( $value ) use ( $stock_status ) {
 				return in_array( $value, $stock_status, true );
 			}
 		);

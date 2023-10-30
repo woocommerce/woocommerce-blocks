@@ -372,7 +372,7 @@ class ProductCollection extends AbstractBlock {
 	private function merge_queries( ...$queries ) {
 		$merged_query = array_reduce(
 			$queries,
-			function( $acc, $query ) {
+			function ( $acc, $query ) {
 				if ( ! is_array( $query ) ) {
 					return $acc;
 				}
@@ -537,15 +537,13 @@ class ProductCollection extends AbstractBlock {
 		foreach ( $new as $key => $value ) {
 			if ( is_numeric( $key ) ) {
 				$base[] = $value;
-			} else {
-				if ( is_array( $value ) ) {
-					if ( ! isset( $base[ $key ] ) ) {
-						$base[ $key ] = array();
-					}
-					$base[ $key ] = $this->array_merge_recursive_replace_non_array_properties( $base[ $key ], $value );
-				} else {
-					$base[ $key ] = $value;
+			} elseif ( is_array( $value ) ) {
+				if ( ! isset( $base[ $key ] ) ) {
+					$base[ $key ] = array();
 				}
+					$base[ $key ] = $this->array_merge_recursive_replace_non_array_properties( $base[ $key ], $value );
+			} else {
+				$base[ $key ] = $value;
 			}
 		}
 
@@ -718,7 +716,7 @@ class ProductCollection extends AbstractBlock {
 		$product_taxonomies = get_taxonomies( [ 'object_type' => [ 'product' ] ], 'names' );
 		$result             = array_filter(
 			$tax_query,
-			function( $item ) use ( $product_taxonomies ) {
+			function ( $item ) use ( $product_taxonomies ) {
 				return isset( $item['taxonomy'] ) && in_array( $item['taxonomy'], $product_taxonomies, true );
 			}
 		);
@@ -807,7 +805,7 @@ class ProductCollection extends AbstractBlock {
 
 		$queries = array_reduce(
 			$attributes_filter_query_args,
-			function( $acc, $query_args ) {
+			function ( $acc, $query_args ) {
 				$attribute_name       = $query_args['filter'];
 				$attribute_query_type = $query_args['query_type'];
 
@@ -872,7 +870,7 @@ class ProductCollection extends AbstractBlock {
 
 		$this->attributes_filter_query_args = array_reduce(
 			wc_get_attribute_taxonomies(),
-			function( $acc, $attribute ) {
+			function ( $acc, $attribute ) {
 				$acc[ $attribute->attribute_name ] = array(
 					'filter'     => AttributeFilter::FILTER_QUERY_VAR_PREFIX . $attribute->attribute_name,
 					'query_type' => AttributeFilter::QUERY_TYPE_QUERY_VAR_PREFIX . $attribute->attribute_name,
@@ -899,7 +897,7 @@ class ProductCollection extends AbstractBlock {
 
 		$filtered_stock_status_values = array_filter(
 			explode( ',', $filter_stock_status_values ),
-			function( $stock_status ) {
+			function ( $stock_status ) {
 				return in_array( $stock_status, StockFilter::get_stock_status_query_var_values(), true );
 			}
 		);
@@ -940,7 +938,7 @@ class ProductCollection extends AbstractBlock {
 		}
 
 		$rating_terms = array_map(
-			function( $rating ) use ( $product_visibility_terms ) {
+			function ( $rating ) use ( $product_visibility_terms ) {
 				return $product_visibility_terms[ 'rated-' . $rating ];
 			},
 			$parsed_filter_rating_values

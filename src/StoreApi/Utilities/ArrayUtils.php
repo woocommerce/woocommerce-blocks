@@ -16,7 +16,7 @@ class ArrayUtils {
 	public static function natural_language_join( $array, $enclose_items_with_quotes = false ) {
 		if ( true === $enclose_items_with_quotes ) {
 			$array = array_map(
-				function( $item ) {
+				function ( $item ) {
 					return '"' . $item . '"';
 				},
 				$array

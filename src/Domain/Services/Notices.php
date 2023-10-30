@@ -47,7 +47,7 @@ class Notices {
 			add_filter( 'wc_get_template', [ $this, 'get_notices_template' ], 10, 5 );
 			add_action(
 				'wp_head',
-				function() {
+				function () {
 					// These pages may return notices in ajax responses, so we need the styles to be ready.
 					if ( is_cart() || is_checkout() ) {
 						wp_enqueue_style( 'wc-blocks-style' );

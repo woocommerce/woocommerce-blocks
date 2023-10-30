@@ -347,7 +347,7 @@ class OrderSchema extends AbstractSchema {
 			'total_items'        => $this->prepare_money_response(
 				array_sum(
 					array_map(
-						function( $item ) {
+						function ( $item ) {
 							return $item->get_total();
 						},
 						array_values( $order->get_items( 'line_item' ) )
@@ -357,7 +357,7 @@ class OrderSchema extends AbstractSchema {
 			'total_items_tax'    => $this->prepare_money_response(
 				array_sum(
 					array_map(
-						function( $item ) {
+						function ( $item ) {
 							return $item->get_tax_total();
 						},
 						array_values( $order->get_items( 'tax' ) )
@@ -367,7 +367,7 @@ class OrderSchema extends AbstractSchema {
 			'total_fees_tax'     => $this->prepare_money_response(
 				array_sum(
 					array_map(
-						function( $item ) {
+						function ( $item ) {
 							return $item->get_total_tax();
 						},
 						array_values( $order->get_items( 'fee' ) )
@@ -377,7 +377,7 @@ class OrderSchema extends AbstractSchema {
 			'total_discount_tax' => $this->prepare_money_response( $order->get_discount_tax() ),
 			'total_shipping_tax' => $this->prepare_money_response( $order->get_shipping_tax() ),
 			'tax_lines'          => array_map(
-				function( $item ) {
+				function ( $item ) {
 					return [
 						'name'  => $item->get_name(),
 						'price' => $item->get_tax_total(),

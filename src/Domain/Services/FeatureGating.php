@@ -177,5 +177,4 @@ class FeatureGating {
 		}
 		return false;
 	}
-
 }

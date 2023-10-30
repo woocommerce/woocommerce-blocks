@@ -9,5 +9,4 @@ namespace Automattic\WooCommerce\Blocks\Templates;
 class CheckoutHeaderTemplate {
 
 	const SLUG = 'checkout-header';
-
 }

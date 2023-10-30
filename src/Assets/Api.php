@@ -240,7 +240,7 @@ class Api {
 				$dependencies = array_diff( $script_data['dependencies'], [ $handle ] );
 					add_action(
 						'admin_notices',
-						function() use ( $handle ) {
+						function () use ( $handle ) {
 								echo '<div class="error"><p>';
 								/* translators: %s file handle name. */
 								printf( esc_html__( 'Script with handle %s had a dependency on itself which has been removed. This is an indicator that your JS code has a circular dependency that can cause bugs.', 'woo-gutenberg-products-block' ), esc_html( $handle ) );

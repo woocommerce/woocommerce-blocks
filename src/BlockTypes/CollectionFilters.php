@@ -151,7 +151,7 @@ final class CollectionFilters extends AbstractBlock {
 		$inner_blocks = $this->get_inner_blocks_recursive( $block->inner_blocks );
 
 		$collection_data_params = array_map(
-			function( $block_name ) use ( $inner_blocks ) {
+			function ( $block_name ) use ( $inner_blocks ) {
 				return in_array( $block_name, $inner_blocks, true );
 			},
 			$this->collection_data_params_mapping
@@ -222,7 +222,7 @@ final class CollectionFilters extends AbstractBlock {
 		$shared_params = array( 'exclude', 'offset', 'order', 'serach' );
 		array_walk(
 			$shared_params,
-			function( $key ) use ( $query, &$params ) {
+			function ( $key ) use ( $query, &$params ) {
 				$params[ $key ] = $query[ $key ] ?? '';
 			}
 		);
@@ -241,7 +241,7 @@ final class CollectionFilters extends AbstractBlock {
 		);
 		array_walk(
 			$mapped_params,
-			function( $mapped_key, $original_key ) use ( $query, &$params ) {
+			function ( $mapped_key, $original_key ) use ( $query, &$params ) {
 				$params[ $mapped_key ] = $query[ $original_key ] ?? '';
 			}
 		);
@@ -250,7 +250,7 @@ final class CollectionFilters extends AbstractBlock {
 		 * The value of taxQuery and woocommerceAttributes need additional
 		 * transformation to the shape that Store API accepts.
 		 */
-		$taxonomy_mapper = function( $key ) {
+		$taxonomy_mapper = function ( $key ) {
 			$mapping = array(
 				'product_tag' => 'tag',
 				'product_cat' => 'category',
@@ -262,7 +262,7 @@ final class CollectionFilters extends AbstractBlock {
 		if ( is_array( $query['taxQuery'] ) ) {
 			array_walk(
 				$query['taxQuery'],
-				function( $terms, $taxonomy ) use ( $taxonomy_mapper, &$params ) {
+				function ( $terms, $taxonomy ) use ( $taxonomy_mapper, &$params ) {
 					$params[ $taxonomy_mapper( $taxonomy ) ] = implode( ',', $terms );
 				}
 			);
@@ -271,7 +271,7 @@ final class CollectionFilters extends AbstractBlock {
 		if ( is_array( $query['woocommerceAttributes'] ) ) {
 			array_walk(
 				$query['woocommerceAttributes'],
-				function( $attribute ) use ( &$params ) {
+				function ( $attribute ) use ( &$params ) {
 					$params['attributes'][] = array(
 						'attribute' => $attribute['taxonomy'],
 						'term_id'   => $attribute['termId'],

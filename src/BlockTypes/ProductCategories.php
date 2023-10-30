@@ -169,7 +169,7 @@ class ProductCategories extends AbstractDynamicBlock {
 		if ( ! $attributes['hasEmpty'] ) {
 			$categories = array_filter(
 				$categories,
-				function( $category ) {
+				function ( $category ) {
 					return 0 !== $category->count;
 				}
 			);

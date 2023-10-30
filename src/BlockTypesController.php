@@ -303,5 +303,4 @@ final class BlockTypesController {
 
 		return $block_types;
 	}
-
 }

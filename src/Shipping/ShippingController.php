@@ -54,7 +54,7 @@ class ShippingController {
 		if ( is_admin() ) {
 			$this->asset_data_registry->add(
 				'countryStates',
-				function() {
+				function () {
 					return WC()->countries->get_states();
 				},
 				true
@@ -438,7 +438,7 @@ class ShippingController {
 		// Check all packages for an instance of a collectable shipping method.
 		$valid_packages = array_filter(
 			$packages,
-			function( $package ) {
+			function ( $package ) {
 				$shipping_method_ids = ArrayUtil::select( $package['rates'] ?? [], 'get_method_id', ArrayUtil::SELECT_BY_OBJECT_METHOD );
 				return ! empty( array_intersect( LocalPickupUtils::get_local_pickup_method_ids(), $shipping_method_ids ) );
 			}
@@ -447,14 +447,14 @@ class ShippingController {
 		// Remove pickup location from rates arrays.
 		if ( count( $valid_packages ) !== count( $packages ) ) {
 			$packages = array_map(
-				function( $package ) {
+				function ( $package ) {
 					if ( ! is_array( $package['rates'] ) ) {
 						$package['rates'] = [];
 						return $package;
 					}
 					$package['rates'] = array_filter(
 						$package['rates'],
-						function( $rate ) {
+						function ( $rate ) {
 							return ! in_array( $rate->get_method_id(), LocalPickupUtils::get_local_pickup_method_ids(), true );
 						}
 					);

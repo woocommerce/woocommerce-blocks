@@ -58,5 +58,4 @@ trait OrderAuthorizationTrait {
 			throw new RouteException( 'woocommerce_rest_invalid_billing_email', __( 'Invalid billing email provided.', 'woo-gutenberg-products-block' ), 401 );
 		}
 	}
-
 }

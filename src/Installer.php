@@ -116,7 +116,7 @@ class Installer {
 	protected function add_create_table_notice( $table_name ) {
 		add_action(
 			'admin_notices',
-			function() use ( $table_name ) {
+			function () use ( $table_name ) {
 				echo '<div class="error"><p>';
 				printf(
 					/* translators: %1$s table name, %2$s database user, %3$s database name. */

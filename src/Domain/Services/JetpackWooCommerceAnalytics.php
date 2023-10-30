@@ -121,7 +121,7 @@ class JetpackWooCommerceAnalytics {
 		$order        = wc_get_order( $order_id );
 		$product_data = wp_json_encode(
 			array_map(
-				function( $item ) {
+				function ( $item ) {
 					$product         = wc_get_product( $item->get_product_id() );
 					$product_details = $this->get_product_details( $product );
 					return array(
@@ -377,7 +377,7 @@ class JetpackWooCommerceAnalytics {
 			'pickup_locations_enabled' => count(
 				array_filter(
 					$locations,
-					function( $location ) {
+					function ( $location ) {
 						return $location['enabled']; }
 				)
 			),

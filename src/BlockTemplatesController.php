@@ -72,7 +72,7 @@ class BlockTemplatesController {
 			// This render_callback wrapper allows us to add support for plugin-housed template parts.
 			add_filter(
 				'block_type_metadata_settings',
-				function( $settings, $metadata ) {
+				function ( $settings, $metadata ) {
 					if (
 						isset( $metadata['name'], $settings['render_callback'] ) &&
 						'core/template-part' === $metadata['name'] &&
@@ -90,13 +90,13 @@ class BlockTemplatesController {
 			// @see https://core.trac.wordpress.org/ticket/58366 for more info.
 			add_filter(
 				'block_type_metadata_settings',
-				function( $settings, $metadata ) {
+				function ( $settings, $metadata ) {
 					if (
 						isset( $metadata['name'], $settings['render_callback'] ) &&
 						'core/shortcode' === $metadata['name']
 					) {
 						$settings['original_render_callback'] = $settings['render_callback'];
-						$settings['render_callback']          = function( $attributes, $content ) use ( $settings ) {
+						$settings['render_callback']          = function ( $attributes, $content ) use ( $settings ) {
 							// The shortcode has already been rendered, so look for the cart/checkout HTML.
 							if ( strstr( $content, 'woocommerce-cart-form' ) || strstr( $content, 'wc-empty-cart-message' ) || strstr( $content, 'woocommerce-checkout-form' ) ) {
 								// Return early before wpautop runs again.
@@ -410,7 +410,7 @@ class BlockTemplatesController {
 		 * templates that aren't listed in theme.json.
 		 */
 		$query_result = array_map(
-			function( $template ) {
+			function ( $template ) {
 				if ( str_contains( $template->slug, 'single-product' ) ) {
 					// We don't want to add the compatibility layer on the Editor Side.
 					// The second condition is necessary to not apply the compatibility layer on the REST API. Gutenberg uses the REST API to clone the template.
@@ -419,7 +419,7 @@ class BlockTemplatesController {
 						// Add the product class to the body. We should move this to a more appropriate place.
 						add_filter(
 							'body_class',
-							function( $classes ) {
+							function ( $classes ) {
 								return array_merge( $classes, wc_get_product_class() );
 							}
 						);

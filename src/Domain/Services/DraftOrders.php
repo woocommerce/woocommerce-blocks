@@ -174,7 +174,7 @@ class DraftOrders {
 			if ( $orders ) {
 				foreach ( $orders as $order ) {
 					$order->delete( true );
-					$count ++;
+					++$count;
 				}
 			}
 			if ( $batch_size === $count && function_exists( 'as_enqueue_async_action' ) ) {

@@ -85,7 +85,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 							$html .= $processor->get_updated_html();
 						}
 
-						$thumbnails_count++;
+						++$thumbnails_count;
 					}
 
 					return sprintf(

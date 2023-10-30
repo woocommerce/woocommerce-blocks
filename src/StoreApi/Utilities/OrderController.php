@@ -1,7 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Utilities;
 
-use \Exception;
+use Exception;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 
 /**
@@ -63,7 +63,7 @@ class OrderController {
 		 */
 		add_filter(
 			'woocommerce_order_get_tax_location',
-			function( $location ) {
+			function ( $location ) {
 
 				if ( ! is_null( wc()->customer ) ) {
 
@@ -134,7 +134,7 @@ class OrderController {
 			);
 
 			$customer->save();
-		};
+		}
 	}
 
 	/**
@@ -181,7 +181,7 @@ class OrderController {
 			try {
 				array_walk(
 					$validators,
-					function( $validator, $index, $params ) {
+					function ( $validator, $index, $params ) {
 						call_user_func_array( [ $this, $validator ], $params );
 					},
 					[ $coupon, $order ]

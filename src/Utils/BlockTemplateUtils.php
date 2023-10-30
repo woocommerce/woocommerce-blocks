@@ -426,7 +426,7 @@ class BlockTemplateUtils {
 		// or the stylesheet directory for child themes.
 		$possible_paths = array_reduce(
 			$possible_templates_dir,
-			function( $carry, $item ) use ( $template_filename ) {
+			function ( $carry, $item ) use ( $template_filename ) {
 				$filepath = DIRECTORY_SEPARATOR . $item . DIRECTORY_SEPARATOR . $template_filename;
 
 				$carry[] = get_stylesheet_directory() . $filepath;
@@ -502,7 +502,6 @@ class BlockTemplateUtils {
 		}
 
 		return null;
-
 	}
 
 	/**
@@ -632,7 +631,7 @@ class BlockTemplateUtils {
 
 		return array_filter(
 			$block_templates,
-			function( $block_template ) use ( $flag, $block_templates_with_feature_gate ) {
+			function ( $block_template ) use ( $flag, $block_templates_with_feature_gate ) {
 				if ( isset( $block_templates_with_feature_gate[ $block_template->slug ] ) ) {
 					return $block_templates_with_feature_gate[ $block_template->slug ] <= $flag;
 				}
@@ -652,13 +651,13 @@ class BlockTemplateUtils {
 
 		// Get the slugs of all templates that have been customised and saved in the database.
 		$customised_template_slugs = array_map(
-			function( $template ) {
+			function ( $template ) {
 				return $template->slug;
 			},
 			array_values(
 				array_filter(
 					$templates,
-					function( $template ) {
+					function ( $template ) {
 						// This template has been customised and saved as a post.
 						return 'custom' === $template->source;
 					}
@@ -673,7 +672,7 @@ class BlockTemplateUtils {
 		return array_values(
 			array_filter(
 				$templates,
-				function( $template ) use ( $customised_template_slugs ) {
+				function ( $template ) use ( $customised_template_slugs ) {
 					// This template has been customised and saved as a post, so return it.
 					return ! ( 'theme' === $template->source && in_array( $template->slug, $customised_template_slugs, true ) );
 				}
@@ -754,7 +753,7 @@ class BlockTemplateUtils {
 		$saved_woo_templates = $check_query->posts;
 
 		return array_map(
-			function( $saved_woo_template ) {
+			function ( $saved_woo_template ) {
 				return self::build_template_result_from_post( $saved_woo_template );
 			},
 			$saved_woo_templates

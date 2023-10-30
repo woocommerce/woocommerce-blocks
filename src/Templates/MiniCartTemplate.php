@@ -9,5 +9,4 @@ namespace Automattic\WooCommerce\Blocks\Templates;
 class MiniCartTemplate {
 
 	const SLUG = 'mini-cart';
-
 }

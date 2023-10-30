@@ -101,7 +101,7 @@ class Totals extends AbstractOrderConfirmationBlock {
 		$order_items = array_filter(
 			// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 			$order->get_items( apply_filters( 'woocommerce_purchase_order_item_types', 'line_item' ) ),
-			function( $item ) {
+			function ( $item ) {
 				// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 				return apply_filters( 'woocommerce_order_item_visible', true, $item );
 			}

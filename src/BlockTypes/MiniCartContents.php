@@ -122,7 +122,7 @@ class MiniCartContents extends AbstractBlock {
 
 			$properties = array_filter(
 				$style['properties'],
-				function( $property ) {
+				function ( $property ) {
 					return $property['value'];
 				}
 			);
@@ -165,5 +165,4 @@ class MiniCartContents extends AbstractBlock {
 
 		return $block_types;
 	}
-
 }

@@ -341,7 +341,7 @@ class AssetDataRegistry {
 	public function hydrate_data_from_api_request( $key, $path, $check_key_exists = false ) {
 		$this->add(
 			$key,
-			function() use ( $path ) {
+			function () use ( $path ) {
 				if ( isset( $this->preloaded_api_requests[ $path ], $this->preloaded_api_requests[ $path ]['body'] ) ) {
 					return $this->preloaded_api_requests[ $path ]['body'];
 				}

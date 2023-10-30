@@ -79,7 +79,6 @@ class Package {
 	 */
 	public function set_version_stored_on_db() {
 		update_option( Options::WC_BLOCK_VERSION, $this->get_version() );
-
 	}
 
 	/**

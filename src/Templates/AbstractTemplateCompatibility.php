@@ -29,7 +29,7 @@ abstract class AbstractTemplateCompatibility {
 
 		add_filter(
 			'render_block_data',
-			function( $parsed_block, $source_block, $parent_block ) {
+			function ( $parsed_block, $source_block, $parent_block ) {
 				/**
 				* Filter to disable the compatibility layer for the blockified templates.
 				*
@@ -45,7 +45,6 @@ abstract class AbstractTemplateCompatibility {
 				}
 
 				return $this->update_render_block_data( $parsed_block, $source_block, $parent_block );
-
 			},
 			10,
 			3

@@ -59,7 +59,7 @@ class ProductGallery extends AbstractBlock {
 
 		$html = array_reduce(
 			$parsed_template,
-			function( $carry, $item ) {
+			function ( $carry, $item ) {
 				return $carry . render_block( $item );
 			},
 			''

@@ -820,7 +820,7 @@ class CartController {
 		// Add extra package data to array.
 		if ( count( $packages ) ) {
 			$packages = array_map(
-				function( $key, $package, $index ) {
+				function ( $key, $package, $index ) {
 					$package['package_id']   = isset( $package['package_id'] ) ? $package['package_id'] : $key;
 					$package['package_name'] = isset( $package['package_name'] ) ? $package['package_name'] : $this->get_package_name( $package, $index );
 					return $package;
@@ -934,7 +934,7 @@ class CartController {
 
 		// Prevents new coupons being added if individual use coupons are already in the cart.
 		$individual_use_coupons = $this->get_cart_coupons(
-			function( $code ) {
+			function ( $code ) {
 				$coupon = new \WC_Coupon( $code );
 				return $coupon->get_individual_use();
 			}
