@@ -5,12 +5,9 @@ import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { Modal, Button } from '@wordpress/components';
-import { isEmpty } from '@woocommerce/types';
 import {
-	type BlockInstance,
 	// @ts-expect-error Type definitions for this function are missing in Guteberg
 	store as blocksStore,
-	cloneBlock,
 	createBlock,
 	// @ts-expect-error Type definitions for this function are missing in Guteberg
 	createBlocksFromInnerBlocksTemplate,
@@ -28,40 +25,24 @@ import {
 /**
  * Internal dependencies
  */
-import type {
-	ProductCollectionQuery,
-	ProductCollectionAttributes,
-} from '../types';
-import { DEFAULT_QUERY } from '../constants';
-import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
+import type { ProductCollectionAttributes } from '../types';
 import blockJson from '../block.json';
 
-const buildFinalQueryFromBlockAndPatternQuery = ( {
-	blockQuery,
-	patternQuery,
-}: {
-	blockQuery: ProductCollectionQuery | undefined;
-	patternQuery: ProductCollectionQuery;
-} ) => {
-	// If blockQuery is empty, it means it's the initial pattern/collection choice
-	// and we should use DEFAULT_QUERY as a base for query.
-	const baseQuery = isEmpty( blockQuery )
-		? {
-				...DEFAULT_QUERY,
-				inherit: getDefaultValueOfInheritQueryFromTemplate(),
-		  }
-		: blockQuery;
-	const { perPage, offset, pages } = patternQuery;
-
-	return {
-		...baseQuery,
-		perPage,
-		offset,
-		pages,
-	};
+type CollectionButtonProps = {
+	active: boolean;
+	title: string;
+	icon: string;
+	description: string;
+	onClick: () => void;
 };
 
-const CollectionButton = ( { active, title, icon, description, onClick } ) => {
+const CollectionButton = ( {
+	active,
+	title,
+	icon,
+	description,
+	onClick,
+}: CollectionButtonProps ) => {
 	const variant = active ? 'primary' : 'secondary';
 
 	return (
@@ -77,31 +58,10 @@ const PatternSelectionModal = ( props: {
 	attributes: ProductCollectionAttributes;
 	closePatternSelectionModal: () => void;
 } ) => {
-	const { clientId, attributes } = props;
-	const { query } = attributes;
+	const { clientId } = props;
 	// @ts-expect-error Type definitions for this function are missing
 	// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/actions.d.ts
 	const { replaceBlock } = useDispatch( blockEditorStore );
-
-	const updateQueryAttributeOfPattern = (
-		block: BlockInstance
-	): BlockInstance => {
-		const newInnerBlocks =
-			block.innerBlocks?.map( updateQueryAttributeOfPattern ) || [];
-
-		if ( block.name === blockJson.name ) {
-			const newQuery = buildFinalQueryFromBlockAndPatternQuery( {
-				blockQuery: query,
-				patternQuery: block.attributes.query,
-			} );
-			return cloneBlock(
-				block,
-				{ query: newQuery, collection: attributes.collection },
-				newInnerBlocks
-			);
-		}
-		return cloneBlock( block, {}, newInnerBlocks );
-	};
 
 	// Get Patterns
 	const blockPatterns = useSelect(
@@ -116,7 +76,7 @@ const PatternSelectionModal = ( props: {
 		[ blockJson.name, clientId ]
 	);
 
-	// const [ chosenPatternName, selectPatternName ] = useState( '' );
+	const [ chosenPatternName, selectPatternName ] = useState( '' );
 
 	// Get Collections
 	const blockCollections = useSelect( ( select ) => {
@@ -136,22 +96,23 @@ const PatternSelectionModal = ( props: {
 
 	const applyCollection = () => {
 		const chosenCollection = blockCollections.find(
-			( { name } ) => name === chosenCollectionName
+			( { name }: { name: string } ) => name === chosenCollectionName
 		);
 
-		// Collection overrides the current block completely
-		// so there's no need to apply current query to pattern
-		if ( chosenCollection ) {
-			const newBlock = createBlock(
-				blockJson.name,
-				chosenCollection.attributes,
-				createBlocksFromInnerBlocksTemplate(
-					chosenCollection.innerBlocks
-				)
-			);
+		const chosenPattern = blockPatterns.find(
+			( { name }: { name: string } ) => name === chosenPatternName
+		);
 
-			replaceBlock( clientId, newBlock );
-		}
+		const newBlock = createBlock(
+			blockJson.name,
+			chosenCollection.attributes,
+			createBlocksFromInnerBlocksTemplate( chosenCollection.innerBlocks )
+		);
+
+		// TODO: Need to apply pattern attributes and inner blocks structure
+		// to the new Collection from a chosenPattern.
+
+		replaceBlock( clientId, newBlock );
 	};
 
 	return (
@@ -190,7 +151,7 @@ const PatternSelectionModal = ( props: {
 				<div className="wc-blocks-product-collection__patterns-section">
 					<h3>
 						{ __(
-							'Choose a pattern.',
+							'Choose a pattern',
 							'woo-gutenberg-products-block'
 						) }
 					</h3>
