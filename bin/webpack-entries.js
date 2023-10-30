@@ -237,6 +237,8 @@ const entries = {
 			'./assets/js/extensions/shipping-methods/pickup-location/index.js',
 		'wc-blocks-jetpack-woocommerce-analytics':
 			'./assets/js/extensions/jetpack/woocommerce-analytics/index.ts',
+		'wc-blocks-order-source-attribution':
+			'./assets/js/extensions/order-source-attribution/index.ts',
 	},
 	editor: {
 		'wc-blocks-classic-template-revert-button':
