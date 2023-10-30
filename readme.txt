@@ -81,6 +81,16 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.4.3 - 2023-10-30 =
+
+#### Enhancements
+
+- Improve Hero Product Chessboard pattern. [11423](https://github.com/woocommerce/woocommerce-blocks/pull/11423)
+- Fix spacing on the "Minimal header" pattern. [11477](https://github.com/woocommerce/woocommerce-blocks/pull/11477)
+- "Product Gallery" improvements: remove product summary and update margins. [11464](https://github.com/woocommerce/woocommerce-blocks/pull/11464)
+- Patterns with Search Bar: improve style. [11478](https://github.com/woocommerce/woocommerce-blocks/pull/11478)
+- "Product Collection X Columns" patterns: align "no reviews" text with the star. [11468](https://github.com/woocommerce/woocommerce-blocks/pull/11468)
+
 = 11.4.2 - 2023-10-25 =
 
 #### Enhancements
