@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import type { Story, Meta } from '@storybook/react';
+import type { StoryFn, Meta } from '@storybook/react';
 
 /**
  * Internal dependencies
@@ -55,7 +55,7 @@ export default {
 	component: NoticeBanner,
 } as Meta< NoticeBannerProps >;
 
-const Template: Story< NoticeBannerProps > = ( args ) => {
+const Template: StoryFn< NoticeBannerProps > = ( args ) => {
 	return <NoticeBanner { ...args } />;
 };
 
