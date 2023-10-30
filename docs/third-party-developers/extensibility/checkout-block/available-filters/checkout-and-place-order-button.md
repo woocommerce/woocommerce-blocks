@@ -9,6 +9,7 @@ The following Checkout and place order button filters are available:
 The following objects are shared between the filters:
 
 -   [Cart object](#cart-object)
+-   [Cart Item object](#cart-item-object)
 
 ## `proceedToCheckoutButtonLabel`
 
@@ -255,7 +256,7 @@ The Cart object of the filters above has the following keys:
     -   _total_shipping_tax_ `string` - The total shipping tax.
     -   _total_tax_ `string` - The total tax.
 
-## Cart Item object <!-- omit in toc -->
+## Cart Item object
 
 The Cart Item object of the filters above has the following keys:
 

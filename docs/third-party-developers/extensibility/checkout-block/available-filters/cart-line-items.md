@@ -29,7 +29,7 @@ The `cartItemClass` filter allows to change the cart item class.
 -   _defaultValue_ `object` (default: `''`) - The default cart item class.
 -   _extensions_ `object` (default: `{}`) - The extensions object.
 -   _args_ `object` - The arguments object with the following keys:
-    -   _cart_ `object` - The cart object from `wc/store/cart`, see [Cart object](cart-object).
+    -   _cart_ `object` - The cart object from `wc/store/cart`, see [Cart object](#cart-object).
     -   _cartItem_ `object` - The cart item object from `wc/store/cart`, see [Cart Item object](#cart-item-object).
     -   _context_ `string` (allowed values: `cart` or `summary`) - The context of the item.
 

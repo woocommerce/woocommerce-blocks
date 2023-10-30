@@ -6,9 +6,10 @@ The following Totals Footer Item filter is available:
 
 ## `totalLabel`
 
-The following object is used in the filter:
+The following objects are used in the filter:
 
 -   [Cart object](#cart-object)
+-   [Cart Item object](#cart-item-object)
 
 ### Description <!-- omit in toc -->
 
@@ -104,7 +105,7 @@ The Cart object of the filters above has the following keys:
 -   _shippingAddress_ `object` - The shipping address object with the same keys as the `billingAddress` object.
 -   _shippingRates_ `array` - The shipping rates array.
 
-## Cart Item object <!-- omit in toc -->
+## Cart Item object
 
 The Cart Item object of the filters above has the following keys:
 
