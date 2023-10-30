@@ -15,7 +15,21 @@ import { getAdminLink, getSetting } from '@woocommerce/settings';
 import BlockTitle from '@woocommerce/editor-components/block-title';
 import classnames from 'classnames';
 import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
-import { AttributeSetting } from '@woocommerce/types';
+import {
+	useCollection,
+	useQueryStateByKey,
+	useQueryStateByContext,
+	useCollectionData,
+} from '@woocommerce/base-context/hooks';
+import {
+	AttributeSetting,
+	AttributeQuery,
+	AttributeTerm,
+	isAttributeQueryCollection,
+	isBoolean,
+	isString,
+	objectHasProp,
+} from '@woocommerce/types';
 import {
 	Placeholder,
 	Disabled,
@@ -59,6 +73,15 @@ const Edit = ( {
 	const [ isEditing, setIsEditing ] = useState(
 		! attributeId && ! isPreview
 	);
+
+	const { results: attributeTerms } = useCollection< AttributeTerm >( {
+		namespace: '/wc/store/v1',
+		resourceName: 'products/attributes/terms',
+		resourceValues: [ attributeObject?.id || 0 ],
+		shouldSelect: blockAttributes.attributeId > 0,
+		query: { orderby: 'menu_order' },
+	} );
+
 	const blockProps = useBlockProps();
 
 	useEffect( () => {
