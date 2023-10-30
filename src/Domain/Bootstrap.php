@@ -14,6 +14,7 @@ use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Domain\Services\GoogleAnalytics;
 use Automattic\WooCommerce\Blocks\Domain\Services\Hydration;
+use Automattic\WooCommerce\Blocks\Domain\Services\OrderSourceAttribution;
 use Automattic\WooCommerce\Blocks\InboxNotifications;
 use Automattic\WooCommerce\Blocks\Installer;
 use Automattic\WooCommerce\Blocks\Migration;
@@ -31,6 +32,7 @@ use Automattic\WooCommerce\Blocks\Templates\ClassicTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
+use Automattic\WooCommerce\Internal\Features\FeaturesController;
 use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\StoreApi;
@@ -160,6 +162,11 @@ class Bootstrap {
 			$this->container->get( ArchiveProductTemplatesCompatibility::class )->init();
 			$this->container->get( SingleProductTemplateCompatibility::class )->init();
 			$this->container->get( Notices::class )->init();
+		}
+
+		// Load assets on frontend only.
+		if ( ! $is_rest && ! is_admin() ) {
+			$this->container->get( OrderSourceAttribution::class )->init();
 		}
 	}
 
@@ -401,6 +408,16 @@ class Bootstrap {
 				return new StoreApi();
 			}
 		);
+		$this->container->register(
+			OrderSourceAttribution::class,
+			function( Container $container ) {
+				$features_controller = wc_get_container()->get( FeaturesController::class );
+				$asset_api           = $container->get( AssetApi::class );
+
+				return new OrderSourceAttribution( $asset_api, $features_controller );
+			}
+		);
+
 		// Maintains backwards compatibility with previous Store API namespace.
 		$this->container->register(
 			'Automattic\WooCommerce\Blocks\StoreApi\Formatters',
