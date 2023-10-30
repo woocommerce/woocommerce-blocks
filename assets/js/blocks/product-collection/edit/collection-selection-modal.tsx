@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { Modal, Button } from '@wordpress/components';
+import { Icon, loop } from '@wordpress/icons';
 import {
 	// @ts-expect-error Type definitions for this function are missing in Guteberg
 	store as blocksStore,
@@ -26,6 +27,11 @@ import {
  * Internal dependencies
  */
 import type { ProductCollectionAttributes } from '../types';
+import {
+	INNER_BLOCKS_PRODUCT_TEMPLATE,
+	DEFAULT_ATTRIBUTES,
+} from '../constants';
+import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
 import blockJson from '../block.json';
 
 type CollectionButtonProps = {
@@ -53,6 +59,21 @@ const CollectionButton = ( {
 	);
 };
 
+const defaultQuery = {
+	name: 'woocommerce-blocks/product-collection/default-query',
+	title: 'Default Query',
+	icon: <Icon icon={ loop } />,
+	description: 'Use the current query context set by template',
+	innerBlocks: [ INNER_BLOCKS_PRODUCT_TEMPLATE ],
+	attributes: {
+		...DEFAULT_ATTRIBUTES,
+		query: {
+			...DEFAULT_ATTRIBUTES.query,
+			inherit: getDefaultValueOfInheritQueryFromTemplate(), // TODO: This has to be resolved when applying the collection, so the context is known.
+		},
+	},
+};
+
 const PatternSelectionModal = ( props: {
 	clientId: string;
 	attributes: ProductCollectionAttributes;
@@ -76,15 +97,19 @@ const PatternSelectionModal = ( props: {
 		[ blockJson.name, clientId ]
 	);
 
+	// Prepare Patterns
 	const [ chosenPatternName, selectPatternName ] = useState( '' );
 
 	// Get Collections
-	const blockCollections = useSelect( ( select ) => {
-		// @ts-expect-error Type definitions are missing
-		// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/selectors.d.ts
-		const { getBlockVariations } = select( blocksStore );
-		return getBlockVariations( blockJson.name );
-	}, [] );
+	const blockCollections = [
+		...useSelect( ( select ) => {
+			// @ts-expect-error Type definitions are missing
+			// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/selectors.d.ts
+			const { getBlockVariations } = select( blocksStore );
+			return getBlockVariations( blockJson.name );
+		}, [] ),
+		defaultQuery,
+	];
 
 	// Prepare Collections
 	const defaultCollection = blockCollections.length

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { InnerBlockTemplate } from '@wordpress/blocks';
-import { Icon, trendingUp } from '@wordpress/icons';
+import { Icon, starEmpty } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -15,7 +15,7 @@ import {
 const collection = {
 	name: 'woocommerce-blocks/product-collection/top-sellers',
 	title: 'Top Sellers',
-	icon: <Icon icon={ trendingUp } />,
+	icon: <Icon icon={ starEmpty } />,
 	description: 'Display a grid of the best selling products.',
 	keywords: [ 'best selling' ],
 	scope: [],

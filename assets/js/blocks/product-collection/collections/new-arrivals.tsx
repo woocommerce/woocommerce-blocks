@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { InnerBlockTemplate } from '@wordpress/blocks';
-import { Icon } from '@wordpress/components';
+import { Icon, calendar } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -15,7 +15,7 @@ import {
 const collection = {
 	name: 'woocommerce-blocks/product-collection/new-arrivals',
 	title: 'New Arrivals',
-	icon: <Icon icon={ 'star-filled' } />,
+	icon: <Icon icon={ calendar } />,
 	description: 'Display a grid of your newest products.',
 	keywords: [ 'newest products' ],
 	scope: [],
