@@ -33,10 +33,7 @@ import type {
 	ProductCollectionAttributes,
 } from '../types';
 import { DEFAULT_QUERY } from '../constants';
-import {
-	getDefaultValueOfInheritQueryFromTemplate,
-	getDefaultProductCollection,
-} from '../utils';
+import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
 import blockJson from '../block.json';
 
 const buildFinalQueryFromBlockAndPatternQuery = ( {
@@ -69,6 +66,7 @@ const CollectionButton = ( { active, title, icon, description, onClick } ) => {
 
 	return (
 		<Button variant={ variant } onClick={ onClick }>
+			{ icon }
 			{ title }: { description }
 		</Button>
 	);
@@ -118,6 +116,8 @@ const PatternSelectionModal = ( props: {
 		[ blockJson.name, clientId ]
 	);
 
+	// const [ chosenPatternName, selectPatternName ] = useState( '' );
+
 	// Get Collections
 	const blockCollections = useSelect( ( select ) => {
 		// @ts-expect-error Type definitions are missing
@@ -126,6 +126,7 @@ const PatternSelectionModal = ( props: {
 		return getBlockVariations( blockJson.name );
 	}, [] );
 
+	// Prepare Collections
 	const defaultCollection = blockCollections.length
 		? blockCollections[ 0 ].name
 		: '';
@@ -172,23 +173,41 @@ const PatternSelectionModal = ( props: {
 						'woo-gutenberg-products-block'
 					) }
 				</p>
-				{ blockCollections.map(
-					( { name, title, icon, description } ) => (
-						<CollectionButton
-							active={ chosenCollectionName === name }
-							key={ name }
-							title={ title }
-							description={ description }
-							icon={ icon }
-							onClick={ () => selectCollectionName( name ) }
-						/>
-					)
-				) }
-				{ /* <BlockPatternsList
-					blockPatterns={ blockPatterns }
-					shownPatterns={ blockPatterns }
-					onClickPattern={ onClickPattern }
-				/> */ }
+				<div className="wc-blocks-product-collection__collections-section">
+					{ blockCollections.map(
+						( { name, title, icon, description } ) => (
+							<CollectionButton
+								active={ chosenCollectionName === name }
+								key={ name }
+								title={ title }
+								description={ description }
+								icon={ icon }
+								onClick={ () => selectCollectionName( name ) }
+							/>
+						)
+					) }
+				</div>
+				<div className="wc-blocks-product-collection__patterns-section">
+					<h3>
+						{ __(
+							'Choose a pattern.',
+							'woo-gutenberg-products-block'
+						) }
+					</h3>
+					<p className="wc-blocks-product-collection__subtitle">
+						{ __(
+							'Patterns are a great starting point that you can customise later.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+					<BlockPatternsList
+						blockPatterns={ blockPatterns }
+						shownPatterns={ blockPatterns }
+						onClickPattern={ ( { name } ) =>
+							selectPatternName( name )
+						}
+					/>
+				</div>
 				<div className="wc-blocks-product-collection__footer">
 					<Button
 						variant="tertiary"

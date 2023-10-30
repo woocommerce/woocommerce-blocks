@@ -3,7 +3,12 @@
  */
 import { getSetting } from '@woocommerce/settings';
 import { objectOmit } from '@woocommerce/utils';
-import { type InnerBlockTemplate } from '@wordpress/blocks';
+import {
+	type InnerBlockTemplate,
+	createBlock,
+	// @ts-expect-error Missing types in Gutenberg
+	createBlocksFromInnerBlocksTemplate,
+} from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -16,10 +21,10 @@ import {
 	ProductCollectionDisplayLayout,
 	LayoutOptions,
 } from './types';
-
 import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
 import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 import { getDefaultValueOfInheritQueryFromTemplate } from './utils';
+import blockJson from './block.json';
 
 export const STOCK_STATUS_OPTIONS = getSetting< Record< string, string > >(
 	'stockStatusOptions',
@@ -160,3 +165,16 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 	INNER_BLOCKS_PAGINATION_TEMPLATE,
 	INNER_BLOCKS_NO_RESULTS_TEMPLATE,
 ];
+
+export const getDefaultProductCollection = () =>
+	createBlock(
+		blockJson.name,
+		{
+			...DEFAULT_ATTRIBUTES,
+			query: {
+				...DEFAULT_ATTRIBUTES.query,
+				inherit: getDefaultValueOfInheritQueryFromTemplate(),
+			},
+		},
+		createBlocksFromInnerBlocksTemplate( INNER_BLOCKS_TEMPLATE )
+	);
