@@ -46,7 +46,7 @@ static function render( $props ) {
 			</svg>
       <ul data-wc-bind--hidden="!context.woocommerceDropdown.isOpen" class="components-form-token-field__suggestions-list" id="components-form-token-suggestions-1" role="listbox">
         <?php foreach ( $items as $item ) : ?>					
-          <li role="option" data-wc-context='{ "value": "<?php echo $item['value']; ?>" }' class="components-form-token-field__suggestion" data-wc-bind--aria-selected="selectors.woocommerceDropdown.isSelected"><?php echo $item['label']; ?></li>
+          <li role="option" data-wc-on--click="actions.woocommerceDropdown.selectStockStatus" data-wc-context='{ "label": "<?php echo $item['label'] ?>", "value": "<?php echo $item['value']; ?>" }' class="components-form-token-field__suggestion" data-wc-bind--aria-selected="selectors.woocommerceDropdown.isSelected"><?php echo $item['label']; ?></li>
         <?php endforeach; ?>
       </ul>
     </div>
