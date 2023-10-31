@@ -46,7 +46,7 @@
 		<!-- wp:navigation /-->
 
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
-		<div class="wp-block-group"><!-- wp:search {"label":"","showLabel":false,"placeholder":"Search","width":100,"widthUnit":"%","buttonText":"Search","query":{"post_type":"product"},"style":{"border":{"radius":"0px"}}} /--></div>
+		<div class="wp-block-group"><!-- wp:search {"label":"","showLabel":false,"placeholder":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","buttonText":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","buttonUseIcon":true,"query":{"post_type":"product"},"style":{"border":{"radius":"0px"}}} /--></div>
 		<!-- /wp:group -->
 	</div>
 	<!-- /wp:group -->
