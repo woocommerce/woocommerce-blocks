@@ -95,6 +95,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Simplify the Hero Product 3 Split pattern. [11495](https://github.com/woocommerce/woocommerce-blocks/pull/11495)
 - Improve the Centered Header Menu with Search pattern. [11304](https://github.com/woocommerce/woocommerce-blocks/pull/11304)
 - Large Header pattern: improve the layout on mobile view. [11490](https://github.com/woocommerce/woocommerce-blocks/pull/11490)
+- Improve the "Large footer" spacing. [11520](https://github.com/woocommerce/woocommerce-blocks/pull/11520)
 
 = 11.4.2 - 2023-10-25 =
 
