@@ -39,6 +39,10 @@ export interface ProductCollectionQuery {
 	postType: string;
 	search: string;
 	taxQuery: Record< string, number[] >;
+	/**
+	 * If true, show only featured products.
+	 */
+	featured: boolean;
 	woocommerceOnSale: boolean;
 	/**
 	 * Filter products by their stock status.

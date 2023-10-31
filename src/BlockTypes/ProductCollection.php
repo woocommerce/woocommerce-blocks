@@ -207,6 +207,8 @@ class ProductCollection extends AbstractBlock {
 		$stock_status        = $request->get_param( 'woocommerceStockStatus' );
 		$product_attributes  = $request->get_param( 'woocommerceAttributes' );
 		$handpicked_products = $request->get_param( 'woocommerceHandPickedProducts' );
+		$featured            = $request->get_param( 'featured' ) === 'true';
+
 		// This argument is required for the tests to PHP Unit Tests to run correctly.
 		// Most likely this argument is being accessed in the test environment image.
 		$args['author'] = '';
@@ -219,6 +221,7 @@ class ProductCollection extends AbstractBlock {
 				'stock_status'        => $stock_status,
 				'product_attributes'  => $product_attributes,
 				'handpicked_products' => $handpicked_products,
+				'featured'            => $featured,
 			)
 		);
 	}
@@ -305,6 +308,7 @@ class ProductCollection extends AbstractBlock {
 		$product_attributes  = $query['woocommerceAttributes'] ?? [];
 		$taxonomies_query    = $this->get_filter_by_taxonomies_query( $query['tax_query'] ?? [] );
 		$handpicked_products = $query['woocommerceHandPickedProducts'] ?? [];
+		$featured            = $query['featured'] ?? false;
 
 		$final_query = $this->get_final_query_args(
 			$common_query_values,
@@ -315,6 +319,7 @@ class ProductCollection extends AbstractBlock {
 				'product_attributes'  => $product_attributes,
 				'taxonomies_query'    => $taxonomies_query,
 				'handpicked_products' => $handpicked_products,
+				'featured'            => $featured,
 			),
 			$is_exclude_applied_filters
 		);
@@ -335,10 +340,11 @@ class ProductCollection extends AbstractBlock {
 		$on_sale_query       = $this->get_on_sale_products_query( $query['on_sale'] );
 		$stock_query         = $this->get_stock_status_query( $query['stock_status'] );
 		$visibility_query    = is_array( $query['stock_status'] ) ? $this->get_product_visibility_query( $stock_query ) : [];
+		$featured            = $query['featured'] ?? false;
+		$featured_query      = $this->get_featured_query( $featured );
 		$attributes_query    = $this->get_product_attributes_query( $query['product_attributes'] );
 		$taxonomies_query    = $query['taxonomies_query'] ?? [];
-		$tax_query           = $this->merge_tax_queries( $visibility_query, $attributes_query, $taxonomies_query );
-
+		$tax_query           = $this->merge_tax_queries( $visibility_query, $attributes_query, $taxonomies_query, $featured_query );
 		// We exclude applied filters to generate product ids for the filter blocks.
 		$applied_filters_query = $is_exclude_applied_filters ? [] : $this->get_queries_by_applied_filters();
 
@@ -627,6 +633,35 @@ class ProductCollection extends AbstractBlock {
 			),
 		);
 	}
+
+	/**
+	 * Generates a tax query to filter products based on their "featured" status.
+	 * If the `$featured` parameter is true, the function will return a tax query
+	 * that filters products to only those marked as featured.
+	 * If `$featured` is false, an empty array is returned, meaning no filtering will be applied.
+	 *
+	 * @param bool $featured A flag indicating whether to filter products based on featured status.
+	 *
+	 * @return array A tax query for fetching featured products if `$featured` is true; otherwise, an empty array.
+	 */
+	private function get_featured_query( $featured ) {
+		if ( ! $featured ) {
+			return array();
+		}
+
+		return array(
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'product_visibility',
+					'field'    => 'name',
+					'terms'    => 'featured',
+					'operator' => 'IN',
+				),
+			),
+		);
+	}
+
 
 	/**
 	 * Merge tax_queries from various queries.
