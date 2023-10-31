@@ -200,6 +200,10 @@ const entries = {
 		priceFormat: './packages/prices/index.js',
 		blocksCheckout: './packages/checkout/index.js',
 		blocksComponents: './packages/components/index.ts',
+
+		// interactivity components, exported as separate entries for now
+		'wc-interactivity-dropdown':
+			'./packages/interactivity-components/dropdown/index.ts',
 	},
 	main: {
 		// Shared blocks code
