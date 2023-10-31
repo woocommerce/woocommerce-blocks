@@ -24,6 +24,7 @@ type StockFilterState = {
 	filters: {
 		stockStatus: string;
 		activeFilters: string;
+		showDropdown: boolean;
 	};
 };
 
@@ -33,11 +34,19 @@ type ActionProps = {
 };
 
 interactivityStore( {
+	selectors: {
+		woocommerceDropdown: {
+			isSelected: ( { state, context, ref, event, className } ) => {
+				return false;
+			},
+		},
+	},
 	state: {
 		filters: {
 			stockStatus: '',
 			// comma separated list of active filters
 			activeFilters: '',
+			showDropdown: false,
 		},
 	},
 	actions: {
@@ -61,6 +70,12 @@ interactivityStore( {
 				state.filters.activeFilters = activeFilters.join( ',' );
 
 				navigate( getUrl( state.filters.activeFilters ) );
+			},
+		},
+		woocommerceDropdown: {
+			toggleIsOpen: ( { context, ref } ) => {
+				context.woocommerceDropdown.isOpen =
+					! context.woocommerceDropdown.isOpen;
 			},
 		},
 	},
