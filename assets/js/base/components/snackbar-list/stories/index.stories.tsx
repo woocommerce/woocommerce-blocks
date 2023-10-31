@@ -9,7 +9,7 @@ import type { Story, Meta } from '@storybook/react';
 import SnackbarList, { SnackbarListProps } from '../';
 
 export default {
-	title: 'WooCommerce Blocks/@base-components/SnackbarList',
+	title: 'Base Components/SnackbarList',
 	args: {
 		notices: [
 			{
