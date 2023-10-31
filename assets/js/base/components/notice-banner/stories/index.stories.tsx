@@ -20,7 +20,8 @@ export default {
 		},
 		isDismissible: {
 			control: 'boolean',
-			description: 'Determines whether the notice can be dismissed.',
+			description:
+				'Determines whether the notice can be dismissed by the user. When set to true, a close icon will be displayed on the banner.',
 		},
 		summary: {
 			description:
@@ -33,7 +34,7 @@ export default {
 		},
 		spokenMessage: {
 			description:
-				'Optionally provided to change the spoken message for assistive technology.',
+				'Optionally provided to change the spoken message for assistive technology. If not provided, the `children` prop will be used as the spoken message.',
 			control: 'text',
 		},
 		politeness: {
@@ -44,11 +45,12 @@ export default {
 		},
 		children: {
 			description:
-				'The content of the notice; either text or a React node such as a list of errors.',
+				'The displayed message of a notice. Also used as the spoken message for assistive technology, unless `spokenMessage` is provided as an alternative message.',
 			disable: true,
 		},
 		onRemove: {
-			description: 'Function called when dismissing the notice.',
+			description:
+				'Function called when dismissing the notice. When the close icon is clicked or the Escape key is pressed, this function will be called.',
 			disable: true,
 		},
 	},
@@ -84,7 +86,7 @@ Warning.args = {
 
 export const Info = Template.bind( {} );
 Info.args = {
-	children: 'This is an info notice',
+	children: 'This is an informational notice',
 	status: 'info',
 };
 

@@ -8,7 +8,7 @@ module.exports = {
 		// WooCommerce Blocks stuff (anywhere in repo!)
 		'../assets/js/**/stories/*.stories.@(js|jsx|ts|tsx)',
 		'../packages/**/stories/*.stories.@(js|jsx|ts|tsx)',
-		'../assets/js/**/stories/*.mdx',
+		'../assets/js/**/docs/*.mdx',
 	],
 	addons: [
 		'@storybook/addon-essentials',
