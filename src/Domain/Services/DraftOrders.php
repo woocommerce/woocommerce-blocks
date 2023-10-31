@@ -168,9 +168,9 @@ class DraftOrders {
 			]
 		);
 
-		// do we bail because the query results are unexpected?
+		// Do we bail because the query results are unexpected?
 		try {
-			$this->assert_order_results( $orders, $batch_size );
+			$this->assert_order_results( $orders );
 			if ( $orders ) {
 				foreach ( $orders as $order ) {
 					$order->delete( true );
@@ -206,11 +206,10 @@ class DraftOrders {
 	 * this service class executes.
 	 *
 	 * @param WC_Order[] $order_results The order results being asserted.
-	 * @param int        $expected_batch_size The expected batch size for the results.
 	 * @throws Exception If any assertions fail, an exception is thrown.
 	 */
-	private function assert_order_results( $order_results, $expected_batch_size ) {
-		// if not an array, then just return because it won't get handled
+	private function assert_order_results( $order_results ) {
+		// If not an array, then just return because it won't get handled
 		// anyways.
 		if ( ! is_array( $order_results ) ) {
 			return;
@@ -218,17 +217,21 @@ class DraftOrders {
 
 		$suffix = ' This is an indicator that something is filtering WooCommerce or WordPress queries and modifying the query parameters.';
 
-		// if count is greater than our expected batch size, then that's a problem.
+		// If count is greater than our expected batch size, then that's a problem.
+		// phpcs ignores are because the output is hardcoded and doesn't need to be escaped.
 		if ( count( $order_results ) > 20 ) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 			throw new Exception( 'There are an unexpected number of results returned from the query.' . $suffix );
 		}
 
-		// if any of the returned orders are not draft (or not a WC_Order), then that's a problem.
+		// If any of the returned orders are not draft (or not a WC_Order), then that's a problem.
 		foreach ( $order_results as $order ) {
 			if ( ! ( $order instanceof WC_Order ) ) {
+                // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 				throw new Exception( 'The returned results contain a value that is not a WC_Order.' . $suffix );
 			}
 			if ( ! $order->has_status( self::STATUS ) ) {
+                // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 				throw new Exception( 'The results contain an order that is not a `wc-checkout-draft` status in the results.' . $suffix );
 			}
 		}
