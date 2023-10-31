@@ -94,7 +94,7 @@ class Notices {
 	 * @param string $default_path Default path.
 	 * @return string
 	 */
-	public function get_notices_template( $template, $template_name, $args, $template_path, $default_path ) {
+	public function get_notices_template( $template, $template_name, $args, $template_path, $default_path ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- Ignoring because those parameters passed by the filter.
 		if ( in_array( $template_name, $this->notice_templates, true ) ) {
 			$template = $this->package->get_path( 'templates/' . $template_name );
 			wp_enqueue_style( 'wc-blocks-style' );
