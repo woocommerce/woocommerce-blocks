@@ -21,7 +21,7 @@ test.describe( 'Test the checkout template', async () => {
 		await expect(
 			page
 				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h1:has-text("Checkout")' )
+				.locator( 'h1:has-text("Checkout block")' )
 				.first()
 		).toBeVisible();
 	} );

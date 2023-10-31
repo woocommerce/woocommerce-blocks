@@ -272,11 +272,25 @@ export class EditorUtils {
 			.nth( 2 )
 			.isVisible();
 
+		const isModalEditingPageOpen = await this.page
+			.getByRole( 'dialog', { name: 'Editing a page' } )
+			.locator( 'div' )
+			.filter( {
+				hasText:
+					'Editing a pageIt’s now possible to edit page content in the site editor.',
+			} )
+			.nth( 2 )
+			.isVisible();
+
 		// eslint-disable-next-line playwright/no-conditional-in-test
 		if ( isModalOpen ) {
 			await this.page
 				.getByRole( 'button', { name: 'Get started' } )
 				.click();
+		}
+
+		if ( isModalEditingPageOpen ) {
+			await this.page.getByRole( 'button', { name: 'Continue' } ).click();
 		}
 	}
 

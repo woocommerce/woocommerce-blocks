@@ -21,7 +21,7 @@ test.describe( 'Test the cart template', async () => {
 		await expect(
 			page
 				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h2:has-text("Cart")' )
+				.locator( 'h1:has-text("Cart")' )
 				.first()
 		).toBeVisible();
 	} );
@@ -35,15 +35,18 @@ test.describe( 'Test the cart template', async () => {
 		await admin.visitAdminPage( 'site-editor.php' );
 		await editorUtils.waitForSiteEditorFinishLoading();
 		await editor.page.getByRole( 'button', { name: /Pages/i } ).click();
-		await editor.page.getByRole( 'button', { name: /Cart/i } ).click();
+		await editor.page
+			.getByRole( 'button', { name: 'Cart block', exact: true } )
+			.click();
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
 		await expect(
-			editor.canvas.locator( 'h2:has-text("Cart")' ).first()
+			editor.canvas.locator( 'h1:has-text("Cart")' ).first()
 		).toBeVisible();
 		await editor.openDocumentSettingsSidebar();
 		await page.getByRole( 'button', { name: 'Edit template' } ).click();
 		await expect(
-			editor.canvas.locator( 'h2:has-text("Cart")' ).first()
+			editor.canvas.locator( 'h1:has-text("Cart")' ).first()
 		).toBeVisible();
 	} );
 
@@ -53,7 +56,7 @@ test.describe( 'Test the cart template', async () => {
 		await expect(
 			admin.page
 				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h2:has-text("Cart")' )
+				.locator( 'h1:has-text("Cart")' )
 				.first()
 		).toBeVisible();
 	} );
@@ -85,9 +88,12 @@ test.describe( 'Test editing the cart template', async () => {
 		await editor.canvas
 			.getByRole( 'button', { name: 'Transform into blocks' } )
 			.click();
+		await editor.canvas.waitForSelector(
+			'button:has-text("Proceed to Checkout")'
+		);
 		await expect(
 			editor.canvas
-				.locator( 'button:has-text("Proceed to checkout")' )
+				.locator( 'button:has-text("Proceed to Checkout")' )
 				.first()
 		).toBeVisible();
 	} );
