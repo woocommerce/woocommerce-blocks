@@ -16,11 +16,11 @@
 			<!-- wp:group {"style":{"spacing":{"blockGap":"8px"}},"layout":{"type":"flex","orientation":"vertical"}} -->
 			<div class="wp-block-group"><!-- wp:site-logo /-->
 				<!-- wp:heading {"level":5,"style":{"typography":{"textTransform":"none"},"spacing":{"margin":{"top":"40px"}}}} -->
-				<h5 class="wp-block-heading" style="margin-top:40px;text-transform:none">Join the community</h5>
+				<h5 class="wp-block-heading" style="margin-top:40px;text-transform:none"><?php esc_html_e( 'Join the community', 'woo-gutenberg-products-block' ); ?></h5>
 				<!-- /wp:heading -->
 
 				<!-- wp:paragraph {"style":{"spacing":{"margin":{"bottom":"40px"}}}} -->
-				<p style="margin-bottom:40px">Learn about new products and discounts</p>
+				<p style="margin-bottom:40px"><?php esc_html_e( 'Learn about new products and discounts', 'woo-gutenberg-products-block' ); ?></p>
 				<!-- /wp:paragraph -->
 
 				<!-- wp:social-links {"size":"has-small-icon-size","style":{"spacing":{"blockGap":{"left":"16px"}}},"className":"is-style-logos-only"} -->
