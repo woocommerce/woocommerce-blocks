@@ -455,12 +455,12 @@ class Bootstrap {
 	/**
 	 * Throws a deprecation notice for a dependency without breaking requests.
 	 *
-	 * @param string $function Class or function being deprecated.
+	 * @param string $function_name Class or function being deprecated.
 	 * @param string $version Version in which it was deprecated.
 	 * @param string $replacement Replacement class or function, if applicable.
 	 * @param string $trigger_error_version Optional version to start surfacing this as a PHP error rather than a log. Defaults to $version.
 	 */
-	protected function deprecated_dependency( $function, $version, $replacement = '', $trigger_error_version = '' ) {
+	protected function deprecated_dependency( $function_name, $version, $replacement = '', $trigger_error_version = '' ) {
 		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
 			return;
 		}
@@ -468,12 +468,12 @@ class Bootstrap {
 		$trigger_error_version = $trigger_error_version ? $trigger_error_version : $version;
 		$error_message         = $replacement ? sprintf(
 			'%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
-			$function,
+			$function_name,
 			$version,
 			$replacement
 		) : sprintf(
 			'%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.',
-			$function,
+			$function_name,
 			$version
 		);
 		/**
@@ -481,7 +481,7 @@ class Bootstrap {
 		 *
 		 * @since 7.3.0
 		 */
-		do_action( 'deprecated_function_run', $function, $replacement, $version );
+		do_action( 'deprecated_function_run', $function_name, $replacement, $version );
 
 		$log_error = false;
 
