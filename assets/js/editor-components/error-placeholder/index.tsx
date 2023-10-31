@@ -44,7 +44,7 @@ export interface ErrorPlaceholderProps {
 }
 
 const ErrorPlaceholder = ( {
-	className,
+	className = '',
 	error,
 	isLoading = false,
 	onRetry,

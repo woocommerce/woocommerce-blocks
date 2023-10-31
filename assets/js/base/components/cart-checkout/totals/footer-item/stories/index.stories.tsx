@@ -21,7 +21,7 @@ const NZD: Currency = {
 };
 
 export default {
-	title: 'Base Components/cart-checkout/totals/FooterItem',
+	title: 'Base Components/Totals/FooterItem',
 	component: FooterItem,
 	args: {
 		currency: NZD,
