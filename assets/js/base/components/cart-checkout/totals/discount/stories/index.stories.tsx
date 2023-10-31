@@ -67,7 +67,7 @@ function extractValuesFromCoupons(
 }
 
 export default {
-	title: 'Base Components/cart-checkout/totals/Discount',
+	title: 'Base Components/Totals/Discount',
 	component: Discount,
 	argTypes: {
 		currency: currencyControl,
