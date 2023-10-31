@@ -10,7 +10,7 @@ import NoticeBanner, { NoticeBannerProps } from '../';
 const availableStatus = [ 'default', 'success', 'error', 'warning', 'info' ];
 
 export default {
-	title: 'WooCommerce Blocks/@base-components/NoticeBanner',
+	title: 'Base Components/NoticeBanner',
 	argTypes: {
 		status: {
 			control: 'radio',

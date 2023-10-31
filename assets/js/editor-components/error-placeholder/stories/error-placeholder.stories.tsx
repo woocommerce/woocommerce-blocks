@@ -11,7 +11,7 @@ import { INTERACTION_TIMEOUT } from '@woocommerce/storybook-controls';
 import ErrorPlaceholder, { ErrorPlaceholderProps } from '..';
 
 export default {
-	title: 'WooCommerce Blocks/editor-components/Errors',
+	title: 'Editor Components/Errors',
 	component: ErrorPlaceholder,
 } as Meta< ErrorPlaceholderProps >;
 
