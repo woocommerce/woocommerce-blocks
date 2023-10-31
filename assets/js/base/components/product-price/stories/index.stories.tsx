@@ -25,6 +25,15 @@ export default {
 		align: 'left',
 		format: '<price/>',
 		price: 3000,
+		currency: {
+			code: 'USD',
+			symbol: '$',
+			thousandSeparator: ' ',
+			decimalSeparator: '.',
+			minorUnit: 2,
+			prefix: '$',
+			suffix: '',
+		},
 	},
 } as Meta< ProductPriceProps >;
 
