@@ -151,7 +151,7 @@ function render_dropdown( $props ) {
 
 	ob_start();
 	?>
-    <div class="wc-block-stock-filter style-dropdown" data-wc-context="<?php echo wp_json_encode( $context, JSON_NUMERIC_CHECK )?>" >
+    <div class="wc-block-stock-filter style-dropdown" data-wc-context='<?php echo wp_json_encode( $context, JSON_NUMERIC_CHECK ); ?>' >
       <div class="wc-blocks-components-form-token-field-wrapper single-selection">
         <div class="components-form-token-field" tabindex="-1">
           <label for="components-form-token-input-1" class="components-form-token-field__label">Hello</label>
