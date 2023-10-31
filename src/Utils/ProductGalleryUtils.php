@@ -129,6 +129,11 @@ class ProductGalleryUtils {
 		$image_path     = wp_get_original_image_path( $attachment_id );
 		$image_metadata = wp_get_attachment_metadata( $attachment_id );
 
+		// If image doesn't exist, we can't generate the intermediate size. Bail.
+		if ( ! isset( $image_metadata['path'] ) ) {
+			return;
+		}
+
 		/*
 		 * We want to take the minimum dimension of the image and
 		 * use that size as the crop size for the new image.
