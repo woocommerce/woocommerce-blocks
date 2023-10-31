@@ -18,10 +18,7 @@ import {
 import { AttributeSelectControls } from './attribute-select-controls';
 import { EditProps } from '../types';
 
-export const Inspector = ( {
-	attributes,
-	setAttributes,
-}: Pick< EditProps, 'attributes' | 'setAttributes' > ) => {
+export const Inspector = ( { attributes, setAttributes }: EditProps ) => {
 	const { attributeId, showCounts, queryType, displayStyle, selectType } =
 		attributes;
 	return (

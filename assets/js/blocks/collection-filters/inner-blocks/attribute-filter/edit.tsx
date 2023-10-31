@@ -58,14 +58,19 @@ import {
 import { AttributeSelectControls } from './components/attribute-select-controls';
 import { getAttributeFromId } from './utils';
 import { Inspector } from './components/inspector-controls';
+import { CheckboxList } from '@woocommerce/blocks-components';
+import Label from '@woocommerce/base-components/label';
+import FilterElementLabel from '@woocommerce/base-components/filter-element-label';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
-const Edit = ( {
-	attributes: blockAttributes,
-	setAttributes,
-	debouncedSpeak,
-}: EditProps ) => {
+const Edit = ( props: EditProps ) => {
+	const {
+		attributes: blockAttributes,
+		setAttributes,
+		debouncedSpeak,
+	} = props;
+
 	const { attributeId, queryType, isPreview } = blockAttributes;
 
 	const attributeObject = getAttributeFromId( attributeId );
@@ -112,6 +117,24 @@ const Edit = ( {
 		</BlockControls>
 	);
 
+	const AttributeCheckboxList = () => {
+		return (
+			<CheckboxList
+				onChange={ () => null }
+				options={ attributeTerms.map( ( term ) => ( {
+					label: (
+						<FilterElementLabel
+							name={ term.name }
+							count={ term.count }
+						/>
+					),
+					value: term.slug,
+				} ) ) }
+			/>
+		);
+	};
+
+	// Block rendering starts.
 	if ( Object.keys( ATTRIBUTES ).length === 0 )
 		return <NoAttributesPlaceholder />;
 
@@ -145,11 +168,8 @@ const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<Toolbar />
-			<Inspector
-				attributes={ blockAttributes }
-				setAttributes={ setAttributes }
-			/>
-			Collection Attribute Filter
+			<Inspector { ...props } />
+			<AttributeCheckboxList />
 		</div>
 	);
 };
