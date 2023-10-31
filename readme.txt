@@ -93,6 +93,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Rename the Footer with Simple Menu and Cart pattern. [11487](https://github.com/woocommerce/woocommerce-blocks/pull/11487)
 - Enhance the Hero Product Split pattern. [11505](https://github.com/woocommerce/woocommerce-blocks/pull/11505)
 - Simplify the Hero Product 3 Split pattern. [11495](https://github.com/woocommerce/woocommerce-blocks/pull/11495)
+- Improve the Centered Header Menu with Search pattern. [11304](https://github.com/woocommerce/woocommerce-blocks/pull/11304)
 
 = 11.4.2 - 2023-10-25 =
 
