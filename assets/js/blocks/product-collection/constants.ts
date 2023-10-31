@@ -40,7 +40,6 @@ export const DEFAULT_QUERY: ProductCollectionQuery = {
 	postType: 'product',
 	order: 'asc',
 	orderBy: 'title',
-	author: '',
 	search: '',
 	exclude: [],
 	inherit: null,
@@ -58,6 +57,7 @@ export const DEFAULT_ATTRIBUTES: Partial< ProductCollectionAttributes > = {
 	displayLayout: {
 		type: LayoutOptions.GRID,
 		columns: 3,
+		shrinkColumns: false,
 	},
 };
 
