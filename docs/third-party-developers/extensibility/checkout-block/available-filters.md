@@ -5,8 +5,8 @@
 -   [Cart Line Items filters](#cart-line-items-filters)
 -   [Order Summary Items filters](#order-summary-items-filters)
 -   [Totals Footer Item filter](#totals-footer-item-filter)
--   [Checkout and place order button](#checkout-and-place-order-button)
--   [Coupons](#coupons)
+-   [Checkout and place order button filters](#checkout-and-place-order-button-filters)
+-   [Coupon filters](#coupon-filters)
 -   [Additional Cart and Checkout inner block types filter](#additional-cart-and-checkout-inner-block-types-filter)
 -   [Combined filters](#combined-filters)
 -   [Troubleshooting](#troubleshooting)
@@ -47,7 +47,7 @@ The following [Totals Footer Item filter](./available-filters/totals-footer-item
 
 -   [totalLabel](./available-filters/totals-footer-item.md#totallabel)
 
-## Checkout and place order button
+## Checkout and place order button filters
 
 The following [Checkout and place order button filters](./available-filters/checkout-and-place-order-button.md) are available:
 
@@ -55,7 +55,7 @@ The following [Checkout and place order button filters](./available-filters/chec
 -   [proceedToCheckoutButtonLink](./available-filters/checkout-and-place-order-button.md#proceedtocheckoutbuttonlink)
 -   [placeOrderButtonLabel](./available-filters/checkout-and-place-order-button.md#placeorderbuttonlabel)
 
-## Coupons
+## Coupon filters
 
 The following [Coupon filters](./available-filters/coupons.md) are available:
 
