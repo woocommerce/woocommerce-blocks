@@ -45,6 +45,7 @@ interactivityStore( {
 				const { label, value } = context;
 
 				context.woocommerceDropdown.selectedItem = { label, value };
+				console.log( 'Mutated context' );
 			},
 			addHoverClass: ( { ref } ) => {
 				ref.classList.add( 'is-selected' );
