@@ -40,8 +40,15 @@ test.describe( 'Test the checkout template', async () => {
 		await expect(
 			editor.canvas.locator( 'h1:has-text("Checkout")' ).first()
 		).toBeVisible();
-		await editor.openDocumentSettingsSidebar();
-		await page.getByRole( 'button', { name: 'Edit template' } ).click();
+		await page
+			.getByRole( 'region', { name: 'Editor top bar' } )
+			.locator( 'button' )
+			.filter( { hasText: 'Cart block' } )
+			.click();
+		await page
+			.getByRole( 'option', { name: 'Edit template: Pages' } )
+			.locator( 'div' )
+			.click();
 		await expect(
 			editor.canvas.locator( 'h1:has-text("Checkout")' ).first()
 		).toBeVisible();
