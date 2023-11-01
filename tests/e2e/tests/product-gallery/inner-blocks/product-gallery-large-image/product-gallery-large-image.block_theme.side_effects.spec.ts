@@ -1,3 +1,4 @@
+import { ProductGalleryInteractivityApiContext } from './../../../../../../assets/js/blocks/product-gallery/frontend';
 /**
  * External dependencies
  */
@@ -8,6 +9,7 @@ import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
  */
 
 import { ProductGalleryPage } from '../../product-gallery.page';
+import { InteractivityApiUtils } from '@woocommerce/e2e-utils';
 const blockData = {
 	name: 'woocommerce/product-gallery-large-image',
 	selectors: {
@@ -29,6 +31,8 @@ const test = base.extend< { pageObject: ProductGalleryPage } >( {
 		await use( pageObject );
 	},
 } );
+
+const interactivityApiUtils = new InteractivityApiUtils();
 
 test.describe( `${ blockData.name }`, () => {
 	test.beforeEach( async ( { requestUtils, admin, editorUtils, editor } ) => {
@@ -148,5 +152,75 @@ test.describe( `${ blockData.name }`, () => {
 
 			await expect( styleOnHover.transform ).toBe( '' );
 		} );
+	} );
+
+	test( 'Renders correct image when selecting a product variation in the Add to Cart With Options block', async ( {
+		page,
+		editorUtils,
+		pageObject,
+	} ) => {
+		await pageObject.addProductGalleryBlock( { cleanContent: true } );
+		await pageObject.addAddToCartWithOptionsBlock();
+
+		const block = await pageObject.getMainImageBlock( {
+			page: 'editor',
+		} );
+
+		await expect( block ).toBeVisible();
+
+		await editorUtils.saveTemplate();
+
+		await page.goto( blockData.productPage, {
+			waitUntil: 'commit',
+		} );
+
+		const largeImageBlockOnFrontend = await pageObject.getMainImageBlock( {
+			page: 'frontend',
+		} );
+
+		const largeImageElement = largeImageBlockOnFrontend
+			.locator( '.wc-block-product-gallery-large-image__image-element' )
+			.locator( 'img' )
+			.locator( 'visible=true' );
+
+		console.log( { count: await largeImageElement.count() } );
+
+		await expect( largeImageElement ).toBeVisible();
+
+		const imageSourceForLargeImageElement =
+			await largeImageElement.getAttribute( 'src' );
+
+		const addToCartWithOptionsBlock =
+			await pageObject.getAddToCartWithOptionsBlock( {
+				page: 'frontend',
+			} );
+		const addToCartWithOptionsColorSelector =
+			addToCartWithOptionsBlock.getByLabel( 'Color' );
+		const addToCartWithOptionsSizeSelector =
+			addToCartWithOptionsBlock.getByLabel( 'Size' );
+
+		await addToCartWithOptionsColorSelector.selectOption( 'Green' );
+		await addToCartWithOptionsSizeSelector.selectOption( 'Medium' );
+
+		await expect( largeImageElement ).toBeHidden();
+
+		const largeImageElementAfterSelectingVariation =
+			largeImageBlockOnFrontend
+				.locator(
+					'.wc-block-product-gallery-large-image__image-element'
+				)
+				.locator( 'img' )
+				.locator( 'visible=true' );
+
+		await expect( largeImageElementAfterSelectingVariation ).toBeVisible();
+
+		const imageSourceForLargeImageElementAfterSelectingVariation =
+			await largeImageElementAfterSelectingVariation.getAttribute(
+				'src'
+			);
+
+		expect( imageSourceForLargeImageElement ).not.toEqual(
+			imageSourceForLargeImageElementAfterSelectingVariation
+		);
 	} );
 } );
