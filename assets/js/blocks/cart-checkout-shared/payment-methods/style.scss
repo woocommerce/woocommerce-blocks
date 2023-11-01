@@ -177,6 +177,7 @@
 		&::after {
 			content: none;
 			color: $universal-border-light;
+			opacity: 1 !important;
 		}
 
 		.wc-block-components-radio-control__input {
@@ -235,7 +236,7 @@
 
 		&::after {
 			color: $universal-border-light;
-
+			opacity: 1;
 		}
 	}
 
