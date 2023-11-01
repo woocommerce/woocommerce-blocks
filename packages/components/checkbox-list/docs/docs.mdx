@@ -1,0 +1,65 @@
+import { Canvas, Meta, ArgTypes } from '@storybook/blocks';
+
+import * as CheckboxListStories from '../stories/index.stories.tsx';
+
+<Meta name="Docs" of={ CheckboxListStories } />
+
+# CheckboxList
+
+A component used to show a grouped list of checkboxes.
+
+<Canvas
+	of={ CheckboxListStories.Default }
+	layout="padded"
+	className={ 'force-canvas-height' }
+/>
+
+## Design Guidelines
+
+The CheckboxList is used to display things like the ratings checkboxes on product pages or a list of product filters. It can be used whenever you need a list of checkboxes displayed neatly with the same formatting.
+
+## Development Guidelines
+
+The list of of options can have any React Node as the label. The onChange handler is specified by the wrapping element and controls what happens when any of the checkboxes are checked or unchecked.
+
+### Props
+
+<ArgTypes />
+
+### CheckboxListOptions Type
+
+Each option has the following properties:
+
+-   The `label` (required) prop is used to display a label next to the checkbox.
+-   The `value` (required) prop is used to identify each checkbox, and should be unique.
+
+### Usage example
+
+Let's say you have a list of product categories that you want to display as checkboxes. You can use the CheckboxList component to display them like this:
+
+```jsx
+import { useState } from 'react';
+import { CheckboxList } from '@woocommerce/blocks-components';
+
+// Your list of categories can come from wherever
+const categories = ['shoes', 'clothes', 'accessories'];
+
+
+// Let's say you have a ProductCategoriesList component
+export const ProductCategoriesList = (categories) => {
+
+    // Set up your state
+    const [ tickedBoxes, setTickedBoxes ] = useState( []);
+
+    // set up the onChange handler
+    const onChange = ( checkedValue) => {
+        if(tickedBoxes.includes( checkedValue)) {
+            setTickedBoxes( tickedBoxes.filter( value => value !== checkedValue ) );
+        } else {
+            setTickedBoxes( [...tickedBoxes, checkedValue] );
+        }
+    };
+
+    return <CheckboxList options={ notices } onChange={ onChange }>;
+}
+```
