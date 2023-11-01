@@ -318,7 +318,7 @@ class ProductCollection extends AbstractBlock {
 				'product_attributes'  => $product_attributes,
 				'taxonomies_query'    => $taxonomies_query,
 				'handpicked_products' => $handpicked_products,
-				'featured'            => $query['featured'],
+				'featured'            => $query['featured'] ?? false,
 			),
 			$is_exclude_applied_filters
 		);
@@ -339,7 +339,7 @@ class ProductCollection extends AbstractBlock {
 		$on_sale_query       = $this->get_on_sale_products_query( $query['on_sale'] );
 		$stock_query         = $this->get_stock_status_query( $query['stock_status'] );
 		$visibility_query    = is_array( $query['stock_status'] ) ? $this->get_product_visibility_query( $stock_query ) : [];
-		$featured_query      = $this->get_featured_query( $query['featured'] );
+		$featured_query      = $this->get_featured_query( $query['featured'] ?? false );
 		$attributes_query    = $this->get_product_attributes_query( $query['product_attributes'] );
 		$taxonomies_query    = $query['taxonomies_query'] ?? [];
 		$tax_query           = $this->merge_tax_queries( $visibility_query, $attributes_query, $taxonomies_query, $featured_query );
