@@ -1,55 +1,22 @@
 /**
  * External dependencies
  */
-import { sort } from 'fast-sort';
-import { __, sprintf, _n } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
+import { BlockControls, useBlockProps } from '@wordpress/block-editor';
+import { getSetting } from '@woocommerce/settings';
+import { useCollection } from '@woocommerce/base-context/hooks';
+import { AttributeSetting, AttributeTerm } from '@woocommerce/types';
 import {
-	InspectorControls,
-	BlockControls,
-	useBlockProps,
-} from '@wordpress/block-editor';
-import { Icon, category, external } from '@wordpress/icons';
-import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
-import { getAdminLink, getSetting } from '@woocommerce/settings';
-import BlockTitle from '@woocommerce/editor-components/block-title';
-import classnames from 'classnames';
-import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
-import {
-	useCollection,
-	useQueryStateByKey,
-	useQueryStateByContext,
-	useCollectionData,
-} from '@woocommerce/base-context/hooks';
-import {
-	AttributeSetting,
-	AttributeQuery,
-	AttributeTerm,
-	isAttributeQueryCollection,
-	isBoolean,
-	isString,
-	objectHasProp,
-} from '@woocommerce/types';
-import {
-	Placeholder,
 	Disabled,
-	PanelBody,
-	ToggleControl,
 	Button,
 	ToolbarGroup,
-	Notice,
 	withSpokenMessages,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import Block from './block';
-import { UpgradeNotice } from '../filter-wrapper/upgrade';
 import type { EditProps } from './types';
 import {
 	NoAttributesPlaceholder,
@@ -58,10 +25,9 @@ import {
 import { AttributeSelectControls } from './components/attribute-select-controls';
 import { getAttributeFromId } from './utils';
 import { Inspector } from './components/inspector-controls';
-import { CheckboxList } from '@woocommerce/blocks-components';
-import Label from '@woocommerce/base-components/label';
-import FilterElementLabel from '@woocommerce/base-components/filter-element-label';
 import { AttributeCheckboxList } from './components/attribute-checkbox-list';
+import { AttributeDropdown } from './components/attribute-dropdown';
+import './style.scss';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
@@ -72,7 +38,7 @@ const Edit = ( props: EditProps ) => {
 		debouncedSpeak,
 	} = props;
 
-	const { attributeId, queryType, isPreview } = blockAttributes;
+	const { attributeId, queryType, isPreview, displayStyle } = blockAttributes;
 
 	const attributeObject = getAttributeFromId( attributeId );
 
@@ -156,7 +122,15 @@ const Edit = ( props: EditProps ) => {
 				<AttributeSelectPlaceholder />
 			) : (
 				<Disabled>
-					<AttributeCheckboxList attributeTerms={ attributeTerms } />
+					{ displayStyle === 'dropdown' ? (
+						<AttributeDropdown
+							attributeObject={ attributeObject }
+						/>
+					) : (
+						<AttributeCheckboxList
+							attributeTerms={ attributeTerms }
+						/>
+					) }{ ' ' }
 				</Disabled>
 			) }
 		</div>

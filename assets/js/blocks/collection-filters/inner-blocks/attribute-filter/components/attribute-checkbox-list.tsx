@@ -10,6 +10,7 @@ type Props = {
 };
 export const AttributeCheckboxList = ( { attributeTerms }: Props ) => (
 	<CheckboxList
+		className="attribute-checkbox-list"
 		onChange={ () => null }
 		options={ attributeTerms.map( ( term ) => ( {
 			label: (

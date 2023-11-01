@@ -3,41 +3,15 @@
  */
 import { sort } from 'fast-sort';
 import { __, sprintf, _n } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
-import {
-	InspectorControls,
-	BlockControls,
-	useBlockProps,
-} from '@wordpress/block-editor';
-import { Icon, category, external } from '@wordpress/icons';
 import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
-import { getAdminLink, getSetting } from '@woocommerce/settings';
-import BlockTitle from '@woocommerce/editor-components/block-title';
-import classnames from 'classnames';
+import { getSetting } from '@woocommerce/settings';
 import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
 import { AttributeSetting } from '@woocommerce/types';
-import {
-	Placeholder,
-	Disabled,
-	PanelBody,
-	ToggleControl,
-	Button,
-	ToolbarGroup,
-	Notice,
-	withSpokenMessages,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
-} from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import Block from './block';
-import type { EditProps, GetNotice } from './types';
-import { UpgradeNotice } from '../filter-wrapper/upgrade';
-import { AttributesPlaceholder } from './placeholder';
+import type { EditProps } from '../types';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
