@@ -23,21 +23,12 @@ type Store = {
 };
 
 interactivityStore( {
-	state: {
-		woocommerceDropdown: {
-			selectedItem: {
-				label: '',
-				value: '',
-			},
-			isOpen: false,
-		},
-	},
 	selectors: {
 		woocommerceDropdown: {
-			isSelected: ( { state, context } ) => {
+			isSelected: ( { context } ) => {
 				const { value } = context;
 
-				return state.woocommerceDropdown.selectedItem.value === value;
+				return context.woocommerceDropdown.selectedItem.value === value;
 			},
 		},
 	},
@@ -50,10 +41,21 @@ interactivityStore( {
 
 				woocommerceDropdown.isOpen = ! woocommerceDropdown.isOpen;
 			},
-			selectStockStatus: ( { state, context } ) => {
+			selectStockStatus: ( { context } ) => {
 				const { label, value } = context;
-				state.woocommerceDropdown.selectedItem.label = label;
-				state.woocommerceDropdown.selectedItem.value = value;
+
+				context.woocommerceDropdown.selectedItem = { label, value };
+			},
+			addHoverClass: ( { ref } ) => {
+				ref.classList.add( 'is-selected' );
+			},
+			removeHoverClass: ( { ref, context } ) => {
+				if (
+					context.value !==
+					context.woocommerceDropdown.selectedItem.value
+				) {
+					ref.classList.remove( 'is-selected' );
+				}
 			},
 		},
 	},
