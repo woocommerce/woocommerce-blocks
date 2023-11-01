@@ -61,6 +61,7 @@ import { Inspector } from './components/inspector-controls';
 import { CheckboxList } from '@woocommerce/blocks-components';
 import Label from '@woocommerce/base-components/label';
 import FilterElementLabel from '@woocommerce/base-components/filter-element-label';
+import { AttributeCheckboxList } from './components/attribute-checkbox-list';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
@@ -117,59 +118,47 @@ const Edit = ( props: EditProps ) => {
 		</BlockControls>
 	);
 
-	const AttributeCheckboxList = () => {
-		return (
-			<CheckboxList
-				onChange={ () => null }
-				options={ attributeTerms.map( ( term ) => ( {
-					label: (
-						<FilterElementLabel
-							name={ term.name }
-							count={ term.count }
-						/>
-					),
-					value: term.slug,
-				} ) ) }
-			/>
-		);
-	};
+	const AttributeSelectPlaceholder = () => (
+		<AttributesPlaceholder>
+			<div className="wc-block-attribute-filter__selection">
+				<AttributeSelectControls
+					isCompact={ false }
+					attributeId={ attributeId }
+					setAttributes={ setAttributes }
+				/>
+				<Button
+					isPrimary
+					onClick={ () => {
+						setIsEditing( false );
+						debouncedSpeak(
+							__(
+								'Now displaying a preview of the Filter Products by Attribute block.',
+								'woo-gutenberg-products-block'
+							)
+						);
+					} }
+				>
+					{ __( 'Done', 'woo-gutenberg-products-block' ) }
+				</Button>
+			</div>
+		</AttributesPlaceholder>
+	);
 
 	// Block rendering starts.
 	if ( Object.keys( ATTRIBUTES ).length === 0 )
 		return <NoAttributesPlaceholder />;
 
-	if ( isEditing )
-		return (
-			<AttributesPlaceholder>
-				<div className="wc-block-attribute-filter__selection">
-					<AttributeSelectControls
-						isCompact={ false }
-						attributeId={ attributeId }
-						setAttributes={ setAttributes }
-					/>
-					<Button
-						isPrimary
-						onClick={ () => {
-							setIsEditing( false );
-							debouncedSpeak(
-								__(
-									'Now displaying a preview of the Filter Products by Attribute block.',
-									'woo-gutenberg-products-block'
-								)
-							);
-						} }
-					>
-						{ __( 'Done', 'woo-gutenberg-products-block' ) }
-					</Button>
-				</div>
-			</AttributesPlaceholder>
-		);
-
 	return (
 		<div { ...blockProps }>
 			<Toolbar />
 			<Inspector { ...props } />
-			<AttributeCheckboxList />
+			{ isEditing ? (
+				<AttributeSelectPlaceholder />
+			) : (
+				<Disabled>
+					<AttributeCheckboxList attributeTerms={ attributeTerms } />
+				</Disabled>
+			) }
 		</div>
 	);
 };
