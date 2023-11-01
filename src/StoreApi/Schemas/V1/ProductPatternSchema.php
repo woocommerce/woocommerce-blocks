@@ -4,20 +4,20 @@ namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 /**
  * OrderSchema class.
  */
-class PatternsSchema extends AbstractSchema {
+class ProductPatternSchema extends AbstractSchema {
 	/**
 	 * The schema item name.
 	 *
 	 * @var string
 	 */
-	protected $title = 'patterns';
+	protected $title = 'product-patterns';
 
 	/**
 	 * The schema item identifier.
 	 *
 	 * @var string
 	 */
-	const IDENTIFIER = 'patterns';
+	const IDENTIFIER = 'product-patterns';
 
 	/**
 	 * Patterns schema properties.
@@ -37,9 +37,7 @@ class PatternsSchema extends AbstractSchema {
 	 */
 	public function get_item_response( $item ) {
 		return [
-			'ai_content_generated'     => true,
-			'product_content'          => $item['product_content'],
-			'dummy_products_to_update' => $item['dummy_products_to_update'],
+			'ai_content_generated' => true,
 		];
 	}
 }

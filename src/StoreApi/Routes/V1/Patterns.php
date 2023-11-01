@@ -148,6 +148,15 @@ class Patterns extends AbstractRoute {
 
 			$populate_products = ( new ProductUpdater() )->generate_content( $ai_connection, $token, $images, $business_description );
 
+			$product_content          = $populate_products['product_content'];
+			$dummy_products_to_update = $populate_products['dummy_products_to_update'];
+
+			$item = array(
+				'ai_content_generated'     => true,
+				'product_content'          => $product_content,
+				'dummy_products_to_update' => $dummy_products_to_update,
+			);
+
 			if ( is_wp_error( $populate_products ) ) {
 				$response = $this->error_to_response( $populate_products );
 			}
@@ -157,15 +166,6 @@ class Patterns extends AbstractRoute {
 			}
 		}
 
-		if ( ! isset( $response ) ) {
-			$response = $this->prepare_item_for_response(
-				[
-					'ai_content_generated' => true,
-				],
-				$request
-			);
-		}
-
-		return rest_ensure_response( $response );
+		return rest_ensure_response( $item );
 	}
 }
