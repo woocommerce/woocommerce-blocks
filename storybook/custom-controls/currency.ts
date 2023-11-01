@@ -35,6 +35,6 @@ export const currenciesAPIShape: Record< string, CurrencyResponse > =
 
 export const currencyControl = {
 	control: 'select',
-	options: currencies,
-	mapping: Object.keys( currencies ),
+	options: Object.keys( currencies ),
+	mapping: currencies,
 };

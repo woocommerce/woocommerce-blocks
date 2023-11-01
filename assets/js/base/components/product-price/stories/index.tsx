@@ -2,7 +2,7 @@
  * External dependencies
  */
 import type { Story, Meta } from '@storybook/react';
-import { currencyControl } from '@woocommerce/storybook-controls';
+import { currencies, currencyControl } from '@woocommerce/storybook-controls';
 
 /**
  * Internal dependencies
@@ -23,6 +23,7 @@ export default {
 	},
 	args: {
 		align: 'left',
+		currency: currencies.EUR,
 		format: '<price/>',
 		price: 3000,
 	},
