@@ -22,7 +22,6 @@ module.exports = {
 		reactDocgen: 'react-docgen-typescript-plugin',
 	},
 	docs: {
-		//👇 See the table below for the list of supported options
 		autodocs: true,
 		defaultName: 'Docs',
 	},
