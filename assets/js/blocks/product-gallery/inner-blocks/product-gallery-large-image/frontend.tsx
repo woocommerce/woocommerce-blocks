@@ -6,7 +6,10 @@ import { store as interactivityStore } from '@woocommerce/interactivity';
 /**
  * Internal dependencies
  */
-import { ProductGallerySelectors } from '../../frontend';
+import {
+	ProductGalleryInteractivityApiContext,
+	ProductGallerySelectors,
+} from '../../frontend';
 
 type Context = {
 	woocommerce: {
@@ -20,7 +23,7 @@ type Context = {
 			| undefined;
 		isDialogOpen: boolean;
 	};
-};
+} & ProductGalleryInteractivityApiContext;
 
 type Store = {
 	context: Context;
@@ -49,6 +52,13 @@ const productGalleryLargeImageSelectors = {
 
 let isDialogStatusChanged = false;
 
+const resetImageZoom = ( context: Context ) => {
+	if ( context.woocommerce.styles ) {
+		context.woocommerce.styles.transform = `scale(1.0)`;
+		context.woocommerce.styles[ 'transform-origin' ] = '';
+	}
+};
+
 interactivityStore(
 	// @ts-expect-error: Store function isn't typed.
 	{
@@ -62,6 +72,11 @@ interactivityStore(
 					event: MouseEvent;
 					context: Context;
 				} ) => {
+					if ( context.woocommerce.mouseIsOverPreviousOrNextButton ) {
+						resetImageZoom( context );
+						return;
+					}
+
 					if ( ( event.target as HTMLElement ).tagName === 'IMG' ) {
 						const element = event.target as HTMLElement;
 						const percentageX =
@@ -69,16 +84,17 @@ interactivityStore(
 						const percentageY =
 							( event.offsetY / element.clientHeight ) * 100;
 
-						context.woocommerce.styles.transform = `scale(1.3)`;
+						if ( context.woocommerce.styles ) {
+							context.woocommerce.styles.transform = `scale(1.3)`;
 
-						context.woocommerce.styles[
-							'transform-origin'
-						] = `${ percentageX }% ${ percentageY }%`;
+							context.woocommerce.styles[
+								'transform-origin'
+							] = `${ percentageX }% ${ percentageY }%`;
+						}
 					}
 				},
 				handleMouseLeave: ( { context }: { context: Context } ) => {
-					context.woocommerce.styles.transform = `scale(1.0)`;
-					context.woocommerce.styles[ 'transform-origin' ] = '';
+					resetImageZoom( context );
 				},
 				handleClick: ( {
 					context,

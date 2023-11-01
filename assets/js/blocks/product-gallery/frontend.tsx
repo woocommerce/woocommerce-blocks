@@ -7,12 +7,13 @@ interface State {
 	[ key: string ]: unknown;
 }
 
-interface Context {
+export interface ProductGalleryInteractivityApiContext {
 	woocommerce: {
 		selectedImage: string;
 		imageId: string;
 		visibleImagesIds: string[];
 		isDialogOpen: boolean;
+		mouseIsOverPreviousOrNextButton: boolean;
 		productId: string;
 	};
 }
@@ -29,7 +30,9 @@ export interface ProductGallerySelectors {
 interface Actions {
 	woocommerce: {
 		thumbnails: {
-			handleClick: ( context: Context ) => void;
+			handleClick: (
+				context: ProductGalleryInteractivityApiContext
+			) => void;
 		};
 		handlePreviousImageButtonClick: {
 			( store: Store ): void;
@@ -42,7 +45,7 @@ interface Actions {
 
 interface Store {
 	state: State;
-	context: Context;
+	context: ProductGalleryInteractivityApiContext;
 	selectors: ProductGallerySelectors;
 	actions: Actions;
 	ref?: HTMLElement;
@@ -203,6 +206,14 @@ interactivityApiStore( {
 				);
 				context.woocommerce.selectedImage =
 					context.woocommerce.visibleImagesIds[ previousImageIndex ];
+			},
+			handleMouseEnterPreviousOrNextButton: ( store: Store ) => {
+				store.context.woocommerce.mouseIsOverPreviousOrNextButton =
+					true;
+			},
+			handleMouseLeavePreviousOrNextButton: ( store: Store ) => {
+				store.context.woocommerce.mouseIsOverPreviousOrNextButton =
+					false;
 			},
 		},
 	},
