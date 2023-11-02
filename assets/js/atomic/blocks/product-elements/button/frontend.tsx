@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { store, getContext } from '@woocommerce/interactivity';
+import { store, getContext as getContextFn } from '@woocommerce/interactivity';
 import { select, subscribe } from '@wordpress/data';
 import { dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
@@ -10,7 +10,7 @@ import { Cart } from '@woocommerce/type-defs/cart';
 // import { createRoot } from '@wordpress/element';
 // import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
-export interface Context {
+interface Context {
 	isLoading: boolean;
 	addToCartText: string;
 	productId: number;
@@ -26,7 +26,7 @@ enum AnimationStatus {
 	SLIDE_IN = 'SLIDE-IN',
 }
 
-export interface Store {
+interface Store {
 	state: {
 		cart?: Cart;
 		inTheCartText?: string;
@@ -60,18 +60,20 @@ const getTextButton = (
 	return inTheCart.replace( '###', numberOfItems.toString() );
 };
 
+const getContext = getContextFn< Context >;
+
 const { state } = store< Store >( 'woocommerce/product-button', {
 	state: {
 		get slideInAnimation() {
-			const { animationStatus } = getContext< Context >();
+			const { animationStatus } = getContext();
 			return animationStatus === AnimationStatus.SLIDE_IN;
 		},
 		get slideOutAnimation() {
-			const { animationStatus } = getContext< Context >();
+			const { animationStatus } = getContext();
 			return animationStatus === AnimationStatus.SLIDE_OUT;
 		},
 		get numberOfItemsInTheCart() {
-			const { productId } = getContext< Context >();
+			const { productId } = getContext();
 			const product = getProductById( state.cart, productId );
 			return product?.quantity || 0;
 		},
@@ -79,7 +81,7 @@ const { state } = store< Store >( 'woocommerce/product-button', {
 			return !! state.cart;
 		},
 		get addToCartText(): string {
-			const context = getContext< Context >();
+			const context = getContext();
 			// We use the temporary number of items when there's no animation, or the
 			// second part of the animation hasn't started.
 			if (
@@ -99,17 +101,17 @@ const { state } = store< Store >( 'woocommerce/product-button', {
 			);
 		},
 		get displayViewCart(): boolean {
-			const context = getContext< Context >();
-			if ( ! context.displayViewCart ) return false;
+			const { displayViewCart, temporaryNumberOfItems } = getContext();
+			if ( ! displayViewCart ) return false;
 			if ( ! state.hasCartLoaded ) {
-				return context.temporaryNumberOfItems > 0;
+				return temporaryNumberOfItems > 0;
 			}
 			return state.numberOfItemsInTheCart > 0;
 		},
 	},
 	actions: {
 		*addToCart() {
-			const context = getContext< Context >();
+			const context = getContext();
 			const { productId, quantityToAdd } = context;
 
 			context.isLoading = true;
@@ -131,7 +133,7 @@ const { state } = store< Store >( 'woocommerce/product-button', {
 			}
 		},
 		handleAnimationEnd: ( event: AnimationEvent ) => {
-			const context = getContext< Context >();
+			const context = getContext();
 			if ( event.animationName === 'slideOut' ) {
 				// When the first part of the animation (slide-out) ends, we move
 				// to the second part (slide-in).
@@ -147,7 +149,7 @@ const { state } = store< Store >( 'woocommerce/product-button', {
 	},
 	callbacks: {
 		syncTemporaryNumberOfItemsOnLoad: () => {
-			const context = getContext< Context >();
+			const context = getContext();
 			// If the cart has loaded when we instantiate this element, we sync
 			// the temporary number of items with the number of items in the cart
 			// to avoid triggering the animation. We do this only once, but we
@@ -157,7 +159,7 @@ const { state } = store< Store >( 'woocommerce/product-button', {
 			}
 		},
 		startAnimation: () => {
-			const context = getContext< Context >();
+			const context = getContext();
 			// We start the animation if the cart has loaded, the temporary number
 			// of items is out of sync with the number of items in the cart, the
 			// button is not loading (because that means the user started the
