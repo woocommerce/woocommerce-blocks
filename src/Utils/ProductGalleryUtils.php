@@ -129,8 +129,8 @@ class ProductGalleryUtils {
 		$image_path     = wp_get_original_image_path( $attachment_id );
 		$image_metadata = wp_get_attachment_metadata( $attachment_id );
 
-		// If image doesn't exist, we can't generate the intermediate size. Bail.
-		if ( ! isset( $image_metadata['path'] ) ) {
+		// If image sizes are not available. Bail.
+		if ( ! isset( $image_metadata['width'], $image_metadata['height'] ) ) {
 			return;
 		}
 
@@ -138,8 +138,25 @@ class ProductGalleryUtils {
 		 * We want to take the minimum dimension of the image and
 		 * use that size as the crop size for the new image.
 		 */
-		$min_size                         = min( $image_metadata['width'], $image_metadata['height'] );
-		$new_image_metadata               = image_make_intermediate_size( $image_path, $min_size, $min_size, true );
+		$min_size = min( $image_metadata['width'], $image_metadata['height'] );
+
+		/*
+		 * By default WordPress does not create a new intermediate image
+		 * if the ratio is off by 1 pixel i.e. 500x501 image.
+		 * We need to allow discrepancies of 1 pixel to proceed with the cropping
+		 * so it stays consistent.
+		 */
+		add_filter( 'wp_image_resize_identical_dimensions', '__return_true' );
+		$new_image_metadata = image_make_intermediate_size( $image_path, $min_size, $min_size, true );
+
+		// Let's clean up after ourselves and remove the filter.
+		remove_filter( 'wp_image_resize_identical_dimensions', '__return_true' );
+
+		// Bail if new image metadata is not generated.
+		if ( ! $new_image_metadata ) {
+			return;
+		}
+
 		$image_metadata['sizes'][ $size ] = $new_image_metadata;
 
 		wp_update_attachment_metadata( $attachment_id, $image_metadata );
