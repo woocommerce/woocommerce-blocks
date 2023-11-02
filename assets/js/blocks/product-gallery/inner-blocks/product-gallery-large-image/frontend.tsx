@@ -72,25 +72,28 @@ interactivityStore(
 					event: MouseEvent;
 					context: Context;
 				} ) => {
-					if ( context.woocommerce.mouseIsOverPreviousOrNextButton ) {
+					const target = event.target as HTMLElement;
+					const isMouseEventFromLargeImage =
+						target.classList.contains(
+							'wc-block-woocommerce-product-gallery-large-image__image'
+						);
+					if ( ! isMouseEventFromLargeImage ) {
 						resetImageZoom( context );
 						return;
 					}
 
-					if ( ( event.target as HTMLElement ).tagName === 'IMG' ) {
-						const element = event.target as HTMLElement;
-						const percentageX =
-							( event.offsetX / element.clientWidth ) * 100;
-						const percentageY =
-							( event.offsetY / element.clientHeight ) * 100;
+					const element = event.target as HTMLElement;
+					const percentageX =
+						( event.offsetX / element.clientWidth ) * 100;
+					const percentageY =
+						( event.offsetY / element.clientHeight ) * 100;
 
-						if ( context.woocommerce.styles ) {
-							context.woocommerce.styles.transform = `scale(1.3)`;
+					if ( context.woocommerce.styles ) {
+						context.woocommerce.styles.transform = `scale(1.3)`;
 
-							context.woocommerce.styles[
-								'transform-origin'
-							] = `${ percentageX }% ${ percentageY }%`;
-						}
+						context.woocommerce.styles[
+							'transform-origin'
+						] = `${ percentageX }% ${ percentageY }%`;
 					}
 				},
 				handleMouseLeave: ( { context }: { context: Context } ) => {

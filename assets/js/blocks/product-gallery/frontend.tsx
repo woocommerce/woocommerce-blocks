@@ -13,7 +13,6 @@ export interface ProductGalleryInteractivityApiContext {
 		imageId: string;
 		visibleImagesIds: string[];
 		isDialogOpen: boolean;
-		mouseIsOverPreviousOrNextButton: boolean;
 		productId: string;
 	};
 }
@@ -206,14 +205,6 @@ interactivityApiStore( {
 				);
 				context.woocommerce.selectedImage =
 					context.woocommerce.visibleImagesIds[ previousImageIndex ];
-			},
-			handleMouseEnterPreviousOrNextButton: ( store: Store ) => {
-				store.context.woocommerce.mouseIsOverPreviousOrNextButton =
-					true;
-			},
-			handleMouseLeavePreviousOrNextButton: ( store: Store ) => {
-				store.context.woocommerce.mouseIsOverPreviousOrNextButton =
-					false;
 			},
 		},
 	},
