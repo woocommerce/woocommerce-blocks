@@ -109,22 +109,6 @@ class ProductUpdater {
 			'product_content'          => $product_content,
 			'dummy_products_to_update' => $dummy_products_to_update,
 		);
-
-		// if ( is_null( $product_content ) ) {
-		// $this->update_dummy_products( $dummy_products_to_update, $products_information_list );
-
-		// return new \WP_Error( 'invalid_json', __( 'The response from the AI service is not a valid JSON.', 'woo-gutenberg-products-block' ) );
-		// }
-
-		// // This is required to allow the usage of the media_sideload_image function outside the context of /wp-admin/.
-		// // See https://developer.wordpress.org/reference/functions/media_sideload_image/ for more details.
-		// require_once ABSPATH . 'wp-admin/includes/media.php';
-		// require_once ABSPATH . 'wp-admin/includes/file.php';
-		// require_once ABSPATH . 'wp-admin/includes/image.php';
-
-		// $this->update_dummy_products( $dummy_products_to_update, $product_content );
-
-		// return true;
 	}
 
 	/**
@@ -279,14 +263,14 @@ class ProductUpdater {
 			return;
 		}
 
-		// require_once ABSPATH . 'wp-admin/includes/media.php';
-		// require_once ABSPATH . 'wp-admin/includes/file.php';
-		// require_once ABSPATH . 'wp-admin/includes/image.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 
 		// Since the media_sideload_image function is expensive and can take longer to complete
 		// the process of downloading the external image and uploading it to the media library,
 		// here we are increasing the time limit and the memory limit to avoid any issues.
-		set_time_limit( 60 );
+		set_time_limit( 150 );
 		wp_raise_memory_limit();
 
 		$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );

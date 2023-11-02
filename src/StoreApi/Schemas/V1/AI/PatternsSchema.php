@@ -1,23 +1,25 @@
 <?php
-namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
+namespace Automattic\WooCommerce\StoreApi\Schemas\V1\AI;
+
+use Automattic\WooCommerce\StoreApi\Schemas\V1\AbstractSchema;
 
 /**
- * OrderSchema class.
+ * PatternSchema class.
  */
-class ProductPatternSchema extends AbstractSchema {
+class PatternsSchema extends AbstractSchema {
 	/**
 	 * The schema item name.
 	 *
 	 * @var string
 	 */
-	protected $title = 'product-patterns';
+	protected $title = 'patterns';
 
 	/**
 	 * The schema item identifier.
 	 *
 	 * @var string
 	 */
-	const IDENTIFIER = 'product-patterns';
+	const IDENTIFIER = 'patterns';
 
 	/**
 	 * Patterns schema properties.
