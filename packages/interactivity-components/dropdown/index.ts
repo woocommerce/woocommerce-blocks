@@ -41,11 +41,11 @@ interactivityStore( {
 
 				woocommerceDropdown.isOpen = ! woocommerceDropdown.isOpen;
 			},
-			selectStockStatus: ( { context } ) => {
+			selectDropdownItem: ( { context } ) => {
 				const { label, value } = context;
 
 				context.woocommerceDropdown.selectedItem = { label, value };
-				console.log( 'Mutated context' );
+				console.log( 'Mutated context!' );
 			},
 			addHoverClass: ( { ref } ) => {
 				ref.classList.add( 'is-selected' );

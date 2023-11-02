@@ -51,7 +51,7 @@ static function render( $props ) {
             ?>
               <li 
                 role="option" data-wc-class--is-selected="selectors.woocommerceDropdown.isSelected" 
-                data-wc-on--click="actions.woocommerceDropdown.selectStockStatus" 
+                data-wc-on--click="actions.woocommerceDropdown.selectDropdownItem" 
                 data-wc-on--mouseover="actions.woocommerceDropdown.addHoverClass" 
                 data-wc-on--mouseout="actions.woocommerceDropdown.removeHoverClass" 
                 data-wc-context='<?php echo $context ?>' 
