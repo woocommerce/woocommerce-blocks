@@ -33,8 +33,10 @@ use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductAttributeTemplate;
 use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Internal\Features\FeaturesController;
+use Automattic\WooCommerce\Internal\Orders\SourceAttributionController;
 use Automattic\WooCommerce\StoreApi\RoutesController;
 use Automattic\WooCommerce\StoreApi\SchemaController;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
@@ -135,6 +137,7 @@ class Bootstrap {
 		$this->container->get( ShippingController::class )->init();
 		$this->container->get( TasksController::class )->init();
 		$this->container->get( JetpackWooCommerceAnalytics::class )->init();
+		$this->container->get( OrderSourceAttribution::class )->init();
 
 		// Load assets in admin and on the frontend.
 		if ( ! $is_rest ) {
@@ -162,11 +165,6 @@ class Bootstrap {
 			$this->container->get( ArchiveProductTemplatesCompatibility::class )->init();
 			$this->container->get( SingleProductTemplateCompatibility::class )->init();
 			$this->container->get( Notices::class )->init();
-		}
-
-		// Load assets on frontend only.
-		if ( ! $is_rest && ! is_admin() ) {
-			$this->container->get( OrderSourceAttribution::class )->init();
 		}
 	}
 
@@ -411,10 +409,12 @@ class Bootstrap {
 		$this->container->register(
 			OrderSourceAttribution::class,
 			function( Container $container ) {
-				$features_controller = wc_get_container()->get( FeaturesController::class );
-				$asset_api           = $container->get( AssetApi::class );
-
-				return new OrderSourceAttribution( $asset_api, $features_controller );
+				return new OrderSourceAttribution(
+					$container->get( AssetApi::class ),
+					$container->get( ExtendSchema::class ),
+					wc_get_container()->get( FeaturesController::class ),
+					wc_get_container()->get( SourceAttributionController::class )
+				);
 			}
 		);
 
