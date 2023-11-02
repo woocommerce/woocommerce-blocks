@@ -3,8 +3,10 @@
  */
 import { store, getContext } from '@woocommerce/interactivity';
 import { select, subscribe } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { Cart } from '@woocommerce/type-defs/cart';
+
 // import { createRoot } from '@wordpress/element';
 // import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
@@ -38,7 +40,6 @@ export interface Store {
 	actions: {
 		addToCart: () => void;
 		handleAnimationEnd: ( event: AnimationEvent ) => void;
-		__addToCart: () => void;
 	};
 	callbacks: {
 		startAnimation: () => void;
@@ -59,7 +60,7 @@ const getTextButton = (
 	return inTheCart.replace( '###', numberOfItems.toString() );
 };
 
-const { state, actions } = store< Store >( 'woo', {
+const { state } = store< Store >( 'woocommerce/product-button', {
 	state: {
 		get slideInAnimation() {
 			const { animationStatus } = getContext< Context >();
@@ -108,8 +109,26 @@ const { state, actions } = store< Store >( 'woo', {
 	},
 	actions: {
 		*addToCart() {
-			yield import( './frontend-add-to-cart' );
-			yield actions.__addToCart();
+			const context = getContext< Context >();
+			const { productId, quantityToAdd } = context;
+
+			context.isLoading = true;
+
+			try {
+				yield dispatch( storeKey ).addItemToCart(
+					productId,
+					quantityToAdd
+				);
+
+				// After the cart is updated, sync the temporary number of items again.
+				context.temporaryNumberOfItems = state.numberOfItemsInTheCart;
+			} catch ( error ) {
+				// eslint-disable-next-line no-console
+				console.error( error );
+			} finally {
+				context.displayViewCart = true;
+				context.isLoading = false;
+			}
 		},
 		handleAnimationEnd: ( event: AnimationEvent ) => {
 			const context = getContext< Context >();
@@ -172,17 +191,4 @@ requestIdleCallback( () => {
 	if ( ! state.hasCartLoaded ) {
 		select( storeKey ).getCartData();
 	}
-} );
-
-interface WooTestCtx {
-	emoji: string;
-}
-
-store( 'woo-test', {
-	state: {
-		get addToCartText(): string {
-			const ctx = getContext< WooTestCtx >();
-			return `${ state.addToCartText } ${ ctx.emoji }`;
-		},
-	},
 } );

@@ -109,7 +109,7 @@ class ProductButton extends AbstractBlock {
 			);
 
 			wc_initial_state(
-				'woo',
+				'woocommerce/product-button',
 				array(
 					'inTheCartText' => sprintf(
 						/* translators: %s: product number. */
@@ -165,7 +165,7 @@ class ProductButton extends AbstractBlock {
 			}
 
 			$interactive = array(
-				'namespace' => 'woo',
+				'namespace' => 'woocommerce/product-button',
 			);
 
 			$div_directives = '
@@ -179,8 +179,7 @@ class ProductButton extends AbstractBlock {
 			';
 
 			$span_button_directives = '
-				data-wc-context=\'woo-test::{ "emoji": "💰" }\'
-				data-wc-text="woo-test::state.addToCartText"
+				data-wc-text="state.addToCartText"
 				data-wc-class--wc-block-slide-in="state.slideInAnimation"
 				data-wc-class--wc-block-slide-out="state.slideOutAnimation"
 				data-wc-on--animationend="actions.handleAnimationEnd"
