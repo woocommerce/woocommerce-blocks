@@ -32,16 +32,34 @@ static function render( $props ) {
 
   $change_effect = $props['on_change_effect'] ?? '';
 
+  $dropdown_context = wp_json_encode( $context, JSON_NUMERIC_CHECK );
+
 	ob_start();
 	?>
-  <div class="wc-block-stock-filter style-dropdown" data-wc-effect="<?php echo $change_effect; ?>" data-wc-context='<?php echo wp_json_encode( $context, JSON_NUMERIC_CHECK ); ?>' >
+  <div class="wc-block-stock-filter style-dropdown" data-wc-effect="<?php echo $change_effect; ?>" data-wc-context='<?php echo $dropdown_context ?>' >
     <div class="wc-blocks-components-form-token-field-wrapper single-selection" >
       <div class="components-form-token-field" tabindex="-1">
-        <div class="components-form-token-field__input-container" data-wc-class--is-active="context.woocommerceDropdown.isOpen" tabindex="-1" data-wc-on--click="actions.woocommerceDropdown.toggleIsOpen" >
+        <div class="components-form-token-field__input-container" 
+             data-wc-class--is-active="context.woocommerceDropdown.isOpen" 
+             tabindex="-1" 
+             data-wc-on--click="actions.woocommerceDropdown.toggleIsOpen" 
+         >
           <input id="components-form-token-input-1" type="text" autocomplete="off" placeholder="<?php echo esc_attr($placeholder) ?>" class="components-form-token-field__input" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-describedby="components-form-token-suggestions-howto-1" value="">
           <ul data-wc-bind--hidden="!context.woocommerceDropdown.isOpen" class="components-form-token-field__suggestions-list" id="components-form-token-suggestions-1" role="listbox">
-            <?php foreach ( $items as $item ) : ?>					
-              <li role="option" data-wc-class--is-selected="selectors.woocommerceDropdown.isSelected" data-wc-on--click="actions.woocommerceDropdown.selectStockStatus"  data-wc-on--mouseover="actions.woocommerceDropdown.addHoverClass" data-wc-on--mouseout="actions.woocommerceDropdown.removeHoverClass" data-wc-context='{ "label": "<?php echo $item['label'] ?>", "value": "<?php echo $item['value']; ?>" }' class="components-form-token-field__suggestion" data-wc-bind--aria-selected="selectors.woocommerceDropdown.isSelected"><?php echo $item['label']; ?></li>
+            <?php foreach ( $items as $item ) : 
+              $context = json_encode($item, JSON_NUMERIC_CHECK);
+            ?>
+              <li 
+                role="option" data-wc-class--is-selected="selectors.woocommerceDropdown.isSelected" 
+                data-wc-on--click="actions.woocommerceDropdown.selectStockStatus" 
+                data-wc-on--mouseover="actions.woocommerceDropdown.addHoverClass" 
+                data-wc-on--mouseout="actions.woocommerceDropdown.removeHoverClass" 
+                data-wc-context='<?php echo $context ?>' 
+                class="components-form-token-field__suggestion" 
+                data-wc-bind--aria-selected="selectors.woocommerceDropdown.isSelected"
+              >
+                <?php echo $item['label']; ?>
+              </li>
             <?php endforeach; ?>
           </ul>
         </div>
