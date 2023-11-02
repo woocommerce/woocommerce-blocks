@@ -107,9 +107,20 @@ registerCheckoutFilters( 'example-extension', {
 
 > 💡 Filters can be also combined. See [Combined filters](../available-filters.md#combined-filters) for an example.
 
-### Screenshot <!-- omit in toc -->
+### Screenshots <!-- omit in toc -->
 
-![Cart Item Class filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-26-at-14.14.17.png)
+<table>
+<tr>
+<td valign="top">Before:
+<br><br>
+<img width="676" alt="Before applying the Cart Item Class filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/a587a6ce-d051-4ed0-bba5-815b5d72179d">
+</td>
+<td valign="top">After:
+<br><br>
+<img width="677" alt="After applying the Cart Item Class filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/9b25eeae-6d81-4e28-b177-32f942e1d0c2">
+</td>
+</tr>
+</table>
 
 ## `cartItemPrice`
 
@@ -183,9 +194,20 @@ registerCheckoutFilters( 'example-extension', {
 
 > 💡 Filters can be also combined. See [Combined filters](../available-filters.md#combined-filters) for an example.
 
-### Screenshot <!-- omit in toc -->
+### Screenshots <!-- omit in toc -->
 
-![Cart Item Price filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-26-at-14.00.16.png)
+<table>
+<tr>
+<td valign="top">Before:
+<br><br>
+<img width="673" alt="Before applying the Cart Item Price filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/78fdaabe-cb21-4697-bc64-56d0b95a501b">
+</td>
+<td valign="top">After:
+<br><br>
+<img width="675" alt="After applying the Cart Item Price filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/bbaeb68a-492e-41e7-87b7-4b8b05ca3709">
+</td>
+</tr>
+</table>
 
 ## `itemName`
 
@@ -258,9 +280,21 @@ registerCheckoutFilters( 'example-extension', {
 
 > 💡 Filters can be also combined. See [Combined filters](../available-filters.md#combined-filters) for an example.
 
-### Screenshot <!-- omit in toc -->
+### Screenshots <!-- omit in toc -->
 
-![Item Name filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-26-at-12.22.21.png)
+<table>
+<tr>
+<td valign="top">Before:
+<br><br>
+<img width="682" alt="Before applying the Item Name filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/97d0f501-138e-4448-93df-a4d865b524e6">
+</td>
+<td valign="top">After:
+<br><br>
+<img width="683" alt="After applying the Item Name filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/69381932-d064-4e8f-b378-c2477fef56ae">
+
+</td>
+</tr>
+</table>
 
 ## `saleBadgePriceFormat`
 
@@ -342,9 +376,20 @@ registerCheckoutFilters( 'example-extension', {
 
 > 💡 Filters can be also combined. See [Combined filters](../available-filters.md#combined-filters) for an example.
 
-### Screenshot <!-- omit in toc -->
+### Screenshots <!-- omit in toc -->
 
-![Sale Badge Price Format filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-26-at-15.16.20.png)
+<table>
+<tr>
+<td valign="top">Before:
+<br><br>
+<img width="670" alt="Before applying the Sale Badge Price Format filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/d2aeb206-e620-44e0-93c1-31484cfcdca6">
+</td>
+<td valign="top">After:
+<br><br>
+<img width="677" alt="After applying the Sale Badge Price Format filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/6b929695-5d89-433b-8694-b9201a7c0519">
+</td>
+</tr>
+</table>
 
 ## `showRemoveItemLink`
 
@@ -417,9 +462,20 @@ registerCheckoutFilters( 'example-extension', {
 
 > 💡 Filters can be also combined. See [Combined filters](../available-filters.md#combined-filters) for an example.
 
-### Screenshot <!-- omit in toc -->
+### Screenshots <!-- omit in toc -->
 
-![Show Remove Item Link filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-26-at-14.48.44.png)
+<table>
+<tr>
+<td valign="top">Before:
+<br><br>
+<img width="668" alt="Before applying the Show Remove Item Link filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/a4254f3b-f056-47ad-b34a-d5f6d5500e56">
+</td>
+<td valign="top">After:
+<br><br>
+<img width="669" alt="After applying the Show Remove Item Link filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/32c55dc7-ef65-4f35-ab90-9533bc79d362">
+</td>
+</tr>
+</table>
 
 ## `subtotalPriceFormat`
 
@@ -503,9 +559,20 @@ registerCheckoutFilters( 'example-extension', {
 
 > 💡 Filters can be also combined. See [Combined filters](../available-filters.md#combined-filters) for an example.
 
-### Screenshot <!-- omit in toc -->
+### Screenshots <!-- omit in toc -->
 
-![Subtotal Price Format filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-26-at-14.42.08.png)
+<table>
+<tr>
+<td valign="top">Before:
+<br><br>
+<img width="668" alt="Before applying the Subtotal Price Format filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/a392cb24-4c40-4e25-8396-bf4971830e22">
+</td>
+<td valign="top">After:
+<br><br>
+<img width="670" alt="After applying the Subtotal Price Format filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/af69b26f-662a-4ef9-a288-3713b6e46373">
+</td>
+</tr>
+</table>
 
 ## Cart object
 

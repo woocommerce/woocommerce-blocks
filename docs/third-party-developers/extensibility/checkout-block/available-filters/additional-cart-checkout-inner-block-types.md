@@ -73,9 +73,21 @@ To call this filter within the editor, wrap the filter registration in a `DOMCon
 
 > 💡 Filters can be also combined. See [Combined filters](../available-filters.md#combined-filters) for an example.
 
-### Screenshot <!-- omit in toc -->
+### Screenshots <!-- omit in toc -->
 
-![Additional Cart and Checkout inner block types filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-26-at-18.20.37.png)
+<table>
+<tr>
+<td valign="top">Before:
+<br><br>
+<img width="367" alt="Before applying the Additional Cart and Checkout inner block types filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/0d4560c8-c2b1-4ed8-8aee-469b248ccb08">
+
+</td>
+<td valign="top">After:
+<br><br>
+<img width="366" alt="After applying the Additional Cart and Checkout inner block types filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/d38cd568-6c8c-4158-9269-d8dffdf66988">
+</td>
+</tr>
+</table>
 
 <!-- FEEDBACK -->
 

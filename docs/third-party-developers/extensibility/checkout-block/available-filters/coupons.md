@@ -69,11 +69,20 @@ registerCheckoutFilters( 'example-extension', {
 
 > 💡 Filters can be also combined. See [Combined filters](../available-filters.md#combined-filters) for an example.
 
-### Screenshot <!-- omit in toc -->
+### Screenshots <!-- omit in toc -->
 
-![Coupons filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-27-at-19.10.47.png)
-
-![Coupons filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-27-at-19.14.23.png)
+<table>
+<tr>
+<td valign="top">Before:
+<br><br>
+<img width="385" alt="Before applying the Coupons filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/6cab1aff-e4b9-4909-b81c-5726c6a20c40">
+</td>
+<td valign="top">After:
+<br><br>
+<img width="382" alt="After applying the Coupons filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/b053304c-179a-4d54-821d-5ad5e7dccafc">
+</td>
+</tr>
+</table>
 
 ## `showApplyCouponNotice`
 
@@ -145,11 +154,20 @@ registerCheckoutFilters( 'example-extension', {
 
 > 💡 Filters can be also combined. See [Combined filters](../available-filters.md#combined-filters) for an example.
 
-### Screenshot <!-- omit in toc -->
+### Screenshots <!-- omit in toc -->
 
-![Show Apply Coupon Notice filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-27-at-21.09.19.png)
-
-![Show Apply Coupon Notice filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-27-at-21.11.35.png)
+<table>
+<tr>
+<td valign="top">Before:
+<br><br>
+<img width="648" alt="Before applying the Show Apply Coupon Notice filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/374d4899-61f3-49b2-ae04-5541d4c130c2">
+</td>
+<td valign="top">After:
+<br><br>
+<img width="662" alt="After applying the Show Apply Coupon Notice filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/c35dbd9b-eee4-4afe-9a29-9c554d467729">
+</td>
+</tr>
+</table>
 
 ## `showRemoveCouponNotice`
 
@@ -221,11 +239,20 @@ registerCheckoutFilters( 'example-extension', {
 
 > 💡 Filters can be also combined. See [Combined filters](../available-filters.md#combined-filters) for an example.
 
-### Screenshot <!-- omit in toc -->
+### Screenshots <!-- omit in toc -->
 
-![Show Remove Coupon Notice filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-27-at-21.03.43.png)
-
-![Show Remove Coupon Notice filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-27-at-21.05.29.png)
+<table>
+<tr>
+<td valign="top">Before:
+<br><br>
+<img width="648" alt="Before applying the Show Remove Coupon Notice filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/9d8607fa-ab20-4181-b70b-7954e7aa49cb">
+</td>
+<td valign="top">After:
+<br><br>
+<img width="648" alt="After applying the Show Remove Coupon Notice filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/83d5f65f-c4f3-4707-a250-077952514931">
+</td>
+</tr>
+</table>
 
 <!-- FEEDBACK -->
 

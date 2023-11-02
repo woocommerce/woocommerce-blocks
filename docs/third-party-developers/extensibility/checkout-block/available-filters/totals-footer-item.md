@@ -53,9 +53,18 @@ registerCheckoutFilters( 'example-extension', {
 
 ### Screenshots <!-- omit in toc -->
 
-![Total Label filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-27-at-14.17.38.png)
-
-![Total Label filter](https://woocommerce.com/wp-content/uploads/2023/10/Screenshot-2023-10-27-at-14.19.32.png)
+<table>
+<tr>
+<td valign="top">Before:
+<br><br>
+<img width="361" alt="Before applying the Total Label filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/5b2fb8ab-db84-4ed0-a676-d5203edc84d2">
+</td>
+<td valign="top">After:
+<br><br>
+<img width="355" alt="After applying the Total Label filter" src="https://github.com/woocommerce/woocommerce-blocks/assets/3323310/07955eea-cb17-48e9-9cb5-6548dd6a3b24">
+</td>
+</tr>
+</table>
 
 ## Cart object
 
