@@ -7,6 +7,8 @@ use Automattic\WooCommerce\StoreApi\Routes\V1\AbstractRoute;
 
 /**
  * Product class.
+ *
+ * @internal
  */
 class Product extends AbstractRoute {
 	/**
@@ -102,7 +104,11 @@ class Product extends AbstractRoute {
 			$product_updater->update_product_content( $dummy_products[ $index ], $products_information );
 		}
 
-		return rest_ensure_response( true );
+		return rest_ensure_response(
+			array(
+				'ai_content_generated' => true,
+			)
+		);
 	}
 
 }

@@ -65,6 +65,7 @@ class RoutesController {
 				Routes\V1\AI\Patterns::IDENTIFIER => Routes\V1\AI\Patterns::class,
 				Routes\V1\AI\Product::IDENTIFIER  => Routes\V1\AI\Product::class,
 				Routes\V1\AI\Products::IDENTIFIER => Routes\V1\AI\Products::class,
+				Routes\V1\AI\BusinessDescription::IDENTIFIER => Routes\V1\AI\BusinessDescription::class,
 			],
 		];
 	}

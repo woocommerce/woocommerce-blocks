@@ -4,24 +4,24 @@ namespace Automattic\WooCommerce\StoreApi\Schemas\V1\AI;
 use Automattic\WooCommerce\StoreApi\Schemas\V1\AbstractSchema;
 
 /**
- * ProductsSchema class.
+ * BusinessDescriptionSchema class.
  *
  * @internal
  */
-class ProductsSchema extends AbstractSchema {
+class BusinessDescriptionSchema extends AbstractSchema {
 	/**
 	 * The schema item name.
 	 *
 	 * @var string
 	 */
-	protected $title = 'ai/products';
+	protected $title = 'business-description';
 
 	/**
 	 * The schema item identifier.
 	 *
 	 * @var string
 	 */
-	const IDENTIFIER = 'ai/products';
+	const IDENTIFIER = 'business-description';
 
 	/**
 	 * Patterns schema properties.
@@ -41,9 +41,7 @@ class ProductsSchema extends AbstractSchema {
 	 */
 	public function get_item_response( $item ) {
 		return [
-			'ai_content_generated'     => true,
-			'product_content'          => $item['product_content'],
-			'dummy_products_to_update' => $item['dummy_products_to_update'],
+			'ai_content_generated' => true,
 		];
 	}
 }

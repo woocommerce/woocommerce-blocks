@@ -5,6 +5,8 @@ use Automattic\WooCommerce\StoreApi\Schemas\V1\AbstractSchema;
 
 /**
  * PatternSchema class.
+ *
+ * @internal
  */
 class PatternsSchema extends AbstractSchema {
 	/**

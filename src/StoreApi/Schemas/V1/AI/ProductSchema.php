@@ -5,6 +5,8 @@ use Automattic\WooCommerce\StoreApi\Schemas\V1\AbstractSchema;
 
 /**
  * ProductSchema class.
+ *
+ * @internal
  */
 class ProductSchema extends AbstractSchema {
 	/**

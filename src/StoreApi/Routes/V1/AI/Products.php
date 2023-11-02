@@ -8,6 +8,8 @@ use Automattic\WooCommerce\StoreApi\Routes\V1\AbstractRoute;
 
 /**
  * Products class.
+ *
+ * @internal
  */
 class Products extends AbstractRoute {
 	/**

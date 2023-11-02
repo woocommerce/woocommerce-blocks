@@ -4,7 +4,9 @@ namespace Automattic\WooCommerce\StoreApi\Schemas\V1\AI;
 use Automattic\WooCommerce\StoreApi\Schemas\V1\AbstractSchema;
 
 /**
- * OrderSchema class.
+ * ImageSchema class.
+ *
+ * @internal
  */
 class ImagesSchema extends AbstractSchema {
 	/**
