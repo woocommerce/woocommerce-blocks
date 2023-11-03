@@ -49,6 +49,7 @@ export const DEFAULT_QUERY: ProductCollectionQuery = {
 	woocommerceStockStatus: getDefaultStockStatuses(),
 	woocommerceAttributes: [],
 	woocommerceHandPickedProducts: [],
+	timeFrame: null,
 };
 
 export const DEFAULT_ATTRIBUTES: Partial< ProductCollectionAttributes > = {
