@@ -49,7 +49,7 @@ export interface ProductCollectionQuery {
 	postType: string;
 	search: string;
 	taxQuery: Record< string, number[] >;
-	timeFrame: TimeFrame | null;
+	timeFrame: TimeFrame | undefined;
 	woocommerceOnSale: boolean;
 	/**
 	 * Filter products by their stock status.

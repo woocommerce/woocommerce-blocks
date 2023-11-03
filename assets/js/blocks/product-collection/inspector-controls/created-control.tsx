@@ -31,10 +31,10 @@ const CreatedControl = ( props: QueryControlProps ) => {
 	return (
 		<ToolsPanelItem
 			label={ __( 'Created', 'woo-gutenberg-products-block' ) }
-			hasValue={ () => ! timeFrame }
+			hasValue={ () => timeFrame?.operator && timeFrame?.value }
 			onDeselect={ () => {
 				setQueryAttribute( {
-					timeFrame: null,
+					timeFrame: undefined,
 				} );
 			} }
 		>
@@ -74,6 +74,7 @@ const CreatedControl = ( props: QueryControlProps ) => {
 						onChange={ ( value: string ) => {
 							setQueryAttribute( {
 								timeFrame: {
+									operator: ETimeFrameOperator.IN,
 									...timeFrame,
 									value,
 								},

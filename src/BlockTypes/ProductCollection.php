@@ -342,7 +342,7 @@ class ProductCollection extends AbstractBlock {
 		$attributes_query    = $this->get_product_attributes_query( $query['product_attributes'] );
 		$taxonomies_query    = $query['taxonomies_query'] ?? [];
 		$tax_query           = $this->merge_tax_queries( $visibility_query, $attributes_query, $taxonomies_query );
-		$date_query          = $this->get_date_query( $query['timeFrame'] ?? null );
+		$date_query          = $this->get_date_query( $query['timeFrame'] ?? [] );
 
 		// We exclude applied filters to generate product ids for the filter blocks.
 		$applied_filters_query = $is_exclude_applied_filters ? [] : $this->get_queries_by_applied_filters();
