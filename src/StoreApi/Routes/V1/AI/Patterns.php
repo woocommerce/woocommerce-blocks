@@ -17,14 +17,14 @@ class Patterns extends AbstractRoute {
 	 *
 	 * @var string
 	 */
-	const IDENTIFIER = 'patterns';
+	const IDENTIFIER = 'ai/patterns';
 
 	/**
 	 * The schema item identifier.
 	 *
 	 * @var string
 	 */
-	const SCHEMA_TYPE = 'patterns';
+	const SCHEMA_TYPE = 'ai/patterns';
 
 	/**
 	 * Get the path of this REST route.

@@ -15,14 +15,14 @@ class Images extends AbstractRoute {
 	 *
 	 * @var string
 	 */
-	const IDENTIFIER = 'images';
+	const IDENTIFIER = 'ai/images';
 
 	/**
 	 * The schema item identifier.
 	 *
 	 * @var string
 	 */
-	const SCHEMA_TYPE = 'images';
+	const SCHEMA_TYPE = 'ai/images';
 
 	/**
 	 * Get the path of this REST route.

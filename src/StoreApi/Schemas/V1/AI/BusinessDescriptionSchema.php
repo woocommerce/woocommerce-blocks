@@ -14,14 +14,14 @@ class BusinessDescriptionSchema extends AbstractSchema {
 	 *
 	 * @var string
 	 */
-	protected $title = 'business-description';
+	protected $title = 'ai/business-description';
 
 	/**
 	 * The schema item identifier.
 	 *
 	 * @var string
 	 */
-	const IDENTIFIER = 'business-description';
+	const IDENTIFIER = 'ai/business-description';
 
 	/**
 	 * Patterns schema properties.

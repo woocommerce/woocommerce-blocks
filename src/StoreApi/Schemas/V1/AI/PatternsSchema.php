@@ -14,14 +14,14 @@ class PatternsSchema extends AbstractSchema {
 	 *
 	 * @var string
 	 */
-	protected $title = 'patterns';
+	protected $title = 'ai/patterns';
 
 	/**
 	 * The schema item identifier.
 	 *
 	 * @var string
 	 */
-	const IDENTIFIER = 'patterns';
+	const IDENTIFIER = 'ai/patterns';
 
 	/**
 	 * Patterns schema properties.

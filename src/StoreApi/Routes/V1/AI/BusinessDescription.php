@@ -16,14 +16,14 @@ class BusinessDescription extends AbstractRoute {
 	 *
 	 * @var string
 	 */
-	const IDENTIFIER = 'business-description';
+	const IDENTIFIER = 'ai/business-description';
 
 	/**
 	 * The schema item identifier.
 	 *
 	 * @var string
 	 */
-	const SCHEMA_TYPE = 'business-description';
+	const SCHEMA_TYPE = 'ai/business-description';
 
 	/**
 	 * Get the path of this REST route.

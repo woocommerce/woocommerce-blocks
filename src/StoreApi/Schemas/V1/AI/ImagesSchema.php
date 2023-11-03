@@ -14,14 +14,14 @@ class ImagesSchema extends AbstractSchema {
 	 *
 	 * @var string
 	 */
-	protected $title = 'images';
+	protected $title = 'ai/images';
 
 	/**
 	 * The schema item identifier.
 	 *
 	 * @var string
 	 */
-	const IDENTIFIER = 'images';
+	const IDENTIFIER = 'ai/images';
 
 	/**
 	 * Patterns schema properties.
