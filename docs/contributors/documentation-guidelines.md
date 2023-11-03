@@ -136,8 +136,6 @@ In code examples, use imports from the global window object rather than the alia
 +const { registerCheckoutFilters } = window.wc.blocksCheckout;
 ```
 
-This does not apply to imports from packages like `@woocommerce/blocks-checkout`.
-
 ## Use table of contents for top-level readme
 
 Every top-level README must have a table of contents. The table of contents can be generated automatically using the Visual Studio Code extension Markdown All in One.
