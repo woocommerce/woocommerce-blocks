@@ -89,26 +89,25 @@ class ProductUpdater {
 		$ai_selected_products_images = $this->get_images_information( $images );
 		$products_information_list   = $this->assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images );
 
-		$response = $this->generate_product_content( $ai_connection, $token, $products_information_list );
+		$responses = $this->generate_product_content( $ai_connection, $token, $ai_selected_products_images );
 
-		if ( is_wp_error( $response ) ) {
-			$error_msg = $response;
-		} elseif ( empty( $response ) || ! isset( $response['completion'] ) ) {
-			$error_msg = new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
+		foreach ( $responses as $response ) {
+			if ( is_wp_error( $response ) ) {
+				$error_msg = $response;
+			} elseif ( empty( $response ) || ! isset( $response['completion'] ) ) {
+				$error_msg = new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
+			}
+
+			$prompt_used = $response['previous_messages'][0]['content'] ?? '';
+			foreach ( $products_information_list as $key => $product_information ) {
+				if ( isset( $product_information['title'] ) && isset( $product_information['image']['alt'] ) && str_contains( $prompt_used, $product_information['image']['alt'] ) ) {
+					$products_information_list[ $key ]['title'] = str_replace( '"', '', $response['completion'] );
+				}
+			}
 		}
 
 		if ( isset( $error_msg ) ) {
-			$this->update_dummy_products( $dummy_products_to_update, $products_information_list );
-
 			return $error_msg;
-		}
-
-		$product_content = json_decode( $response['completion'], true );
-
-		if ( is_null( $product_content ) ) {
-			$this->update_dummy_products( $dummy_products_to_update, $products_information_list );
-
-			return new \WP_Error( 'invalid_json', __( 'The response from the AI service is not a valid JSON.', 'woo-gutenberg-products-block' ) );
 		}
 
 		// This is required to allow the usage of the media_sideload_image function outside the context of /wp-admin/.
@@ -117,7 +116,7 @@ class ProductUpdater {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		$this->update_dummy_products( $dummy_products_to_update, $product_content );
+		$this->update_dummy_products( $dummy_products_to_update, $products_information_list );
 
 		return true;
 	}
@@ -270,7 +269,7 @@ class ProductUpdater {
 			return;
 		}
 
-		if ( ! isset( $ai_generated_product_content['image']['src'] ) || ! isset( $ai_generated_product_content['image']['alt'] ) || ! isset( $ai_generated_product_content['title'] ) || ! isset( $ai_generated_product_content['description'] ) ) {
+		if ( ! isset( $ai_generated_product_content['image']['src'] ) || ! isset( $ai_generated_product_content['image']['alt'] ) || ! isset( $ai_generated_product_content['title'] ) ) {
 			return;
 		}
 		// Since the media_sideload_image function is expensive and can take longer to complete
@@ -279,14 +278,13 @@ class ProductUpdater {
 		set_time_limit( 60 );
 		wp_raise_memory_limit();
 
-		$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
+		$product_image_id = \media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
 
 		if ( is_wp_error( $product_image_id ) ) {
 			return $product_image_id->get_error_message();
 		}
 
 		$product->set_name( $ai_generated_product_content['title'] );
-		$product->set_description( $ai_generated_product_content['description'] );
 		$product->set_image_id( $product_image_id );
 
 		$product->save();
@@ -367,6 +365,12 @@ class ProductUpdater {
 				continue;
 			}
 
+			// When an image returned by Pexels has a title that is a `.jpeg` file,
+			// that means no description exists for the image, so we should not use it to generate AI content.
+			if ( strpos( $image['title'], '.jpeg' ) !== false ) {
+				continue;
+			}
+
 			$placeholder_images[] = [
 				'src' => esc_url( $image['thumbnails']['medium'] ),
 				'alt' => esc_attr( $image['title'] ),
@@ -383,19 +387,26 @@ class ProductUpdater {
 	 *
 	 * @param Connection $ai_connection The AI connection.
 	 * @param string     $token The JWT token.
-	 * @param array      $products_default_content The default content for the products.
+	 * @param array      $ai_selected_products_images The images information.
 	 *
 	 * @return array|int|string|\WP_Error
 	 */
-	public function generate_product_content( $ai_connection, $token, $products_default_content ) {
+	public function generate_product_content( $ai_connection, $token, $ai_selected_products_images ) {
 		$store_description = get_option( 'woo_ai_describe_store_description' );
 
 		if ( ! $store_description ) {
 			return new \WP_Error( 'missing_store_description', __( 'The store description is required to generate the content for your site.', 'woo-gutenberg-products-block' ) );
 		}
 
-		$prompt = sprintf( 'Given the following business description: "%1s" and the assigned value for the alt property in the json bellow, generate new titles and descriptions for each one of the products listed bellow and assign them as the new values for the json: %2s. Each one of the titles should be unique and must be limited to 29 characters. The response should be only a JSON string with the exact same structure as the JSON provided in this prompt, with no intro or explanations.', $store_description, wp_json_encode( $products_default_content ) );
+		$prompts = [];
+		foreach ( $ai_selected_products_images as $selected_image ) {
+			if ( isset( $selected_image['alt'] ) ) {
+				$prompts[] = sprintf( 'Generate the title of a product that match the following store description: "%1s" and the following image description: "%2s". The title must be limited to 25 characters. Do not add any intro or explanations to the response.', $store_description, $selected_image['alt'] );
+			} else {
+				$prompts[] = sprintf( 'Generate the title of a product that match the following store description: "%1s". The title must be limited to 25 characters. Do not add any intro or explanations to the response.', $store_description );
+			}
+		}
 
-		return $ai_connection->fetch_ai_response( $token, $prompt, 60 );
+		return $ai_connection->fetch_ai_responses( $token, $prompts );
 	}
 }
