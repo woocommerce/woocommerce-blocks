@@ -411,7 +411,7 @@ class Bootstrap {
 			function( Container $container ) {
 				return new OrderSourceAttribution(
 					$container->get( AssetApi::class ),
-					$container->get( ExtendSchema::class ),
+					$container->get( StoreApi::class )->container()->get( ExtendSchema::class ),
 					wc_get_container()->get( FeaturesController::class ),
 					wc_get_container()->get( SourceAttributionController::class )
 				);
