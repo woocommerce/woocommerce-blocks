@@ -69,12 +69,10 @@ class BusinessDescription extends AbstractRoute {
 		$business_description = $request->get_param( 'business_description' );
 
 		if ( ! $business_description ) {
-			return rest_ensure_response(
-				$this->error_to_response(
-					new \WP_Error(
-						'invalid_business_description',
-						__( 'Invalid business description.', 'woo-gutenberg-products-block' )
-					)
+			return $this->error_to_response(
+				new \WP_Error(
+					'invalid_business_description',
+					__( 'Invalid business description.', 'woo-gutenberg-products-block' )
 				)
 			);
 		}

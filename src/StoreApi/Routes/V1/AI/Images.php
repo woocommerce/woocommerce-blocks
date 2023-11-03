@@ -78,6 +78,7 @@ class Images extends AbstractRoute {
 				$this->prepare_item_for_response(
 					[
 						'ai_content_generated' => true,
+						'images'               => array(),
 					],
 					$request
 				)
@@ -89,13 +90,13 @@ class Images extends AbstractRoute {
 		$site_id = $ai_connection->get_site_id();
 
 		if ( is_wp_error( $site_id ) ) {
-			return $site_id;
+			return $this->error_to_response( $site_id );
 		}
 
 		$token = $ai_connection->get_jwt_token( $site_id );
 
 		if ( is_wp_error( $token ) ) {
-			return $token;
+			return $this->error_to_response( $token );
 		}
 
 		$images = ( new Pexels() )->get_images( $ai_connection, $token, $business_description );
@@ -104,6 +105,14 @@ class Images extends AbstractRoute {
 			return $this->error_to_response( $images );
 		}
 
-		return rest_ensure_response( $images );
+		return rest_ensure_response(
+			$this->prepare_item_for_response(
+				[
+					'ai_content_generated' => true,
+					'images'               => $images,
+				],
+				$request
+			)
+		);
 	}
 }

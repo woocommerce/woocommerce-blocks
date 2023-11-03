@@ -107,13 +107,13 @@ class Products extends AbstractRoute {
 		$site_id = $ai_connection->get_site_id();
 
 		if ( is_wp_error( $site_id ) ) {
-			return $site_id;
+			return $this->error_to_response( $site_id );
 		}
 
 		$token = $ai_connection->get_jwt_token( $site_id );
 
 		if ( is_wp_error( $token ) ) {
-			return $token;
+			return $this->error_to_response( $token );
 		}
 
 		$images = $request['images'];

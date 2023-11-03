@@ -77,15 +77,18 @@ class Patterns extends AbstractRoute {
 		$site_id = $ai_connection->get_site_id();
 
 		if ( is_wp_error( $site_id ) ) {
-			return $site_id;
+			return $this->error_to_response( $site_id );
 		}
 
 		$token = $ai_connection->get_jwt_token( $site_id );
 
 		$images = $request['images'];
 
-		( new PatternUpdater() )->generate_content( $ai_connection, $token, $images, $business_description );
-
-		return rest_ensure_response( array( 'ai_content_generated' => true ) );
+		try {
+			( new PatternUpdater() )->generate_content( $ai_connection, $token, $images, $business_description );
+			return rest_ensure_response( array( 'ai_content_generated' => true ) );
+		} catch ( \WP_Error $e ) {
+			return $this->error_to_response( $e );
+		}
 	}
 }

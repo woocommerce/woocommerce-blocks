@@ -2,6 +2,8 @@
 
 namespace Automattic\WooCommerce\StoreApi\Routes\V1\AI;
 
+use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
+
 /**
  * Middleware class.
  *
@@ -32,10 +34,18 @@ class Middleware {
 		$allow_ai_connection = get_option( 'woocommerce_blocks_allow_ai_connection' );
 
 		if ( ! $allow_ai_connection ) {
-			throw new RouteException( 'ai_connection_not_allowed', __( 'AI content generation is not allowed on this store. Update your store settings if you wish to enable this feature.', 'woo-gutenberg-products-block' ), 403 );
+			try {
+				throw new RouteException( 'ai_connection_not_allowed', __( 'AI content generation is not allowed on this store. Update your store settings if you wish to enable this feature.', 'woo-gutenberg-products-block' ), 403 );
+			} catch ( RouteException $error ) {
+				return new \WP_Error(
+					$error->getErrorCode(),
+					$error->getMessage(),
+					array( 'status' => $error->getCode() )
+				);
+			}
+
+			return true;
+
 		}
-
-		return true;
-
 	}
 }
