@@ -33,7 +33,7 @@ class ProductSchema extends AbstractSchema {
 	}
 
 	/**
-	 * Get the Patterns response.
+	 * Get the Product response.
 	 *
 	 * @param array $item Item to get response for.
 	 *

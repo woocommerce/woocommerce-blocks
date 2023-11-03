@@ -62,7 +62,7 @@ class Product extends AbstractRoute {
 	}
 
 	/**
-	 * Ensure the content and images in patterns are powered by AI.
+	 * Update product with the content and image powered by AI.
 	 *
 	 * @param  \WP_REST_Request $request Request object.
 	 *

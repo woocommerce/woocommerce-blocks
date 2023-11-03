@@ -4,7 +4,7 @@ namespace Automattic\WooCommerce\StoreApi\Schemas\V1\AI;
 use Automattic\WooCommerce\StoreApi\Schemas\V1\AbstractSchema;
 
 /**
- * PatternSchema class.
+ * PatternsSchema class.
  *
  * @internal
  */

@@ -24,7 +24,7 @@ class BusinessDescriptionSchema extends AbstractSchema {
 	const IDENTIFIER = 'ai/business-description';
 
 	/**
-	 * Patterns schema properties.
+	 * Business Description schema properties.
 	 *
 	 * @return array
 	 */
@@ -33,7 +33,7 @@ class BusinessDescriptionSchema extends AbstractSchema {
 	}
 
 	/**
-	 * Get the Patterns response.
+	 * Get the Business Description response.
 	 *
 	 * @param array $item Item to get response for.
 	 *

@@ -4,7 +4,7 @@ namespace Automattic\WooCommerce\StoreApi\Schemas\V1\AI;
 use Automattic\WooCommerce\StoreApi\Schemas\V1\AbstractSchema;
 
 /**
- * ImageSchema class.
+ * ImagesSchema class.
  *
  * @internal
  */
@@ -24,7 +24,7 @@ class ImagesSchema extends AbstractSchema {
 	const IDENTIFIER = 'ai/images';
 
 	/**
-	 * Patterns schema properties.
+	 * Images schema properties.
 	 *
 	 * @return array
 	 */
@@ -33,7 +33,7 @@ class ImagesSchema extends AbstractSchema {
 	}
 
 	/**
-	 * Get the Patterns response.
+	 * Get the Images response.
 	 *
 	 * @param array $item Item to get response for.
 	 *

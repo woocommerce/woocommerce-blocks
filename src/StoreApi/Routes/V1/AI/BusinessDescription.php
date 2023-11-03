@@ -58,7 +58,7 @@ class BusinessDescription extends AbstractRoute {
 	}
 
 	/**
-	 * Ensure the content and images in patterns are powered by AI.
+	 * Update the last business description.
 	 *
 	 * @param  \WP_REST_Request $request Request object.
 	 *

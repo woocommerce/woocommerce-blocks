@@ -24,7 +24,7 @@ class ProductsSchema extends AbstractSchema {
 	const IDENTIFIER = 'ai/products';
 
 	/**
-	 * Patterns schema properties.
+	 * Products schema properties.
 	 *
 	 * @return array
 	 */
@@ -33,7 +33,7 @@ class ProductsSchema extends AbstractSchema {
 	}
 
 	/**
-	 * Get the Patterns response.
+	 * Get the Products response.
 	 *
 	 * @param array $item Item to get response for.
 	 *

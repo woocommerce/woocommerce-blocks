@@ -63,7 +63,7 @@ class Patterns extends AbstractRoute {
 	}
 
 	/**
-	 * Ensure the content and images in patterns are powered by AI.
+	 * Update patterns with the content and images powered by AI.
 	 *
 	 * @param  \WP_REST_Request $request Request object.
 	 *
