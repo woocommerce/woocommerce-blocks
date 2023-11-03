@@ -120,13 +120,11 @@ class Products extends AbstractRoute {
 
 		$populate_products = ( new ProductUpdater() )->generate_content( $ai_connection, $token, $images, $business_description );
 
-		$product_content          = $populate_products['product_content'];
-		$dummy_products_to_update = $populate_products['dummy_products_to_update'];
+		$product_content = $populate_products['product_content'];
 
 		$item = array(
-			'ai_content_generated'     => true,
-			'product_content'          => $product_content,
-			'dummy_products_to_update' => $dummy_products_to_update,
+			'ai_content_generated' => true,
+			'product_content'      => $product_content,
 		);
 
 		if ( is_wp_error( $populate_products ) ) {

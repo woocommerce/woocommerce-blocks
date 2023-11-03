@@ -43,9 +43,8 @@ class Middleware {
 					array( 'status' => $error->getCode() )
 				);
 			}
-
-			return true;
-
 		}
+
+		return true;
 	}
 }
