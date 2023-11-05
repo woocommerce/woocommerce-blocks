@@ -121,16 +121,20 @@ class Products extends AbstractRoute {
 
 		$populate_products = ( new ProductUpdater() )->generate_content( $ai_connection, $token, $images, $business_description );
 
+		if ( is_wp_error( $populate_products ) ) {
+			return $this->error_to_response( $populate_products );
+		}
+
+		if ( ! isset( $populate_products['product_content'] ) ) {
+			return $this->error_to_response( new \WP_Error( 'product_content_not_found', __( 'Product content not found.', 'woo-gutenberg-products-block' ) ) );
+		}
+
 		$product_content = $populate_products['product_content'];
 
 		$item = array(
 			'ai_content_generated' => true,
 			'product_content'      => $product_content,
 		);
-
-		if ( is_wp_error( $populate_products ) ) {
-			return $this->error_to_response( $populate_products );
-		}
 
 		return rest_ensure_response( $item );
 	}
