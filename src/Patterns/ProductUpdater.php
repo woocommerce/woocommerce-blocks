@@ -17,7 +17,7 @@ class ProductUpdater {
 	 * @param array      $images The array of images.
 	 * @param string     $business_description The business description.
 	 *
-	 * @return bool|WP_Error True if the content was generated successfully, WP_Error otherwise.
+	 * @return array|WP_Error The generated content.
 	 */
 	public function generate_content( $ai_connection, $token, $images, $business_description ) {
 		if ( empty( $business_description ) ) {
@@ -28,16 +28,48 @@ class ProductUpdater {
 
 		if ( $last_business_description === $business_description ) {
 			if ( is_string( $business_description ) && is_string( $last_business_description ) ) {
-				return true;
+				return array(
+					'product_content' => array(),
+				);
 			} else {
 				return new \WP_Error( 'business_description_not_found', __( 'No business description provided for generating AI content.', 'woo-gutenberg-products-block' ) );
 			}
 		}
 
+		$ai_selected_products_images = $this->get_images_information( $images );
+		$products_information_list   = $this->assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images );
+
+		$response = $this->generate_product_content( $ai_connection, $token, $products_information_list );
+
+		if ( is_wp_error( $response ) ) {
+			$error_msg = $response;
+		} elseif ( empty( $response ) || ! isset( $response['completion'] ) ) {
+			$error_msg = new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
+		}
+
+		if ( isset( $error_msg ) ) {
+			return $error_msg;
+		}
+
+		$product_content = json_decode( $response['completion'], true );
+
+		return array(
+			'product_content' => $product_content,
+		);
+	}
+
+	/**
+	 * Return all dummy products that were not modified by the store owner.
+	 *
+	 * @return array|WP_Error An array with the dummy products that need to have their content updated by AI.
+	 */
+	public function fetch_dummy_products_to_update() {
 		$real_products = $this->fetch_product_ids();
 
 		if ( is_array( $real_products ) && count( $real_products ) > 0 ) {
-			return true;
+			return array(
+				'product_content' => array(),
+			);
 		}
 
 		$dummy_products = $this->fetch_product_ids( 'dummy' );
@@ -82,51 +114,7 @@ class ProductUpdater {
 			}
 		}
 
-		if ( empty( $dummy_products_to_update ) ) {
-			return true;
-		}
-
-		$ai_selected_products_images = $this->get_images_information( $images );
-		$products_information_list   = $this->assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images );
-
-		$response = $this->generate_product_content( $ai_connection, $token, $products_information_list );
-
-		if ( is_wp_error( $response ) ) {
-			$error_msg = $response;
-		} elseif ( empty( $response ) || ! isset( $response['completion'] ) ) {
-			$error_msg = new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
-		}
-
-		if ( isset( $error_msg ) ) {
-			$this->update_dummy_products( $dummy_products_to_update, $products_information_list );
-
-			return $error_msg;
-		}
-
-		$product_content = json_decode( $response['completion'], true );
-
-		return array(
-			'product_content'          => $product_content,
-			'dummy_products_to_update' => $dummy_products_to_update,
-		);
-	}
-
-	/**
-	 * Update the dummy products with the content from the information list.
-	 *
-	 * @param array $dummy_products_to_update The dummy products to update.
-	 * @param array $products_information_list The products information list.
-	 */
-	public function update_dummy_products( $dummy_products_to_update, $products_information_list ) {
-		$i = 0;
-		foreach ( $dummy_products_to_update as $dummy_product ) {
-			if ( ! isset( $products_information_list[ $i ] ) ) {
-				continue;
-			}
-
-			$this->update_product_content( $dummy_product, $products_information_list[ $i ] );
-			++$i;
-		}
+		return $dummy_products_to_update;
 	}
 
 	/**
@@ -270,7 +258,6 @@ class ProductUpdater {
 		// Since the media_sideload_image function is expensive and can take longer to complete
 		// the process of downloading the external image and uploading it to the media library,
 		// here we are increasing the time limit and the memory limit to avoid any issues.
-		set_time_limit( 150 );
 		wp_raise_memory_limit();
 
 		$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
