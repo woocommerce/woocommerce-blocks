@@ -70,35 +70,36 @@ class Product extends AbstractRoute {
 	 */
 	protected function get_route_post_response( \WP_REST_Request $request ) {
 		$product_updater = new ProductUpdater();
+		$dummy_products  = $product_updater->fetch_dummy_products_to_update();
 
-		$dummy_products = $product_updater->fetch_product_ids( 'dummy' );
-
-		if ( ! is_array( $dummy_products ) ) {
-			$error = new \WP_Error( 'failed_to_fetch_dummy_products', __( 'Failed to fetch dummy products.', 'woo-gutenberg-products-block' ) );
-			return $this->error_to_response( $error );
+		if ( empty( $dummy_products ) ) {
+			return rest_ensure_response(
+				array(
+					'ai_content_generated' => true,
+				)
+			);
 		}
 
-		// Identify dummy products that need to have their content updated.
-		$dummy_products_ids = $product_updater->fetch_product_ids( 'dummy' );
-
-		if ( ! is_array( $dummy_products_ids ) ) {
-			$error = new \WP_Error( 'failed_to_fetch_dummy_products', __( 'Failed to fetch dummy products.', 'woo-gutenberg-products-block' ) );
-			return $this->error_to_response( $error );
+		$index = $request['index'];
+		if ( ! is_numeric( $index ) ) {
+			return rest_ensure_response(
+				array(
+					'ai_content_generated' => false,
+				)
+			);
 		}
 
-		$dummy_products = array_map(
-			function ( $product ) {
-				return wc_get_product( $product->ID );
-			},
-			$dummy_products_ids
-		);
+		$products_information = $request['products_information'] ?? array();
 
-		$index                = $request['index'];
-		$products_information = $request['products_information'];
-
-		if ( $product_updater->should_update_dummy_product( $dummy_products[ $index ] ) ) {
-			$product_updater->update_product_content( $dummy_products[ $index ], $products_information );
+		if ( ! isset( $dummy_products[ $index ] ) ) {
+			return rest_ensure_response(
+				array(
+					'ai_content_generated' => false,
+				)
+			);
 		}
+
+		$product_updater->update_product_content( $dummy_products[ $index ], $products_information );
 
 		return rest_ensure_response(
 			array(
