@@ -37,7 +37,7 @@ const Edit = ( props: BlockEditProps< Attributes > ) => {
 	return (
 		<div { ...blockProps }>
 			<Tooltip
-				text="Customer will see product add-to-cart options in this space, dependend on the product type. "
+				text="Customer will see product add-to-cart options in this space, dependent on the product type. "
 				position="bottom right"
 			>
 				<div className="wc-block-editor-add-to-cart-form-container">
