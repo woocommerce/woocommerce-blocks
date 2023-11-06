@@ -66,6 +66,7 @@ export default {
 					summary: 'ReactNode',
 				},
 			},
+			control: 'disabled',
 			description: 'The content of the form step.',
 		},
 		disabled: {
@@ -97,13 +98,6 @@ export default {
 	},
 } as Meta< FormStepProps >;
 
-const Template: Story< FormStepProps > = ( args ) => (
-	<div className="wc-block-components-form">
-		<FormStep { ...args } />
-	</div>
-);
-
-export const Default = Template.bind( {} );
 const InputWithState = () => {
 	const [ value, setValue ] = useState( 'John Doe' );
 	return (
@@ -115,9 +109,18 @@ const InputWithState = () => {
 		/>
 	);
 };
+const Template: Story< FormStepProps > = ( args ) => (
+	<div className="wc-block-components-form">
+		<FormStep { ...args }>
+			<InputWithState />
+		</FormStep>
+	</div>
+);
+
+export const Default = Template.bind( {} );
+
 Default.args = {
 	stepHeadingContent: () => <span>Step heading content</span>,
 	title: 'Personal information',
 	description: 'Please enter your personal information.',
-	children: <InputWithState />,
 };
