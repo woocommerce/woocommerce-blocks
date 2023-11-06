@@ -108,7 +108,7 @@ final class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_aggregated_collection_data( $block ) {
-		$collection_data_params = $this->get_inner_filter_types_recursive( $block->inner_blocks );
+		$collection_data_params = $this->get_inner_collection_data_params( $block->inner_blocks );
 
 		if ( empty( array_filter( $collection_data_params ) ) ) {
 			return array();
@@ -139,13 +139,13 @@ final class CollectionFilters extends AbstractBlock {
 	 *
 	 * @return array
 	 */
-	private function get_inner_filter_types_recursive( $inner_blocks, &$results = array() ) {
+	private function get_inner_collection_data_params( $inner_blocks, &$results = array() ) {
 		if ( is_a( $inner_blocks, 'WP_Block_List' ) ) {
 			foreach ( $inner_blocks as $inner_block ) {
 				if ( ! empty( $inner_block->attributes['queryParam'] ) ) {
 					$results = array_merge( $results, $inner_block->attributes['queryParam'] );
 				}
-				$this->get_inner_filter_types_recursive(
+				$this->get_inner_collection_data_params(
 					$inner_block->inner_blocks,
 					$results
 				);
@@ -239,7 +239,7 @@ final class CollectionFilters extends AbstractBlock {
 		 * statuses. We need to pass the catalog_visibility param to the Store
 		 * API to make sure the product visibility is correct.
 		 */
-		$params['catalog_visibility'] = is_search() ? 'catalog' : 'visible';
+		$params['catalog_visibility'] = is_search() ? 'search' : 'visible';
 
 		return array_filter( $params );
 	}

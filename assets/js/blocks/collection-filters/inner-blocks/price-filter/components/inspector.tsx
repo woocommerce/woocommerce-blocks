@@ -15,7 +15,7 @@ import {
 /**
  * Internal dependencies
  */
-import { FilterComponentProps } from '../types';
+import type { FilterComponentProps } from '../types';
 
 export const Inspector = ( {
 	attributes,
