@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6866bccfee9df864f774a3ad47d1fdf6",
+    "content-hash": "b2547b778103abc9da48f4991993a563",
     "packages": [
         {
             "name": "automattic/jetpack-a8c-mc-stats",
@@ -55,20 +55,20 @@
         },
         {
             "name": "automattic/jetpack-admin-ui",
-            "version": "v0.2.23",
+            "version": "v0.2.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Automattic/jetpack-admin-ui.git",
-                "reference": "2684f3ee3b458074d95e727e70ae994802501688"
+                "reference": "334858057237be51aa916352c7573fc4c06bbd6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/jetpack-admin-ui/zipball/2684f3ee3b458074d95e727e70ae994802501688",
-                "reference": "2684f3ee3b458074d95e727e70ae994802501688",
+                "url": "https://api.github.com/repos/Automattic/jetpack-admin-ui/zipball/334858057237be51aa916352c7573fc4c06bbd6c",
+                "reference": "334858057237be51aa916352c7573fc4c06bbd6c",
                 "shasum": ""
             },
             "require-dev": {
-                "automattic/jetpack-changelogger": "^3.3.9",
+                "automattic/jetpack-changelogger": "^3.3.11",
                 "automattic/jetpack-logo": "^1.6.3",
                 "automattic/wordbless": "dev-master",
                 "yoast/phpunit-polyfills": "1.1.0"
@@ -102,9 +102,9 @@
             ],
             "description": "Generic Jetpack wp-admin UI elements",
             "support": {
-                "source": "https://github.com/Automattic/jetpack-admin-ui/tree/v0.2.23"
+                "source": "https://github.com/Automattic/jetpack-admin-ui/tree/v0.2.24"
             },
-            "time": "2023-09-19T18:19:10+00:00"
+            "time": "2023-10-30T08:37:02+00:00"
         },
         {
             "name": "automattic/jetpack-autoloader",
@@ -217,21 +217,21 @@
         },
         {
             "name": "automattic/jetpack-connection",
-            "version": "v1.58.2",
+            "version": "v1.58.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Automattic/jetpack-connection.git",
-                "reference": "9b12984bc9fcc075844b4f2e3fe27176e42cdf14"
+                "reference": "237fa402c8c8c2ebd3f5d180a530eb1224545453"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/jetpack-connection/zipball/9b12984bc9fcc075844b4f2e3fe27176e42cdf14",
-                "reference": "9b12984bc9fcc075844b4f2e3fe27176e42cdf14",
+                "url": "https://api.github.com/repos/Automattic/jetpack-connection/zipball/237fa402c8c8c2ebd3f5d180a530eb1224545453",
+                "reference": "237fa402c8c8c2ebd3f5d180a530eb1224545453",
                 "shasum": ""
             },
             "require": {
                 "automattic/jetpack-a8c-mc-stats": "^1.4.22",
-                "automattic/jetpack-admin-ui": "^0.2.23",
+                "automattic/jetpack-admin-ui": "^0.2.24",
                 "automattic/jetpack-constants": "^1.6.23",
                 "automattic/jetpack-redirect": "^1.7.27",
                 "automattic/jetpack-roles": "^1.4.25",
@@ -274,9 +274,9 @@
             ],
             "description": "Everything needed to connect to the Jetpack infrastructure",
             "support": {
-                "source": "https://github.com/Automattic/jetpack-connection/tree/v1.58.2"
+                "source": "https://github.com/Automattic/jetpack-connection/tree/v1.58.3"
             },
-            "time": "2023-10-19T23:36:12+00:00"
+            "time": "2023-11-03T07:41:50+00:00"
         },
         {
             "name": "automattic/jetpack-constants",
@@ -3299,5 +3299,5 @@
     "platform-overrides": {
         "php": "7.4.33"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
