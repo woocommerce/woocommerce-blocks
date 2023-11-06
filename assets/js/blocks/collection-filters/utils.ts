@@ -10,6 +10,11 @@ export const sharedParams: Array< keyof ProductCollectionQuery > = [
 	'search',
 ];
 
+/**
+ * There is an open dicussion around the shape of this object. Check it out on GH.
+ *
+ * @see {@link https://github.com/woocommerce/woocommerce-blocks/pull/11218#discussion_r1365171167 | #11218 review comment}.
+ */
 export const mappedParams: {
 	key: keyof ProductCollectionQuery;
 	map: string;
