@@ -6,6 +6,7 @@
  */
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
+
 $content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/just-arrived-full-hero' );
 $images  = PatternsHelper::get_pattern_images( 'woocommerce-blocks/just-arrived-full-hero' );
 
@@ -14,12 +15,13 @@ $pattern_description = $content['descriptions'][0]['default'] ?? '';
 $pattern_button      = $content['buttons'][0]['default'] ?? '';
 $pattern_image       = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/plant-in-vase.jpg' );
 ?>
-<!-- wp:cover {"url":"<?php echo esc_url( $pattern_image ); ?>","dimRatio":30,"minHeight":739,"contentPosition":"center right","align":"wide","style":{"spacing":{"padding":{"right":"4em"}}}} -->
-<div class="wp-block-cover alignwide has-custom-content-position is-position-center-right" style="padding-right:4em;min-height:739px">
+
+<!-- wp:cover {"url":"<?php echo esc_url( $pattern_image ); ?>","dimRatio":30,"minHeight":739,"contentPosition":"center right","align":"full","style":{"spacing":{"margin":{"bottom":"80px"},"padding":{"left":"0","right":"25%"}}}}  -->
+<div class="wp-block-cover alignfull has-custom-content-position is-position-center-right" style="margin-bottom:80px;padding-right:25%;padding-left:0;min-height:739px">
 	<span aria-hidden="true" class="wp-block-cover__background has-background-dim-30 has-background-dim"></span>
-	<img class="wp-block-cover__image-background" alt="" src="<?php echo esc_url( $pattern_image ); ?>" data-object-fit="cover"/>
+	<img class="wp-block-cover__image-background" alt="" src="<?php echo esc_url( $pattern_image ); ?>" data-object-fit="cover" />
 	<div class="wp-block-cover__inner-container">
-		<!-- wp:group {"layout":{"type":"constrained"}} -->
+		<!-- wp:group {"style":{"spacing":{"margin":{"top":"0","bottom":"0"},"padding":{"right":"var:preset|spacing|80","left":"var:preset|spacing|80"},"blockGap":"16px"}}} {"layout":{"type":"constrained"}} -->
 		<div class="wp-block-group">
 			<!-- wp:heading {"anchor":"just-arrived"} -->
 			<h2 class="wp-block-heading" id="just-arrived"><?php echo esc_html( $pattern_title ); ?></h2>
@@ -40,5 +42,6 @@ $pattern_image       = PatternsHelper::get_image_url( $images, 0, 'images/patter
 			<!-- /wp:buttons -->
 		</div>
 		<!-- /wp:group -->
-	</div></div>
+	</div>
+</div>
 <!-- /wp:cover -->

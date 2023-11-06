@@ -51,7 +51,7 @@ class PatternsHelper {
 			return array();
 		}
 
-		return self::get_random_images( $pattern['images'], $pattern['images_total'] );
+		return $pattern['images'];
 	}
 
 	/**
@@ -73,20 +73,6 @@ class PatternsHelper {
 		}
 
 		return $image;
-	}
-
-	/**
-	 * Returns an array of random images.
-	 *
-	 * @param array $images The pattern images.
-	 * @param int   $images_total The total number of images needed for the pattern.
-	 *
-	 * @return array The random images.
-	 */
-	private static function get_random_images( array $images, int $images_total ): array {
-		shuffle( $images );
-
-		return array_slice( $images, 0, $images_total );
 	}
 
 	/**

@@ -40,13 +40,10 @@ export const DEFAULT_QUERY: ProductCollectionQuery = {
 	postType: 'product',
 	order: 'asc',
 	orderBy: 'title',
-	author: '',
 	search: '',
 	exclude: [],
-	sticky: '',
 	inherit: null,
 	taxQuery: {},
-	parents: [],
 	isProductCollectionBlock: true,
 	woocommerceOnSale: false,
 	woocommerceStockStatus: getDefaultStockStatuses(),
@@ -60,6 +57,7 @@ export const DEFAULT_ATTRIBUTES: Partial< ProductCollectionAttributes > = {
 	displayLayout: {
 		type: LayoutOptions.GRID,
 		columns: 3,
+		shrinkColumns: false,
 	},
 };
 

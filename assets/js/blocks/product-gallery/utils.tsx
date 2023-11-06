@@ -3,6 +3,7 @@
  */
 import { BlockAttributes, BlockInstance } from '@wordpress/blocks';
 import { select, dispatch } from '@wordpress/data';
+import { findBlock } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -101,37 +102,6 @@ const controlBlocksLockAttribute = ( {
 };
 
 /**
- * Recursively searches through an array of `BlockInstance` objects and their nested `innerBlocks` arrays to find a block that matches a given condition.
- *
- * @param { { blocks: BlockInstance[], findCondition: Function } } parameters Parameters containing an array of `BlockInstance` objects to search through and a function that takes a `BlockInstance` object as its argument and returns a boolean indicating whether the block matches the desired condition.
- * @return If a matching block is found, the function returns the `BlockInstance` object. If no matching block is found, the function returns `undefined`.
- */
-const findBlock = ( {
-	blocks,
-	findCondition,
-}: {
-	blocks: BlockInstance[];
-	findCondition: ( block: BlockInstance ) => boolean;
-} ): BlockInstance | undefined => {
-	for ( const block of blocks ) {
-		if ( findCondition( block ) ) {
-			return block;
-		}
-		if ( block.innerBlocks ) {
-			const largeImageParentBlock = findBlock( {
-				blocks: block.innerBlocks,
-				findCondition,
-			} );
-			if ( largeImageParentBlock ) {
-				return largeImageParentBlock;
-			}
-		}
-	}
-
-	return undefined;
-};
-
-/**
  * Sets the layout of group block based on the thumbnails' position.
  *
  * @param {ThumbnailsPosition} thumbnailsPosition - The position of thumbnails.
@@ -170,6 +140,10 @@ export const moveInnerBlocksToPosition = (
 	const productGalleryBlock = getBlock( clientId );
 
 	if ( productGalleryBlock ) {
+		const previousLayout = productGalleryBlock.innerBlocks.length
+			? productGalleryBlock.innerBlocks[ 0 ].attributes.layout
+			: null;
+
 		const thumbnailsBlock = findBlock( {
 			blocks: [ productGalleryBlock ],
 			findCondition( block ) {
@@ -211,6 +185,22 @@ export const moveInnerBlocksToPosition = (
 				thumbnailsPosition,
 				clientId
 			);
+
+			setGroupBlockLayoutByThumbnailsPosition(
+				thumbnailsPosition,
+				productGalleryBlock.innerBlocks[ 0 ].clientId
+			);
+
+			if ( previousLayout ) {
+				const orientation =
+					getGroupLayoutAttributes( thumbnailsPosition ).orientation;
+				updateBlockAttributes(
+					{
+						layout: { ...previousLayout, orientation },
+					},
+					productGalleryBlock.innerBlocks[ 0 ]
+				);
+			}
 
 			if (
 				( ( thumbnailsPosition === 'bottom' ||

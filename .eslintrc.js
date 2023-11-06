@@ -124,6 +124,7 @@ module.exports = {
 	extends: [
 		'plugin:@woocommerce/eslint-plugin/recommended',
 		'plugin:you-dont-need-lodash-underscore/compatible',
+		'plugin:storybook/recommended',
 	],
 	globals: {
 		wcBlocksMiddlewareConfig: 'readonly',
@@ -147,6 +148,7 @@ module.exports = {
 		'import/core-modules': [
 			'@woocommerce/block-data',
 			'@woocommerce/blocks-checkout',
+			'@woocommerce/blocks-components',
 			'@woocommerce/price-format',
 			'@woocommerce/settings',
 			'@woocommerce/shared-context',
