@@ -11,7 +11,7 @@ import type { ChangeEventHandler } from 'react';
 import './style.scss';
 import Label from '../label'; // Imported like this because importing from the components package loads the data stores unnecessarily - not a problem in the front end but would require a lot of unit test rewrites to prevent breaking tests due to incorrect mocks.
 
-interface SortSelectProps {
+export interface SortSelectProps {
 	/**
 	 * Unique id for component instance.
 	 */
