@@ -62,6 +62,7 @@ const SortSelect = ( {
 	options,
 	screenReaderLabel,
 	value = '',
+	readOnly = false,
 }: SortSelectProps ): JSX.Element => {
 	const selectId = `wc-block-components-sort-select__select-${ instanceId }`;
 
@@ -84,6 +85,7 @@ const SortSelect = ( {
 				} }
 			/>
 			<select
+				disabled={ !! readOnly }
 				id={ selectId }
 				className="wc-block-sort-select__select wc-block-components-sort-select__select"
 				onChange={ onChange }
