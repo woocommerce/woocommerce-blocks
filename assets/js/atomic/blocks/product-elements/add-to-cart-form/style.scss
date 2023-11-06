@@ -13,10 +13,11 @@
 	.quantity {
 		display: inline-block;
 		float: none;
-		margin-right: 1rem;
+		margin-right: 4px;
 		vertical-align: middle;
 
 		.qty {
+			margin-right: 0.5rem;
 			width: 3.631em;
 			text-align: center;
 		}
