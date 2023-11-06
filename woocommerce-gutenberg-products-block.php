@@ -9,7 +9,7 @@
  * Text Domain:  woo-gutenberg-products-block
  * Requires at least: 6.3.2
  * Requires PHP: 7.4
- * WC requires at least: 8.1
+ * WC requires at least: 8.2
  * WC tested up to: 8.2
  *
  * @package WooCommerce\Blocks
