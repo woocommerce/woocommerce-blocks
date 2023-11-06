@@ -96,6 +96,7 @@ class Products extends AbstractRoute {
 				$this->prepare_item_for_response(
 					[
 						'ai_content_generated' => true,
+						'product_content'      => null,
 					],
 					$request
 				)

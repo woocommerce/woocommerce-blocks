@@ -41,7 +41,7 @@ class ProductsSchema extends AbstractSchema {
 	 */
 	public function get_item_response( $item ) {
 		return [
-			'ai_content_generated' => true,
+			'ai_content_generated' => $item['ai_content_generated'],
 			'product_content'      => $item['product_content'],
 		];
 	}
