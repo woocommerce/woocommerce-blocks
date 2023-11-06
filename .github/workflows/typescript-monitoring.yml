@@ -8,7 +8,7 @@ jobs:
     check-typescript-errors-with-trunk:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
               with:
                   ref: 'trunk'
 
@@ -36,7 +36,7 @@ jobs:
                   npm run ts:log-errors
                   mv checkstyle.xml $HOME/checkstyle-trunk.xml
 
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
 
             - name: Generate checkstyle for current PR
               run: |

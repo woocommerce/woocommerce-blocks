@@ -26,7 +26,7 @@ jobs:
       fail-fast: false
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use desired version of NodeJS
         uses: actions/setup-node@v4
@@ -63,7 +63,7 @@ jobs:
       WP_ENV_PHP_VERSION: ${{ matrix.php }}
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
