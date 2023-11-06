@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import type { Story, Meta } from '@storybook/react';
+import type { StoryFn, Meta } from '@storybook/react';
 import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
 import { useState } from '@wordpress/element';
 
@@ -109,7 +109,7 @@ const InputWithState = () => {
 		/>
 	);
 };
-const Template: Story< FormStepProps > = ( args ) => (
+const Template: StoryFn< FormStepProps > = ( args ) => (
 	<div className="wc-block-components-form">
 		<FormStep { ...args }>
 			<InputWithState />
