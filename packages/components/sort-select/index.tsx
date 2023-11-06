@@ -83,7 +83,7 @@ const SortSelect = ( {
 					htmlFor: selectId,
 				} }
 			/>
-			<select // eslint-disable-line jsx-a11y/no-onchange
+			<select
 				id={ selectId }
 				className="wc-block-sort-select__select wc-block-components-sort-select__select"
 				onChange={ onChange }
