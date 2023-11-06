@@ -206,7 +206,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		}
 
 		return array(
-			'data-wc-on--click' => 'actions.woocommerce.handleClick',
+			'data-wc-on--click' => 'actions.woocommerce.dialog.openDialog',
 		);
 	}
 }

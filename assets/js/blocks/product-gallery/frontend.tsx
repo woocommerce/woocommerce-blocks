@@ -49,6 +49,7 @@ interface Store {
 }
 
 interface Event {
+	target: HTMLElement;
 	keyCode: number;
 }
 
@@ -170,8 +171,23 @@ interactivityApiStore( {
 				},
 			},
 			dialog: {
-				handleCloseButtonClick: ( { context }: Store ) => {
+				closeDialog: ( { context }: Store ) => {
 					context.woocommerce.isDialogOpen = false;
+				},
+				openDialog: ( {
+					context,
+					event,
+				}: {
+					context: Context;
+					event: Event;
+				} ) => {
+					if (
+						( event.target as HTMLElement ).classList.contains(
+							'wc-block-product-gallery-dialog-on-click'
+						)
+					) {
+						context.woocommerce.isDialogOpen = true;
+					}
 				},
 			},
 			handleSelectImage: ( { context }: Store ) => {
