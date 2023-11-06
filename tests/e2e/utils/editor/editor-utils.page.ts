@@ -295,21 +295,14 @@ export class EditorUtils {
 	}
 
 	async transformIntoBlocks() {
-		const isNotTransformedIntoBlocks = await this.page
-			.frameLocator( 'iframe[name="editor-canvas"]' )
+		const isNotTransformedIntoBlocks = await this.editor.canvas
 			.getByRole( 'button', { name: 'Transform into blocks' } )
 			.count();
 
 		if ( isNotTransformedIntoBlocks ) {
-			await this.page
-				.frameLocator( 'iframe[name="editor-canvas"]' )
-				.getByRole( 'group' )
-				.click();
-			await this.page
-				.frameLocator( 'iframe[name="editor-canvas"]' )
+			await this.editor.canvas
 				.getByRole( 'button', { name: 'Transform into blocks' } )
 				.click();
-
 			// save changes
 			await this.saveSiteEditorEntities();
 		}
