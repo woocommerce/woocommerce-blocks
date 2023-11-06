@@ -81,6 +81,46 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.5.0 - 2023-11-06 =
+
+#### Enhancements
+
+- Add margin bottom to the `Hero Product 3 Split` pattern. ([11573](https://github.com/woocommerce/woocommerce-blocks/pull/11573))
+- Set explicit margins in the search bar group on the `Large Header` pattern. ([11571](https://github.com/woocommerce/woocommerce-blocks/pull/11571))
+- Add aspect ratio to the `Featured Products 5 Columns` pattern. ([11570](https://github.com/woocommerce/woocommerce-blocks/pull/11570))
+- [CYS] Fix `Product Collection 4 Columns` pattern button height. ([11553](https://github.com/woocommerce/woocommerce-blocks/pull/11553))
+- Change the "chessboard" pattern structure to improve mobile view. ([11545](https://github.com/woocommerce/woocommerce-blocks/pull/11545))
+- `Footer with 3 menus` pattern: Update the spacing in the columns to improve the mobile view. ([11544](https://github.com/woocommerce/woocommerce-blocks/pull/11544))
+- Add checkout-header template to the correct area in site editor. ([11528](https://github.com/woocommerce/woocommerce-blocks/pull/11528))
+- Product gallery/add crop images. ([11482](https://github.com/woocommerce/woocommerce-blocks/pull/11482))
+- Remove authors filter from Product Collection block. ([11427](https://github.com/woocommerce/woocommerce-blocks/pull/11427))
+- Move `SortSelect` to components package. ([11411](https://github.com/woocommerce/woocommerce-blocks/pull/11411))
+- Move `Textarea` to components package. ([11384](https://github.com/woocommerce/woocommerce-blocks/pull/11384))
+- Move `Title` to components package. ([11383](https://github.com/woocommerce/woocommerce-blocks/pull/11383))
+- Use the <header> element for the checkout header. ([11222](https://github.com/woocommerce/woocommerce-blocks/pull/11222))
+- Product Gallery Thumbnails: Add View all overlay. ([11087](https://github.com/woocommerce/woocommerce-blocks/pull/11087))
+
+#### Bug Fixes
+
+- Fix `Hero Product 3 Split` pattern text content. ([11612](https://github.com/woocommerce/woocommerce-blocks/pull/11612))
+- Prevent theme button border appearing in opinionated patterns. ([11564](https://github.com/woocommerce/woocommerce-blocks/pull/11564))
+- Prevent Sale badge overflowing the Product Image in some product grid blocks. ([11556](https://github.com/woocommerce/woocommerce-blocks/pull/11556))
+- Block Checkout: Add back missing render-checkout-form hook. ([11554](https://github.com/woocommerce/woocommerce-blocks/pull/11554))
+- Ensure that the "Remove Item" link on Cart block has a hover state. ([11526](https://github.com/woocommerce/woocommerce-blocks/pull/11526))
+- All Products: Add cursor pointer when hovering over pagination items. ([11502](https://github.com/woocommerce/woocommerce-blocks/pull/11502))
+- Product Collection: Fix the PHP Warning after migrating from Products (Beta). ([11494](https://github.com/woocommerce/woocommerce-blocks/pull/11494))
+- Footer with 2 Menus Dark pattern: Fix the Site Title color contrast in TT4. ([11484](https://github.com/woocommerce/woocommerce-blocks/pull/11484))
+- Essential Header Dark pattern: Fix color contrast issues in TT4. ([11480](https://github.com/woocommerce/woocommerce-blocks/pull/11480))
+- Display shipping calculator link for guests shopper. ([11442](https://github.com/woocommerce/woocommerce-blocks/pull/11442))
+- Comboboxes should match against values before looking at labels. ([11410](https://github.com/woocommerce/woocommerce-blocks/pull/11410))
+- Fix products incorrectly marked as discounted. ([11386](https://github.com/woocommerce/woocommerce-blocks/pull/11386))
+- Ensure input is validated when autofilled in Firefox. ([11062](https://github.com/woocommerce/woocommerce-blocks/pull/11062))
+
+#### compatibility
+
+- Remove bullet points and unnecessary padding from `SearchListControl`. ([11444](https://github.com/woocommerce/woocommerce-blocks/pull/11444))
+
+
 = 11.4.3 - 2023-10-30 =
 
 #### Enhancements
