@@ -47,7 +47,7 @@ class Notices {
 			add_filter( 'wc_get_template', [ $this, 'get_notices_template' ], 10, 5 );
 			add_action(
 				'wp_head',
-				function() {
+				function () {
 					// These pages may return notices in ajax responses, so we need the styles to be ready.
 					if ( is_cart() || is_checkout() ) {
 						wp_enqueue_style( 'wc-blocks-style' );
@@ -94,7 +94,7 @@ class Notices {
 	 * @param string $default_path Default path.
 	 * @return string
 	 */
-	public function get_notices_template( $template, $template_name, $args, $template_path, $default_path ) {
+	public function get_notices_template( $template, $template_name, $args, $template_path, $default_path ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- Ignoring because those parameters passed by the filter.
 		if ( in_array( $template_name, $this->notice_templates, true ) ) {
 			$template = $this->package->get_path( 'templates/' . $template_name );
 			wp_enqueue_style( 'wc-blocks-style' );

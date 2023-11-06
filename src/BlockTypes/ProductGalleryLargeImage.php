@@ -98,7 +98,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 				'{content}'            => $content,
 				'{directives}'         => array_reduce(
 					array_keys( $directives ),
-					function( $carry, $key ) use ( $directives ) {
+					function ( $carry, $key ) use ( $directives ) {
 						return $carry . ' ' . $key . '="' . esc_attr( $directives[ $key ] ) . '"';
 					},
 					''
@@ -141,7 +141,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		);
 
 		$main_image_with_wrapper = array_map(
-			function( $main_image_element ) {
+			function ( $main_image_element ) {
 				return "<div class='wc-block-product-gallery-large-image__wrapper'>" . $main_image_element . '</div>';
 			},
 			$main_images
@@ -149,7 +149,6 @@ class ProductGalleryLargeImage extends AbstractBlock {
 
 		$visible_main_image = array_shift( $main_images );
 		return array( $visible_main_image, $main_image_with_wrapper );
-
 	}
 
 	/**

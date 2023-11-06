@@ -164,7 +164,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 							}
 						}
 
-						$thumbnails_count++;
+						++$thumbnails_count;
 					}
 
 					return sprintf(

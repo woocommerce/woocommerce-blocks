@@ -41,7 +41,6 @@ class RelatedProducts extends AbstractBlock {
 			10,
 			2
 		);
-
 	}
 
 	/**
@@ -164,7 +163,7 @@ class RelatedProducts extends AbstractBlock {
 		$related_products = wc_products_array_orderby( $related_products, 'rand', 'desc' );
 
 		$related_product_ids = array_map(
-			function( $product ) {
+			function ( $product ) {
 				return $product->get_id();
 			},
 			$related_products
@@ -172,5 +171,4 @@ class RelatedProducts extends AbstractBlock {
 
 		return $related_product_ids;
 	}
-
 }

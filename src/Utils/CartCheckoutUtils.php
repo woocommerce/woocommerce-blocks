@@ -94,7 +94,7 @@ class CartCheckoutUtils {
 		}
 
 		$array_without_accents = array_map(
-			function( $value ) {
+			function ( $value ) {
 				return is_array( $value )
 					? self::deep_sort_with_accents( $value )
 					: remove_accents( wc_strtolower( html_entity_decode( $value ) ) );

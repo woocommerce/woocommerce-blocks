@@ -200,7 +200,7 @@ final class AssetsController {
 			$this->get_script_dependency_src_array( $script_data['dependencies'] )
 		);
 		return array_map(
-			function( $src ) {
+			function ( $src ) {
 				return array(
 					'href' => $src,
 					'as'   => 'script',
@@ -220,7 +220,7 @@ final class AssetsController {
 		$wp_scripts = wp_scripts();
 		return array_reduce(
 			$dependencies,
-			function( $src, $handle ) use ( $wp_scripts ) {
+			function ( $src, $handle ) use ( $wp_scripts ) {
 				if ( isset( $wp_scripts->registered[ $handle ] ) ) {
 					$src[] = esc_url( add_query_arg( 'ver', $wp_scripts->registered[ $handle ]->ver, $this->get_absolute_url( $wp_scripts->registered[ $handle ]->src ) ) );
 					$src   = array_merge( $src, $this->get_script_dependency_src_array( $wp_scripts->registered[ $handle ]->deps ) );

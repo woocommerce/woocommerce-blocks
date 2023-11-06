@@ -532,7 +532,7 @@ class MiniCart extends AbstractBlock {
 				'tax_label'                         => $tax_label,
 				'display_cart_prices_including_tax' => false,
 			);
-		};
+		}
 
 		return array(
 			'tax_label'                         => '',

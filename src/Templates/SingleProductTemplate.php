@@ -21,7 +21,7 @@ class SingleProductTemplate {
 		$single_product_template_blocks = array( 'woocommerce/product-image-gallery', 'woocommerce/product-details', 'woocommerce/add-to-cart-form', 'woocommerce/product-meta', 'woocommerce/product-rating', 'woocommerce/product-price', 'woocommerce/related-products' );
 		return array_reduce(
 			$parsed_blocks,
-			function( $carry, $block ) use ( $single_product_template_blocks ) {
+			function ( $carry, $block ) use ( $single_product_template_blocks ) {
 				if ( in_array( $block['blockName'], $single_product_template_blocks, true ) ) {
 					if ( $carry['is_already_replaced'] ) {
 						return array(

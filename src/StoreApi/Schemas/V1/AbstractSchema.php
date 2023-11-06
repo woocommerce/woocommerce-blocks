@@ -87,7 +87,7 @@ abstract class AbstractSchema {
 	 */
 	protected function remove_arg_options( $properties ) {
 		return array_map(
-			function( $property ) {
+			function ( $property ) {
 				if ( isset( $property['properties'] ) ) {
 					$property['properties'] = $this->remove_arg_options( $property['properties'] );
 				} elseif ( isset( $property['items']['properties'] ) ) {
@@ -294,7 +294,7 @@ abstract class AbstractSchema {
 	 */
 	protected function force_schema_readonly( $properties ) {
 		return array_map(
-			function( $property ) {
+			function ( $property ) {
 				$property['readonly'] = true;
 				if ( isset( $property['items']['properties'] ) ) {
 					$property['items']['properties'] = $this->force_schema_readonly( $property['items']['properties'] );

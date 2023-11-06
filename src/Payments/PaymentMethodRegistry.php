@@ -24,7 +24,7 @@ final class PaymentMethodRegistry extends IntegrationRegistry {
 	public function get_all_active_registered() {
 		return array_filter(
 			$this->get_all_registered(),
-			function( $payment_method ) {
+			function ( $payment_method ) {
 				return $payment_method->is_active();
 			}
 		);

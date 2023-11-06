@@ -220,7 +220,7 @@ class CheckoutSchema extends AbstractSchema {
 	 */
 	protected function prepare_payment_details_for_response( array $payment_details ) {
 		return array_map(
-			function( $key, $value ) {
+			function ( $key, $value ) {
 				return (object) [
 					'key'   => $key,
 					'value' => $value,

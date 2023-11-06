@@ -578,7 +578,7 @@ class ProductSchema extends AbstractSchema {
 		$attributes                  = array_filter( $product->get_attributes(), [ $this, 'filter_variation_attribute' ] );
 		$default_variation_meta_data = array_reduce(
 			$attributes,
-			function( $defaults, $attribute ) use ( $product ) {
+			function ( $defaults, $attribute ) use ( $product ) {
 				$meta_key              = wc_variation_attribute_name( $attribute->get_name() );
 				$defaults[ $meta_key ] = [
 					'name'  => wc_attribute_label( $attribute->get_name(), $product ),
@@ -627,7 +627,7 @@ class ProductSchema extends AbstractSchema {
 		 */
 		$attributes_by_variation = array_reduce(
 			$variation_meta_data,
-			function( $values, $data ) use ( $default_variation_meta_keys ) {
+			function ( $values, $data ) use ( $default_variation_meta_keys ) {
 				// The query above only includes the keys of $default_variation_meta_data so we know all of the attributes
 				// being processed here apply to this product. However, we need an additional check here because the
 				// cache may have been primed elsewhere and include keys from other products.

@@ -100,4 +100,3 @@ class ProductAverageRating extends AbstractBlock {
 		);
 	}
 }
-

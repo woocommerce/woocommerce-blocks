@@ -110,6 +110,5 @@ class ProductStockIndicator extends AbstractBlock {
 		$output .= '</div>';
 
 		return $output;
-
 	}
 }

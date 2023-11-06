@@ -112,7 +112,7 @@ class Bootstrap {
 
 		add_action(
 			'admin_init',
-			function() {
+			function () {
 				// Delete this notification because the blocks are included in WC Core now. This will handle any sites
 				// with lingering notices.
 				InboxNotifications::delete_surface_cart_checkout_blocks_notification();
@@ -181,7 +181,7 @@ class Bootstrap {
 				$has_needed_dependencies = false;
 				add_action(
 					'admin_notices',
-					function() {
+					function () {
 						if ( should_display_compatibility_notices() ) {
 							?>
 							<div class="notice notice-error">
@@ -216,7 +216,7 @@ class Bootstrap {
 		}
 		add_action(
 			'admin_notices',
-			function() {
+			function () {
 				echo '<div class="error"><p>';
 				printf(
 					/* translators: %1$s is the install command, %2$s is the build command, %3$s is the watch command. */
@@ -255,19 +255,19 @@ class Bootstrap {
 		);
 		$this->container->register(
 			AssetDataRegistry::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				return new AssetDataRegistry( $container->get( AssetApi::class ) );
 			}
 		);
 		$this->container->register(
 			AssetsController::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				return new AssetsController( $container->get( AssetApi::class ) );
 			}
 		);
 		$this->container->register(
 			PaymentMethodRegistry::class,
-			function() {
+			function () {
 				return new PaymentMethodRegistry();
 			}
 		);
@@ -349,26 +349,26 @@ class Bootstrap {
 		);
 		$this->container->register(
 			DraftOrders::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				return new DraftOrders( $container->get( Package::class ) );
 			}
 		);
 		$this->container->register(
 			CreateAccount::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				return new CreateAccount( $container->get( Package::class ) );
 			}
 		);
 		$this->container->register(
 			GoogleAnalytics::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				$asset_api = $container->get( AssetApi::class );
 				return new GoogleAnalytics( $asset_api );
 			}
 		);
 		$this->container->register(
 			JetpackWooCommerceAnalytics::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				$asset_api                  = $container->get( AssetApi::class );
 				$asset_data_registry        = $container->get( AssetDataRegistry::class );
 				$block_templates_controller = $container->get( BlockTemplatesController::class );
@@ -377,13 +377,13 @@ class Bootstrap {
 		);
 		$this->container->register(
 			Notices::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				return new Notices( $container->get( Package::class ) );
 			}
 		);
 		$this->container->register(
 			Hydration::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				return new Hydration( $container->get( AssetDataRegistry::class ) );
 			}
 		);
@@ -404,28 +404,28 @@ class Bootstrap {
 		// Maintains backwards compatibility with previous Store API namespace.
 		$this->container->register(
 			'Automattic\WooCommerce\Blocks\StoreApi\Formatters',
-			function( Container $container ) {
+			function ( Container $container ) {
 				$this->deprecated_dependency( 'Automattic\WooCommerce\Blocks\StoreApi\Formatters', '7.2.0', 'Automattic\WooCommerce\StoreApi\Formatters', '7.4.0' );
 				return $container->get( StoreApi::class )->container()->get( \Automattic\WooCommerce\StoreApi\Formatters::class );
 			}
 		);
 		$this->container->register(
 			'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi',
-			function( Container $container ) {
+			function ( Container $container ) {
 				$this->deprecated_dependency( 'Automattic\WooCommerce\Blocks\Domain\Services\ExtendRestApi', '7.2.0', 'Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema', '7.4.0' );
 				return $container->get( StoreApi::class )->container()->get( \Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema::class );
 			}
 		);
 		$this->container->register(
 			'Automattic\WooCommerce\Blocks\StoreApi\SchemaController',
-			function( Container $container ) {
+			function ( Container $container ) {
 				$this->deprecated_dependency( 'Automattic\WooCommerce\Blocks\StoreApi\SchemaController', '7.2.0', 'Automattic\WooCommerce\StoreApi\SchemaController', '7.4.0' );
 				return $container->get( StoreApi::class )->container()->get( SchemaController::class );
 			}
 		);
 		$this->container->register(
 			'Automattic\WooCommerce\Blocks\StoreApi\RoutesController',
-			function( Container $container ) {
+			function ( Container $container ) {
 				$this->deprecated_dependency( 'Automattic\WooCommerce\Blocks\StoreApi\RoutesController', '7.2.0', 'Automattic\WooCommerce\StoreApi\RoutesController', '7.4.0' );
 				return $container->get( StoreApi::class )->container()->get( RoutesController::class );
 			}
@@ -446,7 +446,7 @@ class Bootstrap {
 		);
 		$this->container->register(
 			TasksController::class,
-			function() {
+			function () {
 				return new TasksController();
 			}
 		);
@@ -455,12 +455,12 @@ class Bootstrap {
 	/**
 	 * Throws a deprecation notice for a dependency without breaking requests.
 	 *
-	 * @param string $function Class or function being deprecated.
+	 * @param string $function_name Class or function being deprecated.
 	 * @param string $version Version in which it was deprecated.
 	 * @param string $replacement Replacement class or function, if applicable.
 	 * @param string $trigger_error_version Optional version to start surfacing this as a PHP error rather than a log. Defaults to $version.
 	 */
-	protected function deprecated_dependency( $function, $version, $replacement = '', $trigger_error_version = '' ) {
+	protected function deprecated_dependency( $function_name, $version, $replacement = '', $trigger_error_version = '' ) {
 		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
 			return;
 		}
@@ -468,12 +468,12 @@ class Bootstrap {
 		$trigger_error_version = $trigger_error_version ? $trigger_error_version : $version;
 		$error_message         = $replacement ? sprintf(
 			'%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.',
-			$function,
+			$function_name,
 			$version,
 			$replacement
 		) : sprintf(
 			'%1$s is <strong>deprecated</strong> since version %2$s with no alternative available.',
-			$function,
+			$function_name,
 			$version
 		);
 		/**
@@ -481,7 +481,7 @@ class Bootstrap {
 		 *
 		 * @since 7.3.0
 		 */
-		do_action( 'deprecated_function_run', $function, $replacement, $version );
+		do_action( 'deprecated_function_run', $function_name, $replacement, $version );
 
 		$log_error = false;
 
@@ -521,28 +521,28 @@ class Bootstrap {
 	protected function register_payment_methods() {
 		$this->container->register(
 			Cheque::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				$asset_api = $container->get( AssetApi::class );
 				return new Cheque( $asset_api );
 			}
 		);
 		$this->container->register(
 			PayPal::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				$asset_api = $container->get( AssetApi::class );
 				return new PayPal( $asset_api );
 			}
 		);
 		$this->container->register(
 			BankTransfer::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				$asset_api = $container->get( AssetApi::class );
 				return new BankTransfer( $asset_api );
 			}
 		);
 		$this->container->register(
 			CashOnDelivery::class,
-			function( Container $container ) {
+			function ( Container $container ) {
 				$asset_api = $container->get( AssetApi::class );
 				return new CashOnDelivery( $asset_api );
 			}

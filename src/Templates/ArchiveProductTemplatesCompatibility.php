@@ -78,7 +78,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 
 		$block_hooks = array_filter(
 			$this->hook_data,
-			function( $hook ) use ( $block_name ) {
+			function ( $hook ) use ( $block_name ) {
 				return in_array( $block_name, $hook['block_names'], true );
 			}
 		);
@@ -100,7 +100,7 @@ class ArchiveProductTemplatesCompatibility extends AbstractTemplateCompatibility
 		$supported_blocks = array_merge(
 			[],
 			...array_map(
-				function( $hook ) {
+				function ( $hook ) {
 					return $hook['block_names'];
 				},
 				array_values( $this->hook_data )

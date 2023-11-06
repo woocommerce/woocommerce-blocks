@@ -230,7 +230,7 @@ abstract class AbstractBlock {
 			$block_settings['style'] = null;
 			add_filter(
 				'render_block',
-				function( $html, $block ) use ( $style_handles ) {
+				function ( $html, $block ) use ( $style_handles ) {
 					if ( $block['blockName'] === $this->get_block_type() ) {
 						array_map( 'wp_enqueue_style', $style_handles );
 					}

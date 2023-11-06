@@ -101,7 +101,7 @@ class ProductRatingStars extends AbstractBlock {
 			 * @param int    $count  Total number of ratings.
 			 * @return string
 			 */
-			$filter_rating_html = function( $html, $rating, $count ) use ( $product_rating, $product_reviews_count ) {
+			$filter_rating_html = function ( $html, $rating, $count ) use ( $product_rating, $product_reviews_count ) {
 				$product_permalink = get_permalink();
 				$reviews_count     = $count;
 				$average_rating    = $rating;

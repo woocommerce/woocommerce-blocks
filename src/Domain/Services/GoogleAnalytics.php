@@ -106,7 +106,7 @@ class GoogleAnalytics {
 	 * @param string $src Src of script.
 	 * @return string
 	 */
-	public function async_script_loader_tags( $tag, $handle, $src ) {
+	public function async_script_loader_tags( $tag, $handle, $src ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		if ( ! in_array( $handle, array( 'google-tag-manager' ), true ) ) {
 			return $tag;
 		}

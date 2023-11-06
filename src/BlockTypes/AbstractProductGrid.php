@@ -430,7 +430,7 @@ abstract class AbstractProductGrid extends AbstractDynamicBlock {
 		// Prepare the data to cache by indexing by the parent product.
 		$primed_data = array_reduce(
 			$all_variation_meta_data,
-			function( $values, $data ) use ( $variation_ids_by_parent ) {
+			function ( $values, $data ) use ( $variation_ids_by_parent ) {
 				$values[ $variation_ids_by_parent[ $data->variation_id ] ?? 0 ][] = $data;
 				return $values;
 			},
