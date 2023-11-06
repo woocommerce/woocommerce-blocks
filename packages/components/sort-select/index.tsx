@@ -27,7 +27,7 @@ export interface SortSelectProps {
 	/**
 	 * Function to call on the change event.
 	 */
-	onChange: ChangeEventHandler;
+	onChange: ChangeEventHandler< HTMLSelectElement >;
 	/**
 	 * Option values for the select.
 	 */
