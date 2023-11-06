@@ -177,7 +177,6 @@
 		&::after {
 			content: none;
 			color: $universal-border-light;
-			opacity: 1 !important;
 		}
 
 		.wc-block-components-radio-control__input {
@@ -200,7 +199,7 @@
 
 	.wc-block-components-radio-control-accordion-option,
 	.wc-block-components-radio-control__option {
-		@include with-translucent-border(1px 1px 0 1px);
+		@include with-translucent-border(1px 1px 0 1px, 1);
 	}
 
 	.wc-block-components-radio-control-accordion-option:first-child::after {
@@ -236,7 +235,6 @@
 
 		&::after {
 			color: $universal-border-light;
-			opacity: 1;
 		}
 	}
 

@@ -9,7 +9,6 @@ table.wc-block-cart-items td {
 
 	&::after {
 		color: $universal-border-light;
-		opacity: 1 !important;
 	}
 }
 
@@ -83,7 +82,7 @@ table.wc-block-cart-items {
 		}
 		&:not(.wc-block-mini-cart-items):not(:last-child) {
 			.wc-block-cart-items__row {
-				@include with-translucent-border( 0 0 1px );
+				@include with-translucent-border( 0 0 1px, 1 );
 			}
 		}
 		.wc-block-cart-items__row {
@@ -133,7 +132,7 @@ table.wc-block-cart-items {
 			white-space: nowrap;
 		}
 		td {
-			@include with-translucent-border( 1px 0 0 );
+			@include with-translucent-border( 1px 0 0, 1 );
 			padding: $gap 0 $gap $gap;
 			vertical-align: top;
 		}

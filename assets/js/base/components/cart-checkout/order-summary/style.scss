@@ -15,7 +15,7 @@
 	}
 
 	.wc-block-components-order-summary-item {
-		@include with-translucent-border(0 0 1px);
+		@include with-translucent-border(0 0 1px, 1);
 		@include font-size(small);
 		display: flex;
 		padding-bottom: 1px;
@@ -42,7 +42,6 @@
 
 		&::after {
 			color: $universal-border-light;
-			opacity: 1;
 		}
 	}
 

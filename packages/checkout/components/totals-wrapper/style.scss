@@ -20,7 +20,7 @@
 		padding: 0;
 
 		> * > * {
-			@include with-translucent-border(0 0 1px);
+			@include with-translucent-border(0 0 1px, 1);
 			padding: $gap 0;
 
 
@@ -32,7 +32,6 @@
 	}
 	&::after {
 		color: $universal-border-light;
-		opacity: 1;
 	}
 }
 

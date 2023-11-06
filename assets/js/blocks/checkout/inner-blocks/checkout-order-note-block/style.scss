@@ -6,14 +6,13 @@
 .is-small,
 .is-medium {
 	.wc-block-checkout__add-note {
-		@include with-translucent-border(1px 0);
+		@include with-translucent-border(1px 0, 1);
 		margin-bottom: em($gap);
 		margin-top: em($gap);
 		padding: em($gap) 0;
 
 		&::after {
 			color: $universal-border-light;
-			opacity: 1;
 		}
 	}
 }

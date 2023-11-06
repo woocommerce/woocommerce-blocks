@@ -24,7 +24,6 @@
 
 	&::after {
 		color: $universal-border-light;
-		opacity: 1 !important;
 	}
 }
 
@@ -42,7 +41,7 @@
 
 .is-large {
 	.wc-block-checkout__actions {
-		@include with-translucent-border(1px 0 0);
+		@include with-translucent-border(1px 0 0, 1);
 		padding: em($gap-large) 0;
 	}
 }

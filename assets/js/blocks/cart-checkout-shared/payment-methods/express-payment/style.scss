@@ -57,7 +57,6 @@ $border-width: 1px;
 			display: block;
 			height: $universal-border-radius - $border-width;
 			margin-right: $gap-small;
-			opacity: 1;
 			pointer-events: none;
 			width: #{$gap-large - $gap-small - $border-width * 2};
 		}
@@ -71,7 +70,6 @@ $border-width: 1px;
 			display: block;
 			height: $universal-border-radius - $border-width;
 			margin-left: $gap-small;
-			opacity: 1;
 			pointer-events: none;
 			flex-grow: 1;
 		}
@@ -83,13 +81,12 @@ $border-width: 1px;
 	}
 
 	.wc-block-components-express-payment__content {
-		@include with-translucent-border(0 $border-width $border-width);
+		@include with-translucent-border(0 $border-width $border-width, 1);
 		padding: #{$gap-large - $universal-border-radius} $gap-large $gap-large;
 
 		&::after {
 			border-radius: 0 0 $universal-border-radius $universal-border-radius;
 			border-color: $universal-border-light;
-			opacity: 1;
 		}
 
 		> p {
@@ -132,7 +129,6 @@ $border-width: 1px;
 		content: " ";
 		flex: 1;
 		border-bottom: 1px solid $universal-border-light;
-		opacity: 1;
 	}
 }
 
