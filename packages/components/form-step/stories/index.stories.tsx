@@ -12,7 +12,7 @@ import FormStep, { type FormStepProps } from '..';
 import '../style.scss';
 
 export default {
-	title: 'WooCommerce Blocks/@woocommerce-blocks-components/FormStep',
+	title: 'Checkout Components/FormStep',
 	component: FormStep,
 	argTypes: {
 		className: {
