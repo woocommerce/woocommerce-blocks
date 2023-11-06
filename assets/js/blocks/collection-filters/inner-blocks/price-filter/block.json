@@ -17,7 +17,8 @@
 		"interactivity": true
 	},
 	"usesContext": [
-		"collectionData"
+		"collectionData",
+		"query"
 	],
 	"attributes": {
 		"queryParam": {
