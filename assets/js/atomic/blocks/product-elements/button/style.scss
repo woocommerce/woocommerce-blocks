@@ -20,16 +20,6 @@
 			opacity: 0.25;
 		}
 
-		&::before {
-			content: "";
-			margin-right: 1.5em;
-		}
-
-		&::after {
-			content: "";
-			margin-left: 1.5em;
-		}
-
 		&.loading::after {
 			font-family: WooCommerce; /* stylelint-disable-line */
 			content: "\e031";
