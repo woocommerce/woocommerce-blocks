@@ -187,7 +187,6 @@ class Totals extends AbstractOrderConfirmationBlock {
 	 * @return string
 	 */
 	protected function render_order_details_table_totals( $order ) {
-		add_filter( 'woocommerce_order_shipping_to_display_shipped_via', '__return_empty_string' );
 
 		$return     = '';
 		$total_rows = array_diff_key(
