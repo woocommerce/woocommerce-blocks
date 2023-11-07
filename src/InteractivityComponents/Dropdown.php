@@ -11,13 +11,13 @@ class Dropdown {
 	/**
 	 * Render the dropdown.
 	 *
-	 * @param mixed $props
+	 * @param mixed $props The properties to render the dropdown with.
 	 * @return string|false
 	 */
-	static function render( $props ) {
+	public static function render( $props ) {
 		wp_enqueue_script( 'wc-interactivity-dropdown' );
 
-		$context = array(
+		$dropdown_context = array(
 			'woocommerceDropdown' => array(
 				'selectedItem' => array(
 					'label' => null,
@@ -40,7 +40,7 @@ class Dropdown {
 
 		ob_start();
 		?>
-	<div class="wc-block-stock-filter style-dropdown" data-wc-context='<?php echo esc_attr( $context ); ?>' >
+	<div class="wc-block-stock-filter style-dropdown" data-wc-context='<?php echo wp_json_encode( $dropdown_context ); ?>' >
 		<div class="wc-blocks-components-form-token-field-wrapper single-selection" >
 			<div class="components-form-token-field" tabindex="-1">
 				<div class="components-form-token-field__input-container" 
@@ -52,7 +52,10 @@ class Dropdown {
 					<ul hidden data-wc-bind--hidden="!context.woocommerceDropdown.isOpen" class="components-form-token-field__suggestions-list" id="components-form-token-suggestions-1" role="listbox">
 						<?php
 						foreach ( $items as $item ) :
-							$context = wp_json_encode( $item, JSON_NUMERIC_CHECK );
+							$context = array(
+								'woocommerceDropdown' => array( 'currentItem' => $item ),
+								JSON_NUMERIC_CHECK,
+							);
 							?>
 							<li
 								role="option" 
@@ -61,7 +64,7 @@ class Dropdown {
 								data-wc-class--is-selected="selectors.woocommerceDropdown.isSelected" 
 								data-wc-on--mouseover="actions.woocommerceDropdown.addHoverClass" 
 								data-wc-on--mouseout="actions.woocommerceDropdown.removeHoverClass" 
-								data-wc-context='<?php echo esc_attr( $context ); ?>' 
+								data-wc-context='<?php echo wp_json_encode( $context ); ?>' 
 								class="components-form-token-field__suggestion" 
 								data-wc-bind--aria-selected="selectors.woocommerceDropdown.isSelected"
 							>
