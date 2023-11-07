@@ -17,7 +17,7 @@ class ProductUpdater {
 	 * @param array      $images The array of images.
 	 * @param string     $business_description The business description.
 	 *
-	 * @return array|WP_Error The generated content.
+	 * @return array|WP_Error The generated content for the products. An error if the content could not be generated.
 	 */
 	public function generate_content( $ai_connection, $token, $images, $business_description ) {
 		if ( empty( $business_description ) ) {
@@ -254,11 +254,6 @@ class ProductUpdater {
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
-
-		// Since the media_sideload_image function is expensive and can take longer to complete
-		// the process of downloading the external image and uploading it to the media library,
-		// here we are increasing the time limit and the memory limit to avoid any issues.
-		wp_raise_memory_limit();
 
 		$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
 
