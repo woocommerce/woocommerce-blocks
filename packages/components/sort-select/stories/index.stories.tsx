@@ -12,7 +12,72 @@ import SortSelect, { type SortSelectProps } from '..';
 export default {
 	title: 'External Components/SortSelect',
 	component: SortSelect,
-	argTypes: {},
+	argTypes: {
+		className: {
+			control: 'text',
+			table: {
+				type: {
+					summary: 'string',
+				},
+			},
+			description: 'Additional class names to add to the textarea.',
+		},
+		value: {
+			control: 'text',
+			table: {
+				type: {
+					summary: 'string',
+				},
+			},
+			description: 'The selected value.',
+		},
+		label: {
+			control: 'text',
+			table: {
+				type: {
+					summary: 'string',
+				},
+			},
+			description: 'Label for the select.',
+		},
+		readOnly: {
+			control: 'boolean',
+			table: {
+				type: {
+					summary: 'boolean',
+				},
+			},
+			description: 'Whether the textarea is disabled/read-only.',
+		},
+		onChange: {
+			action: 'onChange',
+			table: {
+				type: {
+					summary: 'function',
+				},
+			},
+			description: 'Function to call on the change event.',
+		},
+		screenReaderLabel: {
+			control: 'text',
+			table: {
+				type: {
+					summary: 'string',
+				},
+			},
+			description: 'Hidden text to be read by a screen reader.',
+		},
+		options: {
+			control: 'object',
+			table: {
+				type: {
+					summary: '{ key: string; label: string }[]',
+				},
+			},
+			description:
+				'The placeholder text to show when no value has been entered.',
+		},
+	},
 } as Meta< SortSelectProps >;
 
 const Template: StoryFn< SortSelectProps > = ( args ) => {
