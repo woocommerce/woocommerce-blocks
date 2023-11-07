@@ -16,7 +16,9 @@ const getUrl = ( activeFilters: string ) => {
 	const url = new URL( window.location.href );
 	const { searchParams } = url;
 
-	searchParams.set( 'filter_stock_status', activeFilters );
+	if ( activeFilters !== '' ) {
+		searchParams.set( 'filter_stock_status', activeFilters );
+	}
 
 	return url.href;
 };
@@ -42,27 +44,14 @@ interactivityStore( {
 			activeFilters: '',
 		},
 	},
-	// effects: {
-	// 	filters: {
-	// 		updateProductsFromSingleDropdownChoice: ( {
-	// 			context,
-	// 		}: {
-	// 			context: DropdownContext;
-	// 		} ) => {
-	// 			if ( context.woocommerceDropdown.selectedItem.value ) {
-	// 				navigate(
-	// 					getUrl( context.woocommerceDropdown.selectedItem.value )
-	// 				);
-	// 			}
-	// 		},
-	// 	},
-	// },
 	actions: {
 		filters: {
 			navigate: ( { context }: { context: DropdownContext } ) => {
-				navigate(
-					getUrl( context.woocommerceDropdown.selectedItem.value )
-				);
+				if ( context.woocommerceDropdown.selectedItem.value ) {
+					navigate(
+						getUrl( context.woocommerceDropdown.selectedItem.value )
+					);
+				}
 			},
 			updateProducts: ( { state, event }: ActionProps ) => {
 				const activeFilters = state.filters.activeFilters.split( ',' );

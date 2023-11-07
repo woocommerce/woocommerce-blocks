@@ -33,6 +33,13 @@ interactivityStore( {
 	state: {},
 	selectors: {
 		woocommerceDropdown: {
+			placeholderText: ( { context }: { context: DropdownContext } ) => {
+				const {
+					woocommerceDropdown: { selectedItem },
+				} = context;
+
+				return selectedItem.label || 'Select an option';
+			},
 			isSelected: ( { context }: { context: DropdownContext } ) => {
 				const {
 					woocommerceDropdown: {
@@ -68,6 +75,7 @@ interactivityStore( {
 				} = context;
 
 				context.woocommerceDropdown.selectedItem = { label, value };
+				context.woocommerceDropdown.isOpen = false;
 			},
 			addHoverClass: ( { context }: { context: DropdownContext } ) => {
 				const {

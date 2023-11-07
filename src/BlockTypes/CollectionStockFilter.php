@@ -73,8 +73,10 @@ final class CollectionStockFilter extends AbstractBlock {
 	 */
 	private function get_stock_filter_html( $data, $attributes, $block ) {
 		$display_style  = $attributes['displayStyle'] ?? 'list';
-		$select_type    = $attributes['selectType'] ?? 'multiple';
 		$stock_statuses = wc_get_product_stock_status_options();
+
+		// check the url params to select initial item on page load.
+		$selected_stock_status = isset( $_GET[ self::STOCK_STATUS_QUERY_VAR ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::STOCK_STATUS_QUERY_VAR ] ) ) : '';
 
 		$list_items = array_map(
 			function( $item ) use ( $stock_statuses ) {
@@ -85,6 +87,21 @@ final class CollectionStockFilter extends AbstractBlock {
 			},
 			$data
 		);
+
+		$selected_items = array_values(
+			array_filter(
+				$list_items,
+				function( $item ) use ( $selected_stock_status ) {
+						return $item['value'] === $selected_stock_status;
+				}
+			)
+		);
+
+		$selected_item = $selected_items[0] ?? array(
+			'label' => null,
+			'value' => null,
+		);
+
 		ob_start();
 		?>
 
@@ -122,9 +139,9 @@ final class CollectionStockFilter extends AbstractBlock {
 			<?php
 			echo Dropdown::render(
 				array(
-					'items'       => $list_items,
-					'placeholder' => 'Select stock status',
-					'action'      => 'actions.filters.navigate',
+					'items'         => $list_items,
+					'action'        => 'actions.filters.navigate',
+					'selected_item' => $selected_item,
 				)
 			);
 			?>

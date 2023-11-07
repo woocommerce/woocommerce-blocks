@@ -17,12 +17,14 @@ class Dropdown {
 	public static function render( $props ) {
 		wp_enqueue_script( 'wc-interactivity-dropdown' );
 
+		$selected_item = $props['selected_item'] ?? array(
+			'label' => null,
+			'value' => null,
+		);
+
 		$dropdown_context = array(
 			'woocommerceDropdown' => array(
-				'selectedItem' => array(
-					'label' => null,
-					'value' => null,
-				),
+				'selectedItem' => $selected_item,
 				'hoveredItem'  => array(
 					'label' => null,
 					'value' => null,
@@ -32,6 +34,7 @@ class Dropdown {
 		);
 
 		$action = $props['action'] ?? '';
+
 		// TODO - translate the default.
 		$placeholder = $props['placeholder'] ?? 'Choose an option';
 
@@ -48,7 +51,7 @@ class Dropdown {
 							tabindex="-1" 
 							data-wc-on--click="actions.woocommerceDropdown.toggleIsOpen" 
 					>
-					<input id="components-form-token-input-1" type="text" autocomplete="off" placeholder="<?php echo esc_attr( $placeholder ); ?>" class="components-form-token-field__input" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-describedby="components-form-token-suggestions-howto-1" value="">
+					<input id="components-form-token-input-1" type="text" autocomplete="off" data-wc-bind--placeholder="selectors.woocommerceDropdown.placeholderText" class="components-form-token-field__input" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-describedby="components-form-token-suggestions-howto-1" value="">
 					<ul hidden data-wc-bind--hidden="!context.woocommerceDropdown.isOpen" class="components-form-token-field__suggestions-list" id="components-form-token-suggestions-1" role="listbox">
 						<?php
 						foreach ( $items as $item ) :
