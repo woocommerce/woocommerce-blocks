@@ -38,7 +38,8 @@ const Edit = ( props: EditProps ) => {
 		debouncedSpeak,
 	} = props;
 
-	const { attributeId, queryType, isPreview, displayStyle } = blockAttributes;
+	const { attributeId, queryType, isPreview, displayStyle, showCounts } =
+		blockAttributes;
 
 	const attributeObject = getAttributeFromId( attributeId );
 
@@ -128,6 +129,7 @@ const Edit = ( props: EditProps ) => {
 						/>
 					) : (
 						<AttributeCheckboxList
+							showCounts={ showCounts }
 							attributeTerms={ attributeTerms }
 						/>
 					) }{ ' ' }
