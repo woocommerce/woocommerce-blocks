@@ -45,7 +45,7 @@ static function render( $props ) {
              data-wc-on--click="actions.woocommerceDropdown.toggleIsOpen" 
          >
           <input id="components-form-token-input-1" type="text" autocomplete="off" placeholder="<?php echo esc_attr($placeholder) ?>" class="components-form-token-field__input" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-describedby="components-form-token-suggestions-howto-1" value="">
-          <ul data-wc-bind--hidden="!context.woocommerceDropdown.isOpen" class="components-form-token-field__suggestions-list" id="components-form-token-suggestions-1" role="listbox">
+          <ul hidden data-wc-bind--hidden="!context.woocommerceDropdown.isOpen" class="components-form-token-field__suggestions-list" id="components-form-token-suggestions-1" role="listbox">
             <?php foreach ( $items as $item ) : 
               $context = json_encode($item, JSON_NUMERIC_CHECK);
             ?>
