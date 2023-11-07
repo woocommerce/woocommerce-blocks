@@ -176,7 +176,6 @@
 
 		&::after {
 			content: none;
-			color: $universal-border-light;
 		}
 
 		.wc-block-components-radio-control__input {
@@ -199,7 +198,11 @@
 
 	.wc-block-components-radio-control-accordion-option,
 	.wc-block-components-radio-control__option {
-		@include with-translucent-border(1px 1px 0 1px, 1);
+		border: 1px solid $universal-border-light;
+	}
+	.wc-block-components-radio-control-accordion-option
+	.wc-block-components-radio-control__option {
+		border-width: 0;
 	}
 
 	.wc-block-components-radio-control-accordion-option:first-child::after {
@@ -225,16 +228,13 @@
 			display: flex;
 			align-items: center;
 			justify-content: flex-start;
+			border-width: 0;
 		}
 		.wc-block-components-radio-control__label img {
 			height: 24px;
 			max-height: 24px;
 			object-fit: contain;
 			object-position: left;
-		}
-
-		&::after {
-			color: $universal-border-light;
 		}
 	}
 

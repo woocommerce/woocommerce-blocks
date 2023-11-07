@@ -81,13 +81,12 @@ $border-width: 1px;
 	}
 
 	.wc-block-components-express-payment__content {
-		@include with-translucent-border(0 $border-width $border-width, 1);
+		border-style: solid;
+		border-width: 0 $border-width $border-width;
+		bottom: 0;
+		border-color: $universal-border-light;
 		padding: #{$gap-large - $universal-border-radius} $gap-large $gap-large;
-
-		&::after {
-			border-radius: 0 0 $universal-border-radius $universal-border-radius;
-			border-color: $universal-border-light;
-		}
+		border-radius: 0 0 $universal-border-radius $universal-border-radius;
 
 		> p {
 			margin-bottom: em($gap);

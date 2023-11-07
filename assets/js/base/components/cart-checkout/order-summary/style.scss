@@ -15,7 +15,7 @@
 	}
 
 	.wc-block-components-order-summary-item {
-		@include with-translucent-border(0 0 1px, 1);
+		border-bottom: 1px solid $universal-border-light;
 		@include font-size(small);
 		display: flex;
 		padding-bottom: 1px;
@@ -27,6 +27,8 @@
 		}
 
 		&:last-child {
+			border-width: 0;
+
 			> div {
 				padding-bottom: 0;
 			}
@@ -40,9 +42,6 @@
 			@include font-size(regular);
 		}
 
-		&::after {
-			color: $universal-border-light;
-		}
 	}
 
 	.wc-block-components-order-summary-item__image,

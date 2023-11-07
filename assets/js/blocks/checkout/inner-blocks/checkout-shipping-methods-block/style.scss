@@ -1,12 +1,8 @@
 .wc-block-checkout__shipping-option {
 	.wc-block-components-radio-control__option {
-		@include with-translucent-border(0 0 1px, 1);
+		border-bottom: 1px solid $universal-border-light;
 		margin: 0;
 		padding: em($gap-small) 0 em($gap-small) em($gap-largest);
-
-		&::after {
-			color: $universal-border-light;
-		}
 	}
 
 	.wc-block-components-shipping-rates-control__no-results-notice {
