@@ -91,13 +91,13 @@ const blocks = {
 	'reviews-by-product': {
 		customDir: 'reviews/reviews-by-product',
 	},
-	'collection-price-filter': {
-		customDir: 'collection-filters/inner-blocks/price-filter',
-		isExperimental: true,
-	},
 	'single-product': {},
 	'stock-filter': {},
 	'collection-filters': {
+		isExperimental: true,
+	},
+	'collection-price-filter': {
+		customDir: 'collection-filters/inner-blocks/price-filter',
 		isExperimental: true,
 	},
 	'order-confirmation-summary': {
@@ -166,7 +166,7 @@ const getBlockEntries = ( relativePath ) => {
 const entries = {
 	styling: {
 		// Packages styles
-		'packages-style': glob.sync( './packages/**/index.js' ),
+		'packages-style': glob.sync( './packages/**/index.{t,j}s' ),
 
 		// Shared blocks code
 		'wc-blocks': './assets/js/index.js',
@@ -195,7 +195,7 @@ const entries = {
 		wcBlocksSharedHocs: './assets/js/shared/hocs/index.js',
 		priceFormat: './packages/prices/index.js',
 		blocksCheckout: './packages/checkout/index.js',
-		blocksComponents: './packages/components/index.js',
+		blocksComponents: './packages/components/index.ts',
 	},
 	main: {
 		// Shared blocks code
@@ -227,6 +227,8 @@ const entries = {
 			'./assets/js/extensions/google-analytics/index.ts',
 		'wc-shipping-method-pickup-location':
 			'./assets/js/extensions/shipping-methods/pickup-location/index.js',
+		'wc-blocks-jetpack-woocommerce-analytics':
+			'./assets/js/extensions/jetpack/woocommerce-analytics/index.ts',
 	},
 	editor: {
 		'wc-blocks-classic-template-revert-button':
