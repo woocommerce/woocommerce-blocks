@@ -58,12 +58,15 @@ const CreatedControl = ( props: QueryControlProps ) => {
 					>
 						<ToggleGroupControlOption
 							value={ ETimeFrameOperator.IN }
-							label={ __( 'In', 'woo-gutenberg-products-block' ) }
+							label={ __(
+								'Within',
+								'woo-gutenberg-products-block'
+							) }
 						/>
 						<ToggleGroupControlOption
 							value={ ETimeFrameOperator.NOT_IN }
 							label={ __(
-								'Not in',
+								'Before',
 								'woo-gutenberg-products-block'
 							) }
 						/>
