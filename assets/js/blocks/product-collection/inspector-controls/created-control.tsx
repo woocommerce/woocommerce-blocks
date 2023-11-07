@@ -28,8 +28,6 @@ const CreatedControl = ( props: QueryControlProps ) => {
 	const { query, setQueryAttribute } = props;
 	const { timeFrame } = query;
 
-	const uppercaseStyle = { textTransform: 'uppercase' };
-
 	return (
 		<ToolsPanelItem
 			label={ __( 'Created', 'woo-gutenberg-products-block' ) }
@@ -60,16 +58,14 @@ const CreatedControl = ( props: QueryControlProps ) => {
 					>
 						<ToggleGroupControlOption
 							value={ ETimeFrameOperator.IN }
-							label={ __( 'IN', 'woo-gutenberg-products-block' ) }
-							style={ uppercaseStyle }
+							label={ __( 'In', 'woo-gutenberg-products-block' ) }
 						/>
 						<ToggleGroupControlOption
 							value={ ETimeFrameOperator.NOT_IN }
 							label={ __(
-								'NOT IN',
+								'Not in',
 								'woo-gutenberg-products-block'
 							) }
-							style={ uppercaseStyle }
 						/>
 					</ToggleGroupControl>
 				</FlexItem>
