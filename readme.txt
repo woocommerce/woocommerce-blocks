@@ -98,7 +98,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Move `Textarea` to components package. ([11384](https://github.com/woocommerce/woocommerce-blocks/pull/11384))
 - Move `Title` to components package. ([11383](https://github.com/woocommerce/woocommerce-blocks/pull/11383))
 - Use the <header> element for the checkout header. ([11222](https://github.com/woocommerce/woocommerce-blocks/pull/11222))
-- Product Gallery Thumbnails: Add View all overlay. ([11087](https://github.com/woocommerce/woocommerce-blocks/pull/11087))
 
 #### Bug Fixes
 
