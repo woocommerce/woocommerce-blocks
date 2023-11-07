@@ -9,7 +9,7 @@ import { withInstanceId } from '@wordpress/compose';
 import {
 	ValidatedTextInput,
 	ValidationInputError,
-} from '@woocommerce/blocks-checkout';
+} from '@woocommerce/blocks-components';
 import { useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import classnames from 'classnames';
