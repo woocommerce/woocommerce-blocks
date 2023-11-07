@@ -22,9 +22,9 @@ The release pull request has been created! This checklist is a guide to follow f
 -   [ ] Run `npm run package-plugin:deploy`. This will create a zip of the current branch build locally.
 -   [ ] Create the testing notes for the release.
     -   [ ] For each pull request that belongs to the current release, grab the `User Facing Testing` notes from the PR's description.
-        - If a PR has the `Should be tested by the development team exclusively` checkbox checked, create a new section called 'Testing notes for the development team' and copy the `User Facing Testing` notes from the PR to this section.
-        - If a PR has the `Experimental` checkbox checked, do not include it in the testing instructions.
-        - If a PR has the `Do not include in the Testing Notes` checkbox checked, as the description suggests, do not include it in the release instructions.
+        -   If a PR has the `Should be tested by the development team exclusively` checkbox checked, create a new section called 'Testing notes for the development team' and copy the `User Facing Testing` notes from the PR to this section.
+        -   If a PR has the `Experimental` checkbox checked, do not include it in the testing instructions.
+        -   If a PR has the `Do not include in the Testing Notes` checkbox checked, as the description suggests, do not include it in the release instructions.
 -   [ ] Add the notes to `docs/internal-developers/testing/releases`
 -   [ ] Update the `docs/internal-developers/testing/releases/README.md` file index.
 -   [ ] Copy a link to the release zip you created earlier into the testing notes. To generate the link you can upload the zip as an attachment in a GitHub comment and then just copy the path (without publishing the comment).
@@ -95,7 +95,7 @@ This only needs done if the patch release needs to be included in WooCommerce Co
 
     -   The PR description can follow [this example](https://github.com/woocommerce/woocommerce/pull/32627).
         -   It lists all the WooCommerce Blocks versions that are being included since the last version that you edited in `plugins/woocommerce/composer.json`. Each version should have a link for the `Release PR`, `Testing instructions` and `Release post` (if available).
-        -   The changelog should be aggregated from all the releases included in the package bump and grouped per type: `Enhancements`, `Bug Fixes`, `Various` etc. This changelog will be used in the release notes for the WooCommerce release. That's why it should only list the PRs that have WooCoomerce Core in the WooCommerce Visibility section of their description. Don't include changes available in the feature plugin or development builds.
+        -   The changelog should be aggregated from all the releases included in the package bump and grouped per type: `Enhancements`, `Bug Fixes`, `Various` etc. This changelog will be used in the release notes for the WooCommerce release. That's why it should only list the PRs that have WooCommerce Core in the WooCommerce Visibility section of their description. Don't include changes available in the feature plugin or development builds.
 
 -   [ ] Build WC core from that branch with `pnpm run --filter='woocommerce' build` (you might need to [install the dependencies first](https://github.com/woocommerce/woocommerce#prerequisites)) and:
 
@@ -103,10 +103,7 @@ This only needs done if the patch release needs to be included in WooCommerce Co
     -   [ ] Complete the [Smoke testing checklist](https://github.com/woocommerce/woocommerce-gutenberg-products-block/blob/trunk/docs/internal-developers/testing/smoke-testing.md).
 
 -   [ ] Verify and make any additional edits to the pull request description for things like: Changelog to be included with WooCommerce core, additional communication that might be needed elsewhere, additional marketing communication notes that may be needed, etc.
-
-    -   [ ] Assign the corresponding WC version milestone to the PR
-    -   [ ] After the checklist is complete and the testing is done, select the porter of your team to review the PR. Once approved, make sure you merge the PR.
-
+-   [ ] After the checklist is complete and the testing is done, select the porter of your team to review the PR. Once approved, make sure you merge the PR.
 -   [ ] Make sure you join the `#woo-core-releases` Slack channel to represent Woo Blocks for the release of WooCommerce core this version is included in.
 
 ## Publish Posts
