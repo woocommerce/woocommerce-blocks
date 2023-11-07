@@ -36,7 +36,7 @@ static function render( $props ) {
 
 	ob_start();
 	?>
-  <div class="wc-block-stock-filter style-dropdown" data-wc-effect="<?php echo $change_effect; ?>" data-wc-context='<?php echo $dropdown_context ?>' >
+  <div class="wc-block-stock-filter style-dropdown" data-wc-context='<?php echo $dropdown_context ?>' >
     <div class="wc-blocks-components-form-token-field-wrapper single-selection" >
       <div class="components-form-token-field" tabindex="-1">
         <div class="components-form-token-field__input-container" 
@@ -49,8 +49,10 @@ static function render( $props ) {
             <?php foreach ( $items as $item ) : 
               $context = json_encode($item, JSON_NUMERIC_CHECK);
             ?>
-              <li 
-                role="option" data-wc-class--is-selected="selectors.woocommerceDropdown.isSelected" 
+              <li
+                data-wc-effect="<?php echo $change_effect; ?>"
+                role="option" 
+                data-wc-class--is-selected="selectors.woocommerceDropdown.isSelected" 
                 data-wc-on--click="actions.woocommerceDropdown.selectDropdownItem" 
                 data-wc-on--mouseover="actions.woocommerceDropdown.addHoverClass" 
                 data-wc-on--mouseout="actions.woocommerceDropdown.removeHoverClass" 
