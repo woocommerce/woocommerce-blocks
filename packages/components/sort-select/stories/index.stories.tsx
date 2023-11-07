@@ -10,7 +10,7 @@ import { useArgs } from '@storybook/preview-api';
 import SortSelect, { type SortSelectProps } from '..';
 
 export default {
-	title: 'Checkout Components/SortSelect',
+	title: 'External Components/SortSelect',
 	component: SortSelect,
 	argTypes: {},
 } as Meta< SortSelectProps >;
