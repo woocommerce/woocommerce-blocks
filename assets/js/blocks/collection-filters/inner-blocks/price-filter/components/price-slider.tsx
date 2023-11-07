@@ -4,6 +4,10 @@
 import { EditProps } from '../types';
 import { getFormattedPrice } from '../utils';
 
+/**
+ * We pass the whole props from Edit component to <PriceSlider/> so we're
+ * reusing the EditProps type here.
+ */
 export const PriceSlider = ( { attributes, context }: EditProps ) => {
 	const { showInputFields } = attributes;
 	const { minPrice, maxPrice, formattedMinPrice, formattedMaxPrice } =
