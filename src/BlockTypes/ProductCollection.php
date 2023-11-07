@@ -989,7 +989,7 @@ class ProductCollection extends AbstractBlock {
 		return array(
 			'date_query' => array(
 				array(
-					'column'        => 'post_date',
+					'column'        => 'post_date_gmt',
 					$query_operator => $time_frame['value'],
 					'inclusive'     => true,
 				),
