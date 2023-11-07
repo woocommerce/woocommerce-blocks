@@ -57,14 +57,19 @@ test.describe( 'Test the cart template', async () => {
 		).toBeVisible();
 	} );
 
-	test( 'Admin bar edit site link opens site editor', async ( { admin } ) => {
+	test( 'Admin bar edit site link opens site editor', async ( {
+		admin,
+		editor,
+		editorUtils,
+	} ) => {
 		await admin.page.goto( permalink, { waitUntil: 'load' } );
 		await admin.page.locator( '#wp-admin-bar-site-editor a' ).click();
+		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
+		await editorUtils.waitForSiteEditorFinishLoading();
+		await editor.canvas.waitForSelector( 'h1:has-text("Cart block")' );
 		await expect(
-			admin.page
-				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h1:has-text("Cart")' )
-				.first()
+			editor.canvas.locator( 'h1:has-text("Cart block")' ).first()
 		).toBeVisible();
 	} );
 } );
