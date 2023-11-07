@@ -42,6 +42,7 @@ use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ArchiveProductTemplatesCompatibility;
 use Automattic\WooCommerce\Blocks\Domain\Services\OnboardingTasks\TasksController;
+use Automattic\WooCommerce\Vendor\League\Container\Exception\NotFoundException;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -137,7 +138,18 @@ class Bootstrap {
 		$this->container->get( ShippingController::class )->init();
 		$this->container->get( TasksController::class )->init();
 		$this->container->get( JetpackWooCommerceAnalytics::class )->init();
-		$this->container->get( OrderSourceAttribution::class )->init();
+
+		try {
+			$this->container->get( OrderSourceAttribution::class )->init();
+		} catch ( NotFoundException $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+
+			/*
+			 * This will fail until #39701 is merged into WooCommerce core.
+			 *
+			 * @see https://github.com/woocommerce/woocommerce/pull/39701
+			 * @todo Remove this try/catch once the PR is merged.
+			 */
+		}
 
 		// Load assets in admin and on the frontend.
 		if ( ! $is_rest ) {
