@@ -12,17 +12,17 @@ test.describe( 'Test the cart template', async () => {
 		admin,
 		page,
 		editorUtils,
+		editor,
 	} ) => {
 		await admin.visitAdminPage( 'site-editor.php' );
 		await editorUtils.waitForSiteEditorFinishLoading();
 		await page.getByRole( 'button', { name: /Templates/i } ).click();
 		await page.getByRole( 'button', { name: /Page: Cart/i } ).click();
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
+		await editor.canvas.waitForSelector( 'h1:has-text("Cart block")' );
 		await expect(
-			page
-				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h1:has-text("Cart")' )
-				.first()
+			editor.canvas.locator( 'h1:has-text("Cart block")' ).first()
 		).toBeVisible();
 	} );
 
