@@ -11,11 +11,6 @@ use WP_Error;
 class PatternUpdater {
 
 	/**
-	 * The patterns content option name.
-	 */
-	const WC_BLOCKS_PATTERNS_CONTENT = 'wc_blocks_patterns_content';
-
-	/**
 	 * Creates the patterns content for the given vertical.
 	 *
 	 * @param Connection      $ai_connection The AI connection.
