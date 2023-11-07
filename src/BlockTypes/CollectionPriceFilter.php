@@ -71,8 +71,8 @@ final class CollectionPriceFilter extends AbstractBlock {
 		}
 
 		// CSS variables for the range bar style.
-		$__low       = 100 * $min_price / $max_range;
-		$__high      = 100 * $max_price / $max_range;
+		$__low       = 100 * ( $min_price - $min_range ) / ( $max_range - $min_range );
+		$__high      = 100 * ( $max_price - $min_range ) / ( $max_range - $min_range );
 		$range_style = "--low: $__low%; --high: $__high%";
 
 		$wrapper_attributes = get_block_wrapper_attributes(
