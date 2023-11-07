@@ -5,30 +5,45 @@ import { store as interactivityStore } from '@woocommerce/interactivity';
 
 // TODO - import scss
 
-type Context = {
+export type DropdownContext = {
 	woocommerceDropdown: {
-		selectedItem: {
+		currentItem: {
 			label: string;
 			value: string;
+		};
+		selectedItem: {
+			label: string | null;
+			value: string | null;
+		};
+		hoveredItem: {
+			label: string | null;
+			value: string | null;
 		};
 		isOpen: boolean;
 	};
 };
 
 type Store = {
-	context: Context;
-	// @ts-ignore
-	selectors: any;
+	context: DropdownContext;
+	selectors: unknown;
 	ref: HTMLElement;
 };
 
 interactivityStore( {
+	state: {},
 	selectors: {
 		woocommerceDropdown: {
-			isSelected: ( { context } ) => {
-				const { value } = context;
+			isSelected: ( { context }: { context: DropdownContext } ) => {
+				const {
+					woocommerceDropdown: {
+						currentItem: { value },
+					},
+				} = context;
 
-				return context.woocommerceDropdown.selectedItem.value === value;
+				return (
+					context.woocommerceDropdown.selectedItem.value === value ||
+					context.woocommerceDropdown.hoveredItem.value === value
+				);
 			},
 		},
 	},
@@ -41,21 +56,33 @@ interactivityStore( {
 
 				woocommerceDropdown.isOpen = ! woocommerceDropdown.isOpen;
 			},
-			selectDropdownItem: ( { context } ) => {
-				const { label, value } = context;
+			selectDropdownItem: ( {
+				context,
+			}: {
+				context: DropdownContext;
+			} ) => {
+				const {
+					woocommerceDropdown: {
+						currentItem: { label, value },
+					},
+				} = context;
 
 				context.woocommerceDropdown.selectedItem = { label, value };
 			},
-			addHoverClass: ( { ref } ) => {
-				ref.classList.add( 'is-selected' );
+			addHoverClass: ( { context }: { context: DropdownContext } ) => {
+				const {
+					woocommerceDropdown: {
+						currentItem: { label, value },
+					},
+				} = context;
+
+				context.woocommerceDropdown.hoveredItem = { label, value };
 			},
-			removeHoverClass: ( { ref, context } ) => {
-				if (
-					context.value !==
-					context.woocommerceDropdown.selectedItem.value
-				) {
-					ref.classList.remove( 'is-selected' );
-				}
+			removeHoverClass: ( { context }: { context: DropdownContext } ) => {
+				context.woocommerceDropdown.hoveredItem = {
+					label: null,
+					value: null,
+				};
 			},
 		},
 	},

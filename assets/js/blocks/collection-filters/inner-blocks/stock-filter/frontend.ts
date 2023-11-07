@@ -10,6 +10,7 @@ import {
  * Internal dependencies
  */
 import { HTMLElementEvent } from '../../../../types';
+import { DropdownContext } from '../../../../../../packages/interactivity-components/dropdown';
 
 const getUrl = ( activeFilters: string ) => {
 	const url = new URL( window.location.href );
@@ -41,9 +42,24 @@ interactivityStore( {
 			activeFilters: '',
 		},
 	},
+	// effects: {
+	// 	filters: {
+	// 		updateProductsFromSingleDropdownChoice: ( {
+	// 			context,
+	// 		}: {
+	// 			context: DropdownContext;
+	// 		} ) => {
+	// 			if ( context.woocommerceDropdown.selectedItem.value ) {
+	// 				navigate(
+	// 					getUrl( context.woocommerceDropdown.selectedItem.value )
+	// 				);
+	// 			}
+	// 		},
+	// 	},
+	// },
 	actions: {
 		filters: {
-			navigate: ( { context } ) => {
+			navigate: ( { context }: { context: DropdownContext } ) => {
 				navigate(
 					getUrl( context.woocommerceDropdown.selectedItem.value )
 				);
