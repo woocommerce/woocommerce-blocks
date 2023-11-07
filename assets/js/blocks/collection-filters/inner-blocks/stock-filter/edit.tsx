@@ -15,7 +15,6 @@ import type { BlockEditProps } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import './editor.scss';
 import { BlockProps } from './types';
 import { Inspector } from './inspector';
 
