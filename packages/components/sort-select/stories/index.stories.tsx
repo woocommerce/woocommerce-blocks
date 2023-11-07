@@ -7,7 +7,7 @@ import { useArgs } from '@storybook/preview-api';
 /**
  * Internal dependencies
  */
-import SortSelect, { type SortSelectProps } from '..';
+import { SortSelect, type SortSelectProps } from '..';
 
 export default {
 	title: 'External Components/SortSelect',

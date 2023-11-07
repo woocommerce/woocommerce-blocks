@@ -54,7 +54,7 @@ export interface SortSelectProps {
  * Component used for 'Order by' selectors, which renders a label
  * and a <select> with the options provided in the props.
  */
-const SortSelect = ( {
+export const SortSelect = ( {
 	className,
 	instanceId,
 	label = '',
