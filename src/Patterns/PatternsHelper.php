@@ -74,6 +74,49 @@ class PatternsHelper {
 
 		return $image;
 	}
+	/**
+	 * Returns the post that has the generated data by the AI for the patterns.
+	 *
+	 * @return WP_Post|null
+	 */
+	public static function get_patterns_ai_data() {
+		$arg = array(
+			'post_type'      => 'patterns_ai_data',
+			'posts_per_page' => 1,
+			'no_found_rows'  => true,
+			'cache_results'  => true,
+		);
+
+		$query = new \WP_Query( $arg );
+
+		$posts = $query->get_posts();
+		return isset( $posts[0] ) ? $posts[0] : null;
+	}
+
+	/**
+	 * Upsert the patterns AI data.
+	 *
+	 * @param array $patterns_dictionary The patterns dictionary.
+	 *
+	 * @return void
+	 */
+	public static function upsert_patterns_ai_data( $patterns_dictionary ) {
+		$patterns = self::get_patterns_ai_data();
+
+		if ( isset( $patterns ) ) {
+			$patterns->post_content = wp_json_encode( $patterns_dictionary );
+			wp_update_post( $patterns );
+		} else {
+			$patterns = array(
+				'post_title'   => 'Patterns AI Data',
+				'post_content' => wp_json_encode( $patterns_dictionary ),
+				'post_status'  => 'publish',
+				'post_type'    => 'patterns_ai_data',
+			);
+			wp_insert_post( $patterns );
+		}
+
+	}
 
 	/**
 	 * Get the Patterns Dictionary.
@@ -83,7 +126,9 @@ class PatternsHelper {
 	 * @return mixed|WP_Error|null
 	 */
 	private static function get_patterns_dictionary( $pattern_slug = null ) {
-		$patterns_dictionary = get_option( PatternUpdater::WC_BLOCKS_PATTERNS_CONTENT );
+
+		$patterns_dictionary_post = self::get_patterns_ai_data();
+		$patterns_dictionary      = json_decode( $patterns_dictionary_post->post_content, true );
 
 		if ( ! empty( $patterns_dictionary ) ) {
 			if ( empty( $pattern_slug ) ) {

@@ -42,11 +42,13 @@ class PatternUpdater {
 			return new WP_Error( 'failed_to_set_pattern_content', __( 'Failed to set the pattern content.', 'woo-gutenberg-products-block' ) );
 		}
 
-		if ( get_option( self::WC_BLOCKS_PATTERNS_CONTENT ) === $patterns_with_images_and_content ) {
+		$patterns_dictionary = PatternsHelper::get_patterns_ai_data();
+
+		if ( isset( $patterns_dictionary->post_content ) && json_decode( $patterns_dictionary->post_content ) === $patterns_with_images_and_content ) {
 			return true;
 		}
 
-		$updated_content = update_option( self::WC_BLOCKS_PATTERNS_CONTENT, $patterns_with_images_and_content );
+		$updated_content = PatternsHelper::upsert_patterns_ai_data( $patterns_with_images_and_content );
 
 		if ( ! $updated_content ) {
 			return new WP_Error( 'failed_to_update_patterns_content', __( 'Failed to update patterns content.', 'woo-gutenberg-products-block' ) );
