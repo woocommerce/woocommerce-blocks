@@ -116,7 +116,7 @@ final class CollectionStockFilter extends AbstractBlock {
 		<?php endif; ?>
 
 		<?php if ( 'dropdown' === $display_style ) : ?>
-			<?php echo Dropdown::render( array( 'items' => $list_items, 'placeholder' =>  'Select stock status', 'on_change_effect' => 'effects.filters.updateProductsFromSingleDropdownChoice' )); ?>
+			<?php echo Dropdown::render( array( 'items' => $list_items, 'placeholder' =>  'Select stock status', 'action' => 'actions.filters.navigate' )); ?>
 		<?php endif; ?>
 			
 		<?php

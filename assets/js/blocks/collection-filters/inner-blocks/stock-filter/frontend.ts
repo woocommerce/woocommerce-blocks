@@ -41,23 +41,13 @@ interactivityStore( {
 			activeFilters: '',
 		},
 	},
-	effects: {
-		filters: {
-			updateProductsFromSingleDropdownChoice: ( { context } ) => {
-				console.log(
-					'update parent',
-					context.woocommerceDropdown.selectedItem.value
-				);
-				if ( context.woocommerceDropdown.selectedItem.value ) {
-					navigate(
-						getUrl( context.woocommerceDropdown.selectedItem.value )
-					);
-				}
-			},
-		},
-	},
 	actions: {
 		filters: {
+			navigate: ( { context } ) => {
+				navigate(
+					getUrl( context.woocommerceDropdown.selectedItem.value )
+				);
+			},
 			updateProducts: ( { state, event }: ActionProps ) => {
 				const activeFilters = state.filters.activeFilters.split( ',' );
 

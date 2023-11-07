@@ -95,9 +95,17 @@ export default () => {
 	// data-wc-on--[event]
 	directive( 'on', ( { directives: { on }, element, evaluate, context } ) => {
 		const contextValue = useContext( context );
+		const events = new Map();
 		Object.entries( on ).forEach( ( [ name, path ] ) => {
-			element.props[ `on${ name }` ] = ( event ) => {
-				evaluate( path, { event, context: contextValue } );
+			const event = name.split( '--' )[ 0 ];
+			if ( ! events.has( event ) ) events.set( event, new Set() );
+			events.get( event ).add( path );
+		} );
+		events.forEach( ( paths, event ) => {
+			element.props[ `on${ event }` ] = ( event ) => {
+				paths.forEach( ( path ) => {
+					evaluate( path, { event, context: contextValue } );
+				} );
 			};
 		} );
 	} );

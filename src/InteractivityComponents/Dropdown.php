@@ -30,7 +30,7 @@ static function render( $props ) {
 	// Items should be an array of objects with a label and value property.
 	$items = $props['items'] ?? [];
 
-  $change_effect = $props['on_change_effect'] ?? '';
+  $action = $props['action'] ?? '';
 
   $dropdown_context = wp_json_encode( $context, JSON_NUMERIC_CHECK );
 
@@ -50,10 +50,10 @@ static function render( $props ) {
               $context = json_encode($item, JSON_NUMERIC_CHECK);
             ?>
               <li
-                data-wc-effect="<?php echo $change_effect; ?>"
                 role="option" 
+                data-wc-on--click--select-item="actions.woocommerceDropdown.selectDropdownItem" 
+                data-wc-on--click--parent-action="<?php echo $action; ?>" 
                 data-wc-class--is-selected="selectors.woocommerceDropdown.isSelected" 
-                data-wc-on--click="actions.woocommerceDropdown.selectDropdownItem" 
                 data-wc-on--mouseover="actions.woocommerceDropdown.addHoverClass" 
                 data-wc-on--mouseout="actions.woocommerceDropdown.removeHoverClass" 
                 data-wc-context='<?php echo $context ?>' 
