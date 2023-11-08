@@ -348,7 +348,7 @@
 			"titles": [
 				{
 					"default": "Our newest arrivals",
-					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+					"ai_prompt": "An impact phrase with less than 20 characters that advertises the displayed product collection"
 				}
 			]
 		}
