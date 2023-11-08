@@ -208,7 +208,7 @@
 			"titles": [
 				{
 					"default": "Get cozy this fall with knit sweaters",
-					"ai_prompt": "An impact phrase with less than 40 characters that advertises the displayed product: {image.0}"
+					"ai_prompt": "An impact phrase with less than 40 characters that advertises the product the store is selling"
 				}
 			]
 		}
@@ -360,7 +360,7 @@
 			"titles": [
 				{
 					"default": "Our newest arrivals",
-					"ai_prompt": "An impact phrase that advertises the displayed product collection"
+					"ai_prompt": "An impact phrase with less than 20 characters that advertises the displayed product collection"
 				}
 			]
 		}
@@ -494,7 +494,7 @@
 			"titles": [
 				{
 					"default": "Follow us on social media",
-					"ai_prompt": "An phrase that advertises the social media accounts"
+					"ai_prompt": "A phrase with less than 30 characters that advertises the social media accounts"
 				}
 			]
 		}
