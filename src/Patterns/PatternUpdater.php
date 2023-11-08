@@ -45,7 +45,7 @@ class PatternUpdater {
 
 		$updated_content = PatternsHelper::upsert_patterns_ai_data_post( $patterns_with_images_and_content );
 
-		if ( ! $updated_content ) {
+		if ( is_wp_error( $updated_content ) ) {
 			return new WP_Error( 'failed_to_update_patterns_content', __( 'Failed to update patterns content.', 'woo-gutenberg-products-block' ) );
 		}
 

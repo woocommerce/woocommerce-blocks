@@ -103,21 +103,17 @@ class PatternsHelper {
 	public static function upsert_patterns_ai_data_post( $patterns_dictionary ) {
 		$patterns_ai_data_post = self::get_patterns_ai_data_post();
 
-		try {
-			if ( isset( $patterns_ai_data_post ) ) {
-				$patterns_ai_data_post->post_content = wp_json_encode( $patterns_dictionary );
-				wp_update_post( $patterns_ai_data_post );
-			} else {
-				$patterns_ai_data_post = array(
-					'post_title'   => 'Patterns AI Data',
-					'post_content' => wp_json_encode( $patterns_dictionary ),
-					'post_status'  => 'publish',
-					'post_type'    => 'patterns_ai_data',
-				);
-				wp_insert_post( $patterns_ai_data_post );
-			}
-		} catch ( \WP_Error $e ) {
-			return $e;
+		if ( isset( $patterns_ai_data_post ) ) {
+			$patterns_ai_data_post->post_content = wp_json_encode( $patterns_dictionary );
+			return wp_update_post( $patterns_ai_data_post );
+		} else {
+			$patterns_ai_data_post = array(
+				'post_title'   => 'Patterns AI Data',
+				'post_content' => wp_json_encode( $patterns_dictionary ),
+				'post_status'  => 'publish',
+				'post_type'    => 'patterns_ai_data',
+			);
+			return wp_insert_post( $patterns_ai_data_post );
 		}
 	}
 
