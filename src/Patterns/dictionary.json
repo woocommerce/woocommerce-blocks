@@ -208,7 +208,7 @@
 			"titles": [
 				{
 					"default": "Get cozy this fall with knit sweaters",
-					"ai_prompt": "An impact phrase that advertises the displayed product: {image.0}"
+					"ai_prompt": "An impact phrase with less than 40 characters that advertises the displayed product: {image.0}"
 				}
 			]
 		}
@@ -548,19 +548,19 @@
 			"titles": [
 				{
 					"default": "What our customers say",
-					"ai_prompt": "A title that advertises the set of testimonials"
+					"ai_prompt": "A title with less than 30 characters that advertises the set of testimonials"
 				},
 				{
-					"default": "Great experience",
-					"ai_prompt": "A title that advertises a customer product review"
+					"default": "I had a great experience",
+					"ai_prompt": "A title with less than 30 characters that advertises a customer product review"
 				},
 				{
 					"default": "LOVE IT",
-					"ai_prompt": "A title that advertises a customer product review"
+					"ai_prompt": "A title with less than 30 characters that advertises a customer product review"
 				},
 				{
 					"default": "Awesome couch",
-					"ai_prompt": "A title that advertises a customer product review"
+					"ai_prompt": "A title with less than 30 characters that advertises a customer product review"
 				}
 			],
 			"descriptions": [
