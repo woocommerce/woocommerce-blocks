@@ -105,7 +105,7 @@ class PatternsHelper {
 
 		if ( isset( $patterns_ai_data_post ) ) {
 			$patterns_ai_data_post->post_content = wp_json_encode( $patterns_dictionary );
-			return wp_update_post( $patterns_ai_data_post );
+			return wp_update_post( $patterns_ai_data_post, true );
 		} else {
 			$patterns_ai_data_post = array(
 				'post_title'   => 'Patterns AI Data',
@@ -113,7 +113,7 @@ class PatternsHelper {
 				'post_status'  => 'publish',
 				'post_type'    => 'patterns_ai_data',
 			);
-			return wp_insert_post( $patterns_ai_data_post );
+			return wp_insert_post( $patterns_ai_data_post, true );
 		}
 	}
 
