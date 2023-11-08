@@ -40,6 +40,6 @@ export default {
 	},
 } as Meta< LabelProps >;
 
-const Template: StoryFn = () => <Label />;
+const Template: StoryFn = () => <Label label="I'm a Label" />;
 
 export const Default = Template.bind( {} );
