@@ -25,7 +25,13 @@ import type { ProductGalleryAttributes } from './types';
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'core/group',
-		{ layout: { type: 'flex', flexWrap: 'nowrap' } },
+		{
+			layout: {
+				type: 'flex',
+				flexWrap: 'nowrap',
+				verticalAlignment: 'top',
+			},
+		},
 		[
 			[
 				'woocommerce/product-gallery-thumbnails',

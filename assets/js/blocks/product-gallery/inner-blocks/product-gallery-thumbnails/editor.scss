@@ -1,6 +1,5 @@
 $thumbnails: ".wc-block-editor-product-gallery-thumbnails";
 
-// Thumbnails
 #{$thumbnails} {
 	display: flex;
 
@@ -12,6 +11,9 @@ $thumbnails: ".wc-block-editor-product-gallery-thumbnails";
 	&:not(.wc-block-editor-product-gallery-thumbnails--bottom) {
 		flex-direction: column;
 		gap: 15px 0;
-		min-width: clamp(50px, 20%, 100%);
 	}
+}
+
+.wc-block-product-gallery-thumbnails {
+	flex-basis: 30%;
 }
