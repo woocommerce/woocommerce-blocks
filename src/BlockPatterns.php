@@ -33,8 +33,9 @@ use Automattic\WooCommerce\Blocks\Patterns\ProductUpdater;
  * @internal
  */
 class BlockPatterns {
-	const SLUG_REGEX            = '/^[A-z0-9\/_-]+$/';
-	const COMMA_SEPARATED_REGEX = '/[\s,]+/';
+	const SLUG_REGEX                 = '/^[A-z0-9\/_-]+$/';
+	const COMMA_SEPARATED_REGEX      = '/[\s,]+/';
+	const PATTERNS_AI_DATA_POST_TYPE = 'patterns_ai_data';
 
 	/**
 	 * Path to the patterns directory.
@@ -91,6 +92,22 @@ class BlockPatterns {
 		if ( ! class_exists( 'WP_Block_Patterns_Registry' ) ) {
 			return;
 		}
+
+		register_post_type(
+			self::PATTERNS_AI_DATA_POST_TYPE,
+			array(
+				'labels'           => array(
+					'name'          => __( 'Patterns AI Data', 'woo-gutenberg-products-block' ),
+					'singular_name' => __( 'Patterns AI Data', 'woo-gutenberg-products-block' ),
+				),
+				'public'           => false,
+				'hierarchical'     => false,
+				'rewrite'          => false,
+				'query_var'        => false,
+				'delete_with_user' => false,
+				'can_export'       => true,
+			)
+		);
 
 		$default_headers = array(
 			'title'         => 'Title',
@@ -250,7 +267,7 @@ class BlockPatterns {
 	 * @param array        $options  Array of bulk item update data.
 	 */
 	public function schedule_on_plugin_update( $upgrader_object, $options ) {
-		if ( 'update' === $options['action'] && 'plugin' === $options['type'] ) {
+		if ( 'update' === $options['action'] && 'plugin' === $options['type'] && isset( $options['plugins'] ) ) {
 			foreach ( $options['plugins'] as $plugin ) {
 				if ( str_contains( $plugin, 'woocommerce-gutenberg-products-block.php' ) || str_contains( $plugin, 'woocommerce.php' ) ) {
 					$business_description = get_option( 'woo_ai_describe_store_description' );
