@@ -10,6 +10,17 @@ use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
  */
 abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	/**
+	 * Initialize this block type.
+	 *
+	 * - Hook into WP lifecycle.
+	 * - Register the block with WordPress.
+	 */
+	protected function initialize() {
+		parent::initialize();
+		add_action( 'wp_loaded', array( $this, 'register_patterns' ) );
+	}
+
+	/**
 	 * Get the content from a hook and return it.
 	 *
 	 * @param string $hook Hook name.
@@ -151,7 +162,7 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 		 * the 'order received' or 'order pay' pages.
 		 *
 		 * @see \WC_Shortcode_Checkout::order_received()
-		 * @since $VID:$
+		 * @since 11.4.0
 		 * @param int      $grace_period Time in seconds after an order is placed before email verification may be required.
 		 * @param \WC_Order $order        The order for which this grace period is being assessed.
 		 * @param string   $context      Indicates the context in which we might verify the email address. Typically 'order-pay' or 'order-received'.
@@ -195,7 +206,7 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 		 * before we show information such as the order summary, or order payment page.
 		 *
 		 * @see \WC_Shortcode_Checkout::order_received()
-		 * @since $VID:$
+		 * @since 11.4.0
 		 * @param bool     $email_verification_required If email verification is required.
 		 * @param WC_Order $order                       The relevant order.
 		 * @param string   $context                     The context under which we are performing this check.
@@ -243,5 +254,48 @@ abstract class AbstractOrderConfirmationBlock extends AbstractBlock {
 	 */
 	protected function get_block_type_script( $key = null ) {
 		return null;
+	}
+
+	/**
+	 * Register block pattern for Order Confirmation to make it translatable.
+	 */
+	public function register_patterns() {
+
+		register_block_pattern(
+			'woocommerce/order-confirmation-totals-heading',
+			array(
+				'title'    => '',
+				'inserter' => false,
+				'content'  => '<!-- wp:heading {"level":3,"style":{"typography":{"fontSize":"24px"}}} --><h3 class="wp-block-heading" style="font-size:24px">' . esc_html__( 'Order details', 'woo-gutenberg-products-block' ) . '</h3><!-- /wp:heading -->',
+			)
+		);
+
+		register_block_pattern(
+			'woocommerce/order-confirmation-downloads-heading',
+			array(
+				'title'    => '',
+				'inserter' => false,
+				'content'  => '<!-- wp:heading {"level":3,"style":{"typography":{"fontSize":"24px"}}} --><h3 class="wp-block-heading" style="font-size:24px">' . esc_html__( 'Downloads', 'woo-gutenberg-products-block' ) . '</h3><!-- /wp:heading -->',
+			)
+		);
+
+		register_block_pattern(
+			'woocommerce/order-confirmation-shipping-heading',
+			array(
+				'title'    => '',
+				'inserter' => false,
+				'content'  => '<!-- wp:heading {"level":3,"style":{"typography":{"fontSize":"24px"}}} --><h3 class="wp-block-heading" style="font-size:24px">' . esc_html__( 'Shipping address', 'woo-gutenberg-products-block' ) . '</h3><!-- /wp:heading -->',
+			)
+		);
+
+		register_block_pattern(
+			'woocommerce/order-confirmation-billing-heading',
+			array(
+				'title'    => '',
+				'inserter' => false,
+				'content'  => '<!-- wp:heading {"level":3,"style":{"typography":{"fontSize":"24px"}}} --><h3 class="wp-block-heading" style="font-size:24px">' . esc_html__( 'Billing address', 'woo-gutenberg-products-block' ) . '</h3><!-- /wp:heading -->',
+			)
+		);
+
 	}
 }
