@@ -85,7 +85,8 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 #### Bug Fixes
 
-- WordPress 6.4: fixed a bug which would break sites using the Classic Template block for the Single Product template. https://github.com/woocommerce/woocommerce-blocks/pull/11455
+- WordPress 6.4: fixed a bug which would break sites using the Classic Template block for the Single Product template. ([11455](https://github.com/woocommerce/woocommerce-blocks/pull/11455))
+- Fix an error that might appear when pre_get_block_template filter was called with wrong params. ([11690](https://github.com/woocommerce/woocommerce-blocks/pull/11690))
 
 = 11.5.0 - 2023-11-06 =
 
