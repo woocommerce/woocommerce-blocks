@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebpackWcBlocksJsonp=self.webpackChunkwebpackWcBlocksJsonp||[]).push([[3562],{8942:(s,c,e)=>{e.r(c),e.d(c,{default:()=>n});var l=e(99196),a=e(94055);const n=({children:s,className:c=""})=>{const{crossSellsProducts:e,cartIsLoading:n}=(0,a.b)();return n||e.length<1?null:(0,l.createElement)("div",{className:c},s)}}}]);
