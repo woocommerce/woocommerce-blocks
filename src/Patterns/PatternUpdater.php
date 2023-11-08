@@ -16,6 +16,150 @@ class PatternUpdater {
 	const WC_BLOCKS_PATTERNS_CONTENT = 'wc_blocks_patterns_content';
 
 	/**
+	 * The pattern contents that can be updated by the AI.
+	 */
+	const PATTERN_CONTENTS = [ 'titles', 'descriptions', 'buttons' ];
+
+	/**
+	 * Returns the patterns with AI generated content.
+	 *
+	 * @param Connection      $ai_connection The AI connection.
+	 * @param string|WP_Error $token The JWT token.
+	 * @param array           $patterns The array of patterns.
+	 * @param string          $business_description The business description.
+	 *
+	 * @return array|WP_Error The patterns with AI generated content.
+	 */
+	public function get_patterns_with_content( $ai_connection, $token, $patterns, $business_description ) {
+		if ( is_wp_error( $token ) ) {
+			return $token;
+		}
+
+		$prompts = $this->prepare_prompts( $patterns, $business_description );
+
+		$responses = $ai_connection->fetch_ai_responses( $token, $prompts );
+		if ( is_wp_error( $responses ) ) {
+			return $responses;
+		}
+
+		return $this->integrate_ai_responses( $patterns, $responses );
+	}
+
+	/**
+	 * Prepare prompts for the AI
+	 *
+	 * @param array  $patterns The array of patterns.
+	 * @param string $business_description The business description.
+	 *
+	 * @return array
+	 */
+	private function prepare_prompts( $patterns, $business_description ) {
+		$prompts = [];
+		foreach ( $patterns as $pattern ) {
+			if ( empty( $pattern['content'] ) ) {
+				continue;
+			}
+
+			foreach ( self::PATTERN_CONTENTS as $content_type ) {
+				$prompt = $this->construct_prompt( $pattern, $content_type, $business_description );
+				if ( $prompt ) {
+					$prompts[] = $prompt;
+				}
+			}
+		}
+
+		return $prompts;
+	}
+
+	/**
+	 * Construct an individual prompt
+	 *
+	 * @param array  $pattern The array of patterns.
+	 * @param string $content_type The content type.
+	 * @param string $business_description The business description.
+	 *
+	 * @return string|null
+	 */
+	private function construct_prompt( $pattern, $content_type, $business_description ) {
+		if ( isset( $pattern['content'][ $content_type ][0]['ai_prompt'] ) ) {
+			$individual_prompt = $pattern['content'][ $content_type ][0]['ai_prompt'];
+			$pattern_json      = wp_json_encode( $pattern['content'][ $content_type ] );
+
+			return sprintf(
+				"Given the following store description: \"%s\", and the following JSON string representing the %s of the \"%s\" pattern: %s.\n Replace the texts in each 'default' key using the following prompt '%s' with a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The text should not be written in first-person. The response should be only a JSON string, with absolutely no intro or explanations.",
+				$business_description,
+				$content_type,
+				$pattern['slug'],
+				$pattern_json,
+				$individual_prompt
+			);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Integrate AI responses into patterns
+	 *
+	 * @param array          $patterns The array of patterns.
+	 * @param array|WP_Error $responses The array of responses.
+	 *
+	 * @return mixed
+	 */
+	private function integrate_ai_responses( $patterns, $responses ) {
+		foreach ( $responses as $response_key => $response ) {
+			if ( is_wp_error( $response ) || empty( $response['completion'] ) ) {
+				continue;
+			}
+
+			$this->update_pattern_with_response( $patterns, $response );
+		}
+
+		return $patterns;
+	}
+
+	/**
+	 * Update the specific pattern with the AI response
+	 *
+	 * @param array          $patterns The array of patterns.
+	 * @param array|WP_Error $response The array of responses.
+	 *
+	 * @return void
+	 */
+	private function update_pattern_with_response( &$patterns, $response ) {
+		$prompt_used = $response['previous_messages'][0]['content'] ?? '';
+		if ( empty( $prompt_used ) ) {
+			return;
+		}
+
+		foreach ( $patterns as $key => &$pattern ) {
+			if ( strpos( $prompt_used, $pattern['slug'] ) !== false ) {
+				$this->update_pattern_content_with_ai( $pattern, $prompt_used, $response );
+			}
+		}
+	}
+
+	/**
+	 * Update the content of a pattern based on the AI's response
+	 *
+	 * @param array  $pattern The array of patterns.
+	 * @param string $prompt_used The prompt used.
+	 * @param array  $response The array of responses.
+	 *
+	 * @return void
+	 */
+	private function update_pattern_content_with_ai( &$pattern, $prompt_used, $response ) {
+		foreach ( self::PATTERN_CONTENTS as $content_type ) {
+			if ( strpos( $prompt_used, $content_type ) !== false ) {
+				$ai_content_generated = json_decode( $response['completion'], true );
+				if ( json_last_error() === JSON_ERROR_NONE ) {
+					$pattern['content'][ $content_type ] = $ai_content_generated;
+				}
+			}
+		}
+	}
+
+	/**
 	 * Creates the patterns content for the given vertical.
 	 *
 	 * @param Connection      $ai_connection The AI connection.
@@ -98,70 +242,6 @@ class PatternUpdater {
 		}
 
 		return $patterns_with_images;
-	}
-
-	/**
-	 * Returns the patterns with AI generated content.
-	 *
-	 * @param Connection      $ai_connection The AI connection.
-	 * @param string|WP_Error $token The JWT token.
-	 * @param array           $patterns The array of patterns.
-	 * @param string          $business_description The business description.
-	 *
-	 * @return array|WP_Error The patterns with AI generated content.
-	 */
-	private function get_patterns_with_content( $ai_connection, $token, $patterns, $business_description ) {
-		if ( is_wp_error( $token ) ) {
-			return $token;
-		}
-
-		$possible_pattern_contents = [ 'titles', 'descriptions', 'buttons' ];
-		$prompts                   = array();
-		foreach ( $patterns as $pattern ) {
-			foreach ( $possible_pattern_contents as $pattern_content ) {
-				if ( isset( $pattern['content'][ $pattern_content ][0]['ai_prompt'] ) ) {
-					$individual_prompt = $pattern['content'][ $pattern_content ][0]['ai_prompt'];
-					$pattern_json      = wp_json_encode( $pattern['content'][ $pattern_content ] );
-
-					$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON string representing the %s of the "%s" pattern: %s.\n', $business_description, $pattern_content, $pattern['slug'], $pattern_json );
-					$prompt .= sprintf( "Replace the texts in each 'default' key using the following prompt '%s' with a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The text should not be written in first-person. The response should be only a JSON string, with absolutely no intro or explanations.", $individual_prompt );
-
-					$prompts[] = $prompt;
-				}
-			}
-		}
-
-		$responses = $ai_connection->fetch_ai_responses( $token, $prompts );
-
-		foreach ( $responses as $response ) {
-			if ( is_wp_error( $response ) || empty( $response ) ) {
-				continue;
-			}
-			if ( ! isset( $response['completion'] ) ) {
-				continue;
-			}
-
-			$prompt_used = $response['previous_messages'][0]['content'] ?? '';
-
-			if ( empty( $prompt_used ) ) {
-				continue;
-			}
-
-			foreach ( $patterns as $key => $pattern ) {
-				if ( str_contains( $prompt_used, $pattern['slug'] ) ) {
-					foreach ( $possible_pattern_contents as $pattern_content ) {
-						if ( str_contains( $prompt_used, $pattern_content ) ) {
-							$ai_content_generated = json_decode( $response['completion'], true );
-							if ( json_last_error() === JSON_ERROR_NONE ) {
-								$patterns[ $key ]['content'][ $pattern_content ] = $ai_content_generated;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return $patterns;
 	}
 
 	/**
