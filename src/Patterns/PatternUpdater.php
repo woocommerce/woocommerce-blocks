@@ -115,35 +115,53 @@ class PatternUpdater {
 			return $token;
 		}
 
-		$patterns_with_content = $patterns;
+		$possible_pattern_contents = [ 'titles', 'descriptions', 'buttons' ];
+		$prompts                   = array();
+		foreach ( $patterns as $pattern ) {
+			foreach ( $possible_pattern_contents as $pattern_content ) {
+				if ( isset( $pattern['content'][ $pattern_content ][0]['ai_prompt'] ) ) {
+					$individual_prompt = $pattern['content'][ $pattern_content ][0]['ai_prompt'];
+					$pattern_json      = wp_json_encode( $pattern['content'][ $pattern_content ] );
 
-		$prompts = array();
-		foreach ( $patterns_with_content as $pattern ) {
-			$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing the content of the "%s" pattern: %s.\n', $business_description, $pattern['name'], wp_json_encode( $pattern['content'] ) );
-			$prompt .= "Replace the titles, descriptions and button texts in each 'default' key using the prompt in the corresponding 'ai_prompt' key by a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The text should not be written in first-person. The response should be only a JSON string, with absolutely no intro or explanations.";
+					$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON string representing the %s of the "%s" pattern: %s.\n', $business_description, $pattern_content, $pattern['slug'], $pattern_json );
+					$prompt .= sprintf( "Replace the texts in each 'default' key using the following prompt '%s' with a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The text should not be written in first-person. The response should be only a JSON string, with absolutely no intro or explanations.", $individual_prompt );
 
-			$prompts[] = $prompt;
+					$prompts[] = $prompt;
+				}
+			}
 		}
 
 		$responses = $ai_connection->fetch_ai_responses( $token, $prompts );
 
-		foreach ( $responses as $key => $response ) {
-			// If the AI response is invalid, we skip the pattern and keep the default content.
+		foreach ( $responses as $response ) {
 			if ( is_wp_error( $response ) || empty( $response ) ) {
 				continue;
 			}
-
 			if ( ! isset( $response['completion'] ) ) {
 				continue;
 			}
 
-			$pattern_content = json_decode( $response['completion'], true );
-			if ( ! is_null( $pattern_content ) ) {
-				$patterns_with_content[ $key ]['content'] = $pattern_content;
+			$prompt_used = $response['previous_messages'][0]['content'] ?? '';
+
+			if ( empty( $prompt_used ) ) {
+				continue;
+			}
+
+			foreach ( $patterns as $key => $pattern ) {
+				if ( str_contains( $prompt_used, $pattern['slug'] ) ) {
+					foreach ( $possible_pattern_contents as $pattern_content ) {
+						if ( str_contains( $prompt_used, $pattern_content ) ) {
+							$ai_content_generated = json_decode( $response['completion'], true );
+							if ( json_last_error() === JSON_ERROR_NONE ) {
+								$patterns[ $key ]['content'][ $pattern_content ] = $ai_content_generated;
+							}
+						}
+					}
+				}
 			}
 		}
 
-		return $patterns_with_content;
+		return $patterns;
 	}
 
 	/**

@@ -132,33 +132,33 @@
 			"titles": [
 				{
 					"default": "New in: 3-in-1 parka",
-					"ai_prompt": "An impact phrase that advertises the displayed product: {image.0}. The title must have less than 30 characters"
+					"ai_prompt": "Generate a title that highlights one of the qualities of the product being sold. The title must have only 2 or 3 words."
 				},
 				{
 					"default": "Waterproof Membrane",
-					"ai_prompt": "A title describing the first displayed product feature. The title must have only 2 or 3 words."
+					"ai_prompt": "Generate a title that highlights one of the qualities of the product being sold. The title must have only 2 or 3 words."
 				},
 				{
 					"default": "Expert Craftsmanship",
-					"ai_prompt": "A title describing the second displayed product feature. The title must have only 2 or 3 words."
+					"ai_prompt": "Generate a title that highlights one of the qualities of the product being sold. The title must have only 2 or 3 words."
 				},
 				{
 					"default": "Durable Fabric",
-					"ai_prompt": "A title describing the third displayed product feature. The title must have only 2 or 3 words."
+					"ai_prompt": "Generate a title that highlights one of the qualities of the product being sold. The title must have only 2 or 3 words."
 				}
 			],
 			"descriptions": [
 				{
 					"default": "Never worry about the weather again. Keep yourself dry, warm, and looking stylish.",
-					"ai_prompt": "A description of the first displayed product feature. The description must have less than 120 characters."
+					"ai_prompt": "Craft a catchy product description under 120 characters emphasizing one of its qualities."
 				},
 				{
 					"default": "Our products are made with expert craftsmanship and attention to detail.",
-					"ai_prompt": "A description of the second displayed product feature. The description must have less than 120 characters."
+					"ai_prompt": "Craft a catchy product description under 120 characters emphasizing one of its qualities."
 				},
 				{
 					"default": "We use only the highest-quality materials in our products, ensuring that they look great.",
-					"ai_prompt": "A description of the third displayed product feature. The description must have less than 120 characters."
+					"ai_prompt": "Craft a catchy product description under 120 characters emphasizing one of its qualities."
 				}
 			]
 		}
@@ -552,29 +552,29 @@
 				},
 				{
 					"default": "Great experience",
-					"ai_prompt": "A title that advertises the first testimonial"
+					"ai_prompt": "A title that advertises a customer product review"
 				},
 				{
 					"default": "LOVE IT",
-					"ai_prompt": "A title that advertises the second testimonial"
+					"ai_prompt": "A title that advertises a customer product review"
 				},
 				{
 					"default": "Awesome couch",
-					"ai_prompt": "A title that advertises the third testimonial"
+					"ai_prompt": "A title that advertises a customer product review"
 				}
 			],
 			"descriptions": [
 				{
 					"default": "In the end the couch wasn't exactly what I was looking for but my experience with the Burrow team was excellent. First in providing a discount when the couch was delayed.",
-					"ai_prompt": "A description of the first testimonial. The testimonial must have less than 200 characters."
+					"ai_prompt": "A customer product review with less than 200 characters."
 				},
 				{
 					"default": "Great couch. color as advertise. seat is nice and firm. Easy to put together. Versatile. Bought one for my mother in law as well. And she loves hers!",
-					"ai_prompt": "A description of the second testimonial. The testimonial must have less than 200 characters."
+					"ai_prompt": "A customer product review with less than 200 characters."
 				},
 				{
 					"default": "I got the kind sofa. The look and feel is high quality, and I enjoy that it is a medium level of firmness. Assembly took a little longer than I expected, and it came in 4 boxes.",
-					"ai_prompt": "A description of the third testimonial. The testimonial must have less than 200 characters."
+					"ai_prompt": "A customer product review with less than 200 characters."
 				}
 			]
 		}
