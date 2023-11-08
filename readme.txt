@@ -81,6 +81,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.5.2 - 2023-11-08 =
+
+#### Bug Fixes
+
+- Rename the Centered Header Menu with Search to Centered Header Menu. [11637](https://github.com/woocommerce/woocommerce-blocks/pull/11637)
+- Fix decoding issue and pattern. [11681](https://github.com/woocommerce/woocommerce-blocks/pull/11681)
+
 = 11.5.1 - 2023-11-08 =
 
 #### Bug Fixes
