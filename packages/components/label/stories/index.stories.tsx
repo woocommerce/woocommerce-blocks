@@ -40,6 +40,12 @@ export default {
 	},
 } as Meta< LabelProps >;
 
-const Template: StoryFn = () => <Label label="I'm a Label" />;
+const Template: StoryFn = ( args ) => <Label { ...args } />;
 
 export const Default = Template.bind( {} );
+Default.args = {
+	label: 'I am a label',
+	screenReaderLabel: 'I am a screen reader label',
+	wrapperElement: 'span',
+	wrapperProps: {},
+};
