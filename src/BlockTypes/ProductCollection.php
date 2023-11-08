@@ -119,7 +119,7 @@ class ProductCollection extends AbstractBlock {
 					'data-wc-navigation-id',
 					'wc-product-collection-' . $this->parsed_block['attrs']['queryId']
 				);
-				$p->set_attribute( 'data-wc-interactive', true );
+				$p->set_attribute( 'data-wc-interactive', wp_json_encode( array( 'namespace' => 'woocommerce' ) ) );
 				$block_content = $p->get_updated_html();
 			}
 		}
