@@ -208,7 +208,7 @@ class ProductCollection extends AbstractBlock {
 		$product_attributes  = $request->get_param( 'woocommerceAttributes' );
 		$handpicked_products = $request->get_param( 'woocommerceHandPickedProducts' );
 		$featured            = $request->get_param( 'featured' );
-
+		$time_frame          = $request->get_param( 'timeFrame' );
 		// This argument is required for the tests to PHP Unit Tests to run correctly.
 		// Most likely this argument is being accessed in the test environment image.
 		$args['author'] = '';
@@ -222,6 +222,7 @@ class ProductCollection extends AbstractBlock {
 				'product_attributes'  => $product_attributes,
 				'handpicked_products' => $handpicked_products,
 				'featured'            => $featured,
+				'timeFrame'           => $time_frame,
 			)
 		);
 	}
@@ -308,6 +309,7 @@ class ProductCollection extends AbstractBlock {
 		$product_attributes  = $query['woocommerceAttributes'] ?? [];
 		$taxonomies_query    = $this->get_filter_by_taxonomies_query( $query['tax_query'] ?? [] );
 		$handpicked_products = $query['woocommerceHandPickedProducts'] ?? [];
+		$time_frame          = $query['timeFrame'] ?? null;
 
 		$final_query = $this->get_final_query_args(
 			$common_query_values,
@@ -319,6 +321,7 @@ class ProductCollection extends AbstractBlock {
 				'taxonomies_query'    => $taxonomies_query,
 				'handpicked_products' => $handpicked_products,
 				'featured'            => $query['featured'] ?? false,
+				'timeFrame'           => $time_frame,
 			),
 			$is_exclude_applied_filters
 		);
@@ -343,10 +346,12 @@ class ProductCollection extends AbstractBlock {
 		$attributes_query    = $this->get_product_attributes_query( $query['product_attributes'] );
 		$taxonomies_query    = $query['taxonomies_query'] ?? [];
 		$tax_query           = $this->merge_tax_queries( $visibility_query, $attributes_query, $taxonomies_query, $featured_query );
+		$date_query          = $this->get_date_query( $query['timeFrame'] ?? [] );
+
 		// We exclude applied filters to generate product ids for the filter blocks.
 		$applied_filters_query = $is_exclude_applied_filters ? [] : $this->get_queries_by_applied_filters();
 
-		$merged_query = $this->merge_queries( $common_query_values, $orderby_query, $on_sale_query, $stock_query, $tax_query, $applied_filters_query );
+		$merged_query = $this->merge_queries( $common_query_values, $orderby_query, $on_sale_query, $stock_query, $tax_query, $applied_filters_query, $date_query );
 
 		return $this->filter_query_to_only_include_ids( $merged_query, $handpicked_products );
 	}
@@ -992,4 +997,38 @@ class ProductCollection extends AbstractBlock {
 			),
 		);
 	}
+
+	/**
+	 * Constructs a date query for product filtering based on a specified time frame.
+	 *
+	 * @param array $time_frame {
+	 *     Associative array with 'operator' (in or not-in) and 'value' (date string).
+	 *
+	 *     @type string $operator Determines the inclusion or exclusion of the date range.
+	 *     @type string $value    The date around which the range is applied.
+	 * }
+	 * @return array Date query array; empty if parameters are invalid.
+	 */
+	private function get_date_query( array $time_frame ) : array {
+		// Validate time_frame elements.
+		if ( empty( $time_frame['operator'] ) || empty( $time_frame['value'] ) ) {
+			return array();
+		}
+
+		// Determine the query operator based on the 'operator' value.
+		$query_operator = 'in' === $time_frame['operator'] ? 'after' : 'before';
+
+		// Construct and return the date query.
+		return array(
+			'date_query' => array(
+				array(
+					'column'        => 'post_date_gmt',
+					$query_operator => $time_frame['value'],
+					'inclusive'     => true,
+				),
+			),
+		);
+	}
+
+
 }
