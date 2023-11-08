@@ -1,8 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
-use Automattic\WooCommerce\Blocks\Utils\ProductGalleryUtils;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
+use Automattic\WooCommerce\Blocks\Utils\ProductGalleryUtils;
 
 /**
  * ProductGallery class.
@@ -25,6 +25,27 @@ class ProductGallery extends AbstractBlock {
 	}
 
 	/**
+	 * Inject dialog into the product gallery HTML.
+	 *
+	 * @param string $gallery_html The gallery HTML.
+	 * @param string $dialog_html  The dialog HTML.
+	 *
+	 * @return string
+	 */
+	protected function inject_dialog( $gallery_html, $dialog_html ) {
+
+		// Find the position of the last </div>.
+		$pos = strrpos( $gallery_html, '</div>' );
+
+		if ( false !== $pos ) {
+			// Inject the dialog_html at the correct position.
+			$html = substr_replace( $gallery_html, $dialog_html, $pos, 0 );
+
+			return $html;
+		}
+	}
+
+	/**
 	 * Return the dialog content.
 	 *
 	 * @return string
@@ -44,23 +65,40 @@ class ProductGallery extends AbstractBlock {
 			''
 		);
 
-		$gallery_dialog = '<dialog data-wc-bind--open="selectors.woocommerce.isDialogOpen">' . $html . '</dialog>';
+		$html_processor = new \WP_HTML_Tag_Processor( $html );
+
+		$html_processor->next_tag(
+			array(
+				'class_name' => 'wp-block-woocommerce-product-gallery',
+			)
+		);
+
+		$html_processor->remove_attribute( 'data-wc-context' );
+
+		$gallery_dialog = strtr(
+			'
+		<div class="wc-block-product-gallery-dialog__overlay" hidden data-wc-bind--hidden="!selectors.woocommerce.isDialogOpen" data-wc-effect="effects.woocommerce.keyboardAccess">
+			<dialog data-wc-bind--open="selectors.woocommerce.isDialogOpen">
+			<div class="wc-block-product-gallery-dialog__header">
+			<div class="wc-block-product-galler-dialog__header-right">
+				<button class="wc-block-product-gallery-dialog__close" data-wc-on--click="actions.woocommerce.dialog.handleCloseButtonClick">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<rect width="24" height="24" rx="2"/>
+						<path d="M13 11.8L19.1 5.5L18.1 4.5L12 10.7L5.9 4.5L4.9 5.5L11 11.8L4.5 18.5L5.5 19.5L12 12.9L18.5 19.5L19.5 18.5L13 11.8Z" fill="black"/>
+					</svg>
+				</button>
+			</div>
+			</div>
+			<div class="wc-block-product-gallery-dialog__body">
+				{{html}}
+			</div>
+			</dialog>
+		</div>',
+			array(
+				'{{html}}' => $html_processor->get_updated_html(),
+			)
+		);
 		return $gallery_dialog;
-	}
-
-
-	/**
-	 * This function remove the div wrapper.
-	 * The content has a <div> with the class wp-block-woocommerce-product-gallery>.
-	 * We don't need since that we add it in the render method.
-	 *
-	 * @param string $content Block content.
-	 * @return string Rendered block type output.
-	 */
-	private function remove_div_wrapper( $content ) {
-		$parsed_string = preg_replace( '/<div class="wp-block-woocommerce-product-gallery">/', '', $content );
-		$parsed_string = preg_replace( '/<\/div>$/', '', $parsed_string );
-		return $parsed_string;
 	}
 
 	/**
@@ -83,22 +121,15 @@ class ProductGallery extends AbstractBlock {
 			$classname_single_image = 'is-single-product-gallery-image';
 		}
 
-		$classname          = $attributes['className'] ?? '';
-		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'wc-block-product-gallery %1$s %2$s', $classname, $classname_single_image ) ) ) );
-		$gallery            = ( true === $attributes['fullScreenOnClick'] && isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ) ? $this->render_dialog() : '';
-		$html               = sprintf(
-			'<div %1$s>
-				%2$s
-				%3$s
-			</div>',
-			$wrapper_attributes,
-			$content,
-			$gallery
-		);
+		$number_of_thumbnails = $block->attributes['thumbnailsNumberOfThumbnails'] ?? 0;
+		$classname            = $attributes['className'] ?? '';
+		$dialog               = isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ? $this->render_dialog() : '';
+		$post_id              = $block->context['postId'] ?? '';
+		$product              = wc_get_product( $post_id );
+		$product_id           = strval( $product->get_id() );
 
-		$post_id = $block->context['postId'] ?? '';
-		$product = wc_get_product( $post_id );
-		$p       = new \WP_HTML_Tag_Processor( $html );
+		$html = $this->inject_dialog( $content, $dialog );
+		$p    = new \WP_HTML_Tag_Processor( $html );
 
 		if ( $p->next_tag() ) {
 			$p->set_attribute( 'data-wc-interactive', true );
@@ -107,12 +138,22 @@ class ProductGallery extends AbstractBlock {
 				wp_json_encode(
 					array(
 						'woocommerce' => array(
-							'selectedImage' => $product->get_image_id(),
-							'isDialogOpen'  => false,
+							'selectedImage'    => $product->get_image_id(),
+							'visibleImagesIds' => ProductGalleryUtils::get_product_gallery_image_ids( $product, $number_of_thumbnails, true ),
+							'mouseIsOverPreviousOrNextButton' => false,
+							'isDialogOpen'     => false,
+							'productId'        => $product_id,
 						),
 					)
 				)
 			);
+
+			if ( $product->is_type( 'variable' ) ) {
+				$p->set_attribute( 'data-wc-init--watch-changes-on-add-to-cart-form', 'effects.woocommerce.watchForChangesOnAddToCartForm' );
+			}
+
+			$p->add_class( $classname );
+			$p->add_class( $classname_single_image );
 			$html = $p->get_updated_html();
 		}
 

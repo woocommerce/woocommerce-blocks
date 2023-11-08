@@ -54,8 +54,7 @@
 		display: inline-flex;
 		justify-content: center;
 		text-align: center;
-		// Set button font size and padding so it inherits from parent.
-		padding: 0.5em 1em;
+		// Set button font size so it inherits from parent.
 		font-size: 1em;
 
 		&.loading {
@@ -146,7 +145,7 @@
 	display: inline-block;
 	width: auto;
 	border: 1px solid #43454b;
-	border-radius: 3px;
+	border-radius: $universal-border-radius;
 	color: #43454b;
 	background: #fff;
 	text-align: center;
@@ -161,6 +160,13 @@
 
 // Element spacing.
 .wc-block-grid__product {
+	// Prevent link and image taking the full width unnecessarily, which might cause: https://github.com/woocommerce/woocommerce-blocks/issues/11438
+	.wc-block-grid__product-link,
+	.wc-block-grid__product-image {
+		display: inline-block;
+		position: relative;
+	}
+
 	// Not operator necessary for avoid this problem: https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/5925/files#r814043454
 	.wc-block-grid__product-image:not(.wc-block-components-product-image),
 	.wc-block-grid__product-title {
@@ -299,7 +305,6 @@
 
 	.wc-block-grid__product-add-to-cart.wp-block-button .wp-block-button__link {
 		@include font-size(smaller);
-		padding: em($gap-smaller);
 	}
 
 	@media only screen and (min-width: 768px) {
