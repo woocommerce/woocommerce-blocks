@@ -430,7 +430,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 					$carry[] = array( $block );
 					return $carry;
 				}
-				$last_element_index = count( $carry ) - 1;
+				$last_element_index = ( is_countable( $carry ) ? count( $carry ) : 0 ) - 1;
 				if ( isset( $carry[ $last_element_index ][0]['blockName'] ) && 'core/template-part' !== $carry[ $last_element_index ][0]['blockName'] ) {
 					$carry[ $last_element_index ][] = $block;
 					return $carry;
