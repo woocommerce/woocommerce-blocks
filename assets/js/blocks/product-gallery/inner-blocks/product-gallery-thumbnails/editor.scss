@@ -1,17 +1,17 @@
-.wc-block-product-gallery-thumbnails {
-	width: fit-content;
-	.wc-block-editor-product-gallery-thumbnails {
-		display: flex;
-		flex-flow: column nowrap;
+$thumbnails: ".wc-block-editor-product-gallery-thumbnails";
 
-		&.wc-block-editor-product-gallery-thumbnails--bottom {
-			flex-flow: row nowrap;
-		}
+// Thumbnails
+#{$thumbnails} {
+	display: flex;
 
-		img {
-			width: 100px;
-			height: 100px;
-			margin: 5px;
-		}
+	&.wc-block-editor-product-gallery-thumbnails--bottom {
+		flex-direction: row;
+		gap: 0 15px;
+	}
+
+	&:not(.wc-block-editor-product-gallery-thumbnails--bottom) {
+		flex-direction: column;
+		gap: 15px 0;
+		min-width: clamp(50px, 20%, 100%);
 	}
 }

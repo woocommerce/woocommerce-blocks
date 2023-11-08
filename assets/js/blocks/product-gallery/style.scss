@@ -10,6 +10,7 @@ $gallery-next-previous-inside-image: "#{$gallery}:not([data-next-previous-button
 
 $outside-image-offset: 30px;
 $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
+$thumbnails-gap: 15px;
 
 // Product Gallery
 #{$gallery} {
@@ -232,21 +233,43 @@ $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 
 // Thumbnails
 #{$thumbnails} {
+	display: flex;
+
 	img {
 		cursor: pointer;
+		height: auto;
+		width: auto;
+		max-width: 100%;
 	}
 
-	.is-vertical & {
-		display: flex;
+	#{$gallery}[data-thumbnails-position='bottom'] & {
 		flex-direction: row;
+		gap: 0 15px;
+	}
+
+	#{$gallery}:not([data-thumbnails-position='bottom']) & {
+		flex-direction: column;
+		gap: 15px 0;
 	}
 
 	.wc-block-product-gallery-thumbnails__thumbnail {
-		width: 100px;
-		height: 100px;
-		margin: 5px;
+		border: 1px solid rgba($color: #000, $alpha: 0.1);
+		max-width: 100%;
+		height: auto;
+		width: auto;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		aspect-ratio: 1 / 1;
 		position: relative;
+		flex-basis: 0;
+		flex-grow: 1;
 
+		&::before {
+			content: "";
+			display: block;
+			padding-top: 100%;
+		}
 	}
 
 	.wc-block-product-gallery-thumbnails__thumbnail__overlay {
