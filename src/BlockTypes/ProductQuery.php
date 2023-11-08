@@ -298,7 +298,7 @@ class ProductQuery extends AbstractBlock {
 		 */
 		if (
 			! empty( $merged_query['post__in'] ) &&
-			count( $merged_query['post__in'] ) > count( array_unique( $merged_query['post__in'] ) )
+			( is_countable( $merged_query['post__in'] ) ? count( $merged_query['post__in'] ) : 0 ) > count( array_unique( $merged_query['post__in'] ) )
 		) {
 			$merged_query['post__in'] = array_unique(
 				array_diff(
@@ -392,7 +392,7 @@ class ProductQuery extends AbstractBlock {
 			function ( $carry, $item ) {
 				$taxonomy = sanitize_title( $item['taxonomy'] );
 
-				if ( ! key_exists( $taxonomy, $carry ) ) {
+				if ( ! array_key_exists( $taxonomy, $carry ) ) {
 					$carry[ $taxonomy ] = array(
 						'field'    => 'term_id',
 						'operator' => 'IN',
