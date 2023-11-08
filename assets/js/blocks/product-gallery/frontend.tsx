@@ -28,15 +28,13 @@ export interface ProductGallerySelectors {
 
 interface Actions {
 	woocommerce: {
-		thumbnails: {
-			handleClick: (
-				context: ProductGalleryInteractivityApiContext
-			) => void;
+		setImageAsSelected: {
+			( context: ProductGalleryInteractivityApiContext ): void;
 		};
-		handlePreviousImageButtonClick: {
+		selectPreviousImage: {
 			( store: Store ): void;
 		};
-		handleNextImageButtonClick: {
+		selectNextImage: {
 			( store: Store ): void;
 		};
 	};
@@ -128,14 +126,12 @@ interactivityApiStore( {
 
 					// Check if left arrow key is pressed.
 					if ( event.keyCode === Keys.LEFT_ARROW ) {
-						actions.woocommerce.handlePreviousImageButtonClick(
-							store
-						);
+						actions.woocommerce.selectPreviousImage( store );
 					}
 
 					// Check if right arrow key is pressed.
 					if ( event.keyCode === Keys.RIGHT_ARROW ) {
-						actions.woocommerce.handleNextImageButtonClick( store );
+						actions.woocommerce.selectNextImage( store );
 					}
 				};
 
@@ -166,12 +162,6 @@ interactivityApiStore( {
 	},
 	actions: {
 		woocommerce: {
-			thumbnails: {
-				handleClick: ( { context }: Store ) => {
-					context.woocommerce.selectedImage =
-						context.woocommerce.imageId;
-				},
-			},
 			dialog: {
 				closeDialog: ( { context }: Store ) => {
 					context.woocommerce.isDialogOpen = false;
@@ -192,10 +182,10 @@ interactivityApiStore( {
 					}
 				},
 			},
-			handleSelectImage: ( { context }: Store ) => {
+			setImageAsSelected: ( { context }: Store ) => {
 				context.woocommerce.selectedImage = context.woocommerce.imageId;
 			},
-			handleNextImageButtonClick: ( store: Store ) => {
+			selectNextImage: ( store: Store ) => {
 				const { context } = store;
 				const selectedImageIdIndex =
 					context.woocommerce.visibleImagesIds.indexOf(
@@ -209,7 +199,7 @@ interactivityApiStore( {
 				context.woocommerce.selectedImage =
 					context.woocommerce.visibleImagesIds[ nextImageIndex ];
 			},
-			handlePreviousImageButtonClick: ( store: Store ) => {
+			selectPreviousImage: ( store: Store ) => {
 				const { context } = store;
 				const selectedImageIdIndex =
 					context.woocommerce.visibleImagesIds.indexOf(

@@ -157,7 +157,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 							if ( $processor->next_tag( 'img' ) ) {
 								$processor->set_attribute(
 									'data-wc-on--click',
-									'actions.woocommerce.thumbnails.dialog.openDialog'
+									'actions.woocommerce.setImageAsSelected'
 								);
 
 								$html .= $processor->get_updated_html();
