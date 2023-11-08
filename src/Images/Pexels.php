@@ -47,7 +47,7 @@ class Pexels {
 	 * @return mixed|\WP_Error
 	 */
 	private function define_search_term( $ai_connection, $token, $business_description ) {
-		$prompt = sprintf( 'Based on the description "%s", provide a one-word product description for the store\'s item. Do not include any adjectives or descriptions of the qualities of the product. The returned word should be simple.', $business_description );
+		$prompt = sprintf( 'Based on the description "%s", summarize what the store is selling in one word. Do not include any adjectives or descriptions of the qualities of the product. The returned word should be simple.', $business_description );
 
 		$response = $ai_connection->fetch_ai_response( $token, $prompt );
 
