@@ -81,6 +81,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.5.3 - 2023-11-08 =
+
+#### Bug Fixes
+
+- Use wp_json_file_decode instead of json_decode [11681](https://github.com/woocommerce/woocommerce-blocks/pull/11681)
+
 = 11.5.2 - 2023-11-08 =
 
 #### Bug Fixes
