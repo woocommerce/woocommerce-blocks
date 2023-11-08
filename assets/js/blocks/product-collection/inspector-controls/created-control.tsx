@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, _x } from '@wordpress/i18n';
 import {
 	Flex,
 	FlexItem,
@@ -58,15 +58,17 @@ const CreatedControl = ( props: QueryControlProps ) => {
 					>
 						<ToggleGroupControlOption
 							value={ ETimeFrameOperator.IN }
-							label={ __(
+							label={ _x(
 								'Within',
+								'Product Collection query operator',
 								'woo-gutenberg-products-block'
 							) }
 						/>
 						<ToggleGroupControlOption
 							value={ ETimeFrameOperator.NOT_IN }
-							label={ __(
+							label={ _x(
 								'Before',
+								'Product Collection query operator',
 								'woo-gutenberg-products-block'
 							) }
 						/>
