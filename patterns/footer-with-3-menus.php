@@ -17,8 +17,8 @@
 			<div class="wp-block-group">
 				<!-- wp:site-logo /-->
 
-				<!-- wp:columns {"style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"blockGap":{"top":"var:preset|spacing|70","left":"var:preset|spacing|80"}}}} -->
-				<div class="wp-block-columns" style="padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
+				<!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"var:preset|spacing|50"}},"layout":{"selfStretch":"fill","flexSize":null}}} -->
+				<div class="wp-block-columns">
 					<!-- wp:column -->
 					<div class="wp-block-column">
 						<!-- wp:navigation {"overlayMenu":"never","layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"blockGap":"10px"}}} /-->
@@ -49,8 +49,7 @@
 
 		<!-- wp:column {"verticalAlignment":"stretch","width":"30%","style":{"spacing":{"blockGap":"60px"}},"layout":{"type":"default"}} -->
 		<div class="wp-block-column is-vertically-aligned-stretch" style="flex-basis:30%">
-			<!-- wp:search {"label":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","showLabel":false,"placeholder":"<?php esc_html_e( 'Search our store', 'woo-gutenberg-products-block' ); ?>","buttonText":"<?php esc_html_e( 'Search our store', 'woo-gutenberg-products-block' ); ?>","buttonUseIcon":true,"query":{"post_type":"product"}} /-->
-
+			<!-- wp:search {"style":{"border":{"radius":"0px"}}, "label":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","showLabel":false,"placeholder":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","buttonText":"<?php esc_html_e( 'Search', 'woo-gutenberg-products-block' ); ?>","buttonUseIcon":true,"query":{"post_type":"product"},"width":100,"widthUnit":"%"} /-->
 			<!-- wp:group {"style":{"spacing":{"blockGap":"0","padding":{"right":"0","left":"0"},"margin":{"top":"56px","bottom":"0"}}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"right"}} -->
 			<div class="wp-block-group" style="margin-top:56px;margin-bottom:0;padding-right:0;padding-left:0">
 				<!-- wp:site-title {"style":{"typography":{"fontStyle":"normal","fontWeight":"700"}}} /-->
