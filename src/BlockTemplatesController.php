@@ -183,6 +183,17 @@ class BlockTemplatesController {
 	 * @return object|null
 	 */
 	public function get_block_template_fallback( $template, $id, $template_type ) {
+		// Add protection against invalid ids.
+		if ( ! is_string( $id ) || ! str_contains( $id, '//' ) ) {
+			return null;
+		}
+		// Add protection against invalid template types.
+		if (
+			'wp_template' !== $template_type &&
+			'wp_template_part' !== $template_type
+		) {
+			return null;
+		}
 		$template_name_parts  = explode( '//', $id );
 		list( $theme, $slug ) = $template_name_parts;
 
