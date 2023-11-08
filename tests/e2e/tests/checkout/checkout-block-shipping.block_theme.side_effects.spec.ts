@@ -27,9 +27,7 @@ test.describe( 'Shopper → Checkout block → Shipping', () => {
 		storageState: process.env.CUSTOMERSTATE,
 	} );
 
-	// Unskip this test before merging the PR
-	// eslint-disable-next-line playwright/no-skipped-test
-	test.skip( 'Shopper can choose free shipping, flat rate shipping, and can have different billing and shipping addresses', async ( {
+	test( 'Shopper can choose free shipping, flat rate shipping, and can have different billing and shipping addresses', async ( {
 		pageObject,
 		frontendUtils,
 		page,
