@@ -274,6 +274,16 @@ class JetpackWooCommerceAnalytics {
 			$checkout_template = get_block_template( $checkout_template_id );
 		}
 
+		// Something failed with the template retrieval, return early with 0 values rather than let a warning appear.
+		if ( ! $cart_template || ! $checkout_template ) {
+			return array(
+				'cart_page_contains_cart_block'         => 0,
+				'cart_page_contains_cart_shortcode'     => 0,
+				'checkout_page_contains_checkout_block' => 0,
+				'checkout_page_contains_checkout_shortcode' => 0,
+			);
+		}
+
 		// Update the info transient with data we got from the templates, if the site isn't using WC Blocks we
 		// won't be doing this so no concern about overwriting.
 		// Sites that load this code will be loading it on a page using the relevant block, but we still need to check
