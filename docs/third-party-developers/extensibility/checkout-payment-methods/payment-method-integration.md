@@ -49,7 +49,7 @@ import { registerExpressPaymentMethod } from '@woocommerce/blocks-registry';
 #### `wc global`
 
 ```js
-const { registerExpressPaymentMethod } = wc.wcBlocksRegistry;
+const { registerExpressPaymentMethod } = window.wc.wcBlocksRegistry;
 ```
 
 #### The registration options
@@ -136,7 +136,7 @@ import { registerPaymentMethod } from '@woocommerce/blocks-registry';
 #### `wc global`
 
 ```js
-const { registerPaymentMethod } = wc.wcBlocksRegistry;
+const { registerPaymentMethod } = window.wc.wcBlocksRegistry;
 ```
 
 #### The registration options
@@ -194,6 +194,8 @@ Any registered `savedTokenComponent` node will also receive a `token` prop which
 ### Processing Payment
 
 The checkout block currently has legacy handling for payment processing. It converts incoming `payment_data` provided by the client-side payment method to `$_POST` and calls the payment gateway's `process_payment` function. If you already have a WooCommerce Payment method extension integrated with the existing shortcode checkout flow, the checkout block's legacy handling will take care of processing your payment for you on the server side. However, If your payment method hooks into the core checkout `process_checkout` function in any way, you will need to account for this behavior and make appropriate adjustments. (See the section below about hooking into the checkout process via the Store API.)
+
+See an example of [Passing a value from the client through to server side payment processing](https://github.com/woocommerce/woocommerce-blocks/blob/62243e1731a0773f51b81fb8406ebc2e8b180b40/docs/internal-developers/block-client-apis/checkout/checkout-api.md#passing-a-value-from-the-client-through-to-server-side-payment-processing)
 
 ### Registering Assets
 
@@ -265,4 +267,3 @@ As an example, you can see how the Stripe extension adds it's integration in thi
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/checkout-payment-methods/payment-method-integration.md)
 
 <!-- /FEEDBACK -->
-

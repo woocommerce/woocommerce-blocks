@@ -3,71 +3,49 @@
 namespace Automattic\WooCommerce\Blocks\Patterns;
 
 use Automattic\WooCommerce\Blocks\AI\Connection;
-use Automattic\WooCommerce\Blocks\Verticals\Client;
-use Automattic\WooCommerce\Blocks\Verticals\VerticalsSelector;
 use WP_Error;
 
 /**
  * Pattern Images class.
  */
 class PatternUpdater {
-	/**
-	 * The AI Connection.
-	 *
-	 * @var Connection
-	 */
-	private $ai_connection;
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		$this->ai_connection = new Connection();
-	}
-
-	/**
-	 * The patterns content option name.
-	 */
-	const WC_BLOCKS_PATTERNS_CONTENT = 'wc_blocks_patterns_content';
 
 	/**
 	 * Creates the patterns content for the given vertical.
 	 *
-	 * @param  int    $vertical_id  The vertical id.
-	 * @param  Client $verticals_api_client  The verticals API client.
+	 * @param Connection      $ai_connection The AI connection.
+	 * @param string|WP_Error $token The JWT token.
+	 * @param array|WP_Error  $images The array of images.
+	 * @param string          $business_description The business description.
 	 *
 	 * @return bool|WP_Error
 	 */
-	public function create_patterns_content( $vertical_id, $verticals_api_client ) {
-		if ( ! is_int( $vertical_id ) ) {
-			return new WP_Error( 'invalid_vertical_id', __( 'The vertical id is invalid.', 'woo-gutenberg-products-block' ) );
+	public function generate_content( $ai_connection, $token, $images, $business_description ) {
+		if ( is_wp_error( $images ) ) {
+			return $images;
 		}
 
-		$vertical_images = $verticals_api_client->get_vertical_images( $vertical_id );
-
-		if ( is_wp_error( $vertical_images ) ) {
-			return $vertical_images;
-		}
-
-		$patterns_with_images = $this->get_patterns_with_images( $vertical_images );
+		$patterns_with_images = $this->get_patterns_with_images( $images );
 
 		if ( is_wp_error( $patterns_with_images ) ) {
 			return new WP_Error( 'failed_to_set_pattern_images', __( 'Failed to set the pattern images.', 'woo-gutenberg-products-block' ) );
 		}
 
-		$patterns_with_images_and_content = $this->get_patterns_with_content( $patterns_with_images );
+		$patterns_with_images_and_content = $this->get_patterns_with_content( $ai_connection, $token, $patterns_with_images, $business_description );
 
 		if ( is_wp_error( $patterns_with_images_and_content ) ) {
 			return new WP_Error( 'failed_to_set_pattern_content', __( 'Failed to set the pattern content.', 'woo-gutenberg-products-block' ) );
 		}
 
-		if ( get_option( self::WC_BLOCKS_PATTERNS_CONTENT ) === $patterns_with_images_and_content ) {
+		$patterns_ai_data_post = PatternsHelper::get_patterns_ai_data_post();
+
+		if ( isset( $patterns_ai_data_post->post_content ) && json_decode( $patterns_ai_data_post->post_content ) === $patterns_with_images_and_content ) {
 			return true;
 		}
 
-		$updated_content = update_option( self::WC_BLOCKS_PATTERNS_CONTENT, $patterns_with_images_and_content );
+		$updated_content = PatternsHelper::upsert_patterns_ai_data_post( $patterns_with_images_and_content );
 
-		if ( ! $updated_content ) {
+		if ( is_wp_error( $updated_content ) ) {
 			return new WP_Error( 'failed_to_update_patterns_content', __( 'Failed to update patterns content.', 'woo-gutenberg-products-block' ) );
 		}
 
@@ -77,11 +55,11 @@ class PatternUpdater {
 	/**
 	 * Returns the patterns with images.
 	 *
-	 * @param array $vertical_images The array of vertical images.
+	 * @param array $selected_images The array of images.
 	 *
 	 * @return array|WP_Error The patterns with images.
 	 */
-	private function get_patterns_with_images( $vertical_images ) {
+	private function get_patterns_with_images( $selected_images ) {
 		$patterns_dictionary = $this->get_patterns_dictionary();
 
 		if ( is_wp_error( $patterns_dictionary ) ) {
@@ -96,13 +74,23 @@ class PatternUpdater {
 				continue;
 			}
 
-			$images = $this->get_images_for_pattern( $pattern, $vertical_images );
+			list( $images, $alts ) = $this->get_images_for_pattern( $pattern, $selected_images );
 			if ( empty( $images ) ) {
 				$patterns_with_images[] = $pattern;
 				continue;
 			}
 
-			$pattern['images']      = $images;
+			$pattern['images'] = $images;
+
+			$string = wp_json_encode( $pattern );
+
+			foreach ( $alts as $i => $alt ) {
+				$alt    = empty( $alt ) ? 'the text should be related to the store description but generic enough to adapt to any image' : $alt;
+				$string = str_replace( "{image.$i}", $alt, $string );
+			}
+
+			$pattern = json_decode( $string, true );
+
 			$patterns_with_images[] = $pattern;
 		}
 
@@ -112,19 +100,14 @@ class PatternUpdater {
 	/**
 	 * Returns the patterns with AI generated content.
 	 *
-	 * @param array $patterns The array of patterns.
+	 * @param Connection      $ai_connection The AI connection.
+	 * @param string|WP_Error $token The JWT token.
+	 * @param array           $patterns The array of patterns.
+	 * @param string          $business_description The business description.
 	 *
 	 * @return array|WP_Error The patterns with AI generated content.
 	 */
-	public function get_patterns_with_content( array $patterns ) {
-		$site_id = $this->ai_connection->get_site_id();
-
-		if ( is_wp_error( $site_id ) ) {
-			return $site_id;
-		}
-
-		$token = $this->ai_connection->get_jwt_token( $site_id );
-
+	private function get_patterns_with_content( $ai_connection, $token, $patterns, $business_description ) {
 		if ( is_wp_error( $token ) ) {
 			return $token;
 		}
@@ -132,14 +115,14 @@ class PatternUpdater {
 		$patterns_with_content = $patterns;
 
 		$prompts = array();
-		foreach ( $patterns_with_content as $key => $pattern ) {
-			$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing the content of the "%s" pattern: %s.\n', get_option( VerticalsSelector::STORE_DESCRIPTION_OPTION_KEY ), $pattern['name'], wp_json_encode( $pattern['content'] ) );
-			$prompt .= "Replace the titles, descriptions and button texts in each 'default' key using the prompt in the corresponding 'ai_prompt' key by a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The response should be only a JSON string, with absolutely no intro or explanations.";
+		foreach ( $patterns_with_content as $pattern ) {
+			$prompt  = sprintf( 'Given the following store description: "%s", and the following JSON file representing the content of the "%s" pattern: %s.\n', $business_description, $pattern['name'], wp_json_encode( $pattern['content'] ) );
+			$prompt .= "Replace the titles, descriptions and button texts in each 'default' key using the prompt in the corresponding 'ai_prompt' key by a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The text should not be written in first-person. The response should be only a JSON string, with absolutely no intro or explanations.";
 
 			$prompts[] = $prompt;
 		}
 
-		$responses = $this->ai_connection->fetch_ai_responses( $token, $prompts );
+		$responses = $ai_connection->fetch_ai_responses( $token, $prompts );
 
 		foreach ( $responses as $key => $response ) {
 			// If the AI response is invalid, we skip the pattern and keep the default content.
@@ -189,50 +172,53 @@ class PatternUpdater {
 	/**
 	 * Returns the images for the given pattern.
 	 *
-	 * @param array $pattern The array representing the pattern.
-	 * @param array $vertical_images The array of vertical images.
+	 * @param array $pattern         The array representing the pattern.
+	 * @param array $selected_images The array of images.
 	 *
-	 * @return string[]
+	 * @return array An array containing an array of the images in the first position and their alts in the second.
 	 */
-	private function get_images_for_pattern( array $pattern, array $vertical_images ): array {
+	private function get_images_for_pattern( array $pattern, array $selected_images ): array {
 		$images = array();
-		if ( count( $vertical_images ) < $pattern['images_total'] ) {
-			return $images;
-		}
-
-		foreach ( $vertical_images as $vertical_image ) {
-			if ( $pattern['images_format'] === $this->get_image_format( $vertical_image ) ) {
-				$images[] = str_replace( 'http://', 'https://', $vertical_image['guid'] );
+		$alts   = array();
+		foreach ( $selected_images as $selected_image ) {
+			if ( ! isset( $selected_image['title'] ) ) {
+				continue;
 			}
+
+			if ( ! isset( $selected_image['URL'] ) ) {
+				continue;
+			}
+
+			if ( str_contains( '.jpeg', $selected_image['title'] ) ) {
+				continue;
+			}
+
+			$expected_image_format = $pattern['images_format'] ?? 'portrait';
+			$selected_image_format = $this->get_selected_image_format( $selected_image );
+
+			if ( $selected_image_format !== $expected_image_format ) {
+				continue;
+			}
+
+			$images[] = $selected_image['URL'];
+			$alts[]   = $selected_image['title'];
 		}
 
-		return $images;
+		return array( $images, $alts );
 	}
 
 	/**
-	 * Returns the image format for the given vertical image.
+	 * Returns the selected image format. Defaults to landscape.
 	 *
-	 * @param array $vertical_image The vertical image.
+	 * @param array $selected_image The selected image to be assigned to the pattern.
 	 *
-	 * @return string The image format, or an empty string if the image format is invalid.
+	 * @return string The selected image format.
 	 */
-	private function get_image_format( array $vertical_image ): string {
-		if ( ! isset( $vertical_image['width'] ) || ! isset( $vertical_image['height'] ) ) {
-			return '';
-		}
-
-		if ( 0 === $vertical_image['width'] || 0 === $vertical_image['height'] ) {
-			return '';
-		}
-
-		if ( $vertical_image['width'] === $vertical_image['height'] ) {
-			return 'square';
-		}
-
-		if ( $vertical_image['width'] < $vertical_image['height'] ) {
+	private function get_selected_image_format( $selected_image ) {
+		if ( ! isset( $selected_image['width'], $selected_image['height'] ) ) {
 			return 'portrait';
 		}
 
-		return 'landscape';
+		return $selected_image['width'] === $selected_image['height'] ? 'square' : ( $selected_image['width'] > $selected_image['height'] ? 'landscape' : 'portrait' );
 	}
 }
