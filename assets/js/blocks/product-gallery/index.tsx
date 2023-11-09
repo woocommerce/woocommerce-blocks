@@ -16,11 +16,13 @@ import './inner-blocks/product-gallery-large-image-next-previous';
 import './inner-blocks/product-gallery-pager';
 import './inner-blocks/product-gallery-thumbnails';
 
+export const ProductGalleryBlockSettings = {
+	icon,
+	edit: Edit,
+	save: Save,
+}
+
 if ( isExperimentalBuild() ) {
 	// @ts-expect-error: `metadata` currently does not have a type definition in WordPress core.
-	registerBlockType( metadata, {
-		icon,
-		edit: Edit,
-		save: Save,
-	} );
+	registerBlockType( metadata, ProductGalleryBlockSettings );
 }

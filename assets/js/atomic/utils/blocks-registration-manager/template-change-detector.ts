@@ -36,7 +36,7 @@ export class TemplateChangeDetector implements TemplateChangeDetectorSubject {
 	 */
 	public notify(): void {
 		for ( const observer of this.observers ) {
-			observer.update( this );
+			observer.run( this );
 		}
 	}
 
@@ -61,7 +61,7 @@ export class TemplateChangeDetector implements TemplateChangeDetectorSubject {
 	public checkIfTemplateHasChangedAndUpdateCurrentTemplateIfNeeded(): void {
 		this.previousTemplateId = this.currentTemplateId;
 
-		const editedPostId = select( 'core/edit-site' ).getEditedPostId<
+		const editedPostId = select( 'core/edit-site' )?.getEditedPostId<
 			string | number | undefined
 		>();
 		this.currentTemplateId = this.parseTemplateId( editedPostId );
@@ -79,11 +79,11 @@ export class TemplateChangeDetector implements TemplateChangeDetectorSubject {
 }
 
 interface TemplateChangeDetectorObserver {
-	update( subject: TemplateChangeDetectorSubject ): void;
+	run( subject: TemplateChangeDetectorSubject ): void;
 }
 
 export class TemplateChangeObserver implements TemplateChangeDetectorObserver {
-	update( subject: TemplateChangeDetectorSubject ): void {
+	run( subject: TemplateChangeDetectorSubject ): void {
 		console.log(
 			`previous: ${ subject.getPreviousTemplateId() } current: ${ subject.getCurrentTemplateId() }`
 		);
