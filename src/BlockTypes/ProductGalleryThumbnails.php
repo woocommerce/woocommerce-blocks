@@ -79,7 +79,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 						if ( $processor->next_tag( 'img' ) ) {
 							$processor->set_attribute(
 								'data-wc-on--click',
-								'actions.woocommerce.thumbnails.handleClick'
+								'actions.thumbnails.handleClick'
 							);
 
 							$html .= $processor->get_updated_html();
@@ -89,12 +89,13 @@ class ProductGalleryThumbnails extends AbstractBlock {
 					}
 
 					return sprintf(
-						'<div class="wc-block-product-gallery-thumbnails wp-block-woocommerce-product-gallery-thumbnails %1$s" style="%2$s">
+						'<div class="wc-block-product-gallery-thumbnails wp-block-woocommerce-product-gallery-thumbnails %1$s" style="%2$s" data-wc-interactive=\'%4$s\'>
 							%3$s
 						</div>',
 						esc_attr( $classes_and_styles['classes'] ),
 						esc_attr( $classes_and_styles['styles'] ),
-						$html
+						$html,
+						wp_json_encode( array( 'namespace' => 'woocommerce' ) )
 					);
 				}
 			}

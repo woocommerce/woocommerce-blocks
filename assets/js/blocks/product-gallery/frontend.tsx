@@ -1,80 +1,42 @@
 /**
  * External dependencies
  */
-import { store as interactivityApiStore } from '@woocommerce/interactivity';
-
-interface State {
-	[ key: string ]: unknown;
-}
+import { store, getContext as getContextFn } from '@woocommerce/interactivity';
 
 interface Context {
-	woocommerce: {
-		selectedImage: string;
-		imageId: string;
-		isDialogOpen: boolean;
-	};
+	selectedImage: string;
+	imageId: string;
+	isDialogOpen: boolean;
 }
 
-interface Selectors {
-	woocommerce: {
-		isSelected: ( store: unknown ) => boolean;
-		pagerDotFillOpacity: ( store: SelectorsStore ) => number;
-		isDialogOpen: ( store: unknown ) => boolean;
-	};
-}
+const getContext = ( ns?: string ) => getContextFn< Context >( ns );
 
-interface Actions {
-	woocommerce: {
-		thumbnails: {
-			handleClick: ( context: Context ) => void;
-		};
-	};
-}
+store( 'woocommerce', {
+	state: {
+		get isSelected() {
+			const { selectedImage, imageId } = getContext();
+			return selectedImage === imageId;
+		},
+		get pagerDotFillOpacity() {
+			const { selectedImage, imageId } = getContext();
 
-interface Store {
-	state: State;
-	context: Context;
-	selectors: Selectors;
-	actions: Actions;
-	ref?: HTMLElement;
-}
-
-type SelectorsStore = Pick< Store, 'context' | 'selectors' | 'ref' >;
-
-interactivityApiStore( {
-	state: {},
-	selectors: {
-		woocommerce: {
-			isSelected: ( { context }: Store ) => {
-				return (
-					context?.woocommerce.selectedImage ===
-					context?.woocommerce.imageId
-				);
-			},
-			pagerDotFillOpacity( store: SelectorsStore ) {
-				const { context } = store;
-
-				return context?.woocommerce.selectedImage ===
-					context?.woocommerce.imageId
-					? 1
-					: 0.2;
-			},
-			isDialogOpen: ( { context }: Store ) => {
-				return context?.woocommerce.isDialogOpen;
-			},
+			return selectedImage === imageId ? 1 : 0.2;
+		},
+		get isDialogOpen() {
+			const { isDialogOpen } = getContext();
+			return isDialogOpen;
 		},
 	},
 	actions: {
-		woocommerce: {
-			thumbnails: {
-				handleClick: ( { context }: Store ) => {
-					context.woocommerce.selectedImage =
-						context.woocommerce.imageId;
-				},
+		thumbnails: {
+			handleClick: () => {
+				const context = getContext();
+				context.selectedImage = context.imageId;
 			},
-			handleSelectImage: ( { context }: Store ) => {
-				context.woocommerce.selectedImage = context.woocommerce.imageId;
-			},
+		},
+		handleSelectImage: () => {
+			const context = getContext();
+			context.selectedImage = context.imageId;
 		},
 	},
 } );

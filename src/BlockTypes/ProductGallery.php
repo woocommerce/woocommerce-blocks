@@ -44,7 +44,7 @@ class ProductGallery extends AbstractBlock {
 			''
 		);
 
-		$gallery_dialog = '<dialog data-wc-bind--open="selectors.woocommerce.isDialogOpen">' . $html . '</dialog>';
+		$gallery_dialog = '<dialog data-wc-bind--open="state.isDialogOpen">' . $html . '</dialog>';
 		return $gallery_dialog;
 	}
 
@@ -101,15 +101,13 @@ class ProductGallery extends AbstractBlock {
 		$p       = new \WP_HTML_Tag_Processor( $html );
 
 		if ( $p->next_tag() ) {
-			$p->set_attribute( 'data-wc-interactive', true );
+			$p->set_attribute( 'data-wc-interactive', wp_json_encode( array( 'namespace' => 'woocommerce' ) ) );
 			$p->set_attribute(
 				'data-wc-context',
 				wp_json_encode(
 					array(
-						'woocommerce' => array(
-							'selectedImage' => $product->get_image_id(),
-							'isDialogOpen'  => false,
-						),
+						'selectedImage' => $product->get_image_id(),
+						'isDialogOpen'  => false,
 					)
 				)
 			);

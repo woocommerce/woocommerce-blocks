@@ -1,30 +1,24 @@
 /**
  * External dependencies
  */
-import { store as interactivityStore } from '@woocommerce/interactivity';
+import { store, getContext as getContextFn } from '@woocommerce/interactivity';
 
 type Context = {
-	woocommerce: {
-		styles: {
-			// eslint-disable-next-line @typescript-eslint/naming-convention
-			'transform-origin': string;
-			transform: string;
-			transition: string;
-		};
-		isDialogOpen: boolean;
+	styles: {
+		// eslint-disable-next-line @typescript-eslint/naming-convention
+		'transform-origin': string;
+		transform: string;
+		transition: string;
 	};
+	isDialogOpen: boolean;
 };
 
-type Store = {
-	context: Context;
-	selectors: typeof productButtonSelectors;
-	ref: HTMLElement;
-};
+const getContext = ( ns?: string ) => getContextFn< Context >( ns );
 
-const productButtonSelectors = {
-	woocommerce: {
-		styles: ( { context }: Store ) => {
-			const { styles } = context.woocommerce;
+store( 'woocommerce', {
+	state: {
+		get styles() {
+			const { styles } = getContext();
 
 			return Object.entries( styles ).reduce( ( acc, [ key, value ] ) => {
 				const style = `${ key }:${ value };`;
@@ -32,43 +26,31 @@ const productButtonSelectors = {
 			}, '' );
 		},
 	},
-};
+	actions: {
+		handleMouseMove: ( event: MouseEvent ) => {
+			const context = getContext();
+			if ( ( event.target as HTMLElement ).tagName === 'IMG' ) {
+				const element = event.target as HTMLElement;
+				const percentageX =
+					( event.offsetX / element.clientWidth ) * 100;
+				const percentageY =
+					( event.offsetY / element.clientHeight ) * 100;
 
-interactivityStore(
-	// @ts-expect-error: Store function isn't typed.
-	{
-		selectors: productButtonSelectors,
-		actions: {
-			woocommerce: {
-				handleMouseMove: ( {
-					event,
-					context,
-				}: {
-					event: MouseEvent;
-					context: Context;
-				} ) => {
-					if ( ( event.target as HTMLElement ).tagName === 'IMG' ) {
-						const element = event.target as HTMLElement;
-						const percentageX =
-							( event.offsetX / element.clientWidth ) * 100;
-						const percentageY =
-							( event.offsetY / element.clientHeight ) * 100;
+				context.styles.transform = `scale(1.3)`;
 
-						context.woocommerce.styles.transform = `scale(1.3)`;
-
-						context.woocommerce.styles[
-							'transform-origin'
-						] = `${ percentageX }% ${ percentageY }%`;
-					}
-				},
-				handleMouseLeave: ( { context }: { context: Context } ) => {
-					context.woocommerce.styles.transform = `scale(1.0)`;
-					context.woocommerce.styles[ 'transform-origin' ] = '';
-				},
-				handleClick: ( { context }: { context: Context } ) => {
-					context.woocommerce.isDialogOpen = true;
-				},
-			},
+				context.styles[
+					'transform-origin'
+				] = `${ percentageX }% ${ percentageY }%`;
+			}
 		},
-	}
-);
+		handleMouseLeave: () => {
+			const context = getContext();
+			context.styles.transform = `scale(1.0)`;
+			context.styles[ 'transform-origin' ] = '';
+		},
+		handleClick: () => {
+			const context = getContext();
+			context.isDialogOpen = true;
+		},
+	},
+} );

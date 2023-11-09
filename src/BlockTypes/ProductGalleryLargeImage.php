@@ -118,7 +118,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 	 */
 	private function get_main_images_html( $context, $product_id ) {
 		$attributes = array(
-			'data-wc-bind--hidden' => '!selectors.woocommerce.isSelected',
+			'data-wc-bind--hidden' => '!state.isSelected',
 			'hidden'               => true,
 			'class'                => 'wc-block-woocommerce-product-gallery-large-image__image',
 
@@ -126,7 +126,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 
 		if ( $context['hoverZoom'] ) {
 			$attributes['class']              .= ' wc-block-woocommerce-product-gallery-large-image__image--hoverZoom';
-			$attributes['data-wc-bind--style'] = 'selectors.woocommerce.styles';
+			$attributes['data-wc-bind--style'] = 'state.styles';
 		}
 
 		$main_images = ProductGalleryUtils::get_product_gallery_images(
@@ -159,19 +159,18 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		}
 
 		$context = array(
-			'woocommerce' => array(
-				'styles' => array(
-					'transform'        => 'scale(1.0)',
-					'transform-origin' => '',
-				),
+			'styles' => array(
+				'transform'        => 'scale(1.0)',
+				'transform-origin' => '',
 			),
 		);
 
 		return array(
-			'data-wc-on--mousemove'  => 'actions.woocommerce.handleMouseMove',
-			'data-wc-on--mouseleave' => 'actions.woocommerce.handleMouseLeave',
-			'data-wc-on--click'      => 'actions.woocommerce.handleClick',
+			'data-wc-on--mousemove'  => 'actions.handleMouseMove',
+			'data-wc-on--mouseleave' => 'actions.handleMouseLeave',
+			'data-wc-on--click'      => 'actions.handleClick',
 			'data-wc-context'        => wp_json_encode( $context, JSON_NUMERIC_CHECK ),
+			'data-wc-interactive'    => wp_json_encode( array( 'namespace' => 'woocommerce' ) )
 		);
 	}
 }
