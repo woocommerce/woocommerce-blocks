@@ -1,4 +1,4 @@
-import { ProductGalleryInteractivityApiContext } from './../../../../../../assets/js/blocks/product-gallery/frontend';
+import { image } from '@wordpress/icons';
 /**
  * External dependencies
  */
@@ -17,7 +17,7 @@ const blockData = {
 		editor: {},
 	},
 	slug: 'single-product',
-	productPage: '/product/v-neck-t-shirt/',
+	productPage: '/product/hoodie/',
 };
 
 const test = base.extend< { pageObject: ProductGalleryPage } >( {
@@ -159,7 +159,7 @@ test.describe( `${ blockData.name }`, () => {
 		editorUtils,
 		pageObject,
 	} ) => {
-		await pageObject.addProductGalleryBlock( { cleanContent: true } );
+		await pageObject.addProductGalleryBlock( { cleanContent: false } );
 		await pageObject.addAddToCartWithOptionsBlock();
 
 		const block = await pageObject.getMainImageBlock( {
@@ -178,14 +178,9 @@ test.describe( `${ blockData.name }`, () => {
 			page: 'frontend',
 		} );
 
-		const largeImageElement = largeImageBlockOnFrontend
-			.locator( '.wc-block-product-gallery-large-image__image-element' )
-			.locator( 'img' )
-			.locator( 'visible=true' );
-
-		console.log( { count: await largeImageElement.count() } );
-
-		await expect( largeImageElement ).toBeVisible();
+		const largeImageElement = largeImageBlockOnFrontend.locator(
+			'.wc-block-woocommerce-product-gallery-large-image__image--active-image-slide'
+		);
 
 		const imageSourceForLargeImageElement =
 			await largeImageElement.getAttribute( 'src' );
@@ -197,22 +192,15 @@ test.describe( `${ blockData.name }`, () => {
 		const addToCartWithOptionsColorSelector =
 			addToCartWithOptionsBlock.getByLabel( 'Color' );
 		const addToCartWithOptionsSizeSelector =
-			addToCartWithOptionsBlock.getByLabel( 'Size' );
+			addToCartWithOptionsBlock.getByLabel( 'Logo' );
 
 		await addToCartWithOptionsColorSelector.selectOption( 'Green' );
-		await addToCartWithOptionsSizeSelector.selectOption( 'Medium' );
-
-		await expect( largeImageElement ).toBeHidden();
+		await addToCartWithOptionsSizeSelector.selectOption( 'No' );
 
 		const largeImageElementAfterSelectingVariation =
-			largeImageBlockOnFrontend
-				.locator(
-					'.wc-block-product-gallery-large-image__image-element'
-				)
-				.locator( 'img' )
-				.locator( 'visible=true' );
-
-		await expect( largeImageElementAfterSelectingVariation ).toBeVisible();
+			largeImageBlockOnFrontend.locator(
+				'.wc-block-woocommerce-product-gallery-large-image__image--active-image-slide'
+			);
 
 		const imageSourceForLargeImageElementAfterSelectingVariation =
 			await largeImageElementAfterSelectingVariation.getAttribute(

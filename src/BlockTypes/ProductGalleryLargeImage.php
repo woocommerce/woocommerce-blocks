@@ -117,10 +117,10 @@ class ProductGalleryLargeImage extends AbstractBlock {
 	 */
 	private function get_main_images_html( $context, $product_id ) {
 		$attributes = array(
-			'data-wc-bind--style' => 'selectors.woocommerce.productGalleryLargeImage.styles',
-			'data-wc-effect'      => 'effects.woocommerce.scrollInto',
-			'class'               => 'wc-block-woocommerce-product-gallery-large-image__image',
-
+			'data-wc-bind--style'                                                                  => 'selectors.woocommerce.productGalleryLargeImage.styles',
+			'data-wc-effect'                                                                       => 'effects.woocommerce.scrollInto',
+			'data-wc-class--wc-block-woocommerce-product-gallery-large-image__image--active-image-slide' => 'selectors.woocommerce.isSelected',
+			'class'                                                                                => 'wc-block-woocommerce-product-gallery-large-image__image',
 		);
 
 		if ( $context['fullScreenOnClick'] ) {
