@@ -12,7 +12,7 @@ import {
  * Internal dependencies
  */
 import productGalleryBlockMetadata from '../../../blocks/product-gallery/block.json';
-import { ProductGalleryBlockSettings } from '@woocommerce/blocks/product-gallery';
+import { ProductGalleryBlockSettings } from '@woocommerce/blocks/product-gallery/settings';
 import {
 	TemplateChangeDetector,
 	TemplateChangeObserver,
