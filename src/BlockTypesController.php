@@ -90,6 +90,8 @@ final class BlockTypesController {
 				}
 			}
 		}
+
+		return false;
 	}
 
 	/**
