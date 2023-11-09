@@ -209,7 +209,7 @@ class PatternUpdater {
 	 * @return array|WP_Error The patterns with images.
 	 */
 	private function get_patterns_with_images( $selected_images ) {
-		$patterns_dictionary = $this->get_patterns_dictionary();
+		$patterns_dictionary = self::get_patterns_dictionary();
 
 		if ( is_wp_error( $patterns_dictionary ) ) {
 			return $patterns_dictionary;
@@ -251,7 +251,7 @@ class PatternUpdater {
 	 *
 	 * @return mixed|WP_Error|null
 	 */
-	private function get_patterns_dictionary() {
+	public static function get_patterns_dictionary() {
 		$patterns_dictionary = plugin_dir_path( __FILE__ ) . 'dictionary.json';
 
 		if ( ! file_exists( $patterns_dictionary ) ) {

@@ -3,6 +3,7 @@
 namespace Automattic\WooCommerce\Blocks\Images;
 
 use Automattic\WooCommerce\Blocks\AI\Connection;
+use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
 
 /**
  * Pexels API client.
@@ -32,9 +33,40 @@ class Pexels {
 			return $search_term;
 		}
 
+		$required_images = $this->total_number_required_images();
+
+		if ( is_wp_error( $required_images ) ) {
+			return $required_images;
+		}
+
 		$returned_images = $this->request( $search_term );
 
-		return $this->refine_returned_images_results( $ai_connection, $token, $business_description, $returned_images );
+		if ( is_wp_error( $returned_images ) ) {
+			return $returned_images;
+		}
+
+		$refined_images = $this->refine_returned_images_results( $ai_connection, $token, $business_description, $returned_images );
+
+		if ( is_wp_error( $refined_images ) ) {
+			return $returned_images;
+		}
+
+		$refined_images_count = count( $refined_images );
+
+		$i = 0;
+		while ( $refined_images_count < $required_images && $i < 5 ) {
+			$images_to_add = $this->request( $search_term );
+			$images_to_add = $this->refine_returned_images_results( $ai_connection, $token, $business_description, $images_to_add );
+
+			if ( is_wp_error( $images_to_add ) ) {
+				return $images_to_add;
+			}
+
+			$refined_images = array_merge( $refined_images, $images_to_add );
+			$i ++;
+		}
+
+		return $refined_images;
 	}
 
 	/**
@@ -49,7 +81,7 @@ class Pexels {
 	 * @return mixed|\WP_Error
 	 */
 	private function define_search_term( $ai_connection, $token, $business_description ) {
-		$prompt = sprintf( 'Based on the description "%s", summarize what the store is selling in two words. Do not include any adjectives or descriptions of the qualities of the product. The returned word should be simple.', $business_description );
+		$prompt = sprintf( 'Based on the description "%s", count how many different products the store is selling and generate comma-separated words that precisely describe them. Do not separate compound words. The returned words should be as accurate as possible to describe the products sold. Do not include any adjectives or descriptions of the qualities of the product. The returned word should be simple. Do not add any explanations.', $business_description );
 
 		$response = $ai_connection->fetch_ai_response( $token, $prompt );
 
@@ -67,6 +99,8 @@ class Pexels {
 	 * @param  string     $token  The JWT token.
 	 * @param  string     $business_description  The business description.
 	 * @param  array      $returned_images  The returned images.
+	 *
+	 * @return array|\WP_Error The refined images, or WP_Error if the request failed.
 	 */
 	private function refine_returned_images_results( $ai_connection, $token, $business_description, $returned_images ) {
 		$image_titles = array();
@@ -131,5 +165,30 @@ class Pexels {
 		}
 
 		return array();
+	}
+
+	/**
+	 * Total number of required images.
+	 *
+	 * @return array|\WP_Error The total number of required images, or WP_Error if the request failed.
+	 */
+	private function total_number_required_images() {
+		$patterns_dictionary = PatternUpdater::get_patterns_dictionary();
+
+		if ( is_wp_error( $patterns_dictionary ) ) {
+			return $patterns_dictionary;
+		}
+
+		$required_images = 0;
+		foreach ( $patterns_dictionary as $pattern ) {
+			if ( isset( $pattern['images_total'] ) && $pattern['images_total'] > 0 ) {
+				$required_images += $pattern['images_total'];
+			}
+		}
+
+		// Adding +6 images for the dummy products.
+		$required_images += 6;
+
+		return $required_images;
 	}
 }

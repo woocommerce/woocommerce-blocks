@@ -74,10 +74,11 @@ class PatternsHelper {
 
 		return $image;
 	}
+
 	/**
 	 * Returns the post that has the generated data by the AI for the patterns.
 	 *
-	 * @return WP_Post|null
+	 * @return int|\WP_Post|null
 	 */
 	public static function get_patterns_ai_data_post() {
 		$arg = array(
@@ -90,7 +91,7 @@ class PatternsHelper {
 		$query = new \WP_Query( $arg );
 
 		$posts = $query->get_posts();
-		return isset( $posts[0] ) ? $posts[0] : null;
+		return $posts[0] ?? null;
 	}
 
 	/**
@@ -125,7 +126,6 @@ class PatternsHelper {
 	 * @return mixed|WP_Error|null
 	 */
 	private static function get_patterns_dictionary( $pattern_slug = null ) {
-
 		$patterns_ai_data_post = self::get_patterns_ai_data_post();
 
 		if ( isset( $patterns_ai_data_post ) ) {
