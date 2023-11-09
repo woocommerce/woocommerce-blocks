@@ -36,32 +36,15 @@ class ProductUpdater {
 			}
 		}
 
-		$ai_selected_products_images = $this->get_images_information( $images );
-		$products_information_list   = $this->assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images );
+		$dummy_products_to_update = $this->fetch_dummy_products_to_update();
 
-		$responses = $this->generate_product_content( $ai_connection, $token, $ai_selected_products_images );
-		foreach ( $responses as $response ) {
-			if ( is_wp_error( $response ) ) {
-				$error_msg = $response;
-			} elseif ( empty( $response ) || ! isset( $response['completion'] ) ) {
-				$error_msg = new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
-			}
-
-			$prompt_used = $response['previous_messages'][0]['content'] ?? '';
-			foreach ( $products_information_list as $key => $product_information ) {
-				if ( isset( $product_information['title'] ) && isset( $product_information['image']['alt'] ) && str_contains( $prompt_used, $product_information['image']['alt'] ) ) {
-					$products_information_list[ $key ]['title'] = str_replace( '"', '', $response['completion'] );
-				}
-			}
+		if ( is_wp_error( $dummy_products_to_update ) ) {
+			return $dummy_products_to_update;
 		}
 
-		if ( isset( $error_msg ) ) {
-			return $error_msg;
-		}
+		$products_information_list = $this->assign_ai_selected_images_to_dummy_produts( $dummy_products_to_update, $images );
 
-		return array(
-			'product_content' => $products_information_list,
-		);
+		return $this->assign_ai_generated_content_to_dummy_products( $ai_connection, $token, $products_information_list, $business_description );
 	}
 
 	/**
@@ -88,23 +71,18 @@ class ProductUpdater {
 	 * @return array|WP_Error An array with the dummy products that need to have their content updated by AI.
 	 */
 	public function fetch_dummy_products_to_update() {
-		$real_products = $this->fetch_product_ids();
+		$real_products       = $this->fetch_product_ids();
+		$real_products_count = count( $real_products );
 
-		if ( is_array( $real_products ) && count( $real_products ) > 0 ) {
+		if ( is_array( $real_products ) && $real_products_count > 6 ) {
 			return array(
 				'product_content' => array(),
 			);
 		}
 
-		$dummy_products = $this->fetch_product_ids( 'dummy' );
-
-		if ( ! is_array( $dummy_products ) ) {
-			return new \WP_Error( 'failed_to_fetch_dummy_products', __( 'Failed to fetch dummy products.', 'woo-gutenberg-products-block' ) );
-		}
-
-		$dummy_products_count          = count( $dummy_products );
-		$expected_dummy_products_count = 6;
-		$products_to_create            = max( 0, $expected_dummy_products_count - $dummy_products_count );
+		$dummy_products       = $this->fetch_product_ids( 'dummy' );
+		$dummy_products_count = count( $dummy_products );
+		$products_to_create   = max( 6, 6 - $real_products_count - $dummy_products_count );
 
 		while ( $products_to_create > 0 ) {
 			$this->create_new_product();
@@ -113,7 +91,6 @@ class ProductUpdater {
 
 		// Identify dummy products that need to have their content updated.
 		$dummy_products_ids = $this->fetch_product_ids( 'dummy' );
-
 		if ( ! is_array( $dummy_products_ids ) ) {
 			return new \WP_Error( 'failed_to_fetch_dummy_products', __( 'Failed to fetch dummy products.', 'woo-gutenberg-products-block' ) );
 		}
@@ -199,7 +176,7 @@ class ProductUpdater {
 	 *
 	 * @param string $type The type of products to fetch.
 	 *
-	 * @return array
+	 * @return array|null
 	 */
 	public function fetch_product_ids( $type = 'user_created' ) {
 		global $wpdb;
@@ -261,12 +238,17 @@ class ProductUpdater {
 	/**
 	 * Update the product content with the AI-generated content.
 	 *
-	 * @param \WC_Product $product The product.
-	 * @param array       $ai_generated_product_content The AI-generated content.
+	 * @param array $ai_generated_product_content The AI-generated product content.
 	 *
 	 * @return string|void
 	 */
-	public function update_product_content( $product, $ai_generated_product_content ) {
+	public function update_product_content( $ai_generated_product_content ) {
+		if ( ! isset( $ai_generated_product_content['product_id'] ) ) {
+			return;
+		}
+
+		$product = wc_get_product( $ai_generated_product_content['product_id'] );
+
 		if ( ! $product instanceof \WC_Product ) {
 			return;
 		}
@@ -274,6 +256,9 @@ class ProductUpdater {
 		if ( ! isset( $ai_generated_product_content['image']['src'] ) || ! isset( $ai_generated_product_content['image']['alt'] ) || ! isset( $ai_generated_product_content['title'] ) || ! isset( $ai_generated_product_content['description'] ) ) {
 			return;
 		}
+
+		$product->set_name( $ai_generated_product_content['title'] );
+		$product->set_description( $ai_generated_product_content['description'] );
 
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -291,10 +276,7 @@ class ProductUpdater {
 			return $product_image_id->get_error_message();
 		}
 
-		$product->set_name( $ai_generated_product_content['title'] );
-		$product->set_description( $ai_generated_product_content['description'] );
 		$product->set_image_id( $product_image_id );
-
 		$product->save();
 
 		$this->create_hash_for_ai_modified_product( $product );
@@ -303,85 +285,30 @@ class ProductUpdater {
 	/**
 	 * Assigns the default content for the products.
 	 *
-	 * @param array $ai_selected_products_images The images information.
+	 * @param array $dummy_products_to_update The dummy products to update.
+	 * @param array $ai_selected_images The images' information.
 	 *
 	 * @return array[]
 	 */
-	public function assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images ) {
-		$default_image = [
-			'src' => esc_url( plugins_url( 'woocommerce-blocks/images/block-placeholders/product-image-gallery.svg' ) ),
-			'alt' => 'The placeholder for a product image.',
-		];
+	public function assign_ai_selected_images_to_dummy_produts( $dummy_products_to_update, $ai_selected_images ) {
+		$products_information_list = [];
+		$dummy_products_count      = count( $dummy_products_to_update );
+		for ( $i = 0; $i < $dummy_products_count; $i ++ ) {
+			$image_src = $ai_selected_images[ $i ]['thumbnails']['medium'] ?? plugins_url( 'woocommerce-blocks/images/block-placeholders/product-image-gallery.svg' );
+			$image_alt = $ai_selected_images[ $i ]['title'] ?? '';
 
-		return [
-			[
+			$products_information_list[] = [
 				'title'       => 'A product title',
 				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[0] ?? $default_image,
-			],
-			[
-				'title'       => 'A product title',
-				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[1] ?? $default_image,
-			],
-			[
-				'title'       => 'A product title',
-				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[2] ?? $default_image,
-			],
-			[
-				'title'       => 'A product title',
-				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[3] ?? $default_image,
-			],
-			[
-				'title'       => 'A product title',
-				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[4] ?? $default_image,
-			],
-			[
-				'title'       => 'A product title',
-				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[5] ?? $default_image,
-			],
-		];
-	}
-
-	/**
-	 * Get the images information.
-	 *
-	 * @param array $images The array of images.
-	 *
-	 * @return array
-	 */
-	public function get_images_information( $images ) {
-		if ( is_wp_error( $images ) ) {
-			return [
-				'src' => 'images/block-placeholders/product-image-gallery.svg',
-				'alt' => 'The placeholder for a product image.',
+				'image'       => [
+					'src' => esc_url( $image_src ),
+					'alt' => esc_attr( $image_alt ),
+				],
+				'product_id'  => $dummy_products_to_update[ $i ]->get_id(),
 			];
 		}
 
-		$count              = 0;
-		$placeholder_images = [];
-		foreach ( $images as $image ) {
-			if ( $count >= 6 ) {
-				break;
-			}
-
-			if ( ! isset( $image['title'] ) || ! isset( $image['thumbnails']['medium'] ) ) {
-				continue;
-			}
-
-			$placeholder_images[] = [
-				'src' => esc_url( $image['thumbnails']['medium'] ),
-				'alt' => esc_attr( $image['title'] ),
-			];
-
-			++ $count;
-		}
-
-		return $placeholder_images;
+		return $products_information_list;
 	}
 
 	/**
@@ -389,26 +316,52 @@ class ProductUpdater {
 	 *
 	 * @param Connection $ai_connection The AI connection.
 	 * @param string     $token The JWT token.
-	 * @param array      $ai_selected_products_images The images information.
+	 * @param array      $products_information_list The products information list.
+	 * @param string     $business_description The business description.
 	 *
 	 * @return array|int|string|\WP_Error
 	 */
-	public function generate_product_content( $ai_connection, $token, $ai_selected_products_images ) {
-		$store_description = get_option( 'woo_ai_describe_store_description' );
-
-		if ( ! $store_description ) {
-			return new \WP_Error( 'missing_store_description', __( 'The store description is required to generate the content for your site.', 'woo-gutenberg-products-block' ) );
+	public function assign_ai_generated_content_to_dummy_products( $ai_connection, $token, $products_information_list, $business_description ) {
+		if ( empty( $business_description ) ) {
+			return new \WP_Error( 'missing_store_description', __( 'The store description is required to generate content for your site.', 'woo-gutenberg-products-block' ) );
 		}
 
 		$prompts = [];
-		foreach ( $ai_selected_products_images as $selected_image ) {
-			if ( isset( $selected_image['alt'] ) ) {
-				$prompts[] = sprintf( 'Generate the name for a single product under 70 characters that match the following store description: "%1s" and the following image description: "%2s". Do not include any adjectives or descriptions of the qualities of the product.', $store_description, $selected_image['alt'] );
+		foreach ( $products_information_list as $product_information ) {
+			if ( ! empty( $product_information['image']['alt'] ) ) {
+				$prompts[] = sprintf( 'Generate the name for a single product under 60 characters that match the following store description: "%1s" and the following image description: "%2s". Do not include any adjectives or descriptions of the qualities of the product.', $business_description, $product_information['image']['alt'] );
 			} else {
-				$prompts[] = sprintf( 'Generate the name for a single product under 70 characters that match the following store description: "%1s". The title must be limited to 25 characters. Do not include any adjectives or descriptions of the qualities of the product.', $store_description );
+				$prompts[] = sprintf( 'Generate the name for a single product under 60 characters that match the following store description: "%1s". Do not include any adjectives or descriptions of the qualities of the product.', $business_description );
 			}
 		}
 
-		return $ai_connection->fetch_ai_responses( $token, $prompts );
+		$responses  = $ai_connection->fetch_ai_responses( $token, $prompts );
+		$error_msgs = [];
+		foreach ( $responses as $index => $response ) {
+			if ( is_wp_error( $response ) ) {
+				$error_msgs[] = $response;
+				continue;
+			}
+
+			if ( empty( $response ) || ! isset( $response['completion'] ) ) {
+				$error_msgs[] = new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
+				continue;
+			}
+
+			$products_information_list[ $index ]['title'] = str_replace( '"', '', $response['completion'] );
+		}
+
+		if ( ! empty( $error_msgs ) ) {
+			$error_data = new \WP_Error();
+			foreach ( $error_msgs as $msg ) {
+				$error_data->add( 'ai_content_generation_error', $msg );
+			}
+
+			return $error_data;
+		}
+
+		return array(
+			'product_content' => $products_information_list,
+		);
 	}
 }
