@@ -622,7 +622,7 @@ class ProductCollection extends AbstractBlock {
 		$product_visibility_not_in = array( is_search() ? $product_visibility_terms['exclude-from-search'] : $product_visibility_terms['exclude-from-catalog'] );
 
 		// Hide out of stock products.
-		if ( empty( $stock_query ) && in_array( 'outofstock', $stock_status, true ) ) {
+		if ( empty( $stock_query ) && ! in_array( 'outofstock', $stock_status, true ) ) {
 			$product_visibility_not_in[] = $product_visibility_terms['outofstock'];
 		}
 
