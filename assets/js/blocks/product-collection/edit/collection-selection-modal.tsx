@@ -82,7 +82,6 @@ const defaultQuery = {
 		...DEFAULT_ATTRIBUTES,
 		query: {
 			...DEFAULT_ATTRIBUTES.query,
-			inherit: getDefaultValueOfInheritQueryFromTemplate(), // TODO: This has to be resolved when applying the collection, so the context is known.
 		},
 	},
 };
@@ -103,6 +102,16 @@ const getDefaultChosenCollection = (
 	// Otherwise it should be the first available choice. We control collections
 	// so there always should be at least one available.
 	return blockCollections.length ? blockCollections[ 0 ].name : '';
+};
+
+const findProductCollectionBlock = ( blocks ) => {
+	return blocks.find( ( block ) => {
+		const isProductCollection =
+			block.name === 'woocommerce/product-collection';
+		return isProductCollection
+			? block
+			: findProductCollectionBlock( block.innerBlocks );
+	} );
 };
 
 const PatternSelectionModal = ( props: {
@@ -156,19 +165,54 @@ const PatternSelectionModal = ( props: {
 		const chosenCollection = blockCollections.find(
 			( { name }: { name: string } ) => name === chosenCollectionName
 		);
-
 		const chosenPattern = blockPatterns.find(
 			( { name }: { name: string } ) => name === chosenPatternName
 		);
 
+		if (
+			chosenCollection.name ===
+			'woocommerce-blocks/product-collection/default-query'
+		) {
+			chosenCollection.attributes.query.inherit =
+				getDefaultValueOfInheritQueryFromTemplate();
+		}
+
+		if ( ! chosenPattern ) {
+			const newBlock = createBlock(
+				blockJson.name,
+				chosenCollection.attributes,
+				createBlocksFromInnerBlocksTemplate(
+					chosenCollection.innerBlocks
+				)
+			);
+
+			replaceBlock( clientId, newBlock );
+			return;
+		}
+
+		const { innerBlocks, attributes: patternAttributes } =
+			findProductCollectionBlock( chosenPattern.blocks );
+		const {
+			displayLayout,
+			query: { perPage, pages, offset },
+		} = patternAttributes;
+
+		const mergedAttributes = {
+			...chosenCollection.attributes,
+			displayLayout,
+			query: {
+				...chosenCollection.attributes.query,
+				perPage,
+				pages,
+				offset,
+			},
+		};
+
 		const newBlock = createBlock(
 			blockJson.name,
-			chosenCollection.attributes,
-			createBlocksFromInnerBlocksTemplate( chosenCollection.innerBlocks )
+			mergedAttributes,
+			createBlocksFromInnerBlocksTemplate( innerBlocks )
 		);
-
-		// TODO: Need to apply pattern attributes and inner blocks structure
-		// to the new Collection from a chosenPattern.
 
 		replaceBlock( clientId, newBlock );
 	};
