@@ -397,4 +397,36 @@ class JetpackWooCommerceAnalytics {
 
 		return $served;
 	}
+
+	/**
+	 * Search a specific post for text content.
+	 *
+	 * Note: similar code is in a WooCommerce core PR:
+	 * https://github.com/woocommerce/woocommerce/pull/25932
+	 *
+	 * @param integer $post_id The id of the post to search.
+	 * @param string  $text    The text to search for.
+	 * @return integer 1 if post contains $text (otherwise 0).
+	 */
+	public function post_contains_text( $post_id, $text ) {
+		global $wpdb;
+
+		// Search for the text anywhere in the post.
+		$wildcarded = "%{$text}%";
+
+		// No better way to search post content without having filters expanding blocks.
+		// This is already cached up in the parent function.
+		$result = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->prepare(
+				"
+				SELECT COUNT( * ) FROM {$wpdb->prefix}posts
+				WHERE ID=%d
+				AND {$wpdb->prefix}posts.post_content LIKE %s
+				",
+				array( $post_id, $wildcarded )
+			)
+		);
+
+		return ( '0' !== $result ) ? 1 : 0;
+	}
 }
