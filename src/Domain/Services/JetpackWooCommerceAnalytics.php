@@ -249,16 +249,16 @@ class JetpackWooCommerceAnalytics {
 		$checkout_template    = null;
 		$cart_template_id     = null;
 		$checkout_template_id = null;
-		$templates            = $this->block_templates_controller->get_block_templates( array( 'cart', 'checkout' ) );
+		$templates            = $this->block_templates_controller->get_block_templates( array( 'cart', 'checkout', 'page-checkout', 'page-cart' ) );
 		$guest_checkout       = ucfirst( get_option( 'woocommerce_enable_guest_checkout', 'No' ) );
 		$create_account       = ucfirst( get_option( 'woocommerce_enable_signup_and_login_from_checkout', 'No' ) );
 
 		foreach ( $templates as $template ) {
-			if ( 'cart' === $template->slug ) {
+			if ( 'cart' === $template->slug || 'page-cart' === $template->slug ) {
 				$cart_template_id = ( $template->id );
 				continue;
 			}
-			if ( 'checkout' === $template->slug ) {
+			if ( 'checkout' === $template->slug || 'page-checkout' === $template->slug ) {
 				$checkout_template_id = ( $template->id );
 			}
 		}
