@@ -18,11 +18,11 @@
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: space-between;
-			gap: 0 calc(#{$gap-smaller} * 2);
+			gap: 0 calc(#{$gap-smaller} * 2); // Required for spacing especially when using flex-grow
 
 			.wc-block-components-text-input,
 			.wc-block-components-state-input {
-				flex: 1 0 calc(50% - #{$gap-smaller});
+				flex: 1 0 calc(50% - #{$gap-smaller}); // "flex-grow = 1" allows the input to grow to fill the space
 				box-sizing: border-box;
 
 				&:nth-of-type(2),
