@@ -182,10 +182,15 @@ interactivityApiStore( {
 			},
 			handleNextImageButtonClick: ( store: Store ) => {
 				const { context } = store;
-				const imagesIds = context.woocommerce[ context.woocommerce.isDialogOpen ? 'dialogVisibleImagesIds' : 'visibleImagesIds' ];
+				const imagesIds =
+					context.woocommerce[
+						context.woocommerce.isDialogOpen
+							? 'dialogVisibleImagesIds'
+							: 'visibleImagesIds'
+					];
 				const selectedImageIdIndex = imagesIds.indexOf(
-						context.woocommerce.selectedImage
-					);
+					context.woocommerce.selectedImage
+				);
 				const nextImageIndex = Math.min(
 					selectedImageIdIndex + 1,
 					imagesIds.length - 1
@@ -195,15 +200,21 @@ interactivityApiStore( {
 			},
 			handlePreviousImageButtonClick: ( store: Store ) => {
 				const { context } = store;
-				const imagesIds = context.woocommerce[ context.woocommerce.isDialogOpen ? 'dialogVisibleImagesIds' : 'visibleImagesIds' ];
+				const imagesIds =
+					context.woocommerce[
+						context.woocommerce.isDialogOpen
+							? 'dialogVisibleImagesIds'
+							: 'visibleImagesIds'
+					];
 				const selectedImageIdIndex = imagesIds.indexOf(
-						context.woocommerce.selectedImage
-					);
+					context.woocommerce.selectedImage
+				);
 				const previousImageIndex = Math.max(
 					selectedImageIdIndex - 1,
 					0
 				);
-				context.woocommerce.selectedImage = imagesIds[ previousImageIndex ];
+				context.woocommerce.selectedImage =
+					imagesIds[ previousImageIndex ];
 			},
 		},
 	},
