@@ -1,4 +1,3 @@
-import { image } from '@wordpress/icons';
 /**
  * External dependencies
  */
@@ -9,7 +8,6 @@ import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
  */
 
 import { ProductGalleryPage } from '../../product-gallery.page';
-import { InteractivityApiUtils } from '@woocommerce/e2e-utils';
 const blockData = {
 	name: 'woocommerce/product-gallery-large-image',
 	selectors: {
@@ -31,8 +29,6 @@ const test = base.extend< { pageObject: ProductGalleryPage } >( {
 		await use( pageObject );
 	},
 } );
-
-const interactivityApiUtils = new InteractivityApiUtils();
 
 test.describe( `${ blockData.name }`, () => {
 	test.beforeEach( async ( { requestUtils, admin, editorUtils, editor } ) => {
