@@ -52,9 +52,22 @@ const CollectionButton = ( {
 	const variant = active ? 'primary' : 'secondary';
 
 	return (
-		<Button variant={ variant } onClick={ onClick }>
-			{ icon }
-			{ title }: { description }
+		<Button
+			className="wc-blocks-product-collection__collection-button"
+			variant={ variant }
+			onClick={ onClick }
+		>
+			<div className="wc-blocks-product-collection__collection-button-icon">
+				{ icon }
+			</div>
+			<div className="wc-blocks-product-collection__collection-button-text">
+				<p className="wc-blocks-product-collection__collection-button-title">
+					{ title }
+				</p>
+				<p className="wc-blocks-product-collection__collection-button-description">
+					{ description }
+				</p>
+			</div>
 		</Button>
 	);
 };
@@ -63,7 +76,7 @@ const defaultQuery = {
 	name: 'woocommerce-blocks/product-collection/default-query',
 	title: 'Default Query',
 	icon: <Icon icon={ loop } />,
-	description: 'Use the current query context set by template',
+	description: 'Use the current query context set by template.',
 	innerBlocks: [ INNER_BLOCKS_PRODUCT_TEMPLATE ],
 	attributes: {
 		...DEFAULT_ATTRIBUTES,
@@ -108,6 +121,7 @@ const PatternSelectionModal = ( props: {
 			const { getBlockVariations } = select( blocksStore );
 			return getBlockVariations( blockJson.name );
 		}, [] ),
+		defaultQuery,
 		defaultQuery,
 	];
 
