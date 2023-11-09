@@ -81,6 +81,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.4.7 - 2023-11-09 =
+
+#### Bug Fixes
+
+- Fixed address components in Firefox, and editing of address form in the editor. [#11714](https://github.com/woocommerce/woocommerce-blocks/pull/11714)
+
 = 11.4.6 - 2023-11-09 =
 
 #### Bug Fixes
