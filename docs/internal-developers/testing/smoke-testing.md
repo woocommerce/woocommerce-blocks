@@ -204,7 +204,7 @@ Note: some blocks might fail to render because they are based on products having
 
 </details>
 
-### 3. Add the Cart and Checkout block to the relevant WooCommerce pages
+### 3. Add the Cart and Checkout block to the relevant templates
 
 ## Editor Tests
 
