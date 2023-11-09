@@ -12,9 +12,18 @@ import {
  */
 import blockJson from '../block.json';
 import newArrivals from './new-arrivals';
-import topSellers from './top-sellers';
+import topRated from './top-rated';
+import bestSellers from './best-sellers';
+import onSale from './on-sale';
+import featured from './featured';
 
-const collections: BlockVariation[] = [ newArrivals, topSellers ];
+const collections: BlockVariation[] = [
+	newArrivals,
+	topRated,
+	bestSellers,
+	onSale,
+	featured,
+];
 
 const registerCollections = () => {
 	collections.forEach( ( collection ) => {
