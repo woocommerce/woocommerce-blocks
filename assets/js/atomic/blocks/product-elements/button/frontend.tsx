@@ -2,8 +2,7 @@
  * External dependencies
  */
 import { store, getContext as getContextFn } from '@woocommerce/interactivity';
-import { select, subscribe } from '@wordpress/data';
-import { dispatch } from '@wordpress/data';
+import { select, subscribe, dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { Cart } from '@woocommerce/type-defs/cart';
 
@@ -47,10 +46,6 @@ interface Store {
 	};
 }
 
-// RequestIdleCallback is not available in Safari, so we use setTimeout as an alternative.
-const callIdleCallback =
-	window.requestIdleCallback || ( ( cb ) => setTimeout( cb, 100 ) );
-
 const getProductById = ( cartState: Cart | undefined, productId: number ) => {
 	return cartState?.items.find( ( item ) => item.id === productId );
 };
@@ -64,7 +59,8 @@ const getTextButton = (
 	return inTheCart.replace( '###', numberOfItems.toString() );
 };
 
-const getContext = getContextFn< Context >;
+// The `getContextFn` function is wrapped just to avoid prettier issues.
+const getContext = ( ns?: string ) => getContextFn< Context >( ns );
 
 const { state } = store< Store >( 'woocommerce/product-button', {
 	state: {
@@ -191,9 +187,13 @@ subscribe( () => {
 	}
 }, storeKey );
 
+// RequestIdleCallback is not available in Safari, so we use setTimeout as an alternative.
+const callIdleCallback =
+	window.requestIdleCallback || ( ( cb ) => setTimeout( cb, 100 ) );
+
 // This selector triggers a fetch of the Cart data. It is done in a
 // `requestIdleCallback` to avoid potential performance issues.
-requestIdleCallback( () => {
+callIdleCallback( () => {
 	if ( ! state.hasCartLoaded ) {
 		select( storeKey ).getCartData();
 	}
