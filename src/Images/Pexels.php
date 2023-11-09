@@ -81,7 +81,7 @@ class Pexels {
 	 * @return mixed|\WP_Error
 	 */
 	private function define_search_term( $ai_connection, $token, $business_description ) {
-		$prompt = sprintf( 'Based on the description "%s", count how many different products the store is selling and generate comma-separated words that precisely describe them. Do not separate compound words. The returned words should be as accurate as possible to describe the products sold. Do not include any adjectives or descriptions of the qualities of the product. The returned word should be simple. Do not add any explanations.', $business_description );
+		$prompt = sprintf( 'Based on the description "%s", generate one compound word that precisely describe them. The returned words should be as accurate as possible to describe the products sold. Do not include any adjectives or descriptions of the qualities of the product. The returned word should be simple. Do not add any explanations.', $business_description );
 
 		$response = $ai_connection->fetch_ai_response( $token, $prompt );
 

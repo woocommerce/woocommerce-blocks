@@ -55,12 +55,6 @@ class ProductUpdater {
 			}
 		}
 
-		if ( is_wp_error( $response ) ) {
-			$error_msg = $response;
-		} elseif ( empty( $response ) || ! isset( $response['completion'] ) ) {
-			$error_msg = new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
-		}
-
 		if ( isset( $error_msg ) ) {
 			return $error_msg;
 		}
