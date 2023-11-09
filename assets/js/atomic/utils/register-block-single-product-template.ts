@@ -52,8 +52,6 @@ export const registerBlockSingleProductTemplate = ( {
 		const hasTemplateId = Boolean( currentTemplateId );
 		const editedPostType = store?.getEditedPostType();
 
-		console.log({ currentTemplateId, editedPostType });
-
 		if ( ! hasChangedTemplate || ! hasTemplateId || ! blockName ) {
 			return;
 		}
@@ -78,7 +76,6 @@ export const registerBlockSingleProductTemplate = ( {
 			} else {
 				unregisterBlockType( blockName );
 			}
-			console.log(`unregisterBlockType ${blockName}`);
 			isBlockRegistered = false;
 		}
 
@@ -87,7 +84,6 @@ export const registerBlockSingleProductTemplate = ( {
 				// @ts-expect-error: `registerBlockType` is not typed in WordPress core
 				registerBlockVariation( blockName, blockSettings );
 			} else {
-				console.log(`registerBlockType ${blockName}`);
 				const ancestor = isEmpty( blockSettings?.ancestor )
 					? [ 'woocommerce/single-product' ]
 					: blockSettings?.ancestor;
@@ -117,7 +113,6 @@ export const registerBlockSingleProductTemplate = ( {
 					blockSettings as BlockVariation< BlockAttributes >
 				);
 			} else {
-				console.log(`registerBlockType ${blockName}`);
 				blocksRegistered.add( blockName );
 				// @ts-expect-error: `registerBlockType` is typed in WordPress core
 				registerBlockType( blockMetadata, blockSettings );

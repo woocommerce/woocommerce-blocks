@@ -14,6 +14,12 @@ import '../css/style.scss';
 import './filters/block-list-block';
 import './filters/get-block-attributes';
 import './base/components/notice-banner/style.scss';
+import { BlockRegistrationManager } from './atomic/utils/blocks-registration-manager';
+
+const blockRegistrationManager = new BlockRegistrationManager({
+	registerBlock({}){},
+	unregisterBlock({}){}
+});
 
 setCategories( [
 	...getCategories().filter(
