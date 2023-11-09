@@ -606,7 +606,7 @@ class MiniCart extends AbstractBlock {
 				'after' === $position &&
 				'header' === $context->area
 			) {
-				$hooked_blocks[] = 'woocommerce/mini-cart';
+				$hooked_blocks[] = $this->namespace . '/' . $this->block_name;
 			}
 		}
 
