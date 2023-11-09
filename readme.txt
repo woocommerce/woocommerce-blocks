@@ -86,6 +86,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 #### Bug Fixes
 
 - Prevent PHP warnings when using Jetpack WooCommerce Analytics module. [#11707](https://github.com/woocommerce/woocommerce-blocks/pull/11707)
+- Fixed address components in Firefox, and editing of address form in the editor. [#11714](https://github.com/woocommerce/woocommerce-blocks/pull/11714)
 
 = 11.5.3 - 2023-11-08 =
 
