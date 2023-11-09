@@ -87,12 +87,30 @@ const defaultQuery = {
 	},
 };
 
+const getDefaultChosenCollection = (
+	attributes: ProductCollectionAttributes,
+	// @ts-expect-error Type definitions are missing
+	// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/selectors.d.ts
+	blockCollections
+) => {
+	// If `attributes.query` is truthy, that means Product Collection was already
+	// configured. So it's either a collection or we need to return defaultQuery
+	// collection name;
+	if ( attributes.query ) {
+		return attributes.collection || defaultQuery.name;
+	}
+
+	// Otherwise it should be the first available choice. We control collections
+	// so there always should be at least one available.
+	return blockCollections.length ? blockCollections[ 0 ].name : '';
+};
+
 const PatternSelectionModal = ( props: {
 	clientId: string;
 	attributes: ProductCollectionAttributes;
 	closePatternSelectionModal: () => void;
 } ) => {
-	const { clientId } = props;
+	const { clientId, attributes } = props;
 	// @ts-expect-error Type definitions for this function are missing
 	// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/actions.d.ts
 	const { replaceBlock } = useDispatch( blockEditorStore );
@@ -125,12 +143,14 @@ const PatternSelectionModal = ( props: {
 	];
 
 	// Prepare Collections
-	const defaultCollection = blockCollections.length
-		? blockCollections[ 0 ].name
-		: '';
+	const defaultChosenCollection = getDefaultChosenCollection(
+		attributes,
+		blockCollections
+	);
 
-	const [ chosenCollectionName, selectCollectionName ] =
-		useState( defaultCollection );
+	const [ chosenCollectionName, selectCollectionName ] = useState(
+		defaultChosenCollection
+	);
 
 	const applyCollection = () => {
 		const chosenCollection = blockCollections.find(
