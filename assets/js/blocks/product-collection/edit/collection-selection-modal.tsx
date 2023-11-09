@@ -175,7 +175,7 @@ const PatternSelectionModal = ( props: {
 
 	return (
 		<Modal
-			overlayClassName="wc-blocks-product-collection__selection-modal"
+			overlayClassName="wc-blocks-product-collection__modal"
 			title={ __(
 				'Choose a collection',
 				'woo-gutenberg-products-block'

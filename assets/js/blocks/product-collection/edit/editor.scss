@@ -10,7 +10,7 @@
 	}
 }
 
-.wc-blocks-product-collection__selection-modal {
+.wc-blocks-product-collection__modal {
 	.block-editor-block-patterns-list {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
@@ -72,6 +72,11 @@
 		.wc-blocks-product-collection__collection-button-description {
 			white-space: wrap;
 		}
+	}
+
+	.wc-blocks-product-collection__footer {
+		text-align: end;
+		margin: $gap-small 0;
 	}
 }
 
