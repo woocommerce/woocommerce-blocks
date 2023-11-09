@@ -13,7 +13,7 @@ import { useDispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import type { ProductCollectionEditComponentProps } from '../types';
-import { getDefaultProductCollection } from '../utils';
+import { getDefaultProductCollection } from '../constants';
 import Icon from '../icon';
 
 const ProductCollectionPlaceholder = (
