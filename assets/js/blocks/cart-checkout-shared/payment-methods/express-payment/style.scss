@@ -81,10 +81,9 @@ $border-width: 1px;
 	}
 
 	.wc-block-components-express-payment__content {
-		border-style: solid;
-		border-width: 0 $border-width $border-width;
+		border: $border-width solid $universal-border-light;
+		border-top: 0;
 		bottom: 0;
-		border-color: $universal-border-light;
 		padding: #{$gap-large - $universal-border-radius} $gap-large $gap-large;
 		border-radius: 0 0 $universal-border-radius $universal-border-radius;
 
