@@ -147,9 +147,11 @@ const CustomerAddress = ( {
 			dispatchCheckoutEvent,
 			onChangeAddress,
 			requirePhoneField,
+			setBillingPhone,
 			setShippingPhone,
 			shippingAddress,
 			showPhoneField,
+			useShippingAsBilling,
 		]
 	);
 
