@@ -28,6 +28,16 @@ export interface ProductCollectionDisplayLayout {
 	shrinkColumns?: boolean;
 }
 
+export enum ETimeFrameOperator {
+	IN = 'in',
+	NOT_IN = 'not-in',
+}
+
+export interface TimeFrame {
+	operator?: ETimeFrameOperator;
+	value?: string;
+}
+
 export interface ProductCollectionQuery {
 	exclude: string[];
 	inherit: boolean | null;
@@ -39,6 +49,11 @@ export interface ProductCollectionQuery {
 	postType: string;
 	search: string;
 	taxQuery: Record< string, number[] >;
+	/**
+	 * If true, show only featured products.
+	 */
+	featured: boolean;
+	timeFrame: TimeFrame | undefined;
 	woocommerceOnSale: boolean;
 	/**
 	 * Filter products by their stock status.
