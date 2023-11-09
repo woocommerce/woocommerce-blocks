@@ -73,6 +73,7 @@ class MiniCart extends AbstractBlock {
 		parent::initialize();
 		add_action( 'wp_loaded', array( $this, 'register_empty_cart_message_block_pattern' ) );
 		add_action( 'wp_print_footer_scripts', array( $this, 'print_lazy_load_scripts' ), 2 );
+		add_filter( 'hooked_block_types', array( $this, 'auto_insert_into_header_template_part' ), 10, 4 );
 	}
 
 	/**
@@ -586,5 +587,29 @@ class MiniCart extends AbstractBlock {
 	 */
 	public function should_not_render_mini_cart( array $attributes ) {
 		return isset( $attributes['cartAndCheckoutRenderStyle'] ) && 'hidden' !== $attributes['cartAndCheckoutRenderStyle'];
+	}
+
+	/**
+	 * Uses Block Hooks to automatically insert the Mini Cart block after the Navigation block in the header template part.
+	 *
+	 * @param array              $hooked_blocks Blocks to be hooked.
+	 * @param string             $position Where to hook the block in relation to its anchor.
+	 * @param string             $anchor_block The anchor block where we are hooking the Mini Cart block.
+	 * @param \WP_Block_Template $context The context of the block.
+	 *
+	 * @return array
+	 */
+	public function auto_insert_into_header_template_part( $hooked_blocks, $position, $anchor_block, $context ) {
+		if ( $context instanceof \WP_Block_Template ) {
+			if (
+				'core/navigation' === $anchor_block &&
+				'after' === $position &&
+				'header' === $context->area
+			) {
+				$hooked_blocks[] = 'woocommerce/mini-cart';
+			}
+		}
+
+		return $hooked_blocks;
 	}
 }
