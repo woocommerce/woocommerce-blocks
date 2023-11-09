@@ -72,6 +72,14 @@ class Product extends AbstractRoute {
 		$product_updater     = new ProductUpdater();
 		$product_information = $request['products_information'] ?? array();
 
+		if ( empty( $product_information ) ) {
+			return rest_ensure_response(
+				array(
+					'ai_content_generated' => true,
+				)
+			);
+		}
+
 		$product_updater->update_product_content( $product_information );
 
 		return rest_ensure_response(

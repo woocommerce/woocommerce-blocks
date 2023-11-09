@@ -82,7 +82,7 @@ class ProductUpdater {
 
 		$dummy_products       = $this->fetch_product_ids( 'dummy' );
 		$dummy_products_count = count( $dummy_products );
-		$products_to_create   = max( 6, 6 - $real_products_count - $dummy_products_count );
+		$products_to_create   = max( 0, 6 - $real_products_count - $dummy_products_count );
 
 		while ( $products_to_create > 0 ) {
 			$this->create_new_product();
@@ -141,10 +141,12 @@ class ProductUpdater {
 
 		$timestamp_created  = strtotime( $formatted_date_created );
 		$timestamp_modified = strtotime( $formatted_date_modified );
+		$timestamp_current  = time();
 
-		$dummy_product_not_modified = abs( $timestamp_modified - $timestamp_created ) < 60;
+		$dummy_product_recently_modified = abs( $timestamp_current - $timestamp_modified ) < 10;
+		$dummy_product_not_modified      = abs( $timestamp_modified - $timestamp_created ) < 60;
 
-		if ( $current_product_hash === $ai_modified_product_hash || $dummy_product_not_modified ) {
+		if ( $current_product_hash === $ai_modified_product_hash || $dummy_product_not_modified || $dummy_product_recently_modified ) {
 			return true;
 		}
 
