@@ -32,7 +32,9 @@ class Pexels {
 			return $search_term;
 		}
 
-		return $this->request( $search_term );
+		$returned_images = $this->request( $search_term );
+
+		return $this->refine_returned_images_results( $ai_connection, $token, $business_description, $returned_images );
 	}
 
 	/**
@@ -47,7 +49,7 @@ class Pexels {
 	 * @return mixed|\WP_Error
 	 */
 	private function define_search_term( $ai_connection, $token, $business_description ) {
-		$prompt = sprintf( 'Based on the description "%s", summarize what the store is selling in one word. The generated word should not be an abbreviation. Do not include any adjectives or descriptions of the qualities of the product. The returned word should be simple.', $business_description );
+		$prompt = sprintf( 'Based on the description "%s", summarize what the store is selling in two words. Do not include any adjectives or descriptions of the qualities of the product. The returned word should be simple.', $business_description );
 
 		$response = $ai_connection->fetch_ai_response( $token, $prompt );
 
@@ -59,6 +61,41 @@ class Pexels {
 	}
 
 	/**
+	 * Refine the results returned by Pexels API.
+	 *
+	 * @param  Connection $ai_connection  The AI connection.
+	 * @param  string     $token  The JWT token.
+	 * @param  string     $business_description  The business description.
+	 * @param  array      $returned_images  The returned images.
+	 */
+	private function refine_returned_images_results( $ai_connection, $token, $business_description, $returned_images ) {
+		$image_titles = array();
+		foreach ( $returned_images as $returned_image ) {
+			if ( isset( $returned_image['title'] ) ) {
+				$image_titles[] = $returned_image['title'];
+			}
+		}
+
+		$prompt = sprintf( 'Compare the following text: "%s" with the image titles listed in the JSON below: if they have nothing in common, delete them from the list. Do not include any explanations or introductions to the response. The JSON is: %s', $business_description, wp_json_encode( $image_titles ) );
+
+		$response = $ai_connection->fetch_ai_response( $token, $prompt );
+
+		if ( is_wp_error( $response ) || ! isset( $response['completion'] ) ) {
+			return $returned_images;
+		}
+
+		$filtered_image_titles = json_decode( $response['completion'] );
+
+		foreach ( $returned_images as $returned_image ) {
+			if ( isset( $returned_image['title'] ) && ! in_array( $returned_image['title'], $filtered_image_titles, true ) ) {
+				unset( $returned_image );
+			}
+		}
+
+		return $returned_images;
+	}
+
+	/**
 	 * Make a request to the Pexels API.
 	 *
 	 * @param string $search_term The search term to use.
@@ -66,11 +103,12 @@ class Pexels {
 	 *
 	 * @return array|\WP_Error The response body, or WP_Error if the request failed.
 	 */
-	private function request( string $search_term, int $per_page = 90 ) {
+	private function request( string $search_term, int $per_page = 100 ) {
 		$request = new \WP_REST_Request( 'GET', self::EXTERNAL_MEDIA_PEXELS_ENDPOINT );
 
 		$request->set_param( 'search', esc_html( $search_term ) );
 		$request->set_param( 'number', $per_page );
+		$request->set_param( 'size', 'small' );
 
 		$response      = rest_do_request( $request );
 		$response_data = $response->get_data();
