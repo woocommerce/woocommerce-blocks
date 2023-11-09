@@ -245,6 +245,33 @@ class JetpackWooCommerceAnalytics {
 			return $info;
 		}
 
+		if ( ! wp_is_block_theme() ) {
+			$cart_page_id     = wc_get_page_id( 'cart' );
+			$checkout_page_id = wc_get_page_id( 'checkout' );
+
+			$info = array(
+				'cart_page_contains_cart_block'         => $this->post_contains_text(
+					$cart_page_id,
+					'<!-- wp:woocommerce/cart'
+				),
+				'cart_page_contains_cart_shortcode'     => $this->post_contains_text(
+					$cart_page_id,
+					'[woocommerce_cart]'
+				),
+				'checkout_page_contains_checkout_block' => $this->post_contains_text(
+					$checkout_page_id,
+					'<!-- wp:woocommerce/checkout'
+				),
+				'checkout_page_contains_checkout_shortcode' => $this->post_contains_text(
+					$checkout_page_id,
+					'[woocommerce_checkout]'
+				),
+			);
+
+			set_transient( $transient_name, $info, DAY_IN_SECONDS );
+			return $info;
+		}
+
 		$cart_template        = null;
 		$checkout_template    = null;
 		$cart_template_id     = null;
