@@ -122,7 +122,6 @@ const PatternSelectionModal = ( props: {
 			return getBlockVariations( blockJson.name );
 		}, [] ),
 		defaultQuery,
-		defaultQuery,
 	];
 
 	// Prepare Collections
