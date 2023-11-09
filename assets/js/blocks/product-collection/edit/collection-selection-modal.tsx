@@ -220,6 +220,7 @@ const PatternSelectionModal = ( props: {
 						) }
 					</p>
 					<BlockPatternsList
+						className="wc-blocks-product-collection__patterns-preview"
 						blockPatterns={ blockPatterns }
 						shownPatterns={ blockPatterns }
 						onClickPattern={ ( { name } ) =>
