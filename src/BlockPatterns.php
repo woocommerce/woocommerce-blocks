@@ -233,6 +233,16 @@ class BlockPatterns {
 
 			// The actual pattern content is the output of the file.
 			ob_start();
+
+			/*
+				For patterns that can have AI-generated content, we need to get its content from the dictionary and pass
+				it to the pattern file through the "$content" and "$images" variables.
+				This is to avoid having to access the dictionary for each pattern when it's registered or inserted.
+				Before the "$content" and "$images" variables were populated in each pattern. Since the pattern
+				registration happens in the init hook, the dictionary was being access one for each pattern and
+				for each page load. This way we only do it once on registration.
+				For more context: https://github.com/woocommerce/woocommerce-blocks/pull/11733
+			*/
 			if ( ! is_null( $pattern_data_from_dictionary ) ) {
 				$content = $pattern_data_from_dictionary['content'];
 				$images  = $pattern_data_from_dictionary['images'] ?? array();
