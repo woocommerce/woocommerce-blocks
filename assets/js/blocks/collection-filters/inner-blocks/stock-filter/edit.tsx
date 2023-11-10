@@ -16,7 +16,7 @@ import type { BlockEditProps } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { BlockProps } from './types';
-import { Inspector } from './inspector';
+import { Inspector } from './components/inspector';
 
 const Edit = ( props: BlockEditProps< BlockProps > & { context: Context } ) => {
 	const blockProps = useBlockProps( {

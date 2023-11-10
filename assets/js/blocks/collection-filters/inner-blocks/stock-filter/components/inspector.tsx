@@ -15,7 +15,7 @@ import {
 /**
  * Internal dependencies
  */
-import { EditProps } from './types';
+import { EditProps } from '../types';
 
 export const Inspector = ( { attributes, setAttributes }: EditProps ) => {
 	const { showCounts, selectType, displayStyle } = attributes;
