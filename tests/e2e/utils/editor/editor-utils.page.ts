@@ -281,16 +281,18 @@ export class EditorUtils {
 	}
 
 	async transformIntoBlocks() {
+		// Select the block, so the button is visible.
+		const block = this.page
+			.locator( `[data-type="woocommerce/legacy-template"]` )
+			.first();
+		await this.editor.selectBlocks( block );
+
 		const isNotTransformedIntoBlocks = await this.page
 			.frameLocator( 'iframe[name="editor-canvas"]' )
 			.getByRole( 'button', { name: 'Transform into blocks' } )
 			.count();
 
 		if ( isNotTransformedIntoBlocks ) {
-			await this.page
-				.frameLocator( 'iframe[name="editor-canvas"]' )
-				.getByRole( 'group' )
-				.click();
 			await this.page
 				.frameLocator( 'iframe[name="editor-canvas"]' )
 				.getByRole( 'button', { name: 'Transform into blocks' } )
