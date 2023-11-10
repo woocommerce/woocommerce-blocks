@@ -191,7 +191,6 @@ class ProductGalleryLargeImage extends AbstractBlock {
 			'data-wc-context'        => wp_json_encode( $context, JSON_NUMERIC_CHECK ),
 			'data-wc-on--mousemove'  => 'actions.handleMouseMove',
 			'data-wc-on--mouseleave' => 'actions.handleMouseLeave',
-			'data-wc-on--click'      => 'actions.handleSelectImage',
 		);
 	}
 
