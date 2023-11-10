@@ -37,9 +37,19 @@ class PatternUpdater {
 
 		$prompts = $this->prepare_prompts( $patterns, $business_description );
 
-		$responses = $ai_connection->fetch_ai_responses( $token, $prompts );
+		$max_retries = 5;
+		$attempt     = 0;
+		$responses   = null;
+		while ( $attempt < $max_retries ) {
+			$responses = $ai_connection->fetch_ai_responses( $token, $prompts );
+			if ( ! is_wp_error( $responses ) ) {
+				break;
+			}
+			$attempt ++;
+		}
+
 		if ( is_wp_error( $responses ) ) {
-			return $responses;
+			return new WP_Error( 'ai_api_connection_failed', __( 'Failed to fetch AI responses after several attempts.', 'woo-gutenberg-products-block' ) );
 		}
 
 		return $this->integrate_ai_responses( $patterns, $responses );
@@ -86,7 +96,7 @@ class PatternUpdater {
 			$pattern_json      = wp_json_encode( $pattern['content'][ $content_type ] );
 
 			return sprintf(
-				"Given the following store description: \"%s\", and the following JSON string representing the %s of the \"%s\" pattern: %s.\n Replace the texts in each 'default' key using the following prompt '%s' with a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt', the length of each replacement should be similar to the 'default' text length. The text should not be written in first-person. The response should be only a JSON string, with absolutely no intro or explanations.",
+				"Given the following store description: \"%s\", and the following JSON string representing the %s of the \"%s\" pattern: %s.\n Replace the texts in each 'default' key using the following prompt '%s' with a text that is related to the previous store description (but not the exact text) and matches the 'ai_prompt'. The text should not be written in first-person. The response should be only a JSON string, with absolutely no intro or explanations.",
 				$business_description,
 				$content_type,
 				$pattern['slug'],
@@ -104,12 +114,12 @@ class PatternUpdater {
 	 * @param array          $patterns The array of patterns.
 	 * @param array|WP_Error $responses The array of responses.
 	 *
-	 * @return mixed
+	 * @return array|WP_Error
 	 */
 	private function integrate_ai_responses( $patterns, $responses ) {
 		foreach ( $responses as $response_key => $response ) {
 			if ( is_wp_error( $response ) || empty( $response['completion'] ) ) {
-				continue;
+				return new WP_Error( 'ai_fetch_failed', __( 'Failed to fetch AI responses after several attempts.', 'woo-gutenberg-products-block' ) );
 			}
 
 			$this->update_pattern_with_response( $patterns, $response );
@@ -173,6 +183,27 @@ class PatternUpdater {
 		if ( is_wp_error( $images ) ) {
 			return $images;
 		}
+
+		$last_business_description = get_option( 'last_business_description_with_ai_content_generated' );
+
+		if ( $last_business_description === $business_description ) {
+			if ( is_string( $business_description ) && is_string( $last_business_description ) ) {
+				return true;
+			} else {
+				return new \WP_Error( 'business_description_not_found', __( 'No business description provided for generating AI content.', 'woo-gutenberg-products-block' ) );
+			}
+		}
+
+		if ( 0 === count( $images ) ) {
+			$images = get_transient( 'woocommerce_ai_managed_images' );
+		}
+
+		if ( empty( $images ) ) {
+			return new WP_Error( 'no_images_found', __( 'No images found.', 'woo-gutenberg-products-block' ) );
+		}
+
+		// This is required in case something interrupts the execution of the script and the endpoint is called again on retry.
+		set_transient( 'woocommerce_ai_managed_images', $images, 60 );
 
 		$patterns_with_images = $this->get_patterns_with_images( $images );
 
