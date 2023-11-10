@@ -37,17 +37,21 @@ const productGallery = {
 		},
 	},
 	actions: {
-		dialog: {
-			handleCloseButtonClick: () => {
-				const context = getContext();
-				context.isDialogOpen = false;
-			},
+		closeDialog: () => {
+			const context = getContext();
+			context.isDialogOpen = false;
+		},
+		openDialog: () => {
+			debugger;
+			const context = getContext();
+			context.isDialogOpen = true;
 		},
 		handleSelectImage: () => {
 			const context = getContext();
 			context.selectedImage = context.imageId;
 		},
-		handleNextImageButtonClick: () => {
+		handleNextImageButtonClick: ( event?: MouseEvent ) => {
+			event?.stopPropagation();
 			const context = getContext();
 			const imagesIds =
 				context[
@@ -65,7 +69,8 @@ const productGallery = {
 
 			context.selectedImage = imagesIds[ nextImageIndex ];
 		},
-		handlePreviousImageButtonClick: () => {
+		handlePreviousImageButtonClick: ( event?: MouseEvent ) => {
+			event?.stopPropagation();
 			const context = getContext();
 			const imagesIds =
 				context[
@@ -91,6 +96,7 @@ const productGallery = {
 				return;
 			}
 
+			// TODO: Replace with an interactive block that calls `actions.selectImage`.
 			const observer = new MutationObserver( function ( mutations ) {
 				for ( const mutation of mutations ) {
 					const mutationTarget = mutation.target as HTMLElement;

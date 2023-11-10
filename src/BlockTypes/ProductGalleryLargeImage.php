@@ -207,7 +207,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		}
 
 		return array(
-			'data-wc-on--click' => 'actions.handleSelectImage',
+			'data-wc-on--click' => 'actions.openDialog',
 		);
 	}
 }
