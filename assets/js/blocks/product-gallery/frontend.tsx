@@ -25,6 +25,22 @@ enum Keys {
 const getContext = ( ns?: string ) =>
 	getContextFn< ProductGalleryContext >( ns );
 
+const selectImage = (
+	context: ProductGalleryContext,
+	select: 'next' | 'previous'
+) => {
+	const imagesIds =
+		context[
+			context.isDialogOpen ? 'dialogVisibleImagesIds' : 'visibleImagesIds'
+		];
+	const selectedImageIdIndex = imagesIds.indexOf( context.selectedImage );
+	const nextImageIndex =
+		select === 'next'
+			? Math.min( selectedImageIdIndex + 1, imagesIds.length - 1 )
+			: Math.max( selectedImageIdIndex - 1, 0 );
+	context.selectedImage = imagesIds[ nextImageIndex ];
+};
+
 const productGallery = {
 	state: {
 		get isSelected() {
@@ -52,36 +68,12 @@ const productGallery = {
 		selectNextImage: ( event?: MouseEvent ) => {
 			event?.stopPropagation();
 			const context = getContext();
-			const imagesIds =
-				context[
-					context.isDialogOpen
-						? 'dialogVisibleImagesIds'
-						: 'visibleImagesIds'
-				];
-			const selectedImageIdIndex = imagesIds.indexOf(
-				context.selectedImage
-			);
-			const nextImageIndex = Math.min(
-				selectedImageIdIndex + 1,
-				imagesIds.length - 1
-			);
-
-			context.selectedImage = imagesIds[ nextImageIndex ];
+			selectImage( context, 'next' );
 		},
 		selectPreviousImage: ( event?: MouseEvent ) => {
 			event?.stopPropagation();
 			const context = getContext();
-			const imagesIds =
-				context[
-					context.isDialogOpen
-						? 'dialogVisibleImagesIds'
-						: 'visibleImagesIds'
-				];
-			const selectedImageIdIndex = imagesIds.indexOf(
-				context.selectedImage
-			);
-			const previousImageIndex = Math.max( selectedImageIdIndex - 1, 0 );
-			context.selectedImage = imagesIds[ previousImageIndex ];
+			selectImage( context, 'previous' );
 		},
 	},
 	callbacks: {
@@ -144,20 +136,23 @@ const productGallery = {
 
 				// Check if left arrow key is pressed.
 				if ( event.keyCode === Keys.LEFT_ARROW ) {
-					actions.selectPreviousImage();
+					selectImage( context, 'previous' );
 				}
 
 				// Check if right arrow key is pressed.
 				if ( event.keyCode === Keys.RIGHT_ARROW ) {
-					actions.selectNextImage();
+					selectImage( context, 'next' );
 				}
 			};
 
 			document.addEventListener( 'keydown', handleKeyEvents );
+
+			return () =>
+				document.removeEventListener( 'keydown', handleKeyEvents );
 		},
 	},
 };
 
-const { actions } = store( 'woocommerce', productGallery );
+store( 'woocommerce', productGallery );
 
 export type ProductGallery = typeof productGallery;
