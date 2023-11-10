@@ -2,10 +2,6 @@
  * External dependencies
  */
 import { subscribe, select } from '@wordpress/data';
-
-/**
- * Internal dependencies
- */
 import { isNumber } from '@woocommerce/types';
 
 interface TemplateChangeDetectorSubject {
@@ -15,15 +11,21 @@ interface TemplateChangeDetectorSubject {
 	notify(): void;
 }
 
+interface TemplateChangeDetectorObserver {
+	run( subject: TemplateChangeDetectorSubject ): void;
+}
+
 export class TemplateChangeDetector implements TemplateChangeDetectorSubject {
 	private previousTemplateId: string | undefined;
 	private currentTemplateId: string | undefined;
+	private isPostOrPage: boolean;
 
 	private observers: TemplateChangeDetectorObserver[] = [];
 
 	constructor() {
+		this.isPostOrPage = false;
 		subscribe( () => {
-			this.checkIfTemplateHasChangedAndUpdateCurrentTemplateIfNeeded();
+			this.checkIfTemplateHasChangedAndNotifySubscribers();
 		}, 'core/edit-site' );
 	}
 
@@ -48,44 +50,43 @@ export class TemplateChangeDetector implements TemplateChangeDetectorSubject {
 		return this.currentTemplateId;
 	}
 
+	public getIsPostOrPage() {
+		return this.isPostOrPage;
+	}
+
 	private parseTemplateId(
 		templateId: string | number | undefined
 	): string | undefined {
-		// With GB 16.3.0 the return type can be a number: https://github.com/WordPress/gutenberg/issues/53230
-		const parsedTemplateId = isNumber( templateId )
-			? undefined
-			: templateId;
-		return parsedTemplateId?.split( '//' )[ 1 ];
+		if ( isNumber( templateId ) ) {
+			return String( templateId );
+		}
+		return templateId?.split( '//' )[ 1 ];
 	}
 
-	public checkIfTemplateHasChangedAndUpdateCurrentTemplateIfNeeded(): void {
+	public checkIfTemplateHasChangedAndNotifySubscribers(): void {
 		this.previousTemplateId = this.currentTemplateId;
 
-		const editedPostId = select( 'core/edit-site' )?.getEditedPostId<
+		const postOrPageId = select( 'core/editor' )?.getCurrentPostId<
 			string | number | undefined
 		>();
+
+		this.isPostOrPage = Boolean( postOrPageId );
+
+		const editedPostId =
+			postOrPageId ||
+			select( 'core/edit-site' )?.getEditedPostId<
+				string | number | undefined
+			>();
 		this.currentTemplateId = this.parseTemplateId( editedPostId );
+
 		const hasChangedTemplate =
 			this.previousTemplateId !== this.currentTemplateId;
 		const hasTemplateId = Boolean( this.currentTemplateId );
-
 
 		if ( ! hasChangedTemplate || ! hasTemplateId ) {
 			return;
 		}
 
 		this.notify();
-	}
-}
-
-interface TemplateChangeDetectorObserver {
-	run( subject: TemplateChangeDetectorSubject ): void;
-}
-
-export class TemplateChangeObserver implements TemplateChangeDetectorObserver {
-	run( subject: TemplateChangeDetectorSubject ): void {
-		console.log(
-			`previous: ${ subject.getPreviousTemplateId() } current: ${ subject.getCurrentTemplateId() }`
-		);
 	}
 }

@@ -46,11 +46,10 @@ export const registerBlockSingleProductTemplate = ( {
 
 		// With GB 16.3.0 the return type can be a number: https://github.com/WordPress/gutenberg/issues/53230
 		currentTemplateId = parseTemplateId(
-			store?.getEditedPostId<string | number | undefined>()
+			store?.getEditedPostId< string | number | undefined >()
 		);
 		const hasChangedTemplate = previousTemplateId !== currentTemplateId;
 		const hasTemplateId = Boolean( currentTemplateId );
-		const editedPostType = store?.getEditedPostType();
 
 		if ( ! hasChangedTemplate || ! hasTemplateId || ! blockName ) {
 			return;

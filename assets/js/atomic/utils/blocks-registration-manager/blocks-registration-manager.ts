@@ -7,22 +7,17 @@ import {
 	registerBlockType,
 	unregisterBlockType,
 } from '@wordpress/blocks';
+import { ProductGalleryBlockSettings } from '@woocommerce/blocks/product-gallery/settings';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import productGalleryBlockMetadata from '../../../blocks/product-gallery/block.json';
-import { ProductGalleryBlockSettings } from '@woocommerce/blocks/product-gallery/settings';
 import {
 	TemplateChangeDetector,
 	TemplateChangeObserver,
 } from './template-change-detector';
-import { select } from '@wordpress/data';
-
-interface RegisterBlockParameters {
-	currentTemplateId: string;
-	previousTemplateId: string;
-}
 
 interface BlocksWithRestriction {
 	[ key: string ]: {
@@ -34,6 +29,7 @@ interface BlocksWithRestriction {
 		allowedTemplateParts: {
 			[ key: string ]: boolean;
 		};
+		availableInPostOrPageEditor: false;
 	};
 }
 
@@ -47,6 +43,7 @@ const BLOCKS_WITH_RESTRICTION: BlocksWithRestriction = {
 		allowedTemplateParts: {
 			'product-gallery': true,
 		},
+		availableInPostOrPageEditor: false,
 	},
 };
 
@@ -54,13 +51,12 @@ export class BlockRegistrationManager implements TemplateChangeObserver {
 	private blocksWithRestriction: BlocksWithRestriction;
 	private unregisteredBlocks: string[] = [];
 
-	constructor () {
+	constructor() {
 		this.blocksWithRestriction = BLOCKS_WITH_RESTRICTION;
 	}
 
-	registerBlocksAfterLeavingRestrictedTemplateOrTemplatePart () {
+	registerBlocksAfterLeavingRestrictedArea() {
 		for ( const unregisteredBlockName of this.unregisteredBlocks ) {
-			console.log( { unregisteredBlocks: this.unregisteredBlocks } );
 			const restrictedBlockData =
 				this.blocksWithRestriction[ unregisteredBlockName ];
 			const isBlockRegistered = Boolean(
@@ -77,58 +73,61 @@ export class BlockRegistrationManager implements TemplateChangeObserver {
 		}
 	}
 
-	unregisterBlocksBeforeEnteringRestrictedTemplateOrTemplatePart ( {
+	unregisterBlocksBeforeEnteringRestrictedArea( {
 		currentTemplateId,
+		isPostOrPage,
 	}: {
 		currentTemplateId: string;
+		isPostOrPage: boolean;
 	} ) {
 		for ( const blockWithRestrictionName of Object.keys(
 			BLOCKS_WITH_RESTRICTION
 		) ) {
 			if ( this.blocksWithRestriction[ blockWithRestrictionName ] ) {
-				const allowedTemplatesForTheBlock =
-					this.blocksWithRestriction[ blockWithRestrictionName ]
-						.allowedTemplates;
-				const allowedTemplatePartsForTheBlock =
-					this.blocksWithRestriction[ blockWithRestrictionName ]
-						.allowedTemplateParts;
+				const {
+					allowedTemplates,
+					allowedTemplateParts,
+					availableInPostOrPageEditor,
+				} = this.blocksWithRestriction[ blockWithRestrictionName ];
 				const shouldBeAvailableOnTemplate = Object.keys(
-					allowedTemplatesForTheBlock
+					allowedTemplates
 				).some( ( allowedTemplate ) =>
 					currentTemplateId.startsWith( allowedTemplate )
 				);
 				const shouldBeAvailableOnTemplatePart = Object.keys(
-					allowedTemplatePartsForTheBlock
+					allowedTemplateParts
 				).some( ( allowedTemplate ) =>
 					currentTemplateId.startsWith( allowedTemplate )
 				);
-				console.log( {
-					currentTemplateId,
-					name: blockWithRestrictionName,
-					shouldBeAvailableOnTemplate,
-					shouldBeAvailableOnTemplatePart,
-				} );
+				const shouldBeAvailableOnPostOrPageEditor =
+					isPostOrPage && availableInPostOrPageEditor;
 
 				if (
 					shouldBeAvailableOnTemplate ||
-					shouldBeAvailableOnTemplatePart
+					shouldBeAvailableOnTemplatePart ||
+					shouldBeAvailableOnPostOrPageEditor
 				) {
 					continue;
 				}
 
-				console.log( `unregistering ${ blockWithRestrictionName }` );
 				unregisterBlockType( blockWithRestrictionName );
 				this.unregisteredBlocks.push( blockWithRestrictionName );
 			}
 		}
 	}
 
-	run ( templateChangeDetector: TemplateChangeDetector ) {
+	run( templateChangeDetector: TemplateChangeDetector ) {
+		console.log( {
+			currentTemplateId: templateChangeDetector.getCurrentTemplateId(),
+			previousTemplateId: templateChangeDetector.getPreviousTemplateId(),
+		} );
 		const blockTypes = select( blocksStore ).getBlockTypes();
 
-		this.registerBlocksAfterLeavingRestrictedTemplateOrTemplatePart();
-		this.unregisterBlocksBeforeEnteringRestrictedTemplateOrTemplatePart( {
-			currentTemplateId: templateChangeDetector.getCurrentTemplateId() || '',
+		this.registerBlocksAfterLeavingRestrictedArea();
+		this.unregisterBlocksBeforeEnteringRestrictedArea( {
+			currentTemplateId:
+				templateChangeDetector.getCurrentTemplateId() || '',
+			isPostOrPage: templateChangeDetector.getIsPostOrPage(),
 		} );
 	}
 }
