@@ -53,17 +53,40 @@ class Pexels {
 
 		$refined_images_count = count( $refined_images );
 
-		$i = 0;
+		$i      = 0;
+		$errors = array();
 		while ( $refined_images_count < $required_images && $i < 5 ) {
+			$search_term = $this->define_search_term( $ai_connection, $token, $business_description );
+
+			if ( is_wp_error( $search_term ) ) {
+				$errors[] = $search_term;
+				continue;
+			}
+
 			$images_to_add = $this->request( $search_term );
+
+			if ( is_wp_error( $images_to_add ) ) {
+				$errors[] = $images_to_add;
+				continue;
+			}
+
 			$images_to_add = $this->refine_returned_images_results( $ai_connection, $token, $business_description, $images_to_add );
 
 			if ( is_wp_error( $images_to_add ) ) {
-				return $images_to_add;
+				$errors[] = $images_to_add;
+				continue;
 			}
 
 			$refined_images = array_merge( $refined_images, $images_to_add );
 			$i ++;
+		}
+
+		if ( $refined_images_count < $required_images && ! empty( $errors ) ) {
+			return new \WP_Error( 'ai_service_unavailable', __( 'AI Service is unavailable, try again later.', 'woo-gutenberg-products-block' ), $errors );
+		}
+
+		if ( empty( $refined_images ) ) {
+			return new \WP_Error( 'woocommerce_no_images_found', __( 'No images found.', 'woo-gutenberg-products-block' ) );
 		}
 
 		return $refined_images;
@@ -81,11 +104,15 @@ class Pexels {
 	 * @return mixed|\WP_Error
 	 */
 	private function define_search_term( $ai_connection, $token, $business_description ) {
-		$prompt = sprintf( 'Based on the description "%s", generate one compound word that precisely describe them. The returned words should be as accurate as possible to describe the products sold. Do not include any adjectives or descriptions of the qualities of the product. The returned word should be simple. Do not add any explanations.', $business_description );
+		$prompt = sprintf( 'Based on the description "%s", generate one word that precisely describe what this business is selling. The returned words should be as accurate as possible to describe the products sold, do not include any adjectives or descriptions of the qualities of the product. The generated word must exist in the english dictionary and not be a proper name, the returned word should be simple, do not add any explanations.', $business_description );
 
 		$response = $ai_connection->fetch_ai_response( $token, $prompt );
 
-		if ( is_wp_error( $response ) || ! isset( $response['completion'] ) ) {
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		if ( ! isset( $response['completion'] ) ) {
 			return new \WP_Error( 'search_term_definition_failed', __( 'The search term definition failed.', 'woo-gutenberg-products-block' ) );
 		}
 
@@ -119,6 +146,20 @@ class Pexels {
 		}
 
 		$filtered_image_titles = json_decode( $response['completion'] );
+
+		if ( ! is_array( $filtered_image_titles ) ) {
+			$response = $ai_connection->fetch_ai_response( $token, $prompt );
+
+			if ( is_wp_error( $response ) || ! isset( $response['completion'] ) ) {
+				return $returned_images;
+			}
+
+			$filtered_image_titles = json_decode( $response['completion'] );
+		}
+
+		if ( ! is_array( $filtered_image_titles ) ) {
+			return new \WP_Error( 'ai_service_unavailable', __( 'AI Service is unavailable, try again later.', 'woo-gutenberg-products-block' ) );
+		}
 
 		foreach ( $returned_images as $returned_image ) {
 			if ( isset( $returned_image['title'] ) && ! in_array( $returned_image['title'], $filtered_image_titles, true ) ) {
