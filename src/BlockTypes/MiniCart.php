@@ -590,8 +590,8 @@ class MiniCart extends AbstractBlock {
 	 */
 	public function register_auto_insert( $hooked_blocks, $position, $anchor_block, $context ) {
 		// Cache for active theme.
-		static $active_theme = null;
-		if ( is_null( $active_theme ) ) {
+		static $active_theme_name = null;
+		if ( is_null( $active_theme_name ) ) {
 			$active_theme_name = wp_get_theme()->get( 'Name' );
 		}
 		/**
