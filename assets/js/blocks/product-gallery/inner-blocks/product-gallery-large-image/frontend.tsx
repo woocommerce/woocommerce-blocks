@@ -14,15 +14,12 @@ import type { ProductGalleryContext, ProductGallery } from '../../frontend';
 import type { StorePart } from '../../../../utils/interactivity';
 
 type Context = {
-	styles:
-		| {
-				// eslint-disable-next-line @typescript-eslint/naming-convention
-				'transform-origin': string;
-				transform: string;
-				transition: string;
-		  }
-		| undefined;
-	isDialogOpen: boolean;
+	styles: {
+		// eslint-disable-next-line @typescript-eslint/naming-convention
+		'transform-origin': string;
+		transform: string;
+		transition: string;
+	};
 } & ProductGalleryContext;
 
 const getContext = ( ns?: string ) => getContextFn< Context >( ns );

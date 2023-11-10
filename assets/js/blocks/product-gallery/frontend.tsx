@@ -48,8 +48,7 @@ const productGallery = {
 			return selectedImage === imageId;
 		},
 		get pagerDotFillOpacity() {
-			const { selectedImage, imageId } = getContext();
-			return selectedImage === imageId ? 1 : 0.2;
+			return state.isSelected ? 1 : 0.2;
 		},
 	},
 	actions: {
@@ -65,13 +64,13 @@ const productGallery = {
 			const context = getContext();
 			context.selectedImage = context.imageId;
 		},
-		selectNextImage: ( event?: MouseEvent ) => {
-			event?.stopPropagation();
+		selectNextImage: ( event: MouseEvent ) => {
+			event.stopPropagation();
 			const context = getContext();
 			selectImage( context, 'next' );
 		},
-		selectPreviousImage: ( event?: MouseEvent ) => {
-			event?.stopPropagation();
+		selectPreviousImage: ( event: MouseEvent ) => {
+			event.stopPropagation();
 			const context = getContext();
 			selectImage( context, 'previous' );
 		},
@@ -153,6 +152,6 @@ const productGallery = {
 	},
 };
 
-store( 'woocommerce/product-gallery', productGallery );
+const { state } = store( 'woocommerce/product-gallery', productGallery );
 
 export type ProductGallery = typeof productGallery;
