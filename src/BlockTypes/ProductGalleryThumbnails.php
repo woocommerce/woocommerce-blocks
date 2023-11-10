@@ -174,7 +174,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 						esc_attr( $classes_and_styles['classes'] ),
 						esc_attr( $classes_and_styles['styles'] ),
 						$html,
-						wp_json_encode( array( 'namespace' => 'woocommerce' ) )
+						wp_json_encode( array( 'namespace' => 'woocommerce/product-gallery' ) )
 					);
 				}
 			}

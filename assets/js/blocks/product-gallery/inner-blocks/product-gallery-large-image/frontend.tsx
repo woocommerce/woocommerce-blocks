@@ -124,6 +124,6 @@ const productGalleryLargeImage = {
 type Store = typeof productGalleryLargeImage & StorePart< ProductGallery >;
 
 const { state, actions } = store< Store >(
-	'woocommerce',
+	'woocommerce/product-gallery',
 	productGalleryLargeImage
 );

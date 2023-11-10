@@ -153,6 +153,6 @@ const productGallery = {
 	},
 };
 
-store( 'woocommerce', productGallery );
+store( 'woocommerce/product-gallery', productGallery );
 
 export type ProductGallery = typeof productGallery;

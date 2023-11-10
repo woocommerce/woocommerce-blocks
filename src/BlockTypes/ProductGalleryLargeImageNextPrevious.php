@@ -109,7 +109,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 		return strtr(
 			'<div
 				class="wc-block-product-gallery-large-image-next-previous wp-block-woocommerce-product-gallery-large-image-next-previous {alignment_class}"
-				data-wc-interactive=\'{ "namespace": "woocommerce" }\'
+				data-wc-interactive=\'{data_wc_interactive}\'
 			>
 				<div class="wc-block-product-gallery-large-image-next-previous-container {position_class}">
 					{prev_button}
@@ -121,6 +121,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 				'{next_button}'     => $next_button,
 				'{alignment_class}' => $alignment_class,
 				'{position_class}'  => $position_class,
+				'{data_wc_interactive}' => wp_json_encode( array( 'namespace' => 'woocommerce/product-gallery' ), JSON_NUMERIC_CHECK ),
 			)
 		);
 	}

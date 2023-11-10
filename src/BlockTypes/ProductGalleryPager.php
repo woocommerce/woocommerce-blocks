@@ -74,7 +74,7 @@ class ProductGalleryPager extends AbstractBlock {
 					</div>',
 					$wrapper_attributes,
 					$html,
-					wp_json_encode( array( 'namespace' => 'woocommerce' ) )
+					wp_json_encode( array( 'namespace' => 'woocommerce/product-gallery' ) )
 				);
 			}
 			return '';

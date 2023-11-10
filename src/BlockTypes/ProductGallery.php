@@ -132,7 +132,7 @@ class ProductGallery extends AbstractBlock {
 		$p    = new \WP_HTML_Tag_Processor( $html );
 
 		if ( $p->next_tag() ) {
-			$p->set_attribute( 'data-wc-interactive', wp_json_encode( array( 'namespace' => 'woocommerce' ) ) );
+			$p->set_attribute( 'data-wc-interactive', wp_json_encode( array( 'namespace' => 'woocommerce/product-gallery' ) ) );
 			$p->set_attribute(
 				'data-wc-context',
 				wp_json_encode(
