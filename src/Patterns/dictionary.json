@@ -78,15 +78,15 @@
 			"titles": [
 				{
 					"default": "Cupcakes",
-					"ai_prompt": "The title of the first featured category: {image.0}"
+					"ai_prompt": "A title with less than 20 characters for the featured category: {image.0}"
 				},
 				{
 					"default": "Sweet Danish",
-					"ai_prompt": "The title of the second featured category: {image.1}"
+					"ai_prompt": "A title with less than 20 characters for the featured category: {image.1}"
 				},
 				{
 					"default": "Warm Bread",
-					"ai_prompt": "The title of the third featured category: {image.2}"
+					"ai_prompt": "A title with less than 20 characters for the featured category: {image.2}"
 				}
 			]
 		}
