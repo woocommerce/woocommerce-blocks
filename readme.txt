@@ -81,6 +81,13 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.5.1 - 2023-11-08 =
+
+#### Bug Fixes
+
+- WordPress 6.4: fixed a bug which would break sites using the Classic Template block for the Single Product template. ([11455](https://github.com/woocommerce/woocommerce-blocks/pull/11455))
+- Fix an error that might appear when pre_get_block_template filter was called with wrong params. ([11690](https://github.com/woocommerce/woocommerce-blocks/pull/11690))
+
 = 11.5.0 - 2023-11-06 =
 
 #### Enhancements
@@ -118,6 +125,24 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 #### compatibility
 
 - Remove bullet points and unnecessary padding from `SearchListControl`. ([11444](https://github.com/woocommerce/woocommerce-blocks/pull/11444))
+
+= 11.4.7 - 2023-11-09 =
+
+#### Bug Fixes
+
+- Fixed address components in Firefox, and editing of address form in the editor. [#11714](https://github.com/woocommerce/woocommerce-blocks/pull/11714)
+
+= 11.4.6 - 2023-11-09 =
+
+#### Bug Fixes
+
+- Prevent PHP warnings when using Jetpack WooCommerce Analytics module. [#11707](https://github.com/woocommerce/woocommerce-blocks/pull/11707)
+
+= 11.4.5 - 2023-11-07 =
+
+#### Bug Fixes
+
+- WordPress 6.4: fixed a bug which would break sites using the Classic Template block for the Single Product template. https://github.com/woocommerce/woocommerce-blocks/pull/11455
 
 = 11.4.4 - 2023-11-06 =
 
