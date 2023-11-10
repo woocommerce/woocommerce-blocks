@@ -11,6 +11,7 @@ import {
  * Internal dependencies
  */
 import type { ProductGalleryContext, ProductGallery } from '../../frontend';
+import type { StorePart } from '../../../../utils/interactivity';
 
 type Context = {
 	styles:
@@ -120,13 +121,7 @@ const productGalleryLargeImage = {
 	},
 };
 
-type External< T > = T extends Function
-	? T
-	: T extends object
-	? { [ P in keyof T ]?: External< T[ P ] > }
-	: T;
-
-type Store = typeof productGalleryLargeImage & External< ProductGallery >;
+type Store = typeof productGalleryLargeImage & StorePart< ProductGallery >;
 
 const { state, actions } = store< Store >(
 	'woocommerce',
