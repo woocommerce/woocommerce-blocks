@@ -609,7 +609,7 @@ class MiniCart extends AbstractBlock {
 		 *
 		 * @since $VID:$
 		 */
-		$theme_include_list = apply_filters( '__experimental_woocommerce_blocks_mini_cart_auto_insert_pattern_include_list', [ 'Twenty Twenty-Four' ] );
+		$theme_include_list = apply_filters( '__experimental_woocommerce_blocks_mini_cart_auto_insert_theme_include_list', [ 'Twenty Twenty-Four' ] );
 
 		if ( $context && in_array( $active_theme_name, $theme_include_list, true ) ) {
 			if (
