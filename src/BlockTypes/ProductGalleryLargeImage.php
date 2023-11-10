@@ -117,7 +117,6 @@ class ProductGalleryLargeImage extends AbstractBlock {
 	 */
 	private function get_main_images_html( $context, $product_id ) {
 		$attributes = array(
-			'hidden'               => true,
 			'class'                => 'wc-block-woocommerce-product-gallery-large-image__image',
 			'data-wc-bind--hidden' => '!state.isSelected',
 			'data-wc-watch'        => 'callbacks.scrollInto',
