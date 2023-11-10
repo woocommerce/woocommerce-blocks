@@ -83,18 +83,18 @@ class ProductGalleryUtils {
 
 		// We don't want to show the same image twice, so we have to remove the featured image from the gallery if it's there.
 		$unique_image_ids = array_unique(
-				array_merge(
-						array( $featured_image_id ),
-						$product_gallery_image_ids
-				)
+			array_merge(
+				array( $featured_image_id ),
+				$product_gallery_image_ids
+			)
 		);
 
 		foreach ( $unique_image_ids as $key => $image_id ) {
-				$unique_image_ids[ $key ] = strval( $image_id );
+			$unique_image_ids[ $key ] = strval( $image_id );
 		}
 
 		if ( count( $unique_image_ids ) > $max_number_of_visible_images && $only_visible ) {
-				$unique_image_ids = array_slice( $unique_image_ids, 0, $max_number_of_visible_images );
+			$unique_image_ids = array_slice( $unique_image_ids, 0, $max_number_of_visible_images );
 		}
 
 		// Reindex array.

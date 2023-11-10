@@ -117,10 +117,10 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 				</div>
 		</div>',
 			array(
-				'{prev_button}'     => $prev_button,
-				'{next_button}'     => $next_button,
-				'{alignment_class}' => $alignment_class,
-				'{position_class}'  => $position_class,
+				'{prev_button}'         => $prev_button,
+				'{next_button}'         => $next_button,
+				'{alignment_class}'     => $alignment_class,
+				'{position_class}'      => $position_class,
 				'{data_wc_interactive}' => wp_json_encode( array( 'namespace' => 'woocommerce/product-gallery' ), JSON_NUMERIC_CHECK ),
 			)
 		);
