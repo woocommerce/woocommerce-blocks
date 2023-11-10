@@ -42,7 +42,6 @@ const productGallery = {
 			context.isDialogOpen = false;
 		},
 		openDialog: () => {
-			debugger;
 			const context = getContext();
 			context.isDialogOpen = true;
 		},

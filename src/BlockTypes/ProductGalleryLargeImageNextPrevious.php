@@ -89,14 +89,6 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 				'data-wc-on--click',
 				'actions.selectPreviousImage'
 			);
-			$p->set_attribute(
-				'data-wc-on--mouseleave',
-				'actions.handleMouseLeavePreviousOrNextButton'
-			);
-			$p->set_attribute(
-				'data-wc-on--mouseenter',
-				'actions.handleMouseEnterPreviousOrNextButton'
-			);
 			$prev_button = $p->get_updated_html();
 		}
 
