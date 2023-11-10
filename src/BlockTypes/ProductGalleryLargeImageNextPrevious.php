@@ -115,7 +115,10 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 		$position_class  = 'wc-block-product-gallery-large-image-next-previous--' . $this->get_class_suffix( $context );
 
 		return strtr(
-			'<div class="wc-block-product-gallery-large-image-next-previous wp-block-woocommerce-product-gallery-large-image-next-previous {alignment_class}">
+			'<div
+				class="wc-block-product-gallery-large-image-next-previous wp-block-woocommerce-product-gallery-large-image-next-previous {alignment_class}"
+				data-wc-interactive=\'{ "namespace": "woocommerce" }\'
+			>
 				<div class="wc-block-product-gallery-large-image-next-previous-container {position_class}">
 					{prev_button}
 					{next_button}
