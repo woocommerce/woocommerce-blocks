@@ -253,19 +253,19 @@ class JetpackWooCommerceAnalytics {
 				'cart_page_contains_cart_block'         => $this->post_contains_text(
 					$cart_page_id,
 					'<!-- wp:woocommerce/cart'
-				),
+				) ? 1 : 0,
 				'cart_page_contains_cart_shortcode'     => $this->post_contains_text(
 					$cart_page_id,
 					'[woocommerce_cart]'
-				),
+				) ? 1 : 0,
 				'checkout_page_contains_checkout_block' => $this->post_contains_text(
 					$checkout_page_id,
 					'<!-- wp:woocommerce/checkout'
-				),
+				) ? 1 : 0,
 				'checkout_page_contains_checkout_shortcode' => $this->post_contains_text(
 					$checkout_page_id,
 					'[woocommerce_checkout]'
-				),
+				) ? 1 : 0,
 			);
 
 			set_transient( $transient_name, $info, DAY_IN_SECONDS );
@@ -316,10 +316,10 @@ class JetpackWooCommerceAnalytics {
 		// Sites that load this code will be loading it on a page using the relevant block, but we still need to check
 		// the other page to see if it's using the block or shortcode.
 		$info = array(
-			'cart_page_contains_cart_block'             => str_contains( $cart_template->content, '<!-- wp:woocommerce/cart' ),
-			'cart_page_contains_cart_shortcode'         => str_contains( $cart_template->content, '[woocommerce_cart]' ),
-			'checkout_page_contains_checkout_block'     => str_contains( $checkout_template->content, '<!-- wp:woocommerce/checkout' ),
-			'checkout_page_contains_checkout_shortcode' => str_contains( $checkout_template->content, '[woocommerce_checkout]' ),
+			'cart_page_contains_cart_block'             => str_contains( $cart_template->content, '<!-- wp:woocommerce/cart' ) ? 1 : 0,
+			'cart_page_contains_cart_shortcode'         => str_contains( $cart_template->content, '[woocommerce_cart]' ) ? 1 : 0,
+			'checkout_page_contains_checkout_block'     => str_contains( $checkout_template->content, '<!-- wp:woocommerce/checkout' ) ? 1 : 0,
+			'checkout_page_contains_checkout_shortcode' => str_contains( $checkout_template->content, '[woocommerce_checkout]' ) ? 1 : 0,
 			'additional_blocks_on_cart_page'            => $this->get_additional_blocks(
 				$cart_template->content,
 				array( 'woocommerce/cart' )
