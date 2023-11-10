@@ -87,7 +87,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 		if ( $p->next_tag() ) {
 			$p->set_attribute(
 				'data-wc-on--click',
-				'actions.handlePreviousImageButtonClick'
+				'actions.selectPreviousImage'
 			);
 			$p->set_attribute(
 				'data-wc-on--mouseleave',
@@ -106,7 +106,7 @@ class ProductGalleryLargeImageNextPrevious extends AbstractBlock {
 		if ( $p->next_tag() ) {
 			$p->set_attribute(
 				'data-wc-on--click',
-				'actions.handleNextImageButtonClick'
+				'actions.selectNextImage'
 			);
 			$next_button = $p->get_updated_html();
 		}

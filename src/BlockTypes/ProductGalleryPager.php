@@ -130,7 +130,7 @@ class ProductGalleryPager extends AbstractBlock {
 				);
 				$p->set_attribute(
 					'data-wc-on--click',
-					'actions.handleSelectImage'
+					'actions.selectImage'
 				);
 				$p->set_attribute(
 					'data-wc-class--wc-block-product-gallery-pager__pager-item--is-active',

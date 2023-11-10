@@ -28,14 +28,6 @@ const getContext = ( ns?: string ) => getContextFn< Context >( ns );
 
 let isDialogStatusChanged = false;
 
-const resetImageZoom = () => {
-	const context = getContext();
-	if ( context.styles ) {
-		context.styles.transform = `scale(1.0)`;
-		context.styles[ 'transform-origin' ] = '';
-	}
-};
-
 const productGalleryLargeImage = {
 	state: {
 		productGalleryLargeImage: {
@@ -52,13 +44,13 @@ const productGalleryLargeImage = {
 		},
 	},
 	actions: {
-		handleMouseMove: ( event: MouseEvent ) => {
+		startZoom: ( event: MouseEvent ) => {
 			const target = event.target as HTMLElement;
 			const isMouseEventFromLargeImage = target.classList.contains(
 				'wc-block-woocommerce-product-gallery-large-image__image'
 			);
 			if ( ! isMouseEventFromLargeImage ) {
-				return resetImageZoom();
+				return actions.resetZoom();
 			}
 
 			const element = event.target as HTMLElement;
@@ -74,17 +66,11 @@ const productGalleryLargeImage = {
 				] = `${ percentageX }% ${ percentageY }%`;
 			}
 		},
-		handleMouseLeave: () => {
-			resetImageZoom();
-		},
-		handleClick: ( event: Event ) => {
+		resetZoom: () => {
 			const context = getContext();
-			if (
-				( event.target as HTMLElement ).classList.contains(
-					'wc-block-product-gallery-dialog-on-click'
-				)
-			) {
-				context.isDialogOpen = true;
+			if ( context.styles ) {
+				context.styles.transform = `scale(1.0)`;
+				context.styles[ 'transform-origin' ] = '';
 			}
 		},
 	},
@@ -142,4 +128,7 @@ type External< T > = T extends Function
 
 type Store = typeof productGalleryLargeImage & External< ProductGallery >;
 
-const { state } = store< Store >( 'woocommerce', productGalleryLargeImage );
+const { state, actions } = store< Store >(
+	'woocommerce',
+	productGalleryLargeImage
+);

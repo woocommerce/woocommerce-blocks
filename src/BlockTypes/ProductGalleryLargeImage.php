@@ -189,8 +189,8 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		return array(
 			'data-wc-interactive'    => wp_json_encode( array( 'namespace' => 'woocommerce' ) ),
 			'data-wc-context'        => wp_json_encode( $context, JSON_NUMERIC_CHECK ),
-			'data-wc-on--mousemove'  => 'actions.handleMouseMove',
-			'data-wc-on--mouseleave' => 'actions.handleMouseLeave',
+			'data-wc-on--mousemove'  => 'actions.startZoom',
+			'data-wc-on--mouseleave' => 'actions.resetZoom',
 		);
 	}
 

@@ -46,11 +46,11 @@ const productGallery = {
 			const context = getContext();
 			context.isDialogOpen = true;
 		},
-		handleSelectImage: () => {
+		selectImage: () => {
 			const context = getContext();
 			context.selectedImage = context.imageId;
 		},
-		handleNextImageButtonClick: ( event?: MouseEvent ) => {
+		selectNextImage: ( event?: MouseEvent ) => {
 			event?.stopPropagation();
 			const context = getContext();
 			const imagesIds =
@@ -69,7 +69,7 @@ const productGallery = {
 
 			context.selectedImage = imagesIds[ nextImageIndex ];
 		},
-		handlePreviousImageButtonClick: ( event?: MouseEvent ) => {
+		selectPreviousImage: ( event?: MouseEvent ) => {
 			event?.stopPropagation();
 			const context = getContext();
 			const imagesIds =
@@ -145,12 +145,12 @@ const productGallery = {
 
 				// Check if left arrow key is pressed.
 				if ( event.keyCode === Keys.LEFT_ARROW ) {
-					actions.handlePreviousImageButtonClick();
+					actions.selectPreviousImage();
 				}
 
 				// Check if right arrow key is pressed.
 				if ( event.keyCode === Keys.RIGHT_ARROW ) {
-					actions.handleNextImageButtonClick();
+					actions.selectNextImage();
 				}
 			};
 

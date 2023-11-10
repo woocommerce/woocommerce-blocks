@@ -157,7 +157,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 							if ( $processor->next_tag( 'img' ) ) {
 								$processor->set_attribute(
 									'data-wc-on--click',
-									'actions.handleSelectImage'
+									'actions.selectImage'
 								);
 
 								$html .= $processor->get_updated_html();
