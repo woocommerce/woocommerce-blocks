@@ -170,7 +170,7 @@ class ProductQuery extends AbstractBlock {
 	 */
 	public function update_query( $pre_render, $parsed_block ) {
 		if ( 'core/query' !== $parsed_block['blockName'] ) {
-			return;
+			return $pre_render;
 		}
 
 		$this->parsed_block = $parsed_block;
@@ -186,6 +186,8 @@ class ProductQuery extends AbstractBlock {
 				1
 			);
 		}
+
+		return $pre_render;
 	}
 
 	/**
@@ -296,6 +298,7 @@ class ProductQuery extends AbstractBlock {
 		 */
 		if (
 			! empty( $merged_query['post__in'] ) &&
+			is_array( $merged_query['post__in'] ) &&
 			count( $merged_query['post__in'] ) > count( array_unique( $merged_query['post__in'] ) )
 		) {
 			$merged_query['post__in'] = array_unique(

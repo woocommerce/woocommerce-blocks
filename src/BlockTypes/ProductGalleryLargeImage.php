@@ -30,7 +30,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 	 * @return string[]
 	 */
 	protected function get_block_type_uses_context() {
-		return [ 'postId', 'hoverZoom' ];
+		return [ 'postId', 'hoverZoom', 'fullScreenOnClick' ];
 	}
 
 	/**
@@ -41,7 +41,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 	 * @param WP_Block $block    The block object.
 	 */
 	protected function enqueue_assets( array $attributes, $content, $block ) {
-		if ( $block->context['hoverZoom'] ) {
+		if ( $block->context['hoverZoom'] || $block->context['fullScreenOnClick'] ) {
 			parent::enqueue_assets( $attributes, $content, $block );
 		}
 	}
@@ -87,11 +87,10 @@ class ProductGalleryLargeImage extends AbstractBlock {
 
 		return strtr(
 			'<div class="wc-block-product-gallery-large-image wp-block-woocommerce-product-gallery-large-image" {directives}>
-				{visible_main_image}
-				{main_images}
-				<div class="wc-block-woocommerce-product-gallery-large-image__content">
-					{content}
+				<div class="wc-block-product-gallery-large-image__container">
+					{main_images}
 				</div>
+					{content}
 			</div>',
 			array(
 				'{visible_main_image}' => $visible_main_image,
@@ -118,46 +117,68 @@ class ProductGalleryLargeImage extends AbstractBlock {
 	 */
 	private function get_main_images_html( $context, $product_id ) {
 		$attributes = array(
-			'data-wc-bind--hidden' => '!state.isSelected',
 			'hidden'               => true,
 			'class'                => 'wc-block-woocommerce-product-gallery-large-image__image',
-
+			'data-wc-bind--hidden' => '!state.isSelected',
+			'data-wc-bind--style'  => 'selectors.woocommerce.productGalleryLargeImage.styles',
+			'data-wc-effect'       => 'effects.woocommerce.scrollInto',
 		);
+
+		if ( $context['fullScreenOnClick'] ) {
+			$attributes['class'] .= ' wc-block-woocommerce-product-gallery-large-image__image--full-screen-on-click wc-block-product-gallery-dialog-on-click';
+		}
 
 		if ( $context['hoverZoom'] ) {
 			$attributes['class']              .= ' wc-block-woocommerce-product-gallery-large-image__image--hoverZoom';
 			$attributes['data-wc-bind--style'] = 'state.styles';
+			$attributes['data-wc-bind--style'] = 'selectors.woocommerce.productGalleryLargeImage.styles';
 		}
 
 		$main_images = ProductGalleryUtils::get_product_gallery_images(
 			$product_id,
 			'full',
 			$attributes,
-			'wc-block-woocommerce-product-gallery-large-image__container'
+			'wc-block-product-gallery-large-image__image-element',
+			$context['cropImages']
 		);
 
-		$visible_main_image           = array_shift( $main_images );
-		$visible_main_image_processor = new \WP_HTML_Tag_Processor( $visible_main_image );
-		$visible_main_image_processor->next_tag();
-		$visible_main_image_processor->remove_attribute( 'hidden' );
-		$visible_main_image = $visible_main_image_processor->get_updated_html();
+		$main_image_with_wrapper = array_map(
+			function( $main_image_element ) {
+				return "<div class='wc-block-product-gallery-large-image__wrapper'>" . $main_image_element . '</div>';
+			},
+			$main_images
+		);
 
-		return array( $visible_main_image, $main_images );
+		$visible_main_image = array_shift( $main_images );
+		return array( $visible_main_image, $main_image_with_wrapper );
 
 	}
 
 	/**
-	 * Get directives for the hover zoom.
+	 * Get directives for the block.
 	 *
 	 * @param array $block_context The block context.
 	 *
 	 * @return array
 	 */
 	private function get_directives( $block_context ) {
+		return array_merge(
+			$this->get_zoom_directives( $block_context ),
+			$this->get_open_dialog_directives( $block_context )
+		);
+	}
+
+	/**
+	 * Get directives for zoom.
+	 *
+	 * @param array $block_context The block context.
+	 *
+	 * @return array
+	 */
+	private function get_zoom_directives( $block_context ) {
 		if ( ! $block_context['hoverZoom'] ) {
 			return array();
 		}
-
 		$context = array(
 			'styles' => array(
 				'transform'        => 'scale(1.0)',
@@ -166,11 +187,28 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		);
 
 		return array(
+			'data-wc-interactive'    => wp_json_encode( array( 'namespace' => 'woocommerce' ) ),
+			'data-wc-context'        => wp_json_encode( $context, JSON_NUMERIC_CHECK ),
 			'data-wc-on--mousemove'  => 'actions.handleMouseMove',
 			'data-wc-on--mouseleave' => 'actions.handleMouseLeave',
 			'data-wc-on--click'      => 'actions.handleClick',
-			'data-wc-context'        => wp_json_encode( $context, JSON_NUMERIC_CHECK ),
-			'data-wc-interactive'    => wp_json_encode( array( 'namespace' => 'woocommerce' ) )
+		);
+	}
+
+	/**
+	 * Get directives for opening the dialog.
+	 *
+	 * @param array $block_context The block context.
+	 *
+	 * @return array
+	 */
+	private function get_open_dialog_directives( $block_context ) {
+		if ( ! $block_context['fullScreenOnClick'] ) {
+			return array();
+		}
+
+		return array(
+			'data-wc-on--click' => 'actions.woocommerce.handleClick',
 		);
 	}
 }

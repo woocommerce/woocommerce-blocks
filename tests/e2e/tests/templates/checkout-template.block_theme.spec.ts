@@ -21,12 +21,14 @@ test.describe( 'Test the checkout template', async () => {
 		await expect(
 			page
 				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h2:has-text("Checkout")' )
+				.locator( 'h1:has-text("Checkout")' )
 				.first()
 		).toBeVisible();
 	} );
 
-	test( 'Template can be accessed from the page editor', async ( {
+	// Remove the skip once this ticket is resolved: https://github.com/woocommerce/woocommerce-blocks/issues/11671
+	// eslint-disable-next-line playwright/no-skipped-test
+	test.skip( 'Template can be accessed from the page editor', async ( {
 		admin,
 		editor,
 		page,
@@ -38,12 +40,12 @@ test.describe( 'Test the checkout template', async () => {
 		await editor.page.getByRole( 'button', { name: /Checkout/i } ).click();
 		await editorUtils.enterEditMode();
 		await expect(
-			editor.canvas.locator( 'h2:has-text("Checkout")' ).first()
+			editor.canvas.locator( 'h1:has-text("Checkout")' ).first()
 		).toBeVisible();
 		await editor.openDocumentSettingsSidebar();
 		await page.getByRole( 'button', { name: 'Edit template' } ).click();
 		await expect(
-			editor.canvas.locator( 'h2:has-text("Checkout")' ).first()
+			editor.canvas.locator( 'h1:has-text("Checkout")' ).first()
 		).toBeVisible();
 	} );
 
@@ -53,7 +55,7 @@ test.describe( 'Test the checkout template', async () => {
 		await expect(
 			admin.page
 				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h2:has-text("Checkout")' )
+				.locator( 'h1:has-text("Checkout")' )
 				.first()
 		).toBeVisible();
 	} );

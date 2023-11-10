@@ -1,56 +1,145 @@
 /**
  * External dependencies
  */
-import { store, getContext as getContextFn } from '@woocommerce/interactivity';
+import {
+	store,
+	getContext as getContextFn,
+	getElement,
+} from '@woocommerce/interactivity';
+
+/**
+ * Internal dependencies
+ */
+import type { ProductGalleryContext, ProductGallery } from '../../frontend';
 
 type Context = {
-	styles: {
-		// eslint-disable-next-line @typescript-eslint/naming-convention
-		'transform-origin': string;
-		transform: string;
-		transition: string;
-	};
+	styles:
+		| {
+				// eslint-disable-next-line @typescript-eslint/naming-convention
+				'transform-origin': string;
+				transform: string;
+				transition: string;
+		  }
+		| undefined;
 	isDialogOpen: boolean;
-};
+} & ProductGalleryContext;
 
 const getContext = ( ns?: string ) => getContextFn< Context >( ns );
 
-store( 'woocommerce', {
-	state: {
-		get styles() {
-			const { styles } = getContext();
+let isDialogStatusChanged = false;
 
-			return Object.entries( styles ).reduce( ( acc, [ key, value ] ) => {
-				const style = `${ key }:${ value };`;
-				return acc.length > 0 ? `${ acc } ${ style }` : style;
-			}, '' );
+const resetImageZoom = () => {
+	const context = getContext();
+	if ( context.styles ) {
+		context.styles.transform = `scale(1.0)`;
+		context.styles[ 'transform-origin' ] = '';
+	}
+};
+
+const productGalleryLargeImage = {
+	state: {
+		productGalleryLargeImage: {
+			get styles() {
+				const { styles } = getContext();
+				return Object.entries( styles ?? [] ).reduce(
+					( acc, [ key, value ] ) => {
+						const style = `${ key }:${ value };`;
+						return acc.length > 0 ? `${ acc } ${ style }` : style;
+					},
+					''
+				);
+			},
 		},
 	},
 	actions: {
 		handleMouseMove: ( event: MouseEvent ) => {
-			const context = getContext();
-			if ( ( event.target as HTMLElement ).tagName === 'IMG' ) {
-				const element = event.target as HTMLElement;
-				const percentageX =
-					( event.offsetX / element.clientWidth ) * 100;
-				const percentageY =
-					( event.offsetY / element.clientHeight ) * 100;
+			const target = event.target as HTMLElement;
+			const isMouseEventFromLargeImage = target.classList.contains(
+				'wc-block-woocommerce-product-gallery-large-image__image'
+			);
+			if ( ! isMouseEventFromLargeImage ) {
+				return resetImageZoom();
+			}
 
-				context.styles.transform = `scale(1.3)`;
+			const element = event.target as HTMLElement;
+			const percentageX = ( event.offsetX / element.clientWidth ) * 100;
+			const percentageY = ( event.offsetY / element.clientHeight ) * 100;
 
-				context.styles[
+			const { styles } = getContext();
+
+			if ( styles ) {
+				styles.transform = `scale(1.3)`;
+				styles[
 					'transform-origin'
 				] = `${ percentageX }% ${ percentageY }%`;
 			}
 		},
 		handleMouseLeave: () => {
-			const context = getContext();
-			context.styles.transform = `scale(1.0)`;
-			context.styles[ 'transform-origin' ] = '';
+			resetImageZoom();
 		},
-		handleClick: () => {
+		handleClick: ( event: Event ) => {
 			const context = getContext();
-			context.isDialogOpen = true;
+			if (
+				( event.target as HTMLElement ).classList.contains(
+					'wc-block-product-gallery-dialog-on-click'
+				)
+			) {
+				context.isDialogOpen = true;
+			}
 		},
 	},
-} );
+	callbacks: {
+		scrollInto: () => {
+			const { isDialogOpen } = getContext();
+			const { ref } = getElement();
+
+			if ( ! state.isSelected ) {
+				return;
+			}
+
+			// Scroll to the selected image with a smooth animation.
+			if ( isDialogOpen === isDialogStatusChanged ) {
+				ref.scrollIntoView( {
+					behavior: 'smooth',
+					block: 'nearest',
+					inline: 'center',
+				} );
+			}
+
+			// Scroll to the selected image when the dialog is being opened without an animation.
+			if (
+				isDialogOpen &&
+				isDialogOpen !== isDialogStatusChanged &&
+				ref.closest( 'dialog' )
+			) {
+				ref.scrollIntoView( {
+					behavior: 'instant',
+					block: 'nearest',
+					inline: 'center',
+				} );
+
+				isDialogStatusChanged = isDialogOpen;
+			}
+
+			// Scroll to the selected image when the dialog is being closed without an animation.
+			if ( ! isDialogOpen && isDialogOpen !== isDialogStatusChanged ) {
+				ref.scrollIntoView( {
+					behavior: 'instant',
+					block: 'nearest',
+					inline: 'center',
+				} );
+				isDialogStatusChanged = isDialogOpen;
+			}
+		},
+	},
+};
+
+type External< T > = T extends Function
+	? T
+	: T extends object
+	? { [ P in keyof T ]?: External< T[ P ] > }
+	: T;
+
+type Store = typeof productGalleryLargeImage & External< ProductGallery >;
+
+const { state } = store< Store >( 'woocommerce', productGalleryLargeImage );

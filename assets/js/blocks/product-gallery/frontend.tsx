@@ -3,15 +3,29 @@
  */
 import { store, getContext as getContextFn } from '@woocommerce/interactivity';
 
-interface Context {
+export interface ProductGalleryContext {
 	selectedImage: string;
 	imageId: string;
+	visibleImagesIds: string[];
+	dialogVisibleImagesIds: string[];
 	isDialogOpen: boolean;
+	productId: string;
 }
 
-const getContext = ( ns?: string ) => getContextFn< Context >( ns );
+interface Event {
+	keyCode: number;
+}
 
-store( 'woocommerce', {
+enum Keys {
+	ESC = 27,
+	LEFT_ARROW = 37,
+	RIGHT_ARROW = 39,
+}
+
+const getContext = ( ns?: string ) =>
+	getContextFn< ProductGalleryContext >( ns );
+
+const productGallery = {
 	state: {
 		get isSelected() {
 			const { selectedImage, imageId } = getContext();
@@ -19,24 +33,126 @@ store( 'woocommerce', {
 		},
 		get pagerDotFillOpacity() {
 			const { selectedImage, imageId } = getContext();
-
 			return selectedImage === imageId ? 1 : 0.2;
-		},
-		get isDialogOpen() {
-			const { isDialogOpen } = getContext();
-			return isDialogOpen;
 		},
 	},
 	actions: {
-		thumbnails: {
-			handleClick: () => {
+		dialog: {
+			handleCloseButtonClick: () => {
 				const context = getContext();
-				context.selectedImage = context.imageId;
+				context.isDialogOpen = false;
 			},
 		},
 		handleSelectImage: () => {
 			const context = getContext();
 			context.selectedImage = context.imageId;
 		},
+		handleNextImageButtonClick: () => {
+			const context = getContext();
+			const imagesIds =
+				context[
+					context.isDialogOpen
+						? 'dialogVisibleImagesIds'
+						: 'visibleImagesIds'
+				];
+			const selectedImageIdIndex = imagesIds.indexOf(
+				context.selectedImage
+			);
+			const nextImageIndex = Math.min(
+				selectedImageIdIndex + 1,
+				imagesIds.length - 1
+			);
+
+			context.selectedImage = imagesIds[ nextImageIndex ];
+		},
+		handlePreviousImageButtonClick: () => {
+			const context = getContext();
+			const imagesIds =
+				context[
+					context.isDialogOpen
+						? 'dialogVisibleImagesIds'
+						: 'visibleImagesIds'
+				];
+			const selectedImageIdIndex = imagesIds.indexOf(
+				context.selectedImage
+			);
+			const previousImageIndex = Math.max( selectedImageIdIndex - 1, 0 );
+			context.selectedImage = imagesIds[ previousImageIndex ];
+		},
 	},
-} );
+	callbacks: {
+		watchForChangesOnAddToCartForm: () => {
+			const context = getContext();
+			const variableProductCartForm = document.querySelector(
+				`form[data-product_id="${ context.productId }"]`
+			);
+
+			if ( ! variableProductCartForm ) {
+				return;
+			}
+
+			const observer = new MutationObserver( function ( mutations ) {
+				for ( const mutation of mutations ) {
+					const mutationTarget = mutation.target as HTMLElement;
+					const currentImageAttribute =
+						mutationTarget.getAttribute( 'current-image' );
+					if (
+						mutation.type === 'attributes' &&
+						currentImageAttribute &&
+						context.visibleImagesIds.includes(
+							currentImageAttribute
+						)
+					) {
+						context.selectedImage = currentImageAttribute;
+					}
+				}
+			} );
+
+			observer.observe( variableProductCartForm, {
+				attributes: true,
+			} );
+
+			return () => {
+				observer.disconnect();
+			};
+		},
+		keyboardAccess: () => {
+			const context = getContext();
+			let allowNavigation = true;
+
+			const handleKeyEvents = ( event: Event ) => {
+				if ( ! allowNavigation || ! context.isDialogOpen ) {
+					return;
+				}
+
+				// Disable navigation for a brief period to prevent spamming.
+				allowNavigation = false;
+
+				requestAnimationFrame( () => {
+					allowNavigation = true;
+				} );
+
+				// Check if the esc key is pressed.
+				if ( event.keyCode === Keys.ESC ) {
+					context.isDialogOpen = false;
+				}
+
+				// Check if left arrow key is pressed.
+				if ( event.keyCode === Keys.LEFT_ARROW ) {
+					actions.handlePreviousImageButtonClick();
+				}
+
+				// Check if right arrow key is pressed.
+				if ( event.keyCode === Keys.RIGHT_ARROW ) {
+					actions.handleNextImageButtonClick();
+				}
+			};
+
+			document.addEventListener( 'keydown', handleKeyEvents );
+		},
+	},
+};
+
+const { actions } = store( 'woocommerce', productGallery );
+
+export type ProductGallery = typeof productGallery;

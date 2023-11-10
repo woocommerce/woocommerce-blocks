@@ -2,13 +2,11 @@
  * External dependencies
  */
 import { store, getContext as getContextFn } from '@woocommerce/interactivity';
-import { select, subscribe } from '@wordpress/data';
-import { dispatch } from '@wordpress/data';
+import { select, subscribe, dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { Cart } from '@woocommerce/type-defs/cart';
-
-// import { createRoot } from '@wordpress/element';
-// import NoticeBanner from '@woocommerce/base-components/notice-banner';
+import { createRoot } from '@wordpress/element';
+import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
 interface Context {
 	isLoading: boolean;
@@ -47,6 +45,29 @@ interface Store {
 	};
 }
 
+const storeNoticeClass = '.wc-block-store-notices';
+
+const createNoticeContainer = () => {
+	const noticeContainer = document.createElement( 'div' );
+	noticeContainer.classList.add( storeNoticeClass.replace( '.', '' ) );
+	return noticeContainer;
+};
+
+const injectNotice = ( domNode: Element, errorMessage: string ) => {
+	const root = createRoot( domNode );
+
+	root.render(
+		<NoticeBanner status="error" onRemove={ () => root.unmount() }>
+			{ errorMessage }
+		</NoticeBanner>
+	);
+
+	domNode?.scrollIntoView( {
+		behavior: 'smooth',
+		inline: 'nearest',
+	} );
+};
+
 const getProductById = ( cartState: Cart | undefined, productId: number ) => {
 	return cartState?.items.find( ( item ) => item.id === productId );
 };
@@ -60,7 +81,8 @@ const getTextButton = (
 	return inTheCart.replace( '###', numberOfItems.toString() );
 };
 
-const getContext = getContextFn< Context >;
+// The `getContextFn` function is wrapped just to avoid prettier issues.
+const getContext = ( ns?: string ) => getContextFn< Context >( ns );
 
 const { state } = store< Store >( 'woocommerce/product-button', {
 	state: {
@@ -125,6 +147,25 @@ const { state } = store< Store >( 'woocommerce/product-button', {
 				// After the cart is updated, sync the temporary number of items again.
 				context.temporaryNumberOfItems = state.numberOfItemsInTheCart;
 			} catch ( error ) {
+				const storeNoticeBlock =
+					document.querySelector( storeNoticeClass );
+
+				if ( ! storeNoticeBlock ) {
+					document
+						.querySelector( '.entry-content' )
+						?.prepend( createNoticeContainer() );
+				}
+
+				const domNode =
+					storeNoticeBlock ??
+					document.querySelector( storeNoticeClass );
+
+				if ( domNode ) {
+					injectNotice( domNode, ( error as Error ).message );
+				}
+
+				// We don't care about errors blocking execution, but will
+				// console.error for troubleshooting.
 				// eslint-disable-next-line no-console
 				console.error( error );
 			} finally {
@@ -187,9 +228,13 @@ subscribe( () => {
 	}
 }, storeKey );
 
+// RequestIdleCallback is not available in Safari, so we use setTimeout as an alternative.
+const callIdleCallback =
+	window.requestIdleCallback || ( ( cb ) => setTimeout( cb, 100 ) );
+
 // This selector triggers a fetch of the Cart data. It is done in a
 // `requestIdleCallback` to avoid potential performance issues.
-requestIdleCallback( () => {
+callIdleCallback( () => {
 	if ( ! state.hasCartLoaded ) {
 		select( storeKey ).getCartData();
 	}
