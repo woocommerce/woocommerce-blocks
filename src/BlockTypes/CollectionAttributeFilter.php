@@ -22,7 +22,7 @@ final class CollectionAttributeFilter extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		if ( is_admin() || empty( $block->context['filterData'] ) ) {
+		if ( is_admin() || empty( $block->context['collectionData'] ) ) {
 			return $content;
 		}
 

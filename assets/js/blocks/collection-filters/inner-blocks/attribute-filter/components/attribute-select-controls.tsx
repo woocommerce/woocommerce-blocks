@@ -8,22 +8,17 @@ import { getSetting } from '@woocommerce/settings';
 import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
 import { AttributeSetting } from '@woocommerce/types';
 
-/**
- * Internal dependencies
- */
-import type { EditProps } from '../types';
-
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
 type AttributeSelectControlsProps = {
 	isCompact: boolean;
-	setAttributes: EditProps[ 'setAttributes' ];
+	setAttributeId: ( id: number ) => void;
 	attributeId: number;
 };
 
 export const AttributeSelectControls = ( {
 	isCompact,
-	setAttributes,
+	setAttributeId,
 	attributeId,
 }: AttributeSelectControlsProps ) => {
 	const messages = {
@@ -77,9 +72,7 @@ export const AttributeSelectControls = ( {
 			return;
 		}
 
-		setAttributes( {
-			attributeId: selectedId as number,
-		} );
+		setAttributeId( attributeId as number );
 	};
 
 	return (

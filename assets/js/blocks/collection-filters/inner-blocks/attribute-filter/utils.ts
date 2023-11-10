@@ -2,14 +2,19 @@
  * External dependencies
  */
 import { getSetting } from '@woocommerce/settings';
-import { AttributeObject, AttributeSetting } from '@woocommerce/types';
+import {
+	AttributeObject,
+	AttributeSetting,
+	isObject,
+	objectHasProp,
+} from '@woocommerce/types';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
 /**
  * Format an attribute from the settings into an object with standardized keys.
  */
-const attributeSettingToObject = ( attribute: AttributeSetting ) => {
+function attributeSettingToObject( attribute: AttributeSetting ) {
 	if ( ! attribute || ! attribute.attribute_name ) {
 		return null;
 	}
@@ -19,7 +24,7 @@ const attributeSettingToObject = ( attribute: AttributeSetting ) => {
 		taxonomy: 'pa_' + attribute.attribute_name,
 		label: attribute.attribute_label,
 	};
-};
+}
 
 const attributeObjects = ATTRIBUTES.reduce(
 	( acc: Partial< AttributeObject >[], current ) => {
@@ -49,11 +54,26 @@ export function getAttributeFromId( attributeId: number ) {
 /**
  * Get attribute data by taxonomy name.
  */
-export const getAttributeFromTaxonomy = ( taxonomy: string ) => {
+export function getAttributeFromTaxonomy( taxonomy: string ) {
 	if ( ! taxonomy ) {
 		return;
 	}
 	return attributeObjects.find( ( attribute ) => {
 		return attribute.taxonomy === taxonomy;
 	} );
-};
+}
+
+export function isDeepEqual( a: unknown, b: unknown ): boolean {
+	if ( a === b ) {
+		return true;
+	}
+
+	if ( isObject( a ) && isObject( b ) ) {
+		for ( const key in a ) {
+			if ( ! objectHasProp( b, key ) ) return false;
+			return isDeepEqual( a[ key ], b[ key ] );
+		}
+	}
+
+	return true;
+}

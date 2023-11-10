@@ -23,7 +23,7 @@ import {
 	AttributesPlaceholder,
 } from './components/placeholder';
 import { AttributeSelectControls } from './components/attribute-select-controls';
-import { getAttributeFromId } from './utils';
+import { getAttributeFromId, isDeepEqual } from './utils';
 import { Inspector } from './components/inspector-controls';
 import { AttributeCheckboxList } from './components/attribute-checkbox-list';
 import { AttributeDropdown } from './components/attribute-dropdown';
@@ -38,8 +38,14 @@ const Edit = ( props: EditProps ) => {
 		debouncedSpeak,
 	} = props;
 
-	const { attributeId, queryType, isPreview, displayStyle, showCounts } =
-		blockAttributes;
+	const {
+		attributeId,
+		queryParam,
+		queryType,
+		isPreview,
+		displayStyle,
+		showCounts,
+	} = blockAttributes;
 
 	const attributeObject = getAttributeFromId( attributeId );
 
@@ -58,17 +64,20 @@ const Edit = ( props: EditProps ) => {
 	const blockProps = useBlockProps();
 
 	useEffect( () => {
-		setAttributes( {
-			queryParam: {
-				calculate_attribute_counts: [
-					{
-						taxonomy: attributeObject?.taxonomy || '',
-						queryType,
-					},
-				],
+		if ( ! attributeObject?.taxonomy ) {
+			return;
+		}
+		const newQueryParam = {
+			calculate_attribute_counts: {
+				taxonomy: attributeObject.taxonomy,
+				queryType,
 			},
-		} );
-	}, [ queryType, setAttributes, attributeObject?.taxonomy ] );
+		};
+		if ( isDeepEqual( queryParam, newQueryParam ) ) {
+			return;
+		}
+		setAttributes( { queryParam } );
+	}, [ queryParam, queryType, setAttributes, attributeObject?.taxonomy ] );
 
 	const Toolbar = () => (
 		<BlockControls>
@@ -91,7 +100,11 @@ const Edit = ( props: EditProps ) => {
 				<AttributeSelectControls
 					isCompact={ false }
 					attributeId={ attributeId }
-					setAttributes={ setAttributes }
+					setAttributeId={ ( id ) =>
+						setAttributes( {
+							attributeId: id,
+						} )
+					}
 				/>
 				<Button
 					isPrimary
