@@ -120,7 +120,6 @@ class ProductGalleryLargeImage extends AbstractBlock {
 			'hidden'               => true,
 			'class'                => 'wc-block-woocommerce-product-gallery-large-image__image',
 			'data-wc-bind--hidden' => '!state.isSelected',
-			'data-wc-bind--style'  => 'state.productGalleryLargeImage.styles',
 			'data-wc-watch'        => 'callbacks.scrollInto',
 		);
 
@@ -131,7 +130,6 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		if ( $context['hoverZoom'] ) {
 			$attributes['class']              .= ' wc-block-woocommerce-product-gallery-large-image__image--hoverZoom';
 			$attributes['data-wc-bind--style'] = 'state.styles';
-			$attributes['data-wc-bind--style'] = 'state.productGalleryLargeImage.styles';
 		}
 
 		$main_images = ProductGalleryUtils::get_product_gallery_images(

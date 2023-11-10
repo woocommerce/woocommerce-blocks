@@ -31,17 +31,15 @@ let isDialogStatusChanged = false;
 
 const productGalleryLargeImage = {
 	state: {
-		productGalleryLargeImage: {
-			get styles() {
-				const { styles } = getContext();
-				return Object.entries( styles ?? [] ).reduce(
-					( acc, [ key, value ] ) => {
-						const style = `${ key }:${ value };`;
-						return acc.length > 0 ? `${ acc } ${ style }` : style;
-					},
-					''
-				);
-			},
+		get styles() {
+			const { styles } = getContext();
+			return Object.entries( styles ?? [] ).reduce(
+				( acc, [ key, value ] ) => {
+					const style = `${ key }:${ value };`;
+					return acc.length > 0 ? `${ acc } ${ style }` : style;
+				},
+				''
+			);
 		},
 	},
 	actions: {
