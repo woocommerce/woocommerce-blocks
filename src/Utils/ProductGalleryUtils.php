@@ -54,9 +54,7 @@ class ProductGalleryUtils {
 						'data-wc-context',
 						wp_json_encode(
 							array(
-								'woocommerce' => array(
-									'imageId' => $product_gallery_image_id,
-								),
+								'imageId' => $product_gallery_image_id,
 							)
 						)
 					);
