@@ -1,19 +1,17 @@
-$thumbnails: ".wc-block-editor-product-gallery-thumbnails";
-
-#{$thumbnails} {
-	display: flex;
-
-	&.wc-block-editor-product-gallery-thumbnails--bottom {
-		flex-direction: row;
-		gap: 0 15px;
-	}
-
-	&:not(.wc-block-editor-product-gallery-thumbnails--bottom) {
-		flex-direction: column;
-		gap: 15px 0;
-	}
-}
-
 .wc-block-product-gallery-thumbnails {
-	flex-basis: 30%;
+	width: fit-content;
+	.wc-block-editor-product-gallery-thumbnails {
+		display: flex;
+		flex-flow: column nowrap;
+
+		&.wc-block-editor-product-gallery-thumbnails--bottom {
+			flex-flow: row nowrap;
+		}
+
+		img {
+			width: 100px;
+			height: 100px;
+			margin: 5px;
+		}
+	}
 }
