@@ -72,13 +72,12 @@ const productGalleryLargeImage = {
 	},
 	callbacks: {
 		scrollInto: () => {
-			const { isDialogOpen } = getContext();
-			const { ref } = getElement();
-
 			if ( ! state.isSelected ) {
 				return;
 			}
 
+			const { isDialogOpen } = getContext();
+			const { ref } = getElement();
 			// Scroll to the selected image with a smooth animation.
 			if ( isDialogOpen === isDialogStatusChanged ) {
 				ref.scrollIntoView( {
