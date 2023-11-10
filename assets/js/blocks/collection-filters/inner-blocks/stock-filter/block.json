@@ -21,7 +21,7 @@
 		},
 		"displayStyle": {
 			"type": "string",
-			"default": "list"
+			"default": "dropdown"
 		},
 		"selectType": {
 			"type": "string",
@@ -38,7 +38,7 @@
 			}
 		}
 	},
-	"usesContext": [ "query", "queryId", "postId", "collectionData" ],
+	"usesContext": [ "collectionData" ],
 	"ancestor": [ "woocommerce/collection-filters" ],
 	"textdomain": "woo-gutenberg-products-block",
 	"apiVersion": 2,
