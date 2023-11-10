@@ -207,7 +207,11 @@ class ProductCollection extends AbstractBlock {
 		$stock_status        = $request->get_param( 'woocommerceStockStatus' );
 		$product_attributes  = $request->get_param( 'woocommerceAttributes' );
 		$handpicked_products = $request->get_param( 'woocommerceHandPickedProducts' );
-		$args['author']      = $request->get_param( 'author' ) ?? '';
+		$featured            = $request->get_param( 'featured' );
+		$time_frame          = $request->get_param( 'timeFrame' );
+		// This argument is required for the tests to PHP Unit Tests to run correctly.
+		// Most likely this argument is being accessed in the test environment image.
+		$args['author'] = '';
 
 		return $this->get_final_query_args(
 			$args,
@@ -217,6 +221,8 @@ class ProductCollection extends AbstractBlock {
 				'stock_status'        => $stock_status,
 				'product_attributes'  => $product_attributes,
 				'handpicked_products' => $handpicked_products,
+				'featured'            => $featured,
+				'timeFrame'           => $time_frame,
 			)
 		);
 	}
@@ -297,12 +303,13 @@ class ProductCollection extends AbstractBlock {
 			'tax_query'      => array(),
 			'paged'          => $page,
 			's'              => $query['search'],
-			'author'         => $query['author'] ?? '',
 		);
 
 		$is_on_sale          = $query['woocommerceOnSale'] ?? false;
+		$product_attributes  = $query['woocommerceAttributes'] ?? [];
 		$taxonomies_query    = $this->get_filter_by_taxonomies_query( $query['tax_query'] ?? [] );
 		$handpicked_products = $query['woocommerceHandPickedProducts'] ?? [];
+		$time_frame          = $query['timeFrame'] ?? null;
 
 		$final_query = $this->get_final_query_args(
 			$common_query_values,
@@ -310,9 +317,11 @@ class ProductCollection extends AbstractBlock {
 				'on_sale'             => $is_on_sale,
 				'stock_status'        => $query['woocommerceStockStatus'],
 				'orderby'             => $query['orderBy'],
-				'product_attributes'  => $query['woocommerceAttributes'],
+				'product_attributes'  => $product_attributes,
 				'taxonomies_query'    => $taxonomies_query,
 				'handpicked_products' => $handpicked_products,
+				'featured'            => $query['featured'] ?? false,
+				'timeFrame'           => $time_frame,
 			),
 			$is_exclude_applied_filters
 		);
@@ -333,14 +342,16 @@ class ProductCollection extends AbstractBlock {
 		$on_sale_query       = $this->get_on_sale_products_query( $query['on_sale'] );
 		$stock_query         = $this->get_stock_status_query( $query['stock_status'] );
 		$visibility_query    = is_array( $query['stock_status'] ) ? $this->get_product_visibility_query( $stock_query ) : [];
+		$featured_query      = $this->get_featured_query( $query['featured'] ?? false );
 		$attributes_query    = $this->get_product_attributes_query( $query['product_attributes'] );
 		$taxonomies_query    = $query['taxonomies_query'] ?? [];
-		$tax_query           = $this->merge_tax_queries( $visibility_query, $attributes_query, $taxonomies_query );
+		$tax_query           = $this->merge_tax_queries( $visibility_query, $attributes_query, $taxonomies_query, $featured_query );
+		$date_query          = $this->get_date_query( $query['timeFrame'] ?? [] );
 
 		// We exclude applied filters to generate product ids for the filter blocks.
 		$applied_filters_query = $is_exclude_applied_filters ? [] : $this->get_queries_by_applied_filters();
 
-		$merged_query = $this->merge_queries( $common_query_values, $orderby_query, $on_sale_query, $stock_query, $tax_query, $applied_filters_query );
+		$merged_query = $this->merge_queries( $common_query_values, $orderby_query, $on_sale_query, $stock_query, $tax_query, $applied_filters_query, $date_query );
 
 		return $this->filter_query_to_only_include_ids( $merged_query, $handpicked_products );
 	}
@@ -390,6 +401,7 @@ class ProductCollection extends AbstractBlock {
 		 */
 		if (
 			! empty( $merged_query['post__in'] ) &&
+			is_array( $merged_query['post__in'] ) &&
 			count( $merged_query['post__in'] ) > count( array_unique( $merged_query['post__in'] ) )
 		) {
 			$merged_query['post__in'] = array_unique(
@@ -625,6 +637,35 @@ class ProductCollection extends AbstractBlock {
 			),
 		);
 	}
+
+	/**
+	 * Generates a tax query to filter products based on their "featured" status.
+	 * If the `$featured` parameter is true, the function will return a tax query
+	 * that filters products to only those marked as featured.
+	 * If `$featured` is false, an empty array is returned, meaning no filtering will be applied.
+	 *
+	 * @param bool $featured A flag indicating whether to filter products based on featured status.
+	 *
+	 * @return array A tax query for fetching featured products if `$featured` is true; otherwise, an empty array.
+	 */
+	private function get_featured_query( $featured ) {
+		if ( true !== $featured && 'true' !== $featured ) {
+			return array();
+		}
+
+		return array(
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'product_visibility',
+					'field'    => 'name',
+					'terms'    => 'featured',
+					'operator' => 'IN',
+				),
+			),
+		);
+	}
+
 
 	/**
 	 * Merge tax_queries from various queries.
@@ -957,4 +998,38 @@ class ProductCollection extends AbstractBlock {
 			),
 		);
 	}
+
+	/**
+	 * Constructs a date query for product filtering based on a specified time frame.
+	 *
+	 * @param array $time_frame {
+	 *     Associative array with 'operator' (in or not-in) and 'value' (date string).
+	 *
+	 *     @type string $operator Determines the inclusion or exclusion of the date range.
+	 *     @type string $value    The date around which the range is applied.
+	 * }
+	 * @return array Date query array; empty if parameters are invalid.
+	 */
+	private function get_date_query( array $time_frame ) : array {
+		// Validate time_frame elements.
+		if ( empty( $time_frame['operator'] ) || empty( $time_frame['value'] ) ) {
+			return array();
+		}
+
+		// Determine the query operator based on the 'operator' value.
+		$query_operator = 'in' === $time_frame['operator'] ? 'after' : 'before';
+
+		// Construct and return the date query.
+		return array(
+			'date_query' => array(
+				array(
+					'column'        => 'post_date_gmt',
+					$query_operator => $time_frame['value'],
+					'inclusive'     => true,
+				),
+			),
+		);
+	}
+
+
 }

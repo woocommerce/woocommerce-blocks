@@ -33,3 +33,7 @@ export type StateProps = {
 export interface ActionProps extends StateProps {
 	event: HTMLElementEvent< HTMLInputElement >;
 }
+
+export type FilterComponentProps = BlockEditProps< BlockAttributes > & {
+	collectionData: Partial< PriceFilterState >;
+};

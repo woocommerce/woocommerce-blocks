@@ -4,22 +4,15 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
-import { useCollectionData } from '@woocommerce/base-context/hooks';
-import { BlockEditProps } from '@wordpress/blocks';
+import { useCollection } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
-import { getQueryParams } from './utils';
+import { formatQuery, getQueryParams } from './utils';
+import type { EditProps } from './type';
 
-type BlockAttributes = {
-	collectionData: unknown[];
-};
-
-const Edit = ( {
-	clientId,
-	setAttributes,
-}: BlockEditProps< BlockAttributes > ) => {
+const Edit = ( { clientId, setAttributes, context }: EditProps ) => {
 	const blockProps = useBlockProps();
 	const innerBlockProps = useInnerBlocksProps( blockProps );
 
@@ -28,9 +21,11 @@ const Edit = ( {
 		return select( 'core/block-editor' ).getBlock( clientId );
 	} );
 
-	const { results } = useCollectionData( {
-		isEditor: true,
-		queryState: {
+	const { results } = useCollection( {
+		namespace: '/wc/store/v1',
+		resourceName: 'products/collection-data',
+		query: {
+			...formatQuery( context.query ),
 			...getQueryParams( currentBlock ),
 		},
 	} );

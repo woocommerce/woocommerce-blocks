@@ -36,8 +36,8 @@ final class CollectionPriceFilter extends AbstractBlock {
 		$price_range = $block->context['collectionData']['price_range'];
 
 		$wrapper_attributes  = get_block_wrapper_attributes();
-		$min_range           = $price_range->min_price / 10 ** $price_range->currency_minor_unit;
-		$max_range           = $price_range->max_price / 10 ** $price_range->currency_minor_unit;
+		$min_range           = $price_range['min_price'] / 10 ** $price_range['currency_minor_unit'];
+		$max_range           = $price_range['max_price'] / 10 ** $price_range['currency_minor_unit'];
 		$min_price           = intval( get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range ) );
 		$max_price           = intval( get_query_var( self::MAX_PRICE_QUERY_VAR, $max_range ) );
 		$formatted_min_price = wc_price( $min_price, array( 'decimals' => 0 ) );
@@ -71,8 +71,8 @@ final class CollectionPriceFilter extends AbstractBlock {
 		}
 
 		// CSS variables for the range bar style.
-		$__low       = 100 * $min_price / $max_range;
-		$__high      = 100 * $max_price / $max_range;
+		$__low       = 100 * ( $min_price - $min_range ) / ( $max_range - $min_range );
+		$__high      = 100 * ( $max_price - $min_range ) / ( $max_range - $min_range );
 		$range_style = "--low: $__low%; --high: $__high%";
 
 		$wrapper_attributes = get_block_wrapper_attributes(

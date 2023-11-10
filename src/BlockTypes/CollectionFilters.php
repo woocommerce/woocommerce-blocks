@@ -108,7 +108,7 @@ final class CollectionFilters extends AbstractBlock {
 	 * @return array
 	 */
 	private function get_aggregated_collection_data( $block ) {
-		$collection_data_params = $this->get_inner_filter_types_recursive( $block->inner_blocks );
+		$collection_data_params = $this->get_inner_collection_data_params( $block->inner_blocks );
 
 		if ( empty( array_filter( $collection_data_params ) ) ) {
 			return array();
@@ -125,7 +125,13 @@ final class CollectionFilters extends AbstractBlock {
 		);
 
 		if ( ! empty( $response['body'] ) ) {
-			return $response['body'];
+			$normalized_response = array();
+
+			foreach ( $response['body'] as $key => $data ) {
+				$normalized_response[ $key ] = (array) $data;
+			}
+
+			return $normalized_response;
 		}
 
 		return array();
@@ -139,22 +145,13 @@ final class CollectionFilters extends AbstractBlock {
 	 *
 	 * @return array
 	 */
-	private function get_inner_filter_types_recursive( $inner_blocks, &$results = array() ) {
+	private function get_inner_collection_data_params( $inner_blocks, &$results = array() ) {
 		if ( is_a( $inner_blocks, 'WP_Block_List' ) ) {
 			foreach ( $inner_blocks as $inner_block ) {
 				if ( ! empty( $inner_block->attributes['queryParam'] ) ) {
-					$query_param = $inner_block->attributes['queryParam'];
-					/**
-					 * There can be multiple attribute filters so we transform
-					 * the query param of each filter into an array to merge
-					 * them together.
-					 */
-					if ( ! empty( $query_param['calculate_attribute_counts'] ) ) {
-						$query_param['calculate_attribute_counts'] = array( $query_param['calculate_attribute_counts'] );
-					}
-					$results = array_merge_recursive( $results, $query_param );
+					$results = array_merge( $results, $inner_block->attributes['queryParam'] );
 				}
-				$this->get_inner_filter_types_recursive(
+				$this->get_inner_collection_data_params(
 					$inner_block->inner_blocks,
 					$results
 				);
@@ -181,37 +178,18 @@ final class CollectionFilters extends AbstractBlock {
 		/**
 		 * The following params can be passed directly to Store API endpoints.
 		 */
-		$shared_params = array( 'exclude', 'offset', 'order', 'serach' );
-		array_walk(
-			$shared_params,
-			function( $key ) use ( $query, &$params ) {
-				$params[ $key ] = $query[ $key ] ?? '';
-			}
-		);
+		$shared_params = array( 'exclude', 'offset', 'search' );
 
 		/**
 		 * The following params just need to transform the key, their value can
 		 * be passed as it is to the Store API.
 		 */
 		$mapped_params = array(
-			'orderBy'                       => 'orderby',
-			'pages'                         => 'page',
-			'perPage'                       => 'per_page',
 			'woocommerceStockStatus'        => 'stock_status',
 			'woocommerceOnSale'             => 'on_sale',
 			'woocommerceHandPickedProducts' => 'include',
 		);
-		array_walk(
-			$mapped_params,
-			function( $mapped_key, $original_key ) use ( $query, &$params ) {
-				$params[ $mapped_key ] = $query[ $original_key ] ?? '';
-			}
-		);
 
-		/**
-		 * The value of taxQuery and woocommerceAttributes need additional
-		 * transformation to the shape that Store API accepts.
-		 */
 		$taxonomy_mapper = function( $key ) {
 			$mapping = array(
 				'product_tag' => 'tag',
@@ -221,35 +199,61 @@ final class CollectionFilters extends AbstractBlock {
 			return $mapping[ $key ] ?? '_unstable_tax_' . $key;
 		};
 
-		if ( is_array( $query['taxQuery'] ) ) {
-			array_walk(
-				$query['taxQuery'],
-				function( $terms, $taxonomy ) use ( $taxonomy_mapper, &$params ) {
-					$params[ $taxonomy_mapper( $taxonomy ) ] = implode( ',', $terms );
+		array_walk(
+			$query,
+			function( $value, $key ) use ( $shared_params, $mapped_params, $taxonomy_mapper, &$params ) {
+				if ( in_array( $key, $shared_params, true ) ) {
+					$params[ $key ] = $value;
 				}
-			);
-		}
 
-		if ( is_array( $query['woocommerceAttributes'] ) ) {
-			array_walk(
-				$query['woocommerceAttributes'],
-				function( $attribute ) use ( &$params ) {
-					$params['attributes'][] = array(
-						'attribute' => $attribute['taxonomy'],
-						'term_id'   => $attribute['termId'],
+				if ( in_array( $key, array_keys( $mapped_params ), true ) ) {
+					$params[ $mapped_params[ $key ] ] = $value;
+				}
+
+				/**
+				 * The value of taxQuery and woocommerceAttributes need additional
+				 * transformation to the shape that Store API accepts.
+				 */
+				if ( 'taxQuery' === $key && is_array( $value ) ) {
+					array_walk(
+						$value,
+						function( $terms, $taxonomy ) use ( $taxonomy_mapper, &$params ) {
+							$params[ $taxonomy_mapper( $taxonomy ) ] = implode( ',', $terms );
+						}
 					);
 				}
-			);
-		}
+
+				if ( 'woocommerceAttributes' === $key && is_array( $value ) ) {
+					array_walk(
+						$value,
+						function( $attribute ) use ( &$params ) {
+							$params['attributes'][] = array(
+								'attribute' => $attribute['taxonomy'],
+								'term_id'   => $attribute['termId'],
+							);
+						}
+					);
+				}
+			}
+		);
 
 		/**
 		 * Product Collection determines the product visibility based on stock
 		 * statuses. We need to pass the catalog_visibility param to the Store
 		 * API to make sure the product visibility is correct.
 		 */
-		$params['catalog_visibility'] = is_search() ? 'catalog' : 'visible';
+		$params['catalog_visibility'] = is_search() ? 'search' : 'visible';
 
-		return array_filter( $params );
+		/**
+		* `false` values got removed from `add_query_arg`, so we need to convert
+		* them to numeric.
+		*/
+		return array_map(
+			function( $param ) {
+				return is_bool( $param ) ? +$param : $param;
+			},
+			$params
+		);
 	}
 
 }
