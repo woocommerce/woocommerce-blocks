@@ -189,6 +189,7 @@ Every release includes specific testing instructions for new features and bug fi
     -   [11.4.5](./1145.md)
     -   [11.4.6](./1146.md)
     -   [11.4.7](./1147.md)
+    -   [11.4.8](./1148.md)
 
 <!-- FEEDBACK -->
 
