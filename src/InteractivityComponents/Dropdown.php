@@ -35,9 +35,6 @@ class Dropdown {
 
 		$action = $props['action'] ?? '';
 
-		// TODO - translate the default.
-		$placeholder = $props['placeholder'] ?? 'Choose an option';
-
 		// Items should be an array of objects with a label and value property.
 		$items = $props['items'] ?? [];
 
