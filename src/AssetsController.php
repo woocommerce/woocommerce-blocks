@@ -64,7 +64,7 @@ final class AssetsController {
 		$this->api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
 		$this->api->register_script( 'wc-blocks-components', 'build/blocks-components.js', [] );
 
-		// Register the interactivity components here for now
+		// Register the interactivity components here for now.
 		$this->api->register_script( 'wc-interactivity-dropdown', 'build/wc-interactivity-dropdown.js', [] );
 
 		wp_add_inline_script(
