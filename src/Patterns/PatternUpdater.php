@@ -235,17 +235,36 @@ class PatternUpdater {
 			$loops_success = [];
 			$i             = 0;
 			foreach ( $ai_responses as $ai_response ) {
-				$completion = isset( $ai_response['completion'] ) ? json_decode( $ai_response['completion'], true ) : [];
+				if ( ! isset( $ai_response['completion'] ) ) {
+					$loops_success[] = false;
+					continue;
+				}
+
+				$completion = json_decode( $ai_response['completion'], true );
 
 				if ( ! is_array( $completion ) ) {
 					$loops_success[] = false;
 					continue;
 				}
 
-				$diff = array_diff_key( $completion, $expected_results_format[ $i ] );
+				$diff = array_diff_key( $expected_results_format[ $i ], $completion );
 				$i ++;
 
 				if ( ! empty( $diff ) ) {
+					$loops_success[] = false;
+					continue;
+				}
+
+				$empty_results = false;
+				foreach ( $completion as $completion_item ) {
+					foreach ( $completion_item as $value ) {
+						if ( empty( $value ) ) {
+							$empty_results = true;
+						}
+					}
+				}
+
+				if ( $empty_results ) {
 					$loops_success[] = false;
 					continue;
 				}
