@@ -3,8 +3,6 @@
  */
 import { store as interactivityStore } from '@woocommerce/interactivity';
 
-// TODO - import scss
-
 export type DropdownContext = {
 	woocommerceDropdown: {
 		currentItem: {
