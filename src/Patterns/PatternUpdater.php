@@ -307,6 +307,10 @@ class PatternUpdater {
 					$counter = 1;
 					if ( isset( $patterns[ $i ]['content']['titles'] ) ) {
 						foreach ( $patterns[ $i ]['content']['titles'] as $j => $title ) {
+							if ( ! isset( $ai_response_content[ $counter ] ) ) {
+								$ai_response_content[ $counter ] = $ai_response_content[ $counter - 1 ] ?? '';
+							}
+
 							$patterns[ $i ]['content']['titles'][ $j ]['default'] = $ai_response_content[ $counter ];
 
 							$counter ++;
@@ -315,6 +319,10 @@ class PatternUpdater {
 
 					if ( isset( $patterns[ $i ]['content']['descriptions'] ) ) {
 						foreach ( $patterns[ $i ]['content']['descriptions'] as $k => $description ) {
+							if ( ! isset( $ai_response_content[ $counter ] ) ) {
+								$ai_response_content[ $counter ] = $ai_response_content[ $counter - 1 ] ?? '';
+							}
+
 							$patterns[ $i ]['content']['descriptions'][ $k ]['default'] = $ai_response_content[ $counter ];
 
 							$counter ++;
@@ -323,6 +331,10 @@ class PatternUpdater {
 
 					if ( isset( $patterns[ $i ]['content']['buttons'] ) ) {
 						foreach ( $patterns[ $i ]['content']['buttons'] as $l => $button ) {
+							if ( ! isset( $ai_response_content[ $counter ] ) ) {
+								$ai_response_content[ $counter ] = $ai_response_content[ $counter - 1 ] ?? '';
+							}
+
 							$patterns[ $i ]['content']['buttons'][ $l ]['default'] = $ai_response_content[ $counter ];
 
 							$counter ++;
