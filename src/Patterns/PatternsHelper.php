@@ -171,6 +171,10 @@ class PatternsHelper {
 	 */
 	private static function find_pattern_by_slug( $patterns_dictionary, $slug ) {
 		foreach ( $patterns_dictionary as $pattern ) {
+			if ( ! is_array( $pattern ) ) {
+				continue;
+			}
+
 			if ( $pattern['slug'] === $slug ) {
 				return $pattern;
 			}
