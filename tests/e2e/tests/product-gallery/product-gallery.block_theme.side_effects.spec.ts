@@ -68,7 +68,7 @@ const getThumbnailImageIdByNth = async (
 		'data-wc-context'
 	) ) as string;
 
-	const imageId = JSON.parse( imageContext ).woocommerce.imageId;
+	const imageId = JSON.parse( imageContext ).imageId;
 
 	return imageId;
 };
