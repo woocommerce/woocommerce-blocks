@@ -8,8 +8,6 @@ import { ProductGalleryBlockSettings } from '@woocommerce/blocks/product-gallery
  * Internal dependencies
  */
 import productGalleryBlockMetadata from '../../../blocks/product-gallery/block.json';
-import addToCartWithOptionsBlockMetadata from '../../../atomic/blocks/product-elements/add-to-cart-form/block.json';
-import { addToCartWithOptionsBlockSettings } from './../../blocks/product-elements/add-to-cart-form/settings';
 
 export interface BlocksWithRestriction {
 	[ key: string ]: {
@@ -26,6 +24,8 @@ export interface BlocksWithRestriction {
 	};
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error: `metadata` currently does not have a type definition in WordPress core
 export const BLOCKS_WITH_RESTRICTION: BlocksWithRestriction = {
 	[ productGalleryBlockMetadata.name ]: {
 		blockMetadata: productGalleryBlockMetadata,
@@ -37,16 +37,6 @@ export const BLOCKS_WITH_RESTRICTION: BlocksWithRestriction = {
 			'product-gallery': true,
 		},
 		availableInPostOrPageEditor: false,
-		isVariationBlock: false,
-	},
-	[ addToCartWithOptionsBlockMetadata.name ]: {
-		blockMetadata: addToCartWithOptionsBlockMetadata,
-		blockSettings: addToCartWithOptionsBlockSettings,
-		allowedTemplates: {
-			'single-product': true,
-		},
-		allowedTemplateParts: {},
-		availableInPostOrPageEditor: true,
 		isVariationBlock: false,
 	},
 };
