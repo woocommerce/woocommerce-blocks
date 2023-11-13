@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.3.2
 Tested up to: 6.3.2
 Requires PHP: 7.4
-Stable tag: 11.4.6
+Stable tag: 11.4.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -80,6 +80,18 @@ Yes you can! Join in on our [GitHub repository](https://github.com/woocommerce/w
 Release and roadmap notes available on the [WooCommerce Developers Blog](https://woocommerce.wordpress.com/2019/01/15/woocommerce-blocks-1-3-0-release-notes/)
 
 == Changelog ==
+
+= 11.4.8 - 2023-11-10 =
+
+#### Bug Fixes
+
+- Ensure that incompatible notices are displayed in Safari. [11736](https://github.com/woocommerce/woocommerce-blocks/pull/11736)
+
+= 11.4.7 - 2023-11-09 =
+
+#### Bug Fixes
+
+- Fixed address components in Firefox, and editing of address form in the editor. [#11714](https://github.com/woocommerce/woocommerce-blocks/pull/11714)
 
 = 11.4.6 - 2023-11-09 =
 
