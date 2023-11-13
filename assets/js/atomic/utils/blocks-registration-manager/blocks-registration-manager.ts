@@ -1,13 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	BlockConfiguration,
-	store as blocksStore,
-	registerBlockType,
-	unregisterBlockType,
-} from '@wordpress/blocks';
-import { select } from '@wordpress/data';
+import { unregisterBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -26,6 +20,15 @@ import {
 	BlocksWithRestriction,
 } from './blocks-with-restriction';
 
+/**
+ * Manages the registration and unregistration of blocks based on template or page restrictions.
+ *
+ * This class implements the TemplateChangeDetectorObserver interface and is responsible for managing the registration and unregistration of blocks based on the restrictions defined in the BLOCKS_WITH_RESTRICTION constant.
+ *
+ * The class maintains a list of unregistered blocks and uses a block registration strategy to register and unregister blocks as needed. The strategy used depends on whether the block is a variation block or a regular block.
+ *
+ * The `run` method is the main entry point for the class. It is called with a TemplateChangeDetector object and registers and unregisters blocks based on the current template and whether the editor is in post or page mode.
+ */
 export class BlockRegistrationManager
 	implements TemplateChangeDetectorObserver
 {
@@ -38,6 +41,19 @@ export class BlockRegistrationManager
 		this.blockRegistrationStrategy = new BlockTypeStrategy();
 	}
 
+	/**
+	 * Determines whether a block should be registered based on the current template or page.
+	 *
+	 * This method checks whether a block with restrictions should be registered based on the current template ID and
+	 * whether the editor is in post or page mode. It checks whether the current template ID starts with any of the
+	 * allowed templates or template parts for the block, and whether the block is available in the post or page editor.
+	 *
+	 * @param {Object}  params                          - The parameters for the method.
+	 * @param {string}  params.blockWithRestrictionName - The name of the block with restrictions.
+	 * @param {string}  params.currentTemplateId        - The ID of the current template.
+	 * @param {boolean} params.isPostOrPage             - Whether the editor is in a post or page.
+	 * @return {boolean} True if the block should be registered, false otherwise.
+	 */
 	private blockShouldBeRegistered( {
 		blockWithRestrictionName,
 		currentTemplateId,
@@ -72,6 +88,17 @@ export class BlockRegistrationManager
 		);
 	}
 
+	/**
+	 * Unregisters blocks before entering a restricted area based on the current template or page/post.
+	 *
+	 * This method iterates over all blocks with restrictions and unregisters them if they should not be registered
+	 * based on the current template ID and whether the editor is in a post or page. It uses a block registration
+	 * strategy to unregister the blocks, which depends on whether the block is a variation block or a regular block.
+	 *
+	 * @param {Object}  params                   - The parameters for the method.
+	 * @param {string}  params.currentTemplateId - The ID of the current template.
+	 * @param {boolean} params.isPostOrPage      - Whether the editor is in post or page mode.
+	 */
 	unregisterBlocksBeforeEnteringRestrictedArea( {
 		currentTemplateId,
 		isPostOrPage,
@@ -107,6 +134,17 @@ export class BlockRegistrationManager
 		}
 	}
 
+	/**
+	 * Unregisters blocks before entering a restricted area based on the current template and editor mode.
+	 *
+	 * This method iterates over all blocks with restrictions and unregisters them if they should not be registered
+	 * based on the current template ID and whether the editor is in a post or page. It uses a block registration
+	 * strategy to unregister the blocks, which depends on whether the block is a variation block or a regular block.
+	 *
+	 * @param {Object}  params                   - The parameters for the method.
+	 * @param {string}  params.currentTemplateId - The ID of the current template.
+	 * @param {boolean} params.isPostOrPage      - Whether the editor is in post or page mode.
+	 */
 	registerBlocksAfterLeavingRestrictedArea() {
 		for ( const unregisteredBlockName of this.unregisteredBlocks ) {
 			const restrictedBlockData =
@@ -128,9 +166,15 @@ export class BlockRegistrationManager
 		}
 	}
 
+	/**
+	 * Runs the block registration manager.
+	 *
+	 * This method is the main entry point for the block registration manager. It is called with a TemplateChangeDetector object,
+	 * and registers and unregisters blocks based on the current template and whether the editor is in a post or page.
+	 *
+	 * @param {TemplateChangeDetector} templateChangeDetector - The template change detector object.
+	 */
 	run( templateChangeDetector: TemplateChangeDetector ) {
-		const blockTypes = select( blocksStore ).getBlockTypes();
-
 		this.registerBlocksAfterLeavingRestrictedArea();
 		this.unregisterBlocksBeforeEnteringRestrictedArea( {
 			currentTemplateId:
