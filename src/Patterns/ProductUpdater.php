@@ -12,14 +12,22 @@ class ProductUpdater {
 	/**
 	 * Generate AI content and assign AI-managed images to Products.
 	 *
-	 * @param Connection $ai_connection The AI connection.
-	 * @param string     $token The JWT token.
-	 * @param array      $images The array of images.
-	 * @param string     $business_description The business description.
+	 * @param Connection      $ai_connection The AI connection.
+	 * @param string|WP_Error $token The JWT token.
+	 * @param array|WP_Error  $images The array of images.
+	 * @param string          $business_description The business description.
 	 *
 	 * @return array|WP_Error The generated content for the products. An error if the content could not be generated.
 	 */
 	public function generate_content( $ai_connection, $token, $images, $business_description ) {
+		if ( is_wp_error( $images ) ) {
+			return $images;
+		}
+
+		if ( is_wp_error( $token ) ) {
+			return $token;
+		}
+
 		if ( empty( $business_description ) ) {
 			return new \WP_Error( 'missing_business_description', __( 'No business description provided for generating AI content.', 'woo-gutenberg-products-block' ) );
 		}
@@ -180,7 +188,7 @@ class ProductUpdater {
 	 *
 	 * @return array|null
 	 */
-	public function fetch_product_ids( $type = 'user_created' ) {
+	public function fetch_product_ids( string $type = 'user_created' ) {
 		global $wpdb;
 
 		if ( 'user_created' === $type ) {
@@ -331,35 +339,75 @@ class ProductUpdater {
 		$prompts = [];
 		foreach ( $products_information_list as $product_information ) {
 			if ( ! empty( $product_information['image']['alt'] ) ) {
-				$prompts[] = sprintf( 'Generate the name for a single product under 60 characters that match the following store description: "%1s" and the following image description: "%2s". Do not include any adjectives or descriptions of the qualities of the product.', $business_description, $product_information['image']['alt'] );
+				$prompts[] = sprintf( 'Generate the name of a product under 50 characters that match the following image description: "%2s". Do not include any adjectives or descriptions of the qualities of the product.', $product_information['image']['alt'] );
 			} else {
-				$prompts[] = sprintf( 'Generate the name for a single product under 60 characters that match the following store description: "%1s". Do not include any adjectives or descriptions of the qualities of the product.', $business_description );
+				$prompts[] = sprintf( 'Generate the name of a product under 50 characters. Do not include any adjectives or descriptions of the qualities of the product.' );
 			}
 		}
 
-		$responses  = $ai_connection->fetch_ai_responses( $token, $prompts );
-		$error_msgs = [];
-		foreach ( $responses as $index => $response ) {
-			if ( is_wp_error( $response ) ) {
-				$error_msgs[] = $response;
+		$expected_results_format = [
+			0 => '',
+			1 => '',
+			2 => '',
+			3 => '',
+			4 => '',
+			5 => '',
+		];
+
+		$formatted_prompt = sprintf(
+			"Given the following description '%s' generate titles for the products using the following prompts for each one of them: `'%s'`. Ensure each entry is unique and does not repeat the given examples. Format the response as an array: `'%s'`",
+			$business_description,
+			wp_json_encode( $prompts ),
+			wp_json_encode( $expected_results_format )
+		);
+
+		$ai_request_retries = 0;
+		$success            = false;
+		while ( $ai_request_retries < 5 && ! $success ) {
+			$ai_request_retries ++;
+			$ai_response = $ai_connection->fetch_ai_response( $token, $formatted_prompt, 60 );
+
+			if ( is_wp_error( $ai_response ) ) {
 				continue;
 			}
 
-			if ( empty( $response ) || ! isset( $response['completion'] ) ) {
-				$error_msgs[] = new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
+			if ( empty( $ai_response ) ) {
 				continue;
 			}
 
-			$products_information_list[ $index ]['title'] = str_replace( '"', '', $response['completion'] );
-		}
-
-		if ( ! empty( $error_msgs ) ) {
-			$error_data = new \WP_Error();
-			foreach ( $error_msgs as $msg ) {
-				$error_data->add( 'ai_content_generation_error', $msg );
+			if ( ! isset( $ai_response['completion'] ) ) {
+				continue;
 			}
 
-			return $error_data;
+			$completion = json_decode( $ai_response['completion'], true );
+
+			if ( ! is_array( $completion ) ) {
+				continue;
+			}
+
+			$diff = array_diff_key( $expected_results_format, $completion );
+
+			if ( ! empty( $diff ) ) {
+				continue;
+			}
+
+			$empty_results = false;
+			foreach ( $completion as $completion_item ) {
+				if ( empty( $completion_item ) ) {
+					$empty_results = true;
+					break;
+				}
+			}
+
+			if ( $empty_results ) {
+				continue;
+			}
+
+			foreach ( $products_information_list as $index => $product_information ) {
+				$products_information_list[ $index ]['title'] = str_replace( '"', '', $completion[ $index ] );
+			}
+
+			$success = true;
 		}
 
 		return array(
