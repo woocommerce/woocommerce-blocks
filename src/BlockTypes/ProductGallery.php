@@ -98,7 +98,7 @@ class ProductGallery extends AbstractBlock {
 			</div>
 			</div>
 			<div class="wc-block-product-gallery-dialog__body">
-				<h1>{{product_title}}</h1>
+				<h2>{{product_title}}</h2>
 				{{html}}
 			</div>
 			</dialog>
