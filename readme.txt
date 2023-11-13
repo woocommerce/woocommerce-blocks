@@ -4,7 +4,7 @@ Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 6.3
 Tested up to: 6.3
 Requires PHP: 7.4
-Stable tag: 11.5.0
+Stable tag: 11.5.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -81,6 +81,30 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.5.4 - 2023-11-13 =
+
+#### Bug Fixes
+
+- Prevent PHP warnings when using Jetpack WooCommerce Analytics module. [#11707](https://github.com/woocommerce/woocommerce-blocks/pull/11707)
+- Fixed address components in Firefox, and editing of address form in the editor. [#11714](https://github.com/woocommerce/woocommerce-blocks/pull/11714)
+- Fix Classic Cart/Checkout styling on non-cart and checkout pages. [#11694](https://github.com/woocommerce/woocommerce-blocks/pull/11694)
+- Fix double border in cart and notes field width on mobile. [11742](https://github.com/woocommerce/woocommerce-blocks/pull/11742)
+- Ensure that incompatible notices are displayed in Safari. [#11736](https://github.com/woocommerce/woocommerce-blocks/pull/11736)
+- Enabled the new blockified Order Confirmation by default for block-based themes. [#11615](https://github.com/woocommerce/woocommerce-blocks/pull/11615)
+
+= 11.5.3 - 2023-11-08 =
+
+#### Bug Fixes
+
+- Use wp_json_file_decode instead of json_decode [11681](https://github.com/woocommerce/woocommerce-blocks/pull/11681)
+
+= 11.5.2 - 2023-11-08 =
+
+#### Bug Fixes
+
+- Rename the Centered Header Menu with Search to Centered Header Menu. [11637](https://github.com/woocommerce/woocommerce-blocks/pull/11637)
+- Fix decoding issue and pattern. [11681](https://github.com/woocommerce/woocommerce-blocks/pull/11681)
+
 = 11.5.1 - 2023-11-08 =
 
 #### Bug Fixes
@@ -125,6 +149,18 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 #### compatibility
 
 - Remove bullet points and unnecessary padding from `SearchListControl`. ([11444](https://github.com/woocommerce/woocommerce-blocks/pull/11444))
+
+= 11.4.7 - 2023-11-09 =
+
+#### Bug Fixes
+
+- Fixed address components in Firefox, and editing of address form in the editor. [#11714](https://github.com/woocommerce/woocommerce-blocks/pull/11714)
+
+= 11.4.6 - 2023-11-09 =
+
+#### Bug Fixes
+
+- Prevent PHP warnings when using Jetpack WooCommerce Analytics module. [#11707](https://github.com/woocommerce/woocommerce-blocks/pull/11707)
 
 = 11.4.5 - 2023-11-07 =
 
@@ -294,6 +330,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - BlockTemplatesController: Check that $attributes['theme'] value isset before operating on it. ([10879](https://github.com/woocommerce/woocommerce-blocks/pull/10879))
 - Product Gallery: CSS styling tightening up. ([10867](https://github.com/woocommerce/woocommerce-blocks/pull/10867))
 - Checkout Block: Prevent changes in the selected shipping method when new rates are added or removed. ([10457](https://github.com/woocommerce/woocommerce-blocks/pull/10457))
+
+= 11.1.3 - 2023-11-08 =
+
+#### Bug Fixes
+
+- WordPress 6.4: fixed a bug which would break sites using the Classic Template block for the Single Product template. [11455](https://github.com/woocommerce/woocommerce-blocks/pull/11455)
 
 = 11.1.2 - 2023-09-27 =
 
