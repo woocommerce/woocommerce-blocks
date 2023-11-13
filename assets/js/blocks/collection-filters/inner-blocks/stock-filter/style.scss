@@ -1,8 +1,8 @@
 @import "../../../shared/styles/style";
 
 //  Import styles we need to render the checkbox list and checkbox control.
-@import "../../../../../../packages/components/checkbox-list/style.scss";
-@import "../../../../../../packages/checkout/components/checkbox-control/style.scss";
+@import "../../../../../../packages/components/checkbox-list/style";
+@import "../../../../../../packages/checkout/components/checkbox-control/style";
 
 
 .wp-block-woocommerce-stock-filter {
