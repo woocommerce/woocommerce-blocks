@@ -79,7 +79,7 @@ class PatternUpdater {
 			return new WP_Error( 'failed_to_update_patterns_content', __( 'Failed to update patterns content.', 'woo-gutenberg-products-block' ) );
 		}
 
-		return $updated_content;
+		return true;
 	}
 
 	/**
@@ -220,15 +220,14 @@ class PatternUpdater {
 		$ai_responses       = [];
 		$success            = false;
 		while ( $ai_request_retries < 5 && ! $success ) {
+			$ai_request_retries ++;
 			$ai_responses = $ai_connection->fetch_ai_responses( $token, $formatted_prompts, 60 );
 
 			if ( is_wp_error( $ai_responses ) ) {
-				$ai_request_retries ++;
 				continue;
 			}
 
 			if ( empty( $ai_responses ) ) {
-				$ai_request_retries ++;
 				continue;
 			}
 
@@ -274,8 +273,6 @@ class PatternUpdater {
 
 			if ( ! in_array( false, $loops_success, true ) ) {
 				$success = true;
-			} else {
-				$ai_request_retries ++;
 			}
 		}
 
