@@ -104,7 +104,7 @@ class ProductGallery extends AbstractBlock {
 			</dialog>
 		</div>',
 			array(
-				'{{html}}' => $html_processor->get_updated_html(),
+				'{{html}}'          => $html_processor->get_updated_html(),
 				'{{product_title}}' => esc_html( $product_title ),
 			)
 		);
