@@ -47,7 +47,7 @@ export const getVisibleLargeImageId = async (
 
 	const mainImageParsedContext = JSON.parse( mainImageContext );
 
-	return mainImageParsedContext.woocommerce.imageId;
+	return mainImageParsedContext.imageId;
 };
 
 const waitForJavascriptFrontendFileIsLoaded = async ( page: Page ) => {
