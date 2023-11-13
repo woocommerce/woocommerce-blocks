@@ -72,7 +72,7 @@ const getProductById = ( cartState: Cart | undefined, productId: number ) => {
 	return cartState?.items.find( ( item ) => item.id === productId );
 };
 
-const getTextButton = (
+const getButtonText = (
 	addToCart: string,
 	inTheCart: string,
 	numberOfItems: number
@@ -110,13 +110,13 @@ const { state } = store< Store >( 'woocommerce/product-button', {
 				context.animationStatus === AnimationStatus.IDLE ||
 				context.animationStatus === AnimationStatus.SLIDE_OUT
 			) {
-				return getTextButton(
+				return getButtonText(
 					context.addToCartText,
 					state.inTheCartText!,
 					context.temporaryNumberOfItems
 				);
 			}
-			return getTextButton(
+			return getButtonText(
 				context.addToCartText,
 				state.inTheCartText!,
 				state.numberOfItemsInTheCart
