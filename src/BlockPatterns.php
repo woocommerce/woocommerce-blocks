@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\Blocks;
 use Automattic\WooCommerce\Blocks\AI\Connection;
 use Automattic\WooCommerce\Blocks\Images\Pexels;
 use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
 use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
 use Automattic\WooCommerce\Blocks\Patterns\ProductUpdater;
 
@@ -33,8 +34,9 @@ use Automattic\WooCommerce\Blocks\Patterns\ProductUpdater;
  * @internal
  */
 class BlockPatterns {
-	const SLUG_REGEX            = '/^[A-z0-9\/_-]+$/';
-	const COMMA_SEPARATED_REGEX = '/[\s,]+/';
+	const SLUG_REGEX                 = '/^[A-z0-9\/_-]+$/';
+	const COMMA_SEPARATED_REGEX      = '/[\s,]+/';
+	const PATTERNS_AI_DATA_POST_TYPE = 'patterns_ai_data';
 
 	/**
 	 * Path to the patterns directory.
@@ -92,6 +94,22 @@ class BlockPatterns {
 			return;
 		}
 
+		register_post_type(
+			self::PATTERNS_AI_DATA_POST_TYPE,
+			array(
+				'labels'           => array(
+					'name'          => __( 'Patterns AI Data', 'woo-gutenberg-products-block' ),
+					'singular_name' => __( 'Patterns AI Data', 'woo-gutenberg-products-block' ),
+				),
+				'public'           => false,
+				'hierarchical'     => false,
+				'rewrite'          => false,
+				'query_var'        => false,
+				'delete_with_user' => false,
+				'can_export'       => true,
+			)
+		);
+
 		$default_headers = array(
 			'title'         => 'Title',
 			'slug'          => 'Slug',
@@ -111,6 +129,8 @@ class BlockPatterns {
 		if ( ! $files ) {
 			return;
 		}
+
+		$dictionary = PatternsHelper::get_patterns_dictionary();
 
 		foreach ( $files as $file ) {
 			$pattern_data = get_file_data( $file, $default_headers );
@@ -209,10 +229,27 @@ class BlockPatterns {
 				$pattern_data['description'] = translate_with_gettext_context( $pattern_data['description'], 'Pattern description', 'woo-gutenberg-products-block' );
 			}
 
+			$pattern_data_from_dictionary = $this->get_pattern_from_dictionary( $dictionary, $pattern_data['slug'] );
+
 			// The actual pattern content is the output of the file.
 			ob_start();
+
+			/*
+				For patterns that can have AI-generated content, we need to get its content from the dictionary and pass
+				it to the pattern file through the "$content" and "$images" variables.
+				This is to avoid having to access the dictionary for each pattern when it's registered or inserted.
+				Before the "$content" and "$images" variables were populated in each pattern. Since the pattern
+				registration happens in the init hook, the dictionary was being access one for each pattern and
+				for each page load. This way we only do it once on registration.
+				For more context: https://github.com/woocommerce/woocommerce-blocks/pull/11733
+			*/
+			if ( ! is_null( $pattern_data_from_dictionary ) ) {
+				$content = $pattern_data_from_dictionary['content'];
+				$images  = $pattern_data_from_dictionary['images'] ?? array();
+			}
 			include $file;
 			$pattern_data['content'] = ob_get_clean();
+
 			if ( ! $pattern_data['content'] ) {
 				continue;
 			}
@@ -250,7 +287,7 @@ class BlockPatterns {
 	 * @param array        $options  Array of bulk item update data.
 	 */
 	public function schedule_on_plugin_update( $upgrader_object, $options ) {
-		if ( 'update' === $options['action'] && 'plugin' === $options['type'] ) {
+		if ( 'update' === $options['action'] && 'plugin' === $options['type'] && isset( $options['plugins'] ) ) {
 			foreach ( $options['plugins'] as $plugin ) {
 				if ( str_contains( $plugin, 'woocommerce-gutenberg-products-block.php' ) || str_contains( $plugin, 'woocommerce.php' ) ) {
 					$business_description = get_option( 'woo_ai_describe_store_description' );
@@ -336,5 +373,23 @@ class BlockPatterns {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Filter the patterns dictionary to get the pattern data corresponding to the pattern slug.
+	 *
+	 * @param array  $dictionary The patterns dictionary.
+	 * @param string $slug The pattern slug.
+	 *
+	 * @return array|null
+	 */
+	private function get_pattern_from_dictionary( $dictionary, $slug ) {
+		foreach ( $dictionary as $pattern_dictionary ) {
+			if ( $pattern_dictionary['slug'] === $slug ) {
+				return $pattern_dictionary;
+			}
+		}
+
+		return null;
 	}
 }

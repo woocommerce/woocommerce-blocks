@@ -1,12 +1,28 @@
 /**
  * External dependencies
  */
-import { ProductCollectionQuery } from '@woocommerce/blocks/product-collection/types';
+import type { BlockInstance } from '@wordpress/blocks';
+import type { ProductCollectionQuery } from '@woocommerce/blocks/product-collection/types';
+
+function getInnerBlocksParams( block: BlockInstance, initial = {} ) {
+	return block.innerBlocks.reduce(
+		( acc, innerBlock ): Record< string, unknown > => {
+			acc = { ...acc, ...innerBlock.attributes?.queryParam };
+			return getInnerBlocksParams( innerBlock, acc );
+		},
+		initial
+	);
+}
+
+export function getQueryParams( block: BlockInstance | null ) {
+	if ( ! block ) return {};
+
+	return getInnerBlocksParams( block );
+}
 
 export const sharedParams: Array< keyof ProductCollectionQuery > = [
 	'exclude',
 	'offset',
-	'order',
 	'search',
 ];
 
@@ -19,10 +35,6 @@ export const mappedParams: {
 	key: keyof ProductCollectionQuery;
 	map: string;
 }[] = [
-	{ key: 'orderBy', map: 'orderby' },
-	{ key: 'pages', map: 'page' },
-	{ key: 'parents', map: 'parent' },
-	{ key: 'perPage', map: 'per_page' },
 	{ key: 'woocommerceStockStatus', map: 'stock_status' },
 	{ key: 'woocommerceOnSale', map: 'on_sale' },
 	{ key: 'woocommerceHandPickedProducts', map: 'include' },
@@ -49,12 +61,10 @@ function getAttributeQuery(
 	if ( ! woocommerceAttributes ) {
 		return {};
 	}
-	return {
-		attributes: woocommerceAttributes.map( ( attribute ) => ( {
-			attribute: attribute.taxonomy,
-			term_id: attribute.termId,
-		} ) ),
-	};
+	return woocommerceAttributes.map( ( attribute ) => ( {
+		attribute: attribute.taxonomy,
+		term_id: attribute.termId,
+	} ) );
 }
 
 export function formatQuery( query: ProductCollectionQuery ) {
@@ -63,7 +73,10 @@ export function formatQuery( query: ProductCollectionQuery ) {
 	}
 
 	return Object.assign(
-		{},
+		{
+			attributes: getAttributeQuery( query.woocommerceAttributes ),
+			catalog_visibility: 'visible',
+		},
 		...sharedParams.map(
 			( key ) => key in query && { [ key ]: query[ key ] }
 		),
@@ -71,7 +84,6 @@ export function formatQuery( query: ProductCollectionQuery ) {
 			( param ) =>
 				param.key in query && { [ param.map ]: query[ param.key ] }
 		),
-		...getTaxQueryMap( query.taxQuery ),
-		getAttributeQuery( query.woocommerceAttributes )
+		...getTaxQueryMap( query.taxQuery )
 	);
 }

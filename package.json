@@ -2,7 +2,7 @@
 	"name": "@woocommerce/block-library",
 	"title": "WooCommerce Blocks",
 	"author": "Automattic",
-	"version": "11.5.0-dev",
+	"version": "11.6.0-dev",
 	"description": "WooCommerce blocks for the Gutenberg editor.",
 	"homepage": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/",
 	"keywords": [
@@ -128,6 +128,7 @@
 		"@storybook/addon-styling-webpack": "^0.0.5",
 		"@storybook/addons": "7.5.2",
 		"@storybook/client-api": "7.5.2",
+		"@storybook/preview-api": "^7.5.3",
 		"@storybook/react": "7.5.2",
 		"@storybook/react-webpack5": "^7.5.2",
 		"@testing-library/dom": "9.3.3",
