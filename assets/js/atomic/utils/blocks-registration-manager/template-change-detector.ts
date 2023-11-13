@@ -11,7 +11,7 @@ interface TemplateChangeDetectorSubject {
 	notify(): void;
 }
 
-interface TemplateChangeDetectorObserver {
+export interface TemplateChangeDetectorObserver {
 	run( subject: TemplateChangeDetectorSubject ): void;
 }
 

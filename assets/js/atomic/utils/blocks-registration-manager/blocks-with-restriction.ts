@@ -1,0 +1,52 @@
+/**
+ * External dependencies
+ */
+import { BlockConfiguration } from '@wordpress/blocks';
+import { ProductGalleryBlockSettings } from '@woocommerce/blocks/product-gallery/settings';
+
+/**
+ * Internal dependencies
+ */
+import productGalleryBlockMetadata from '../../../blocks/product-gallery/block.json';
+import addToCartWithOptionsBlockMetadata from '../../../atomic/blocks/product-elements/add-to-cart-form/block.json';
+import { addToCartWithOptionsBlockSettings } from './../../blocks/product-elements/add-to-cart-form/settings';
+
+export interface BlocksWithRestriction {
+	[ key: string ]: {
+		blockMetadata: Partial< BlockConfiguration >;
+		blockSettings: Partial< BlockConfiguration >;
+		allowedTemplates: {
+			[ key: string ]: boolean;
+		};
+		allowedTemplateParts: {
+			[ key: string ]: boolean;
+		};
+		availableInPostOrPageEditor: boolean;
+		isVariationBlock: boolean;
+	};
+}
+
+export const BLOCKS_WITH_RESTRICTION: BlocksWithRestriction = {
+	[ productGalleryBlockMetadata.name ]: {
+		blockMetadata: productGalleryBlockMetadata,
+		blockSettings: ProductGalleryBlockSettings,
+		allowedTemplates: {
+			'single-product': true,
+		},
+		allowedTemplateParts: {
+			'product-gallery': true,
+		},
+		availableInPostOrPageEditor: false,
+		isVariationBlock: false,
+	},
+	[ addToCartWithOptionsBlockMetadata.name ]: {
+		blockMetadata: addToCartWithOptionsBlockMetadata,
+		blockSettings: addToCartWithOptionsBlockSettings,
+		allowedTemplates: {
+			'single-product': true,
+		},
+		allowedTemplateParts: {},
+		availableInPostOrPageEditor: true,
+		isVariationBlock: false,
+	},
+};

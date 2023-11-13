@@ -7,70 +7,69 @@ import {
 	registerBlockType,
 	unregisterBlockType,
 } from '@wordpress/blocks';
-import { ProductGalleryBlockSettings } from '@woocommerce/blocks/product-gallery/settings';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import productGalleryBlockMetadata from '../../../blocks/product-gallery/block.json';
 import {
 	TemplateChangeDetector,
-	TemplateChangeObserver,
+	TemplateChangeDetectorObserver,
 } from './template-change-detector';
+import {
+	BlockRegistrationStrategy,
+	BlockTypeStrategy,
+	BlockVariationStrategy,
+} from './block-registration-strategy';
+import {
+	BLOCKS_WITH_RESTRICTION,
+	BlocksWithRestriction,
+} from './blocks-with-restriction';
 
-interface BlocksWithRestriction {
-	[ key: string ]: {
-		blockMetadata: Partial< BlockConfiguration >;
-		blockSettings: Partial< BlockConfiguration >;
-		allowedTemplates: {
-			[ key: string ]: boolean;
-		};
-		allowedTemplateParts: {
-			[ key: string ]: boolean;
-		};
-		availableInPostOrPageEditor: false;
-	};
-}
-
-const BLOCKS_WITH_RESTRICTION: BlocksWithRestriction = {
-	[ productGalleryBlockMetadata.name ]: {
-		blockMetadata: productGalleryBlockMetadata,
-		blockSettings: ProductGalleryBlockSettings,
-		allowedTemplates: {
-			'single-product': true,
-		},
-		allowedTemplateParts: {
-			'product-gallery': true,
-		},
-		availableInPostOrPageEditor: false,
-	},
-};
-
-export class BlockRegistrationManager implements TemplateChangeObserver {
+export class BlockRegistrationManager
+	implements TemplateChangeDetectorObserver
+{
 	private blocksWithRestriction: BlocksWithRestriction;
 	private unregisteredBlocks: string[] = [];
+	private blockRegistrationStrategy: BlockRegistrationStrategy;
 
 	constructor() {
 		this.blocksWithRestriction = BLOCKS_WITH_RESTRICTION;
+		this.blockRegistrationStrategy = new BlockTypeStrategy();
 	}
 
-	registerBlocksAfterLeavingRestrictedArea() {
-		for ( const unregisteredBlockName of this.unregisteredBlocks ) {
-			const restrictedBlockData =
-				this.blocksWithRestriction[ unregisteredBlockName ];
-			const isBlockRegistered = Boolean(
-				registerBlockType(
-					restrictedBlockData.blockMetadata,
-					restrictedBlockData.blockSettings
-				)
-			);
-			this.unregisteredBlocks = isBlockRegistered
-				? this.unregisteredBlocks.filter(
-						( blockName ) => blockName !== unregisteredBlockName
-				  )
-				: this.unregisteredBlocks;
-		}
+	private blockShouldBeRegistered( {
+		blockWithRestrictionName,
+		currentTemplateId,
+		isPostOrPage,
+	}: {
+		blockWithRestrictionName: string;
+		currentTemplateId: string;
+		isPostOrPage: boolean;
+	} ) {
+		const {
+			allowedTemplates,
+			allowedTemplateParts,
+			availableInPostOrPageEditor,
+		} = this.blocksWithRestriction[ blockWithRestrictionName ];
+		const shouldBeAvailableOnTemplate = Object.keys(
+			allowedTemplates
+		).some( ( allowedTemplate ) =>
+			currentTemplateId.startsWith( allowedTemplate )
+		);
+		const shouldBeAvailableOnTemplatePart = Object.keys(
+			allowedTemplateParts
+		).some( ( allowedTemplate ) =>
+			currentTemplateId.startsWith( allowedTemplate )
+		);
+		const shouldBeAvailableOnPostOrPageEditor =
+			isPostOrPage && availableInPostOrPageEditor;
+
+		return (
+			shouldBeAvailableOnTemplate ||
+			shouldBeAvailableOnTemplatePart ||
+			shouldBeAvailableOnPostOrPageEditor
+		);
 	}
 
 	unregisterBlocksBeforeEnteringRestrictedArea( {
@@ -84,43 +83,52 @@ export class BlockRegistrationManager implements TemplateChangeObserver {
 			BLOCKS_WITH_RESTRICTION
 		) ) {
 			if ( this.blocksWithRestriction[ blockWithRestrictionName ] ) {
-				const {
-					allowedTemplates,
-					allowedTemplateParts,
-					availableInPostOrPageEditor,
-				} = this.blocksWithRestriction[ blockWithRestrictionName ];
-				const shouldBeAvailableOnTemplate = Object.keys(
-					allowedTemplates
-				).some( ( allowedTemplate ) =>
-					currentTemplateId.startsWith( allowedTemplate )
-				);
-				const shouldBeAvailableOnTemplatePart = Object.keys(
-					allowedTemplateParts
-				).some( ( allowedTemplate ) =>
-					currentTemplateId.startsWith( allowedTemplate )
-				);
-				const shouldBeAvailableOnPostOrPageEditor =
-					isPostOrPage && availableInPostOrPageEditor;
-
 				if (
-					shouldBeAvailableOnTemplate ||
-					shouldBeAvailableOnTemplatePart ||
-					shouldBeAvailableOnPostOrPageEditor
+					this.blockShouldBeRegistered( {
+						blockWithRestrictionName,
+						currentTemplateId,
+						isPostOrPage,
+					} )
 				) {
 					continue;
 				}
+				this.blockRegistrationStrategy = this.blocksWithRestriction[
+					blockWithRestrictionName
+				].isVariationBlock
+					? new BlockVariationStrategy()
+					: new BlockTypeStrategy();
 
+				this.blockRegistrationStrategy.unregister(
+					blockWithRestrictionName
+				);
 				unregisterBlockType( blockWithRestrictionName );
 				this.unregisteredBlocks.push( blockWithRestrictionName );
 			}
 		}
 	}
 
+	registerBlocksAfterLeavingRestrictedArea() {
+		for ( const unregisteredBlockName of this.unregisteredBlocks ) {
+			const restrictedBlockData =
+				this.blocksWithRestriction[ unregisteredBlockName ];
+			this.blockRegistrationStrategy = this.blocksWithRestriction[
+				unregisteredBlockName
+			].isVariationBlock
+				? new BlockVariationStrategy()
+				: new BlockTypeStrategy();
+			const isBlockRegistered = this.blockRegistrationStrategy.register(
+				restrictedBlockData.blockMetadata,
+				restrictedBlockData.blockSettings
+			);
+			this.unregisteredBlocks = isBlockRegistered
+				? this.unregisteredBlocks.filter(
+						( blockName ) => blockName !== unregisteredBlockName
+				  )
+				: this.unregisteredBlocks;
+		}
+	}
+
 	run( templateChangeDetector: TemplateChangeDetector ) {
-		console.log( {
-			currentTemplateId: templateChangeDetector.getCurrentTemplateId(),
-			previousTemplateId: templateChangeDetector.getPreviousTemplateId(),
-		} );
 		const blockTypes = select( blocksStore ).getBlockTypes();
 
 		this.registerBlocksAfterLeavingRestrictedArea();
