@@ -283,7 +283,7 @@ If `billingAddress` or `shippingAddress` properties aren't in the response objec
 
 #### Fail
 
-A response is considered a fail response when it at a minimum is an object with this shape:
+A fail response should be given when there is an error with the payment processing. A response is considered a fail response when it is an object with this shape:
 
 ```js
 const failResponse = { type: 'failure' };
@@ -298,7 +298,7 @@ When a fail response is returned by an observer, the payment method context stat
 
 #### Error
 
-A response is considered an error response when it at a minimum is an object with this shape:
+An error response should be given when there is an error with the user input on the checkout form. A response is considered an error response when it is an object with this shape:
 
 ```js
 const errorResponse = { type: 'error' };
