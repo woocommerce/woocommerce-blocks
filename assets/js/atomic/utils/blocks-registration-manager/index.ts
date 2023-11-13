@@ -2,9 +2,7 @@
  * Internal dependencies
  */
 import { BlockRegistrationManager } from './blocks-registration-manager';
-import {
-	TemplateChangeDetector,
-} from './template-change-detector';
+import { TemplateChangeDetector } from './template-change-detector';
 
 wp.domReady( () => {
 	const templateChangeDetector = new TemplateChangeDetector();

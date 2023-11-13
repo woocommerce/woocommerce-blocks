@@ -135,15 +135,11 @@ export class BlockRegistrationManager
 	}
 
 	/**
-	 * Unregisters blocks before entering a restricted area based on the current template and editor mode.
+	 * Registers blocks after leaving a restricted area.
 	 *
-	 * This method iterates over all blocks with restrictions and unregisters them if they should not be registered
-	 * based on the current template ID and whether the editor is in a post or page. It uses a block registration
-	 * strategy to unregister the blocks, which depends on whether the block is a variation block or a regular block.
-	 *
-	 * @param {Object}  params                   - The parameters for the method.
-	 * @param {string}  params.currentTemplateId - The ID of the current template.
-	 * @param {boolean} params.isPostOrPage      - Whether the editor is in post or page mode.
+	 * This method iterates over all unregistered blocks and registers them if they are not restricted in the current context.
+	 * It uses a block registration strategy to register the blocks, which depends on whether the block is a variation block or a regular block.
+	 * If the block is successfully registered, it is removed from the list of unregistered blocks.
 	 */
 	registerBlocksAfterLeavingRestrictedArea() {
 		for ( const unregisteredBlockName of this.unregisteredBlocks ) {

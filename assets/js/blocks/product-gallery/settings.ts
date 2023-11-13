@@ -9,4 +9,4 @@ export const ProductGalleryBlockSettings = {
 	icon,
 	edit: Edit,
 	save: Save,
-}
+};
