@@ -267,7 +267,7 @@ When a payment method returns a non-truthy value, if it returns a valid response
 
 #### Success
 
-A response is considered a success response when it at a minimum is an object with this shape:
+A successs response should be given when there are the user entered data is correct and the payment checks are successful. A response is considered a success response when it at a minimum is an object with this shape:
 
 ```js
 const successResponse = { type: 'success' };
