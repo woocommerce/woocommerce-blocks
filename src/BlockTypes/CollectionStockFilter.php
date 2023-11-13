@@ -86,8 +86,8 @@ final class CollectionStockFilter extends AbstractBlock {
 		$list_items = array_map(
 			function( $item ) use ( $stock_statuses ) {
 				return array(
-					'label' => $stock_statuses[ $item->status ],
-					'value' => $item->status,
+					'label' => $stock_statuses[ $item['status'] ],
+					'value' => $item['status'],
 				);
 			},
 			$stock_counts
@@ -102,6 +102,7 @@ final class CollectionStockFilter extends AbstractBlock {
 			)
 		);
 
+		// Just for the dropdown, we can only select 1 item.
 		$selected_item = $selected_items[0] ?? array(
 			'label' => null,
 			'value' => null,
@@ -116,20 +117,28 @@ final class CollectionStockFilter extends AbstractBlock {
 					<?php foreach ( $stock_counts as $stock_count ) { ?>
 						<li>
 							<div class="wc-block-components-checkbox wc-block-checkbox-list__checkbox">
-								<label for="<?php echo esc_attr( $stock_count->status ); ?>">
-									<input id="<?php echo esc_attr( $stock_count->status ); ?>" class="wc-block-components-checkbox__input" type="checkbox" aria-invalid="false" data-wc-on--change="actions.filters.updateProducts" value="<?php echo esc_attr( $stock_count->status ); ?>">
+								<label for="<?php echo esc_attr( $stock_count['status'] ); ?>">
+									<input 
+										id="<?php echo esc_attr( $stock_count['status'] ); ?>" 
+										class="wc-block-components-checkbox__input" 
+										type="checkbox" 
+										aria-invalid="false" 
+										data-wc-on--change="actions.filters.updateProducts" 
+										value="<?php echo esc_attr( $stock_count['status'] ); ?>"
+										<?php checked( strpos( $selected_stock_status, $stock_count['status'] ) !== false, 1 ); ?>
+									>
 										<svg class="wc-block-components-checkbox__mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 20">
 											<path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path>
 										</svg>
 										<span class="wc-block-components-checkbox__label">
-											<?php echo esc_html( $stock_statuses[ $stock_count->status ] ); ?>
+											<?php echo esc_html( $stock_statuses[ $stock_count['status'] ] ); ?>
 											<?php
 												// translators: %s: number of products.
-												$screen_reader_text = sprintf( _n( '%s product', '%s products', $stock_count->count, 'woo-gutenberg-products-block' ), number_format_i18n( $stock_count->count ) );
+												$screen_reader_text = sprintf( _n( '%s product', '%s products', $stock_count['count'], 'woo-gutenberg-products-block' ), number_format_i18n( $stock_count['count'] ) );
 											?>
 											<span class="wc-filter-element-label-list-count">
 												<span aria-hidden="true">
-													<?php echo esc_html( $stock_count->count ); ?>
+													<?php echo esc_html( $stock_count['count'] ); ?>
 												</span>
 												<span class="screen-reader-text">
 													<?php esc_html( $screen_reader_text ); ?>
