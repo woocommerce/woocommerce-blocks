@@ -124,7 +124,7 @@ class ProductGalleryLargeImage extends AbstractBlock {
 		);
 
 		if ( $context['fullScreenOnClick'] ) {
-			$attributes['class'] .= ' wc-block-woocommerce-product-gallery-large-image__image--full-screen-on-click';
+			$attributes['class'] .= ' wc-block-woocommerce-product-gallery-large-image__image--full-screen-on-click wc-block-product-gallery-dialog-on-click';
 		}
 
 		if ( $context['hoverZoom'] ) {
@@ -136,7 +136,8 @@ class ProductGalleryLargeImage extends AbstractBlock {
 			$product_id,
 			'full',
 			$attributes,
-			'wc-block-product-gallery-large-image__image-element'
+			'wc-block-product-gallery-large-image__image-element',
+			$context['cropImages']
 		);
 
 		$main_image_with_wrapper = array_map(

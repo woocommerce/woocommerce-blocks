@@ -74,19 +74,47 @@ class PatternsHelper {
 
 		return $image;
 	}
+	/**
+	 * Returns the post that has the generated data by the AI for the patterns.
+	 *
+	 * @return WP_Post|null
+	 */
+	public static function get_patterns_ai_data_post() {
+		$arg = array(
+			'post_type'      => 'patterns_ai_data',
+			'posts_per_page' => 1,
+			'no_found_rows'  => true,
+			'cache_results'  => true,
+		);
+
+		$query = new \WP_Query( $arg );
+
+		$posts = $query->get_posts();
+		return isset( $posts[0] ) ? $posts[0] : null;
+	}
 
 	/**
-	 * Returns an array of random images.
+	 * Upsert the patterns AI data.
 	 *
-	 * @param array $images The pattern images.
-	 * @param int   $images_total The total number of images needed for the pattern.
+	 * @param array $patterns_dictionary The patterns dictionary.
 	 *
-	 * @return array The random images.
+	 * @return WP_Error|null
 	 */
-	private static function get_random_images( array $images, int $images_total ): array {
-		shuffle( $images );
+	public static function upsert_patterns_ai_data_post( $patterns_dictionary ) {
+		$patterns_ai_data_post = self::get_patterns_ai_data_post();
 
-		return array_slice( $images, 0, $images_total );
+		if ( isset( $patterns_ai_data_post ) ) {
+			$patterns_ai_data_post->post_content = wp_json_encode( $patterns_dictionary );
+			return wp_update_post( $patterns_ai_data_post, true );
+		} else {
+			$patterns_ai_data_post = array(
+				'post_title'   => 'Patterns AI Data',
+				'post_content' => wp_json_encode( $patterns_dictionary ),
+				'post_status'  => 'publish',
+				'post_type'    => 'patterns_ai_data',
+			);
+			return wp_insert_post( $patterns_ai_data_post, true );
+		}
 	}
 
 	/**
@@ -96,10 +124,12 @@ class PatternsHelper {
 	 *
 	 * @return mixed|WP_Error|null
 	 */
-	private static function get_patterns_dictionary( $pattern_slug = null ) {
-		$patterns_dictionary = get_option( PatternUpdater::WC_BLOCKS_PATTERNS_CONTENT );
+	public static function get_patterns_dictionary( $pattern_slug = null ) {
 
-		if ( ! empty( $patterns_dictionary ) ) {
+		$patterns_ai_data_post = self::get_patterns_ai_data_post();
+
+		if ( isset( $patterns_ai_data_post ) ) {
+			$patterns_dictionary = json_decode( $patterns_ai_data_post->post_content, true );
 			if ( empty( $pattern_slug ) ) {
 				return $patterns_dictionary;
 			}

@@ -7,12 +7,14 @@ interface State {
 	[ key: string ]: unknown;
 }
 
-interface Context {
+export interface ProductGalleryInteractivityApiContext {
 	woocommerce: {
 		selectedImage: string;
 		imageId: string;
 		visibleImagesIds: string[];
+		dialogVisibleImagesIds: string[];
 		isDialogOpen: boolean;
+		productId: string;
 	};
 }
 
@@ -28,7 +30,9 @@ export interface ProductGallerySelectors {
 interface Actions {
 	woocommerce: {
 		thumbnails: {
-			handleClick: ( context: Context ) => void;
+			handleClick: (
+				context: ProductGalleryInteractivityApiContext
+			) => void;
 		};
 		handlePreviousImageButtonClick: {
 			( store: Store ): void;
@@ -41,7 +45,7 @@ interface Actions {
 
 interface Store {
 	state: State;
-	context: Context;
+	context: ProductGalleryInteractivityApiContext;
 	selectors: ProductGallerySelectors;
 	actions: Actions;
 	ref?: HTMLElement;
@@ -63,6 +67,41 @@ interactivityApiStore( {
 	state: {},
 	effects: {
 		woocommerce: {
+			watchForChangesOnAddToCartForm: ( store: Store ) => {
+				const variableProductCartForm = document.querySelector(
+					`form[data-product_id="${ store.context.woocommerce.productId }"]`
+				);
+
+				if ( ! variableProductCartForm ) {
+					return;
+				}
+
+				const observer = new MutationObserver( function ( mutations ) {
+					for ( const mutation of mutations ) {
+						const mutationTarget = mutation.target as HTMLElement;
+						const currentImageAttribute =
+							mutationTarget.getAttribute( 'current-image' );
+						if (
+							mutation.type === 'attributes' &&
+							currentImageAttribute &&
+							store.context.woocommerce.visibleImagesIds.includes(
+								currentImageAttribute
+							)
+						) {
+							store.context.woocommerce.selectedImage =
+								currentImageAttribute;
+						}
+					}
+				} );
+
+				observer.observe( variableProductCartForm, {
+					attributes: true,
+				} );
+
+				return () => {
+					observer.disconnect();
+				};
+			},
 			keyboardAccess: ( store: Store ) => {
 				const { context, actions } = store;
 				let allowNavigation = true;
@@ -143,30 +182,39 @@ interactivityApiStore( {
 			},
 			handleNextImageButtonClick: ( store: Store ) => {
 				const { context } = store;
-				const selectedImageIdIndex =
-					context.woocommerce.visibleImagesIds.indexOf(
-						context.woocommerce.selectedImage
-					);
+				const imagesIds =
+					context.woocommerce[
+						context.woocommerce.isDialogOpen
+							? 'dialogVisibleImagesIds'
+							: 'visibleImagesIds'
+					];
+				const selectedImageIdIndex = imagesIds.indexOf(
+					context.woocommerce.selectedImage
+				);
 				const nextImageIndex = Math.min(
 					selectedImageIdIndex + 1,
-					context.woocommerce.visibleImagesIds.length - 1
+					imagesIds.length - 1
 				);
 
-				context.woocommerce.selectedImage =
-					context.woocommerce.visibleImagesIds[ nextImageIndex ];
+				context.woocommerce.selectedImage = imagesIds[ nextImageIndex ];
 			},
 			handlePreviousImageButtonClick: ( store: Store ) => {
 				const { context } = store;
-				const selectedImageIdIndex =
-					context.woocommerce.visibleImagesIds.indexOf(
-						context.woocommerce.selectedImage
-					);
+				const imagesIds =
+					context.woocommerce[
+						context.woocommerce.isDialogOpen
+							? 'dialogVisibleImagesIds'
+							: 'visibleImagesIds'
+					];
+				const selectedImageIdIndex = imagesIds.indexOf(
+					context.woocommerce.selectedImage
+				);
 				const previousImageIndex = Math.max(
 					selectedImageIdIndex - 1,
 					0
 				);
 				context.woocommerce.selectedImage =
-					context.woocommerce.visibleImagesIds[ previousImageIndex ];
+					imagesIds[ previousImageIndex ];
 			},
 		},
 	},

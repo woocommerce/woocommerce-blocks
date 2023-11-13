@@ -38,8 +38,9 @@ import KeywordControl from './keyword-control';
 import AttributesControl from './attributes-control';
 import TaxonomyControls from './taxonomy-controls';
 import HandPickedProductsControl from './hand-picked-products-control';
-import AuthorControl from './author-control';
 import LayoutOptionsControl from './layout-options-control';
+import FeaturedProductsControl from './featured-products-control';
+import CreatedControl from './created-control';
 
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
@@ -99,7 +100,8 @@ const ProductCollectionInspectorControls = (
 					<KeywordControl { ...queryControlProps } />
 					<AttributesControl { ...queryControlProps } />
 					<TaxonomyControls { ...queryControlProps } />
-					<AuthorControl { ...queryControlProps } />
+					<FeaturedProductsControl { ...queryControlProps } />
+					<CreatedControl { ...queryControlProps } />
 				</ToolsPanel>
 			) : null }
 			<ProductCollectionFeedbackPrompt />

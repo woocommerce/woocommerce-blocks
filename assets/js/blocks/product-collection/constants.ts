@@ -40,16 +40,17 @@ export const DEFAULT_QUERY: ProductCollectionQuery = {
 	postType: 'product',
 	order: 'asc',
 	orderBy: 'title',
-	author: '',
 	search: '',
 	exclude: [],
 	inherit: null,
 	taxQuery: {},
 	isProductCollectionBlock: true,
+	featured: false,
 	woocommerceOnSale: false,
 	woocommerceStockStatus: getDefaultStockStatuses(),
 	woocommerceAttributes: [],
 	woocommerceHandPickedProducts: [],
+	timeFrame: undefined,
 };
 
 export const DEFAULT_ATTRIBUTES: Partial< ProductCollectionAttributes > = {
@@ -87,4 +88,6 @@ export const DEFAULT_FILTERS: Partial< ProductCollectionQuery > = {
 	woocommerceAttributes: [],
 	taxQuery: DEFAULT_QUERY.taxQuery,
 	woocommerceHandPickedProducts: [],
+	featured: DEFAULT_QUERY.featured,
+	timeFrame: undefined,
 };

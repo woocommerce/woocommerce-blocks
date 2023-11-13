@@ -6,8 +6,6 @@
  */
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
-$content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/featured-products-fresh-and-tasty' );
-$images  = PatternsHelper::get_pattern_images( 'woocommerce-blocks/featured-products-fresh-and-tasty' );
 
 $image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/sweet-organic-lemons.png' );
 $image2 = PatternsHelper::get_image_url( $images, 1, 'images/pattern-placeholders/fresh-organic-tomatoes.png' );
@@ -18,6 +16,7 @@ $first_title        = $content['titles'][0]['default'] ?? '';
 $first_description  = $content['descriptions'][0]['default'] ?? '';
 $second_description = $content['descriptions'][1]['default'] ?? '';
 $third_description  = $content['descriptions'][2]['default'] ?? '';
+$fourth_description = $content['descriptions'][3]['default'] ?? '';
 ?>
 
 <!-- wp:heading {"level":3,"align":"wide"} -->
@@ -129,7 +128,7 @@ $third_description  = $content['descriptions'][2]['default'] ?? '';
 			<!-- wp:column {"width":"67%","style":{"typography":{"fontWeight":"600"}},"layout":{"type":"constrained","justifyContent":"left"}} -->
 			<div class="wp-block-column" style="font-weight:600;flex-basis:67%">
 				<!-- wp:paragraph {"fontSize":"small"} -->
-				<p class="has-small-font-size"><?php echo esc_html( $content['descriptions'][0]['default'] ); ?></p>
+				<p class="has-small-font-size"><?php echo esc_html( $fourth_description ); ?></p>
 				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:column -->

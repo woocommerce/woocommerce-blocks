@@ -6,9 +6,8 @@
  */
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
-$content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/product-collection-banner' );
-$images  = PatternsHelper::get_pattern_images( 'woocommerce-blocks/product-collection-banner' );
-$image   = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/beach-landscape-sea-coast-nature-person.jpg' );
+
+$image = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/beach-landscape-sea-coast-nature-person.jpg' );
 
 $first_title       = $content['titles'][0]['default'] ?? '';
 $first_description = $content['descriptions'][0]['default'] ?? '';
@@ -42,9 +41,9 @@ $first_description = $content['descriptions'][0]['default'] ?? '';
 
 			<!-- wp:buttons -->
 			<div class="wp-block-buttons">
-				<!-- wp:button {"style":{"color":{"background":"#ff7179","text":"#000000"},"border":{"radius":"100px"}}} -->
+				<!-- wp:button {"style":{"color":{"background":"#ff7179","text":"#000000"},"border":{"radius":"100px","width":"0px","style":"none"}}} -->
 				<div class="wp-block-button">
-					<a href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" class="wp-block-button__link has-text-color has-background wp-element-button" style="border-radius:100px;color:#000000;background-color:#ff7179">Shop now</a>
+					<a href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" class="wp-block-button__link has-text-color has-background wp-element-button" style="border-style:none;border-width:0px;border-radius:100px;color:#000000;background-color:#ff7179">Shop now</a>
 				</div>
 				<!-- /wp:button -->
 			</div>

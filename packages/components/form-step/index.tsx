@@ -2,12 +2,12 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import Title from '@woocommerce/base-components/title';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import Title from '../title';
 
 interface StepHeadingProps {
 	title: string;
@@ -31,7 +31,7 @@ const StepHeading = ( { title, stepHeadingContent }: StepHeadingProps ) => (
 	</div>
 );
 
-interface FormStepProps {
+export interface FormStepProps {
 	id?: string;
 	className?: string;
 	title?: string;
