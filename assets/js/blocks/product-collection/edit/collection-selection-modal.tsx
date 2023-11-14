@@ -95,7 +95,7 @@ const getDefaultChosenCollection = (
 	}
 
 	// Otherwise it should be the first available choice. We control collections
-	// so there always should be at least one available.
+	// so there's always at least one available.
 	return blockCollections.length ? blockCollections[ 0 ].name : '';
 };
 
@@ -161,8 +161,7 @@ const PatternSelectionModal = ( props: {
 			) }
 			onRequestClose={ props.closePatternSelectionModal }
 			// @ts-expect-error Type definitions are missing in the version we are using i.e. 19.1.5,
-			// Once we will update to the latest version, ts-expect-error should be removed
-			isFullScreen
+			size={ 'large' }
 		>
 			<div className="wc-blocks-product-collection__content">
 				<p className="wc-blocks-product-collection__subtitle">
