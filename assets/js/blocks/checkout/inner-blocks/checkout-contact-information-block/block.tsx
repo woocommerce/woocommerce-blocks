@@ -11,8 +11,8 @@ import { getSetting } from '@woocommerce/settings';
 import {
 	CheckboxControl,
 	ValidatedTextInput,
-	StoreNoticesContainer,
 } from '@woocommerce/blocks-checkout';
+import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { isEmail } from '@wordpress/url';
