@@ -75,5 +75,5 @@ export function isDeepEqual( a: unknown, b: unknown ): boolean {
 		}
 	}
 
-	return true;
+	return false;
 }

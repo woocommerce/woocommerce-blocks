@@ -76,7 +76,7 @@ const Edit = ( props: EditProps ) => {
 		if ( isDeepEqual( queryParam, newQueryParam ) ) {
 			return;
 		}
-		setAttributes( { queryParam } );
+		setAttributes( { queryParam: newQueryParam } );
 	}, [ queryParam, queryType, setAttributes, attributeObject?.taxonomy ] );
 
 	const Toolbar = () => (

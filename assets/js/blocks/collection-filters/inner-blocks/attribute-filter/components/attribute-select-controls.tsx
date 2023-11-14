@@ -72,7 +72,7 @@ export const AttributeSelectControls = ( {
 			return;
 		}
 
-		setAttributeId( attributeId as number );
+		setAttributeId( selectedId as number );
 	};
 
 	return (
