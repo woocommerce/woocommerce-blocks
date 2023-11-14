@@ -206,5 +206,8 @@ test.describe( `${ blockData.name }`, () => {
 		expect( imageSourceForLargeImageElement ).not.toEqual(
 			imageSourceForLargeImageElementAfterSelectingVariation
 		);
+		expect(
+			imageSourceForLargeImageElementAfterSelectingVariation
+		).toContain( 'hoodie-green-1' );
 	} );
 } );
