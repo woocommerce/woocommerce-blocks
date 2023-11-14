@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { InnerBlockTemplate } from '@wordpress/blocks';
+import type { BlockAttributes, InnerBlockTemplate } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 import { Icon, percent } from '@wordpress/icons';
 
 /**
@@ -37,7 +38,20 @@ const attributes = {
 	collection: collection.name,
 };
 
-const innerBlocks: InnerBlockTemplate[] = [ INNER_BLOCKS_PRODUCT_TEMPLATE ];
+const heading: [ string, BlockAttributes?, InnerBlockTemplate[]? ] = [
+	'core/heading',
+	{
+		textAlign: 'center',
+		level: 2,
+		content: __( 'On Sale Products', 'woo-gutenberg-products-block' ),
+		style: { spacing: { margin: { bottom: '1rem' } } },
+	},
+];
+
+const innerBlocks: InnerBlockTemplate[] = [
+	heading,
+	INNER_BLOCKS_PRODUCT_TEMPLATE,
+];
 
 export default {
 	...collection,
