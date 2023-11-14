@@ -15,9 +15,12 @@ import {
 
 const collection = {
 	name: 'woocommerce-blocks/product-collection/top-rated',
-	title: 'Top Rated',
+	title: __( 'Top Rated', 'woo-gutenberg-products-block' ),
 	icon: <Icon icon={ starEmpty } />,
-	description: 'Products gaining popularity based on recent activity.',
+	description: __(
+		'Products gaining popularity based on recent activity.',
+		'woo-gutenberg-products-block'
+	),
 	keywords: [],
 	scope: [],
 };

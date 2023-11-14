@@ -15,10 +15,13 @@ import {
 
 const collection = {
 	name: 'woocommerce-blocks/product-collection/featured',
-	title: 'Featured',
+	title: __( 'Featured', 'woo-gutenberg-products-block' ),
 	icon: <Icon icon={ starFilled } />,
-	description: 'Products that have been marked as featured.',
-	keywords: [ 'best selling' ],
+	description: __(
+		'Products that have been marked as featured.',
+		'woo-gutenberg-products-block'
+	),
+	keywords: [],
 	scope: [],
 };
 

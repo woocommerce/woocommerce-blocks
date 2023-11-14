@@ -15,9 +15,12 @@ import {
 
 const collection = {
 	name: 'woocommerce-blocks/product-collection/best-sellers',
-	title: 'Best Sellers',
+	title: __( 'Best Sellers', 'woo-gutenberg-products-block' ),
 	icon: <Icon icon={ chartBar } />,
-	description: 'Display a grid of the best selling products.',
+	description: __(
+		'Display a grid of the best selling products.',
+		'woo-gutenberg-products-block'
+	),
 	keywords: [ 'best selling' ],
 	scope: [],
 };

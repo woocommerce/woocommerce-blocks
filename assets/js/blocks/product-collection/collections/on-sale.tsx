@@ -15,9 +15,12 @@ import {
 
 const collection = {
 	name: 'woocommerce-blocks/product-collection/on-sale',
-	title: 'On Sale',
+	title: __( 'On Sale', 'woo-gutenberg-products-block' ),
 	icon: <Icon icon={ percent } />,
-	description: 'Products currently marked on sale.',
+	description: __(
+		'Products currently marked on sale.',
+		'woo-gutenberg-products-block'
+	),
 	keywords: [],
 	scope: [],
 };

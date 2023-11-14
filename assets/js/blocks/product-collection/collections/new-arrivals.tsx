@@ -15,9 +15,12 @@ import {
 
 const collection = {
 	name: 'woocommerce-blocks/product-collection/new-arrivals',
-	title: 'New Arrivals',
+	title: __( 'New Arrivals', 'woo-gutenberg-products-block' ),
 	icon: <Icon icon={ calendar } />,
-	description: 'Display a grid of your newest products.',
+	description: __(
+		'Display a grid of your newest products.',
+		'woo-gutenberg-products-block'
+	),
 	keywords: [ 'newest products' ],
 	scope: [],
 };
