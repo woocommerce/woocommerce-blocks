@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import type { BlockAttributes, InnerBlockTemplate } from '@wordpress/blocks';
+import type {
+	BlockAttributes,
+	InnerBlockTemplate,
+	BlockIcon,
+} from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { Icon, percent } from '@wordpress/icons';
 
@@ -16,7 +20,7 @@ import {
 const collection = {
 	name: 'woocommerce-blocks/product-collection/on-sale',
 	title: __( 'On Sale', 'woo-gutenberg-products-block' ),
-	icon: <Icon icon={ percent } />,
+	icon: ( <Icon icon={ percent } /> ) as BlockIcon,
 	description: __(
 		'Products currently marked on sale.',
 		'woo-gutenberg-products-block'

@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import type { BlockAttributes, InnerBlockTemplate } from '@wordpress/blocks';
+import type {
+	BlockAttributes,
+	InnerBlockTemplate,
+	BlockIcon,
+} from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { Icon, starFilled } from '@wordpress/icons';
 
@@ -16,7 +20,7 @@ import {
 const collection = {
 	name: 'woocommerce-blocks/product-collection/featured',
 	title: __( 'Featured', 'woo-gutenberg-products-block' ),
-	icon: <Icon icon={ starFilled } />,
+	icon: ( <Icon icon={ starFilled } /> ) as BlockIcon,
 	description: __(
 		'Products that have been marked as featured.',
 		'woo-gutenberg-products-block'

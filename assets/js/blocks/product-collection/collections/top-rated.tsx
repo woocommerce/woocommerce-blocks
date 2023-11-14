@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import type { BlockAttributes, InnerBlockTemplate } from '@wordpress/blocks';
+import type {
+	BlockAttributes,
+	InnerBlockTemplate,
+	BlockIcon,
+} from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { Icon, starEmpty } from '@wordpress/icons';
 
@@ -16,7 +20,7 @@ import {
 const collection = {
 	name: 'woocommerce-blocks/product-collection/top-rated',
 	title: __( 'Top Rated', 'woo-gutenberg-products-block' ),
-	icon: <Icon icon={ starEmpty } />,
+	icon: ( <Icon icon={ starEmpty } /> ) as BlockIcon,
 	description: __(
 		'Products gaining popularity based on recent activity.',
 		'woo-gutenberg-products-block'

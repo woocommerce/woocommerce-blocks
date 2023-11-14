@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import type { BlockAttributes, InnerBlockTemplate } from '@wordpress/blocks';
+import type {
+	BlockAttributes,
+	InnerBlockTemplate,
+	BlockIcon,
+} from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { Icon, chartBar } from '@wordpress/icons';
 
@@ -16,7 +20,7 @@ import {
 const collection = {
 	name: 'woocommerce-blocks/product-collection/best-sellers',
 	title: __( 'Best Sellers', 'woo-gutenberg-products-block' ),
-	icon: <Icon icon={ chartBar } />,
+	icon: ( <Icon icon={ chartBar } /> ) as BlockIcon,
 	description: __(
 		'Display a grid of the best selling products.',
 		'woo-gutenberg-products-block'

@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import type { BlockAttributes, InnerBlockTemplate } from '@wordpress/blocks';
+import type {
+	BlockAttributes,
+	InnerBlockTemplate,
+	BlockIcon,
+} from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { Icon, calendar } from '@wordpress/icons';
 
@@ -16,7 +20,7 @@ import {
 const collection = {
 	name: 'woocommerce-blocks/product-collection/new-arrivals',
 	title: __( 'New Arrivals', 'woo-gutenberg-products-block' ),
-	icon: <Icon icon={ calendar } />,
+	icon: ( <Icon icon={ calendar } /> ) as BlockIcon,
 	description: __(
 		'Display a grid of your newest products.',
 		'woo-gutenberg-products-block'
