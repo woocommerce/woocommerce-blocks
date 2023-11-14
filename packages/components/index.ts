@@ -17,4 +17,10 @@ export { default as Spinner } from './spinner';
 export { default as StoreNotice } from './store-notice';
 export { default as StoreNoticesContainer } from './store-notices-container';
 export { default as Textarea } from './textarea';
+export {
+	default as ValidatedTextInput,
+	type ValidatedTextInputHandle,
+} from './text-input/validated-text-input';
+export { default as TextInput } from './text-input/text-input';
 export { default as Title } from './title';
+export { default as ValidationInputError } from './validation-input-error';
