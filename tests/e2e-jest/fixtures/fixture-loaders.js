@@ -6,13 +6,13 @@ const WooCommerceRestApi =
 const glob = require( 'glob-promise' );
 const { dirname } = require( 'path' );
 const { readJson } = require( 'fs-extra' );
-const axios = require( 'axios' ).default;
 require( 'dotenv' ).config();
 
 /**
  * Internal dependencies
  */
 const fixtures = require( './fixture-data' );
+const { requestAsync } = require( './utils' );
 
 // global.process.env.WORDPRESS_BASE_URL = `${ process.env.WORDPRESS_BASE_URL }:8889`;
 
@@ -49,12 +49,15 @@ const setupSettings = ( fixture = fixtures.Settings() ) =>
 	} );
 
 const setupPageSettings = () => {
-	axios.get( `${ WPAPI }?per_page=100` ).then( ( response ) => {
-		const fixture = fixtures.PageSettings( response.data );
-		WooCommerce.post( 'settings/advanced/batch', {
-			update: fixture,
-		} );
-	} );
+	requestAsync( `${ WPAPI }?per_page=100`, { method: 'GET' } ).then(
+		( { body } ) => {
+			const fixture = JSON.parse( body );
+
+			WooCommerce.post( 'settings/advanced/batch', {
+				update: fixture,
+			} );
+		}
+	);
 };
 
 /**

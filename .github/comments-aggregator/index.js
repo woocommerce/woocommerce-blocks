@@ -11,8 +11,7 @@ const { updateComment, isMergedComment } = require( './utils' );
 
 const runner = async () => {
 	try {
-		const token = getInput( 'repo-token', { required: true } );
-		const octokit = getOctokit( token );
+		const octokit = getOctokit( context.token );
 		const payload = context.payload;
 		const repo = payload.repository.name;
 		const owner = payload.repository.owner.login;

@@ -52,7 +52,6 @@ jobs:
               uses: ./.github/monitor-typescript-errors
               id: monitor-typescript-errors
               with:
-                  repo-token: '${{ secrets.GITHUB_TOKEN }}'
                   checkstyle: checkstyle.xml
                   checkstyle-trunk: checkstyle-trunk.xml
                   create-comment: false
@@ -62,7 +61,6 @@ jobs:
             - name: Append report
               uses: ./.github/comments-aggregator
               with:
-                  repo-token: '${{ secrets.GITHUB_TOKEN }}'
                   section-id: monitor-typescript-errors
                   content: ${{steps.monitor-typescript-errors.outputs.comment}}
                   order: 20

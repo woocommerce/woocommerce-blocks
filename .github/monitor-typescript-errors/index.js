@@ -6,8 +6,7 @@ const { generateMarkdownMessage } = require( './utils/markdown' );
 const { addComment } = require( './utils/github' );
 
 const runner = async () => {
-	const token = getInput( 'repo-token', { required: true } );
-	const octokit = getOctokit( token );
+	const octokit = getOctokit( context.token );
 	const payload = context.payload;
 	const repo = payload.repository.name;
 	const owner = payload.repository.owner.login;
@@ -56,18 +55,6 @@ const runner = async () => {
 			} );
 		}
 	}
-
-	/**
-	 * @todo: Airtable integration is failing auth, so we're disabling it for now.
-	 * Issue opened: https://github.com/woocommerce/woocommerce-blocks/issues/8961
-	 */
-	// if ( process.env[ 'CURRENT_BRANCH' ] === 'trunk' ) {
-	// 	try {
-	// 		await addRecord( currentCheckStyleFileContentParsed.totalErrors );
-	// 	} catch ( error ) {
-	// 		setFailed( error );
-	// 	}
-	// }
 };
 
 runner();

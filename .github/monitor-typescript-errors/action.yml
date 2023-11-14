@@ -1,9 +1,6 @@
 name: 'Typescript Monitor'
 description: 'Check TypesScript errors'
 inputs:
-    repo-token:
-        description: 'GitHub token'
-        required: true
     checkstyle:
         description: 'Path checkstyle.xml file of current PR/branch'
         required: true

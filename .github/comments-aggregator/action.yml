@@ -1,9 +1,6 @@
 name: 'Comments Aggregator'
 description: 'Merge bot comments into one comment to keep PR page clean'
 inputs:
-    repo-token:
-        description: 'GitHub token'
-        required: true
     section-id:
         description: 'Comment section ID for the action to know which part to update'
         required: true
