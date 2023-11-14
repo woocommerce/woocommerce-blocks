@@ -13,7 +13,7 @@ import './style.scss';
 import FormattedMonetaryAmount from '../../formatted-monetary-amount';
 
 export interface TotalsItemProps {
-	className?: string;
+	className?: string | undefined;
 	currency: Currency;
 	label: string;
 	// Value may be a number, or react node. Numbers are passed to FormattedMonetaryAmount.
