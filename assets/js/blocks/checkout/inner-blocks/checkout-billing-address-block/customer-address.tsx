@@ -43,8 +43,9 @@ const CustomerAddress = ( {
 			invalidProps: Object.keys( billingAddress )
 				.filter( ( key ) => {
 					return (
+						key !== 'email' &&
 						store.getValidationError( 'billing_' + key ) !==
-						undefined
+							undefined
 					);
 				} )
 				.filter( Boolean ),
