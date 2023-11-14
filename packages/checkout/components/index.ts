@@ -5,7 +5,7 @@ export { default as ExperimentalDiscountsMeta } from './discounts-meta';
 export { default as ExperimentalOrderShippingPackages } from './order-shipping-packages';
 export { default as ExperimentalOrderLocalPickupPackages } from './order-local-pickup-packages';
 export { default as Panel } from '../../components/panel';
-export { default as Button } from './button';
+export { default as Button } from '../../components/button';
 export { default as Label } from './label';
 export { default as StoreNoticesContainer } from '../../components/store-notices-container';
 export { default as CheckboxControl } from './checkbox-control';
