@@ -90,10 +90,10 @@ const CustomerAddress = ( {
 				onEdit={ () => {
 					setEditing( true );
 				} }
-				showPhoneField={ showPhoneField }
+				fieldConfig={ addressFieldsConfig }
 			/>
 		),
-		[ billingAddress, showPhoneField ]
+		[ billingAddress, addressFieldsConfig ]
 	);
 
 	const renderAddressFormComponent = useCallback(
@@ -113,9 +113,7 @@ const CustomerAddress = ( {
 			addressFieldKeys,
 			addressFieldsConfig,
 			billingAddress,
-			dispatchCheckoutEvent,
 			onChangeAddress,
-			useBillingAsShipping,
 		]
 	);
 

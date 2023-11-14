@@ -67,7 +67,6 @@ const CustomerAddress = ( {
 	const addressFieldKeys = Object.keys(
 		defaultAddressFields
 	) as ( keyof AddressFields )[];
-
 	const onChangeAddress = useCallback(
 		( values: Partial< ShippingAddress > ) => {
 			setShippingAddress( values );
@@ -93,9 +92,10 @@ const CustomerAddress = ( {
 				onEdit={ () => {
 					setEditing( true );
 				} }
+				fieldConfig={ addressFieldsConfig }
 			/>
 		),
-		[ shippingAddress ]
+		[ shippingAddress, addressFieldsConfig ]
 	);
 
 	const renderAddressFormComponent = useCallback(
