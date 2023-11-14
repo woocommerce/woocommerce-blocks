@@ -25,14 +25,14 @@ const attributes = {
 	...DEFAULT_ATTRIBUTES,
 	displayLayout: {
 		type: 'flex',
-		columns: 3,
+		columns: 5,
 	},
 	query: {
 		...DEFAULT_ATTRIBUTES.query,
 		inherit: false,
 		orderBy: 'rating',
 		order: 'desc',
-		perPage: 9,
+		perPage: 5,
 		pages: 1,
 	},
 	collection: collection.name,
