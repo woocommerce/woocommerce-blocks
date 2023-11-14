@@ -22,11 +22,7 @@ import { store as blockEditorStore } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import type { ProductCollectionAttributes } from '../types';
-import {
-	INNER_BLOCKS_PRODUCT_TEMPLATE,
-	DEFAULT_ATTRIBUTES,
-} from '../constants';
-import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
+import { getDefaultProductCollection } from '../constants';
 import blockJson from '../block.json';
 
 type CollectionButtonProps = {
@@ -72,13 +68,6 @@ const defaultQuery = {
 	title: 'Default Query',
 	icon: <Icon icon={ loop } />,
 	description: 'Use the current query context set by template.',
-	innerBlocks: [ INNER_BLOCKS_PRODUCT_TEMPLATE ],
-	attributes: {
-		...DEFAULT_ATTRIBUTES,
-		query: {
-			...DEFAULT_ATTRIBUTES.query,
-		},
-	},
 };
 
 const getDefaultChosenCollection = (
@@ -131,17 +120,20 @@ const PatternSelectionModal = ( props: {
 	);
 
 	const applyCollection = () => {
+		// Case 1: Merchant has chosen Default Query. In that case we create defaultProductCollection
+		if (
+			chosenCollectionName ===
+			'woocommerce-blocks/product-collection/default-query'
+		) {
+			const defaultProductCollection = getDefaultProductCollection();
+			replaceBlock( clientId, defaultProductCollection );
+			return;
+		}
+
+		// Case 2: Merchant has chosen another Collection
 		const chosenCollection = blockCollections.find(
 			( { name }: { name: string } ) => name === chosenCollectionName
 		);
-
-		if (
-			chosenCollection.name ===
-			'woocommerce-blocks/product-collection/default-query'
-		) {
-			chosenCollection.attributes.query.inherit =
-				getDefaultValueOfInheritQueryFromTemplate();
-		}
 
 		const newBlock = createBlock(
 			blockJson.name,
