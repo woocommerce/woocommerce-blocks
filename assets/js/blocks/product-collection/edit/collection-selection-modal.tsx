@@ -99,16 +99,6 @@ const getDefaultChosenCollection = (
 	return blockCollections.length ? blockCollections[ 0 ].name : '';
 };
 
-const findProductCollectionBlock = ( blocks ) => {
-	return blocks.find( ( block ) => {
-		const isProductCollection =
-			block.name === 'woocommerce/product-collection';
-		return isProductCollection
-			? block
-			: findProductCollectionBlock( block.innerBlocks );
-	} );
-};
-
 const PatternSelectionModal = ( props: {
 	clientId: string;
 	attributes: ProductCollectionAttributes;
@@ -118,22 +108,6 @@ const PatternSelectionModal = ( props: {
 	// @ts-expect-error Type definitions for this function are missing
 	// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/actions.d.ts
 	const { replaceBlock } = useDispatch( blockEditorStore );
-
-	// Get Patterns
-	const blockPatterns = useSelect(
-		( select ) => {
-			// @ts-expect-error Type definitions are missing
-			// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/selectors.d.ts
-			const { getBlockRootClientId, getPatternsByBlockTypes } =
-				select( blockEditorStore );
-			const rootClientId = getBlockRootClientId( clientId );
-			return getPatternsByBlockTypes( blockJson.name, rootClientId );
-		},
-		[ blockJson.name, clientId ]
-	);
-
-	// Prepare Patterns
-	const [ chosenPatternName, selectPatternName ] = useState( '' );
 
 	// Get Collections
 	const blockCollections = [
@@ -160,9 +134,6 @@ const PatternSelectionModal = ( props: {
 		const chosenCollection = blockCollections.find(
 			( { name }: { name: string } ) => name === chosenCollectionName
 		);
-		const chosenPattern = blockPatterns.find(
-			( { name }: { name: string } ) => name === chosenPatternName
-		);
 
 		if (
 			chosenCollection.name ===
@@ -172,41 +143,10 @@ const PatternSelectionModal = ( props: {
 				getDefaultValueOfInheritQueryFromTemplate();
 		}
 
-		if ( ! chosenPattern ) {
-			const newBlock = createBlock(
-				blockJson.name,
-				chosenCollection.attributes,
-				createBlocksFromInnerBlocksTemplate(
-					chosenCollection.innerBlocks
-				)
-			);
-
-			replaceBlock( clientId, newBlock );
-			return;
-		}
-
-		const { innerBlocks, attributes: patternAttributes } =
-			findProductCollectionBlock( chosenPattern.blocks );
-		const {
-			displayLayout,
-			query: { perPage, pages, offset },
-		} = patternAttributes;
-
-		const mergedAttributes = {
-			...chosenCollection.attributes,
-			displayLayout,
-			query: {
-				...chosenCollection.attributes.query,
-				perPage,
-				pages,
-				offset,
-			},
-		};
-
 		const newBlock = createBlock(
 			blockJson.name,
-			mergedAttributes,
-			createBlocksFromInnerBlocksTemplate( innerBlocks )
+			chosenCollection.attributes,
+			createBlocksFromInnerBlocksTemplate( chosenCollection.innerBlocks )
 		);
 
 		replaceBlock( clientId, newBlock );
