@@ -1,11 +1,7 @@
 /**
  * External dependencies
  */
-import type {
-	BlockAttributes,
-	InnerBlockTemplate,
-	BlockIcon,
-} from '@wordpress/blocks';
+import type { InnerBlockTemplate, BlockIcon } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { Icon, chartBar } from '@wordpress/icons';
 
@@ -46,7 +42,7 @@ const attributes = {
 	collection: collection.name,
 };
 
-const heading: [ string, BlockAttributes?, InnerBlockTemplate[]? ] = [
+const heading: InnerBlockTemplate = [
 	'core/heading',
 	{
 		textAlign: 'center',
