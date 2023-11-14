@@ -13,7 +13,7 @@ import {
 
 export interface BlockRegistrationStrategy {
 	register(
-		blockName: string | Partial< BlockConfiguration >,
+		blockNameOrMetadata: string | Partial< BlockConfiguration >,
 		blockSettings: Partial< BlockConfiguration >
 	): boolean;
 	unregister( blockName: string, variationName?: string ): boolean;
@@ -21,10 +21,13 @@ export interface BlockRegistrationStrategy {
 
 export class BlockTypeStrategy implements BlockRegistrationStrategy {
 	register(
-		blockName: string,
+		blockNameOrMetadata: string | Partial< BlockConfiguration >,
 		blockSettings: Partial< BlockConfiguration >
 	): boolean {
-		return Boolean( registerBlockType( blockName, blockSettings ) );
+		return Boolean(
+			// @ts-expect-error: `registerBlockType` is typed in WordPress core
+			registerBlockType( blockNameOrMetadata, blockSettings )
+		);
 	}
 
 	unregister( blockName: string ): boolean {
