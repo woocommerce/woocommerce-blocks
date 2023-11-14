@@ -7,7 +7,7 @@ export { default as ExperimentalOrderLocalPickupPackages } from './order-local-p
 export { default as Panel } from '../../components/panel';
 export { default as Button } from './button';
 export { default as Label } from './label';
-export { default as StoreNoticesContainer } from './store-notices-container';
+export { default as StoreNoticesContainer } from '../../components/store-notices-container';
 export { default as CheckboxControl } from './checkbox-control';
 export {
 	default as ValidatedTextInput,
@@ -15,4 +15,4 @@ export {
 } from './text-input/validated-text-input';
 export { default as TextInput } from './text-input/text-input';
 export { default as ValidationInputError } from './validation-input-error';
-export { default as StoreNotice } from './store-notice';
+export { default as StoreNotice } from '../../components/store-notice';
