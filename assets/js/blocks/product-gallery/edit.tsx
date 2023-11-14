@@ -35,7 +35,15 @@ const TEMPLATE: InnerBlockTemplate[] = [
 		[
 			[
 				'woocommerce/product-gallery-thumbnails',
-				getInnerBlocksLockAttributes( 'lock' ),
+				{
+					...getInnerBlocksLockAttributes( 'lock' ),
+					style: {
+						layout: {
+							selfStretch: 'fixed',
+							flexSize: '30%',
+						},
+					},
+				},
 			],
 			[
 				'core/group',
@@ -46,6 +54,12 @@ const TEMPLATE: InnerBlockTemplate[] = [
 						justifyContent: 'center',
 					},
 					...getInnerBlocksLockAttributes( 'lock' ),
+					style: {
+						layout: {
+							selfStretch: 'fixed',
+							flexSize: '70%',
+						},
+					},
 				},
 				[
 					[
