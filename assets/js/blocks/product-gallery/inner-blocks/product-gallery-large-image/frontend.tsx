@@ -24,6 +24,9 @@ type Context = {
 
 const getContext = ( ns?: string ) => getContextFn< Context >( ns );
 
+type Store = typeof productGalleryLargeImage & StorePart< ProductGallery >;
+const { state, actions } = store< Store >( 'woocommerce/product-gallery' );
+
 let isDialogStatusChanged = false;
 
 const productGalleryLargeImage = {
@@ -115,9 +118,4 @@ const productGalleryLargeImage = {
 	},
 };
 
-type Store = typeof productGalleryLargeImage & StorePart< ProductGallery >;
-
-const { state, actions } = store< Store >(
-	'woocommerce/product-gallery',
-	productGalleryLargeImage
-);
+store< Store >( 'woocommerce/product-gallery', productGalleryLargeImage );

@@ -241,7 +241,7 @@ module.exports = {
 			rules: {
 				'@typescript-eslint/no-explicit-any': 'error',
 				'no-use-before-define': 'off',
-				'@typescript-eslint/no-use-before-define': 'off',
+				'@typescript-eslint/no-use-before-define': [ 'error' ],
 				'jsdoc/require-param': 'off',
 				'no-shadow': 'off',
 				'@typescript-eslint/no-shadow': [ 'error' ],

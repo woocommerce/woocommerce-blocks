@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { store, getContext as getContextFn } from '@woocommerce/interactivity';
+import { StorePart } from 'assets/js/utils/interactivity';
 
 export interface ProductGalleryContext {
 	selectedImage: string;
@@ -24,6 +25,9 @@ enum Keys {
 
 const getContext = ( ns?: string ) =>
 	getContextFn< ProductGalleryContext >( ns );
+
+type Store = typeof productGallery & StorePart< ProductGallery >;
+const { state } = store< Store >( 'woocommerce/product-gallery' );
 
 const selectImage = (
 	context: ProductGalleryContext,
@@ -152,6 +156,6 @@ const productGallery = {
 	},
 };
 
-const { state } = store( 'woocommerce/product-gallery', productGallery );
+store( 'woocommerce/product-gallery', productGallery );
 
 export type ProductGallery = typeof productGallery;
