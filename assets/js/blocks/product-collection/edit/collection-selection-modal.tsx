@@ -16,12 +16,7 @@ import {
 /**
  * External dependencies
  */
-import {
-	store as blockEditorStore,
-	// @ts-expect-error Using experimental features
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalBlockPatternsList as BlockPatternsList,
-} from '@wordpress/block-editor';
+import { store as blockEditorStore } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -249,28 +244,6 @@ const PatternSelectionModal = ( props: {
 							/>
 						)
 					) }
-				</div>
-				<div className="wc-blocks-product-collection__patterns-section">
-					<h3>
-						{ __(
-							'Choose a pattern',
-							'woo-gutenberg-products-block'
-						) }
-					</h3>
-					<p className="wc-blocks-product-collection__subtitle">
-						{ __(
-							'Patterns are a great starting point that you can customise later.',
-							'woo-gutenberg-products-block'
-						) }
-					</p>
-					<BlockPatternsList
-						className="wc-blocks-product-collection__patterns-preview"
-						blockPatterns={ blockPatterns }
-						shownPatterns={ blockPatterns }
-						onClickPattern={ ( { name } ) =>
-							selectPatternName( name )
-						}
-					/>
 				</div>
 				<div className="wc-blocks-product-collection__footer">
 					<Button
