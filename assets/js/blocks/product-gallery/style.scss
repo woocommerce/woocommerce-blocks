@@ -271,6 +271,14 @@ $thumbnails-gap: 15px;
 			display: block;
 			padding-top: 100%;
 		}
+
+		@for $i from 2 through 8 {
+			#{$gallery}[data-thumbnails-number-of-thumbnails='#{$i}'][data-thumbnails-position="bottom"] & {
+				$percentage: 100% / $i;
+				$gap-adjustment: $thumbnails-gap * ($i - 1) / $i;
+				flex: 0 0 calc(#{$percentage} - #{$gap-adjustment});
+			}
+		}
 	}
 
 	.wc-block-product-gallery-thumbnails__thumbnail__overlay {
