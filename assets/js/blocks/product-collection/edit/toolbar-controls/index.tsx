@@ -9,7 +9,7 @@ import { BlockControls } from '@wordpress/block-editor';
  */
 import { setQueryAttribute } from '../../utils';
 import DisplaySettingsToolbar from './display-settings-toolbar';
-import PatternChooserToolbar from './pattern-chooser-toolbar';
+import PatternChooserToolbar from './coolection-chooser-toolbar';
 import type { ProductCollectionEditComponentProps } from '../../types';
 
 export default function ToolbarControls(

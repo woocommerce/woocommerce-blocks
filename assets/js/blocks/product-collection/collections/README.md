@@ -17,7 +17,9 @@ Collections are in fact Variations and they are registered via Variation API. He
 	icon: Icon,
 	description: string,
 	attributes: ProductCollectionAttributes,
-	innerBlocks: InnerBlockTemplate[]
+	innerBlocks: InnerBlockTemplate[],
+	isActive?:
+		(blockAttrs: BlockAttributes, variationAttributes: BlockAttributes) => boolean,
 }
 ```
 

@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
 
-const DisplayLayoutControl = ( props: {
+const CollectionChooserToolbar = ( props: {
 	openPatternSelectionModal: () => void;
 } ) => {
 	return (
@@ -16,4 +16,4 @@ const DisplayLayoutControl = ( props: {
 	);
 };
 
-export default DisplayLayoutControl;
+export default CollectionChooserToolbar;
