@@ -241,7 +241,7 @@ test.describe( `${ blockData.name }`, () => {
 		} );
 	} );
 
-	test.describe( 'Block availability', () => {
+	test.describe( 'block availability', () => {
 		test( 'should be available on the Single Product Template', async ( {
 			page,
 			editorUtils,
