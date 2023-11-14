@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { store, getContext as getContextFn } from '@woocommerce/interactivity';
-import { StorePart } from 'assets/js/utils/interactivity';
+import { StorePart } from '@woocommerce/utils';
 
 export interface ProductGalleryContext {
 	selectedImage: string;
@@ -51,7 +51,7 @@ const productGallery = {
 			const { selectedImage, imageId } = getContext();
 			return selectedImage === imageId;
 		},
-		get pagerDotFillOpacity() {
+		get pagerDotFillOpacity(): number {
 			return state.isSelected ? 1 : 0.2;
 		},
 	},
