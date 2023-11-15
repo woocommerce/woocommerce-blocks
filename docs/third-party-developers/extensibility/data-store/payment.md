@@ -32,7 +32,7 @@
 
 The payment data store is used to store payment method data and payment processing information. When the payment status changes, the data store will reflect this.
 
-**Currently, all the actions are internal-only while we determine which ones will be useful for extensions to interact with. We do not encourage extensions to dispatch actions onto this data store yet.**
+**⚠️ Currently, all the actions are internal-only while we determine which ones will be useful for extensions to interact with. We do not encourage extensions to dispatch actions onto this data store yet.**
 
 An example of data held within the Payment Data Store is shown below. This example shows the state with several Payment Gateways active, and a saved token.
 
@@ -422,7 +422,7 @@ const expressPaymentMethodsInitialized =
 
 ### getPaymentResult
 
-Returns the result of the last payment attempt
+Returns the result of the last payment attempt.
 
 #### _Returns_ <!-- omit in toc -->
 
