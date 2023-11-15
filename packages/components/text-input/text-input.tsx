@@ -23,7 +23,7 @@ interface TextInputProps
 	ariaDescribedBy?: string | undefined;
 	screenReaderLabel?: string;
 	help?: string;
-	feedback?: boolean | JSX.Element;
+	feedback?: JSX.Element | null;
 	autoComplete?: string | undefined;
 	onChange: ( newValue: string ) => void;
 	onBlur?: ( newValue: string ) => void;
