@@ -482,7 +482,7 @@ const isPaymentStarted = store.isPaymentStarted();
 
 Queries if the status is `success`.
 
-> ⚠️ This selector is deprecated and will be removed in a future release. Please use isPaymentReady instead.
+> ⚠️ This selector is deprecated and will be removed in a future release. Please use `isPaymentReady` instead.
 
 #### _Returns_ <!-- omit in toc -->
 
