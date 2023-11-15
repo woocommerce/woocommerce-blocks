@@ -12,7 +12,7 @@ import type { InputHTMLAttributes } from 'react';
 import Label from '../label';
 import './style.scss';
 
-interface TextInputProps
+export interface TextInputProps
 	extends Omit<
 		InputHTMLAttributes< HTMLInputElement >,
 		'onChange' | 'onBlur'
