@@ -38,32 +38,68 @@ final class CollectionAttributeFilter extends AbstractBlock {
 				$acc[ $count['term'] ] = $count['count'];
 				return $acc;
 			},
-			[] );
+			[]
+		);
 
-		$attribute_terms = get_terms( array(
-			'taxonomy' => $product_attribute->slug,
-			'include' => array_keys( $attribute_counts ),
-		) );
+		$attribute_terms = get_terms(
+			array(
+				'taxonomy' => $product_attribute->slug,
+				'include'  => array_keys( $attribute_counts ),
+			)
+		);
 
-		$attribute_options = array_map( function( $term ) use( $attribute_counts ) {
-			$term = (array) $term;
-			$term['count'] = $attribute_counts[$term['term_id']];
-			return $term;
-		}, $attribute_terms );
+		$selected_terms = array_filter(
+			explode(
+				',',
+				get_query_var( 'filter_' . str_replace( 'pa_', '', $product_attribute->slug ) )
+			)
+		);
 
-		$filter_content = $attributes['displayStyle'] === 'dropdown' ? $this->render_attribute_dropdown( $attribute_options, $attributes ) : $this->render_attribute_list( $attribute_options, $attributes );
+		$attribute_options = array_map(
+			function( $term ) use ( $attribute_counts, $selected_terms ) {
+				$term             = (array) $term;
+				$term['count']    = $attribute_counts[ $term['term_id'] ];
+				$term['selected'] = in_array( $term['slug'], $selected_terms, true );
+				return $term;
+			},
+			$attribute_terms
+		);
+
+		$filter_content = 'dropdown' === $attributes['displayStyle'] ? $this->render_attribute_dropdown( $attribute_options, $attributes ) : $this->render_attribute_list( $attribute_options, $attributes );
+
+		$context = array(
+			'attributeSlug' => str_replace( 'pa_', '', $product_attribute->slug ),
+			'queryType'     => $attributes['queryType'],
+			'selectedTerms' => $selected_terms,
+		);
 
 		return sprintf(
 			'<div %1$s>%2$s</div>',
-			get_block_wrapper_attributes(),
+			get_block_wrapper_attributes(
+				array(
+					'data-wc-context' => wp_json_encode( $context ),
+				)
+			),
 			$filter_content
 		);
 	}
 
+	/**
+	 * Render the dropdown.
+	 *
+	 * @param array $options    Data to render the dropdown.
+	 * @param bool  $attributes Block attributes.
+	 */
 	private function render_attribute_dropdown( $options, $attributes ) {
 
 	}
 
+	/**
+	 * Render the list.
+	 *
+	 * @param array $options    Data to render the list.
+	 * @param bool  $attributes Block attributes.
+	 */
 	private function render_attribute_list( $options, $attributes ) {
 		ob_start();
 		echo '<ul class="wc-block-checkbox-list wc-block-components-checkbox-list wc-block-stock-filter-list">';
@@ -74,13 +110,21 @@ final class CollectionAttributeFilter extends AbstractBlock {
 		return ob_get_clean();
 	}
 
+	/**
+	 * Render the list item.
+	 *
+	 * @param array $option      Data to render the list item.
+	 * @param bool  $show_counts Whether to display the count.
+	 */
 	private function render_list_item_template( $option, $show_counts ) {
 		$count_html = $show_counts ?
-			sprintf( '<span class="wc-filter-element-label-list-count">
+			sprintf(
+				'<span class="wc-filter-element-label-list-count">
 				<span aria-hidden="true">%1$s</span>
 				<span class="screen-reader-text">%2$s</span>
 				</span>',
 				$option['count'],
+				// translators: %d is the number of products.
 				sprintf( _n( '%d product', '%d products', $option['count'], 'woo-gutenberg-products-block' ), $option['count'] )
 			) :
 			'';
@@ -88,18 +132,32 @@ final class CollectionAttributeFilter extends AbstractBlock {
 		$template = '<li>
 			<div class="wc-block-components-checkbox wc-block-checkbox-list__checkbox">
 				<label for="%1$s">
-					<input id="%1$s" class="wc-block-components-checkbox__input" type="checkbox" aria-invalid="false">
+					<input
+						id="%1$s"
+						class="wc-block-components-checkbox__input"
+						type="checkbox"
+						aria-invalid="false"
+						data-wc-on--change="actions.filters.updateProductsWithAttributeFilter"
+						data-wc-bind--checked="selectors.filters.isSelectedAttribute"
+						data-wc-context=\'{ "attributeTermSlug": "%5$s" }\'
+						value="%5$s"
+						%4$s
+					/>
 					<svg class="wc-block-components-checkbox__mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 20"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path></svg>
 					<span class="wc-block-components-checkbox__label">%2$s%3$s</span>
 				</label>
 			</div>
 		</li>';
 
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		printf(
 			$template,
 			$option['slug'] . '-' . $option['term_id'],
 			$option['name'],
-			$count_html
+			$count_html,
+			$option['selected'] ? 'checked' : '',
+			$option['slug']
 		);
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
