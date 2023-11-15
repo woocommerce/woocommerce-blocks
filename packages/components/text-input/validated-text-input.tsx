@@ -22,7 +22,7 @@ import { useInstanceId } from '@wordpress/compose';
 import TextInput from './text-input';
 import './style.scss';
 import { ValidationInputError } from '../validation-input-error';
-import { getValidityMessageForInput } from '../../utils';
+import { getValidityMessageForInput } from '../../checkout/utils';
 import { ValidatedTextInputProps } from './types';
 
 export type ValidatedTextInputHandle = {
@@ -40,6 +40,7 @@ const ValidatedTextInput = forwardRef<
 		{
 			className,
 			id,
+			type = 'text',
 			ariaDescribedBy,
 			errorId,
 			focusOnMount = false,
@@ -229,6 +230,7 @@ const ValidatedTextInput = forwardRef<
 				} ) }
 				aria-invalid={ hasError === true }
 				id={ textInputId }
+				type={ type }
 				feedback={
 					showError && (
 						<ValidationInputError
@@ -255,7 +257,7 @@ const ValidatedTextInput = forwardRef<
 				onBlur={ () => validateInput( false ) }
 				ariaDescribedBy={ describedBy }
 				value={ value }
-				title=""
+				title="" // This prevents the same error being shown on hover.
 				label={ label }
 				{ ...rest }
 			/>
