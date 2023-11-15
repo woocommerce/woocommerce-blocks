@@ -48,14 +48,9 @@ class ProductGallery extends AbstractBlock {
 	/**
 	 * Return the dialog content.
 	 *
-	 * @param WP_Block $block Block instance.
 	 * @return string
 	 */
-	protected function render_dialog( $block ) {
-		$post_id       = $block->context['postId'] ?? '';
-		$product       = wc_get_product( $post_id );
-		$product_title = $product->get_title();
-
+	protected function render_dialog() {
 		$template_part = BlockTemplateUtils::get_template_part( 'product-gallery' );
 
 		$parsed_template = parse_blocks(
@@ -131,7 +126,7 @@ class ProductGallery extends AbstractBlock {
 
 		$number_of_thumbnails = $block->attributes['thumbnailsNumberOfThumbnails'] ?? 0;
 		$classname            = $attributes['className'] ?? '';
-		$dialog               = isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ? $this->render_dialog( $block ) : '';
+		$dialog               = isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ? $this->render_dialog() : '';
 		$post_id              = $block->context['postId'] ?? '';
 		$product              = wc_get_product( $post_id );
 		$product_id           = strval( $product->get_id() );
