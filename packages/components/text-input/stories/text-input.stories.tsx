@@ -71,10 +71,6 @@ export default {
 				},
 			},
 		},
-		help: {
-			type: 'string',
-			description: 'Help text to show alongside the input.',
-		},
 		id: {
 			type: 'string',
 			control: 'text',
