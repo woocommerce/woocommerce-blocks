@@ -105,7 +105,7 @@ const { PAYMENT_STORE_KEY } = window.wc.wcBlocksData;
 
 ### isPaymentIdle
 
-Queries if the status is `idle`
+Queries if the status is `idle`.
 
 #### _Returns_ <!-- omit in toc -->
 
