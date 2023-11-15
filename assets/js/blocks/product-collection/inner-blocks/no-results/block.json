@@ -5,7 +5,7 @@
     "title": "No results",
     "version": "1.0.0",
     "category": "woocommerce",
-    "description": "Contains the block elements used to render content when no results are found.",
+    "description": "The contents of this block will display when there are no products found.",
     "textdomain": "woo-gutenberg-products-block",
     "keywords": [ "Product Collection" ],
 	"usesContext": [ "queryId", "query" ],
