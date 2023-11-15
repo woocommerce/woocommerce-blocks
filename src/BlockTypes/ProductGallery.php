@@ -75,9 +75,6 @@ class ProductGallery extends AbstractBlock {
 
 		$html_processor->remove_attribute( 'data-wc-context' );
 
-		$html_processor->next_tag( array( 'class_name' => 'wp-block-woocommerce-product-gallery-pager' ) );
-		$html_processor->set_attribute( 'style', 'display: none;' );
-
 		$gallery_dialog = strtr(
 			'
 		<div class="wc-block-product-gallery-dialog__overlay" hidden data-wc-bind--hidden="!selectors.woocommerce.isDialogOpen" data-wc-effect="effects.woocommerce.keyboardAccess">
