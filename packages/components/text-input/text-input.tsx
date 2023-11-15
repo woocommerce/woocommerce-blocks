@@ -21,7 +21,7 @@ export interface TextInputProps
 	ariaLabel?: string;
 	label?: string | undefined;
 	ariaDescribedBy?: string | undefined;
-	screenReaderLabel?: string;
+	screenReaderLabel?: string | undefined;
 	help?: string;
 	feedback?: JSX.Element | null;
 	autoComplete?: string | undefined;
