@@ -7,8 +7,8 @@
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
 
-$image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/plant-white-leaf-flower-vase-green.jpg' );
-$image2 = PatternsHelper::get_image_url( $images, 1, 'images/pattern-placeholders/table-wood-house-chair-floor-window.jpg' );
+$image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/tea-leaf-meal-food-herb-produce.jpg' );
+$image2 = PatternsHelper::get_image_url( $images, 1, 'images/pattern-placeholders/drinkware-liquid-tableware-dishware-bottle-fluid.jpg' );
 
 $first_title  = $content['titles'][0]['default'] ?? '';
 $second_title = $content['titles'][1]['default'] ?? '';
@@ -102,9 +102,9 @@ $third_description  = $content['descriptions'][2]['default'] ?? '';
 
 		<!-- wp:column {"verticalAlignment":"center"} -->
 		<div class="wp-block-column is-vertically-aligned-center">
-			<!-- wp:cover {"url":"<?php echo esc_url( $image2 ); ?>","dimRatio":0,"focalPoint":{"x":0.33,"y":0.06},"style":{"color":{}}} -->
+			<!-- wp:cover {"url":"<?php echo esc_url( $image2 ); ?>","dimRatio":0,"focalPoint":{"x":0.76,"y":0.57},"style":{"color":{}}} -->
 			<div class="wp-block-cover">
-				<img class="wp-block-cover__image-background" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in a hero section. 2 out of 2.', 'woo-gutenberg-products-block' ); ?>" src="<?php echo esc_url( $image2 ); ?>" style="object-position:33% 6%" data-object-fit="cover" data-object-position="33% 6%"/>
+				<img class="wp-block-cover__image-background" alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased in a hero section. 2 out of 2.', 'woo-gutenberg-products-block' ); ?>" src="<?php echo esc_url( $image2 ); ?>" style="object-position:76% 57%" data-object-fit="cover" data-object-position="76% 57%"/>
 				<div class="wp-block-cover__inner-container">
 					<!-- wp:paragraph {"align":"center","placeholder":"Write title…","fontSize":"large"} -->
 						<p class="has-text-align-center has-large-font-size"> </p>
