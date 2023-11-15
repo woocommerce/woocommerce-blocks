@@ -70,6 +70,7 @@ class ProductCollectionPage {
 
 	async chooseDefaultCollection() {
 		await this.page
+			.frameLocator( 'iframe[name="editor-canvas"]' )
 			.getByRole( 'button', { name: 'Use default collection' } )
 			.click();
 	}
