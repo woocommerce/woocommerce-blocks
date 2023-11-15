@@ -119,7 +119,6 @@ const Block = ( {
 				{ cartDataLoaded ? (
 					<CustomerAddress
 						addressFieldsConfig={ addressFieldsConfig }
-						forceEditing={ forceEditing }
 						defaultEditing={ defaultEditingAddress }
 					/>
 				) : null }
