@@ -446,7 +446,7 @@ const paymentResult = store.getPaymentResult();
 
 ### (@deprecated) isPaymentPristine
 
-Queries if the status is `pristine`
+Queries if the status is `pristine`.
 
 > ⚠️ This selector is deprecated and will be removed in a future release. Please use `isPaymentIdle` instead.
 
