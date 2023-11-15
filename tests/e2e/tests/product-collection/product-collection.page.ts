@@ -69,8 +69,7 @@ class ProductCollectionPage {
 	}
 
 	async chooseDefaultCollection() {
-		await this.page
-			.frameLocator( 'iframe[name="editor-canvas"]' )
+		await this.admin.page
 			.getByRole( 'button', { name: 'Use default collection' } )
 			.click();
 	}
@@ -104,8 +103,6 @@ class ProductCollectionPage {
 			'core/query',
 			'woocommerce/product-collection'
 		);
-
-		await this.chooseDefaultCollection();
 
 		await this.editor.saveSiteEditorEntities();
 	}
