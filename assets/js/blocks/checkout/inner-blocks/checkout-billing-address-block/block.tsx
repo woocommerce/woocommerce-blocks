@@ -14,7 +14,7 @@ import type {
 	AddressField,
 	AddressFields,
 } from '@woocommerce/settings';
-import { StoreNoticesContainer } from '@woocommerce/blocks-checkout';
+import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
 
@@ -71,11 +71,17 @@ const Block = ( {
 			address_2: {
 				hidden: ! showApartmentField,
 			},
+			phone: {
+				hidden: ! showPhoneField,
+				required: requirePhoneField,
+			},
 		};
 	}, [
 		showCompanyField,
 		requireCompanyField,
 		showApartmentField,
+		showPhoneField,
+		requirePhoneField,
 	] ) as Record< keyof AddressFields, Partial< AddressField > >;
 
 	const WrapperComponent = isEditor ? Noninteractive : Fragment;
@@ -96,8 +102,6 @@ const Block = ( {
 				{ cartDataLoaded ? (
 					<CustomerAddress
 						addressFieldsConfig={ addressFieldsConfig }
-						showPhoneField={ showPhoneField }
-						requirePhoneField={ requirePhoneField }
 						forceEditing={ forceEditing }
 					/>
 				) : null }

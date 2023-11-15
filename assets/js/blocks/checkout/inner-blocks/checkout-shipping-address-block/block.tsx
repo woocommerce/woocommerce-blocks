@@ -9,10 +9,8 @@ import {
 	useEditorContext,
 	noticeContexts,
 } from '@woocommerce/base-context';
-import {
-	CheckboxControl,
-	StoreNoticesContainer,
-} from '@woocommerce/blocks-checkout';
+import { CheckboxControl } from '@woocommerce/blocks-checkout';
+import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type {
 	BillingAddress,
@@ -82,11 +80,17 @@ const Block = ( {
 			address_2: {
 				hidden: ! showApartmentField,
 			},
+			phone: {
+				hidden: ! showPhoneField,
+				required: requirePhoneField,
+			},
 		};
 	}, [
 		showCompanyField,
 		requireCompanyField,
 		showApartmentField,
+		showPhoneField,
+		requirePhoneField,
 	] ) as Record< keyof AddressFields, Partial< AddressField > >;
 
 	const WrapperComponent = isEditor ? Noninteractive : Fragment;
@@ -112,8 +116,6 @@ const Block = ( {
 				{ cartDataLoaded ? (
 					<CustomerAddress
 						addressFieldsConfig={ addressFieldsConfig }
-						showPhoneField={ showPhoneField }
-						requirePhoneField={ requirePhoneField }
 					/>
 				) : null }
 			</WrapperComponent>
