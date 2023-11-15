@@ -80,11 +80,17 @@ const Block = ( {
 			address_2: {
 				hidden: ! showApartmentField,
 			},
+			phone: {
+				hidden: ! showPhoneField,
+				required: requirePhoneField,
+			},
 		};
 	}, [
 		showCompanyField,
 		requireCompanyField,
 		showApartmentField,
+		showPhoneField,
+		requirePhoneField,
 	] ) as Record< keyof AddressFields, Partial< AddressField > >;
 
 	const WrapperComponent = isEditor ? Noninteractive : Fragment;
@@ -103,6 +109,9 @@ const Block = ( {
 		};
 	} );
 
+	// Default editing state for CustomerAddress component comes from the current address and whether or not we're in the editor.
+	const defaultEditingAddress = isEditor || ! hasAddress;
+
 	return (
 		<>
 			<StoreNoticesContainer context={ noticeContext } />
@@ -110,8 +119,7 @@ const Block = ( {
 				{ cartDataLoaded ? (
 					<CustomerAddress
 						addressFieldsConfig={ addressFieldsConfig }
-						showPhoneField={ showPhoneField }
-						requirePhoneField={ requirePhoneField }
+						defaultEditing={ defaultEditingAddress }
 					/>
 				) : null }
 			</WrapperComponent>
