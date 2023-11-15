@@ -49,4 +49,6 @@ const Template: StoryFn< ValidationInputErrorProps > = ( args ) => {
 };
 
 export const Default = Template.bind( {} );
-Default.args = {};
+Default.args = {
+	errorMessage: 'An error message to show to the user.',
+};
