@@ -1,11 +1,11 @@
 /**
  * External dependencies
  */
+import { isPostcode } from '@woocommerce/blocks-checkout';
 import {
 	ValidatedTextInput,
-	isPostcode,
 	type ValidatedTextInputHandle,
-} from '@woocommerce/blocks-checkout';
+} from '@woocommerce/blocks-components';
 import {
 	BillingCountryInput,
 	ShippingCountryInput,
@@ -180,6 +180,7 @@ const AddressForm = ( {
 							( fieldsRef.current[ field.key ] = el )
 						}
 						{ ...fieldProps }
+						type={ field.type }
 						value={ values[ field.key ] }
 						onChange={ ( newValue: string ) =>
 							onChange( {
