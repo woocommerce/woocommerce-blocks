@@ -259,16 +259,7 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'editor' );
 	}
 
-	async setDisplaySettings( {
-		itemsPerPage,
-		offset,
-		maxPageToShow,
-	}: {
-		itemsPerPage: number;
-		offset: number;
-		maxPageToShow: number;
-		isOnFrontend?: boolean;
-	} ) {
+	async clickDisplaySettings() {
 		// Select the block, so that toolbar is visible.
 		const block = this.page
 			.locator( `[data-type="${ this.BLOCK_NAME }"]` )
@@ -279,7 +270,18 @@ class ProductCollectionPage {
 		await this.page
 			.getByRole( 'button', { name: 'Display settings' } )
 			.click();
+	}
 
+	async setDisplaySettings( {
+		itemsPerPage,
+		offset,
+		maxPageToShow,
+	}: {
+		itemsPerPage: number;
+		offset: number;
+		maxPageToShow: number;
+		isOnFrontend?: boolean;
+	} ) {
 		// Set the values.
 		const displaySettingsContainer = this.page.locator(
 			'.wc-block-editor-product-collection__display-settings'
