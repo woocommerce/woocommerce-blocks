@@ -17,6 +17,9 @@ class Utils {
 	 * @return bool|int Returns true if the current WordPress version satisfies the comparison, false otherwise.
 	 */
 	public static function wp_version_compare( $version, $operator = null ) {
+		// Replace non-alphanumeric characters with a dot
+		$version = preg_replace( '/[^0-9a-zA-Z\.]+/i', '.', $version );
+
 		$current_wp_version = get_bloginfo( 'version' );
 		if ( preg_match( '/^([0-9]+\.[0-9]+)/', $current_wp_version, $matches ) ) {
 			$current_wp_version = (float) $matches[1];
