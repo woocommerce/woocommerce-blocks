@@ -49,7 +49,7 @@ export class BlockRegistrationManager
 	 * @param {boolean} params.isPostOrPage             - Whether the editor is in a post or page.
 	 * @return {boolean} True if the block should be registered, false otherwise.
 	 */
-	private blockShouldBeRegistered( {
+	private shouldBlockBeRegistered( {
 		blockWithRestrictionName,
 		currentTemplateId,
 		isPostOrPage,
@@ -106,7 +106,7 @@ export class BlockRegistrationManager
 		) ) {
 			if ( this.blocksWithRestriction[ blockWithRestrictionName ] ) {
 				if (
-					this.blockShouldBeRegistered( {
+					this.shouldBlockBeRegistered( {
 						blockWithRestrictionName,
 						currentTemplateId,
 						isPostOrPage,
