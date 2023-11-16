@@ -131,9 +131,8 @@ class ProductCollectionPage {
 			postId: 'woocommerce/woocommerce//archive-product',
 			postType: 'wp_template',
 		} );
-
+		await this.editorUtils.waitForSiteEditorFinishLoading();
 		await this.editor.canvas.click( 'body' );
-
 		await this.editor.insertBlock( block );
 		await this.chooseDefaultCollectionInTemplate();
 		await this.editor.openDocumentSettingsSidebar();
