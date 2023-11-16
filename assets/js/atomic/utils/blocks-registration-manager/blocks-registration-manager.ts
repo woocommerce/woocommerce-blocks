@@ -10,10 +10,7 @@ import {
 	BlockTypeStrategy,
 	BlockVariationStrategy,
 } from './block-registration-strategy';
-import {
-	BLOCKS_WITH_RESTRICTION,
-	BlocksWithRestriction,
-} from './blocks-with-restriction';
+import { BLOCKS_WITH_RESTRICTION } from './blocks-with-restriction';
 
 /**
  * Manages the registration and unregistration of blocks based on template or page restrictions.
@@ -27,12 +24,10 @@ import {
 export class BlockRegistrationManager
 	implements TemplateChangeDetectorObserver
 {
-	private blocksWithRestriction: BlocksWithRestriction;
 	private unregisteredBlocks: string[] = [];
 	private blockRegistrationStrategy: BlockRegistrationStrategy;
 
 	constructor() {
-		this.blocksWithRestriction = BLOCKS_WITH_RESTRICTION;
 		this.blockRegistrationStrategy = new BlockTypeStrategy();
 	}
 
@@ -62,7 +57,7 @@ export class BlockRegistrationManager
 			allowedTemplates,
 			allowedTemplateParts,
 			availableInPostOrPageEditor,
-		} = this.blocksWithRestriction[ blockWithRestrictionName ];
+		} = BLOCKS_WITH_RESTRICTION[ blockWithRestrictionName ];
 		const shouldBeAvailableOnTemplate = Object.keys(
 			allowedTemplates
 		).some( ( allowedTemplate ) =>
@@ -104,27 +99,25 @@ export class BlockRegistrationManager
 		for ( const blockWithRestrictionName of Object.keys(
 			BLOCKS_WITH_RESTRICTION
 		) ) {
-			if ( this.blocksWithRestriction[ blockWithRestrictionName ] ) {
-				if (
-					this.shouldBlockBeRegistered( {
-						blockWithRestrictionName,
-						currentTemplateId,
-						isPostOrPage,
-					} )
-				) {
-					continue;
-				}
-				this.blockRegistrationStrategy = this.blocksWithRestriction[
-					blockWithRestrictionName
-				].isVariationBlock
-					? new BlockVariationStrategy()
-					: new BlockTypeStrategy();
-
-				this.blockRegistrationStrategy.unregister(
-					blockWithRestrictionName
-				);
-				this.unregisteredBlocks.push( blockWithRestrictionName );
+			if (
+				this.shouldBlockBeRegistered( {
+					blockWithRestrictionName,
+					currentTemplateId,
+					isPostOrPage,
+				} )
+			) {
+				continue;
 			}
+			this.blockRegistrationStrategy = BLOCKS_WITH_RESTRICTION[
+				blockWithRestrictionName
+			].isVariationBlock
+				? new BlockVariationStrategy()
+				: new BlockTypeStrategy();
+
+			this.blockRegistrationStrategy.unregister(
+				blockWithRestrictionName
+			);
+			this.unregisteredBlocks.push( blockWithRestrictionName );
 		}
 	}
 
@@ -138,8 +131,8 @@ export class BlockRegistrationManager
 	registerBlocksAfterLeavingRestrictedArea() {
 		for ( const unregisteredBlockName of this.unregisteredBlocks ) {
 			const restrictedBlockData =
-				this.blocksWithRestriction[ unregisteredBlockName ];
-			this.blockRegistrationStrategy = this.blocksWithRestriction[
+				BLOCKS_WITH_RESTRICTION[ unregisteredBlockName ];
+			this.blockRegistrationStrategy = BLOCKS_WITH_RESTRICTION[
 				unregisteredBlockName
 			].isVariationBlock
 				? new BlockVariationStrategy()
