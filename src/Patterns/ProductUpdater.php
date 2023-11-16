@@ -304,7 +304,19 @@ class ProductUpdater {
 		$products_information_list = [];
 		$dummy_products_count      = count( $dummy_products_to_update );
 		for ( $i = 0; $i < $dummy_products_count; $i ++ ) {
-			$image_src = $ai_selected_images[ $i ]['thumbnails']['medium'] ?? plugins_url( 'woocommerce-blocks/images/block-placeholders/product-image-gallery.svg' );
+			$image_src = $ai_selected_images[ $i ]['URL'] ?? plugins_url( 'woocommerce-blocks/images/block-placeholders/product-image-gallery.svg' );
+			$image_src = remove_query_arg( array_keys( wp_parse_args( wp_parse_url( $image_src, PHP_URL_QUERY ) ) ), $image_src );
+			$image_src = add_query_arg(
+				[
+					'auto' => 'compress',
+					'cs'   => 'tinysrgb',
+					'dpr'  => 1,
+					'fit'  => 'crop',
+					'h'    => '450',
+				],
+				$image_src
+			);
+
 			$image_alt = $ai_selected_images[ $i ]['title'] ?? '';
 
 			$products_information_list[] = [
@@ -339,9 +351,9 @@ class ProductUpdater {
 		$prompts = [];
 		foreach ( $products_information_list as $product_information ) {
 			if ( ! empty( $product_information['image']['alt'] ) ) {
-				$prompts[] = sprintf( 'Generate the name of a product under 50 characters that match the following image description: "%2s". Do not include any adjectives or descriptions of the qualities of the product.', $product_information['image']['alt'] );
+				$prompts[] = sprintf( 'Generate a product name that matches the following image description: "%s" and also the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans. The returned result should not refer to people, only objects.', $product_information['image']['alt'], $business_description );
 			} else {
-				$prompts[] = sprintf( 'Generate the name of a product under 50 characters. Do not include any adjectives or descriptions of the qualities of the product.' );
+				$prompts[] = sprintf( 'Generate a product name that matches the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans.', $business_description );
 			}
 		}
 
