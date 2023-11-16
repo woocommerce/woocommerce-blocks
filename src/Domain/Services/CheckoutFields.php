@@ -1,18 +1,35 @@
 <?php
+
 namespace Automattic\WooCommerce\Blocks\Domain\Services;
 
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
+
 /**
  * Service class managing checkout fields and its related extensibility points.
  */
 class CheckoutFields {
+
 
 	/**
 	 * Core checkout fields.
 	 *
 	 * @var array
 	 */
-	private $fields;
+	private $core_fields;
+
+	/**
+	 * Additional checkout fields.
+	 *
+	 * @var array
+	 */
+	private $additional_fields;
+
+	/**
+	 * Fields locations.
+	 *
+	 * @var array
+	 */
+	private $fields_locations;
 
 	/**
 	 * Instance of the asset data registry.
@@ -28,7 +45,19 @@ class CheckoutFields {
 	 */
 	public function __construct( AssetDataRegistry $asset_data_registry ) {
 		$this->asset_data_registry = $asset_data_registry;
-		$this->fields              = array(
+		$this->core_fields         = array(
+			'email'      => array(
+				'label'          => __( 'Email address', 'woo-gutenberg-products-block' ),
+				'optionalLabel'  => __(
+					'Email address (optional)',
+					'woo-gutenberg-products-block'
+				),
+				'required'       => true,
+				'hidden'         => false,
+				'autocomplete'   => 'email',
+				'autocapitalize' => 'none',
+				'index'          => 0,
+			),
 			'first_name' => array(
 				'label'          => __( 'First name', 'woo-gutenberg-products-block' ),
 				'optionalLabel'  => __(
@@ -136,6 +165,21 @@ class CheckoutFields {
 				'autocapitalize' => 'characters',
 				'index'          => 90,
 			),
+			'phone'      => array(
+				'label'          => __( 'Phone', 'woo-gutenberg-products-block' ),
+				'optionalLabel'  => __(
+					'Phone (optional)',
+					'woo-gutenberg-products-block'
+				),
+				'required'       => false,
+				'hidden'         => false,
+				'autocomplete'   => 'tel',
+				'autocapitalize' => 'characters',
+				'index'          => 100,
+			),
+		);
+
+		$this->additional_fields = array(
 			'plugin_vat' => array(
 				'label'          => __( 'VAT', 'woo-gutenberg-products-block' ),
 				'optionalLabel'  => __(
@@ -148,13 +192,22 @@ class CheckoutFields {
 				'autocapitalize' => 'characters',
 			),
 		);
-		$this->initialize();
+
+		$this->fields_locations = array(
+			// omit email from shipping and billing fields.
+			'address'    => $this->get_address_fields_keys(),
+			// @todo handle rendering contact fields.
+			'contact'    => array( 'email' ),
+			// @todo handle rendering additional fields.
+			'additional' => array(),
+		);
+
 	}
 
 	/**
 	 * Initialize hooks.
 	 */
-	public function initialize() {
+	public function init() {
 		// @TODO: this should move to a class that only run on UI operations.
 		add_action( 'woocommerce_blocks_checkout_enqueue_data', array( $this, 'add_fields_data' ) );
 	}
@@ -163,6 +216,19 @@ class CheckoutFields {
 	 * Add fields data to the asset data registry.
 	 */
 	public function add_fields_data() {
-		$this->asset_data_registry->add( 'defaultAddressFields', $this->fields, true );
+		$this->asset_data_registry->add( 'defaultAddressFields', array_merge( $this->core_fields, $this->additional_fields ), true );
+		$this->asset_data_registry->add( 'addressFieldsLocations', $this->fields_locations, true );
+	}
+
+	/**
+	 * Get the keys of the address fields.
+	 *
+	 * @return array
+	 */
+	protected function get_address_fields_keys() {
+		$core_fields       = array_keys( array_diff_key( $this->core_fields, array( 'email' => '' ) ) );
+		$additional_fields = array( 'plugin_vat' );
+
+		return array_merge( $core_fields, $additional_fields );
 	}
 }

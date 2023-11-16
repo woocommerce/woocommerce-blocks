@@ -26,7 +26,7 @@ export interface LocaleSpecificAddressField extends Partial< AddressField > {
 	priority?: number | undefined;
 }
 
-export interface AddressFields {
+export interface CoreAddressFields {
 	first_name: AddressField;
 	last_name: AddressField;
 	company: AddressField;
@@ -39,8 +39,11 @@ export interface AddressFields {
 	phone: AddressField;
 }
 
+export type AddressFields = CoreAddressFields & Record< string, AddressField >;
+
 export type AddressType = 'billing' | 'shipping';
-export interface ShippingAddress {
+
+export interface CoreAddress {
 	first_name: string;
 	last_name: string;
 	company: string;
@@ -52,6 +55,8 @@ export interface ShippingAddress {
 	postcode: string;
 	phone: string;
 }
+
+export type ShippingAddress = CoreAddress & Record< string, string >;
 
 export type KeyedAddressField = AddressField & {
 	key: keyof AddressFields;

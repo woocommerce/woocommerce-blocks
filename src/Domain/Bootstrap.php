@@ -141,6 +141,7 @@ class Bootstrap {
 			$this->container->get( AssetsController::class );
 			$this->container->get( Installer::class )->init();
 			$this->container->get( GoogleAnalytics::class )->init();
+			$this->container->get( CheckoutFields::class )->init();
 		}
 
 		// Load assets unless this is a request specifically for the store API.
