@@ -221,7 +221,7 @@ class PatternUpdater {
 		$formatted_prompts = [];
 		foreach ( $prompts as $prompt ) {
 			$formatted_prompts[] = sprintf(
-				"Given the following description '%s' generate long texts for the sections using the following prompts for each one of them: `'%s'`. Ensure each entry is unique and does not repeat the given examples. The response format should always be as follows: `'%s'`",
+				"Given the following description '%s' generate long texts for the sections using the following prompts for each one of them: `'%s'`. Ensure each entry is unique and does not repeat the given examples. The response should be an array of data in JSON format. Each element should be an object with the pattern name as the key, and the generated content as values. Here's an example format: `'%s'`",
 				$business_description,
 				wp_json_encode( $prompt ),
 				wp_json_encode( $expected_results_format[ $i ] )
