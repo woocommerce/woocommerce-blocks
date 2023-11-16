@@ -14,7 +14,6 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import './editor.scss';
 import {
 	moveInnerBlocksToPosition,
 	getInnerBlocksLockAttributes,
