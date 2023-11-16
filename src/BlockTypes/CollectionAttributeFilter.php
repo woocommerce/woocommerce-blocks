@@ -101,13 +101,12 @@ final class CollectionAttributeFilter extends AbstractBlock {
 	 * @param bool  $attributes Block attributes.
 	 */
 	private function render_attribute_list( $options, $attributes ) {
-		ob_start();
-		echo '<ul class="wc-block-checkbox-list wc-block-components-checkbox-list wc-block-stock-filter-list">';
+		$output = '<ul class="wc-block-checkbox-list wc-block-components-checkbox-list wc-block-stock-filter-list">';
 		foreach ( $options as $option ) {
-			$this->render_list_item_template( $option, $attributes['showCounts'] );
+			$output .= $this->render_list_item_template( $option, $attributes['showCounts'] );
 		}
-		echo '</ul>';
-		return ob_get_clean();
+		$output .= '</ul>';
+		return $output;
 	}
 
 	/**
@@ -144,20 +143,18 @@ final class CollectionAttributeFilter extends AbstractBlock {
 						%4$s
 					/>
 					<svg class="wc-block-components-checkbox__mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 20"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path></svg>
-					<span class="wc-block-components-checkbox__label">%2$s%3$s</span>
+					<span class="wc-block-components-checkbox__label">%2$s %3$s</span>
 				</label>
 			</div>
 		</li>';
 
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-		printf(
+		return sprintf(
 			$template,
-			$option['slug'] . '-' . $option['term_id'],
-			$option['name'],
+			esc_attr( $option['slug'] ) . '-' . $option['term_id'],
+			esc_html( $option['name'] ),
 			$count_html,
 			$option['selected'] ? 'checked' : '',
-			$option['slug']
+			esc_attr( $option['slug'] )
 		);
-		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
