@@ -98,7 +98,8 @@ $thumbnails-gap: 15px;
 		margin: 0 auto;
 		z-index: 1;
 		transition: all 0.1s linear;
-		width: auto;
+		aspect-ratio: 1 / 1;
+		object-fit: contain;
 
 		// Keep the order in this way. The hoverZoom class should override the full-screen-on-click class when both are applied.
 		&.wc-block-woocommerce-product-gallery-large-image__image--full-screen-on-click {
@@ -268,7 +269,6 @@ $thumbnails-gap: 15px;
 
 	.wc-block-product-gallery-thumbnails__thumbnail {
 		border: 1px solid rgba($color: #000, $alpha: 0.1);
-		max-width: 100%;
 		height: auto;
 		width: auto;
 		display: flex;
@@ -278,6 +278,11 @@ $thumbnails-gap: 15px;
 		position: relative;
 		flex-basis: 0;
 		flex-grow: 1;
+
+		img {
+			aspect-ratio: 1 / 1;
+			object-fit: contain;
+		}
 
 		&::before {
 			content: "";
