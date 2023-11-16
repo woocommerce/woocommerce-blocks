@@ -5,6 +5,7 @@ import {
 	store as interactivityStore,
 	navigate,
 } from '@woocommerce/interactivity';
+import { DropdownContext } from '@woocommerce/interactivity-components/dropdown';
 import { HTMLElementEvent } from '@woocommerce/types';
 
 type AttributeFilterContext = {
@@ -12,6 +13,10 @@ type AttributeFilterContext = {
 	queryType: 'or' | 'and';
 	selectType: 'single' | 'multiple';
 };
+
+interface AttributeFilterDropdownContext
+	extends AttributeFilterContext,
+		DropdownContext {}
 
 type ActionProps = {
 	event: HTMLElementEvent< HTMLInputElement >;
@@ -50,6 +55,21 @@ interactivityStore( {
 	},
 	actions: {
 		filters: {
+			navigateWithAttributeFilter: ( {
+				context,
+			}: {
+				context: AttributeFilterDropdownContext;
+			} ) => {
+				if ( context.woocommerceDropdown.selectedItem.value ) {
+					navigate(
+						getUrl(
+							[ context.woocommerceDropdown.selectedItem.value ],
+							context.attributeSlug,
+							context.queryType
+						)
+					);
+				}
+			},
 			updateProductsWithAttributeFilter: ( {
 				event,
 				context,

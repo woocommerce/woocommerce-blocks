@@ -1,6 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
+use Automattic\WooCommerce\Blocks\InteractivityComponents\Dropdown;
+
 /**
  * CollectionAttributeFilter class.
  */
@@ -91,7 +93,29 @@ final class CollectionAttributeFilter extends AbstractBlock {
 	 * @param bool  $attributes Block attributes.
 	 */
 	private function render_attribute_dropdown( $options, $attributes ) {
+		$list_items    = array();
+		$selected_item = array();
 
+		foreach ( $options as $option ) {
+			$item = array(
+				'label' => $attributes['showCounts'] ? sprintf( '%1$s (%2$d)', $option['name'], $option['count'] ) : $option['name'],
+				'value' => $option['slug'],
+			);
+
+			$list_items[] = $item;
+
+			if ( $option['selected'] ) {
+				$selected_item = $item;
+			}
+		}
+
+		return Dropdown::render(
+			array(
+				'items'         => $list_items,
+				'action'        => 'actions.filters.navigateWithAttributeFilter',
+				'selected_item' => $selected_item,
+			)
+		);
 	}
 
 	/**
