@@ -519,8 +519,8 @@
 					"ai_prompt": "An impact phrase that advertises the brand"
 				},
 				{
-					"default": "Marl is an independent studio and artisanal gallery: {image.1}",
-					"ai_prompt": "An impact phrase that advertises the brand"
+					"default": "Marl is an independent studio and artisanal gallery",
+					"ai_prompt": "An impact phrase that advertises the brand: {image.1}"
 				}
 			],
 			"descriptions": [
