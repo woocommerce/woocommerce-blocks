@@ -27,7 +27,11 @@ class Pexels {
 	 * @return array|\WP_Error Array of images, or WP_Error if the request failed.
 	 */
 	public function get_images( $ai_connection, $token, $business_description ) {
-		$search_term = $this->define_search_term( $ai_connection, $token, $business_description );
+		if ( str_word_count( $business_description ) === 1 ) {
+			$search_term = $business_description;
+		} else {
+			$search_term = $this->define_search_term( $ai_connection, $token, $business_description );
+		}
 
 		if ( is_wp_error( $search_term ) ) {
 			return $search_term;
@@ -56,6 +60,7 @@ class Pexels {
 		$i      = 0;
 		$errors = array();
 		while ( $refined_images_count < $required_images && $i < 5 ) {
+			$i ++;
 			$search_term = $this->define_search_term( $ai_connection, $token, $business_description );
 
 			if ( is_wp_error( $search_term ) ) {
@@ -78,7 +83,6 @@ class Pexels {
 			}
 
 			$refined_images = array_merge( $refined_images, $images_to_add );
-			$i ++;
 		}
 
 		if ( $refined_images_count < $required_images && ! empty( $errors ) ) {
@@ -106,7 +110,7 @@ class Pexels {
 	private function define_search_term( $ai_connection, $token, $business_description ) {
 		$prompt = sprintf( 'Based on the description "%s", generate one word that precisely describe what this business is selling. The returned words should be as accurate as possible to describe the products sold, do not include any adjectives or descriptions of the qualities of the product. The generated word must exist in the english dictionary and not be a proper name, the returned word should be simple, do not add any explanations.', $business_description );
 
-		$response = $ai_connection->fetch_ai_response( $token, $prompt );
+		$response = $ai_connection->fetch_ai_response( $token, $prompt, 60 );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
@@ -139,7 +143,7 @@ class Pexels {
 
 		$prompt = sprintf( 'Compare the following text: "%s" with the image titles listed in the JSON below: if they have nothing in common, delete them from the list. Do not include any explanations or introductions to the response. The JSON is: %s', $business_description, wp_json_encode( $image_titles ) );
 
-		$response = $ai_connection->fetch_ai_response( $token, $prompt );
+		$response = $ai_connection->fetch_ai_response( $token, $prompt, 60 );
 
 		if ( is_wp_error( $response ) || ! isset( $response['completion'] ) ) {
 			return $returned_images;
@@ -148,7 +152,7 @@ class Pexels {
 		$filtered_image_titles = json_decode( $response['completion'] );
 
 		if ( ! is_array( $filtered_image_titles ) ) {
-			$response = $ai_connection->fetch_ai_response( $token, $prompt );
+			$response = $ai_connection->fetch_ai_response( $token, $prompt, 60 );
 
 			if ( is_wp_error( $response ) || ! isset( $response['completion'] ) ) {
 				return $returned_images;
