@@ -68,8 +68,15 @@ class ProductCollectionPage {
 		this.editorUtils = editorUtils;
 	}
 
-	async chooseDefaultCollection() {
+	async chooseDefaultCollectionInPost() {
 		await this.admin.page
+			.getByRole( 'button', { name: 'Use default collection' } )
+			.click();
+	}
+
+	async chooseDefaultCollectionInTemplate() {
+		await this.admin.page
+			.frameLocator( 'iframe[name="editor-canvas"]' )
 			.getByRole( 'button', { name: 'Use default collection' } )
 			.click();
 	}
@@ -79,7 +86,7 @@ class ProductCollectionPage {
 		await this.editor.insertBlock( {
 			name: this.BLOCK_NAME,
 		} );
-		await this.chooseDefaultCollection();
+		await this.chooseDefaultCollectionInPost();
 		await this.refreshLocators( 'editor' );
 	}
 
@@ -97,13 +104,13 @@ class ProductCollectionPage {
 			postId: template,
 			postType: 'wp_template',
 		} );
+		await this.editorUtils.waitForSiteEditorFinishLoading();
 		await this.editorUtils.enterEditMode();
-
 		await this.editorUtils.replaceBlockByBlockName(
 			'core/query',
 			'woocommerce/product-collection'
 		);
-
+		await this.chooseDefaultCollectionInTemplate();
 		await this.editor.saveSiteEditorEntities();
 	}
 
@@ -128,7 +135,7 @@ class ProductCollectionPage {
 		await this.editor.canvas.click( 'body' );
 
 		await this.editor.insertBlock( block );
-		await this.chooseDefaultCollection();
+		await this.chooseDefaultCollectionInTemplate();
 		await this.editor.openDocumentSettingsSidebar();
 		await this.editor.saveSiteEditorEntities();
 	}

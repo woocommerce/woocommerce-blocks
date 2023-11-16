@@ -220,7 +220,7 @@ export class EditorUtils {
 			.first()
 			.waitFor();
 		await this.page
-			.locator( '.edit-site-canvas-spinner' )
+			.locator( '.edit-site-canvas-loader' )
 			.waitFor( { state: 'hidden' } );
 	}
 
