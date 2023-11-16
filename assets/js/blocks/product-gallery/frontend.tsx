@@ -13,16 +13,6 @@ export interface ProductGalleryContext {
 	productId: string;
 }
 
-interface Event {
-	keyCode: number;
-}
-
-enum Keys {
-	ESC = 27,
-	LEFT_ARROW = 37,
-	RIGHT_ARROW = 39,
-}
-
 const getContext = ( ns?: string ) =>
 	getContextFn< ProductGalleryContext >( ns );
 
@@ -120,7 +110,7 @@ const productGallery = {
 			const context = getContext();
 			let allowNavigation = true;
 
-			const handleKeyEvents = ( event: Event ) => {
+			const handleKeyEvents = ( event: KeyboardEvent ) => {
 				if ( ! allowNavigation || ! context.isDialogOpen ) {
 					return;
 				}
@@ -133,17 +123,17 @@ const productGallery = {
 				} );
 
 				// Check if the esc key is pressed.
-				if ( event.keyCode === Keys.ESC ) {
+				if ( event.code === 'Escape' ) {
 					context.isDialogOpen = false;
 				}
 
 				// Check if left arrow key is pressed.
-				if ( event.keyCode === Keys.LEFT_ARROW ) {
+				if ( event.code === 'ArrowLeft' ) {
 					selectImage( context, 'previous' );
 				}
 
 				// Check if right arrow key is pressed.
-				if ( event.keyCode === Keys.RIGHT_ARROW ) {
+				if ( event.code === 'ArrowRight' ) {
 					selectImage( context, 'next' );
 				}
 			};
