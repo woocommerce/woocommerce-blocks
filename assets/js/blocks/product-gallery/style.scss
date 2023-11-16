@@ -11,7 +11,6 @@ $gallery-next-previous-inside-image: "#{$gallery}:not([data-next-previous-button
 $outside-image-offset: 30px;
 $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 $thumbnails-gap: 15px;
-$column-gap: 1.2rem;
 
 // Product Gallery
 #{$gallery} {
