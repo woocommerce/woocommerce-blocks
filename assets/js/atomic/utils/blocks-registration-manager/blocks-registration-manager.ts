@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { unregisterBlockType } from '@wordpress/blocks';
-
-/**
  * Internal dependencies
  */
 import {
@@ -128,7 +123,6 @@ export class BlockRegistrationManager
 				this.blockRegistrationStrategy.unregister(
 					blockWithRestrictionName
 				);
-				unregisterBlockType( blockWithRestrictionName );
 				this.unregisteredBlocks.push( blockWithRestrictionName );
 			}
 		}
