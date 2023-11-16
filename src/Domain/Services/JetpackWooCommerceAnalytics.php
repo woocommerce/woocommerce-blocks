@@ -295,33 +295,15 @@ class JetpackWooCommerceAnalytics {
 			return $info;
 		}
 
-		if ( ! wp_is_block_theme() ) {
-			$cart_page_id     = wc_get_page_id( 'cart' );
-			$checkout_page_id = wc_get_page_id( 'checkout' );
+		$cart_page_id     = wc_get_page_id( 'cart' );
+		$checkout_page_id = wc_get_page_id( 'checkout' );
 
-			$info = array(
-				'cart_page_contains_cart_block'         => $this->post_contains_text(
-					$cart_page_id,
-					'<!-- wp:woocommerce/cart'
-				) ? 1 : 0,
-				'cart_page_contains_cart_shortcode'     => ( $this->post_contains_text(
-					$cart_page_id,
-					'[woocommerce_cart]'
-				) || $this->post_contains_text(
-					$cart_page_id,
-					'<!-- wp:woocommerce/classic-shortcode'
-				) ) ? 1 : 0,
-				'checkout_page_contains_checkout_block' => $this->post_contains_text(
-					$checkout_page_id,
-					'<!-- wp:woocommerce/checkout'
-				) ? 1 : 0,
-				'checkout_page_contains_checkout_shortcode' => ( $this->post_contains_text(
-					$checkout_page_id,
-					'[woocommerce_checkout]'
-				) || $this->post_contains_text(
-					$checkout_page_id,
-					'<!-- wp:woocommerce/classic-shortcode'
-				) ) ? 1 : 0,
+		if ( ! wp_is_block_theme() ) {
+
+			$info = array_merge(
+				array(),
+				$this->get_cart_page_block_usage( $cart_page_id ),
+				$this->get_checkout_page_block_usage( $checkout_page_id )
 			);
 
 			set_transient( $transient_name, $info, DAY_IN_SECONDS );
