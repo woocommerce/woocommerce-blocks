@@ -16,6 +16,23 @@ class PatternUpdater {
 	const WC_BLOCKS_PATTERNS_CONTENT = 'wc_blocks_patterns_content';
 
 	/**
+	 * All patterns that are actively in use in the Assembler.
+	 */
+	const WC_PATTERNS_IN_THE_ASSEMBLER = [
+		'woocommerce-blocks/featured-category-triple',
+		'woocommerce-blocks/hero-product-3-split',
+		'woocommerce-blocks/hero-product-chessboard',
+		'woocommerce-blocks/hero-product-split',
+		'woocommerce-blocks/product-query-product-gallery',
+		'woocommerce-blocks/product-collection-3-columns',
+		'woocommerce-blocks/product-collection-4-columns',
+		'woocommerce-blocks/product-collection-5-columns',
+		'woocommerce-blocks/social-follow-us-in-social-media',
+		'woocommerce-blocks/testimonials-3-columns',
+		'woocommerce-blocks/product-collection-featured-products-5-columns',
+	];
+
+	/**
 	 * Generate AI content and assign AI-managed images to Patterns.
 	 *
 	 * @param Connection      $ai_connection The AI connection.
@@ -55,13 +72,19 @@ class PatternUpdater {
 		// This is required in case something interrupts the execution of the script and the endpoint is called again on retry.
 		set_transient( 'woocommerce_ai_managed_images', $images, 60 );
 
-		$patterns_with_images = $this->get_patterns_with_images( $images );
+		$patterns_dictionary = self::get_patterns_dictionary();
 
-		if ( is_wp_error( $patterns_with_images ) ) {
+		if ( is_wp_error( $patterns_dictionary ) ) {
+			return $patterns_dictionary;
+		}
+
+		$patterns = $this->assign_selected_images_to_patterns( $patterns_dictionary, $images );
+
+		if ( is_wp_error( $patterns ) ) {
 			return new WP_Error( 'failed_to_set_pattern_images', __( 'Failed to set the pattern images.', 'woo-gutenberg-products-block' ) );
 		}
 
-		$ai_generated_patterns_content = $this->generate_ai_content_for_patterns( $ai_connection, $token, $patterns_with_images, $business_description );
+		$ai_generated_patterns_content = $this->generate_ai_content_for_patterns( $ai_connection, $token, $patterns, $business_description );
 
 		if ( is_wp_error( $ai_generated_patterns_content ) ) {
 			return new WP_Error( 'failed_to_set_pattern_content', __( 'Failed to set the pattern content.', 'woo-gutenberg-products-block' ) );
@@ -115,13 +138,17 @@ class PatternUpdater {
 	private function prepare_prompts( array $patterns ) {
 		$prompts    = [];
 		$result     = [];
-		$group_size = count( $patterns );
-		$i          = 0;
+		$group_size = count( self::WC_PATTERNS_IN_THE_ASSEMBLER );
+		$i          = 1;
 		foreach ( $patterns as $pattern ) {
-			$slug    = $pattern['slug'];
-			$content = $pattern['content'];
-			$counter = 1;
+			$slug = $pattern['slug'] ?? '';
 
+			if ( ! in_array( $slug, self::WC_PATTERNS_IN_THE_ASSEMBLER, true ) ) {
+				continue;
+			}
+
+			$content         = $pattern['content'] ?? '';
+			$counter         = 1;
 			$result[ $slug ] = [];
 
 			if ( isset( $content['titles'] ) ) {
@@ -147,7 +174,7 @@ class PatternUpdater {
 			if ( $i === $group_size ) {
 				$prompts[] = $result;
 				$result    = [];
-				$i         = 0;
+				$i         = 1;
 			}
 		}
 
@@ -194,7 +221,7 @@ class PatternUpdater {
 		$formatted_prompts = [];
 		foreach ( $prompts as $prompt ) {
 			$formatted_prompts[] = sprintf(
-				"Given the following description '%s' generate really long texts for the sections using the following prompts for each one of them: `'%s'`. Ensure each entry is unique and does not repeat the given examples. Format the response as follows: `'%s'`",
+				"Given the following description '%s' generate long texts for the sections using the following prompts for each one of them: `'%s'`. Ensure each entry is unique and does not repeat the given examples. The response format should always be as follows: `'%s'`",
 				$business_description,
 				wp_json_encode( $prompt ),
 				wp_json_encode( $expected_results_format[ $i ] )
@@ -295,6 +322,10 @@ class PatternUpdater {
 		foreach ( $patterns as $i => $pattern ) {
 			$pattern_slug = $pattern['slug'];
 
+			if ( ! in_array( $pattern_slug, self::WC_PATTERNS_IN_THE_ASSEMBLER, true ) ) {
+				continue;
+			}
+
 			foreach ( $ai_responses as $ai_response ) {
 				$ai_response = json_decode( $ai_response['completion'], true );
 
@@ -345,19 +376,14 @@ class PatternUpdater {
 	}
 
 	/**
-	 * Returns the patterns with images.
+	 * Assign selected images to patterns.
 	 *
+	 * @param array $patterns_dictionary The array of patterns.
 	 * @param array $selected_images The array of images.
 	 *
 	 * @return array|WP_Error The patterns with images.
 	 */
-	private function get_patterns_with_images( $selected_images ) {
-		$patterns_dictionary = self::get_patterns_dictionary();
-
-		if ( is_wp_error( $patterns_dictionary ) ) {
-			return $patterns_dictionary;
-		}
-
+	private function assign_selected_images_to_patterns( $patterns_dictionary, $selected_images ) {
 		$patterns_with_images = array();
 
 		foreach ( $patterns_dictionary as $pattern ) {
