@@ -69,7 +69,6 @@ final class CollectionAttributeFilter extends AbstractBlock {
 
 		$context = array(
 			'attributeSlug' => str_replace( 'pa_', '', $product_attribute->slug ),
-			'selectedTerms' => $selected_terms,
 			'queryType'     => $attributes['queryType'],
 			'selectType'    => $attributes['selectType'],
 		);
@@ -137,9 +136,7 @@ final class CollectionAttributeFilter extends AbstractBlock {
 						class="wc-block-components-checkbox__input"
 						type="checkbox"
 						aria-invalid="false"
-						data-wc-on--input="actions.filters.setAttributes"
 						data-wc-on--change="actions.filters.updateProductsWithAttributeFilter"
-						data-wc-bind--checked="selectors.filters.isSelectedAttribute"
 						data-wc-context=\'{ "attributeTermSlug": "%5$s" }\'
 						value="%5$s"
 						%4$s

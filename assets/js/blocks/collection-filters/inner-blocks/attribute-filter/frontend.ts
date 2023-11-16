@@ -9,64 +9,56 @@ import { HTMLElementEvent } from '@woocommerce/types';
 
 type AttributeFilterContext = {
 	attributeSlug: string;
-	selectedTerms: string[];
 	queryType: 'or' | 'and';
 	selectType: 'single' | 'multiple';
 };
-
-interface AttributeTermContext extends AttributeFilterContext {
-	attributeTermSlug: string;
-}
 
 type ActionProps = {
 	event: HTMLElementEvent< HTMLInputElement >;
 	context: AttributeFilterContext;
 };
 
-const getUrl = ( context: AttributeFilterContext ) => {
+function getUrl(
+	selectedTerms: string[],
+	slug: string,
+	queryType: 'or' | 'and'
+) {
 	const url = new URL( window.location.href );
 	const { searchParams } = url;
 
-	if ( context.selectedTerms.length > 0 ) {
-		searchParams.set(
-			`filter_${ context.attributeSlug }`,
-			context.selectedTerms.join( ',' )
-		);
-		searchParams.set(
-			`query_type_${ context.attributeSlug }`,
-			context.queryType
-		);
+	if ( selectedTerms.length > 0 ) {
+		searchParams.set( `filter_${ slug }`, selectedTerms.join( ',' ) );
+		searchParams.set( `query_type_${ slug }`, queryType );
 	} else {
-		searchParams.delete( `filter_${ context.attributeSlug }` );
-		searchParams.delete( `query_type_${ context.attributeSlug }` );
+		searchParams.delete( `filter_${ slug }` );
+		searchParams.delete( `query_type_${ slug }` );
 	}
 
 	return url.href;
-};
+}
+
+function getSelectedTermsFromUrl( slug: string ) {
+	const url = new URL( window.location.href );
+	return ( url.searchParams.get( `filter_${ slug }` ) || '' )
+		.split( ',' )
+		.filter( Boolean );
+}
 
 interactivityStore( {
 	state: {
 		filters: {},
 	},
-	selectors: {
-		filters: {
-			isSelectedAttribute: ( {
-				context,
-			}: {
-				context: AttributeTermContext;
-			} ) => {
-				return context.selectedTerms.includes(
-					context.attributeTermSlug
-				);
-			},
-		},
-	},
 	actions: {
 		filters: {
-			setAttributes: ( { event, context }: ActionProps ) => {
+			updateProductsWithAttributeFilter: ( {
+				event,
+				context,
+			}: ActionProps ) => {
 				if ( ! event.target.value ) return;
 
-				let selectedTerms = context.selectedTerms;
+				let selectedTerms = getSelectedTermsFromUrl(
+					context.attributeSlug
+				);
 
 				if (
 					event.target.checked &&
@@ -81,11 +73,13 @@ interactivityStore( {
 						( value ) => value !== event.target.value
 					);
 				}
-
-				context.selectedTerms = selectedTerms;
-			},
-			updateProductsWithAttributeFilter: ( { context }: ActionProps ) => {
-				navigate( getUrl( context ) );
+				navigate(
+					getUrl(
+						selectedTerms,
+						context.attributeSlug,
+						context.queryType
+					)
+				);
 			},
 		},
 	},
