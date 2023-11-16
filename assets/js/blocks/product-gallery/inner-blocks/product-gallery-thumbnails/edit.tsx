@@ -25,17 +25,16 @@ interface EditProps
 
 export const Edit = ( { attributes, setAttributes, context }: EditProps ) => {
 	const blockProps = useBlockProps( {
-		className: 'wc-block-product-gallery-thumbnails',
+		className: classNames(
+			'wc-block-product-gallery-thumbnails',
+			`wc-block-product-gallery-thumbnails--number-of-thumbnails-${ context.thumbnailsNumberOfThumbnails }`,
+			`wc-block-product-gallery-thumbnails--position-${ context.thumbnailsPosition }`
+		),
 	} );
 
 	const Placeholder = () => {
 		return context.thumbnailsPosition !== ThumbnailsPosition.OFF ? (
-			<div
-				className={ classNames(
-					'wc-block-editor-product-gallery-thumbnails',
-					`wc-block-editor-product-gallery-thumbnails--${ context.thumbnailsPosition }`
-				) }
-			>
+			<div className="wc-block-editor-product-gallery-thumbnails">
 				{ [
 					...Array( context.thumbnailsNumberOfThumbnails ).keys(),
 				].map( ( index ) => {

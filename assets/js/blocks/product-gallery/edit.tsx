@@ -14,6 +14,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import './editor.scss';
 import {
 	moveInnerBlocksToPosition,
 	getInnerBlocksLockAttributes,
@@ -25,26 +26,8 @@ import type { ProductGalleryAttributes } from './types';
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'core/group',
-		{
-			layout: {
-				type: 'flex',
-				flexWrap: 'nowrap',
-				verticalAlignment: 'top',
-			},
-		},
+		{ layout: { type: 'flex', flexWrap: 'nowrap' } },
 		[
-			[
-				'woocommerce/product-gallery-thumbnails',
-				{
-					...getInnerBlocksLockAttributes( 'lock' ),
-					style: {
-						layout: {
-							selfStretch: 'fixed',
-							flexSize: '30%',
-						},
-					},
-				},
-			],
 			[
 				'core/group',
 				{
@@ -52,14 +35,11 @@ const TEMPLATE: InnerBlockTemplate[] = [
 						type: 'flex',
 						orientation: 'vertical',
 						justifyContent: 'center',
+						verticalAlignment: 'top',
+						selfStretch: 'fixed',
+						flexSize: '100%',
 					},
 					...getInnerBlocksLockAttributes( 'lock' ),
-					style: {
-						layout: {
-							selfStretch: 'fixed',
-							flexSize: '70%',
-						},
-					},
 				},
 				[
 					[
@@ -100,6 +80,10 @@ const TEMPLATE: InnerBlockTemplate[] = [
 						{ lock: { move: true, remove: true } },
 					],
 				],
+			],
+			[
+				'woocommerce/product-gallery-thumbnails',
+				getInnerBlocksLockAttributes( 'lock' ),
 			],
 		],
 	],

@@ -11,6 +11,7 @@ $gallery-next-previous-inside-image: "#{$gallery}:not([data-next-previous-button
 $outside-image-offset: 30px;
 $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 $thumbnails-gap: 15px;
+$column-gap: 1.2rem;
 
 // Product Gallery
 #{$gallery} {
@@ -56,6 +57,7 @@ $thumbnails-gap: 15px;
 	height: fit-content;
 	position: relative;
 	overflow: hidden;
+	flex-grow: 1;
 
 	// Restrict the width of the Large Image when the Next/Previous buttons are outside the image.
 	#{$gallery-next-previous-outside-image} & .wc-block-product-gallery-large-image__image-element {
@@ -252,6 +254,14 @@ $thumbnails-gap: 15px;
 	#{$gallery}:not([data-thumbnails-position='bottom']) & {
 		flex-direction: column;
 		gap: 15px 0;
+		$i: 3;
+		flex-basis: calc((100% - (#{$i - 1} * 15px) - (#{$i} * 3px)) / #{$i});
+	}
+
+	@for $i from 3 through 8 {
+		#{$gallery}[data-thumbnails-number-of-thumbnails='#{$i}']:not([data-thumbnails-position='bottom']) & {
+			flex-basis: calc((100% - (#{$i - 1} * 15px) - (#{$i} * 3px)) / #{$i});
+		}
 	}
 
 	.wc-block-product-gallery-thumbnails__thumbnail {
@@ -273,13 +283,14 @@ $thumbnails-gap: 15px;
 			padding-top: 100%;
 		}
 
-		@for $i from 2 through 8 {
+		@for $i from 3 through 8 {
 			#{$gallery}[data-thumbnails-number-of-thumbnails='#{$i}'][data-thumbnails-position="bottom"] & {
-				$percentage: 100% / $i;
-				$gap-adjustment: $thumbnails-gap * ($i - 1) / $i;
-				flex: 0 0 calc(#{$percentage} - #{$gap-adjustment});
+				$total-gap-width: $thumbnails-gap * ($i - 1);
+				$thumbnail-width: calc((100% - #{$total-gap-width} - (#{$i} * 2px)) / #{$i});
+				flex: 0 0 $thumbnail-width;
 			}
 		}
+
 	}
 
 	.wc-block-product-gallery-thumbnails__thumbnail__overlay {
