@@ -389,6 +389,17 @@ class JetpackWooCommerceAnalytics {
 			'create_account'                            => 'Yes' === $create_account ? 'Yes' : 'No',
 			'store_currency'                            => get_woocommerce_currency(),
 		);
+
+		$is_cart_using_page_content     = str_contains( $cart_template->content, '<!-- wp:woocommerce/page-content-wrapper {"page":"cart"}' );
+		$is_checkout_using_page_content = str_contains( $checkout_template->content, '<!-- wp:woocommerce/page-content-wrapper {"page":"checkout"}' );
+
+		if ( $is_cart_using_page_content ) {
+			$info = array_merge( $info, $this->get_cart_page_block_usage( $cart_page_id ) );
+		}
+		if ( $is_checkout_using_page_content ) {
+			$info = array_merge( $info, $this->get_checkout_page_block_usage( $checkout_page_id ) );
+		}
+
 		set_transient( $transient_name, $info, DAY_IN_SECONDS );
 		return array_merge( $this->get_common_properties(), $info );
 	}
