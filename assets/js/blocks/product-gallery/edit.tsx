@@ -34,6 +34,10 @@ const TEMPLATE: InnerBlockTemplate[] = [
 		},
 		[
 			[
+				'woocommerce/product-gallery-thumbnails',
+				getInnerBlocksLockAttributes( 'lock' ),
+			],
+			[
 				'core/group',
 				{
 					layout: {
@@ -86,10 +90,6 @@ const TEMPLATE: InnerBlockTemplate[] = [
 						{ lock: { move: true, remove: true } },
 					],
 				],
-			],
-			[
-				'woocommerce/product-gallery-thumbnails',
-				getInnerBlocksLockAttributes( 'lock' ),
 			],
 		],
 	],
