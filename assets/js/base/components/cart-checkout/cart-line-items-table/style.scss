@@ -119,6 +119,7 @@ table.wc-block-cart-items {
 
 .is-large.wc-block-cart {
 	margin-bottom: 3em;
+	border-bottom: 1px solid $universal-border-light;
 
 	.wc-block-cart-items {
 		border-spacing: 0;
@@ -128,7 +129,7 @@ table.wc-block-cart-items {
 			white-space: nowrap;
 		}
 		td {
-			border-bottom: 1px solid $universal-border-light;
+			border-top: 1px solid $universal-border-light;
 			padding: $gap 0 $gap $gap;
 			vertical-align: top;
 		}
