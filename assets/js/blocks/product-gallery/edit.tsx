@@ -26,7 +26,13 @@ import type { ProductGalleryAttributes } from './types';
 const TEMPLATE: InnerBlockTemplate[] = [
 	[
 		'core/group',
-		{ layout: { type: 'flex', flexWrap: 'nowrap' } },
+		{
+			layout: {
+				type: 'flex',
+				flexWrap: 'nowrap',
+				verticalAlignment: 'top',
+			},
+		},
 		[
 			[
 				'core/group',
@@ -36,8 +42,9 @@ const TEMPLATE: InnerBlockTemplate[] = [
 						orientation: 'vertical',
 						justifyContent: 'center',
 						verticalAlignment: 'top',
-						selfStretch: 'fixed',
-						flexSize: '100%',
+					},
+					style: {
+						layout: { selfStretch: 'fixed', flexSize: '100%' },
 					},
 					...getInnerBlocksLockAttributes( 'lock' ),
 				},

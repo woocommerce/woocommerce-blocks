@@ -1,25 +1,21 @@
-$thumbnails: ".wc-block-product-gallery-thumbnails";
+$thumbnails: ".wc-block-editor-product-gallery-thumbnails";
 
 #{$thumbnails} {
-	.wc-block-editor-product-gallery-thumbnails {
-		display: flex;
-	}
+	display: flex;
 
-	&.wc-block-editor-product-gallery-thumbnails--bottom .wc-block-editor-product-gallery-thumbnails {
+	.wc-block-product-gallery-thumbnails--position-bottom & {
 		flex-direction: row;
 		gap: 0 15px;
 	}
 
-	&:not(.wc-block-product-gallery-thumbnails--bottom) .wc-block-editor-product-gallery-thumbnails {
+	.wc-block-product-gallery-thumbnails:not(.wc-block-product-gallery-thumbnails--position-bottom) & {
 		flex-direction: column;
 		gap: 15px 0;
 	}
-
-	@for $i from 3 through 8 {
-		&.wc-block-product-gallery-thumbnails--number-of-thumbnails-#{$i}:not(.wc-block-product-gallery-thumbnails--bottom) .wc-block-editor-product-gallery-thumbnails {
-			flex-basis: calc((100% - (#{$i - 1} * 15px) - (#{$i} * 3px)) / #{$i});
-		}
-	}
-
 }
 
+@for $i from 3 through 8 {
+	.wc-block-product-gallery-thumbnails--number-of-thumbnails-#{$i}:not(.wc-block-product-gallery-thumbnails--position-bottom) {
+		flex-basis: calc((100% - (#{$i - 1} * 15px) - (#{$i} * 3px)) / #{$i});
+	}
+}

@@ -67,10 +67,13 @@ $column-gap: 1.2rem;
 	}
 
 	.wc-block-product-gallery-large-image__wrapper {
+		aspect-ratio: 1 / 1;
 		flex-shrink: 0;
 		max-width: 100%;
 		overflow: hidden;
 		width: 100%;
+		display: flex;
+		align-items: center;
 	}
 
 	.wc-block-product-gallery-large-image__container {
