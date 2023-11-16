@@ -292,6 +292,8 @@ test.describe( 'Product Collection', () => {
 		test( 'Toolbar -> Items per page, offset & max page to show', async ( {
 			pageObject,
 		} ) => {
+			await pageObject.goToProductCatalogAndInsertBlock();
+
 			await pageObject.setDisplaySettings( {
 				itemsPerPage: 3,
 				offset: 0,
