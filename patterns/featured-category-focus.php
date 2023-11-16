@@ -12,9 +12,9 @@ $category_title = $content['titles'][0]['default'] ?? '';
 
 <!-- wp:group {"align":"full","style":{"color":{"background":"#F8F9FB"},"spacing":{"padding":{"top":"var:preset|spacing|70","right":"var:preset|spacing|70","bottom":"var:preset|spacing|70","left":"var:preset|spacing|70"}}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"center","flexWrap":"wrap"}} -->
 <div class="wp-block-group alignfull has-background" style="background-color:#F8F9FB;padding-top:var(--wp--preset--spacing--70);padding-right:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70);padding-left:var(--wp--preset--spacing--70)">
-	<!-- wp:image {"id":1,"width":502,"height":335,"sizeSlug":"full","linkDestination":"none"} -->
+	<!-- wp:image {"id":1,"width":"502px","height":"335px","sizeSlug":"full","linkDestination":"none", "scale":"cover"} -->
 	<figure class="wp-block-image size-full is-resized">
-		<img src="<?php echo esc_url( PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/technology-camera-fly-drone-jewellery-minimal.jpg' ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased in a featured category section.', 'woo-gutenberg-products-block' ); ?>" class="wp-image-1" width="502" height="335"/>
+		<img src="<?php echo esc_url( PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/technology-camera-fly-drone-jewellery-minimal.jpg' ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased in a featured category section.', 'woo-gutenberg-products-block' ); ?>" class="wp-image-1"  style="object-fit:cover;width:502px;height:335px"/>
 	</figure>
 	<!-- /wp:image -->
 
