@@ -50,27 +50,9 @@ class ProductUpdater {
 			return $dummy_products_to_update;
 		}
 
-		$products_information_list = $this->assign_ai_selected_images_to_dummy_produts( $dummy_products_to_update, $images );
+		$products_information_list = $this->assign_ai_selected_images_to_dummy_products( $dummy_products_to_update, $images );
 
 		return $this->assign_ai_generated_content_to_dummy_products( $ai_connection, $token, $products_information_list, $business_description );
-	}
-
-	/**
-	 * Update the dummy products with the content from the information list.
-	 *
-	 * @param array $dummy_products_to_update The dummy products to update.
-	 * @param array $products_information_list The products information list.
-	 */
-	public function update_dummy_products( $dummy_products_to_update, $products_information_list ) {
-		$i = 0;
-		foreach ( $dummy_products_to_update as $dummy_product ) {
-			if ( ! isset( $products_information_list[ $i ] ) ) {
-				continue;
-			}
-
-			$this->update_product_content( $dummy_product, $products_information_list[ $i ] );
-			++$i;
-		}
 	}
 
 	/**
@@ -300,23 +282,11 @@ class ProductUpdater {
 	 *
 	 * @return array[]
 	 */
-	public function assign_ai_selected_images_to_dummy_produts( $dummy_products_to_update, $ai_selected_images ) {
+	public function assign_ai_selected_images_to_dummy_products( $dummy_products_to_update, $ai_selected_images ) {
 		$products_information_list = [];
 		$dummy_products_count      = count( $dummy_products_to_update );
 		for ( $i = 0; $i < $dummy_products_count; $i ++ ) {
 			$image_src = $ai_selected_images[ $i ]['URL'] ?? plugins_url( 'woocommerce-blocks/images/block-placeholders/product-image-gallery.svg' );
-			$image_src = remove_query_arg( array_keys( wp_parse_args( wp_parse_url( $image_src, PHP_URL_QUERY ) ) ), $image_src );
-			$image_src = add_query_arg(
-				[
-					'auto' => 'compress',
-					'cs'   => 'tinysrgb',
-					'dpr'  => 1,
-					'fit'  => 'crop',
-					'h'    => '450',
-				],
-				$image_src
-			);
-
 			$image_alt = $ai_selected_images[ $i ]['title'] ?? '';
 
 			$products_information_list[] = [
