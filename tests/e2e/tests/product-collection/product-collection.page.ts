@@ -4,7 +4,6 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateApiUtils, EditorUtils } from '@woocommerce/e2e-utils';
 import { Editor, Admin } from '@wordpress/e2e-test-utils-playwright';
-import { BlockRepresentation } from '@wordpress/e2e-test-utils-playwright/build-types/editor/insert-block';
 
 export const SELECTORS = {
 	productTemplate: '.wc-block-product-template',
@@ -31,6 +30,24 @@ export const SELECTORS = {
 		'.wc-block-product-collection__inherit-query-control',
 	productSearchLabel: 'Search',
 	productSearchButton: '.wp-block-search__button wp-element-button',
+};
+
+type Collections =
+	| 'newArrivals'
+	| 'topRated'
+	| 'bestSellers'
+	| 'onSale'
+	| 'featured'
+	| 'defaultQuery';
+
+const collectionToButtonNameMap = {
+	newArrivals: 'New Arrivals Display a grid of your newest products.',
+	topRated: 'Top Rated Products gaining popularity based on recent activity.',
+	bestSellers: 'Best Sellers Display a grid of the best selling products.',
+	onSale: 'On Sale Products currently marked on sale.',
+	featured: 'Featured Products that have been marked as featured.',
+	defaultQuery:
+		'Default Query Use the current query context set by template.',
 };
 
 class ProductCollectionPage {
@@ -68,25 +85,65 @@ class ProductCollectionPage {
 		this.editorUtils = editorUtils;
 	}
 
-	async chooseDefaultCollectionInPost() {
-		await this.admin.page
-			.getByRole( 'button', { name: 'Use default collection' } )
-			.click();
+	async chooseCollectionInPost( collection?: Collections ) {
+		if ( ! collection ) {
+			await this.admin.page
+				.getByRole( 'button', { name: 'Use default collection' } )
+				.click();
+		} else {
+			await this.admin.page
+				.getByRole( 'button', { name: 'Choose Collection' } )
+				.click();
+
+			await this.admin.page.waitForSelector(
+				'.wc-blocks-product-collection__modal'
+			);
+
+			const buttonName = collectionToButtonNameMap[ collection ];
+			await this.admin.page
+				.getByRole( 'button', { name: buttonName } )
+				.click();
+
+			await this.admin.page
+				.getByRole( 'button', { name: 'Continue' } )
+				.click();
+		}
 	}
 
-	async chooseDefaultCollectionInTemplate() {
-		await this.admin.page
-			.frameLocator( 'iframe[name="editor-canvas"]' )
-			.getByRole( 'button', { name: 'Use default collection' } )
-			.click();
+	async chooseCollectionInTemplate( collection?: Collections ) {
+		if ( ! collection ) {
+			await this.admin.page
+				.frameLocator( 'iframe[name="editor-canvas"]' )
+				.getByRole( 'button', { name: 'Use default collection' } )
+				.click();
+		} else {
+			await this.admin.page
+				.frameLocator( 'iframe[name="editor-canvas"]' )
+				.getByRole( 'button', { name: 'Choose Collection' } )
+				.click();
+
+			await this.admin.page.waitForSelector(
+				'.wc-blocks-product-collection__modal'
+			);
+
+			const buttonName = collectionToButtonNameMap[ collection ];
+
+			await this.admin.page
+				.getByRole( 'button', { name: buttonName } )
+				.click();
+
+			await this.admin.page
+				.getByRole( 'button', { name: 'Continue' } )
+				.click();
+		}
 	}
 
-	async createNewPostAndInsertBlock() {
+	async createNewPostAndInsertBlock( collection?: Collections ) {
 		await this.admin.createNewPost( { legacyCanvas: true } );
 		await this.editor.insertBlock( {
 			name: this.BLOCK_NAME,
 		} );
-		await this.chooseDefaultCollectionInPost();
+		await this.chooseCollectionInPost( collection );
 		await this.refreshLocators( 'editor' );
 	}
 
@@ -98,7 +155,10 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'frontend' );
 	}
 
-	async replaceProductsWithProductCollectionInTemplate( template: string ) {
+	async replaceProductsWithProductCollectionInTemplate(
+		template: string,
+		collection?: Collections
+	) {
 		await this.templateApiUtils.revertTemplate( template );
 		await this.admin.visitSiteEditor( {
 			postId: template,
@@ -110,7 +170,7 @@ class ProductCollectionPage {
 			'core/query',
 			'woocommerce/product-collection'
 		);
-		await this.chooseDefaultCollectionInTemplate();
+		await this.chooseCollectionInTemplate( collection );
 		await this.editor.saveSiteEditorEntities();
 	}
 
@@ -118,11 +178,7 @@ class ProductCollectionPage {
 		await this.page.goto( `/shop` );
 	}
 
-	async goToProductCatalogAndInsertBlock(
-		block: BlockRepresentation = {
-			name: this.BLOCK_NAME,
-		}
-	) {
+	async goToProductCatalogAndInsertCollection( collection?: Collections ) {
 		await this.templateApiUtils.revertTemplate(
 			'woocommerce/woocommerce//archive-product'
 		);
@@ -133,8 +189,8 @@ class ProductCollectionPage {
 		} );
 		await this.editorUtils.waitForSiteEditorFinishLoading();
 		await this.editor.canvas.click( 'body' );
-		await this.editor.insertBlock( block );
-		await this.chooseDefaultCollectionInTemplate();
+		await this.editor.insertBlock( { name: this.BLOCK_NAME } );
+		await this.chooseCollectionInTemplate( collection );
 		await this.editor.openDocumentSettingsSidebar();
 		await this.editor.saveSiteEditorEntities();
 	}
@@ -192,6 +248,15 @@ class ProductCollectionPage {
 		} );
 		await orderByComboBox.selectOption( orderBy );
 		await this.refreshLocators( 'editor' );
+	}
+
+	async getOrderBy() {
+		const sidebarSettings = await this.locateSidebarSettings();
+		const orderByComboBox = sidebarSettings.getByRole( 'combobox', {
+			name: 'Order by',
+		} );
+
+		await expect( orderByComboBox ).toHaveValues( 'Newest to oldest' );
 	}
 
 	async setShowOnlyProductsOnSale(
@@ -365,6 +430,12 @@ class ProductCollectionPage {
 
 	locateByTestId( testId: string ) {
 		return this.page.getByTestId( testId );
+	}
+
+	async getCollectionHeading( name: string ) {
+		return this.page.getByRole( 'heading', {
+			name,
+		} );
 	}
 
 	/**

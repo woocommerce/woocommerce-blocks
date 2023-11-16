@@ -237,7 +237,7 @@ test.describe( 'Product Collection', () => {
 			test( 'Inherit query from template should work as expected in Product Catalog template', async ( {
 				pageObject,
 			} ) => {
-				await pageObject.goToProductCatalogAndInsertBlock();
+				await pageObject.goToProductCatalogAndInsertCollection();
 
 				const sidebarSettings =
 					await pageObject.locateSidebarSettings();
@@ -343,5 +343,23 @@ test.describe( 'Product Collection', () => {
 		productSize = await firstProduct.boundingBox();
 		parentSize = await firstProduct.locator( 'xpath=..' ).boundingBox();
 		expect( productSize?.width ).toBeCloseTo( parentSize?.width as number );
+	} );
+
+	test.describe( 'Collections', () => {
+		test( 'New Arrivals Collection can be added', async ( {
+			pageObject,
+		} ) => {
+			await pageObject.createNewPostAndInsertBlock( 'newArrivals' );
+
+			await pageObject.getOrderBy();
+
+			await expect( pageObject.products ).toHaveCount( 5 );
+
+			await pageObject.publishAndGoToFrontend();
+
+			await expect( pageObject.products ).toHaveCount( 5 );
+		} );
+
+		// Repeat for other collections once select value works.
 	} );
 } );
