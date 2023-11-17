@@ -84,9 +84,11 @@ test.describe( 'Merchant → Checkout', () => {
 		test( 'toggling billing company hides and shows address field', async ( {
 			editor,
 		} ) => {
+			await editor.canvas.click( 'body' );
 			await editor.canvas
 				.getByLabel( 'Use same address for billing' )
 				.uncheck();
+
 			await editor.selectBlocks(
 				blockSelectorInEditor +
 					'  [data-type="woocommerce/checkout-billing-address-block"]'
