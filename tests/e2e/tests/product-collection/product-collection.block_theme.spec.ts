@@ -317,30 +317,77 @@ test.describe( 'Product Collection', () => {
 		} );
 	} );
 
-	test( 'Responsive -> Block correctly adjusts number of columns on smaller screens', async ( {
-		pageObject,
-	} ) => {
-		await pageObject.publishAndGoToFrontend();
+	test.describe( 'Responsive', () => {
+		test( 'Block with shrink columns ENABLED correctly adjusts number of columns on smaller screens', async ( {
+			pageObject,
+		} ) => {
+			await pageObject.publishAndGoToFrontend();
 
-		const firstProduct = pageObject.products.first();
+			const product1 = pageObject.products.nth( 0 );
+			const product2 = pageObject.products.nth( 1 );
 
-		// In the original viewport size, we expect the product width to be less than the parent width
-		// because we will have more than 1 column
-		let productSize = await firstProduct.boundingBox();
-		let parentSize = await firstProduct.locator( 'xpath=..' ).boundingBox();
-		expect( productSize?.width ).toBeLessThan(
-			parentSize?.width as number
-		);
+			const gap = 21;
+			let product1Size = await product1.boundingBox();
+			let product2Size = await product2.boundingBox();
+			let width =
+				( product1Size?.width as number ) +
+				( product2Size?.width as number ) +
+				gap;
+			let parentSize = await product1.locator( 'xpath=..' ).boundingBox();
 
-		await pageObject.setViewportSize( {
-			height: 667,
-			width: 375,
+			// In the original viewport size, we expect the product width to be less than the parent width
+			// because we will have more than 2 columns
+			expect( width ).toBeLessThan( parentSize?.width as number );
+
+			await pageObject.setViewportSize( {
+				height: 667,
+				width: 375,
+			} );
+
+			// In the smaller viewport size, we expect the product width to be (approximately)
+			// the half of available space because with column shrinking option
+			// enabled, it will shrink to 2 columns.
+			product1Size = await product1.boundingBox();
+			product2Size = await product2.boundingBox();
+			parentSize = await product1.locator( 'xpath=..' ).boundingBox();
+			width =
+				( product1Size?.width as number ) +
+				( product2Size?.width as number ) +
+				gap;
+			expect( width ).toBeCloseTo( parentSize?.width as number );
 		} );
 
-		// In the smaller viewport size, we expect the product width to be (approximately) the same as the parent width
-		// because we will have only 1 column
-		productSize = await firstProduct.boundingBox();
-		parentSize = await firstProduct.locator( 'xpath=..' ).boundingBox();
-		expect( productSize?.width ).toBeCloseTo( parentSize?.width as number );
+		test( 'Block with shrink columns DISABLED collapses to single column on small screens', async ( {
+			pageObject,
+		} ) => {
+			await pageObject.createNewPostAndInsertBlock();
+			await pageObject.setShrinkColumnsToFit( false );
+			await pageObject.publishAndGoToFrontend();
+
+			const firstProduct = pageObject.products.first();
+
+			// In the original viewport size, we expect the product width to be less than the parent width
+			// because we will have more than 1 column
+			let productSize = await firstProduct.boundingBox();
+			let parentSize = await firstProduct
+				.locator( 'xpath=..' )
+				.boundingBox();
+			expect( productSize?.width ).toBeLessThan(
+				parentSize?.width as number
+			);
+
+			await pageObject.setViewportSize( {
+				height: 667,
+				width: 375,
+			} );
+
+			// In the smaller viewport size, we expect the product width to be (approximately) the same as the parent width
+			// because we will have only 1 column
+			productSize = await firstProduct.boundingBox();
+			parentSize = await firstProduct.locator( 'xpath=..' ).boundingBox();
+			expect( productSize?.width ).toBeCloseTo(
+				parentSize?.width as number
+			);
+		} );
 	} );
 } );
