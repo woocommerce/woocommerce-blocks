@@ -26,6 +26,7 @@ export const SELECTORS = {
 		onFrontend: '.wp-block-query-pagination',
 	},
 	onSaleControlLabel: 'Show only products on sale',
+	featuredControlLabel: 'Show only featured products',
 	inheritQueryFromTemplateControl:
 		'.wc-block-product-collection__inherit-query-control',
 	productSearchLabel: 'Search',
@@ -256,7 +257,7 @@ class ProductCollectionPage {
 			name: 'Order by',
 		} );
 
-		await expect( orderByComboBox ).toHaveValues( 'Newest to oldest' );
+		return await orderByComboBox.inputValue();
 	}
 
 	async setShowOnlyProductsOnSale(
@@ -282,6 +283,55 @@ class ProductCollectionPage {
 		}
 
 		if ( isLocatorsRefreshNeeded ) await this.refreshLocators( 'editor' );
+	}
+
+	async getOnSaleValue() {
+		const sidebarSettings = await this.locateSidebarSettings();
+
+		const input = sidebarSettings.getByLabel(
+			SELECTORS.onSaleControlLabel
+		);
+
+		return await input.inputValue();
+	}
+
+	async setFeaturedProducts(
+		{
+			featured,
+			isLocatorsRefreshNeeded,
+		}: {
+			featured: boolean;
+			isLocatorsRefreshNeeded?: boolean;
+		} = {
+			isLocatorsRefreshNeeded: true,
+			featured: true,
+		}
+	) {
+		const sidebarSettings = await this.locateSidebarSettings();
+		const input = sidebarSettings.getByLabel(
+			SELECTORS.featuredControlLabel
+		);
+		if ( featured ) {
+			await input.check();
+		} else {
+			await input.uncheck();
+		}
+
+		if ( isLocatorsRefreshNeeded ) await this.refreshLocators( 'editor' );
+	}
+
+	async getFeaturedValue() {
+		const sidebarSettings = await this.locateSidebarSettings();
+		const visible = await sidebarSettings
+			.getByLabel( SELECTORS.featuredControlLabel )
+			.isVisible();
+
+		// If input is hidden, it's implicitly in default state, meaning off
+		if ( ! visible ) return 'off';
+
+		return await sidebarSettings
+			.getByLabel( SELECTORS.featuredControlLabel )
+			.inputValue();
 	}
 
 	async setFilterComboboxValue( filterName: string, filterValue: string[] ) {

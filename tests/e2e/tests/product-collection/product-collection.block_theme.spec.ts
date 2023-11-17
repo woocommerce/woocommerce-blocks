@@ -351,7 +351,9 @@ test.describe( 'Product Collection', () => {
 		} ) => {
 			await pageObject.createNewPostAndInsertBlock( 'newArrivals' );
 
-			await pageObject.getOrderBy();
+			const orderBy = await pageObject.getOrderBy();
+
+			expect( orderBy ).toBe( 'date/desc' );
 
 			await expect( pageObject.products ).toHaveCount( 5 );
 
@@ -360,6 +362,83 @@ test.describe( 'Product Collection', () => {
 			await expect( pageObject.products ).toHaveCount( 5 );
 		} );
 
-		// Repeat for other collections once select value works.
+		test( 'Top Rated Collection can be added', async ( { pageObject } ) => {
+			await pageObject.createNewPostAndInsertBlock( 'topRated' );
+
+			const orderBy = await pageObject.getOrderBy();
+
+			expect( orderBy ).toBe( 'rating/desc' );
+
+			await expect( pageObject.products ).toHaveCount( 5 );
+
+			await pageObject.publishAndGoToFrontend();
+
+			await expect( pageObject.products ).toHaveCount( 5 );
+		} );
+
+		test( 'Best Sellers Collection can be added', async ( {
+			pageObject,
+		} ) => {
+			await pageObject.createNewPostAndInsertBlock( 'bestSellers' );
+
+			const orderBy = await pageObject.getOrderBy();
+
+			expect( orderBy ).toBe( 'popularity/desc' );
+
+			await expect( pageObject.products ).toHaveCount( 5 );
+
+			await pageObject.publishAndGoToFrontend();
+
+			await expect( pageObject.products ).toHaveCount( 5 );
+		} );
+
+		test( 'On Sale Collection can be added', async ( { pageObject } ) => {
+			await pageObject.createNewPostAndInsertBlock( 'onSale' );
+
+			const orderBy = await pageObject.getOrderBy();
+			const featured = await pageObject.getFeaturedValue();
+
+			expect( orderBy ).toBe( 'title/asc' );
+			expect( featured ).toBe( 'off' );
+
+			await expect( pageObject.products ).toHaveCount( 5 );
+
+			await pageObject.publishAndGoToFrontend();
+
+			await expect( pageObject.products ).toHaveCount( 5 );
+		} );
+
+		test( 'Featured Collection can be added', async ( { pageObject } ) => {
+			await pageObject.createNewPostAndInsertBlock( 'featured' );
+
+			const orderBy = await pageObject.getOrderBy();
+			const featured = await pageObject.getFeaturedValue();
+
+			expect( orderBy ).toBe( 'title/asc' );
+			expect( featured ).toBe( 'on' );
+
+			// There's 5 columns layout, but only 4 featured products in test set
+			await expect( pageObject.products ).toHaveCount( 4 );
+
+			await pageObject.publishAndGoToFrontend();
+
+			await expect( pageObject.products ).toHaveCount( 4 );
+		} );
+
+		test( 'Default Query Collection can be added', async ( {
+			pageObject,
+		} ) => {
+			await pageObject.createNewPostAndInsertBlock( 'defaultQuery' );
+
+			const orderBy = await pageObject.getOrderBy();
+
+			expect( orderBy ).toBe( 'title/asc' );
+
+			await expect( pageObject.products ).toHaveCount( 9 );
+
+			await pageObject.publishAndGoToFrontend();
+
+			await expect( pageObject.products ).toHaveCount( 9 );
+		} );
 	} );
 } );
