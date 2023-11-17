@@ -352,8 +352,12 @@ test.describe( 'Product Collection', () => {
 			await pageObject.createNewPostAndInsertBlock( 'newArrivals' );
 
 			const orderBy = await pageObject.getOrderBy();
+			const onSale = await pageObject.getOnSaleValue();
+			const featured = await pageObject.getFeaturedValue();
 
 			expect( orderBy ).toBe( 'date/desc' );
+			expect( onSale ).toBe( 'off' );
+			expect( featured ).toBe( 'off' );
 
 			await expect( pageObject.products ).toHaveCount( 5 );
 
@@ -366,8 +370,12 @@ test.describe( 'Product Collection', () => {
 			await pageObject.createNewPostAndInsertBlock( 'topRated' );
 
 			const orderBy = await pageObject.getOrderBy();
+			const onSale = await pageObject.getOnSaleValue();
+			const featured = await pageObject.getFeaturedValue();
 
 			expect( orderBy ).toBe( 'rating/desc' );
+			expect( onSale ).toBe( 'off' );
+			expect( featured ).toBe( 'off' );
 
 			await expect( pageObject.products ).toHaveCount( 5 );
 
@@ -382,8 +390,12 @@ test.describe( 'Product Collection', () => {
 			await pageObject.createNewPostAndInsertBlock( 'bestSellers' );
 
 			const orderBy = await pageObject.getOrderBy();
+			const onSale = await pageObject.getOnSaleValue();
+			const featured = await pageObject.getFeaturedValue();
 
 			expect( orderBy ).toBe( 'popularity/desc' );
+			expect( onSale ).toBe( 'off' );
+			expect( featured ).toBe( 'off' );
 
 			await expect( pageObject.products ).toHaveCount( 5 );
 
@@ -396,9 +408,11 @@ test.describe( 'Product Collection', () => {
 			await pageObject.createNewPostAndInsertBlock( 'onSale' );
 
 			const orderBy = await pageObject.getOrderBy();
+			const onSale = await pageObject.getOnSaleValue();
 			const featured = await pageObject.getFeaturedValue();
 
-			expect( orderBy ).toBe( 'title/asc' );
+			expect( orderBy ).toBe( 'title/desc' );
+			expect( onSale ).toBe( 'on' );
 			expect( featured ).toBe( 'off' );
 
 			await expect( pageObject.products ).toHaveCount( 5 );
@@ -412,9 +426,11 @@ test.describe( 'Product Collection', () => {
 			await pageObject.createNewPostAndInsertBlock( 'featured' );
 
 			const orderBy = await pageObject.getOrderBy();
+			const onSale = await pageObject.getOnSaleValue();
 			const featured = await pageObject.getFeaturedValue();
 
-			expect( orderBy ).toBe( 'title/asc' );
+			expect( orderBy ).toBe( 'title/desc' );
+			expect( onSale ).toBe( 'off' );
 			expect( featured ).toBe( 'on' );
 
 			// There's 5 columns layout, but only 4 featured products in test set
@@ -431,8 +447,12 @@ test.describe( 'Product Collection', () => {
 			await pageObject.createNewPostAndInsertBlock( 'defaultQuery' );
 
 			const orderBy = await pageObject.getOrderBy();
+			const onSale = await pageObject.getOnSaleValue();
+			const featured = await pageObject.getFeaturedValue();
 
-			expect( orderBy ).toBe( 'title/asc' );
+			expect( orderBy ).toBe( 'title/desc' );
+			expect( onSale ).toBe( 'off' );
+			expect( featured ).toBe( 'off' );
 
 			await expect( pageObject.products ).toHaveCount( 9 );
 
