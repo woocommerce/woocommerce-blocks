@@ -117,6 +117,10 @@ test.describe( 'Product Collection', () => {
 					hasText: 'Product on sale',
 				} )
 			).toHaveCount( await pageObject.productImages.count() );
+
+			await pageObject.setShowOnlyProductsOnSale( {
+				onSale: false,
+			} );
 		} );
 
 		test( 'Products can be filtered based on selection in handpicked products option', async ( {
@@ -411,7 +415,7 @@ test.describe( 'Product Collection', () => {
 			const onSale = await pageObject.getOnSaleValue();
 			const featured = await pageObject.getFeaturedValue();
 
-			expect( orderBy ).toBe( 'title/desc' );
+			expect( orderBy ).toBe( 'title/asc' );
 			expect( onSale ).toBe( 'on' );
 			expect( featured ).toBe( 'off' );
 
@@ -429,7 +433,7 @@ test.describe( 'Product Collection', () => {
 			const onSale = await pageObject.getOnSaleValue();
 			const featured = await pageObject.getFeaturedValue();
 
-			expect( orderBy ).toBe( 'title/desc' );
+			expect( orderBy ).toBe( 'title/asc' );
 			expect( onSale ).toBe( 'off' );
 			expect( featured ).toBe( 'on' );
 
@@ -450,7 +454,7 @@ test.describe( 'Product Collection', () => {
 			const onSale = await pageObject.getOnSaleValue();
 			const featured = await pageObject.getFeaturedValue();
 
-			expect( orderBy ).toBe( 'title/desc' );
+			expect( orderBy ).toBe( 'title/asc' );
 			expect( onSale ).toBe( 'off' );
 			expect( featured ).toBe( 'off' );
 
