@@ -12,7 +12,7 @@ export const ModalContent = ( {
 		return (
 			<p>
 				{ __(
-					'If you continue, the cart block will be replaced with the classic experience powered by shortcodes. This means that you may lose customizations that you did to the cart block.',
+					'If you continue, the cart block will be replaced with the classic experience powered by shortcodes. This means that you may lose customizations that you made to the cart block.',
 					'woo-gutenberg-products-block'
 				) }
 			</p>
