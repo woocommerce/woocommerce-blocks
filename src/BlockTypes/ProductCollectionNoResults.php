@@ -5,9 +5,9 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 use Automattic\WooCommerce\Blocks\Utils\ProductCollectionUtils;
 
 /**
- * NoResults class.
+ * ProductCollectionNoResults class.
  */
-class NoResults extends AbstractBlock {
+class ProductCollectionNoResults extends AbstractBlock {
 
 	/**
 	 * Block name.
