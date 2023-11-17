@@ -48,7 +48,7 @@ const collectionToButtonNameMap = {
 	onSale: 'On Sale Products currently marked on sale.',
 	featured: 'Featured Products that have been marked as featured.',
 	defaultQuery:
-		'Default Query Use the current query context set by template.',
+		'All Products Display all products. Results may be limited by the current template context.',
 };
 
 class ProductCollectionPage {

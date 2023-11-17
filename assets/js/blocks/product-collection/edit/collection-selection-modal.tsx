@@ -65,9 +65,10 @@ const CollectionButton = ( {
 
 const defaultQuery = {
 	name: 'woocommerce-blocks/product-collection/default-query',
-	title: 'Default Query',
+	title: 'All Products',
 	icon: <Icon icon={ loop } />,
-	description: 'Use the current query context set by template.',
+	description:
+		'Display all products. Results may be limited by the current template context.',
 };
 
 const getDefaultChosenCollection = (
