@@ -321,7 +321,7 @@ class ProductUpdater {
 		$prompts = [];
 		foreach ( $products_information_list as $product_information ) {
 			if ( ! empty( $product_information['image']['alt'] ) ) {
-				$prompts[] = sprintf( 'Generate a product name that matches the following image description: "%s" and also the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans. The returned result should not refer to people, only objects.', $product_information['image']['alt'], $business_description );
+				$prompts[] = sprintf( 'Generate a product name that exactly matches the following image description: "%s" and also is related to the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans. The returned result should not refer to people, only objects.', $product_information['image']['alt'], $business_description );
 			} else {
 				$prompts[] = sprintf( 'Generate a product name that matches the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans.', $business_description );
 			}
@@ -337,8 +337,7 @@ class ProductUpdater {
 		];
 
 		$formatted_prompt = sprintf(
-			"Given the following description '%s' generate titles for the products using the following prompts for each one of them: `'%s'`. Ensure each entry is unique and does not repeat the given examples. Format the response as an array: `'%s'`",
-			$business_description,
+			"Generate two-words titles for products using the following prompts for each one of them: '%s'. Ensure each entry is unique and does not repeat the given examples. Do not include backticks or the word json in the response. Here's an example format: '%s'.",
 			wp_json_encode( $prompts ),
 			wp_json_encode( $expected_results_format )
 		);
@@ -347,7 +346,7 @@ class ProductUpdater {
 		$success            = false;
 		while ( $ai_request_retries < 5 && ! $success ) {
 			$ai_request_retries ++;
-			$ai_response = $ai_connection->fetch_ai_response( $token, $formatted_prompt, 60 );
+			$ai_response = $ai_connection->fetch_ai_response( $token, $formatted_prompt, 30 );
 
 			if ( is_wp_error( $ai_response ) ) {
 				continue;
@@ -390,6 +389,10 @@ class ProductUpdater {
 			}
 
 			$success = true;
+		}
+
+		if ( ! $success ) {
+			return new WP_Error( 'failed_to_fetch_ai_responses', __( 'Failed to fetch AI responses for products.', 'woo-gutenberg-products-block' ) );
 		}
 
 		return array(
