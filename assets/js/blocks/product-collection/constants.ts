@@ -68,7 +68,7 @@ export const DEFAULT_ATTRIBUTES: Partial< ProductCollectionAttributes > = {
 	displayLayout: {
 		type: LayoutOptions.GRID,
 		columns: 3,
-		shrinkColumns: true,
+		shrinkColumns: false,
 	},
 };
 

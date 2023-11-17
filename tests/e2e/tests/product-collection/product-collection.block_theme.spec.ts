@@ -338,14 +338,11 @@ test.describe( 'Product Collection', () => {
 			width: 375,
 		} );
 
-		// In the smaller viewport size, we expect the product width to be (approximately)
-		// the half of available space because we with column shrinking option
-		// enabled, it will shrink to 2 columns.
+		// In the smaller viewport size, we expect the product width to be (approximately) the same as the parent width
+		// because we will have only 1 column
 		productSize = await firstProduct.boundingBox();
 		parentSize = await firstProduct.locator( 'xpath=..' ).boundingBox();
-		expect( productSize?.width ).toBeCloseTo(
-			( parentSize?.width as number ) / 2
-		);
+		expect( productSize?.width ).toBeCloseTo( parentSize?.width as number );
 	} );
 
 	test.describe( 'Collections', () => {

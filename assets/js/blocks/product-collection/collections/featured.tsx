@@ -34,7 +34,6 @@ const attributes = {
 	displayLayout: {
 		type: 'flex',
 		columns: 5,
-		shrinkColumns: true,
 	},
 	query: {
 		...DEFAULT_ATTRIBUTES.query,
