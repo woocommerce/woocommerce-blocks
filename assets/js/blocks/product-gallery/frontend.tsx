@@ -6,6 +6,7 @@ import { StorePart } from '@woocommerce/utils';
 
 export interface ProductGalleryContext {
 	selectedImage: string;
+	firstMainImageId: string;
 	imageId: string;
 	visibleImagesIds: string[];
 	dialogVisibleImagesIds: string[];
@@ -17,7 +18,7 @@ const getContext = ( ns?: string ) =>
 	getContextFn< ProductGalleryContext >( ns );
 
 type Store = typeof productGallery & StorePart< ProductGallery >;
-const { state } = store< Store >( 'woocommerce/product-gallery' );
+const { state, actions } = store< Store >( 'woocommerce/product-gallery' );
 
 const selectImage = (
 	context: ProductGalleryContext,
@@ -49,6 +50,8 @@ const productGallery = {
 		closeDialog: () => {
 			const context = getContext();
 			context.isDialogOpen = false;
+			// Reset the main image.
+			context.selectedImage = context.firstMainImageId;
 		},
 		openDialog: () => {
 			const context = getContext();
@@ -124,7 +127,7 @@ const productGallery = {
 
 				// Check if the esc key is pressed.
 				if ( event.code === 'Escape' ) {
-					context.isDialogOpen = false;
+					actions.closeDialog();
 				}
 
 				// Check if left arrow key is pressed.

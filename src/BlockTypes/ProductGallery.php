@@ -138,6 +138,7 @@ class ProductGallery extends AbstractBlock {
 				wp_json_encode(
 					array(
 						'selectedImage'                   => $product->get_image_id(),
+						'firstMainImageId'                => $product->get_image_id(),
 						'isDialogOpen'                    => false,
 						'visibleImagesIds'                => ProductGalleryUtils::get_product_gallery_image_ids( $product, $number_of_thumbnails, true ),
 						'dialogVisibleImagesIds'          => ProductGalleryUtils::get_product_gallery_image_ids( $product, null, false ),
