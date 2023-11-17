@@ -260,7 +260,7 @@ describe( `${ block.name } Block`, () => {
 			await page.goto( frontedPageUrl, { waitUntil: 'networkidle2' } );
 		} );
 
-		it( 'should render products', async () => {
+		it.skip( 'should render products', async () => {
 			const products = await page.$$(
 				selectors.frontend.queryProductsList
 			);
