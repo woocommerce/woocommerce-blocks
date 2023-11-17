@@ -329,7 +329,7 @@ test.describe( 'Product Collection', () => {
 			// should be compiled to three values
 			await expect( productTemplate ).toHaveCSS(
 				'grid-template-columns',
-				/^\d+px \d+px \d+px$/
+				/^\d+(\.\d+)?px \d+(\.\d+)?px \d+(\.\d+)?px$/
 			);
 
 			await pageObject.setViewportSize( {
@@ -341,7 +341,7 @@ test.describe( 'Product Collection', () => {
 			// which means there are two columns on mobile.
 			await expect( productTemplate ).toHaveCSS(
 				'grid-template-columns',
-				/^\d+px \d+px$/
+				/^\d+(\.\d+)?px \d+(\.\d+)?px$/
 			);
 		} );
 
