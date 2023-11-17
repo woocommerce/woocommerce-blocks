@@ -3,11 +3,7 @@
  */
 import { useState, useCallback, useEffect } from '@wordpress/element';
 import { AddressForm } from '@woocommerce/base-components/cart-checkout';
-import {
-	useCheckoutAddress,
-	useStoreEvents,
-	useEditorContext,
-} from '@woocommerce/base-context';
+import { useCheckoutAddress, useStoreEvents } from '@woocommerce/base-context';
 import type {
 	ShippingAddress,
 	AddressField,
@@ -20,34 +16,24 @@ import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
  * Internal dependencies
  */
 import AddressWrapper from '../../address-wrapper';
-import PhoneNumber from '../../phone-number';
 import AddressCard from '../../address-card';
 
 const CustomerAddress = ( {
 	addressFieldsConfig,
-	showPhoneField,
-	requirePhoneField,
+	defaultEditing = false,
 }: {
 	addressFieldsConfig: Record< keyof AddressFields, Partial< AddressField > >;
-	showPhoneField: boolean;
-	requirePhoneField: boolean;
+	defaultEditing?: boolean;
 } ) => {
 	const {
 		defaultAddressFields,
 		shippingAddress,
 		setShippingAddress,
 		setBillingAddress,
-		setShippingPhone,
-		setBillingPhone,
 		useShippingAsBilling,
 	} = useCheckoutAddress();
 	const { dispatchCheckoutEvent } = useStoreEvents();
-	const { isEditor } = useEditorContext();
-	const hasAddress = !! (
-		shippingAddress.address_1 &&
-		( shippingAddress.first_name || shippingAddress.last_name )
-	);
-	const [ editing, setEditing ] = useState( ! hasAddress || isEditor );
+	const [ editing, setEditing ] = useState( defaultEditing );
 
 	// Forces editing state if store has errors.
 	const { hasValidationErrors, invalidProps } = useSelect( ( select ) => {
@@ -74,19 +60,11 @@ const CustomerAddress = ( {
 	const addressFieldKeys = Object.keys(
 		defaultAddressFields
 	) as ( keyof AddressFields )[];
-
 	const onChangeAddress = useCallback(
 		( values: Partial< ShippingAddress > ) => {
 			setShippingAddress( values );
 			if ( useShippingAsBilling ) {
-				// Sync billing with shipping. Ensure unwanted properties are omitted.
-				const { ...syncBilling } = values;
-
-				if ( ! showPhoneField ) {
-					delete syncBilling.phone;
-				}
-
-				setBillingAddress( syncBilling );
+				setBillingAddress( values );
 				dispatchCheckoutEvent( 'set-billing-address' );
 			}
 			dispatchCheckoutEvent( 'set-shipping-address' );
@@ -96,7 +74,6 @@ const CustomerAddress = ( {
 			setBillingAddress,
 			setShippingAddress,
 			useShippingAsBilling,
-			showPhoneField,
 		]
 	);
 
@@ -108,56 +85,28 @@ const CustomerAddress = ( {
 				onEdit={ () => {
 					setEditing( true );
 				} }
-				showPhoneField={ showPhoneField }
+				fieldConfig={ addressFieldsConfig }
 			/>
 		),
-		[ shippingAddress, showPhoneField ]
+		[ shippingAddress, addressFieldsConfig ]
 	);
 
 	const renderAddressFormComponent = useCallback(
 		() => (
-			<>
-				<AddressForm
-					id="shipping"
-					type="shipping"
-					onChange={ onChangeAddress }
-					values={ shippingAddress }
-					fields={ addressFieldKeys }
-					fieldConfig={ addressFieldsConfig }
-				/>
-				{ showPhoneField && (
-					<PhoneNumber
-						id="shipping-phone"
-						errorId={ 'shipping_phone' }
-						isRequired={ requirePhoneField }
-						value={ shippingAddress.phone }
-						onChange={ ( value ) => {
-							setShippingPhone( value );
-							dispatchCheckoutEvent( 'set-phone-number', {
-								step: 'shipping',
-							} );
-							if ( useShippingAsBilling ) {
-								setBillingPhone( value );
-								dispatchCheckoutEvent( 'set-phone-number', {
-									step: 'billing',
-								} );
-							}
-						} }
-					/>
-				) }
-			</>
+			<AddressForm
+				id="shipping"
+				type="shipping"
+				onChange={ onChangeAddress }
+				values={ shippingAddress }
+				fields={ addressFieldKeys }
+				fieldConfig={ addressFieldsConfig }
+			/>
 		),
 		[
 			addressFieldKeys,
 			addressFieldsConfig,
-			dispatchCheckoutEvent,
 			onChangeAddress,
-			requirePhoneField,
-			setBillingPhone,
-			setShippingPhone,
 			shippingAddress,
-			showPhoneField,
-			useShippingAsBilling,
 		]
 	);
 
