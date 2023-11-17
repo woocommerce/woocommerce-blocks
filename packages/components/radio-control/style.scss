@@ -58,7 +58,7 @@
 	.wc-block-components-radio-control__input {
 		appearance: none;
 		background: #fff;
-		border: 2px solid $universal-border-dark;
+		border: 2px solid $universal-border-light;
 		border-radius: 50%;
 		display: inline-block;
 		height: em(24px); // =1.5rem
@@ -72,6 +72,9 @@
 		transform: translate(0, -45%);
 		margin: inherit;
 		cursor: pointer;
+		&:checked {
+			border: 2px solid $input-border-gray;
+		}
 
 		&:focus {
 			outline: 2px solid $input-border-gray;
