@@ -14,7 +14,7 @@ class NoResults extends AbstractBlock {
 	 *
 	 * @var string
 	 */
-	protected $block_name = 'no-results';
+	protected $block_name = 'product-collection-no-results';
 
 	/**
 	 * Render the block.

@@ -83,7 +83,7 @@ const TEMPLATE: Template[] = [
 
 const Edit = () => {
 	const blockProps = useBlockProps( {
-		className: 'wc-block-no-results',
+		className: 'wc-block-product-collection-no-results',
 	} );
 
 	return (

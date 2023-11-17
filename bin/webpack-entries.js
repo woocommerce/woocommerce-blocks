@@ -50,7 +50,7 @@ const blocks = {
 	'product-category': {},
 	'product-categories': {},
 	'product-collection': {},
-	'no-results': {
+	'product-collection-no-results': {
 		customDir: 'product-collection/inner-blocks/no-results',
 	},
 	'product-gallery': {

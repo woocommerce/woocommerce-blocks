@@ -1,7 +1,7 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
-    "name": "woocommerce/no-results",
+    "name": "woocommerce/product-collection-no-results",
     "title": "No results",
     "version": "1.0.0",
     "category": "woocommerce",
