@@ -11,13 +11,17 @@ import {
 	DerivedStateReturn,
 	ReactError,
 } from '@woocommerce/base-components/block-error-boundary/types';
+import { __experimentalDeRegisterExpressPaymentMethod } from '@woocommerce/blocks-registry';
+
 interface PaymentMethodErrorBoundaryProps {
 	isEditor: boolean;
 	children: React.ReactNode;
+	expressPaymentMethodId: string | undefined;
 }
+
 class PaymentMethodErrorBoundary extends Component< PaymentMethodErrorBoundaryProps > {
 	state = { errorMessage: '', hasError: false };
-
+	expressPaymentMethodId = this.props.expressPaymentMethodId;
 	static getDerivedStateFromError( error: ReactError ): DerivedStateReturn {
 		return {
 			errorMessage: error.message,
@@ -52,6 +56,14 @@ class PaymentMethodErrorBoundary extends Component< PaymentMethodErrorBoundaryPr
 					status: 'error',
 				},
 			];
+
+			// De-register the express payment method if has an error.
+			if ( this.expressPaymentMethodId !== undefined ) {
+				__experimentalDeRegisterExpressPaymentMethod(
+					this.expressPaymentMethodId
+				);
+			}
+
 			return (
 				<StoreNoticesContainer
 					additionalNotices={ notices }
