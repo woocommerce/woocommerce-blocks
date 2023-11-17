@@ -117,10 +117,6 @@ test.describe( 'Product Collection', () => {
 					hasText: 'Product on sale',
 				} )
 			).toHaveCount( await pageObject.productImages.count() );
-
-			await pageObject.setShowOnlyProductsOnSale( {
-				onSale: false,
-			} );
 		} );
 
 		test( 'Products can be filtered based on selection in handpicked products option', async ( {
