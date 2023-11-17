@@ -50,7 +50,7 @@
 	.wc-block-components-radio-control__description,
 	.wc-block-components-radio-control__secondary-description {
 		width: 100%;
-		text-align: left;
+		text-align: left !important; // To force align left on the description for the local pickup options.
 		margin: em($gap-small) 0;
 		display: block;
 	}
