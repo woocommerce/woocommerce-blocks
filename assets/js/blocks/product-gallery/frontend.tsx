@@ -18,7 +18,7 @@ const getContext = ( ns?: string ) =>
 	getContextFn< ProductGalleryContext >( ns );
 
 type Store = typeof productGallery & StorePart< ProductGallery >;
-const { state, actions } = store< Store >( 'woocommerce/product-gallery' );
+const { state } = store< Store >( 'woocommerce/product-gallery' );
 
 const selectImage = (
 	context: ProductGalleryContext,
@@ -36,6 +36,12 @@ const selectImage = (
 	context.selectedImage = imagesIds[ nextImageIndex ];
 };
 
+const closeDialog = ( context: ProductGalleryContext ) => {
+	context.isDialogOpen = false;
+	// Reset the main image.
+	context.selectedImage = context.firstMainImageId;
+};
+
 const productGallery = {
 	state: {
 		get isSelected() {
@@ -49,9 +55,7 @@ const productGallery = {
 	actions: {
 		closeDialog: () => {
 			const context = getContext();
-			context.isDialogOpen = false;
-			// Reset the main image.
-			context.selectedImage = context.firstMainImageId;
+			closeDialog( context );
 		},
 		openDialog: () => {
 			const context = getContext();
@@ -127,7 +131,7 @@ const productGallery = {
 
 				// Check if the esc key is pressed.
 				if ( event.code === 'Escape' ) {
-					actions.closeDialog();
+					closeDialog( context );
 				}
 
 				// Check if left arrow key is pressed.
