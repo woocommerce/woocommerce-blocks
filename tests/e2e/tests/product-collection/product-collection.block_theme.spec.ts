@@ -318,43 +318,31 @@ test.describe( 'Product Collection', () => {
 	} );
 
 	test.describe( 'Responsive', () => {
-		test( 'Block with shrink columns ENABLED correctly adjusts number of columns on smaller screens', async ( {
+		test( 'Block with shrink columns ENABLED correctly displays as grid', async ( {
 			pageObject,
 		} ) => {
 			await pageObject.publishAndGoToFrontend();
+			const productTemplate = pageObject.productTemplate;
 
-			const product1 = pageObject.products.nth( 0 );
-			const product2 = pageObject.products.nth( 1 );
-
-			const gap = 21;
-			let product1Size = await product1.boundingBox();
-			let product2Size = await product2.boundingBox();
-			let width =
-				( product1Size?.width as number ) +
-				( product2Size?.width as number ) +
-				gap;
-			let parentSize = await product1.locator( 'xpath=..' ).boundingBox();
-
-			// In the original viewport size, we expect the product width to be less than the parent width
-			// because we will have more than 2 columns
-			expect( width ).toBeLessThan( parentSize?.width as number );
+			await expect( productTemplate ).toHaveCSS( 'display', 'grid' );
+			// By default there should be 3 columns, so grid-template-columns
+			// should be compiled to three values
+			await expect( productTemplate ).toHaveCSS(
+				'grid-template-columns',
+				/^\d+px \d+px \d+px$/
+			);
 
 			await pageObject.setViewportSize( {
 				height: 667,
-				width: 375,
+				width: 390, // iPhone 12 Pro
 			} );
 
-			// In the smaller viewport size, we expect the product width to be (approximately)
-			// the half of available space because with column shrinking option
-			// enabled, it will shrink to 2 columns.
-			product1Size = await product1.boundingBox();
-			product2Size = await product2.boundingBox();
-			parentSize = await product1.locator( 'xpath=..' ).boundingBox();
-			width =
-				( product1Size?.width as number ) +
-				( product2Size?.width as number ) +
-				gap;
-			expect( width ).toBeCloseTo( parentSize?.width as number );
+			// Verifies grid-template-columns compiles to two numbers,
+			// which means there are two columns on mobile.
+			await expect( productTemplate ).toHaveCSS(
+				'grid-template-columns',
+				/^\d+px \d+px$/
+			);
 		} );
 
 		test( 'Block with shrink columns DISABLED collapses to single column on small screens', async ( {
@@ -363,6 +351,10 @@ test.describe( 'Product Collection', () => {
 			await pageObject.createNewPostAndInsertBlock();
 			await pageObject.setShrinkColumnsToFit( false );
 			await pageObject.publishAndGoToFrontend();
+
+			const productTemplate = pageObject.productTemplate;
+
+			await expect( productTemplate ).not.toHaveCSS( 'display', 'grid' );
 
 			const firstProduct = pageObject.products.first();
 
@@ -378,7 +370,7 @@ test.describe( 'Product Collection', () => {
 
 			await pageObject.setViewportSize( {
 				height: 667,
-				width: 375,
+				width: 390, // iPhone 12 Pro
 			} );
 
 			// In the smaller viewport size, we expect the product width to be (approximately) the same as the parent width
