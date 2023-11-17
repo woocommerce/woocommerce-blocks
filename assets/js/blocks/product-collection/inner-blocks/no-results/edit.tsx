@@ -23,59 +23,28 @@ const TEMPLATE: Template[] = [
 					textAlign: 'center',
 					fontSize: 'medium',
 					content: `<strong>${ __(
-						'No results found.',
+						'No results found',
 						'woo-gutenberg-products-block'
 					) }</strong>`,
 				},
 			],
 			[
-				'core/group',
+				'core/paragraph',
 				{
-					layout: {
-						type: 'flex',
-						flexWrap: 'wrap',
-						justifyContent: 'center',
-					},
-					style: { spacing: { blockGap: '0.5rem' } },
+					content: `${ __(
+						'You can try',
+						'woo-gutenberg-products-block'
+					) } <a href="#" class="wc-link-clear-any-filters">${ __(
+						'clearing any filters',
+						'woo-gutenberg-products-block'
+					) }</a> ${ __(
+						'or head to our',
+						'woo-gutenberg-products-block'
+					) } <a href="#" class="wc-link-stores-home">${ __(
+						"store's home",
+						'woo-gutenberg-products-block'
+					) }</a>`,
 				},
-				[
-					[
-						'core/paragraph',
-						{
-							content: __(
-								'You can try',
-								'woo-gutenberg-products-block'
-							),
-						},
-					],
-					[
-						'core/paragraph',
-						{
-							content: `<a href="#" class="wc-link-clear-any-filters">${ __(
-								'clearing any filters',
-								'woo-gutenberg-products-block'
-							) }</a>`,
-						},
-					],
-					[
-						'core/paragraph',
-						{
-							content: __(
-								'or head to our',
-								'woo-gutenberg-products-block'
-							),
-						},
-					],
-					[
-						'core/paragraph',
-						{
-							content: `<a href="#" class="wc-link-stores-home">${ __(
-								"store's home",
-								'woo-gutenberg-products-block'
-							) }</a>`,
-						},
-					],
-				],
 			],
 		],
 	],
