@@ -22,7 +22,7 @@ const block = {
 	title: 'Active filters',
 };
 
-describe.skip( `${ block.name } Block`, () => {
+describe( `${ block.name } Block`, () => {
 	beforeAll( async () => {
 		await switchUserToAdmin();
 		await visitBlockPage( `${ block.name } Block` );
