@@ -43,11 +43,11 @@ interactivityStore( {
 	actions: {
 		filters: {
 			navigate: ( { context }: { context: DropdownContext } ) => {
-				if ( context.woocommerceDropdown.selectedItem.value ) {
-					navigate(
-						getUrl( context.woocommerceDropdown.selectedItem.value )
-					);
-				}
+				navigate(
+					getUrl(
+						context.woocommerceDropdown.selectedItem.value || ''
+					)
+				);
 			},
 			updateProducts: ( { event }: ActionProps ) => {
 				// get the active filters from the url:
