@@ -77,6 +77,7 @@ final class CollectionStockFilter extends AbstractBlock {
 	 */
 	private function get_stock_filter_html( $stock_counts, $attributes ) {
 		$display_style  = $attributes['displayStyle'] ?? 'list';
+		$show_counts    = $attributes['showCounts'] ?? false;
 		$stock_statuses = wc_get_product_stock_status_options();
 
 		// check the url params to select initial item on page load.
@@ -84,9 +85,10 @@ final class CollectionStockFilter extends AbstractBlock {
 		$selected_stock_status = isset( $_GET[ self::STOCK_STATUS_QUERY_VAR ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::STOCK_STATUS_QUERY_VAR ] ) ) : '';
 
 		$list_items = array_map(
-			function( $item ) use ( $stock_statuses ) {
+			function( $item ) use ( $stock_statuses, $show_counts ) {
+				$label = $show_counts ? $stock_statuses[ $item['status'] ] . ' ( ' . $item['count'] . ' ) ' : $stock_statuses[ $item['status'] ];
 				return array(
-					'label' => $stock_statuses[ $item['status'] ],
+					'label' => $label,
 					'value' => $item['status'],
 				);
 			},
@@ -132,18 +134,21 @@ final class CollectionStockFilter extends AbstractBlock {
 										</svg>
 										<span class="wc-block-components-checkbox__label">
 											<?php echo esc_html( $stock_statuses[ $stock_count['status'] ] ); ?>
-											<?php
+
+											<?php if ( $show_counts ) : ?>
+												<?php
 												// translators: %s: number of products.
 												$screen_reader_text = sprintf( _n( '%s product', '%s products', $stock_count['count'], 'woo-gutenberg-products-block' ), number_format_i18n( $stock_count['count'] ) );
-											?>
-											<span class="wc-filter-element-label-list-count">
-												<span aria-hidden="true">
-													<?php echo esc_html( $stock_count['count'] ); ?>
+												?>
+												<span class="wc-filter-element-label-list-count">
+													<span aria-hidden="true">
+														<?php $show_counts ? print( esc_html( $stock_count['count'] ) ) : null; ?>
+													</span>
+													<span class="screen-reader-text">
+														<?php esc_html( $screen_reader_text ); ?>
+													</span>
 												</span>
-												<span class="screen-reader-text">
-													<?php esc_html( $screen_reader_text ); ?>
-												</span>
-											</span>
+											<?php endif; ?>
 										</span>
 								</label>
 							</div>
