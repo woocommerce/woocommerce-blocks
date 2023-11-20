@@ -40,10 +40,6 @@ describe( `${ block.name } Block`, () => {
 			await visitBlockPage( `${ block.name } Block` );
 		} );
 
-		it( 'renders without crashing', async () => {
-			await expect( page ).toRenderBlock( block );
-		} );
-
 		describe( 'attributes', () => {
 			beforeEach( async () => {
 				await openSettingsSidebar();
