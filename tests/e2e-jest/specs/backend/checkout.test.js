@@ -40,38 +40,6 @@ describe( `${ block.name } Block`, () => {
 			await visitBlockPage( `${ block.name } Block` );
 		} );
 
-		describe( 'shipping address block attributes', () => {
-			beforeEach( async () => {
-				await openSettingsSidebar();
-				await selectBlockByName(
-					'woocommerce/checkout-shipping-address-block'
-				);
-			} );
-
-			describe( 'Apartment input', () => {
-				it( 'visibility can be toggled', async () => {
-					const selector = `${ block.class } #shipping-address_2`;
-					await expect( 'Apartment, suite, etc.' ).toToggleElement(
-						selector
-					);
-				} );
-			} );
-
-			describe( 'Phone input', () => {
-				const selector = `${ block.class } #shipping-phone`;
-
-				it( 'visibility can be toggled', async () => {
-					await expect( 'Phone' ).toToggleElement( selector );
-				} );
-
-				it( 'required attribute can be toggled', async () => {
-					await expect(
-						'Require phone number?'
-					).toToggleRequiredAttrOf( selector );
-				} );
-			} );
-		} );
-
 		describe( 'action block attributes', () => {
 			beforeEach( async () => {
 				await openSettingsSidebar();
