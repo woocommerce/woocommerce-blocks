@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        part: [1, 2, 3, 4, 5]
+        part: [1, 2, 3, 4]
     name: JavaScript E2E Tests (WP latest with Gutenberg plugin)
     runs-on: ubuntu-latest
     steps:
@@ -92,7 +92,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        part: [1, 2, 3, 4, 5]
+        part: [1, 2, 3, 4]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -155,7 +155,7 @@ jobs:
           node ./bin/wp-env-with-wp-641.js
           npm run wp-env start
           npm run wp-env:config && npx cross-env NODE_CONFIG_DIR=tests/e2e-jest/config wp-scripts test-e2e --config tests/e2e-jest/config/jest.config.js --listTests > ~/.jest-e2e-tests
-          npx cross-env JEST_PUPPETEER_CONFIG=tests/e2e-jest/config/jest-puppeteer.config.js cross-env NODE_CONFIG_DIR=tests/e2e-jest/config wp-scripts test-e2e --config tests/e2e-jest/config/jest.config.js --runInBand --runTestsByPath $( awk 'NR % 5 == ${{ matrix.part }} - 1' < ~/.jest-e2e-tests )
+          npx cross-env JEST_PUPPETEER_CONFIG=tests/e2e-jest/config/jest-puppeteer.config.js cross-env NODE_CONFIG_DIR=tests/e2e-jest/config wp-scripts test-e2e --config tests/e2e-jest/config/jest.config.js --runInBand --runTestsByPath $( awk 'NR % 4 == ${{ matrix.part }} - 1' < ~/.jest-e2e-tests )
 
       - name: Upload artifacts on failure
         if: ${{ failure() }}
