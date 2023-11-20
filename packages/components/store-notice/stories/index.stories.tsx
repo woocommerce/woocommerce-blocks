@@ -58,8 +58,8 @@ export default {
 	component: StoreNotice,
 } as Meta< NoticeBannerProps >;
 
-const Template: StoryFn< NoticeBannerProps > = ( args ) => {
-	return <StoreNotice { ...args } />;
+const Template: StoryFn< NoticeBannerProps > = ( { children, ...args } ) => {
+	return <StoreNotice { ...args }>{ children }</StoreNotice>;
 };
 
 export const Default = Template.bind( {} );
