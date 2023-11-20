@@ -16,11 +16,11 @@ test.describe( 'Merchant → Checkout', () => {
 			await editorUtils.page
 				.getByLabel( 'Search for blocks and patterns' )
 				.fill( 'woocommerce/checkout' );
-			const cartButton = editorUtils.page.getByRole( 'option', {
+			const checkoutButton = editorUtils.page.getByRole( 'option', {
 				name: 'Checkout',
 				exact: true,
 			} );
-			await expect( cartButton ).toBeHidden();
+			await expect( checkoutButton ).toBeHidden();
 		} );
 	} );
 } );
