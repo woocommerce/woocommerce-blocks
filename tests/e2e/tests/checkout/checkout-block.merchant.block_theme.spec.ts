@@ -385,6 +385,13 @@ test.describe( 'Merchant → Checkout', () => {
 					await expect( darkControls ).toBeHidden();
 				} );
 			} );
+
+			test.describe( 'shipping address', () => {
+				test.beforeEach( async ( { editor } ) => {
+					await editor.openDocumentSettingsSidebar();
+					await editor.selectBlocks( blockSelectorInEditor );
+				} );
+			} );
 		} );
 	} );
 } );
