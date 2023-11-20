@@ -16,7 +16,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	test.only( 'Skipping Cart & Checkout tests', () => {} );
 }
 
-describe.skip( 'Shopper → Checkout → Account', () => {
+describe( 'Shopper → Checkout → Account', () => {
 	beforeAll( async () => {
 		await merchant.login();
 		await merchant.openSettings( 'account' );
@@ -59,9 +59,7 @@ describe.skip( 'Shopper → Checkout → Account', () => {
 		} );
 		//Create random email to place an order.
 		const testEmail = `test${ Math.random() * 10 }@example.com`;
-		await shopper.block.fillInCheckoutWithTestData( {
-			email: testEmail,
-		} );
+		await shopper.block.fillInCheckoutWithTestData( { email: testEmail } );
 		await shopper.block.placeOrder();
 		await expect( page ).toMatch( 'Order received' );
 		await merchant.login();
