@@ -7,6 +7,7 @@ import type {
 	CartShippingAddress,
 	CartBillingAddress,
 } from '@woocommerce/types';
+import { AddressFields, AddressField } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -17,10 +18,12 @@ const AddressCard = ( {
 	address,
 	onEdit,
 	target,
+	fieldConfig,
 }: {
 	address: CartShippingAddress | CartBillingAddress;
 	onEdit: () => void;
 	target: string;
+	fieldConfig: Record< keyof AddressFields, Partial< AddressField > >;
 } ): JSX.Element | null => {
 	return (
 		<div className="wc-block-components-address-card">
@@ -31,7 +34,7 @@ const AddressCard = ( {
 				<div className="wc-block-components-address-card__address-section">
 					{ [
 						address.address_1,
-						address.address_2,
+						! fieldConfig.address_2.hidden && address.address_2,
 						address.city,
 						address.state,
 						address.postcode,
@@ -44,7 +47,7 @@ const AddressCard = ( {
 							<span key={ `address-` + index }>{ field }</span>
 						) ) }
 				</div>
-				{ address.phone ? (
+				{ address.phone && ! fieldConfig.phone.hidden ? (
 					<div
 						key={ `address-phone` }
 						className="wc-block-components-address-card__address-section"
