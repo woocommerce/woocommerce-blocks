@@ -474,6 +474,46 @@ test.describe( 'Merchant → Checkout', () => {
 					} );
 				} );
 			} );
+
+			test.describe( 'Checkout actions', () => {
+				test.beforeEach( async ( { editor } ) => {
+					await editor.openDocumentSettingsSidebar();
+					await editor.selectBlocks( blockSelectorInEditor );
+				} );
+
+				test( 'Return to cart link is visible and can be toggled', async ( {
+					editor,
+					editorUtils,
+				} ) => {
+					await editor.selectBlocks(
+						`${ blockSelectorInEditor } .wp-block-woocommerce-checkout-actions-block`
+					);
+
+					// Turn on return to cart link and check it's visible in the block.
+					const returnToCartLinkToggle = editor.page.getByLabel(
+						'Show a "Return to Cart" link',
+						{ exact: true }
+					);
+					await returnToCartLinkToggle.check();
+					const shippingAddressBlock =
+						await editorUtils.getBlockByName(
+							'woocommerce/checkout-actions-block'
+						);
+
+					// Turn on return to cart link and check it shows in the block.
+					const returnToCartLink = shippingAddressBlock.getByText(
+						'Return to Cart',
+						{ exact: true }
+					);
+
+					// Turn off return to cart link and check it's not visible in the block.
+					await expect( returnToCartLink ).toBeVisible();
+
+					await returnToCartLinkToggle.uncheck();
+
+					await expect( returnToCartLink ).toBeHidden();
+				} );
+			} );
 		} );
 	} );
 } );
