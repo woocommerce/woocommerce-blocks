@@ -21,12 +21,6 @@ export type DropdownContext = {
 	};
 };
 
-type Store = {
-	context: DropdownContext;
-	selectors: unknown;
-	ref: HTMLElement;
-};
-
 interactivityStore( {
 	state: {},
 	selectors: {
@@ -54,17 +48,16 @@ interactivityStore( {
 	},
 	actions: {
 		woocommerceDropdown: {
-			toggleIsOpen: ( store: Store ) => {
-				const {
-					context: { woocommerceDropdown },
-				} = store;
-
-				woocommerceDropdown.isOpen = ! woocommerceDropdown.isOpen;
+			toggleIsOpen: ( { context }: { context: DropdownContext } ) => {
+				context.woocommerceDropdown.isOpen =
+					! context.woocommerceDropdown.isOpen;
 			},
 			selectDropdownItem: ( {
 				context,
+				event,
 			}: {
 				context: DropdownContext;
+				event: MouseEvent;
 			} ) => {
 				const {
 					woocommerceDropdown: {
@@ -72,8 +65,23 @@ interactivityStore( {
 					},
 				} = context;
 
-				context.woocommerceDropdown.selectedItem = { label, value };
+				const { selectedItem } = context.woocommerceDropdown;
+
+				if (
+					selectedItem.value === value &&
+					selectedItem.label === label
+				) {
+					context.woocommerceDropdown.selectedItem = {
+						label: null,
+						value: null,
+					};
+				} else {
+					context.woocommerceDropdown.selectedItem = { label, value };
+				}
+
 				context.woocommerceDropdown.isOpen = false;
+
+				event.stopPropagation();
 			},
 			addHoverClass: ( { context }: { context: DropdownContext } ) => {
 				const {
