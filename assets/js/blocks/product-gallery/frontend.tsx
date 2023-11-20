@@ -10,8 +10,10 @@ interface State {
 export interface ProductGalleryInteractivityApiContext {
 	woocommerce: {
 		selectedImage: string;
+		firstMainImageId: string;
 		imageId: string;
 		visibleImagesIds: string[];
+		dialogVisibleImagesIds: string[];
 		isDialogOpen: boolean;
 		productId: string;
 	};
@@ -38,6 +40,11 @@ interface Actions {
 		};
 		handleNextImageButtonClick: {
 			( store: Store ): void;
+		};
+		dialog: {
+			handleCloseButtonClick: {
+				( store: Store ): void;
+			};
 		};
 	};
 }
@@ -122,7 +129,9 @@ interactivityApiStore( {
 
 					// Check if the esc key is pressed.
 					if ( event.keyCode === Keys.ESC ) {
-						context.woocommerce.isDialogOpen = false;
+						actions.woocommerce.dialog.handleCloseButtonClick(
+							store
+						);
 					}
 
 					// Check if left arrow key is pressed.
@@ -174,6 +183,10 @@ interactivityApiStore( {
 			dialog: {
 				handleCloseButtonClick: ( { context }: Store ) => {
 					context.woocommerce.isDialogOpen = false;
+
+					// Reset the main image.
+					context.woocommerce.selectedImage =
+						context.woocommerce.firstMainImageId;
 				},
 			},
 			handleSelectImage: ( { context }: Store ) => {
@@ -181,30 +194,39 @@ interactivityApiStore( {
 			},
 			handleNextImageButtonClick: ( store: Store ) => {
 				const { context } = store;
-				const selectedImageIdIndex =
-					context.woocommerce.visibleImagesIds.indexOf(
-						context.woocommerce.selectedImage
-					);
+				const imagesIds =
+					context.woocommerce[
+						context.woocommerce.isDialogOpen
+							? 'dialogVisibleImagesIds'
+							: 'visibleImagesIds'
+					];
+				const selectedImageIdIndex = imagesIds.indexOf(
+					context.woocommerce.selectedImage
+				);
 				const nextImageIndex = Math.min(
 					selectedImageIdIndex + 1,
-					context.woocommerce.visibleImagesIds.length - 1
+					imagesIds.length - 1
 				);
 
-				context.woocommerce.selectedImage =
-					context.woocommerce.visibleImagesIds[ nextImageIndex ];
+				context.woocommerce.selectedImage = imagesIds[ nextImageIndex ];
 			},
 			handlePreviousImageButtonClick: ( store: Store ) => {
 				const { context } = store;
-				const selectedImageIdIndex =
-					context.woocommerce.visibleImagesIds.indexOf(
-						context.woocommerce.selectedImage
-					);
+				const imagesIds =
+					context.woocommerce[
+						context.woocommerce.isDialogOpen
+							? 'dialogVisibleImagesIds'
+							: 'visibleImagesIds'
+					];
+				const selectedImageIdIndex = imagesIds.indexOf(
+					context.woocommerce.selectedImage
+				);
 				const previousImageIndex = Math.max(
 					selectedImageIdIndex - 1,
 					0
 				);
 				context.woocommerce.selectedImage =
-					context.woocommerce.visibleImagesIds[ previousImageIndex ];
+					imagesIds[ previousImageIndex ];
 			},
 		},
 	},

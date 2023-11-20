@@ -125,7 +125,7 @@ class PatternsHelper {
 	 *
 	 * @return array|WP_Error Returns pattern dictionary or WP_Error on failure.
 	 */
-	private static function get_patterns_dictionary( $pattern_slug = null ) {
+	public static function get_patterns_dictionary( $pattern_slug = null ) {
 		$patterns_dictionary_file = plugin_dir_path( __FILE__ ) . 'dictionary.json';
 
 		if ( ! file_exists( $patterns_dictionary_file ) ) {

@@ -9,16 +9,16 @@ import {
 	useEditorContext,
 	noticeContexts,
 } from '@woocommerce/base-context';
-import {
-	CheckboxControl,
-	StoreNoticesContainer,
-} from '@woocommerce/blocks-checkout';
+import { CheckboxControl } from '@woocommerce/blocks-checkout';
+import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type {
 	BillingAddress,
 	AddressField,
 	AddressFields,
 } from '@woocommerce/settings';
+import { useSelect } from '@wordpress/data';
+import { CART_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -80,11 +80,17 @@ const Block = ( {
 			address_2: {
 				hidden: ! showApartmentField,
 			},
+			phone: {
+				hidden: ! showPhoneField,
+				required: requirePhoneField,
+			},
 		};
 	}, [
 		showCompanyField,
 		requireCompanyField,
 		showApartmentField,
+		showPhoneField,
+		requirePhoneField,
 	] ) as Record< keyof AddressFields, Partial< AddressField > >;
 
 	const WrapperComponent = isEditor ? Noninteractive : Fragment;
@@ -96,32 +102,41 @@ const Block = ( {
 		( shippingAddress.first_name || shippingAddress.last_name )
 	);
 
+	const { cartDataLoaded } = useSelect( ( select ) => {
+		const store = select( CART_STORE_KEY );
+		return {
+			cartDataLoaded: store.hasFinishedResolution( 'getCartData' ),
+		};
+	} );
+
+	// Default editing state for CustomerAddress component comes from the current address and whether or not we're in the editor.
+	const defaultEditingAddress = isEditor || ! hasAddress;
+
 	return (
 		<>
 			<StoreNoticesContainer context={ noticeContext } />
 			<WrapperComponent>
-				<CustomerAddress
-					addressFieldsConfig={ addressFieldsConfig }
-					showPhoneField={ showPhoneField }
-					requirePhoneField={ requirePhoneField }
-				/>
+				{ cartDataLoaded ? (
+					<CustomerAddress
+						addressFieldsConfig={ addressFieldsConfig }
+						defaultEditing={ defaultEditingAddress }
+					/>
+				) : null }
 			</WrapperComponent>
-			{ hasAddress && (
-				<CheckboxControl
-					className="wc-block-checkout__use-address-for-billing"
-					label={ __(
-						'Use same address for billing',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ useShippingAsBilling }
-					onChange={ ( checked: boolean ) => {
-						setUseShippingAsBilling( checked );
-						if ( checked ) {
-							syncBillingWithShipping();
-						}
-					} }
-				/>
-			) }
+			<CheckboxControl
+				className="wc-block-checkout__use-address-for-billing"
+				label={ __(
+					'Use same address for billing',
+					'woo-gutenberg-products-block'
+				) }
+				checked={ useShippingAsBilling }
+				onChange={ ( checked: boolean ) => {
+					setUseShippingAsBilling( checked );
+					if ( checked ) {
+						syncBillingWithShipping();
+					}
+				} }
+			/>
 		</>
 	);
 };
