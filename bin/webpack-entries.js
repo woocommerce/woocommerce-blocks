@@ -50,6 +50,9 @@ const blocks = {
 	'product-category': {},
 	'product-categories': {},
 	'product-collection': {},
+	'product-collection-no-results': {
+		customDir: 'product-collection/inner-blocks/no-results',
+	},
 	'product-gallery': {
 		isExperimental: true,
 	},
@@ -95,6 +98,10 @@ const blocks = {
 	'stock-filter': {},
 	'collection-filters': {
 		isExperimental: true,
+	},
+	'collection-stock-filter': {
+		isExperimental: true,
+		customDir: 'collection-filters/inner-blocks/stock-filter',
 	},
 	'collection-price-filter': {
 		customDir: 'collection-filters/inner-blocks/price-filter',
@@ -196,6 +203,10 @@ const entries = {
 		priceFormat: './packages/prices/index.js',
 		blocksCheckout: './packages/checkout/index.js',
 		blocksComponents: './packages/components/index.ts',
+
+		// interactivity components, exported as separate entries for now
+		'wc-interactivity-dropdown':
+			'./packages/interactivity-components/dropdown/index.ts',
 	},
 	main: {
 		// Shared blocks code

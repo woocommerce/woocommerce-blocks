@@ -7,9 +7,6 @@
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
 
-$content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/hero-product-3-split' );
-$images  = PatternsHelper::get_pattern_images( 'woocommerce-blocks/hero-product-3-split' );
-
 $main_title   = $content['titles'][0]['default'] ?? '';
 $first_title  = $content['titles'][1]['default'] ?? '';
 $second_title = $content['titles'][2]['default'] ?? '';
@@ -101,7 +98,7 @@ $third_description  = $content['descriptions'][2]['default'] ?? '';
 			<!-- wp:buttons -->
 			<div class="wp-block-buttons"><!-- wp:button -->
 				<div class="wp-block-button">
-					<a class="wp-block-button__link wp-element-button" href="https://store.local/shop/classic-shop/">Shop now</a>
+					<a href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" class="wp-block-button__link wp-element-button"><?php esc_html_e( 'Shop now', 'woo-gutenberg-products-block' ); ?></a>
 				</div>
 				<!-- /wp:button -->
 			</div>
