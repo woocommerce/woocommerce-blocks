@@ -40,13 +40,6 @@ describe( `${ block.name } Block`, () => {
 			await visitBlockPage( `${ block.name } Block` );
 		} );
 
-		describe( 'attributes', () => {
-			beforeEach( async () => {
-				await openSettingsSidebar();
-				await selectBlockByName( block.slug );
-			} );
-		} );
-
 		describe( 'shipping address block attributes', () => {
 			beforeEach( async () => {
 				await openSettingsSidebar();
