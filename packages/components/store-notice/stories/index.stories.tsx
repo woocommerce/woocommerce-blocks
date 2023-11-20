@@ -67,10 +67,6 @@ Default.args = {
 	children: 'This is a default notice',
 	status: 'default',
 	isDismissible: true,
-	summary: undefined,
-	className: undefined,
-	spokenMessage: undefined,
-	politeness: undefined,
 };
 
 export const Error = Template.bind( {} );
