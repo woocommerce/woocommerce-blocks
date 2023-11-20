@@ -391,38 +391,88 @@ test.describe( 'Merchant → Checkout', () => {
 					await editor.openDocumentSettingsSidebar();
 					await editor.selectBlocks( blockSelectorInEditor );
 
-				test.describe( 'Apartment input', () => {
-					test( 'visibility can be toggled', async ( {
-						editor,
-						editorUtils,
-					} ) => {
-						await editor.selectBlocks(
-							`${ blockSelectorInEditor } .wp-block-woocommerce-checkout-shipping-address-block`
-						);
-
-						// Turn on apartment field and check it's visible in the fields.
-						const apartmentToggleSelector = editor.page.getByLabel(
-							'Apartment, suite, etc.',
-							{ exact: true }
-						);
-						await apartmentToggleSelector.check();
-						const shippingAddressBlock =
-							await editorUtils.getBlockByName(
-								'woocommerce/checkout-shipping-address-block'
+					test.describe( 'Apartment input', () => {
+						test( 'visibility can be toggled', async ( {
+							editor,
+							editorUtils,
+						} ) => {
+							await editor.selectBlocks(
+								`${ blockSelectorInEditor } .wp-block-woocommerce-checkout-shipping-address-block`
 							);
 
-						const apartmentInput = shippingAddressBlock.getByLabel(
-							'Apartment, suite, etc. (optional)'
-						);
-						// Turn off apartment field and check it's not visible in the fields.
-						await expect( apartmentInput ).toBeVisible();
+							// Turn on apartment field and check it's visible in the fields.
+							const apartmentToggleSelector =
+								editor.page.getByLabel(
+									'Apartment, suite, etc.',
+									{ exact: true }
+								);
+							await apartmentToggleSelector.check();
+							const shippingAddressBlock =
+								await editorUtils.getBlockByName(
+									'woocommerce/checkout-shipping-address-block'
+								);
 
-						await apartmentToggleSelector.uncheck();
+							const apartmentInput =
+								shippingAddressBlock.getByLabel(
+									'Apartment, suite, etc. (optional)'
+								);
+							// Turn off apartment field and check it's not visible in the fields.
+							await expect( apartmentInput ).toBeVisible();
 
-						await expect( apartmentInput ).toBeHidden();
+							await apartmentToggleSelector.uncheck();
+
+							await expect( apartmentInput ).toBeHidden();
+						} );
+					} );
+
+					test.describe( 'Phone input', () => {
+						test( 'visibility and required can be toggled', async ( {
+							editor,
+							editorUtils,
+						} ) => {
+							await editor.selectBlocks(
+								`${ blockSelectorInEditor } .wp-block-woocommerce-checkout-shipping-address-block`
+							);
+
+							// Turn on phone field and check it's visible in the fields.
+							const phoneToggleSelector = editor.page.getByLabel(
+								'Phone',
+								{ exact: true }
+							);
+							await phoneToggleSelector.check();
+							const shippingAddressBlock =
+								await editorUtils.getBlockByName(
+									'woocommerce/checkout-shipping-address-block'
+								);
+
+							// Turn on Require phone number? option and check it becomes required in the fields.
+							const companyRequiredSelector =
+								editor.page.getByLabel(
+									'Require phone number?',
+									{ exact: true }
+								);
+							await companyRequiredSelector.check();
+							const phoneInput =
+								shippingAddressBlock.getByLabel( 'Phone' );
+							await expect( phoneInput ).toHaveAttribute(
+								'required',
+								''
+							);
+							await companyRequiredSelector.uncheck();
+							await expect( phoneInput ).not.toHaveAttribute(
+								'required',
+								''
+							);
+
+							// Turn off phone field and check it's not visible in the fields.
+							await expect( phoneInput ).toBeVisible();
+
+							await phoneToggleSelector.uncheck();
+
+							await expect( phoneInput ).toBeHidden();
+						} );
 					} );
 				} );
->>>>>>> c2633d611 (Add apartment input tests)
 			} );
 		} );
 	} );
