@@ -65,30 +65,35 @@ Default.args = {
 	children: 'This is a default notice',
 	status: 'default',
 	isDismissible: true,
+	politeness: 'polite',
 };
 
 export const Error = Template.bind( {} );
 Error.args = {
 	children: 'This is an error notice',
 	status: 'error',
+	politeness: 'assertive',
 };
 
 export const Warning = Template.bind( {} );
 Warning.args = {
 	children: 'This is a warning notice',
 	status: 'warning',
+	politeness: 'polite',
 };
 
 export const Info = Template.bind( {} );
 Info.args = {
 	children: 'This is an informational notice',
 	status: 'info',
+	politeness: 'polite',
 };
 
 export const Success = Template.bind( {} );
 Success.args = {
 	children: 'This is a success notice',
 	status: 'success',
+	politeness: 'polite',
 };
 
 export const ErrorSummary = Template.bind( {} );
@@ -101,4 +106,5 @@ ErrorSummary.args = {
 		</ul>
 	),
 	status: 'error',
+	politeness: 'assertive',
 };
