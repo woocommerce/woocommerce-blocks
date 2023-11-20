@@ -15,4 +15,21 @@ export type BlockAttributes = {
 
 export interface EditProps extends BlockEditProps< BlockAttributes > {
 	debouncedSpeak: ( label: string ) => void;
+	context: {
+		collectionData: unknown[];
+	};
+}
+
+type AttributeCount = {
+	term: number;
+	count: number;
+};
+
+export function isAttributeCounts(
+	target: unknown
+): target is AttributeCount[] {
+	return (
+		Array.isArray( target ) &&
+		target.every( ( item ) => 'term' in item && 'count' in item )
+	);
 }

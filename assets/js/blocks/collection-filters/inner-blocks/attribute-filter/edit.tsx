@@ -16,12 +16,13 @@ import {
 	Button,
 	ToolbarGroup,
 	withSpokenMessages,
+	Notice,
 } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import type { EditProps } from './types';
+import { EditProps, isAttributeCounts } from './types';
 import {
 	NoAttributesPlaceholder,
 	AttributesPlaceholder,
@@ -40,6 +41,7 @@ const Edit = ( props: EditProps ) => {
 		attributes: blockAttributes,
 		setAttributes,
 		debouncedSpeak,
+		context,
 	} = props;
 
 	const {
@@ -56,6 +58,9 @@ const Edit = ( props: EditProps ) => {
 	const [ isEditing, setIsEditing ] = useState(
 		! attributeId && ! isPreview
 	);
+	const [ attributeOptions, setAttributeOptions ] = useState<
+		AttributeTerm[]
+	>( [] );
 
 	const { results: attributeTerms } = useCollection< AttributeTerm >( {
 		namespace: '/wc/store/v1',
@@ -95,6 +100,24 @@ const Edit = ( props: EditProps ) => {
 		}
 		setAttributes( { queryParam: newQueryParam } );
 	}, [ queryParam, queryType, setAttributes, attributeObject?.taxonomy ] );
+
+	useEffect( () => {
+		const termIdHasProducts =
+			objectHasProp( context.collectionData, 'attribute_counts' ) &&
+			isAttributeCounts( context.collectionData.attribute_counts )
+				? context.collectionData.attribute_counts.map(
+						( term ) => term.term
+				  )
+				: [];
+
+		if ( termIdHasProducts.length === 0 ) return setAttributeOptions( [] );
+
+		setAttributeOptions(
+			attributeTerms.filter( ( term ) => {
+				return termIdHasProducts.includes( term.id );
+			} )
+		);
+	}, [ attributeTerms, context.collectionData ] );
 
 	const Toolbar = () => (
 		<BlockControls>
@@ -141,31 +164,75 @@ const Edit = ( props: EditProps ) => {
 		</AttributesPlaceholder>
 	);
 
-	// Block rendering starts.
-	if ( Object.keys( ATTRIBUTES ).length === 0 )
-		return <NoAttributesPlaceholder />;
-
-	return (
+	const Wrapper = ( { children }: React.PropsWithChildren ) => (
 		<div { ...blockProps }>
 			<Toolbar />
-			<Inspector { ...props } />
-			{ isEditing ? (
-				<AttributeSelectPlaceholder />
-			) : (
-				<Disabled>
-					{ displayStyle === 'dropdown' ? (
-						<AttributeDropdown
-							attributeObject={ attributeObject }
-						/>
-					) : (
-						<AttributeCheckboxList
-							showCounts={ showCounts }
-							attributeTerms={ attributeTerms }
-						/>
-					) }{ ' ' }
-				</Disabled>
-			) }
+			{ children }
 		</div>
+	);
+
+	// Block rendering starts.
+	if ( Object.keys( ATTRIBUTES ).length === 0 )
+		return (
+			<Wrapper>
+				<NoAttributesPlaceholder />
+			</Wrapper>
+		);
+
+	if ( isEditing )
+		return (
+			<Wrapper>
+				<AttributeSelectPlaceholder />
+			</Wrapper>
+		);
+
+	if ( ! attributeId || ! attributeObject )
+		return (
+			<Wrapper>
+				<Notice status="warning" isDismissible={ false }>
+					<p>
+						{ __(
+							'Please select an attribute to use this filter!',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+				</Notice>
+			</Wrapper>
+		);
+
+	if ( attributeOptions.length === 0 )
+		return (
+			<Wrapper>
+				<Notice status="warning" isDismissible={ false }>
+					<p>
+						{ __(
+							'There are no products with the selected attributes.',
+							'woo-gutenberg-products-block'
+						) }
+					</p>
+				</Notice>
+			</Wrapper>
+		);
+
+	return (
+		<Wrapper>
+			<Inspector { ...props } />
+			<Disabled>
+				{ displayStyle === 'dropdown' ? (
+					<AttributeDropdown
+						label={
+							attributeObject.label ||
+							__( 'attribute', 'woo-gutenberg-products-block' )
+						}
+					/>
+				) : (
+					<AttributeCheckboxList
+						showCounts={ showCounts }
+						attributeTerms={ attributeOptions }
+					/>
+				) }{ ' ' }
+			</Disabled>
+		</Wrapper>
 	);
 };
 
