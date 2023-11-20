@@ -363,6 +363,28 @@ test.describe( 'Merchant → Checkout', () => {
 					).toBeHidden();
 				} );
 			} );
+
+			test.describe( 'Dark mode', () => {
+				test( 'can enable dark mode inputs', async ( {
+					editorUtils,
+					page,
+				} ) => {
+					const toggleLabel = page.getByLabel( 'Dark mode inputs' );
+					await toggleLabel.check();
+
+					const shippingAddressBlock =
+						await editorUtils.getBlockByName(
+							'woocommerce/checkout'
+						);
+
+					const darkControls = shippingAddressBlock.locator(
+						'.wc-block-checkout.has-dark-controls'
+					);
+					await expect( darkControls ).toBeVisible();
+					await toggleLabel.uncheck();
+					await expect( darkControls ).toBeHidden();
+				} );
+			} );
 		} );
 	} );
 } );
