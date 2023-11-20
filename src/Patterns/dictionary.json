@@ -24,7 +24,7 @@
 			"buttons": [
 				{
 					"default": "Shop Holiday Sale",
-					"ai_prompt": "The 3 words button text to go to the sale page"
+					"ai_prompt": "A 3 words button text to go to the sale page"
 				}
 			]
 		}
