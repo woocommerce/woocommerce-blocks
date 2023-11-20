@@ -9,10 +9,8 @@ import {
 	useEditorContext,
 	noticeContexts,
 } from '@woocommerce/base-context';
-import {
-	CheckboxControl,
-	StoreNoticesContainer,
-} from '@woocommerce/blocks-checkout';
+import { CheckboxControl } from '@woocommerce/blocks-checkout';
+import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type {
 	BillingAddress,
@@ -82,11 +80,17 @@ const Block = ( {
 			address_2: {
 				hidden: ! showApartmentField,
 			},
+			phone: {
+				hidden: ! showPhoneField,
+				required: requirePhoneField,
+			},
 		};
 	}, [
 		showCompanyField,
 		requireCompanyField,
 		showApartmentField,
+		showPhoneField,
+		requirePhoneField,
 	] ) as Record< keyof AddressFields, Partial< AddressField > >;
 
 	const WrapperComponent = isEditor ? Noninteractive : Fragment;
@@ -105,6 +109,9 @@ const Block = ( {
 		};
 	} );
 
+	// Default editing state for CustomerAddress component comes from the current address and whether or not we're in the editor.
+	const defaultEditingAddress = isEditor || ! hasAddress;
+
 	return (
 		<>
 			<StoreNoticesContainer context={ noticeContext } />
@@ -112,27 +119,24 @@ const Block = ( {
 				{ cartDataLoaded ? (
 					<CustomerAddress
 						addressFieldsConfig={ addressFieldsConfig }
-						showPhoneField={ showPhoneField }
-						requirePhoneField={ requirePhoneField }
+						defaultEditing={ defaultEditingAddress }
 					/>
 				) : null }
 			</WrapperComponent>
-			{ hasAddress && (
-				<CheckboxControl
-					className="wc-block-checkout__use-address-for-billing"
-					label={ __(
-						'Use same address for billing',
-						'woo-gutenberg-products-block'
-					) }
-					checked={ useShippingAsBilling }
-					onChange={ ( checked: boolean ) => {
-						setUseShippingAsBilling( checked );
-						if ( checked ) {
-							syncBillingWithShipping();
-						}
-					} }
-				/>
-			) }
+			<CheckboxControl
+				className="wc-block-checkout__use-address-for-billing"
+				label={ __(
+					'Use same address for billing',
+					'woo-gutenberg-products-block'
+				) }
+				checked={ useShippingAsBilling }
+				onChange={ ( checked: boolean ) => {
+					setUseShippingAsBilling( checked );
+					if ( checked ) {
+						syncBillingWithShipping();
+					}
+				} }
+			/>
 		</>
 	);
 };
