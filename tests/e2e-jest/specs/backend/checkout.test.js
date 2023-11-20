@@ -45,23 +45,6 @@ describe( `${ block.name } Block`, () => {
 				await openSettingsSidebar();
 				await selectBlockByName( block.slug );
 			} );
-
-			it( 'can enable dark mode inputs', async () => {
-				const toggleLabel = await findLabelWithText(
-					'Dark mode inputs'
-				);
-				await toggleLabel.click();
-
-				await expect( page ).toMatchElement(
-					`.wc-block-checkout.has-dark-controls`
-				);
-
-				await toggleLabel.click();
-
-				await expect( page ).not.toMatchElement(
-					`.wc-block-checkout.has-dark-controls`
-				);
-			} );
 		} );
 
 		describe( 'shipping address block attributes', () => {
