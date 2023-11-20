@@ -40,6 +40,24 @@ test.describe( 'Merchant → Checkout', () => {
 	// `as string` is safe here because we know the variable is a string, it is defined above.
 	const blockSelectorInEditor = blockData.selectors.editor.block as string;
 
+	test.beforeEach( async ( { editorUtils, admin, editor, page } ) => {
+		await admin.visitSiteEditor( {
+			postId: 'woocommerce/woocommerce//page-checkout',
+			postType: 'wp_template',
+		} );
+		await editorUtils.enterEditMode();
+		await editor.openDocumentSettingsSidebar();
+
+		await page
+			// Spinner was used instead of the progress bar in an earlier version of
+			// the site editor.
+			.locator( '.edit-site-canvas-loader, .edit-site-canvas-spinner' )
+			// Bigger timeout is needed for larger entities, for example the large
+			// post html fixture that we load for performance tests, which often
+			// doesn't make it under the default 10 seconds.
+			.waitFor( { state: 'hidden', timeout: 60_000 } );
+	} );
+
 	test.describe( 'Can adjust T&S and Privacy Policy options', () => {
 		test.beforeAll( async ( { browser } ) => {
 			const page = await browser.newPage();
@@ -178,26 +196,6 @@ test.describe( 'Merchant → Checkout', () => {
 			await editor.saveSiteEditorEntities();
 		} );
 
-		test.beforeEach( async ( { editorUtils, admin, editor } ) => {
-			await admin.visitSiteEditor( {
-				postId: 'woocommerce/woocommerce//page-checkout',
-				postType: 'wp_template',
-			} );
-			await editorUtils.enterEditMode();
-			await editor.openDocumentSettingsSidebar();
-
-			await page
-				// Spinner was used instead of the progress bar in an earlier version of
-				// the site editor.
-				.locator(
-					'.edit-site-canvas-loader, .edit-site-canvas-spinner'
-				)
-				// Bigger timeout is needed for larger entities, for example the large
-				// post html fixture that we load for performance tests, which often
-				// doesn't make it under the default 10 seconds.
-				.waitFor( { state: 'hidden', timeout: 60_000 } );
-		} );
-
 		test( 'renders without crashing and can only be inserted once', async ( {
 			page,
 			editorUtils,
@@ -301,65 +299,72 @@ test.describe( 'Merchant → Checkout', () => {
 			await expect( orderSummaryAudioButton ).toBeHidden();
 		} );
 
-		test( 'toggling shipping company hides and shows address field', async ( {
-			editor,
-		} ) => {
-			await editor.selectBlocks(
-				blockSelectorInEditor +
-					'  [data-type="woocommerce/checkout-shipping-address-block"]'
-			);
-			const checkbox = editor.page.getByRole( 'checkbox', {
-				name: 'Company',
-				exact: true,
+		test.describe( 'Attributes', () => {
+			test.beforeEach( async ( { editor } ) => {
+				await editor.openDocumentSettingsSidebar();
+				await editor.selectBlocks( blockSelectorInEditor );
 			} );
-			await checkbox.check();
-			await expect( checkbox ).toBeChecked();
-			await expect(
-				editor.canvas.locator(
-					'div.wc-block-components-address-form__company'
-				)
-			).toBeVisible();
 
-			await checkbox.uncheck();
-			await expect( checkbox ).not.toBeChecked();
-			await expect(
-				editor.canvas.locator(
-					'.wc-block-checkout__shipping-fields .wc-block-components-address-form__company'
-				)
-			).toBeHidden();
-		} );
+			test( 'toggling shipping company hides and shows address field', async ( {
+				editor,
+			} ) => {
+				await editor.selectBlocks(
+					blockSelectorInEditor +
+						'  [data-type="woocommerce/checkout-shipping-address-block"]'
+				);
+				const checkbox = editor.page.getByRole( 'checkbox', {
+					name: 'Company',
+					exact: true,
+				} );
+				await checkbox.check();
+				await expect( checkbox ).toBeChecked();
+				await expect(
+					editor.canvas.locator(
+						'div.wc-block-components-address-form__company'
+					)
+				).toBeVisible();
 
-		test( 'toggling billing company hides and shows address field', async ( {
-			editor,
-		} ) => {
-			await editor.canvas.click( 'body' );
-			await editor.canvas
-				.getByLabel( 'Use same address for billing' )
-				.uncheck();
-
-			await editor.selectBlocks(
-				blockSelectorInEditor +
-					'  [data-type="woocommerce/checkout-billing-address-block"]'
-			);
-			const checkbox = editor.page.getByRole( 'checkbox', {
-				name: 'Company',
-				exact: true,
+				await checkbox.uncheck();
+				await expect( checkbox ).not.toBeChecked();
+				await expect(
+					editor.canvas.locator(
+						'.wc-block-checkout__shipping-fields .wc-block-components-address-form__company'
+					)
+				).toBeHidden();
 			} );
-			await checkbox.check();
-			await expect( checkbox ).toBeChecked();
-			await expect(
-				editor.canvas.locator(
-					'.wc-block-checkout__billing-fields .wc-block-components-address-form__company'
-				)
-			).toBeVisible();
 
-			await checkbox.uncheck();
-			await expect( checkbox ).not.toBeChecked();
-			await expect(
-				editor.canvas.locator(
-					'div.wc-block-components-address-form__company'
-				)
-			).toBeHidden();
+			test( 'toggling billing company hides and shows address field', async ( {
+				editor,
+			} ) => {
+				await editor.canvas.click( 'body' );
+				await editor.canvas
+					.getByLabel( 'Use same address for billing' )
+					.uncheck();
+
+				await editor.selectBlocks(
+					blockSelectorInEditor +
+						'  [data-type="woocommerce/checkout-billing-address-block"]'
+				);
+				const checkbox = editor.page.getByRole( 'checkbox', {
+					name: 'Company',
+					exact: true,
+				} );
+				await checkbox.check();
+				await expect( checkbox ).toBeChecked();
+				await expect(
+					editor.canvas.locator(
+						'.wc-block-checkout__billing-fields .wc-block-components-address-form__company'
+					)
+				).toBeVisible();
+
+				await checkbox.uncheck();
+				await expect( checkbox ).not.toBeChecked();
+				await expect(
+					editor.canvas.locator(
+						'div.wc-block-components-address-form__company'
+					)
+				).toBeHidden();
+			} );
 		} );
 	} );
 } );
