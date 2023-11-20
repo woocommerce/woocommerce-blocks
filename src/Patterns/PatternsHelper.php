@@ -78,7 +78,7 @@ class PatternsHelper {
 	/**
 	 * Returns the post that has the generated data by the AI for the patterns.
 	 *
-	 * @return int|\WP_Post|null
+	 * @return \WP_Post|null
 	 */
 	public static function get_patterns_ai_data_post() {
 		$arg = array(
@@ -148,10 +148,8 @@ class PatternsHelper {
 			}
 		}
 
-		if ( $patterns_dictionary === $default_patterns_dictionary || empty( $patterns_dictionary ) ) {
-			if ( $pattern_slug ) {
-				return self::find_pattern_by_slug( $default_patterns_dictionary, $pattern_slug );
-			}
+		if ( ( $patterns_dictionary === $default_patterns_dictionary || empty( $patterns_dictionary ) ) && $pattern_slug ) {
+			return self::find_pattern_by_slug( $default_patterns_dictionary, $pattern_slug );
 		} elseif ( $pattern_slug && is_array( $patterns_dictionary ) ) {
 			return self::find_pattern_by_slug( $patterns_dictionary, $pattern_slug );
 		} elseif ( is_array( $patterns_dictionary ) ) {
