@@ -2,6 +2,7 @@
  * External dependencies
  */
 import type { StoryFn, Meta } from '@storybook/react';
+import { useArgs } from '@storybook/preview-api';
 
 /**
  * Internal dependencies
@@ -61,8 +62,18 @@ export default {
 } as Meta< PanelProps >;
 
 const Template: StoryFn< PanelProps > = ( args ) => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	let [ { titleTag }, _ ] = useArgs();
+
+	titleTag = ( titleTag || 'div' ).replace( /\n/g, '' );
+	if (
+		document.createElement( titleTag.toUpperCase() ).toString() ===
+		'[object HTMLUnknownElement]'
+	) {
+		titleTag = 'div';
+	}
 	return (
-		<Panel { ...args }>
+		<Panel { ...args } titleTag={ titleTag }>
 			<div style={ { paddingBottom: '.750em' } }>
 				This is the content rendered inside the panel.
 			</div>
