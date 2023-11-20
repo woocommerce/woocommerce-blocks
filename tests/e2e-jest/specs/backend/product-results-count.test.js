@@ -25,7 +25,7 @@ const block = {
 	class: '.wc-block-product-results-count',
 };
 
-describe.skip( `${ block.name } Block`, () => {
+describe( `${ block.name } Block`, () => {
 	it( 'can not be inserted in a post', async () => {
 		await switchUserToAdmin();
 		await createNewPost( {
