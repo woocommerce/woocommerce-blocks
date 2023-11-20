@@ -132,7 +132,7 @@ class PatternsHelper {
 			return new WP_Error( 'missing_patterns_dictionary', __( 'The patterns dictionary is missing.', 'woo-gutenberg-products-block' ) );
 		}
 
-		$default_patterns_dictionary = wp_json_file_decode( $patterns_dictionary_file );
+		$default_patterns_dictionary = wp_json_file_decode( $patterns_dictionary_file, array( 'associative' => true ) );
 
 		if ( json_last_error() !== JSON_ERROR_NONE ) {
 			return new WP_Error( 'json_decode_error', __( 'Error decoding JSON.', 'woo-gutenberg-products-block' ) );
