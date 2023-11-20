@@ -390,7 +390,39 @@ test.describe( 'Merchant → Checkout', () => {
 				test.beforeEach( async ( { editor } ) => {
 					await editor.openDocumentSettingsSidebar();
 					await editor.selectBlocks( blockSelectorInEditor );
+
+				test.describe( 'Apartment input', () => {
+					test( 'visibility can be toggled', async ( {
+						editor,
+						editorUtils,
+					} ) => {
+						await editor.selectBlocks(
+							`${ blockSelectorInEditor } .wp-block-woocommerce-checkout-shipping-address-block`
+						);
+
+						// Turn on apartment field and check it's visible in the fields.
+						const apartmentToggleSelector = editor.page.getByLabel(
+							'Apartment, suite, etc.',
+							{ exact: true }
+						);
+						await apartmentToggleSelector.check();
+						const shippingAddressBlock =
+							await editorUtils.getBlockByName(
+								'woocommerce/checkout-shipping-address-block'
+							);
+
+						const apartmentInput = shippingAddressBlock.getByLabel(
+							'Apartment, suite, etc. (optional)'
+						);
+						// Turn off apartment field and check it's not visible in the fields.
+						await expect( apartmentInput ).toBeVisible();
+
+						await apartmentToggleSelector.uncheck();
+
+						await expect( apartmentInput ).toBeHidden();
+					} );
 				} );
+>>>>>>> c2633d611 (Add apartment input tests)
 			} );
 		} );
 	} );
