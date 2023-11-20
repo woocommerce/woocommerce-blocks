@@ -327,14 +327,10 @@ class ProductUpdater {
 			}
 		}
 
-		$expected_results_format = [
-			0 => '',
-			1 => '',
-			2 => '',
-			3 => '',
-			4 => '',
-			5 => '',
-		];
+		$expected_results_format = [];
+		foreach ( $products_information_list as $index => $product ) {
+			$expected_results_format[ $index ] = '';
+		}
 
 		$formatted_prompt = sprintf(
 			"Generate two-words titles for products using the following prompts for each one of them: '%s'. Ensure each entry is unique and does not repeat the given examples. Do not include backticks or the word json in the response. Here's an example format: '%s'.",
