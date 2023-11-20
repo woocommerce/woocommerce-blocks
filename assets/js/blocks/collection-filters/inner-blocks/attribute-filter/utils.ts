@@ -2,12 +2,7 @@
  * External dependencies
  */
 import { getSetting } from '@woocommerce/settings';
-import {
-	AttributeObject,
-	AttributeSetting,
-	isObject,
-	objectHasProp,
-} from '@woocommerce/types';
+import { AttributeObject, AttributeSetting } from '@woocommerce/types';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 
@@ -61,19 +56,4 @@ export function getAttributeFromTaxonomy( taxonomy: string ) {
 	return attributeObjects.find( ( attribute ) => {
 		return attribute.taxonomy === taxonomy;
 	} );
-}
-
-export function isDeepEqual( a: unknown, b: unknown ): boolean {
-	if ( a === b ) {
-		return true;
-	}
-
-	if ( isObject( a ) && isObject( b ) ) {
-		for ( const key in a ) {
-			if ( ! objectHasProp( b, key ) ) return false;
-			return isDeepEqual( a[ key ], b[ key ] );
-		}
-	}
-
-	return false;
 }

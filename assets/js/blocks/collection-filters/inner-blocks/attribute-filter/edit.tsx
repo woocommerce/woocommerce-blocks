@@ -6,7 +6,11 @@ import { useEffect, useState } from '@wordpress/element';
 import { BlockControls, useBlockProps } from '@wordpress/block-editor';
 import { getSetting } from '@woocommerce/settings';
 import { useCollection } from '@woocommerce/base-context/hooks';
-import { AttributeSetting, AttributeTerm } from '@woocommerce/types';
+import {
+	AttributeSetting,
+	AttributeTerm,
+	objectHasProp,
+} from '@woocommerce/types';
 import {
 	Disabled,
 	Button,
@@ -23,7 +27,7 @@ import {
 	AttributesPlaceholder,
 } from './components/placeholder';
 import { AttributeSelectControls } from './components/attribute-select-controls';
-import { getAttributeFromId, isDeepEqual } from './utils';
+import { getAttributeFromId } from './utils';
 import { Inspector } from './components/inspector-controls';
 import { AttributeCheckboxList } from './components/attribute-checkbox-list';
 import { AttributeDropdown } from './components/attribute-dropdown';
@@ -73,7 +77,20 @@ const Edit = ( props: EditProps ) => {
 				queryType,
 			},
 		};
-		if ( isDeepEqual( queryParam, newQueryParam ) ) {
+		if (
+			objectHasProp( queryParam, 'calculate_attribute_counts' ) &&
+			objectHasProp(
+				queryParam.calculate_attribute_counts,
+				'taxonomy'
+			) &&
+			objectHasProp(
+				queryParam.calculate_attribute_counts,
+				'queryType'
+			) &&
+			queryParam.calculate_attribute_counts.taxonomy ===
+				attributeObject.taxonomy &&
+			queryParam.calculate_attribute_counts.queryType === queryType
+		) {
 			return;
 		}
 		setAttributes( { queryParam: newQueryParam } );
