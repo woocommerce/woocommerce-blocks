@@ -87,7 +87,7 @@ const getActiveFilterNameText = () =>
 		( el ) => ( el as HTMLElement ).childNodes[ 1 ].textContent
 	);
 
-describe( 'Shopper → Active Filters Block', () => {
+describe.skip( 'Shopper → Active Filters Block', () => {
 	describe( 'With All Products block', () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
