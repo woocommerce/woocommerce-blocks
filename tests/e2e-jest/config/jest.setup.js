@@ -209,6 +209,10 @@ beforeAll( async () => {
 	await page.emulateMediaFeatures( [
 		{ name: 'prefers-reduced-motion', value: 'reduce' },
 	] );
+	await page.on( 'error', ( error ) => {
+		console.trace( 'THis is the error', error );
+		throw error;
+	} );
 } );
 
 afterEach( async () => {
