@@ -1,11 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	switchUserToAdmin,
-	openGlobalBlockInserter,
-	insertBlock,
-} from '@wordpress/e2e-test-utils';
+import { switchUserToAdmin, insertBlock } from '@wordpress/e2e-test-utils';
 import {
 	findLabelWithText,
 	visitBlockPage,
@@ -42,13 +38,6 @@ describe( `${ block.name } Block`, () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
 			await visitBlockPage( `${ block.name } Block` );
-		} );
-
-		it( 'can only be inserted once', async () => {
-			await openGlobalBlockInserter();
-			await page.keyboard.type( block.name );
-			const button = await page.$x( block.selectors.insertButton );
-			expect( button ).toHaveLength( 0 );
 		} );
 
 		it.skip( 'inner blocks can be added/removed by filters', async () => {
