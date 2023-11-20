@@ -37,7 +37,7 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 	test.only( `skipping ${ block.name } tests`, () => {} );
 }
 
-describe.skip( `${ block.name } Block`, () => {
+describe( `${ block.name } Block`, () => {
 	describe( 'in page editor', () => {
 		beforeAll( async () => {
 			await switchUserToAdmin();
