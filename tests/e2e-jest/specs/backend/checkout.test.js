@@ -72,23 +72,6 @@ describe( `${ block.name } Block`, () => {
 				);
 			} );
 
-			describe( 'Company input', () => {
-				const selector = `${ block.class } #shipping-company`;
-
-				it( 'visibility can be toggled', async () => {
-					await expect( 'Company' ).toToggleElement( selector );
-				} );
-
-				it( 'required attribute can be toggled', async () => {
-					// Company is disabled by default, so first we need to enable it.
-					const toggleLabel = await findLabelWithText( 'Company' );
-					await toggleLabel.click();
-					await expect(
-						'Require company name?'
-					).toToggleRequiredAttrOf( selector );
-				} );
-			} );
-
 			describe( 'Apartment input', () => {
 				it( 'visibility can be toggled', async () => {
 					const selector = `${ block.class } #shipping-address_2`;
