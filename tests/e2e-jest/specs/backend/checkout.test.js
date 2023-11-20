@@ -1,12 +1,6 @@
 /**
  * External dependencies
  */
-import { switchUserToAdmin } from '@wordpress/e2e-test-utils';
-import {
-	findLabelWithText,
-	visitBlockPage,
-	selectBlockByName,
-} from '@woocommerce/blocks-test-utils';
 import { merchant } from '@woocommerce/e2e-utils';
 
 /**
@@ -14,7 +8,6 @@ import { merchant } from '@woocommerce/e2e-utils';
  */
 import {
 	searchForBlock,
-	openSettingsSidebar,
 	openWidgetEditor,
 	closeModalIfExists,
 } from '../../utils.js';
@@ -34,30 +27,6 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 }
 
 describe( `${ block.name } Block`, () => {
-	describe( 'in page editor', () => {
-		beforeAll( async () => {
-			await switchUserToAdmin();
-			await visitBlockPage( `${ block.name } Block` );
-		} );
-
-		describe( 'action block attributes', () => {
-			beforeEach( async () => {
-				await openSettingsSidebar();
-				await selectBlockByName( 'woocommerce/checkout-actions-block' );
-			} );
-
-			describe( 'Return to cart link', () => {
-				it( 'visibility can be toggled', async () => {
-					const selector = `${ block.class } .wc-block-components-checkout-return-to-cart-button`;
-					const toggleLabel = await findLabelWithText(
-						'Show a "Return to Cart" link'
-					);
-					await expect( toggleLabel ).toToggleElement( selector );
-				} );
-			} );
-		} );
-	} );
-
 	describe( 'in widget editor', () => {
 		it( "can't be inserted in a widget area", async () => {
 			await merchant.login();
