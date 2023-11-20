@@ -8,21 +8,19 @@ import { NoticeBannerProps } from '@woocommerce/base-components/notice-banner';
  */
 import StoreNotice from '../';
 
-const availableStatus = [ 'default', 'success', 'error', 'warning', 'info' ];
-
 export default {
 	title: 'External Components/StoreNotice',
 	argTypes: {
 		status: {
 			control: 'radio',
-			options: availableStatus,
+			options: [ 'default', 'success', 'error', 'warning', 'info' ],
 			description:
 				'Status determines the color of the notice and the icon.',
 		},
 		isDismissible: {
 			control: 'boolean',
 			description:
-				'Determines whether the notice can be dismissed by the user. When set to true, a close icon will be displayed on the banner.',
+				'Determines whether the notice can be dismissed by the user. When set to `true`, a close icon will be displayed on the banner.',
 		},
 		summary: {
 			description:
@@ -42,7 +40,7 @@ export default {
 			control: 'radio',
 			options: [ 'polite', 'assertive' ],
 			description:
-				'Determines the level of politeness for the notice for assistive technology.',
+				'Determines the level of politeness for the notice for assistive technology. This will be `polite` for all `status` values except `error` when it will be `assertive`.',
 		},
 		children: {
 			description:
