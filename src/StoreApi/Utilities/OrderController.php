@@ -108,7 +108,7 @@ class OrderController {
 		if ( $order->get_customer_id() ) {
 			$customer = new \WC_Customer( $order->get_customer_id() );
 			$customer->set_props(
-				[
+				array(
 					'billing_first_name'  => $order->get_billing_first_name(),
 					'billing_last_name'   => $order->get_billing_last_name(),
 					'billing_company'     => $order->get_billing_company(),
@@ -130,7 +130,7 @@ class OrderController {
 					'shipping_postcode'   => $order->get_shipping_postcode(),
 					'shipping_country'    => $order->get_shipping_country(),
 					'shipping_phone'      => $order->get_shipping_phone(),
-				]
+				)
 			);
 
 			$customer->save();
@@ -173,18 +173,18 @@ class OrderController {
 	 */
 	protected function validate_coupons( \WC_Order $order ) {
 		$coupon_codes  = $order->get_coupon_codes();
-		$coupons       = array_filter( array_map( [ $this, 'get_coupon' ], $coupon_codes ) );
-		$validators    = [ 'validate_coupon_email_restriction', 'validate_coupon_usage_limit' ];
-		$coupon_errors = [];
+		$coupons       = array_filter( array_map( array( $this, 'get_coupon' ), $coupon_codes ) );
+		$validators    = array( 'validate_coupon_email_restriction', 'validate_coupon_usage_limit' );
+		$coupon_errors = array();
 
 		foreach ( $coupons as $coupon ) {
 			try {
 				array_walk(
 					$validators,
 					function( $validator, $index, $params ) {
-						call_user_func_array( [ $this, $validator ], $params );
+						call_user_func_array( array( $this, $validator ), $params );
 					},
-					[ $coupon, $order ]
+					array( $coupon, $order )
 				);
 			} catch ( Exception $error ) {
 				$coupon_errors[ $coupon->get_code() ] = $error->getMessage();
@@ -212,9 +212,9 @@ class OrderController {
 					implode( '", "', array_keys( $coupon_errors ) )
 				),
 				409,
-				[
+				array(
 					'removed_coupons' => $coupon_errors,
-				]
+				)
 			);
 		}
 	}
@@ -270,9 +270,9 @@ class OrderController {
 					$shipping_address['country']
 				),
 				400,
-				[
+				array(
 					'allowed_countries' => array_keys( wc()->countries->get_shipping_countries() ),
-				]
+				)
 			);
 		}
 
@@ -285,9 +285,9 @@ class OrderController {
 					$billing_address['country']
 				),
 				400,
-				[
+				array(
 					'allowed_countries' => array_keys( wc()->countries->get_allowed_countries() ),
-				]
+				)
 			);
 		}
 
@@ -300,7 +300,7 @@ class OrderController {
 			return;
 		}
 
-		$errors_by_code = [];
+		$errors_by_code = array();
 		$error_codes    = $errors->get_error_codes();
 		foreach ( $error_codes as $code ) {
 			$errors_by_code[ $code ] = $errors->get_error_messages( $code );
@@ -316,9 +316,9 @@ class OrderController {
 					'shipping' === $code ? __( 'shipping address', 'woo-gutenberg-products-block' ) : __( 'billing address', 'woo-gutenberg-products-block' )
 				),
 				400,
-				[
+				array(
 					'errors' => $errors_by_code,
-				]
+				)
 			);
 		}
 	}
@@ -343,50 +343,50 @@ class OrderController {
 	 */
 	protected function validate_address_fields( $address, $address_type, \WP_Error $errors ) {
 		$all_locales    = wc()->countries->get_country_locale();
-		$current_locale = isset( $all_locales[ $address['country'] ] ) ? $all_locales[ $address['country'] ] : [];
+		$current_locale = isset( $all_locales[ $address['country'] ] ) ? $all_locales[ $address['country'] ] : array();
 
 		/**
 		 * We are not using wc()->counties->get_default_address_fields() here because that is filtered. Instead, this array
 		 * is based on assets/js/base/components/cart-checkout/address-form/default-address-fields.js
 		 */
-		$address_fields = [
-			'first_name' => [
+		$address_fields = array(
+			'first_name' => array(
 				'label'    => __( 'First name', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			],
-			'last_name'  => [
+			),
+			'last_name'  => array(
 				'label'    => __( 'Last name', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			],
-			'company'    => [
+			),
+			'company'    => array(
 				'label'    => __( 'Company', 'woo-gutenberg-products-block' ),
 				'required' => false,
-			],
-			'address_1'  => [
+			),
+			'address_1'  => array(
 				'label'    => __( 'Address', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			],
-			'address_2'  => [
+			),
+			'address_2'  => array(
 				'label'    => __( 'Apartment, suite, etc.', 'woo-gutenberg-products-block' ),
 				'required' => false,
-			],
-			'country'    => [
+			),
+			'country'    => array(
 				'label'    => __( 'Country/Region', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			],
-			'city'       => [
+			),
+			'city'       => array(
 				'label'    => __( 'City', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			],
-			'state'      => [
+			),
+			'state'      => array(
 				'label'    => __( 'State/County', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			],
-			'postcode'   => [
+			),
+			'postcode'   => array(
 				'label'    => __( 'Postal code', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			],
-		];
+			),
+		);
 
 		if ( $current_locale ) {
 			foreach ( $current_locale as $key => $field ) {
@@ -415,7 +415,7 @@ class OrderController {
 	protected function validate_coupon_email_restriction( \WC_Coupon $coupon, \WC_Order $order ) {
 		$restrictions = $coupon->get_email_restrictions();
 
-		if ( ! empty( $restrictions ) && $order->get_billing_email() && ! wc()->cart->is_coupon_emails_allowed( [ $order->get_billing_email() ], $restrictions ) ) {
+		if ( ! empty( $restrictions ) && $order->get_billing_email() && ! wc()->cart->is_coupon_emails_allowed( array( $order->get_billing_email() ), $restrictions ) ) {
 			throw new Exception( $coupon->get_coupon_error( \WC_Coupon::E_WC_COUPON_NOT_YOURS_REMOVED ) );
 		}
 	}
@@ -431,13 +431,75 @@ class OrderController {
 		$coupon_usage_limit = $coupon->get_usage_limit_per_user();
 
 		if ( $coupon_usage_limit > 0 ) {
-			$data_store  = $coupon->get_data_store();
-			$usage_count = $order->get_customer_id() ? $data_store->get_usage_by_user_id( $coupon, $order->get_customer_id() ) : $data_store->get_usage_by_email( $coupon, $order->get_billing_email() );
+			$data_store = $coupon->get_data_store();
+			// First, we check a logged in customer usage count, which happens against their user id, billing email, and account email.
+			if ( get_current_user_id() ) {
+				// First we get a count of usage by user id.
+				$usage_count_per_id = $data_store->get_usage_by_user_id( $coupon, get_current_user_id() );
+				// Then we get usage for all user emails, the order billing email can be different from the one the user created the account with, we still need to check both.
+				$usage_count_per_email = $this->get_coupon_usage_per_emails( $coupon, array( $order->get_billing_email(), wp_get_current_user()->user_email ) );
+				$usage_count           = $usage_count_per_id + $usage_count_per_email;
+
+			} else {
+				// Otherwise we check if the email doesn't belong to an existing user.
+				$customer_data_store = \WC_Data_Store::load( 'customer' );
+				// This will get us any user ids for this billing email.
+				$user_ids              = $customer_data_store->get_user_ids_for_billing_email( array( $order->get_billing_email() ) );
+				$usage_count_per_id    = $this->get_coupon_usage_per_user_ids( $coupon, $user_ids );
+				$usage_count_per_email = $this->get_coupon_usage_per_emails( $coupon, array( $order->get_billing_email() ) );
+
+				$usage_count = $usage_count_per_id + $usage_count_per_email;
+
+			}
 
 			if ( $usage_count >= $coupon_usage_limit ) {
 				throw new Exception( $coupon->get_coupon_error( \WC_Coupon::E_WC_COUPON_USAGE_LIMIT_REACHED ) );
 			}
 		}
+	}
+
+	/**
+	 * Get the usage count for a coupon by user ids.
+	 *
+	 * @param \WC_Coupon $coupon Coupon object applied to the cart.
+	 * @param array      $user_ids Array of user ids.
+	 *
+	 * @return int
+	 */
+	private function get_coupon_usage_per_user_ids( $coupon, $user_ids ) {
+		$data_store = $coupon->get_data_store();
+		$usage      = 0;
+		$user_ids   = array_unique( array_map( 'absint', $user_ids ) );
+		foreach ( $user_ids as $user_id ) {
+			$usage += $data_store->get_usage_by_user_id( $coupon, $user_id );
+		}
+		return $usage;
+	}
+
+	/**
+	 * Get the usage count for a coupon by emails.
+	 *
+	 * @param \WC_Coupon $coupon Coupon object applied to the cart.
+	 * @param array      $emails Array of emails.
+	 *
+	 * @return int
+	 */
+	private function get_coupon_usage_per_emails( $coupon, $emails ) {
+		$data_store = $coupon->get_data_store();
+		$usage      = 0;
+		$emails     = array_unique(
+			array_map(
+				'sanitize_email',
+				array_map(
+					'strtolower',
+					$emails
+				)
+			)
+		);
+		foreach ( $emails as $email ) {
+			$usage += $data_store->get_usage_by_email( $coupon, $email );
+		}
+		return $usage;
 	}
 
 	/**
@@ -458,7 +520,7 @@ class OrderController {
 					'woocommerce_rest_invalid_shipping_option',
 					__( 'Sorry, this order requires a shipping option.', 'woo-gutenberg-products-block' ),
 					400,
-					[]
+					array()
 				);
 			}
 		}
@@ -622,7 +684,7 @@ class OrderController {
 	 */
 	protected function update_addresses_from_cart( \WC_Order $order ) {
 		$order->set_props(
-			[
+			array(
 				'billing_first_name'  => wc()->customer->get_billing_first_name(),
 				'billing_last_name'   => wc()->customer->get_billing_last_name(),
 				'billing_company'     => wc()->customer->get_billing_company(),
@@ -644,7 +706,7 @@ class OrderController {
 				'shipping_postcode'   => wc()->customer->get_shipping_postcode(),
 				'shipping_country'    => wc()->customer->get_shipping_country(),
 				'shipping_phone'      => wc()->customer->get_shipping_phone(),
-			]
+			)
 		);
 	}
 }
