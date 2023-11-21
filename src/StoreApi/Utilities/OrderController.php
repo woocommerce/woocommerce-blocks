@@ -436,32 +436,38 @@ class OrderController {
 
 		// First, we check a logged in customer usage count, which happens against their user id, billing email, and account email.
 		if ( $order->get_customer_id() ) {
-			$user_data = get_userdata( $order->get_customer_id() );
 			// We get usage per user id and associated emails.
 			$usage_count = $this->get_usage_per_aliases(
 				$coupon,
 				[
 					$order->get_billing_email(),
 					$order->get_customer_id(),
-					$user_data ? $user_data->user_email : '',
+					$this->get_email_from_user_id( $order->get_customer_id() ),
 				]
 			);
 		} else {
 			// Otherwise we check if the email doesn't belong to an existing user.
 			$customer_data_store = \WC_Data_Store::load( 'customer' );
-			// This will get us any user ids for this billing email.
-			$user_ids       = $customer_data_store->get_user_ids_for_billing_email( array( $order->get_billing_email() ) );
-			$emails_for_ids = array_map(
-				function( $user_id ) {
-					$user_data = get_userdata( $user_id );
-					return $user_data ? $user_data->user_email : '';
-				},
-				$user_ids
-			);
-			$usage_count    = $this->get_usage_per_aliases(
+
+			// This will get us any user ids for the given billing email.
+			$user_ids = $customer_data_store->get_user_ids_for_billing_email( array( $order->get_billing_email() ) );
+
+			// Convert all found user ids to a list of email addresses.
+			$user_emails = array_map( [ $this, 'get_email_from_user_id' ], $user_ids );
+
+			// This matches a user against the given billing email and gets their ID/email/billing email.
+			$found_user = get_user_by( 'email', $order->get_billing_email() );
+			if ( $found_user ) {
+				$user_ids[]    = $found_user->ID;
+				$user_emails[] = $found_user->user_email;
+				$user_emails[] = get_user_meta( $found_user->ID, 'billing_email', true );
+			}
+
+			// Finally, grab usage count for all found IDs and emails.
+			$usage_count = $this->get_usage_per_aliases(
 				$coupon,
 				array_merge(
-					$emails_for_ids,
+					$user_emails,
 					$user_ids,
 					array( $order->get_billing_email() )
 				)
@@ -471,6 +477,17 @@ class OrderController {
 		if ( $usage_count >= $coupon_usage_limit ) {
 			throw new Exception( $coupon->get_coupon_error( \WC_Coupon::E_WC_COUPON_USAGE_LIMIT_REACHED ) );
 		}
+	}
+
+	/**
+	 * Get user email from user id.
+	 *
+	 * @param integer $user_id User ID.
+	 * @return string Email or empty string.
+	 */
+	private function get_email_from_user_id( $user_id ) {
+		$user_data = get_userdata( $user_id );
+		return $user_data ? $user_data->user_email : '';
 	}
 
 	/**
