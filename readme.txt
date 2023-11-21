@@ -108,6 +108,8 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Fix the Layout for Shipping and Billing Address Forms in the Checkout Block [#11486](https://github.com/woocommerce/woocommerce-blocks/pull/11486)
 - Minor fixes for PHP 8. [#11473](https://github.com/woocommerce/woocommerce-blocks/pull/11473)
 - Product Button: always enqueue the store. [#11858](https://github.com/woocommerce/woocommerce-blocks/pull/11858)
+- Fixed params passed to woocommerce_before_thankyou for block checkout. This should be an order ID, not an order object. [#11862](https://github.com/woocommerce/woocommerce-blocks/pull/11862)
+- Enhanced validation for limited use coupons and guest users. [#11860](https://github.com/woocommerce/woocommerce-blocks/pull/11860)
 
 #### Documentation
 
