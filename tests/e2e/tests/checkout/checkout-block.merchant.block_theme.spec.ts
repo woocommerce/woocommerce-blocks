@@ -453,7 +453,8 @@ test.describe( 'Merchant → Checkout', () => {
 				editorUtils,
 			} ) => {
 				await editor.selectBlocks(
-					`${ blockSelectorInEditor } .wp-block-woocommerce-checkout-shipping-address-block`
+					blockSelectorInEditor +
+						'  [data-type="woocommerce/checkout-shipping-address-block"]'
 				);
 
 				// Turn on phone field and check it's visible in the fields.
@@ -466,14 +467,14 @@ test.describe( 'Merchant → Checkout', () => {
 				);
 
 				// Turn on Require phone number? option and check it becomes required in the fields.
-				const companyRequiredSelector = editor.page.getByLabel(
+				const phoneRequiredSelector = editor.page.getByLabel(
 					'Require phone number?',
 					{ exact: true }
 				);
-				await companyRequiredSelector.check();
+				await phoneRequiredSelector.check();
 				const phoneInput = shippingAddressBlock.getByLabel( 'Phone' );
 				await expect( phoneInput ).toHaveAttribute( 'required', '' );
-				await companyRequiredSelector.uncheck();
+				await phoneRequiredSelector.uncheck();
 				await expect( phoneInput ).not.toHaveAttribute(
 					'required',
 					''
@@ -485,6 +486,52 @@ test.describe( 'Merchant → Checkout', () => {
 				await phoneToggleSelector.uncheck();
 
 				await expect( phoneInput ).toBeHidden();
+
+				await editor.canvas
+					.getByLabel( 'Use same address for billing' )
+					.uncheck();
+
+				await editor.selectBlocks(
+					blockSelectorInEditor +
+						'  [data-type="woocommerce/checkout-billing-address-block"]'
+				);
+
+				// Turn on phone field and check it's visible in the fields.
+				const billingPhoneToggleSelector = editor.page.getByLabel(
+					'Phone',
+					{
+						exact: true,
+					}
+				);
+				await billingPhoneToggleSelector.check();
+				const billingAddressBlock = await editorUtils.getBlockByName(
+					'woocommerce/checkout-billing-address-block'
+				);
+
+				// Turn on Require phone number? option and check it becomes required in the fields.
+				const billingPhoneRequiredSelector = editor.page.getByLabel(
+					'Require phone number?',
+					{ exact: true }
+				);
+				await billingPhoneRequiredSelector.check();
+				const billingPhoneInput =
+					billingAddressBlock.getByLabel( 'Phone' );
+				await expect( billingPhoneInput ).toHaveAttribute(
+					'required',
+					''
+				);
+				await billingPhoneRequiredSelector.uncheck();
+				await expect( billingPhoneInput ).not.toHaveAttribute(
+					'required',
+					''
+				);
+
+				// Turn off phone field and check it's not visible in the fields.
+				await expect( billingPhoneInput ).toBeVisible();
+
+				await billingPhoneToggleSelector.uncheck();
+
+				await expect( billingPhoneInput ).toBeHidden();
 			} );
 		} );
 	} );
