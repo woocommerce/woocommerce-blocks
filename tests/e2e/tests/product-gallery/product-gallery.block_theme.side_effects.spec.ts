@@ -293,7 +293,10 @@ test.describe( `${ blockData.name }`, () => {
 		page,
 		editorUtils,
 		pageObject,
+		editor,
 	} ) => {
+		await editor.openDocumentSettingsSidebar();
+
 		await pageObject.addProductGalleryBlock( { cleanContent: true } );
 
 		const block = await pageObject.getMainImageBlock( {
