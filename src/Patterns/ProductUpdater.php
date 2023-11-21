@@ -329,35 +329,13 @@ class ProductUpdater {
 			}
 		}
 
-		$expected_results_format = [
-			0 => [
-				'title' => '',
-				'price' => '',
-			],
-			1 => [
-				'title' => '',
-				'price' => '',
-			],
-			2 => [
-				'title' => '',
-				'price' => '',
-			],
-			3 => [
-				'title' => '',
-				'price' => '',
-			],
-			4 => [
-				'title' => '',
-				'price' => '',
-			],
-			5 => [
-				'title' => '',
-				'price' => '',
-			],
-		];
+		$expected_results_format = [];
+		foreach ( $products_information_list as $index => $product ) {
+			$expected_results_format[ $index ] = '';
+		}
 
 		$formatted_prompt = sprintf(
-			"Generate two-words titles and price for products using the following prompts for each one of them: '%s'. Ensure each entry is unique and does not repeat the given examples. Ensure each product price is a number and corresponds with the product title that is being advertised. Do not include backticks or the word json in the response. Here's an example format: '%s'.",
+			"Generate two-words titles for products using the following prompts for each one of them: '%s'. Ensure each entry is unique and does not repeat the given examples. Do not include backticks or the word json in the response. Here's an example format: '%s'.",
 			wp_json_encode( $prompts ),
 			wp_json_encode( $expected_results_format )
 		);
@@ -405,8 +383,7 @@ class ProductUpdater {
 			}
 
 			foreach ( $products_information_list as $index => $product_information ) {
-				$products_information_list[ $index ]['title'] = str_replace( '"', '', $completion[ $index ]['title'] );
-				$products_information_list[ $index ]['price'] = $completion[ $index ]['price'];
+				$products_information_list[ $index ]['title'] = str_replace( '"', '', $completion[ $index ] );
 			}
 
 			$success = true;

@@ -165,6 +165,7 @@ class Pexels {
 			return new \WP_Error( 'ai_service_unavailable', __( 'AI Service is unavailable, try again later.', 'woo-gutenberg-products-block' ) );
 		}
 
+		// Remove the images that are not aligned with the business description.
 		foreach ( $returned_images as $returned_image ) {
 			if ( isset( $returned_image['title'] ) && ! in_array( $returned_image['title'], $filtered_image_titles, true ) ) {
 				unset( $returned_image );
