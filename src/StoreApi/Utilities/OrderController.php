@@ -431,7 +431,6 @@ class OrderController {
 		$coupon_usage_limit = $coupon->get_usage_limit_per_user();
 
 		if ( $coupon_usage_limit > 0 ) {
-			$data_store = $coupon->get_data_store();
 			// First, we check a logged in customer usage count, which happens against their user id, billing email, and account email.
 			if ( $order->get_customer_id() ) {
 				$user_data = get_userdata( $order->get_customer_id() );
