@@ -1,6 +1,6 @@
 <?php
 /**
- * Merge data with the exsisting store.
+ * Merge data with the existing store.
  *
  * @param array $data Data that will be merged with the exsisting store.
  *
