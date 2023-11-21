@@ -108,7 +108,7 @@ class OrderController {
 		if ( $order->get_customer_id() ) {
 			$customer = new \WC_Customer( $order->get_customer_id() );
 			$customer->set_props(
-				array(
+				[
 					'billing_first_name'  => $order->get_billing_first_name(),
 					'billing_last_name'   => $order->get_billing_last_name(),
 					'billing_company'     => $order->get_billing_company(),
@@ -130,7 +130,7 @@ class OrderController {
 					'shipping_postcode'   => $order->get_shipping_postcode(),
 					'shipping_country'    => $order->get_shipping_country(),
 					'shipping_phone'      => $order->get_shipping_phone(),
-				)
+				]
 			);
 
 			$customer->save();
@@ -173,18 +173,18 @@ class OrderController {
 	 */
 	protected function validate_coupons( \WC_Order $order ) {
 		$coupon_codes  = $order->get_coupon_codes();
-		$coupons       = array_filter( array_map( array( $this, 'get_coupon' ), $coupon_codes ) );
-		$validators    = array( 'validate_coupon_email_restriction', 'validate_coupon_usage_limit' );
-		$coupon_errors = array();
+		$coupons       = array_filter( array_map( [ $this, 'get_coupon' ], $coupon_codes ) );
+		$validators    = [ 'validate_coupon_email_restriction', 'validate_coupon_usage_limit' ];
+		$coupon_errors = [];
 
 		foreach ( $coupons as $coupon ) {
 			try {
 				array_walk(
 					$validators,
 					function( $validator, $index, $params ) {
-						call_user_func_array( array( $this, $validator ), $params );
+						call_user_func_array( [ $this, $validator ], $params );
 					},
-					array( $coupon, $order )
+					[ $coupon, $order ]
 				);
 			} catch ( Exception $error ) {
 				$coupon_errors[ $coupon->get_code() ] = $error->getMessage();
@@ -212,9 +212,9 @@ class OrderController {
 					implode( '", "', array_keys( $coupon_errors ) )
 				),
 				409,
-				array(
+				[
 					'removed_coupons' => $coupon_errors,
-				)
+				]
 			);
 		}
 	}
@@ -270,9 +270,9 @@ class OrderController {
 					$shipping_address['country']
 				),
 				400,
-				array(
+				[
 					'allowed_countries' => array_keys( wc()->countries->get_shipping_countries() ),
-				)
+				]
 			);
 		}
 
@@ -285,9 +285,9 @@ class OrderController {
 					$billing_address['country']
 				),
 				400,
-				array(
+				[
 					'allowed_countries' => array_keys( wc()->countries->get_allowed_countries() ),
-				)
+				]
 			);
 		}
 
@@ -300,7 +300,7 @@ class OrderController {
 			return;
 		}
 
-		$errors_by_code = array();
+		$errors_by_code = [];
 		$error_codes    = $errors->get_error_codes();
 		foreach ( $error_codes as $code ) {
 			$errors_by_code[ $code ] = $errors->get_error_messages( $code );
@@ -316,9 +316,9 @@ class OrderController {
 					'shipping' === $code ? __( 'shipping address', 'woo-gutenberg-products-block' ) : __( 'billing address', 'woo-gutenberg-products-block' )
 				),
 				400,
-				array(
+				[
 					'errors' => $errors_by_code,
-				)
+				]
 			);
 		}
 	}
@@ -343,50 +343,50 @@ class OrderController {
 	 */
 	protected function validate_address_fields( $address, $address_type, \WP_Error $errors ) {
 		$all_locales    = wc()->countries->get_country_locale();
-		$current_locale = isset( $all_locales[ $address['country'] ] ) ? $all_locales[ $address['country'] ] : array();
+		$current_locale = isset( $all_locales[ $address['country'] ] ) ? $all_locales[ $address['country'] ] : [];
 
 		/**
 		 * We are not using wc()->counties->get_default_address_fields() here because that is filtered. Instead, this array
 		 * is based on assets/js/base/components/cart-checkout/address-form/default-address-fields.js
 		 */
-		$address_fields = array(
-			'first_name' => array(
+		$address_fields = [
+			'first_name' => [
 				'label'    => __( 'First name', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			),
-			'last_name'  => array(
+			],
+			'last_name'  => [
 				'label'    => __( 'Last name', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			),
-			'company'    => array(
+			],
+			'company'    => [
 				'label'    => __( 'Company', 'woo-gutenberg-products-block' ),
 				'required' => false,
-			),
-			'address_1'  => array(
+			],
+			'address_1'  => [
 				'label'    => __( 'Address', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			),
-			'address_2'  => array(
+			],
+			'address_2'  => [
 				'label'    => __( 'Apartment, suite, etc.', 'woo-gutenberg-products-block' ),
 				'required' => false,
-			),
-			'country'    => array(
+			],
+			'country'    => [
 				'label'    => __( 'Country/Region', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			),
-			'city'       => array(
+			],
+			'city'       => [
 				'label'    => __( 'City', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			),
-			'state'      => array(
+			],
+			'state'      => [
 				'label'    => __( 'State/County', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			),
-			'postcode'   => array(
+			],
+			'postcode'   => [
 				'label'    => __( 'Postal code', 'woo-gutenberg-products-block' ),
 				'required' => true,
-			),
-		);
+			],
+		];
 
 		if ( $current_locale ) {
 			foreach ( $current_locale as $key => $field ) {
@@ -415,7 +415,7 @@ class OrderController {
 	protected function validate_coupon_email_restriction( \WC_Coupon $coupon, \WC_Order $order ) {
 		$restrictions = $coupon->get_email_restrictions();
 
-		if ( ! empty( $restrictions ) && $order->get_billing_email() && ! wc()->cart->is_coupon_emails_allowed( array( $order->get_billing_email() ), $restrictions ) ) {
+		if ( ! empty( $restrictions ) && $order->get_billing_email() && ! wc()->cart->is_coupon_emails_allowed( [ $order->get_billing_email() ], $restrictions ) ) {
 			throw new Exception( $coupon->get_coupon_error( \WC_Coupon::E_WC_COUPON_NOT_YOURS_REMOVED ) );
 		}
 	}
@@ -490,7 +490,7 @@ class OrderController {
 		if ( ! $needs_shipping || ! is_array( $chosen_shipping_methods ) ) {
 			return;
 		}
-		$arr = [];
+
 		foreach ( $chosen_shipping_methods as $chosen_shipping_method ) {
 			if ( false === $chosen_shipping_method ) {
 				throw new RouteException(
@@ -661,7 +661,7 @@ class OrderController {
 	 */
 	protected function update_addresses_from_cart( \WC_Order $order ) {
 		$order->set_props(
-			array(
+			[
 				'billing_first_name'  => wc()->customer->get_billing_first_name(),
 				'billing_last_name'   => wc()->customer->get_billing_last_name(),
 				'billing_company'     => wc()->customer->get_billing_company(),
@@ -683,7 +683,7 @@ class OrderController {
 				'shipping_postcode'   => wc()->customer->get_shipping_postcode(),
 				'shipping_country'    => wc()->customer->get_shipping_country(),
 				'shipping_phone'      => wc()->customer->get_shipping_phone(),
-			)
+			]
 		);
 	}
 }
