@@ -124,7 +124,7 @@ class StoreTitle extends AbstractRoute {
 
 		$response = $ai_connection->fetch_ai_response( $token, $prompt );
 		if ( is_wp_error( $response ) ) {
-			return $this->error_to_response( $token );
+			return $this->error_to_response( $response );
 		}
 
 		if ( ! isset( $ai_response['completion'] ) ) {
