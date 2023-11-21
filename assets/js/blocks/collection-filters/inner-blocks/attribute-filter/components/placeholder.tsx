@@ -8,7 +8,9 @@ import { Placeholder, Button } from '@wordpress/components';
 
 export const AttributesPlaceholder = ( {
 	children,
-}: React.PropsWithChildren ) => (
+}: {
+	children: JSX.Element | JSX.Element[];
+} ) => (
 	<Placeholder
 		className="wc-block-attribute-filter"
 		icon={ <Icon icon={ category } /> }
