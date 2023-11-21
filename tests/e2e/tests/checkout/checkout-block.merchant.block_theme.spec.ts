@@ -307,84 +307,80 @@ test.describe( 'Merchant → Checkout', () => {
 			await editor.selectBlocks( blockSelectorInEditor );
 		} );
 
-		test.describe( 'Company input', () => {
-			test( 'visibility and required can be toggled in shipping and billing', async ( {
-				editor,
-			} ) => {
-				await editor.selectBlocks(
-					blockSelectorInEditor +
-						'  [data-type="woocommerce/checkout-shipping-address-block"]'
-				);
-				const checkbox = editor.page.getByRole( 'checkbox', {
-					name: 'Company',
-					exact: true,
-				} );
-
-				await checkbox.check();
-				await expect( checkbox ).toBeChecked();
-				await expect(
-					editor.canvas.locator(
-						'div.wc-block-components-address-form__company'
-					)
-				).toBeVisible();
-
-				await checkbox.uncheck();
-				await expect( checkbox ).not.toBeChecked();
-				await expect(
-					editor.canvas.locator(
-						'.wc-block-checkout__shipping-fields .wc-block-components-address-form__company'
-					)
-				).toBeHidden();
-
-				await editor.canvas
-					.getByLabel( 'Use same address for billing' )
-					.uncheck();
-
-				await editor.selectBlocks(
-					blockSelectorInEditor +
-						'  [data-type="woocommerce/checkout-billing-address-block"]'
-				);
-				const billingCheckbox = editor.page.getByRole( 'checkbox', {
-					name: 'Company',
-					exact: true,
-				} );
-				await billingCheckbox.check();
-				await expect( billingCheckbox ).toBeChecked();
-				await expect(
-					editor.canvas.locator(
-						'.wc-block-checkout__billing-fields .wc-block-components-address-form__company'
-					)
-				).toBeVisible();
-
-				await billingCheckbox.uncheck();
-				await expect( billingCheckbox ).not.toBeChecked();
-				await expect(
-					editor.canvas.locator(
-						'div.wc-block-components-address-form__company'
-					)
-				).toBeHidden();
+		test( 'Company input visibility and required can be toggled in shipping and billing', async ( {
+			editor,
+		} ) => {
+			await editor.selectBlocks(
+				blockSelectorInEditor +
+					'  [data-type="woocommerce/checkout-shipping-address-block"]'
+			);
+			const checkbox = editor.page.getByRole( 'checkbox', {
+				name: 'Company',
+				exact: true,
 			} );
+
+			await checkbox.check();
+			await expect( checkbox ).toBeChecked();
+			await expect(
+				editor.canvas.locator(
+					'div.wc-block-components-address-form__company'
+				)
+			).toBeVisible();
+
+			await checkbox.uncheck();
+			await expect( checkbox ).not.toBeChecked();
+			await expect(
+				editor.canvas.locator(
+					'.wc-block-checkout__shipping-fields .wc-block-components-address-form__company'
+				)
+			).toBeHidden();
+
+			await editor.canvas
+				.getByLabel( 'Use same address for billing' )
+				.uncheck();
+
+			await editor.selectBlocks(
+				blockSelectorInEditor +
+					'  [data-type="woocommerce/checkout-billing-address-block"]'
+			);
+			const billingCheckbox = editor.page.getByRole( 'checkbox', {
+				name: 'Company',
+				exact: true,
+			} );
+			await billingCheckbox.check();
+			await expect( billingCheckbox ).toBeChecked();
+			await expect(
+				editor.canvas.locator(
+					'.wc-block-checkout__billing-fields .wc-block-components-address-form__company'
+				)
+			).toBeVisible();
+
+			await billingCheckbox.uncheck();
+			await expect( billingCheckbox ).not.toBeChecked();
+			await expect(
+				editor.canvas.locator(
+					'div.wc-block-components-address-form__company'
+				)
+			).toBeHidden();
 		} );
 
-		test.describe( 'Dark mode', () => {
-			test( 'can enable dark mode inputs', async ( {
-				editorUtils,
-				page,
-			} ) => {
-				const toggleLabel = page.getByLabel( 'Dark mode inputs' );
-				await toggleLabel.check();
+		test( 'can enable dark mode inputs', async ( {
+			editorUtils,
+			page,
+		} ) => {
+			const toggleLabel = page.getByLabel( 'Dark mode inputs' );
+			await toggleLabel.check();
 
-				const shippingAddressBlock = await editorUtils.getBlockByName(
-					'woocommerce/checkout'
-				);
+			const shippingAddressBlock = await editorUtils.getBlockByName(
+				'woocommerce/checkout'
+			);
 
-				const darkControls = shippingAddressBlock.locator(
-					'.wc-block-checkout.has-dark-controls'
-				);
-				await expect( darkControls ).toBeVisible();
-				await toggleLabel.uncheck();
-				await expect( darkControls ).toBeHidden();
-			} );
+			const darkControls = shippingAddressBlock.locator(
+				'.wc-block-checkout.has-dark-controls'
+			);
+			await expect( darkControls ).toBeVisible();
+			await toggleLabel.uncheck();
+			await expect( darkControls ).toBeHidden();
 		} );
 
 		test.describe( 'shipping address', () => {
