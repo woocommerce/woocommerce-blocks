@@ -98,30 +98,46 @@ export function DefaultNotice( { block }: { block: string } ) {
 		saveEntityRecord,
 		slug,
 	] );
-	const noticeContent = createInterpolateElement(
-		__(
-			'If you would like to use this block as your default <blockTypeLink/>, <updateLink>update your page settings</updateLink>.',
-			'woo-gutenberg-products-block'
-		),
-		{
-			blockTypeLink: (
-				<span>
-					{ block === 'checkout'
-						? __( 'checkout', 'woo-gutenberg-products-block' )
-						: __( 'cart', 'woo-gutenberg-products-block' ) }
-				</span>
+
+	let noticeContent;
+	if ( block === 'checkout' ) {
+		noticeContent = createInterpolateElement(
+			__(
+				'If you would like to use this block as your default checkout, <a>update your page settings</a>.',
+				'woo-gutenberg-products-block'
 			),
-			updateLink: (
-				// eslint-disable-next-line jsx-a11y/anchor-is-valid
-				<a href="#" onClick={ updatePage }>
-					{ __(
-						'update your page settings',
-						'woo-gutenberg-products-block'
-					) }
-				</a>
+			{
+				a: (
+					// eslint-disable-next-line jsx-a11y/anchor-is-valid
+					<a href="#" onClick={ updatePage }>
+						{ __(
+							'update your page settings',
+							'woo-gutenberg-products-block'
+						) }
+					</a>
+				),
+			}
+		);
+	} else {
+		noticeContent = createInterpolateElement(
+			__(
+				'If you would like to use this block as your default cart, <a>update your page settings</a>.',
+				'woo-gutenberg-products-block'
 			),
-		}
-	);
+			{
+				a: (
+					// eslint-disable-next-line jsx-a11y/anchor-is-valid
+					<a href="#" onClick={ updatePage }>
+						{ __(
+							'update your page settings',
+							'woo-gutenberg-products-block'
+						) }
+					</a>
+				),
+			}
+		);
+	}
+
 	// Avoid showing the notice on the site editor, if already set, or if dismissed earlier.
 	if (
 		( typeof pagenow === 'string' && pagenow === 'site-editor' ) ||
