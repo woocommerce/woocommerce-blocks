@@ -433,9 +433,17 @@ class OrderController {
 		if ( $coupon_usage_limit > 0 ) {
 			$data_store = $coupon->get_data_store();
 			// First, we check a logged in customer usage count, which happens against their user id, billing email, and account email.
-			if ( get_current_user_id() ) {
+			if ( $order->get_customer_id() ) {
+				$user_data = get_userdata( $order->get_customer_id() );
 				// We get usage per user id and associated emails.
-				$usage_count = $this->get_usage_per_aliases( $coupon, array( $order->get_billing_email(), get_current_user_id(), wp_get_current_user()->user_email ) );
+				$usage_count = $this->get_usage_per_aliases(
+					$coupon,
+					[
+						$order->get_billing_email(),
+						$order->get_customer_id(),
+						$user_data->user_email,
+					]
+				);
 			} else {
 				// Otherwise we check if the email doesn't belong to an existing user.
 				$customer_data_store = \WC_Data_Store::load( 'customer' );
@@ -447,7 +455,14 @@ class OrderController {
 					},
 					$user_ids
 				);
-				$usage_count    = $this->get_usage_per_aliases( $coupon, array_merge( $emails_for_ids, $user_ids, array( $order->get_billing_email() ) ) );
+				$usage_count    = $this->get_usage_per_aliases(
+					$coupon,
+					array_merge(
+						$emails_for_ids,
+						$user_ids,
+						array( $order->get_billing_email() )
+					)
+				);
 			}
 
 			if ( $usage_count >= $coupon_usage_limit ) {
