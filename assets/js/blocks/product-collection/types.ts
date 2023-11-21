@@ -14,28 +14,46 @@ export interface ProductCollectionAttributes {
 	templateSlug: string;
 	displayLayout: ProductCollectionDisplayLayout;
 	tagName: string;
-	displayUpgradeNotice: boolean;
+	convertedFromProducts: boolean;
+}
+
+export enum LayoutOptions {
+	GRID = 'flex',
+	STACK = 'list',
 }
 
 export interface ProductCollectionDisplayLayout {
-	type: 'flex' | 'list';
+	type: LayoutOptions;
 	columns: number;
+	shrinkColumns?: boolean;
+}
+
+export enum ETimeFrameOperator {
+	IN = 'in',
+	NOT_IN = 'not-in',
+}
+
+export interface TimeFrame {
+	operator?: ETimeFrameOperator;
+	value?: string;
 }
 
 export interface ProductCollectionQuery {
-	author: string;
 	exclude: string[];
 	inherit: boolean | null;
 	offset: number;
 	order: TProductCollectionOrder;
 	orderBy: TProductCollectionOrderBy;
 	pages: number;
-	parents: number[];
 	perPage: number;
 	postType: string;
 	search: string;
-	sticky: string;
 	taxQuery: Record< string, number[] >;
+	/**
+	 * If true, show only featured products.
+	 */
+	featured: boolean;
+	timeFrame: TimeFrame | undefined;
 	woocommerceOnSale: boolean;
 	/**
 	 * Filter products by their stock status.
@@ -63,7 +81,7 @@ export type TProductCollectionOrderBy =
 	| 'popularity'
 	| 'rating';
 
-export type DisplayLayoutControlProps = {
+export type DisplayLayoutToolbarProps = {
 	displayLayout: ProductCollectionDisplayLayout;
 	setAttributes: ( attrs: Partial< ProductCollectionAttributes > ) => void;
 };

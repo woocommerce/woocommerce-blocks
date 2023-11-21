@@ -4,26 +4,40 @@
  * Slug: woocommerce-blocks/featured-category-cover-image
  * Categories: WooCommerce
  */
+
+use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
+
+$image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/table-wood-house-chair-floor-window.jpg' );
+
+$category_title = $content['titles'][0]['default'] ?? '';
+$description    = $content['descriptions'][0]['default'] ?? '';
+$button         = $content['buttons'][0]['default'] ?? '';
 ?>
-<!-- wp:cover {"url":"<?php echo esc_url( plugins_url( 'images/pattern-placeholders/wood-leather-fur-shop-jeans-shelf.png', dirname( __FILE__ ) ) ); ?>","id":1,"dimRatio":0,"focalPoint":{"x":0,"y":0},"contentPosition":"top left","align":"wide","style":{"spacing":{"padding":{"top":"2em","right":"2.25em","bottom":"2.25em","left":"2.25em"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-cover alignwide has-custom-content-position is-position-top-left" style="padding-top:2em;padding-right:2.25em;padding-bottom:2.25em;padding-left:2.25em">
-	<span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span>
-	<img class="wp-block-cover__image-background wp-image-1" alt="<?php esc_attr_e( 'Placeholder image used to represent products being showcased in a featured category section.', 'woo-gutenberg-products-block' ); ?>" src="<?php echo esc_url( plugins_url( 'images/pattern-placeholders/wood-leather-fur-shop-jeans-shelf.png', dirname( __FILE__ ) ) ); ?>" style="object-position:0% 0%" data-object-fit="cover" data-object-position="0% 0%"/>
 
+<!-- wp:cover {"url":"<?php echo esc_url( $image1 ); ?>","dimRatio":50,"focalPoint":{"x":0.5,"y":1},"align":"full","style":{"spacing":{"padding":{"top":"3%","right":"0%","bottom":"10%","left":"5%"},"margin":{"top":"0","bottom":"80px"},"blockGap":"1%"}},"layout":{"type":"default"}} -->
+<div class="wp-block-cover alignfull" style="margin-top:0;margin-bottom:80px;padding-top:3%;padding-right:0%;padding-bottom:10%;padding-left:5%">
+	<span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span>
+	<img class="wp-block-cover__image-background" alt="" src="<?php echo esc_url( $image1 ); ?>" style="object-position:50% 100%" data-object-fit="cover" data-object-position="50% 100%"/>
 	<div class="wp-block-cover__inner-container">
-		<!-- wp:paragraph {"align":"left","placeholder":"Write title…","style":{"typography":{"lineHeight":"1.5","fontSize":"2.2em","textColor":"background"},"color":{"text":"#ffffff"},"spacing":{"margin":{"bottom":"0px","top":"0px"}}}} -->
-		<p class="has-text-align-left has-text-color" style="color:#ffffff;margin-top:0px;margin-bottom:0px;font-size:2.2em;line-height:1.5"><strong>100% natural denim</strong></p>
+		<!-- wp:heading {"level":3} -->
+		<h3 class="wp-block-heading"><?php echo esc_html( $category_title ); ?></h3>
+		<!-- /wp:heading -->
+
+		<!-- wp:paragraph -->
+		<p><?php echo esc_html( $description ); ?></p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1.5"},"color":{"text":"#ffffff"},"spacing":{"margin":{"top":"0px","bottom":"0px"}}}} -->
-		<p class="has-text-color" style="color:#ffffff;margin-top:0px;margin-bottom:0px;line-height:1.5">Only the finest goes into our products. You deserve it.</p>
-		<!-- /wp:paragraph -->
-
-		<!-- wp:buttons {"style":{"spacing":{"margin":{"top":"30px"}}}} -->
-		<div class="wp-block-buttons" style="margin-top:30px">
-			<!-- wp:button {"style":{"border":{"width":"0px","style":"none"},"color":{"text":"#000000","background":"#ffffff"}},"className":"is-style-fill"} -->
-			<div class="wp-block-button is-style-fill"><a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="wp-block-button__link has-text-color has-background wp-element-button" style="border-style:none;border-width:0px;color:#000000;background-color:#ffffff">Shop jeans</a></div>
-			<!-- /wp:button --></div>
-		<!-- /wp:buttons --></div>
+		<!-- wp:buttons {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}}} -->
+		<div class="wp-block-buttons" style="margin-top:var(--wp--preset--spacing--30);margin-bottom:var(--wp--preset--spacing--30)">
+			<!-- wp:button -->
+			<div class="wp-block-button">
+				<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="wp-block-button__link wp-element-button">
+					<?php echo esc_html( $button ); ?>
+				</a>
+			</div>
+			<!-- /wp:button -->
+		</div>
+		<!-- /wp:buttons -->
+	</div>
 </div>
 <!-- /wp:cover -->

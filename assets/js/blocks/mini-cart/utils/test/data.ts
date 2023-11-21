@@ -4,6 +4,7 @@
  */
 import { getByTestId, waitFor } from '@testing-library/dom';
 import { getSettingWithCoercion } from '@woocommerce/settings';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -12,27 +13,25 @@ import {
 	getMiniCartTotalsFromLocalStorage,
 	getMiniCartTotalsFromServer,
 	updateTotals,
+	migrateAttributesToColorPanel,
 } from '../data';
 
 // This is a simplified version of the response of the Cart API endpoint.
 const responseMock = {
-	ok: true,
-	json: async () => ( {
-		totals: {
-			total_price: '1800',
-			total_items: '1400',
-			total_items_tax: '200',
-			currency_code: 'USD',
-			currency_symbol: '$',
-			currency_minor_unit: 2,
-			currency_decimal_separator: '.',
-			currency_thousand_separator: ',',
-			currency_prefix: '$',
-			currency_suffix: '',
-		},
-		items_count: 2,
-	} ),
-} as Response;
+	totals: {
+		total_price: '1800',
+		total_items: '1400',
+		total_items_tax: '200',
+		currency_code: 'USD',
+		currency_symbol: '$',
+		currency_minor_unit: 2,
+		currency_decimal_separator: '.',
+		currency_thousand_separator: ',',
+		currency_prefix: '$',
+		currency_suffix: '',
+	},
+	items_count: 2,
+};
 const localStorageMock = {
 	totals: {
 		total_price: '1800',
@@ -79,6 +78,8 @@ jest.mock( '@woocommerce/settings', () => {
 	};
 } );
 
+jest.mock( '@wordpress/api-fetch' );
+
 describe( 'Mini-Cart frontend script when "the display prices during cart and checkout" option is set to "Including Tax"', () => {
 	beforeAll( () => {
 		( getSettingWithCoercion as jest.Mock ).mockReturnValue( true );
@@ -109,7 +110,7 @@ describe( 'Mini-Cart frontend script when "the display prices during cart and ch
 	} );
 
 	it( 'updates the cart contents based on the API response', async () => {
-		jest.spyOn( window, 'fetch' ).mockResolvedValue( responseMock );
+		apiFetch.mockResolvedValue( responseMock );
 		const container = getMiniCartDOM();
 		document.body.appendChild( container );
 
@@ -117,9 +118,9 @@ describe( 'Mini-Cart frontend script when "the display prices during cart and ch
 
 		// Assert we called the correct endpoint.
 		await waitFor( () =>
-			expect( window.fetch ).toHaveBeenCalledWith(
-				'/wp-json/wc/store/v1/cart/'
-			)
+			expect( apiFetch ).toHaveBeenCalledWith( {
+				path: '/wc/store/v1/cart',
+			} )
 		);
 
 		// Assert we saved the values returned to the localStorage.
@@ -171,7 +172,7 @@ describe( 'Mini-Cart frontend script when "the display prices during cart and ch
 	} );
 
 	it( 'updates the cart contents based on the API response', async () => {
-		jest.spyOn( window, 'fetch' ).mockResolvedValue( responseMock );
+		apiFetch.mockResolvedValue( responseMock );
 		const container = getMiniCartDOM();
 		document.body.appendChild( container );
 
@@ -179,9 +180,9 @@ describe( 'Mini-Cart frontend script when "the display prices during cart and ch
 
 		// Assert we called the correct endpoint.
 		await waitFor( () =>
-			expect( window.fetch ).toHaveBeenCalledWith(
-				'/wp-json/wc/store/v1/cart/'
-			)
+			expect( apiFetch ).toHaveBeenCalledWith( {
+				path: '/wc/store/v1/cart',
+			} )
 		);
 
 		// Assert we saved the values returned to the localStorage.
@@ -204,5 +205,36 @@ describe( 'Mini-Cart frontend script when "the display prices during cart and ch
 			)
 		);
 		jest.restoreAllMocks();
+	} );
+} );
+
+const mockAttributes = {
+	miniCartIcon: 'cart',
+	addToCartBehaviour: 'inline',
+	hasHiddenPrice: false,
+	cartAndCheckoutRenderStyle: true,
+	priceColorValue: '#000000',
+	iconColorValue: '#ffffff',
+	productCountColorValue: '#ff0000',
+};
+describe( 'migrateAttributesToColorPanel tests', () => {
+	test( 'it correctly migrates attributes to color panel', () => {
+		const migratedAttributes =
+			migrateAttributesToColorPanel( mockAttributes );
+		expect( migratedAttributes ).toEqual( {
+			miniCartIcon: 'cart',
+			addToCartBehaviour: 'inline',
+			hasHiddenPrice: false,
+			cartAndCheckoutRenderStyle: true,
+			priceColor: {
+				color: '#000000',
+			},
+			iconColor: {
+				color: '#ffffff',
+			},
+			productCountColor: {
+				color: '#ff0000',
+			},
+		} );
 	} );
 } );

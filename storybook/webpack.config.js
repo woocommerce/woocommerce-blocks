@@ -45,7 +45,12 @@ module.exports = ( { config: storybookConfig } ) => {
 	storybookConfig.module.rules.push(
 		{
 			test: /\/stories\/.+\.js$/,
-			loaders: [ require.resolve( '@storybook/source-loader' ) ],
+			use: [
+				{
+					loader: require.resolve( '@storybook/source-loader' ),
+					options: { parser: 'typescript' },
+				},
+			],
 			enforce: 'pre',
 		},
 		...wooBlocksConfig.module.rules,
@@ -56,6 +61,15 @@ module.exports = ( { config: storybookConfig } ) => {
 		new MiniCssExtractPlugin( {
 			filename: `[name].css`,
 		} )
+	);
+
+	storybookConfig.module.rules = storybookConfig.module.rules.filter(
+		( rule ) =>
+			! (
+				rule.use &&
+				typeof rule.use.loader === 'string' &&
+				rule.use.loader.indexOf( 'babel-loader' ) >= 0
+			)
 	);
 
 	return storybookConfig;

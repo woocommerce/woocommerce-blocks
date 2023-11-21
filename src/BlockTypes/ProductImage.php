@@ -105,7 +105,7 @@ class ProductImage extends AbstractBlock {
 			<span class="screen-reader-text">Product on sale</span>
 		</div>
 	',
-			$attributes['saleBadgeAlign'],
+			esc_attr( $attributes['saleBadgeAlign'] ),
 			isset( $font_size['class'] ) ? esc_attr( $font_size['class'] ) : '',
 			isset( $font_size['style'] ) ? esc_attr( $font_size['style'] ) : '',
 			esc_html__( 'Sale', 'woo-gutenberg-products-block' )
@@ -158,6 +158,9 @@ class ProductImage extends AbstractBlock {
 		if ( ! empty( $attributes['scale'] ) ) {
 			$image_style .= sprintf( 'object-fit:%s;', $attributes['scale'] );
 		}
+		if ( ! empty( $attributes['aspectRatio'] ) ) {
+			$image_style .= sprintf( 'aspect-ratio:%s;', $attributes['aspectRatio'] );
+		}
 
 		if ( ! $product->get_image_id() ) {
 			// The alt text is left empty on purpose, as it's considered a decorative image.
@@ -190,7 +193,7 @@ class ProductImage extends AbstractBlock {
 	 *                           not in the post content on editor load.
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
-		$this->asset_data_registry->add( 'is_block_theme_enabled', wc_current_theme_is_fse_theme(), false );
+		$this->asset_data_registry->add( 'isBlockThemeEnabled', wc_current_theme_is_fse_theme(), false );
 	}
 
 
@@ -212,7 +215,7 @@ class ProductImage extends AbstractBlock {
 
 		$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-		$post_id = $block->context['postId'];
+		$post_id = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
 		$product = wc_get_product( $post_id );
 
 		if ( $product ) {

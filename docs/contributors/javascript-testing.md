@@ -63,7 +63,7 @@ When you're done, you may want to shut down the test environment:
 
 ## How to run end-to-end tests
 
-Visit the [dedicated documentation](../../tests/e2e-pw/README.md).
+Visit the [dedicated documentation](../../tests/e2e/README.md).
 
 ### Debugging e2e tests using generated reports
 
@@ -77,7 +77,7 @@ From there, you can open the _Summary_ of the e2e test jobs:
 
 <img src="https://user-images.githubusercontent.com/3616980/231486308-8f85779b-8ede-440d-a250-6ff612d6ea20.png" alt="Log of an e2e test suite that failed, highlighting the Summary button" width="780" />
 
-From the _Summmary_ page, if you scroll down, you can download the report of each test suite that failed:
+From the _Summary_ page, if you scroll down, you can download the report of each test suite that failed:
 
 <img src="https://user-images.githubusercontent.com/3616980/231486320-c52a0e10-c80e-4d3a-ae0f-b3998013f528.png" alt="Report summary showing the Artifacts list, including the e2e reports" width="780" />
 
@@ -107,7 +107,7 @@ You will need to stop `wp-env` and start it again. In some cases, you will also 
 
 Currently, we only run e2e tests with the most recent version of WordPress. We also have the infrastructure in place to run e2e tests with the most recent version of WordPress with Gutenberg installed, but [it's currently disabled](https://github.com/woocommerce/woocommerce-blocks/blob/07605450ffa4e460543980b7011b3bf8a8e82ff4/.github/workflows/php-js-e2e-tests.yml#L10).
 
-When preparing for a new version of WordPress, it's a good practice to search for conditions in our tests that check for specific WP versions (with the variable `WP_VERSION`) or that check whether Gutenberg is installed (with the variable `GUTENBERG_EDITOR_CONTEXT`).
+When preparing for a new version of WordPress, it's a good practice to search for conditions in our tests that check for specific WP versions (with the variable `WP_VERSION`).
 
 <!-- FEEDBACK -->
 

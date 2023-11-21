@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
+use Automattic\Jetpack\Constants;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 use Automattic\WooCommerce\Blocks\Templates\CartTemplate;
 use Automattic\WooCommerce\Blocks\Templates\CheckoutTemplate;
@@ -9,8 +10,8 @@ use Automattic\WooCommerce\Blocks\Templates\ProductSearchResultsTemplate;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Utils\BlockTemplateUtils;
 use Automattic\WooCommerce\Blocks\Templates\OrderConfirmationTemplate;
-use Automattic\WooCommerce\Blocks\Utils\SettingsUtils;
-use \WP_Post;
+use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplate;
+use Automattic\WooCommerce\Blocks\Utils\BlockTemplateMigrationUtils;
 
 /**
  * BlockTypesController class.
@@ -20,32 +21,18 @@ use \WP_Post;
 class BlockTemplatesController {
 
 	/**
-	 * Holds the Package instance
-	 *
-	 * @var Package
-	 */
-	private $package;
-
-	/**
-	 * Holds the path for the directory where the block templates will be kept.
-	 *
-	 * @var string
-	 */
-	private $templates_directory;
-
-	/**
-	 * Holds the path for the directory where the block template parts will be kept.
-	 *
-	 * @var string
-	 */
-	private $template_parts_directory;
-
-	/**
 	 * Directory which contains all templates
 	 *
 	 * @var string
 	 */
 	const TEMPLATES_ROOT_DIR = 'templates';
+
+	/**
+	 * Package instance.
+	 *
+	 * @var Package
+	 */
+	private $package;
 
 	/**
 	 * Constructor.
@@ -55,11 +42,11 @@ class BlockTemplatesController {
 	public function __construct( Package $package ) {
 		$this->package = $package;
 
+		$feature_gating                                 = $package->feature();
+		$is_block_templates_controller_refactor_enabled = $feature_gating->is_block_templates_controller_refactor_enabled();
+
 		// This feature is gated for WooCommerce versions 6.0.0 and above.
-		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '6.0.0', '>=' ) ) {
-			$root_path                      = plugin_dir_path( __DIR__ ) . self::TEMPLATES_ROOT_DIR . DIRECTORY_SEPARATOR;
-			$this->templates_directory      = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATES'];
-			$this->template_parts_directory = $root_path . BlockTemplateUtils::DIRECTORY_NAMES['TEMPLATE_PARTS'];
+		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '6.0.0', '>=' ) && ! $is_block_templates_controller_refactor_enabled ) {
 			$this->init();
 		}
 	}
@@ -80,9 +67,6 @@ class BlockTemplatesController {
 
 		if ( wc_current_theme_is_fse_theme() ) {
 			add_action( 'init', array( $this, 'maybe_migrate_content' ) );
-			add_filter( 'woocommerce_settings_pages', array( $this, 'template_permalink_settings' ) );
-			add_filter( 'pre_update_option', array( $this, 'update_template_permalink' ), 10, 2 );
-			add_action( 'woocommerce_admin_field_permalink', array( SettingsUtils::class, 'permalink_input_field' ) );
 
 			// By default, the Template Part Block only supports template parts that are in the current theme directory.
 			// This render_callback wrapper allows us to add support for plugin-housed template parts.
@@ -100,6 +84,55 @@ class BlockTemplatesController {
 				},
 				10,
 				2
+			);
+
+			// Prevents shortcodes in templates having their HTML content broken by wpautop.
+			// @see https://core.trac.wordpress.org/ticket/58366 for more info.
+			add_filter(
+				'block_type_metadata_settings',
+				function( $settings, $metadata ) {
+					if (
+						isset( $metadata['name'], $settings['render_callback'] ) &&
+						'core/shortcode' === $metadata['name']
+					) {
+						$settings['original_render_callback'] = $settings['render_callback'];
+						$settings['render_callback']          = function( $attributes, $content ) use ( $settings ) {
+							// The shortcode has already been rendered, so look for the cart/checkout HTML.
+							if ( strstr( $content, 'woocommerce-cart-form' ) || strstr( $content, 'wc-empty-cart-message' ) || strstr( $content, 'woocommerce-checkout-form' ) ) {
+								// Return early before wpautop runs again.
+								return $content;
+							}
+
+							$render_callback = $settings['original_render_callback'];
+
+							return $render_callback( $attributes, $content );
+						};
+					}
+					return $settings;
+				},
+				10,
+				2
+			);
+
+			/**
+			 * Prevents the pages that are assigned as cart/checkout from showing the "template" selector in the page-editor.
+			 * We want to avoid this flow and point users towards the site editor instead.
+			 */
+			add_action(
+				'current_screen',
+				function () {
+					if ( ! is_admin() ) {
+						return;
+					}
+
+					$current_screen = get_current_screen();
+
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+					if ( $current_screen && 'page' === $current_screen->id && ! empty( $_GET['post'] ) && in_array( absint( $_GET['post'] ), [ wc_get_page_id( 'cart' ), wc_get_page_id( 'checkout' ) ], true ) ) {
+						wp_add_inline_style( 'wc-blocks-editor-style', '.edit-post-post-template { display: none; }' );
+					}
+				},
+				10
 			);
 		}
 	}
@@ -128,7 +161,7 @@ class BlockTemplatesController {
 	 * @return string The render.
 	 */
 	public function render_woocommerce_template_part( $attributes ) {
-		if ( 'woocommerce/woocommerce' === $attributes['theme'] ) {
+		if ( isset( $attributes['theme'] ) && 'woocommerce/woocommerce' === $attributes['theme'] ) {
 			$template_part = BlockTemplateUtils::get_block_template( $attributes['theme'] . '//' . $attributes['slug'], 'wp_template_part' );
 
 			if ( $template_part && ! empty( $template_part->content ) ) {
@@ -150,10 +183,22 @@ class BlockTemplatesController {
 	 * @return object|null
 	 */
 	public function get_block_template_fallback( $template, $id, $template_type ) {
-		$template_name_parts  = explode( '//', $id );
-		list( $theme, $slug ) = $template_name_parts;
+		// Add protection against invalid ids.
+		if ( ! is_string( $id ) || ! strstr( $id, '//' ) ) {
+			return null;
+		}
+		// Add protection against invalid template types.
+		if (
+			'wp_template' !== $template_type &&
+			'wp_template_part' !== $template_type
+		) {
+			return null;
+		}
+		$template_name_parts = explode( '//', $id );
+		$theme               = $template_name_parts[0] ?? '';
+		$slug                = $template_name_parts[1] ?? '';
 
-		if ( ! BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $slug ) ) {
+		if ( empty( $theme ) || empty( $slug ) || ! BlockTemplateUtils::template_is_eligible_for_product_archive_fallback( $slug ) ) {
 			return null;
 		}
 
@@ -291,7 +336,7 @@ class BlockTemplatesController {
 			return $template;
 		}
 
-		$directory          = $this->get_templates_directory( $template_type );
+		$directory          = BlockTemplateUtils::get_templates_directory( $template_type );
 		$template_file_path = $directory . '/' . $template_slug . '.html';
 		$template_object    = BlockTemplateUtils::create_new_block_template_object( $template_file_path, $template_type, $template_slug );
 		$template_built     = BlockTemplateUtils::build_template_result_from_file( $template_object, $template_type );
@@ -400,8 +445,11 @@ class BlockTemplatesController {
 							}
 						}
 
-						$new_content       = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
-						$template->content = $new_content;
+						if ( post_password_required() ) {
+							$template->content = SingleProductTemplate::add_password_form( $template->content );
+						} else {
+							$template->content = SingleProductTemplateCompatibility::add_compatibility_layer( $template->content );
+						}
 					}
 				}
 
@@ -446,11 +494,14 @@ class BlockTemplatesController {
 	 * @return array Templates from the WooCommerce blocks plugin directory.
 	 */
 	public function get_block_templates_from_woocommerce( $slugs, $already_found_templates, $template_type = 'wp_template' ) {
-		$directory      = $this->get_templates_directory( $template_type );
+		$directory      = BlockTemplateUtils::get_templates_directory( $template_type );
 		$template_files = BlockTemplateUtils::get_template_paths( $directory );
 		$templates      = array();
 
 		foreach ( $template_files as $template_file ) {
+			if ( ! $this->package->is_experimental_build() && str_contains( $template_file, 'templates/parts/product-gallery.html' ) ) {
+				break;
+			}
 			// Skip the template if it's blockified, and we should only use classic ones.
 			if ( ! BlockTemplateUtils::should_use_blockified_product_grid_templates() && strpos( $template_file, 'blockified' ) !== false ) {
 				continue;
@@ -530,25 +581,6 @@ class BlockTemplatesController {
 	}
 
 	/**
-	 * Gets the directory where templates of a specific template type can be found.
-	 *
-	 * @param string $template_type wp_template or wp_template_part.
-	 *
-	 * @return string
-	 */
-	protected function get_templates_directory( $template_type = 'wp_template' ) {
-		if ( 'wp_template_part' === $template_type ) {
-			return $this->template_parts_directory;
-		}
-
-		if ( BlockTemplateUtils::should_use_blockified_product_grid_templates() ) {
-			return $this->templates_directory . '/blockified';
-		}
-
-		return $this->templates_directory;
-	}
-
-	/**
 	 * Returns the path of a template on the Blocks template folder.
 	 *
 	 * @param string $template_slug Block template slug e.g. single-product.
@@ -557,7 +589,7 @@ class BlockTemplatesController {
 	 * @return string
 	 */
 	public function get_template_path_from_woocommerce( $template_slug, $template_type = 'wp_template' ) {
-		return $this->get_templates_directory( $template_type ) . '/' . $template_slug . '.html';
+		return BlockTemplateUtils::get_templates_directory( $template_type ) . '/' . $template_slug . '.html';
 	}
 
 	/**
@@ -572,7 +604,7 @@ class BlockTemplatesController {
 		if ( ! $template_name ) {
 			return false;
 		}
-		$directory = $this->get_templates_directory( $template_type ) . '/' . $template_name . '.html';
+		$directory = BlockTemplateUtils::get_templates_directory( $template_type ) . '/' . $template_name . '.html';
 
 		return is_readable(
 			$directory
@@ -590,7 +622,13 @@ class BlockTemplatesController {
 		if (
 			is_singular( 'product' ) && $this->block_template_is_available( 'single-product' )
 		) {
-			$templates = get_block_templates( array( 'slug__in' => array( 'single-product' ) ) );
+			global $post;
+
+			$valid_slugs = [ 'single-product' ];
+			if ( 'product' === $post->post_type && $post->post_name ) {
+				$valid_slugs[] = 'single-product-' . $post->post_name;
+			}
+			$templates = get_block_templates( array( 'slug__in' => $valid_slugs ) );
 
 			if ( isset( $templates[0] ) && BlockTemplateUtils::template_has_legacy_template_block( $templates[0] ) ) {
 				add_filter( 'woocommerce_disable_compatibility_layer', '__return_true' );
@@ -653,12 +691,6 @@ class BlockTemplatesController {
 		} elseif (
 			is_checkout() &&
 			! BlockTemplateUtils::theme_has_template( CheckoutTemplate::get_slug() ) && $this->block_template_is_available( CheckoutTemplate::get_slug() )
-		) {
-			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
-		} elseif (
-			is_wc_endpoint_url( 'order-received' )
-			&& ! BlockTemplateUtils::theme_has_template( OrderConfirmationTemplate::get_slug() )
-			&& $this->block_template_is_available( OrderConfirmationTemplate::get_slug() )
 		) {
 			add_filter( 'woocommerce_has_block_template', '__return_true', 10, 0 );
 		} else {
@@ -732,166 +764,17 @@ class BlockTemplatesController {
 	 * Migrates page content to templates if needed.
 	 */
 	public function maybe_migrate_content() {
-		if ( ! $this->has_migrated_page( 'cart' ) ) {
-			$this->migrate_page( 'cart', CartTemplate::get_placeholder_page() );
-		}
-		if ( ! $this->has_migrated_page( 'checkout' ) ) {
-			$this->migrate_page( 'checkout', CheckoutTemplate::get_placeholder_page() );
-		}
-	}
-
-	/**
-	 * Check if a page has been migrated to a template.
-	 *
-	 * @param string $page_id Page ID.
-	 * @return boolean
-	 */
-	protected function has_migrated_page( $page_id ) {
-		return (bool) get_option( 'has_migrated_' . $page_id, false );
-	}
-
-	/**
-	 * Migrates a page to a template if needed.
-	 *
-	 * @param string   $page_id Page ID.
-	 * @param \WP_Post $page Page object.
-	 */
-	protected function migrate_page( $page_id, $page ) {
-		if ( ! $page || empty( $page->post_content ) ) {
-			update_option( 'has_migrated_' . $page_id, '1' );
+		// Migration should occur on a normal request to ensure every requirement is met.
+		// We are postponing it if WP is in maintenance mode, installing, WC installing or if the request is part of a WP-CLI command.
+		if ( wp_is_maintenance_mode() || ! get_option( 'woocommerce_db_version', false ) || Constants::is_defined( 'WP_SETUP_CONFIG' ) || Constants::is_defined( 'WC_INSTALLING' ) || Constants::is_defined( 'WP_CLI' ) ) {
 			return;
 		}
 
-		$request = new \WP_REST_Request( 'POST', '/wp/v2/templates/woocommerce/woocommerce//' . $page_id );
-		$request->set_body_params(
-			[
-				'id'      => 'woocommerce/woocommerce//' . $page_id,
-				'content' => $this->get_block_template_part( 'header' ) .
-					'<!-- wp:group {"layout":{"inherit":true}} -->
-					<div class="wp-block-group">
-						<!-- wp:heading {"level":1} -->
-						<h1 class="wp-block-heading">' . wp_kses_post( $page->post_title ) . '</h1>
-						<!-- /wp:heading -->
-						' . wp_kses_post( $page->post_content ) . '
-					</div>
-					<!-- /wp:group -->' .
-					$this->get_block_template_part( 'footer' ),
-			]
-		);
-		rest_get_server()->dispatch( $request );
-		update_option( 'has_migrated_' . $page_id, '1' );
-	}
-
-	/**
-	 * Returns the requested template part.
-	 *
-	 * @param string $part The part to return.
-	 *
-	 * @return string
-	 */
-	protected function get_block_template_part( $part ) {
-		$template_part = get_block_template( get_stylesheet() . '//' . $part, 'wp_template_part' );
-		if ( ! $template_part || empty( $template_part->content ) ) {
-			return '';
+		if ( ! BlockTemplateMigrationUtils::has_migrated_page( 'cart' ) ) {
+			BlockTemplateMigrationUtils::migrate_page( 'cart' );
 		}
-		return $template_part->content;
-	}
-
-	/**
-	 * Replaces page settings in WooCommerce with text based permalinks which point to a template.
-	 *
-	 * @param array $settings Settings pages.
-	 * @return array
-	 */
-	public function template_permalink_settings( $settings ) {
-		foreach ( $settings as $key => $setting ) {
-			if ( 'woocommerce_checkout_page_id' === $setting['id'] ) {
-				$checkout_page    = CheckoutTemplate::get_placeholder_page();
-				$settings[ $key ] = [
-					'title'    => __( 'Checkout page', 'woo-gutenberg-products-block' ),
-					'desc'     => sprintf(
-						// translators: %1$s: opening anchor tag, %2$s: closing anchor tag.
-						__( 'The checkout template can be %1$s edited here%2$s.', 'woo-gutenberg-products-block' ),
-						'<a href="' . esc_url( admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2F' . CheckoutTemplate::get_slug() ) ) . '" target="_blank">',
-						'</a>'
-					),
-					'desc_tip' => __( 'This is the URL to the checkout page.', 'woo-gutenberg-products-block' ),
-					'id'       => 'woocommerce_checkout_page_endpoint',
-					'type'     => 'permalink',
-					'default'  => $checkout_page ? $checkout_page->post_name : CheckoutTemplate::get_slug(),
-					'autoload' => false,
-				];
-			}
-			if ( 'woocommerce_cart_page_id' === $setting['id'] ) {
-				$cart_page        = CartTemplate::get_placeholder_page();
-				$settings[ $key ] = [
-					'title'    => __( 'Cart page', 'woo-gutenberg-products-block' ),
-					'desc'     => sprintf(
-						// translators: %1$s: opening anchor tag, %2$s: closing anchor tag.
-						__( 'The cart template can be %1$s edited here%2$s.', 'woo-gutenberg-products-block' ),
-						'<a href="' . esc_url( admin_url( 'site-editor.php?postType=wp_template&postId=woocommerce%2Fwoocommerce%2F%2F' . CartTemplate::get_slug() ) ) . '" target="_blank">',
-						'</a>'
-					),
-					'desc_tip' => __( 'This is the URL to the cart page.', 'woo-gutenberg-products-block' ),
-					'id'       => 'woocommerce_cart_page_endpoint',
-					'type'     => 'permalink',
-					'default'  => $cart_page ? $cart_page->post_name : CartTemplate::get_slug(),
-					'autoload' => false,
-				];
-			}
+		if ( ! BlockTemplateMigrationUtils::has_migrated_page( 'checkout' ) ) {
+			BlockTemplateMigrationUtils::migrate_page( 'checkout' );
 		}
-
-		return $settings;
-	}
-
-	/**
-	 * Syncs entered permalink with the pages and returns the correct value.
-	 *
-	 * @param string $value     Value of the option.
-	 * @param string $option    Name of the option.
-	 * @return string
-	 */
-	public function update_template_permalink( $value, $option ) {
-		if ( 'woocommerce_checkout_page_endpoint' === $option ) {
-			return $this->sync_endpoint_with_page( CheckoutTemplate::get_placeholder_page(), 'checkout', $value );
-		}
-		if ( 'woocommerce_cart_page_endpoint' === $option ) {
-			return $this->sync_endpoint_with_page( CartTemplate::get_placeholder_page(), 'cart', $value );
-		}
-		return $value;
-	}
-
-	/**
-	 * Syncs the provided permalink with the actual WP page.
-	 *
-	 * @param WP_Post|null $page The page object, or null if it does not exist.
-	 * @param string       $page_slug The identifier for the page e.g. cart, checkout.
-	 * @param string       $permalink The new permalink to use.
-	 * @return string THe actual permalink assigned to the page. May differ from $permalink if it was already taken.
-	 */
-	protected function sync_endpoint_with_page( $page, $page_slug, $permalink ) {
-		if ( ! $page ) {
-			$updated_page_id = wc_create_page(
-				esc_sql( $permalink ),
-				'woocommerce_' . $page_slug . '_page_id',
-				$page_slug,
-				'',
-				'',
-				'publish'
-			);
-		} else {
-			$updated_page_id = wp_update_post(
-				[
-					'ID'        => $page->ID,
-					'post_name' => esc_sql( $permalink ),
-				]
-			);
-		}
-
-		// Get post again in case slug was updated with a suffix.
-		if ( $updated_page_id && ! is_wp_error( $updated_page_id ) ) {
-			return get_post( $updated_page_id )->post_name;
-		}
-		return $permalink;
 	}
 }

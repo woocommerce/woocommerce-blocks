@@ -4,30 +4,37 @@
  * Slug: woocommerce-blocks/testimonials-single
  * Categories: WooCommerce
  */
+
+use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
+
+$testimonials_title = $content['titles'][0]['default'] ?? '';
+$description        = $content['descriptions'][0]['default'] ?? '';
 ?>
-<!-- wp:columns {"align":"wide","style":{"spacing":{"padding":{"right":"20px","left":"20px"}}}} -->
-<div class="wp-block-columns alignwide" style="padding-right:20px;padding-left:20px">
-	<!-- wp:column {"width":"160px"} -->
-	<div class="wp-block-column" style="flex-basis:160px">
-		<!-- wp:image {"align":"left","width":164,"height":164,"sizeSlug":"large","style":{"border":{"radius":"100%"}},"className":"is-style-rounded"} -->
-		<figure class="wp-block-image alignleft size-large is-resized has-custom-border is-style-rounded"><img src="https://s.w.org/images/core/5.8/portrait.jpg" alt="" style="border-radius:100%" width="164" height="164"/></figure>
+
+<!-- wp:columns {"align":"wide","style":{"spacing":{"padding":{"right":"32px","left":"32px"}}}} -->
+<div class="wp-block-columns alignwide" style="padding-right:32px;padding-left:32px">
+	<!-- wp:column {"verticalAlignment":"center","width":"160px"} -->
+	<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:160px">
+		<!-- wp:image {"width": "164px", "className":"is-style-rounded"} -->
+		<figure class="wp-block-image is-resized is-style-rounded">
+			<img src="<?php echo esc_url( PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/portrait.png' ) ); ?>" alt="<?php esc_attr_e( 'Placeholder image with the avatar of the user who is writing the testimonial.', 'woo-gutenberg-products-block' ); ?>" style="width:164px"/>
+		</figure>
 		<!-- /wp:image -->
 	</div>
 	<!-- /wp:column -->
 
-	<!-- wp:column {"layout":{"type":"default"}} -->
+	<!-- wp:column {"layout":{"type":"constrained","justifyContent":"left"}} -->
 	<div class="wp-block-column">
-		<!-- wp:heading {"level":4,"style":{"typography":{"textTransform":"none","fontSize":"18px"},"color":{"text":"#000000"}}} -->
-		<h4 class="wp-block-heading has-text-color" style="color:#000000;font-size:18px;text-transform:none"><strong>Great experience</strong></h4>
-		<!-- /wp:heading -->
-
-		<!-- wp:paragraph {"style":{"typography":{"fontSize":"18px"},"color":{"text":"#000000"}}} -->
-		<p class="has-text-color" style="color:#000000;font-size:18px">In the end the couch wasn't exactly what I was looking for but my experience with the Burrow team was excellent. First in providing a discount when the couch was delayed, then timely feedback and updates as the...
-		</p>
+		<!-- wp:paragraph -->
+		<p><strong><?php echo esc_html( $testimonials_title ); ?></strong></p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:paragraph {"style":{"typography":{"fontSize":"18px"},"color":{"text":"#646970"}}} -->
-		<p class="has-text-color" style="color:#646970;font-size:18px">~ Anna W.</p>
+		<!-- wp:paragraph -->
+		<p><?php echo esc_html( $description ); ?></p>
+		<!-- /wp:paragraph -->
+
+		<!-- wp:paragraph -->
+		<p>~ Anna W.</p>
 		<!-- /wp:paragraph -->
 	</div>
 	<!-- /wp:column -->

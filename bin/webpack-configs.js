@@ -8,7 +8,7 @@ const RemoveFilesPlugin = require( './remove-files-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const ProgressBarPlugin = require( 'progress-bar-webpack-plugin' );
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
-const WebpackRTLPlugin = require( 'webpack-rtl-plugin' );
+const WebpackRTLPlugin = require( './webpack-rtl-plugin' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 const CreateFileWebpack = require( 'create-file-webpack' );
 const CircularDependencyPlugin = require( 'circular-dependency-plugin' );
@@ -25,8 +25,8 @@ const {
 	CHECK_CIRCULAR_DEPS,
 	requestToExternal,
 	requestToHandle,
-	findModuleMatch,
 	getProgressBarPluginConfig,
+	getCacheGroups,
 } = require( './webpack-helpers' );
 
 const isProduction = NODE_ENV === 'production';
@@ -84,10 +84,7 @@ const getCoreConfig = ( options = {} ) => {
 			path: path.resolve( __dirname, '../build/' ),
 			library: [ 'wc', '[name]' ],
 			libraryTarget: 'this',
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksJsonp',
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -95,9 +92,13 @@ const getCoreConfig = ( options = {} ) => {
 					test: /\.(t|j)sx?$/,
 					exclude: /node_modules/,
 					use: {
-						loader: 'babel-loader?cacheDirectory',
+						loader: 'babel-loader',
 						options: {
 							presets: [ '@wordpress/babel-preset-default' ],
+							plugins: [
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
+							],
 						},
 					},
 				},
@@ -129,10 +130,12 @@ woocommerce_blocks_env = ${ NODE_ENV }
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
+				cacheGroups: {
+					...getCacheGroups(),
+				},
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -189,12 +192,7 @@ const getMainConfig = ( options = {} ) => {
 			filename: `[name]${ fileSuffix }.js`,
 			library: [ 'wc', 'blocks', '[name]' ],
 			libraryTarget: 'this',
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			// This can be removed when moving to webpack 5:
-			// https://webpack.js.org/blog/2020-10-10-webpack-5-release/#automatic-unique-naming
-			jsonpFunction: 'webpackWcBlocksJsonp',
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -202,7 +200,7 @@ const getMainConfig = ( options = {} ) => {
 					test: /\.(j|t)sx?$/,
 					exclude: /node_modules/,
 					use: {
-						loader: 'babel-loader?cacheDirectory',
+						loader: 'babel-loader',
 						options: {
 							presets: [ '@wordpress/babel-preset-default' ],
 							plugins: [
@@ -211,7 +209,10 @@ const getMainConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
 							].filter( Boolean ),
+							cacheDirectory: true,
 						},
 					},
 				},
@@ -227,7 +228,7 @@ const getMainConfig = ( options = {} ) => {
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
-				minSize: 0,
+				minSize: 200000,
 				automaticNameDelimiter: '--',
 				cacheGroups: {
 					commons: {
@@ -236,11 +237,11 @@ const getMainConfig = ( options = {} ) => {
 						chunks: 'all',
 						enforce: true,
 					},
+					...getCacheGroups(),
 				},
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -323,12 +324,7 @@ const getFrontConfig = ( options = {} ) => {
 			// @see https://github.com/Automattic/jetpack/pull/20926
 			chunkFilename: `[name]-frontend${ fileSuffix }.js?ver=[contenthash]`,
 			filename: `[name]-frontend${ fileSuffix }.js`,
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			// This can be removed when moving to webpack 5:
-			// https://webpack.js.org/blog/2020-10-10-webpack-5-release/#automatic-unique-naming
-			jsonpFunction: 'webpackWcBlocksJsonp',
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		module: {
 			rules: [
@@ -336,7 +332,7 @@ const getFrontConfig = ( options = {} ) => {
 					test: /\.(j|t)sx?$/,
 					exclude: /node_modules/,
 					use: {
-						loader: 'babel-loader?cacheDirectory',
+						loader: 'babel-loader',
 						options: {
 							presets: [
 								[
@@ -357,7 +353,10 @@ const getFrontConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
 							].filter( Boolean ),
+							cacheDirectory: true,
 						},
 					},
 				},
@@ -373,11 +372,27 @@ const getFrontConfig = ( options = {} ) => {
 			concatenateModules:
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
+				minSize: 200000,
 				automaticNameDelimiter: '--',
+				cacheGroups: {
+					...getCacheGroups(),
+					'base-components': {
+						test: /\/assets\/js\/base\/components\//,
+						name( module, chunks, cacheGroupKey ) {
+							const moduleFileName = module
+								.identifier()
+								.split( '/' )
+								.reduceRight( ( item ) => item );
+							const allChunksNames = chunks
+								.map( ( item ) => item.name )
+								.join( '~' );
+							return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+						},
+					},
+				},
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -426,10 +441,7 @@ const getPaymentsConfig = ( options = {} ) => {
 			devtoolNamespace: 'wc',
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name].js`,
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksPaymentMethodExtensionJsonp',
+			uniqueName: 'webpackWcBlocksPaymentMethodExtensionJsonp',
 		},
 		module: {
 			rules: [
@@ -437,7 +449,7 @@ const getPaymentsConfig = ( options = {} ) => {
 					test: /\.(j|t)sx?$/,
 					exclude: /node_modules/,
 					use: {
-						loader: 'babel-loader?cacheDirectory',
+						loader: 'babel-loader',
 						options: {
 							presets: [
 								[
@@ -458,7 +470,10 @@ const getPaymentsConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
 							].filter( Boolean ),
+							cacheDirectory: true,
 						},
 					},
 				},
@@ -475,10 +490,12 @@ const getPaymentsConfig = ( options = {} ) => {
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
+				cacheGroups: {
+					...getCacheGroups(),
+				},
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -531,7 +548,114 @@ const getExtensionsConfig = ( options = {} ) => {
 			devtoolNamespace: 'wc',
 			path: path.resolve( __dirname, '../build/' ),
 			filename: `[name].js`,
-			jsonpFunction: 'webpackWcBlocksExtensionsMethodExtensionJsonp',
+			uniqueName: 'webpackWcBlocksExtensionsMethodExtensionJsonp',
+		},
+		module: {
+			rules: [
+				{
+					test: /\.(j|t)sx?$/,
+					exclude: /node_modules/,
+					use: {
+						loader: 'babel-loader',
+						options: {
+							presets: [
+								[
+									'@wordpress/babel-preset-default',
+									{
+										modules: false,
+										targets: {
+											browsers: [
+												'extends @wordpress/browserslist-config',
+											],
+										},
+									},
+								],
+							],
+							plugins: [
+								isProduction
+									? require.resolve(
+											'babel-plugin-transform-react-remove-prop-types'
+									  )
+									: false,
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
+							].filter( Boolean ),
+							cacheDirectory: true,
+						},
+					},
+				},
+				{
+					test: /\.s[c|a]ss$/,
+					use: {
+						loader: 'ignore-loader',
+					},
+				},
+			],
+		},
+		optimization: {
+			concatenateModules:
+				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
+			splitChunks: {
+				automaticNameDelimiter: '--',
+				cacheGroups: {
+					...getCacheGroups(),
+				},
+			},
+			minimizer: [
+				new TerserPlugin( {
+					parallel: true,
+					terserOptions: {
+						output: {
+							comments: /translators:/i,
+						},
+						compress: {
+							passes: 2,
+						},
+						mangle: {
+							reserved: [ '__', '_n', '_nx', '_x' ],
+						},
+					},
+					extractComments: false,
+				} ),
+			],
+		},
+		plugins: [
+			...getSharedPlugins( {
+				bundleAnalyzerReportTitle: 'Experimental Extensions',
+			} ),
+			new ProgressBarPlugin(
+				getProgressBarPluginConfig( 'Experimental Extensions' )
+			),
+		],
+		resolve: {
+			...resolve,
+			extensions: [ '.js', '.ts', '.tsx' ],
+		},
+	};
+};
+
+/**
+ * Build config for scripts to be used exclusively within the Site Editor context.
+ *
+ * @param {Object} options Build options.
+ */
+const getSiteEditorConfig = ( options = {} ) => {
+	const { alias, resolvePlugins = [] } = options;
+	const resolve = alias
+		? {
+				alias,
+				plugins: resolvePlugins,
+		  }
+		: {
+				plugins: resolvePlugins,
+		  };
+	return {
+		entry: getEntryConfig( 'editor', options.exclude || [] ),
+		output: {
+			devtoolNamespace: 'wc',
+			path: path.resolve( __dirname, '../build/' ),
+			filename: `[name].js`,
+			chunkLoadingGlobal: 'webpackWcBlocksExtensionsMethodExtensionJsonp',
 		},
 		module: {
 			rules: [
@@ -560,6 +684,7 @@ const getExtensionsConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								'@babel/plugin-proposal-optional-chaining',
 							].filter( Boolean ),
 						},
 					},
@@ -577,10 +702,12 @@ const getExtensionsConfig = ( options = {} ) => {
 				isProduction && ! process.env.WP_BUNDLE_ANALYZER,
 			splitChunks: {
 				automaticNameDelimiter: '--',
+				cacheGroups: {
+					...getCacheGroups(),
+				},
 			},
 			minimizer: [
 				new TerserPlugin( {
-					cache: true,
 					parallel: true,
 					terserOptions: {
 						output: {
@@ -599,10 +726,10 @@ const getExtensionsConfig = ( options = {} ) => {
 		},
 		plugins: [
 			...getSharedPlugins( {
-				bundleAnalyzerReportTitle: 'Experimental Extensions',
+				bundleAnalyzerReportTitle: 'Site Editor',
 			} ),
 			new ProgressBarPlugin(
-				getProgressBarPluginConfig( 'Experimental Extensions' )
+				getProgressBarPluginConfig( 'Site Editor' )
 			),
 		],
 		resolve: {
@@ -637,28 +764,53 @@ const getStylingConfig = ( options = {} ) => {
 			filename: `[name]-style${ fileSuffix }.js`,
 			library: [ 'wc', 'blocks', '[name]' ],
 			libraryTarget: 'this',
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksJsonp',
+			uniqueName: 'webpackWcBlocksJsonp',
 		},
 		optimization: {
 			splitChunks: {
-				minSize: 0,
 				automaticNameDelimiter: '--',
 				cacheGroups: {
 					editorStyle: {
 						// Capture all `editor` stylesheets and editor-components stylesheets.
-						test: ( module = {} ) =>
-							module.constructor.name === 'CssModule' &&
-							( findModuleMatch( module, /editor\.scss$/ ) ||
-								findModuleMatch(
-									module,
-									/[\\/]assets[\\/]js[\\/]editor-components[\\/]/
-								) ),
+						test: ( module = {}, { moduleGraph } ) => {
+							if ( ! module.type.includes( 'css' ) ) {
+								return false;
+							}
+
+							const moduleIssuer =
+								moduleGraph.getIssuer( module );
+							if ( ! moduleIssuer ) {
+								return false;
+							}
+
+							return (
+								moduleIssuer.resource.endsWith(
+									'editor.scss'
+								) ||
+								moduleIssuer.resource.includes(
+									`${ path.sep }assets${ path.sep }js${ path.sep }editor-components${ path.sep }`
+								)
+							);
+						},
 						name: 'wc-blocks-editor-style',
 						chunks: 'all',
 						priority: 10,
+					},
+					...getCacheGroups(),
+					'base-components': {
+						test: /\/assets\/js\/base\/components\//,
+						name( module, chunks, cacheGroupKey ) {
+							const moduleFileName = module
+								.identifier()
+								.split( '/' )
+								.reduceRight( ( item ) => item )
+								.split( '|' )
+								.reduce( ( item ) => item );
+							const allChunksNames = chunks
+								.map( ( item ) => item.name )
+								.join( '~' );
+							return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+						},
 					},
 				},
 			},
@@ -677,6 +829,8 @@ const getStylingConfig = ( options = {} ) => {
 											'babel-plugin-transform-react-remove-prop-types'
 									  )
 									: false,
+								'@babel/plugin-proposal-optional-chaining',
+								'@babel/plugin-proposal-class-properties',
 							].filter( Boolean ),
 						},
 					},
@@ -733,14 +887,11 @@ const getStylingConfig = ( options = {} ) => {
 		plugins: [
 			...getSharedPlugins( { bundleAnalyzerReportTitle: 'Styles' } ),
 			new ProgressBarPlugin( getProgressBarPluginConfig( 'Styles' ) ),
-			new WebpackRTLPlugin( {
-				filename: `[name]${ fileSuffix }-rtl.css`,
-				minify: {
-					safe: true,
-				},
-			} ),
 			new MiniCssExtractPlugin( {
 				filename: `[name]${ fileSuffix }.css`,
+			} ),
+			new WebpackRTLPlugin( {
+				filenameSuffix: '-rtl.css',
 			} ),
 			// Remove JS files generated by MiniCssExtractPlugin.
 			new RemoveFilesPlugin( `./build/*style${ fileSuffix }.js` ),
@@ -763,10 +914,7 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 			path: path.resolve( __dirname, '../build/' ),
 			library: [ 'wc', '__experimentalInteractivity' ],
 			libraryTarget: 'this',
-			// This fixes an issue with multiple webpack projects using chunking
-			// overwriting each other's chunk loader function.
-			// See https://webpack.js.org/configuration/output/#outputjsonpfunction
-			jsonpFunction: 'webpackWcBlocksJsonp',
+			chunkLoadingGlobal: 'webpackWcBlocksJsonp',
 		},
 		resolve: {
 			alias,
@@ -806,6 +954,7 @@ const getInteractivityAPIConfig = ( options = {} ) => {
 								// Required until Webpack is updated to ^5.0.0
 								plugins: [
 									'@babel/plugin-proposal-optional-chaining',
+									'@babel/plugin-proposal-class-properties',
 								],
 							},
 						},
@@ -822,6 +971,7 @@ module.exports = {
 	getMainConfig,
 	getPaymentsConfig,
 	getExtensionsConfig,
+	getSiteEditorConfig,
 	getStylingConfig,
 	getInteractivityAPIConfig,
 };

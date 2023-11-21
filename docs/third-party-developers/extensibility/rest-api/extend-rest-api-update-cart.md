@@ -143,7 +143,7 @@ When the `Redeem` button gets clicked, you want to tell the server how many poin
 To do this, you will need to use `extensionCartUpdate` to tell the server you want to execute your callback, and have the new cart state loaded into the UI. The `onClick` handler of the button may look like this:
 
 ```js
-import { extensionCartUpdate } from '@woocommerce/blocks-checkout';
+const { extensionCartUpdate } = window.wc.blocksCheckout;
 
 const buttonClickHandler = () => {
 	extensionCartUpdate( {

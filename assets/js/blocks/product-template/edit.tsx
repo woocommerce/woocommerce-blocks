@@ -17,6 +17,8 @@ import { Spinner } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { ProductCollectionAttributes } from '@woocommerce/blocks/product-collection/types';
+import { getSettingWithCoercion } from '@woocommerce/settings';
+import { isNumber } from '@woocommerce/types';
 
 const ProductTemplateInnerBlocks = () => {
 	const innerBlocksProps = useInnerBlocksProps(
@@ -75,21 +77,19 @@ const ProductTemplateEdit = ( {
 			offset = 0,
 			order,
 			orderBy,
-			author,
 			search,
 			exclude,
-			sticky,
 			inherit,
 			taxQuery,
-			parents,
 			pages,
 			...restQueryArgs
 		},
 		queryContext = [ { page: 1 } ],
 		templateSlug,
-		displayLayout: { type: layoutType, columns } = {
+		displayLayout: { type: layoutType, columns, shrinkColumns } = {
 			type: 'flex',
 			columns: 3,
+			shrinkColumns: false,
 		},
 	},
 	__unstableLayoutClassNames,
@@ -102,6 +102,11 @@ const ProductTemplateEdit = ( {
 	const [ { page } ] = queryContext;
 	const [ activeBlockContextId, setActiveBlockContextId ] = useState();
 	const postType = 'product';
+	const loopShopPerPage = getSettingWithCoercion(
+		'loopShopPerPage',
+		12,
+		isNumber
+	);
 	const { products, blocks } = useSelect(
 		( select ) => {
 			const { getEntityRecords, getTaxonomies } = select( coreStore );
@@ -121,6 +126,7 @@ const ProductTemplateEdit = ( {
 					slug: templateSlug.replace( 'category-', '' ),
 				} );
 			const query: Record< string, unknown > = {
+				postType,
 				offset: perPage ? perPage * ( page - 1 ) + offset : 0,
 				order,
 				orderby: orderBy,
@@ -148,29 +154,18 @@ const ProductTemplateEdit = ( {
 			if ( perPage ) {
 				query.per_page = perPage;
 			}
-			if ( author ) {
-				query.author = author;
-			}
 			if ( search ) {
 				query.search = search;
 			}
 			if ( exclude?.length ) {
 				query.exclude = exclude;
 			}
-			if ( parents?.length ) {
-				query.parent = parents;
-			}
-			// If sticky is not set, it will return all products in the results.
-			// If sticky is set to `only`, it will limit the results to sticky products only.
-			// If it is anything else, it will exclude sticky products from results. For the record the value stored is `exclude`.
-			if ( sticky ) {
-				query.sticky = sticky === 'only';
-			}
 			// If `inherit` is truthy, adjust conditionally the query to create a better preview.
 			if ( inherit ) {
 				if ( templateCategory ) {
 					query.categories = templateCategory[ 0 ]?.id;
 				}
+				query.per_page = loopShopPerPage;
 			}
 			return {
 				products: getEntityRecords( 'postType', postType, {
@@ -187,15 +182,12 @@ const ProductTemplateEdit = ( {
 			order,
 			orderBy,
 			clientId,
-			author,
 			search,
 			postType,
 			exclude,
-			sticky,
 			inherit,
 			templateSlug,
 			taxQuery,
-			parents,
 			restQueryArgs,
 		]
 	);
@@ -207,15 +199,21 @@ const ProductTemplateEdit = ( {
 			} ) ),
 		[ products ]
 	);
+
 	const hasLayoutFlex = layoutType === 'flex' && columns > 1;
+	let customClassName = '';
+	if ( hasLayoutFlex ) {
+		const dynamicGrid = `wc-block-product-template__responsive columns-${ columns }`;
+		const staticGrid = `is-flex-container columns-${ columns }`;
+
+		customClassName = shrinkColumns ? dynamicGrid : staticGrid;
+	}
+
 	const blockProps = useBlockProps( {
 		className: classnames(
 			__unstableLayoutClassNames,
 			'wc-block-product-template',
-			{
-				'is-flex-container': hasLayoutFlex,
-				[ `columns-${ columns }` ]: hasLayoutFlex,
-			}
+			customClassName
 		),
 	} );
 

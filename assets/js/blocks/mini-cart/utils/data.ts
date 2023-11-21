@@ -12,6 +12,13 @@ import {
 	isBoolean,
 } from '@woocommerce/types';
 import { getSettingWithCoercion } from '@woocommerce/settings';
+import type { ColorPaletteOption } from '@woocommerce/editor-components/color-panel/types';
+import apiFetch from '@wordpress/api-fetch';
+
+/**
+ * Internal dependencies
+ */
+import { Attributes } from '../edit';
 
 const getPrice = ( totals: CartResponseTotals, showIncludingTax: boolean ) => {
 	const currency = getCurrencyFromPriceResponse( totals );
@@ -122,15 +129,9 @@ export const getMiniCartTotalsFromLocalStorage = ():
 export const getMiniCartTotalsFromServer = async (): Promise<
 	[ CartResponseTotals, number ] | undefined
 > => {
-	return fetch( '/wp-json/wc/store/v1/cart/' )
-		.then( ( response ) => {
-			// Check if the response was successful.
-			if ( ! response.ok ) {
-				throw new Error();
-			}
-
-			return response.json();
-		} )
+	return apiFetch< CartResponse >( {
+		path: '/wc/store/v1/cart',
+	} )
 		.then( ( data: CartResponse ) => {
 			// Save server data to local storage, so we can re-fetch it faster
 			// on the next page load.
@@ -152,3 +153,45 @@ export const getMiniCartTotalsFromServer = async (): Promise<
 			return undefined;
 		} );
 };
+
+interface MaybeInCompatibleAttributes
+	extends Omit<
+		Attributes,
+		'priceColor' | 'iconColor' | 'productCountColor'
+	> {
+	priceColorValue?: string;
+	iconColorValue?: string;
+	productCountColorValue?: string;
+	priceColor: Partial< ColorPaletteOption > | string;
+	iconColor: Partial< ColorPaletteOption > | string;
+	productCountColor: Partial< ColorPaletteOption > | string;
+}
+
+export function migrateAttributesToColorPanel(
+	attributes: MaybeInCompatibleAttributes
+): Attributes {
+	const attrs = { ...attributes };
+
+	if ( attrs.priceColorValue && ! attrs.priceColor ) {
+		attrs.priceColor = {
+			color: attributes.priceColorValue as string,
+		};
+		delete attrs.priceColorValue;
+	}
+
+	if ( attrs.iconColorValue && ! attrs.iconColor ) {
+		attrs.iconColor = {
+			color: attributes.iconColorValue as string,
+		};
+		delete attrs.iconColorValue;
+	}
+
+	if ( attrs.productCountColorValue && ! attrs.productCountColor ) {
+		attrs.productCountColor = {
+			color: attributes.productCountColorValue as string,
+		};
+		delete attrs.productCountColorValue;
+	}
+
+	return <Attributes>attrs;
+}

@@ -25,6 +25,51 @@ class Checkout extends AbstractBlock {
 	protected $chunks_folder = 'checkout-blocks';
 
 	/**
+	 * Initialize this block type.
+	 *
+	 * - Hook into WP lifecycle.
+	 * - Register the block with WordPress.
+	 */
+	protected function initialize() {
+		parent::initialize();
+		add_action( 'wp_loaded', array( $this, 'register_patterns' ) );
+		// This prevents the page redirecting when the cart is empty. This is so the editor still loads the page preview.
+		add_filter(
+			'woocommerce_checkout_redirect_empty_cart',
+			function( $return ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				return isset( $_GET['_wp-find-template'] ) ? false : $return;
+			}
+		);
+	}
+
+	/**
+	 * Dequeues the scripts added by WC Core to the Checkout page.
+	 *
+	 * @return void
+	 */
+	public function dequeue_woocommerce_core_scripts() {
+		wp_dequeue_script( 'wc-checkout' );
+		wp_dequeue_script( 'wc-password-strength-meter' );
+		wp_dequeue_script( 'selectWoo' );
+		wp_dequeue_style( 'select2' );
+	}
+
+	/**
+	 * Register block pattern for Empty Cart Message to make it translatable.
+	 */
+	public function register_patterns() {
+		register_block_pattern(
+			'woocommerce/checkout-heading',
+			array(
+				'title'    => '',
+				'inserter' => false,
+				'content'  => '<!-- wp:heading {"align":"wide", "level":1} --><h1 class="wp-block-heading alignwide">' . esc_html__( 'Checkout', 'woo-gutenberg-products-block' ) . '</h1><!-- /wp:heading -->',
+			)
+		);
+	}
+
+	/**
 	 * Get the editor script handle for this block type.
 	 *
 	 * @param string $key Data to get, or default to everything.
@@ -67,16 +112,18 @@ class Checkout extends AbstractBlock {
 	/**
 	 * Enqueue frontend assets for this block, just in time for rendering.
 	 *
-	 * @param array $attributes  Any attributes that currently are available from the block.
+	 * @param array    $attributes  Any attributes that currently are available from the block.
+	 * @param string   $content    The block content.
+	 * @param WP_Block $block    The block object.
 	 */
-	protected function enqueue_assets( array $attributes ) {
+	protected function enqueue_assets( array $attributes, $content, $block ) {
 		/**
 		 * Fires before checkout block scripts are enqueued.
 		 *
 		 * @since 4.6.0
 		 */
 		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' );
-		parent::enqueue_assets( $attributes );
+		parent::enqueue_assets( $attributes, $content, $block );
 		/**
 		 * Fires after checkout block scripts are enqueued.
 		 *
@@ -94,17 +141,15 @@ class Checkout extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+
 		if ( $this->is_checkout_endpoint() ) {
 			// Note: Currently the block only takes care of the main checkout form -- if an endpoint is set, refer to the
 			// legacy shortcode instead and do not render block.
 			return wc_current_theme_is_fse_theme() ? do_shortcode( '[woocommerce_checkout]' ) : '[woocommerce_checkout]';
 		}
 
-		// Deregister core checkout scripts and styles.
-		wp_dequeue_script( 'wc-checkout' );
-		wp_dequeue_script( 'wc-password-strength-meter' );
-		wp_dequeue_script( 'selectWoo' );
-		wp_dequeue_style( 'select2' );
+		// Dequeue the core scripts when rendering this block.
+		add_action( 'wp_enqueue_scripts', array( $this, 'dequeue_woocommerce_core_scripts' ), 20 );
 
 		/**
 		 * We need to check if $content has any templates from prior iterations of the block, in order to update to the latest iteration.
@@ -297,8 +342,34 @@ class Checkout extends AbstractBlock {
 			$this->asset_data_registry->add( 'globalPaymentMethods', $formatted_payment_methods );
 		}
 
+		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'incompatibleExtensions' ) ) {
+			if ( ! class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+				return;
+			}
+
+			if ( ! function_exists( 'get_plugin_data' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+
+			$declared_extensions     = \Automattic\WooCommerce\Utilities\FeaturesUtil::get_compatible_plugins_for_feature( 'cart_checkout_blocks' );
+			$incompatible_extensions = array_reduce(
+				$declared_extensions['incompatible'],
+				function( $acc, $item ) {
+					$plugin = get_plugin_data( WP_PLUGIN_DIR . '/' . $item );
+					$acc[]  = [
+						'id'    => $plugin['TextDomain'],
+						'title' => $plugin['Name'],
+					];
+					return $acc;
+				},
+				[]
+			);
+			$this->asset_data_registry->add( 'incompatibleExtensions', $incompatible_extensions );
+		}
+
 		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
-			$this->hydrate_from_api();
+			$this->asset_data_registry->hydrate_api_request( '/wc/store/v1/cart' );
+			$this->asset_data_registry->hydrate_data_from_api_request( 'checkoutData', '/wc/store/v1/checkout' );
 			$this->hydrate_customer_payment_methods();
 		}
 
@@ -364,25 +435,6 @@ class Checkout extends AbstractBlock {
 			$payment_methods
 		);
 		remove_filter( 'woocommerce_payment_methods_list_item', [ $this, 'include_token_id_with_payment_methods' ], 10, 2 );
-	}
-
-	/**
-	 * Hydrate the checkout block with data from the API.
-	 */
-	protected function hydrate_from_api() {
-		// Cache existing notices now, otherwise they are caught by the Cart Controller and converted to exceptions.
-		$old_notices = WC()->session->get( 'wc_notices', array() );
-		wc_clear_notices();
-
-		$this->asset_data_registry->hydrate_api_request( '/wc/store/v1/cart' );
-
-		add_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
-		$rest_preload_api_requests = rest_preload_api_request( [], '/wc/store/v1/checkout' );
-		$this->asset_data_registry->add( 'checkoutData', $rest_preload_api_requests['/wc/store/v1/checkout']['body'] ?? [] );
-		remove_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
-
-		// Restore notices.
-		WC()->session->set( 'wc_notices', $old_notices );
 	}
 
 	/**

@@ -8,10 +8,12 @@ use Automattic\WooCommerce\Blocks\BlockPatterns;
 use Automattic\WooCommerce\Blocks\BlockTemplatesController;
 use Automattic\WooCommerce\Blocks\BlockTypesController;
 use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
+use Automattic\WooCommerce\Blocks\Domain\Services\JetpackWooCommerceAnalytics;
 use Automattic\WooCommerce\Blocks\Domain\Services\Notices;
 use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
 use Automattic\WooCommerce\Blocks\Domain\Services\GoogleAnalytics;
+use Automattic\WooCommerce\Blocks\Domain\Services\Hydration;
 use Automattic\WooCommerce\Blocks\InboxNotifications;
 use Automattic\WooCommerce\Blocks\Installer;
 use Automattic\WooCommerce\Blocks\Migration;
@@ -35,6 +37,7 @@ use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ArchiveProductTemplatesCompatibility;
+use Automattic\WooCommerce\Blocks\Domain\Services\OnboardingTasks\TasksController;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -99,6 +102,7 @@ class Bootstrap {
 	protected function init() {
 		$this->register_dependencies();
 		$this->register_payment_methods();
+		$this->load_interactivity_api();
 
 		// This is just a temporary solution to make sure the migrations are run. We have to refactor this. More details: https://github.com/woocommerce/woocommerce-blocks/issues/10196.
 		if ( $this->package->get_version() !== $this->package->get_version_stored_on_db() ) {
@@ -118,33 +122,45 @@ class Bootstrap {
 		);
 
 		$is_rest = wc()->is_rest_api_request();
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$is_store_api_request = $is_rest && ! empty( $_SERVER['REQUEST_URI'] ) && ( false !== strpos( $_SERVER['REQUEST_URI'], trailingslashit( rest_get_url_prefix() ) . 'wc/store/' ) );
+
+		// Load and init assets.
+		$this->container->get( StoreApi::class )->init();
+		$this->container->get( PaymentsApi::class )->init();
+		$this->container->get( DraftOrders::class )->init();
+		$this->container->get( CreateAccount::class )->init();
+		$this->container->get( ShippingController::class )->init();
+		$this->container->get( TasksController::class )->init();
+		$this->container->get( JetpackWooCommerceAnalytics::class )->init();
 
 		// Load assets in admin and on the frontend.
 		if ( ! $is_rest ) {
 			$this->add_build_notice();
 			$this->container->get( AssetDataRegistry::class );
-			$this->container->get( Installer::class );
 			$this->container->get( AssetsController::class );
+			$this->container->get( Installer::class )->init();
+			$this->container->get( GoogleAnalytics::class )->init();
 		}
-		$this->container->get( DraftOrders::class )->init();
-		$this->container->get( CreateAccount::class )->init();
-		$this->container->get( Notices::class )->init();
-		$this->container->get( StoreApi::class )->init();
-		$this->container->get( GoogleAnalytics::class );
-		$this->container->get( BlockTypesController::class );
-		$this->container->get( BlockTemplatesController::class );
-		$this->container->get( ProductSearchResultsTemplate::class );
-		$this->container->get( ProductAttributeTemplate::class );
-		$this->container->get( CartTemplate::class );
-		$this->container->get( CheckoutTemplate::class );
-		$this->container->get( CheckoutHeaderTemplate::class );
-		$this->container->get( OrderConfirmationTemplate::class );
-		$this->container->get( ClassicTemplatesCompatibility::class );
-		$this->container->get( ArchiveProductTemplatesCompatibility::class )->init();
-		$this->container->get( SingleProductTemplateCompatibility::class )->init();
-		$this->container->get( BlockPatterns::class );
-		$this->container->get( PaymentsApi::class );
-		$this->container->get( ShippingController::class )->init();
+
+		// Load assets unless this is a request specifically for the store API.
+		if ( ! $is_store_api_request ) {
+			// Template related functionality. These won't be loaded for store API requests, but may be loaded for
+			// regular rest requests to maintain compatibility with the store editor.
+			$this->container->get( BlockPatterns::class );
+			$this->container->get( BlockTypesController::class );
+			$this->container->get( BlockTemplatesController::class );
+			$this->container->get( ProductSearchResultsTemplate::class );
+			$this->container->get( ProductAttributeTemplate::class );
+			$this->container->get( CartTemplate::class );
+			$this->container->get( CheckoutTemplate::class );
+			$this->container->get( CheckoutHeaderTemplate::class );
+			$this->container->get( OrderConfirmationTemplate::class );
+			$this->container->get( ClassicTemplatesCompatibility::class );
+			$this->container->get( ArchiveProductTemplatesCompatibility::class )->init();
+			$this->container->get( SingleProductTemplateCompatibility::class )->init();
+			$this->container->get( Notices::class )->init();
+		}
 	}
 
 	/**
@@ -212,6 +228,13 @@ class Bootstrap {
 				echo '</p></div>';
 			}
 		);
+	}
+
+	/**
+	 * Load and set up the Interactivity API if enabled.
+	 */
+	protected function load_interactivity_api() {
+			require_once __DIR__ . '/../Interactivity/load.php';
 	}
 
 	/**
@@ -339,18 +362,29 @@ class Bootstrap {
 		$this->container->register(
 			GoogleAnalytics::class,
 			function( Container $container ) {
-				// Require Google Analytics Integration to be activated.
-				if ( ! class_exists( 'WC_Google_Analytics_Integration', false ) ) {
-					return;
-				}
 				$asset_api = $container->get( AssetApi::class );
 				return new GoogleAnalytics( $asset_api );
+			}
+		);
+		$this->container->register(
+			JetpackWooCommerceAnalytics::class,
+			function( Container $container ) {
+				$asset_api                  = $container->get( AssetApi::class );
+				$asset_data_registry        = $container->get( AssetDataRegistry::class );
+				$block_templates_controller = $container->get( BlockTemplatesController::class );
+				return new JetpackWooCommerceAnalytics( $asset_api, $asset_data_registry, $block_templates_controller );
 			}
 		);
 		$this->container->register(
 			Notices::class,
 			function( Container $container ) {
 				return new Notices( $container->get( Package::class ) );
+			}
+		);
+		$this->container->register(
+			Hydration::class,
+			function( Container $container ) {
+				return new Hydration( $container->get( AssetDataRegistry::class ) );
 			}
 		);
 		$this->container->register(
@@ -408,6 +442,12 @@ class Bootstrap {
 				$asset_api           = $container->get( AssetApi::class );
 				$asset_data_registry = $container->get( AssetDataRegistry::class );
 				return new ShippingController( $asset_api, $asset_data_registry );
+			}
+		);
+		$this->container->register(
+			TasksController::class,
+			function() {
+				return new TasksController();
 			}
 		);
 	}

@@ -13,7 +13,9 @@ import {
 	TProductCollectionOrderBy,
 	ProductCollectionQuery,
 	ProductCollectionDisplayLayout,
+	LayoutOptions,
 } from './types';
+import { getDefaultValueOfInheritQueryFromTemplate } from './utils';
 
 export const STOCK_STATUS_OPTIONS = getSetting< Record< string, string > >(
 	'stockStatusOptions',
@@ -38,26 +40,26 @@ export const DEFAULT_QUERY: ProductCollectionQuery = {
 	postType: 'product',
 	order: 'asc',
 	orderBy: 'title',
-	author: '',
 	search: '',
 	exclude: [],
-	sticky: '',
 	inherit: null,
 	taxQuery: {},
-	parents: [],
 	isProductCollectionBlock: true,
+	featured: false,
 	woocommerceOnSale: false,
 	woocommerceStockStatus: getDefaultStockStatuses(),
 	woocommerceAttributes: [],
 	woocommerceHandPickedProducts: [],
+	timeFrame: undefined,
 };
 
 export const DEFAULT_ATTRIBUTES: Partial< ProductCollectionAttributes > = {
 	query: DEFAULT_QUERY,
 	tagName: 'div',
 	displayLayout: {
-		type: 'flex',
+		type: LayoutOptions.GRID,
 		columns: 3,
+		shrinkColumns: false,
 	},
 };
 
@@ -67,7 +69,7 @@ export const getDefaultQuery = (
 	...currentQuery,
 	orderBy: DEFAULT_QUERY.orderBy as TProductCollectionOrderBy,
 	order: DEFAULT_QUERY.order as TProductCollectionOrder,
-	inherit: DEFAULT_QUERY.inherit,
+	inherit: getDefaultValueOfInheritQueryFromTemplate(),
 } );
 
 export const getDefaultDisplayLayout = () =>
@@ -86,4 +88,6 @@ export const DEFAULT_FILTERS: Partial< ProductCollectionQuery > = {
 	woocommerceAttributes: [],
 	taxQuery: DEFAULT_QUERY.taxQuery,
 	woocommerceHandPickedProducts: [],
+	featured: DEFAULT_QUERY.featured,
+	timeFrame: undefined,
 };

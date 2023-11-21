@@ -21,6 +21,27 @@ If you want to add a new SlotFill component, check the [Checkout - Slot Fill doc
 
 This Slot renders below the Checkout summary section and above the "Proceed to Checkout" button in the Cart.
 
+```ts
+const { __ } = window.wp.i18n;
+const { registerPlugin } = window.wp.plugins;
+const { ExperimentalOrderMeta } = window.wc.blocksCheckout;
+
+const render = () => {
+	return (
+		<ExperimentalOrderMeta>
+			<div class="wc-block-components-totals-wrapper">
+				{ __( 'Yearly recurring total ...', 'YOUR-TEXTDOMAIN' ) }
+			</div>
+		</ExperimentalOrderMeta>
+	);
+};
+
+registerPlugin( 'slot-and-fill-examples', {
+	render,
+	scope: 'woocommerce-checkout',
+} );
+```
+
 Cart:
 
 ![Example of ExperimentalOrderMeta in the Cart block](https://user-images.githubusercontent.com/1628454/154517779-117bb4e4-568e-413c-904c-855fc3450dfa.png)
@@ -38,6 +59,25 @@ Checkout:
 ## ExperimentalOrderShippingPackages
 
 This slot renders inside the shipping step of Checkout and inside the shipping options in Cart.
+
+```ts
+const { __ } = window.wp.i18n;
+const { registerPlugin } = window.wp.plugins;
+const { ExperimentalOrderShippingPackages } = window.wc.blocksCheckout;
+
+const render = () => {
+	return (
+		<ExperimentalOrderShippingPackages>
+			<div>{ __( 'Express Shipping', 'YOUR-TEXTDOMAIN' ) }</div>
+		</ExperimentalOrderShippingPackages>
+	);
+};
+
+registerPlugin( 'slot-and-fill-examples', {
+	render,
+	scope: 'woocommerce-checkout',
+} );
+```
 
 Cart:
 
@@ -63,6 +103,30 @@ Checkout:
 
 This slot renders inside the Checkout Pickup Options block in the Checkout block. It does not render in the Cart block.
 
+```ts
+const { __ } = window.wp.i18n;
+const { registerPlugin } = window.wp.plugins;
+const { ExperimentalOrderLocalPickupPackages } = window.wc.blocksCheckout;
+
+const render = () => {
+	return (
+		<ExperimentalOrderLocalPickupPackages>
+			<div>
+				{ __(
+					'By using our convenient local pickup option, you can come to our store and pick up your order. We will send you and email when your order is ready for pickup.',
+					'YOUR-TEXTDOMAIN'
+				) }
+			</div>
+		</ExperimentalOrderLocalPickupPackages>
+	);
+};
+
+registerPlugin( 'slot-and-fill-examples', {
+	render,
+	scope: 'woocommerce-checkout',
+} );
+```
+
 Checkout:
 
 ![Example of ExperimentalOrderLocalPickupPackages in the Checkout block](https://user-images.githubusercontent.com/5656702/222814945-a449d016-0621-4a70-b0f4-2ae1ce6487f1.png)
@@ -77,6 +141,27 @@ Checkout:
 ## ExperimentalDiscountsMeta
 
 This slot renders below the `CouponCode` input.
+
+```ts
+const { __ } = window.wp.i18n;
+const { registerPlugin } = window.wp.plugins;
+const { ExperimentalDiscountsMeta } = window.wc.blocksCheckout;
+
+const render = () => {
+	return (
+		<ExperimentalDiscountsMeta>
+			<div class="wc-block-components-totals-wrapper">
+				{ __( 'You have 98683 coins to spend ...', 'YOUR-TEXTDOMAIN' ) }
+			</div>
+		</ExperimentalDiscountsMeta>
+	);
+};
+
+registerPlugin( 'slot-and-fill-examples', {
+	render,
+	scope: 'woocommerce-checkout',
+} );
+```
 
 Cart:
 

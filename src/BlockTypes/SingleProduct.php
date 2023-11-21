@@ -64,31 +64,6 @@ class SingleProduct extends AbstractBlock {
 		return $block_content;
 	}
 
-
-	/**
-	 * Render the Single Product block
-	 *
-	 * @param array    $attributes Block attributes.
-	 * @param string   $content Block content.
-	 * @param WP_Block $block Block instance.
-	 *
-	 * @return string Rendered block output.
-	 */
-	protected function render( $attributes, $content, $block ) {
-		$classname          = $attributes['className'] ?? '';
-		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => trim( sprintf( 'woocommerce %1$s', $classname ) ) ) );
-
-		$html = sprintf(
-			'<div %1$s>
-				%2$s
-			</div>',
-			$wrapper_attributes,
-			$content
-		);
-
-		return $html;
-	}
-
 	/**
 	 * Update the context by injecting the correct post data
 	 * for each one of the Single Product inner blocks.

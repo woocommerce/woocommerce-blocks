@@ -15,8 +15,6 @@ export const TYPES = {
 	productTaxonomy: 'product-taxonomy',
 	productSearchResults: 'product-search-results',
 	orderConfirmation: 'order-confirmation',
-	cart: 'cart',
-	checkout: 'checkout',
 	checkoutHeader: 'checkout-header',
 };
 export const PLACEHOLDERS = {
@@ -67,6 +65,15 @@ export const TEMPLATES: TemplateDetails = {
 		),
 		placeholder: PLACEHOLDERS.archiveProduct,
 	},
+	// Since that it is a fallback value, it has to be the last one.
+	'taxonomy-product': {
+		type: TYPES.productTaxonomy,
+		title: __(
+			"WooCommerce Product's Custom Taxonomy Block",
+			'woo-gutenberg-products-block'
+		),
+		placeholder: PLACEHOLDERS.archiveProduct,
+	},
 	'product-search-results': {
 		type: TYPES.productSearchResults,
 		title: __(
@@ -74,16 +81,6 @@ export const TEMPLATES: TemplateDetails = {
 			'woo-gutenberg-products-block'
 		),
 		placeholder: PLACEHOLDERS.archiveProduct,
-	},
-	cart: {
-		type: TYPES.cart,
-		title: __( 'WooCommerce Cart Block', 'woo-gutenberg-products-block' ),
-		placeholder: 'cart',
-	},
-	checkout: {
-		type: TYPES.checkout,
-		title: __( 'Checkout Block', 'woo-gutenberg-products-block' ),
-		placeholder: 'checkout',
 	},
 	'checkout-header': {
 		type: TYPES.checkoutHeader,

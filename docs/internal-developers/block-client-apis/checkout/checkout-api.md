@@ -17,7 +17,7 @@
 -   [Examples](#examples)
     -   [Passing a value from the client through to server side payment processing](#passing-a-value-from-the-client-through-to-server-side-payment-processing)
 
-This document gives an overview of some of the major architectural components/APIs for the checkout block. If you haven't already, you may also want to read about the [Checkout Flow and Events](../../extensibility/checkout-flow-and-events.md).
+This document gives an overview of some of the major architectural components/APIs for the checkout block. If you haven't already, you may also want to read about the [Checkout Flow and Events](checkout-flow-and-events.md).
 
 ## Data Stores
 
@@ -95,7 +95,8 @@ The shipping method data context exposes the api interfaces for the following th
 
 The payment method events context exposes any event handlers related to payments (typedef `PaymentEventsContext`) via the `usePaymentEventsContext` hook.
 
--   `onPaymentProcessing`: This is an event subscriber that can be used to subscribe observers to be called when the status for the context is `PROCESSING`.
+-   `onPaymentSetup`: This is an event subscriber that can be used to subscribe observers to be called when the payment is being setup.
+-   ~~`onPaymentProcessing`~~: This event was deprecated in favour of `onPaymentSetup`.
 
 ### Checkout Events Context
 
@@ -151,9 +152,9 @@ Payment method components are passed, by default, everything from the [`usePayme
 ```js
 const Content = ( props ) => {
 	const { eventRegistration, emitResponse } = props;
-	const { onPaymentProcessing } = eventRegistration;
+	const { onPaymentSetup } = eventRegistration;
 	useEffect( () => {
-		const unsubscribe = onPaymentProcessing( async () => {
+		const unsubscribe = onPaymentSetup( async () => {
 			// Here we can do any processing we need, and then emit a response.
 			// For example, we might validate a custom field, or perform an AJAX request, and then emit a response indicating it is valid or not.
 			const myGatewayCustomData = '12345';
@@ -182,7 +183,7 @@ const Content = ( props ) => {
 	}, [
 		emitResponse.responseTypes.ERROR,
 		emitResponse.responseTypes.SUCCESS,
-		onPaymentProcessing,
+		onPaymentSetup,
 	] );
 	return decodeEntities( settings.description || '' );
 };

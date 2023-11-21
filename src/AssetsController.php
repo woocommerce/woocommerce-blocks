@@ -1,9 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
-use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets\Api as AssetApi;
-use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry as AssetDataRegistry;
 
 /**
  * AssetsController class.
@@ -35,6 +33,7 @@ final class AssetsController {
 	 */
 	protected function init() {
 		add_action( 'init', array( $this, 'register_assets' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'register_and_enqueue_site_editor_assets' ) );
 		add_filter( 'wp_resource_hints', array( $this, 'add_resource_hints' ), 10, 2 );
 		add_action( 'body_class', array( $this, 'add_theme_body_class' ), 1 );
 		add_action( 'admin_body_class', array( $this, 'add_theme_body_class' ), 1 );
@@ -56,13 +55,17 @@ final class AssetsController {
 		$this->api->register_script( 'wc-blocks-vendors', $this->api->get_block_asset_build_path( 'wc-blocks-vendors' ), [], false );
 		$this->api->register_script( 'wc-blocks-registry', 'build/wc-blocks-registry.js', [], false );
 		$this->api->register_script( 'wc-blocks', $this->api->get_block_asset_build_path( 'wc-blocks' ), [ 'wc-blocks-vendors' ], false );
-		$this->api->register_script( 'wc-blocks-shared-context', 'build/wc-blocks-shared-context.js', [] );
+		$this->api->register_script( 'wc-blocks-shared-context', 'build/wc-blocks-shared-context.js' );
 		$this->api->register_script( 'wc-blocks-shared-hocs', 'build/wc-blocks-shared-hocs.js', [], false );
 
 		// The price package is shared externally so has no blocks prefix.
 		$this->api->register_script( 'wc-price-format', 'build/price-format.js', [], false );
 
 		$this->api->register_script( 'wc-blocks-checkout', 'build/blocks-checkout.js', [] );
+		$this->api->register_script( 'wc-blocks-components', 'build/blocks-components.js', [] );
+
+		// Register the interactivity components here for now.
+		$this->api->register_script( 'wc-interactivity-dropdown', 'build/wc-interactivity-dropdown.js', [] );
 
 		wp_add_inline_script(
 			'wc-blocks-middleware',
@@ -74,6 +77,20 @@ final class AssetsController {
 			",
 			'before'
 		);
+	}
+
+	/**
+	 * Register and enqueue assets for exclusive usage within the Site Editor.
+	 */
+	public function register_and_enqueue_site_editor_assets() {
+		$this->api->register_script( 'wc-blocks-classic-template-revert-button', 'build/wc-blocks-classic-template-revert-button.js' );
+		$this->api->register_style( 'wc-blocks-classic-template-revert-button-style', 'build/wc-blocks-classic-template-revert-button-style.css' );
+
+		$current_screen = get_current_screen();
+		if ( $current_screen instanceof \WP_Screen && 'site-editor' === $current_screen->base ) {
+			wp_enqueue_script( 'wc-blocks-classic-template-revert-button' );
+			wp_enqueue_style( 'wc-blocks-classic-template-revert-button-style' );
+		}
 	}
 
 	/**
@@ -93,7 +110,7 @@ final class AssetsController {
 		// We only need to prefetch when the cart has contents.
 		$cart = wc()->cart;
 
-		if ( ! $cart || ! $cart instanceof \WC_Cart || 0 === $cart->get_cart_contents_count() ) {
+		if ( ! $cart instanceof \WC_Cart || 0 === $cart->get_cart_contents_count() ) {
 			return $urls;
 		}
 
