@@ -389,12 +389,13 @@ test.describe( 'Merchant → Checkout', () => {
 				).toBeHidden();
 			} );
 
-			test( 'Apartment input visibility can be toggled', async ( {
+			test( 'Apartment input visibility can be toggled in shipping and billing', async ( {
 				editor,
 				editorUtils,
 			} ) => {
 				await editor.selectBlocks(
-					`${ blockSelectorInEditor } .wp-block-woocommerce-checkout-shipping-address-block`
+					blockSelectorInEditor +
+						'  [data-type="woocommerce/checkout-shipping-address-block"]'
 				);
 
 				// Turn on apartment field and check it's visible in the fields.
@@ -416,6 +417,35 @@ test.describe( 'Merchant → Checkout', () => {
 				await apartmentToggleSelector.uncheck();
 
 				await expect( apartmentInput ).toBeHidden();
+
+				await editor.canvas
+					.getByLabel( 'Use same address for billing' )
+					.uncheck();
+
+				await editor.selectBlocks(
+					blockSelectorInEditor +
+						'  [data-type="woocommerce/checkout-billing-address-block"]'
+				);
+
+				// Turn on apartment field and check it's visible in the fields.
+				const billingApartmentToggleSelector = editor.page.getByLabel(
+					'Apartment, suite, etc.',
+					{ exact: true }
+				);
+				await billingApartmentToggleSelector.check();
+				const billingAddressBlock = await editorUtils.getBlockByName(
+					'woocommerce/checkout-billing-address-block'
+				);
+
+				const billingApartmentInput = billingAddressBlock.getByLabel(
+					'Apartment, suite, etc. (optional)'
+				);
+				// Turn off apartment field and check it's not visible in the fields.
+				await expect( billingApartmentInput ).toBeVisible();
+
+				await billingApartmentToggleSelector.uncheck();
+
+				await expect( billingApartmentInput ).toBeHidden();
 			} );
 
 			test.describe( 'Phone input', () => {
