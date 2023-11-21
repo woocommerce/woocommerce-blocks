@@ -448,51 +448,43 @@ test.describe( 'Merchant → Checkout', () => {
 				await expect( billingApartmentInput ).toBeHidden();
 			} );
 
-			test.describe( 'Phone input', () => {
-				test( 'visibility and required can be toggled', async ( {
-					editor,
-					editorUtils,
-				} ) => {
-					await editor.selectBlocks(
-						`${ blockSelectorInEditor } .wp-block-woocommerce-checkout-shipping-address-block`
-					);
+			test( 'Phone input visibility and required can be toggled', async ( {
+				editor,
+				editorUtils,
+			} ) => {
+				await editor.selectBlocks(
+					`${ blockSelectorInEditor } .wp-block-woocommerce-checkout-shipping-address-block`
+				);
 
-					// Turn on phone field and check it's visible in the fields.
-					const phoneToggleSelector = editor.page.getByLabel(
-						'Phone',
-						{ exact: true }
-					);
-					await phoneToggleSelector.check();
-					const shippingAddressBlock =
-						await editorUtils.getBlockByName(
-							'woocommerce/checkout-shipping-address-block'
-						);
-
-					// Turn on Require phone number? option and check it becomes required in the fields.
-					const companyRequiredSelector = editor.page.getByLabel(
-						'Require phone number?',
-						{ exact: true }
-					);
-					await companyRequiredSelector.check();
-					const phoneInput =
-						shippingAddressBlock.getByLabel( 'Phone' );
-					await expect( phoneInput ).toHaveAttribute(
-						'required',
-						''
-					);
-					await companyRequiredSelector.uncheck();
-					await expect( phoneInput ).not.toHaveAttribute(
-						'required',
-						''
-					);
-
-					// Turn off phone field and check it's not visible in the fields.
-					await expect( phoneInput ).toBeVisible();
-
-					await phoneToggleSelector.uncheck();
-
-					await expect( phoneInput ).toBeHidden();
+				// Turn on phone field and check it's visible in the fields.
+				const phoneToggleSelector = editor.page.getByLabel( 'Phone', {
+					exact: true,
 				} );
+				await phoneToggleSelector.check();
+				const shippingAddressBlock = await editorUtils.getBlockByName(
+					'woocommerce/checkout-shipping-address-block'
+				);
+
+				// Turn on Require phone number? option and check it becomes required in the fields.
+				const companyRequiredSelector = editor.page.getByLabel(
+					'Require phone number?',
+					{ exact: true }
+				);
+				await companyRequiredSelector.check();
+				const phoneInput = shippingAddressBlock.getByLabel( 'Phone' );
+				await expect( phoneInput ).toHaveAttribute( 'required', '' );
+				await companyRequiredSelector.uncheck();
+				await expect( phoneInput ).not.toHaveAttribute(
+					'required',
+					''
+				);
+
+				// Turn off phone field and check it's not visible in the fields.
+				await expect( phoneInput ).toBeVisible();
+
+				await phoneToggleSelector.uncheck();
+
+				await expect( phoneInput ).toBeHidden();
 			} );
 		} );
 	} );
