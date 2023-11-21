@@ -491,7 +491,8 @@ class OrderController {
 			)
 		);
 
-		$data_store            = $coupon->get_data_store();
+		$data_store = $coupon->get_data_store();
+		// Coupons can be held for an x amount of time before being applied to an order, so we need to check if it's already being held in (maybe via another flow).
 		$tentative_usage_count = $data_store->get_tentative_usages_for_user( $coupon->get_id(), $aliases );
 		return $tentative_usage_count + $usage_count;
 	}
