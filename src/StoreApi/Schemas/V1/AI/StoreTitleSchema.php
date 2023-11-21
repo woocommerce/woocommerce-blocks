@@ -1,5 +1,5 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Schemas\V1\AI;
+namespace Automattic\WooCommerce\StoreApi\Schemas\V1\AI;
 
 use Automattic\WooCommerce\StoreApi\Schemas\V1\AbstractSchema;
 
