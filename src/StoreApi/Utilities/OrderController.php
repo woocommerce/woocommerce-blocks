@@ -485,7 +485,8 @@ class OrderController {
 		$aliases_string = "('" . implode( "','", array_map( 'esc_sql', $aliases ) ) . "')";
 		$usage_count    = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT COUNT( meta_id ) FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = '_used_by' AND meta_value IN {$aliases_string};", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT COUNT( meta_id ) FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = '_used_by' AND meta_value IN {$aliases_string};",
 				$coupon->get_id(),
 			)
 		);
