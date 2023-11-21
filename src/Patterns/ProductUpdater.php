@@ -338,8 +338,9 @@ class ProductUpdater {
 		}
 
 		$formatted_prompt = sprintf(
-			"Generate two-words titles and price for products using the following prompts for each one of them: '%s'. Ensure each entry is unique and does not repeat the given examples. Ensure each product price is a number and corresponds with the product title that is being advertised. Do not include backticks or the word json in the response. Here's an example format: '%s'.",
+			"Generate two-words titles and price for products using the following prompts for each one of them: '%s'. Ensure each entry is unique and does not repeat the given examples. Ensure each product price is a number and it's not too low or too high for the corresponding product title being advertised in the following currency: %s. Do not include backticks or the word json in the response. Here's an example format: '%s'.",
 			wp_json_encode( $prompts ),
+			get_woocommerce_currency(),
 			wp_json_encode( $expected_results_format )
 		);
 
