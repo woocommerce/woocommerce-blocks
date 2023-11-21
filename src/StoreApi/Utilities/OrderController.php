@@ -430,44 +430,46 @@ class OrderController {
 	protected function validate_coupon_usage_limit( \WC_Coupon $coupon, \WC_Order $order ) {
 		$coupon_usage_limit = $coupon->get_usage_limit_per_user();
 
-		if ( $coupon_usage_limit > 0 ) {
-			// First, we check a logged in customer usage count, which happens against their user id, billing email, and account email.
-			if ( $order->get_customer_id() ) {
-				$user_data = get_userdata( $order->get_customer_id() );
-				// We get usage per user id and associated emails.
-				$usage_count = $this->get_usage_per_aliases(
-					$coupon,
-					[
-						$order->get_billing_email(),
-						$order->get_customer_id(),
-						$user_data ? $user_data->user_email : '',
-					]
-				);
-			} else {
-				// Otherwise we check if the email doesn't belong to an existing user.
-				$customer_data_store = \WC_Data_Store::load( 'customer' );
-				// This will get us any user ids for this billing email.
-				$user_ids       = $customer_data_store->get_user_ids_for_billing_email( array( $order->get_billing_email() ) );
-				$emails_for_ids = array_map(
-					function( $user_id ) {
-						$user_data = get_userdata( $user_id );
-						return $user_data ? $user_data->user_email : '';
-					},
-					$user_ids
-				);
-				$usage_count    = $this->get_usage_per_aliases(
-					$coupon,
-					array_merge(
-						$emails_for_ids,
-						$user_ids,
-						array( $order->get_billing_email() )
-					)
-				);
-			}
+		if ( 0 === $coupon_usage_limit ) {
+			return;
+		}
 
-			if ( $usage_count >= $coupon_usage_limit ) {
-				throw new Exception( $coupon->get_coupon_error( \WC_Coupon::E_WC_COUPON_USAGE_LIMIT_REACHED ) );
-			}
+		// First, we check a logged in customer usage count, which happens against their user id, billing email, and account email.
+		if ( $order->get_customer_id() ) {
+			$user_data = get_userdata( $order->get_customer_id() );
+			// We get usage per user id and associated emails.
+			$usage_count = $this->get_usage_per_aliases(
+				$coupon,
+				[
+					$order->get_billing_email(),
+					$order->get_customer_id(),
+					$user_data ? $user_data->user_email : '',
+				]
+			);
+		} else {
+			// Otherwise we check if the email doesn't belong to an existing user.
+			$customer_data_store = \WC_Data_Store::load( 'customer' );
+			// This will get us any user ids for this billing email.
+			$user_ids       = $customer_data_store->get_user_ids_for_billing_email( array( $order->get_billing_email() ) );
+			$emails_for_ids = array_map(
+				function( $user_id ) {
+					$user_data = get_userdata( $user_id );
+					return $user_data ? $user_data->user_email : '';
+				},
+				$user_ids
+			);
+			$usage_count    = $this->get_usage_per_aliases(
+				$coupon,
+				array_merge(
+					$emails_for_ids,
+					$user_ids,
+					array( $order->get_billing_email() )
+				)
+			);
+		}
+
+		if ( $usage_count >= $coupon_usage_limit ) {
+			throw new Exception( $coupon->get_coupon_error( \WC_Coupon::E_WC_COUPON_USAGE_LIMIT_REACHED ) );
 		}
 	}
 
