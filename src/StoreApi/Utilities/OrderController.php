@@ -434,28 +434,20 @@ class OrderController {
 			$data_store = $coupon->get_data_store();
 			// First, we check a logged in customer usage count, which happens against their user id, billing email, and account email.
 			if ( get_current_user_id() ) {
-				// First we get a count of usage by user id.
-				$usage_count_per_id = $data_store->get_usage_by_user_id( $coupon, get_current_user_id() );
-				// Then we get usage for all user emails, the order billing email can be different from the one the user created the account with, we still need to check both.
-				$usage_count_per_email = $this->get_coupon_usage_per_emails( $coupon, array( $order->get_billing_email(), wp_get_current_user()->user_email ) );
-				$usage_count           = $usage_count_per_id + $usage_count_per_email;
-
+				// We get usage per user id and associated emails.
+				$usage_count = $this->get_usage_per_aliases( $coupon, array( $order->get_billing_email(), get_current_user_id(), wp_get_current_user()->user_email ) );
 			} else {
 				// Otherwise we check if the email doesn't belong to an existing user.
 				$customer_data_store = \WC_Data_Store::load( 'customer' );
 				// This will get us any user ids for this billing email.
-				$user_ids              = $customer_data_store->get_user_ids_for_billing_email( array( $order->get_billing_email() ) );
-				$usage_count_per_id    = $this->get_coupon_usage_per_user_ids( $coupon, $user_ids );
-				$emails_for_ids        = array_map(
+				$user_ids       = $customer_data_store->get_user_ids_for_billing_email( array( $order->get_billing_email() ) );
+				$emails_for_ids = array_map(
 					function( $user_id ) {
 						return get_userdata( $user_id )->user_email;
 					},
 					$user_ids
 				);
-				$usage_count_per_email = $this->get_coupon_usage_per_emails( $coupon, array_merge( $emails_for_ids, array( $order->get_billing_email() ) ) );
-
-				$usage_count = $usage_count_per_id + $usage_count_per_email;
-
+				$usage_count    = $this->get_usage_per_aliases( $coupon, array_merge( $emails_for_ids, $user_ids, array( $order->get_billing_email() ) ) );
 			}
 
 			if ( $usage_count >= $coupon_usage_limit ) {
@@ -465,49 +457,27 @@ class OrderController {
 	}
 
 	/**
-	 * Get the usage count for a coupon by user ids.
+	 * Get the usage count for a coupon based on a list of aliases (ids, emails).
 	 *
 	 * @param \WC_Coupon $coupon Coupon object applied to the cart.
-	 * @param array      $user_ids Array of user ids.
+	 * @param array      $aliases List of aliases to check.
 	 *
-	 * @return int
+	 * @return integer
 	 */
-	private function get_coupon_usage_per_user_ids( $coupon, $user_ids ) {
-		$data_store = $coupon->get_data_store();
-		$usage      = 0;
-		$user_ids   = array_unique( array_map( 'absint', $user_ids ) );
-		foreach ( $user_ids as $user_id ) {
-			$usage += $data_store->get_usage_by_user_id( $coupon, $user_id );
-		}
-		return $usage;
-	}
-
-	/**
-	 * Get the usage count for a coupon by emails.
-	 *
-	 * @param \WC_Coupon $coupon Coupon object applied to the cart.
-	 * @param array      $emails Array of emails.
-	 *
-	 * @return int
-	 */
-	private function get_coupon_usage_per_emails( $coupon, $emails ) {
-		$data_store = $coupon->get_data_store();
-		$usage      = 0;
-		$emails     = array_unique(
-			array_map(
-				'sanitize_email',
-				array_map(
-					'strtolower',
-					$emails
-				)
+	public function get_usage_per_aliases( &$coupon, $aliases ) {
+		global $wpdb;
+		$aliases               = implode( ', ', array_map( 'esc_sql', array_unique( array_filter( $aliases ) ) ) );
+		$usage_count           = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT( meta_id ) FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = '_used_by' AND meta_value IN (%s);",
+				$coupon->get_id(),
+				$aliases
 			)
 		);
-		foreach ( $emails as $email ) {
-			$usage += $data_store->get_usage_by_email( $coupon, $email );
-		}
-		return $usage;
+		$data_store            = $coupon->get_data_store();
+		$tentative_usage_count = $data_store->get_tentative_usages_for_user( $coupon->get_id(), $aliases );
+		return $tentative_usage_count + $usage_count;
 	}
-
 	/**
 	 * Check there is a shipping method if it requires shipping.
 	 *
@@ -519,14 +489,14 @@ class OrderController {
 		if ( ! $needs_shipping || ! is_array( $chosen_shipping_methods ) ) {
 			return;
 		}
-
+		$arr = [];
 		foreach ( $chosen_shipping_methods as $chosen_shipping_method ) {
 			if ( false === $chosen_shipping_method ) {
 				throw new RouteException(
 					'woocommerce_rest_invalid_shipping_option',
 					__( 'Sorry, this order requires a shipping option.', 'woo-gutenberg-products-block' ),
 					400,
-					array()
+					[]
 				);
 			}
 		}
