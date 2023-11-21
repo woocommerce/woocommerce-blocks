@@ -8,7 +8,7 @@ import { Icon, commentContent } from '@wordpress/icons';
  * Internal dependencies
  */
 import '../editor.scss';
-import Editor from './edit';
+import { Edit } from './edit';
 import sharedAttributes from '../attributes';
 import save from '../save.js';
 import { example } from '../example';
@@ -64,9 +64,7 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	 *
 	 * @param {Object} props Props to pass to block.
 	 */
-	edit( props ) {
-		return <Editor { ...props } />;
-	},
+	edit: Edit,
 
 	/**
 	 * Save the props to post content.
