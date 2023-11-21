@@ -479,7 +479,7 @@ class OrderController {
 	 *
 	 * @return integer
 	 */
-	public function get_usage_per_aliases( &$coupon, $aliases ) {
+	private function get_usage_per_aliases( &$coupon, $aliases ) {
 		global $wpdb;
 		$aliases        = array_unique( array_filter( $aliases ) );
 		$aliases_string = "('" . join( "','", array_map( 'esc_sql', $aliases ) ) . "')";
