@@ -441,7 +441,7 @@ class OrderController {
 					[
 						$order->get_billing_email(),
 						$order->get_customer_id(),
-						$user_data->user_email,
+						$user_data ? $user_data->user_email : '',
 					]
 				);
 			} else {
