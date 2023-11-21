@@ -451,7 +451,8 @@ class OrderController {
 				$user_ids       = $customer_data_store->get_user_ids_for_billing_email( array( $order->get_billing_email() ) );
 				$emails_for_ids = array_map(
 					function( $user_id ) {
-						return get_userdata( $user_id )->user_email;
+						$user_data = get_userdata( $user_id );
+						return $user_data ? $user_data->user_email : '';
 					},
 					$user_ids
 				);
