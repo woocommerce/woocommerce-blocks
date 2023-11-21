@@ -50,6 +50,9 @@ const blocks = {
 	'product-category': {},
 	'product-categories': {},
 	'product-collection': {},
+	'product-collection-no-results': {
+		customDir: 'product-collection/inner-blocks/no-results',
+	},
 	'product-gallery': {
 		isExperimental: true,
 	},
@@ -102,6 +105,10 @@ const blocks = {
 	},
 	'collection-price-filter': {
 		customDir: 'collection-filters/inner-blocks/price-filter',
+		isExperimental: true,
+	},
+	'collection-attribute-filter': {
+		customDir: 'collection-filters/inner-blocks/attribute-filter',
 		isExperimental: true,
 	},
 	'order-confirmation-summary': {
