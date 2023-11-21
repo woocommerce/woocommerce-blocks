@@ -9,7 +9,7 @@ import { Placeholder, Button } from '@wordpress/components';
 export const AttributesPlaceholder = ( {
 	children,
 }: {
-	children: JSX.Element | JSX.Element[];
+	children: React.ReactNode;
 } ) => (
 	<Placeholder
 		className="wc-block-attribute-filter"

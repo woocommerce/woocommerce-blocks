@@ -164,7 +164,7 @@ const Edit = ( props: EditProps ) => {
 		</AttributesPlaceholder>
 	);
 
-	const Wrapper = ( { children }: React.PropsWithChildren ) => (
+	const Wrapper = ( { children }: { children: ReactNode } ) => (
 		<div { ...blockProps }>
 			<Toolbar />
 			{ children }
