@@ -446,7 +446,13 @@ class OrderController {
 				// This will get us any user ids for this billing email.
 				$user_ids              = $customer_data_store->get_user_ids_for_billing_email( array( $order->get_billing_email() ) );
 				$usage_count_per_id    = $this->get_coupon_usage_per_user_ids( $coupon, $user_ids );
-				$usage_count_per_email = $this->get_coupon_usage_per_emails( $coupon, array( $order->get_billing_email() ) );
+				$emails_for_ids        = array_map(
+					function( $user_id ) {
+						return get_userdata( $user_id )->user_email;
+					},
+					$user_ids
+				);
+				$usage_count_per_email = $this->get_coupon_usage_per_emails( $coupon, array_merge( $emails_for_ids, array( $order->get_billing_email() ) ) );
 
 				$usage_count = $usage_count_per_id + $usage_count_per_email;
 
