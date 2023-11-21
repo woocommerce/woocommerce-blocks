@@ -204,18 +204,34 @@ class OrderController {
 			$this->update_order_from_cart( $order );
 
 			// Return exception so customer can review before payment.
-			throw new RouteException(
-				'woocommerce_rest_cart_coupon_errors',
-				sprintf(
-					/* translators: %s Coupon codes. */
-					__( 'Invalid coupons were removed from the cart: "%s"', 'woo-gutenberg-products-block' ),
-					implode( '", "', array_keys( $coupon_errors ) )
-				),
-				409,
-				[
-					'removed_coupons' => $coupon_errors,
-				]
-			);
+			if ( 1 === count( $coupon_errors ) ) {
+				throw new RouteException(
+					'woocommerce_rest_cart_coupon_errors',
+					sprintf(
+						/* translators: %1$s Coupon codes, %2$s Reason */
+						__( '"%1$s" was removed from the cart. %2$s', 'woo-gutenberg-products-block' ),
+						array_keys( $coupon_errors )[0],
+						array_values( $coupon_errors )[0],
+					),
+					409,
+					[
+						'removed_coupons' => $coupon_errors,
+					]
+				);
+			} else {
+				throw new RouteException(
+					'woocommerce_rest_cart_coupon_errors',
+					sprintf(
+						/* translators: %s Coupon codes. */
+						__( 'Invalid coupons were removed from the cart: "%s"', 'woo-gutenberg-products-block' ),
+						implode( '", "', array_keys( $coupon_errors ) )
+					),
+					409,
+					[
+						'removed_coupons' => $coupon_errors,
+					]
+				);
+			}
 		}
 	}
 
