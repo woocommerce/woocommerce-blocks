@@ -107,6 +107,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Product Button: Improve the width and padding. [#11537](https://github.com/woocommerce/woocommerce-blocks/pull/11537)
 - Fix the Layout for Shipping and Billing Address Forms in the Checkout Block [#11486](https://github.com/woocommerce/woocommerce-blocks/pull/11486)
 - Minor fixes for PHP 8. [#11473](https://github.com/woocommerce/woocommerce-blocks/pull/11473)
+- Product Button: always enqueue the store. [#11858](https://github.com/woocommerce/woocommerce-blocks/pull/11858)
 
 #### Documentation
 
