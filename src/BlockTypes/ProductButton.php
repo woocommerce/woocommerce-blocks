@@ -77,16 +77,13 @@ class ProductButton extends AbstractBlock {
 		$post_id = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
 		$product = wc_get_product( $post_id );
 
-		wc_store(
+		wc_initial_state(
+			'woocommerce/product-button',
 			array(
-				'state' => array(
-					'woocommerce' => array(
-						'inTheCartText' => sprintf(
-							/* translators: %s: product number. */
-							__( '%s in cart', 'woo-gutenberg-products-block' ),
-							'###'
-						),
-					),
+				'inTheCartText' => sprintf(
+					/* translators: %s: product number. */
+					__( '%s in cart', 'woo-gutenberg-products-block' ),
+					'###'
 				),
 			)
 		);
