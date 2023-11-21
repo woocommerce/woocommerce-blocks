@@ -51,6 +51,10 @@
 			"@woocommerce/block-hocs": [ "assets/js/hocs" ],
 			"@woocommerce/blocks-registry": [ "assets/js/blocks-registry" ],
 			"@woocommerce/blocks-checkout": [ "packages/checkout" ],
+			"@woocommerce/blocks-components": [ "packages/components" ],
+			"@woocommerce/interactivity-components/*": [
+				"packages/interactivity-components/*"
+			],
 			"@woocommerce/price-format": [ "packages/prices" ],
 			"@woocommerce/block-settings": [ "assets/js/settings/blocks" ],
 			"@woocommerce/icons": [ "assets/js/icons" ],
@@ -62,9 +66,10 @@
 			"@woocommerce/types": [ "assets/js/types" ],
 			"@woocommerce/storybook-controls": [ "storybook/custom-controls" ],
 			"@woocommerce/utils": [ "assets/js/utils" ],
-			"@woocommerce/e2e-utils": [ "tests/e2e-pw/utils" ],
-			"@woocommerce/e2e-types": [ "tests/e2e-pw/types" ],
-			"@woocommerce/e2e-playwright-utils": [ "tests/e2e-pw/playwright-utils" ],
+			"@woocommerce/e2e-utils": [ "tests/e2e/utils" ],
+			"@woocommerce/e2e-types": [ "tests/e2e/types" ],
+			"@woocommerce/e2e-playwright-utils": [ "tests/e2e/playwright-utils" ],
+			"@woocommerce/e2e-mocks/*": [ "tests/e2e/mocks/*" ],
 			"@woocommerce/templates/*": [ "assets/js/templates/*" ]
 		}
 	}

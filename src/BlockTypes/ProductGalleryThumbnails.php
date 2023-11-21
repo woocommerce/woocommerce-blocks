@@ -2,9 +2,10 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\Utils\StyleAttributesUtils;
+use Automattic\WooCommerce\Blocks\Utils\ProductGalleryUtils;
 
 /**
- * ProductGalleryLargeImage class.
+ * ProductGalleryThumbnails class.
  */
 class ProductGalleryThumbnails extends AbstractBlock {
 	/**
@@ -22,12 +23,91 @@ class ProductGalleryThumbnails extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return null
+	 */
+	protected function get_block_type_style() {
+		return null;
+	}
+
+	/**
 	 *  Register the context
 	 *
 	 * @return string[]
 	 */
 	protected function get_block_type_uses_context() {
-		return [ 'productGalleryClientId', 'postId', 'thumbnailsNumberOfThumbnails', 'thumbnailsPosition' ];
+		return [ 'productGalleryClientId', 'postId', 'thumbnailsNumberOfThumbnails', 'thumbnailsPosition', 'mode' ];
+	}
+
+	/**
+	 * Generate the View All markup.
+	 *
+	 * @param int $remaining_thumbnails_count The number of thumbnails that are not displayed.
+	 *
+	 * @return string
+	 */
+	protected function generate_view_all_html( $remaining_thumbnails_count ) {
+		$view_all_html = '<div class="wc-block-product-gallery-thumbnails__thumbnail__overlay wc-block-product-gallery-dialog-on-click" data-wc-on--click="actions.woocommerce.handleClick">
+			<span class="wc-block-product-gallery-thumbnails__thumbnail__remaining-thumbnails-count wc-block-product-gallery-dialog-on-click">+%1$s</span>
+			<span class="wc-block-product-gallery-thumbnails__thumbnail__view-all wc-block-product-gallery-dialog-on-click">%2$s</span>
+			</div>';
+
+		return sprintf(
+			$view_all_html,
+			esc_html( $remaining_thumbnails_count ),
+			esc_html__( 'View all', 'woo-gutenberg-products-block' )
+		);
+	}
+
+	/**
+	 * Inject View All markup into the product thumbnail HTML.
+	 *
+	 * @param string $thumbnail_html The thumbnail HTML.
+	 * @param string $view_all_html  The view all HTML.
+	 *
+	 * @return string
+	 */
+	protected function inject_view_all( $thumbnail_html, $view_all_html ) {
+
+		// Find the position of the last </div>.
+		$pos = strrpos( $thumbnail_html, '</div>' );
+
+		if ( false !== $pos ) {
+			// Inject the view_all_html at the correct position.
+			$html = substr_replace( $thumbnail_html, $view_all_html, $pos, 0 );
+
+			return $html;
+		}
+	}
+
+	/**
+	 * Check if the thumbnails should be limited.
+	 *
+	 * @param string $mode                 Mode of the gallery. Expected values: 'standard'.
+	 * @param int    $thumbnails_count     Current count of processed thumbnails.
+	 * @param int    $number_of_thumbnails Number of thumbnails configured to display.
+	 *
+	 * @return bool
+	 */
+	protected function should_limit_thumbnails( $mode, $thumbnails_count, $number_of_thumbnails ) {
+		return 'standard' === $mode && $thumbnails_count > $number_of_thumbnails;
+	}
+
+	/**
+	 * Check if View All markup should be displayed.
+	 *
+	 * @param string $mode                   Mode of the gallery. Expected values: 'standard'.
+	 * @param int    $thumbnails_count       Current count of processed thumbnails.
+	 * @param array  $product_gallery_images Array of product gallery image HTML strings.
+	 * @param int    $number_of_thumbnails   Number of thumbnails configured to display.
+	 *
+	 * @return bool
+	 */
+	protected function should_display_view_all( $mode, $thumbnails_count, $product_gallery_images, $number_of_thumbnails ) {
+		return 'standard' === $mode &&
+		$thumbnails_count === $number_of_thumbnails &&
+		count( $product_gallery_images ) > $number_of_thumbnails;
 	}
 
 	/**
@@ -48,46 +128,56 @@ class ProductGalleryThumbnails extends AbstractBlock {
 
 			$classes_and_styles = StyleAttributesUtils::get_classes_and_styles_by_attributes( $attributes );
 
-			$post_id           = isset( $block->context['postId'] ) ? $block->context['postId'] : '';
-			$product           = wc_get_product( $post_id );
-			$post_thumbnail_id = $product->get_image_id();
-			$html              = '';
+			$post_id = $block->context['postId'] ?? '';
+			$product = wc_get_product( $post_id );
 
 			if ( $product ) {
-				$attachment_ids = $product->get_gallery_image_ids();
-				if ( $attachment_ids && $post_thumbnail_id ) {
-					$html                .= wc_get_gallery_image_html( $post_thumbnail_id, true );
+				$post_thumbnail_id      = $product->get_image_id();
+				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'thumbnail', array(), 'wc-block-product-gallery-thumbnails__thumbnail' );
+				if ( $product_gallery_images && $post_thumbnail_id ) {
+					$html                 = '';
 					$number_of_thumbnails = isset( $block->context['thumbnailsNumberOfThumbnails'] ) ? $block->context['thumbnailsNumberOfThumbnails'] : 3;
+					$mode                 = $block->context['mode'] ?? '';
 					$thumbnails_count     = 1;
 
-					foreach ( $attachment_ids as $attachment_id ) {
-						if ( $thumbnails_count >= $number_of_thumbnails ) {
+					foreach ( $product_gallery_images as $product_gallery_image_html ) {
+						// Limit the number of thumbnails only in the standard mode (and not in dialog).
+						if ( $this->should_limit_thumbnails( $mode, $thumbnails_count, $number_of_thumbnails ) ) {
 							break;
 						}
 
-						/**
-						 * Filter the HTML markup for a single product image thumbnail in the gallery.
-						 *
-						 * @param string $thumbnail_html The HTML markup for the thumbnail.
-						 * @param int    $attachment_id  The attachment ID of the thumbnail.
-						 *
-						 * @since 7.9.0
-						 */
-						$html .= apply_filters( 'woocommerce_single_product_image_thumbnail_html', wc_get_gallery_image_html( $attachment_id ), $attachment_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+						// If not in dialog and it's the last thumbnail and the number of product gallery images is greater than the number of thumbnails settings output the View All markup.
+						if ( $this->should_display_view_all( $mode, $thumbnails_count, $product_gallery_images, $number_of_thumbnails ) ) {
+							$remaining_thumbnails_count = count( $product_gallery_images ) - $number_of_thumbnails;
+							$product_gallery_image_html = $this->inject_view_all( $product_gallery_image_html, $this->generate_view_all_html( $remaining_thumbnails_count ) );
+							$html                      .= $product_gallery_image_html;
+						} else {
+							$processor = new \WP_HTML_Tag_Processor( $product_gallery_image_html );
+
+							if ( $processor->next_tag( 'img' ) ) {
+								$processor->set_attribute(
+									'data-wc-on--click',
+									'actions.woocommerce.thumbnails.handleClick'
+								);
+
+								$html .= $processor->get_updated_html();
+							}
+						}
 
 						$thumbnails_count++;
 					}
-				}
 
-				return sprintf(
-					'<div class="wc-block-components-product-gallery-thumbnails %1$s" style="%2$s">
-						%3$s
-					</div>',
-					esc_attr( $classes_and_styles['classes'] ),
-					esc_attr( $classes_and_styles['styles'] ),
-					$html
-				);
+					return sprintf(
+						'<div class="wc-block-product-gallery-thumbnails wp-block-woocommerce-product-gallery-thumbnails %1$s" style="%2$s">
+							%3$s
+						</div>',
+						esc_attr( $classes_and_styles['classes'] ),
+						esc_attr( $classes_and_styles['styles'] ),
+						$html
+					);
+				}
 			}
+			return;
 		}
 	}
 }

@@ -32,18 +32,18 @@ import OrderSummarySubtotalBlock from '../inner-blocks/cart-order-summary-subtot
 import OrderSummaryShippingBlock from '../inner-blocks/cart-order-summary-shipping/frontend';
 import OrderSummaryTaxesBlock from '../inner-blocks/cart-order-summary-taxes/frontend';
 
+jest.mock( '@wordpress/compose', () => ( {
+	...jest.requireActual( '@wordpress/compose' ),
+	useResizeObserver: jest.fn().mockReturnValue( [ null, { width: 0 } ] ),
+} ) );
+
 const CartBlock = ( {
 	attributes = {
 		showRateAfterTaxName: false,
-		isShippingCalculatorEnabled: false,
 		checkoutPageId: 0,
 	},
 } ) => {
-	const {
-		showRateAfterTaxName,
-		isShippingCalculatorEnabled,
-		checkoutPageId,
-	} = attributes;
+	const { showRateAfterTaxName, checkoutPageId } = attributes;
 	return (
 		<Cart attributes={ attributes }>
 			<FilledCart>
@@ -54,11 +54,7 @@ const CartBlock = ( {
 					<OrderSummaryBlock>
 						<OrderSummaryHeadingBlock />
 						<OrderSummarySubtotalBlock />
-						<OrderSummaryShippingBlock
-							isShippingCalculatorEnabled={
-								isShippingCalculatorEnabled
-							}
-						/>
+						<OrderSummaryShippingBlock />
 						<OrderSummaryTaxesBlock
 							showRateAfterTaxName={ showRateAfterTaxName }
 						/>

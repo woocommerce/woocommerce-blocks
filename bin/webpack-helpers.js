@@ -17,6 +17,7 @@ const wcDepMap = {
 	'@woocommerce/shared-hocs': [ 'wc', 'wcBlocksSharedHocs' ],
 	'@woocommerce/price-format': [ 'wc', 'priceFormat' ],
 	'@woocommerce/blocks-checkout': [ 'wc', 'blocksCheckout' ],
+	'@woocommerce/blocks-components': [ 'wc', 'blocksComponents' ],
 	'@woocommerce/interactivity': [ 'wc', '__experimentalInteractivity' ],
 };
 
@@ -29,6 +30,7 @@ const wcHandleMap = {
 	'@woocommerce/shared-hocs': 'wc-blocks-shared-hocs',
 	'@woocommerce/price-format': 'wc-price-format',
 	'@woocommerce/blocks-checkout': 'wc-blocks-checkout',
+	'@woocommerce/blocks-components': 'wc-blocks-components',
 	'@woocommerce/interactivity': 'wc-interactivity',
 };
 
@@ -98,15 +100,6 @@ const getAlias = ( options = {} ) => {
 	};
 };
 
-function findModuleMatch( module, match ) {
-	if ( module.request && match.test( module.request ) ) {
-		return true;
-	} else if ( module.issuer ) {
-		return findModuleMatch( module.issuer, match );
-	}
-	return false;
-}
-
 const requestToExternal = ( request ) => {
 	if ( wcDepMap[ request ] ) {
 		return wcDepMap[ request ];
@@ -137,13 +130,68 @@ const getProgressBarPluginConfig = ( name ) => {
 	};
 };
 
+const getCacheGroups = () => ( {
+	'base-components': {
+		test: /\/assets\/js\/base\/components\//,
+		name( module, chunks, cacheGroupKey ) {
+			const moduleFileName = module
+				.identifier()
+				.split( '/' )
+				.reduceRight( ( item ) => item );
+			const allChunksNames = chunks
+				.map( ( item ) => item.name )
+				.join( '~' );
+			return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+		},
+	},
+	'base-context': {
+		test: /\/assets\/js\/base\/context\//,
+		name( module, chunks, cacheGroupKey ) {
+			const moduleFileName = module
+				.identifier()
+				.split( '/' )
+				.reduceRight( ( item ) => item );
+			const allChunksNames = chunks
+				.map( ( item ) => item.name )
+				.join( '~' );
+			return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+		},
+	},
+	'base-hooks': {
+		test: /\/assets\/js\/base\/hooks\//,
+		name( module, chunks, cacheGroupKey ) {
+			const moduleFileName = module
+				.identifier()
+				.split( '/' )
+				.reduceRight( ( item ) => item );
+			const allChunksNames = chunks
+				.map( ( item ) => item.name )
+				.join( '~' );
+			return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+		},
+	},
+	'base-utils': {
+		test: /\/assets\/js\/base\/utils\//,
+		name( module, chunks, cacheGroupKey ) {
+			const moduleFileName = module
+				.identifier()
+				.split( '/' )
+				.reduceRight( ( item ) => item );
+			const allChunksNames = chunks
+				.map( ( item ) => item.name )
+				.join( '~' );
+			return `${ cacheGroupKey }-${ allChunksNames }-${ moduleFileName }`;
+		},
+	},
+} );
+
 module.exports = {
 	NODE_ENV,
 	CHECK_CIRCULAR_DEPS,
 	ASSET_CHECK,
 	getAlias,
-	findModuleMatch,
 	requestToHandle,
 	requestToExternal,
 	getProgressBarPluginConfig,
+	getCacheGroups,
 };

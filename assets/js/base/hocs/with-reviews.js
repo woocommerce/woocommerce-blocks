@@ -10,7 +10,7 @@ import { createHigherOrderComponent } from '@wordpress/compose';
  * Internal dependencies
  */
 import { getReviews } from '../../blocks/reviews/utils';
-import { formatError } from '../utils/errors.js';
+import { formatError } from '../utils/errors';
 
 /**
  * HOC that queries reviews for a component.

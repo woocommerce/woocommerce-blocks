@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
+import { isPostcode } from '@woocommerce/blocks-checkout';
+import {
+	ValidatedTextInput,
+	type ValidatedTextInputHandle,
+} from '@woocommerce/blocks-components';
 import {
 	BillingCountryInput,
 	ShippingCountryInput,
@@ -10,17 +14,21 @@ import {
 	BillingStateInput,
 	ShippingStateInput,
 } from '@woocommerce/base-components/state-input';
-import { useEffect, useMemo } from '@wordpress/element';
-import { withInstanceId } from '@wordpress/compose';
+import { useEffect, useMemo, useRef } from '@wordpress/element';
+import { useInstanceId } from '@wordpress/compose';
 import { useShallowEqual } from '@woocommerce/base-hooks';
 import { defaultAddressFields } from '@woocommerce/settings';
-import { useDispatch, dispatch } from '@wordpress/data';
-import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
  */
-import { AddressFormProps, FieldType, FieldConfig } from './types';
+import {
+	AddressFormProps,
+	FieldType,
+	FieldConfig,
+	AddressFormFields,
+} from './types';
 import prepareAddressFields from './prepare-address-fields';
 import validateShippingCountry from './validate-shipping-country';
 import customValidationHandler from './custom-validation-handler';
@@ -36,51 +44,49 @@ const AddressForm = ( {
 	id = '',
 	fields = defaultFields,
 	fieldConfig = {} as FieldConfig,
-	instanceId,
 	onChange,
 	type = 'shipping',
 	values,
 }: AddressFormProps ): JSX.Element => {
-	const { clearValidationError } = useDispatch( VALIDATION_STORE_KEY );
+	const instanceId = useInstanceId( AddressForm );
 
+	// Track incoming props.
 	const currentFields = useShallowEqual( fields );
+	const currentFieldConfig = useShallowEqual( fieldConfig );
+	const currentCountry = useShallowEqual( values.country );
 
-	const addressFormFields = useMemo( () => {
-		return prepareAddressFields(
+	// Memoize the address form fields passed in from the parent component.
+	const addressFormFields = useMemo( (): AddressFormFields => {
+		const preparedFields = prepareAddressFields(
 			currentFields,
-			fieldConfig,
-			values.country
+			currentFieldConfig,
+			currentCountry
 		);
-	}, [ currentFields, fieldConfig, values.country ] );
+		return {
+			fields: preparedFields,
+			type,
+			required: preparedFields.filter( ( field ) => field.required ),
+			hidden: preparedFields.filter( ( field ) => field.hidden ),
+		};
+	}, [ currentFields, currentFieldConfig, currentCountry, type ] );
+
+	// Stores refs for rendered fields so we can access them later.
+	const fieldsRef = useRef<
+		Record< string, ValidatedTextInputHandle | null >
+	>( {} );
 
 	// Clear values for hidden fields.
 	useEffect( () => {
-		addressFormFields.forEach( ( field ) => {
-			if ( field.hidden && values[ field.key ] ) {
-				onChange( {
-					...values,
-					[ field.key ]: '',
-				} );
-			}
-		} );
-	}, [ addressFormFields, onChange, values ] );
-
-	// Clear postcode validation error if postcode is not required.
-	useEffect( () => {
-		addressFormFields.forEach( ( field ) => {
-			if ( field.key === 'postcode' && field.required === false ) {
-				const store = dispatch( 'wc/store/validation' );
-
-				if ( type === 'shipping' ) {
-					store.clearValidationError( 'shipping_postcode' );
-				}
-
-				if ( type === 'billing' ) {
-					store.clearValidationError( 'billing_postcode' );
-				}
-			}
-		} );
-	}, [ addressFormFields, type, clearValidationError ] );
+		const newValues = {
+			...values,
+			...Object.fromEntries(
+				addressFormFields.hidden.map( ( field ) => [ field.key, '' ] )
+			),
+		};
+		if ( ! isShallowEqual( values, newValues ) ) {
+			onChange( newValues );
+		}
+	}, [ onChange, addressFormFields, values ] );
 
 	// Maybe validate country when other fields change so user is notified that it's required.
 	useEffect( () => {
@@ -89,11 +95,16 @@ const AddressForm = ( {
 		}
 	}, [ values, type ] );
 
-	id = id || instanceId;
+	// Changing country may change format for postcodes.
+	useEffect( () => {
+		fieldsRef.current?.postcode?.revalidate();
+	}, [ currentCountry ] );
+
+	id = id || `${ instanceId }`;
 
 	return (
 		<div id={ id } className="wc-block-components-address-form">
-			{ addressFormFields.map( ( field ) => {
+			{ addressFormFields.fields.map( ( field ) => {
 				if ( field.hidden ) {
 					return null;
 				}
@@ -119,13 +130,24 @@ const AddressForm = ( {
 							key={ field.key }
 							{ ...fieldProps }
 							value={ values.country }
-							onChange={ ( newValue ) =>
-								onChange( {
+							onChange={ ( newCountry ) => {
+								const newValues = {
 									...values,
-									country: newValue,
+									country: newCountry,
 									state: '',
-								} )
-							}
+								};
+								// Country will impact postcode too. Do we need to clear it?
+								if (
+									values.postcode &&
+									! isPostcode( {
+										postcode: values.postcode,
+										country: newCountry,
+									} )
+								) {
+									newValues.postcode = '';
+								}
+								onChange( newValues );
+							} }
 						/>
 					);
 				}
@@ -154,7 +176,11 @@ const AddressForm = ( {
 				return (
 					<ValidatedTextInput
 						key={ field.key }
+						ref={ ( el ) =>
+							( fieldsRef.current[ field.key ] = el )
+						}
 						{ ...fieldProps }
+						type={ field.type }
 						value={ values[ field.key ] }
 						onChange={ ( newValue: string ) =>
 							onChange( {
@@ -182,4 +208,4 @@ const AddressForm = ( {
 	);
 };
 
-export default withInstanceId( AddressForm );
+export default AddressForm;

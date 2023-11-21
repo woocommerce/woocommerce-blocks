@@ -8,12 +8,12 @@ namespace Automattic\WooCommerce\Blocks;
  * @internal
  */
 class Installer {
-
 	/**
-	 * Constructor
+	 * Initialize class features.
 	 */
-	public function __construct() {
-		$this->init();
+	public function init() {
+		add_action( 'admin_init', array( $this, 'install' ) );
+		add_filter( 'woocommerce_create_pages', array( $this, 'create_pages' ) );
 	}
 
 	/**
@@ -24,10 +24,24 @@ class Installer {
 	}
 
 	/**
-	 * Initialize class features.
+	 * Modifies default page content replacing it with classic shortcode block.
+	 * We check for shortcode as default because after WooCommerce 8.3, block based checkout is used by default.
+	 * This only runs on Tools > Create Pages as the filter is not applied on WooCommerce plugin activation.
+	 *
+	 * @param array $pages Default pages.
+	 * @return array
 	 */
-	protected function init() {
-		add_action( 'admin_init', array( $this, 'install' ) );
+	public function create_pages( $pages ) {
+
+		if ( '<!-- wp:shortcode -->[woocommerce_cart]<!-- /wp:shortcode -->' === $pages['cart']['content'] ) {
+			$pages['cart']['content'] = '<!-- wp:woocommerce/classic-shortcode {"shortcode":"cart"} /-->';
+		}
+
+		if ( '<!-- wp:shortcode -->[woocommerce_checkout]<!-- /wp:shortcode -->' === $pages['checkout']['content'] ) {
+			$pages['checkout']['content'] = '<!-- wp:woocommerce/classic-shortcode {"shortcode":"checkout"} /-->';
+		}
+
+		return $pages;
 	}
 
 	/**

@@ -33,6 +33,26 @@ class Checkout extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 		add_action( 'wp_loaded', array( $this, 'register_patterns' ) );
+		// This prevents the page redirecting when the cart is empty. This is so the editor still loads the page preview.
+		add_filter(
+			'woocommerce_checkout_redirect_empty_cart',
+			function( $return ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				return isset( $_GET['_wp-find-template'] ) ? false : $return;
+			}
+		);
+	}
+
+	/**
+	 * Dequeues the scripts added by WC Core to the Checkout page.
+	 *
+	 * @return void
+	 */
+	public function dequeue_woocommerce_core_scripts() {
+		wp_dequeue_script( 'wc-checkout' );
+		wp_dequeue_script( 'wc-password-strength-meter' );
+		wp_dequeue_script( 'selectWoo' );
+		wp_dequeue_style( 'select2' );
 	}
 
 	/**
@@ -92,16 +112,18 @@ class Checkout extends AbstractBlock {
 	/**
 	 * Enqueue frontend assets for this block, just in time for rendering.
 	 *
-	 * @param array $attributes  Any attributes that currently are available from the block.
+	 * @param array    $attributes  Any attributes that currently are available from the block.
+	 * @param string   $content    The block content.
+	 * @param WP_Block $block    The block object.
 	 */
-	protected function enqueue_assets( array $attributes ) {
+	protected function enqueue_assets( array $attributes, $content, $block ) {
 		/**
 		 * Fires before checkout block scripts are enqueued.
 		 *
 		 * @since 4.6.0
 		 */
 		do_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before' );
-		parent::enqueue_assets( $attributes );
+		parent::enqueue_assets( $attributes, $content, $block );
 		/**
 		 * Fires after checkout block scripts are enqueued.
 		 *
@@ -119,17 +141,15 @@ class Checkout extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+
 		if ( $this->is_checkout_endpoint() ) {
 			// Note: Currently the block only takes care of the main checkout form -- if an endpoint is set, refer to the
 			// legacy shortcode instead and do not render block.
 			return wc_current_theme_is_fse_theme() ? do_shortcode( '[woocommerce_checkout]' ) : '[woocommerce_checkout]';
 		}
 
-		// Deregister core checkout scripts and styles.
-		wp_dequeue_script( 'wc-checkout' );
-		wp_dequeue_script( 'wc-password-strength-meter' );
-		wp_dequeue_script( 'selectWoo' );
-		wp_dequeue_style( 'select2' );
+		// Dequeue the core scripts when rendering this block.
+		add_action( 'wp_enqueue_scripts', array( $this, 'dequeue_woocommerce_core_scripts' ), 20 );
 
 		/**
 		 * We need to check if $content has any templates from prior iterations of the block, in order to update to the latest iteration.
@@ -320,6 +340,31 @@ class Checkout extends AbstractBlock {
 				[]
 			);
 			$this->asset_data_registry->add( 'globalPaymentMethods', $formatted_payment_methods );
+		}
+
+		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'incompatibleExtensions' ) ) {
+			if ( ! class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+				return;
+			}
+
+			if ( ! function_exists( 'get_plugin_data' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+
+			$declared_extensions     = \Automattic\WooCommerce\Utilities\FeaturesUtil::get_compatible_plugins_for_feature( 'cart_checkout_blocks' );
+			$incompatible_extensions = array_reduce(
+				$declared_extensions['incompatible'],
+				function( $acc, $item ) {
+					$plugin = get_plugin_data( WP_PLUGIN_DIR . '/' . $item );
+					$acc[]  = [
+						'id'    => $plugin['TextDomain'],
+						'title' => $plugin['Name'],
+					];
+					return $acc;
+				},
+				[]
+			);
+			$this->asset_data_registry->add( 'incompatibleExtensions', $incompatible_extensions );
 		}
 
 		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
