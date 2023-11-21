@@ -466,14 +466,16 @@ class OrderController {
 	 */
 	public function get_usage_per_aliases( &$coupon, $aliases ) {
 		global $wpdb;
-		$aliases               = implode( ', ', array_map( 'esc_sql', array_unique( array_filter( $aliases ) ) ) );
-		$usage_count           = $wpdb->get_var(
+		$aliases        = array_unique( array_filter( $aliases ) );
+		$aliases_string = "('" . join( "','", $aliases ) . "')";
+		$usage_count    = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT COUNT( meta_id ) FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = '_used_by' AND meta_value IN (%s);",
+				"SELECT COUNT( meta_id ) FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = '_used_by' AND meta_value IN %s;",
 				$coupon->get_id(),
-				$aliases
+				$aliases_string
 			)
 		);
+
 		$data_store            = $coupon->get_data_store();
 		$tentative_usage_count = $data_store->get_tentative_usages_for_user( $coupon->get_id(), $aliases );
 		return $tentative_usage_count + $usage_count;
