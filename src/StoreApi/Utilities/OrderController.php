@@ -498,6 +498,7 @@ class OrderController {
 		$tentative_usage_count = $data_store->get_tentative_usages_for_user( $coupon->get_id(), $aliases );
 		return $tentative_usage_count + $usage_count;
 	}
+
 	/**
 	 * Check there is a shipping method if it requires shipping.
 	 *
