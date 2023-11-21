@@ -107,7 +107,6 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Product Button: Improve the width and padding. [#11537](https://github.com/woocommerce/woocommerce-blocks/pull/11537)
 - Fix the Layout for Shipping and Billing Address Forms in the Checkout Block [#11486](https://github.com/woocommerce/woocommerce-blocks/pull/11486)
 - Minor fixes for PHP 8. [#11473](https://github.com/woocommerce/woocommerce-blocks/pull/11473)
-- Product Gallery Pager: Remove unnecessary margin. [#11287](https://github.com/woocommerce/woocommerce-blocks/pull/11287)
 
 #### Documentation
 
