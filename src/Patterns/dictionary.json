@@ -78,15 +78,15 @@
 			"titles": [
 				{
 					"default": "Cupcakes",
-					"ai_prompt": "A one word title for the featured category related to the following image description: {image.0}"
+					"ai_prompt": "A one word title for the featured category related to the following image description: {image.0} and what the store is selling"
 				},
 				{
 					"default": "Sweet Danish",
-					"ai_prompt": "A two words title for the featured category related to the following image description: {image.1}"
+					"ai_prompt": "A two words title for the featured category related to the following image description: {image.1} and what the store is selling"
 				},
 				{
 					"default": "Warm Bread",
-					"ai_prompt": "A two words title for the featured category related to the following image description: {image.2}"
+					"ai_prompt": "A two words title for the featured category related to the following image description: {image.2} and what the store is selling"
 				}
 			]
 		}
