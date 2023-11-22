@@ -132,7 +132,7 @@
 			"titles": [
 				{
 					"default": "New in: 3-in-1 parka",
-					"ai_prompt": "Generate a 3 words title that highlights one of the qualities of the product being sold"
+					"ai_prompt": "Generate a 3 words title that highlights the following image description: {image.0} and what the store is selling"
 				},
 				{
 					"default": "Waterproof Membrane",
