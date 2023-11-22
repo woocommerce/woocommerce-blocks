@@ -120,11 +120,11 @@ class StoreTitle extends AbstractRoute {
 			return $this->error_to_response( $token );
 		}
 
-		$prompt = "Generate a store title for a store that has the following: '$business_description'. The length of the title should be 1 and 3 words. The result should include only the store title without any other explanation or number";
+		$prompt = "Generate a store title for a store that has the following: '$business_description'. The length of the title should be 1 and 3 words. The result should include only the store title without any other explanation, number or punctuation marks";
 
-		$response = $ai_connection->fetch_ai_response( $token, $prompt );
-		if ( is_wp_error( $response ) ) {
-			return $this->error_to_response( $response );
+		$ai_response = $ai_connection->fetch_ai_response( $token, $prompt );
+		if ( is_wp_error( $ai_response ) ) {
+			return $this->error_to_response( $ai_response );
 		}
 
 		if ( ! isset( $ai_response['completion'] ) ) {
