@@ -65,7 +65,7 @@ class StoreTitle extends AbstractRoute {
 	}
 
 	/**
-	 * Update the last business description.
+	 * Update the store title powered by AI.
 	 *
 	 * @param  \WP_REST_Request $request Request object.
 	 *
