@@ -65,9 +65,113 @@ setExtensionData(
 - key `string` - The key of your data.
 - value `any` - The value of your data.
 
-### 4. Extend the Store API
+### 4. Processing the Checkout POST Request
 
-To persist your custom fields data, you will need to extend the Store API. Refer to [Exposing your data in the Store API](https://github.com/woocommerce/woocommerce-blocks/blob/trunk/docs/third-party-developers/extensibility/rest-api/extend-rest-api-add-data.md).
+To process the added field data, extend the Store API. We can do this within the `initialize` of your `IntegrationInterface` class.
+
+#### Code Example
+
+We will use the following PHP files in our example:
+
+- The `custom-field-blocks-integration.php` file:
+
+```php
+use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
+
+/**
+ * Class for integrating with WooCommerce Blocks
+ */
+class Custom_Field_Blocks_Integration implements IntegrationInterface {
+	// ... Some code here
+
+	/**
+	 * When called invokes any initialization/setup for the integration.
+	 */
+	public function initialize() {
+		require_once __DIR__ . '/custom-field-extend-store-endpoint.php';
+		// ... Some code here: (e.g. init functions that registers scripts and styles, and other instructions)
+		$this->extend_store_api();
+	}
+
+	/**
+	 * Extends the cart schema to include the custom-field value.
+	 */
+	private function extend_store_api() {
+		Custom_Field_Extend_Store_Endpoint::init();
+	}
+}
+```
+
+- The `custom-field-extend-store-endpoint.php` file: extends the [Store API](https://github.com/woocommerce/woocommerce-blocks/tree/trunk/src/StoreApi) and adds hooks to save and display your custom field instructions.
+
+```php
+use Automattic\WooCommerce\Blocks\Package;
+use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
+use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CheckoutSchema;
+
+/**
+ * Your Custom Field Extend Store API.
+ */
+class Custom_Field_Extend_Store_Endpoint {
+	/**
+	 * Stores Rest Extending instance.
+	 *
+	 * @var ExtendRestApi
+	 */
+	private static $extend;
+
+	/**
+	 * Plugin Identifier, unique to each plugin.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'custom-field';
+
+	/**
+	 * Bootstraps the class and hooks required data.
+	 *
+	 */
+	public static function init() {
+		self::$extend = Automattic\WooCommerce\StoreApi\StoreApi::container()->get( Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema::class );
+		self::extend_store();
+	}
+
+	/**
+	 * Registers the actual data into each endpoint.
+	 */
+	public static function extend_store() {
+		if ( is_callable( [ self::$extend, 'register_endpoint_data' ] ) ) {
+			self::$extend->register_endpoint_data(
+				[
+					'endpoint'        => CheckoutSchema::IDENTIFIER,
+					'namespace'       => self::IDENTIFIER,
+					'schema_callback' => [ 'Custom_Field_Extend_Store_Endpoint', 'extend_checkout_schema' ],
+					'schema_type'     => ARRAY_A,
+				]
+			);
+		}
+	}
+
+	/**
+	 * Register shipping workshop schema into the Checkout endpoint.
+	 *
+	 * @return array Registered schema.
+	 *
+	 */
+	public static function extend_checkout_schema() {
+		return [
+            'Value_1'   => [
+                'description' => // ... description of the field
+                'type'        => // ... type of the field, this should be a string
+                'context'     => // ... context of the field, this should be an array containing 'view' and 'edit'
+                'readonly'    => // ... whether the field is readonly or not, this should be a boolean
+                'optional'    => // ... whether the field is optional or not, this should be a boolean
+            ],
+			// ... other values
+        ];
+	}
+}
+```
 
 ## Conclusion
 
