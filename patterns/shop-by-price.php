@@ -4,6 +4,13 @@
  * Slug: woocommerce-blocks/shop-by-price
  * Categories: WooCommerce
  */
+
+use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
+
+$first_title  = $content['titles'][0]['default'] ?? '';
+$second_title = $content['titles'][1]['default'] ?? '';
+$third_title  = $content['titles'][2]['default'] ?? '';
+$fourth_title = $content['titles'][3]['default'] ?? '';
 ?>
 <!-- wp:columns {"align":"wide"} -->
 <div class="wp-block-columns alignwide">
@@ -28,7 +35,7 @@
 		<div class="wp-block-buttons">
 			<!-- wp:button {"textColor":"contrast","style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0","right":"0","top":"0","bottom":"0"}}},"className":"is-style-outline","fontSize":"small"} -->
 			<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size">
-				<a class="wp-block-button__link has-contrast-color has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>?rating_filter=5" style="border-style:none;border-width:0px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><strong>Outdoor Furniture &amp; Accessories</strong></a>
+				<a class="wp-block-button__link has-contrast-color has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>?rating_filter=5" style="border-style:none;border-width:0px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><strong><?php echo esc_html( $first_title ); ?></strong></a>
 			</div>
 			<!-- /wp:button -->
 		</div>
@@ -58,7 +65,7 @@
 			<!-- wp:button {"textColor":"contrast","style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0","right":"0","top":"0","bottom":"0"}}},"className":"is-style-outline","fontSize":"small"} -->
 			<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size">
 				<a class="wp-block-button__link has-contrast-color has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>?max_price=15" style="border-style:none;border-width:0px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-					<strong>Summer Dinning</strong>
+					<strong><?php echo esc_html( $second_title ); ?></strong>
 				</a>
 			</div>
 			<!-- /wp:button -->
@@ -89,7 +96,7 @@
 			<!-- wp:button {"textColor":"contrast","style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0","right":"0","top":"0","bottom":"0"}}},"className":"is-style-outline","fontSize":"small"} -->
 			<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size">
 				<a class="wp-block-button__link has-contrast-color has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>?max_price=25" style="border-style:none;border-width:0px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-					<strong>Women's Styles</strong>
+					<strong><?php echo esc_html( $third_title ); ?></strong>
 				</a>
 			</div>
 			<!-- /wp:button -->
@@ -120,7 +127,7 @@
 			<!-- wp:button {"textColor":"contrast","style":{"border":{"width":"0px","style":"none"},"spacing":{"padding":{"left":"0","right":"0","top":"0","bottom":"0"}}},"className":"is-style-outline","fontSize":"small"} -->
 			<div class="wp-block-button has-custom-font-size is-style-outline has-small-font-size">
 				<a class="wp-block-button__link has-contrast-color has-text-color wp-element-button" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>?max_price=20" style="border-style:none;border-width:0px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
-					<strong>Kids' Styles</strong>
+					<strong><?php echo esc_html( $fourth_title ); ?></strong>
 				</a>
 			</div>
 			<!-- /wp:button -->

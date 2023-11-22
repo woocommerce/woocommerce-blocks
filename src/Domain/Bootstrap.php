@@ -8,6 +8,7 @@ use Automattic\WooCommerce\Blocks\BlockPatterns;
 use Automattic\WooCommerce\Blocks\BlockTemplatesController;
 use Automattic\WooCommerce\Blocks\BlockTypesController;
 use Automattic\WooCommerce\Blocks\Domain\Services\CreateAccount;
+use Automattic\WooCommerce\Blocks\Domain\Services\JetpackWooCommerceAnalytics;
 use Automattic\WooCommerce\Blocks\Domain\Services\Notices;
 use Automattic\WooCommerce\Blocks\Domain\Services\DraftOrders;
 use Automattic\WooCommerce\Blocks\Domain\Services\FeatureGating;
@@ -36,6 +37,7 @@ use Automattic\WooCommerce\StoreApi\StoreApi;
 use Automattic\WooCommerce\Blocks\Shipping\ShippingController;
 use Automattic\WooCommerce\Blocks\Templates\SingleProductTemplateCompatibility;
 use Automattic\WooCommerce\Blocks\Templates\ArchiveProductTemplatesCompatibility;
+use Automattic\WooCommerce\Blocks\Domain\Services\OnboardingTasks\TasksController;
 
 /**
  * Takes care of bootstrapping the plugin.
@@ -100,6 +102,7 @@ class Bootstrap {
 	protected function init() {
 		$this->register_dependencies();
 		$this->register_payment_methods();
+		$this->load_interactivity_api();
 
 		// This is just a temporary solution to make sure the migrations are run. We have to refactor this. More details: https://github.com/woocommerce/woocommerce-blocks/issues/10196.
 		if ( $this->package->get_version() !== $this->package->get_version_stored_on_db() ) {
@@ -128,6 +131,8 @@ class Bootstrap {
 		$this->container->get( DraftOrders::class )->init();
 		$this->container->get( CreateAccount::class )->init();
 		$this->container->get( ShippingController::class )->init();
+		$this->container->get( TasksController::class )->init();
+		$this->container->get( JetpackWooCommerceAnalytics::class )->init();
 
 		// Load assets in admin and on the frontend.
 		if ( ! $is_rest ) {
@@ -223,6 +228,13 @@ class Bootstrap {
 				echo '</p></div>';
 			}
 		);
+	}
+
+	/**
+	 * Load and set up the Interactivity API if enabled.
+	 */
+	protected function load_interactivity_api() {
+			require_once __DIR__ . '/../Interactivity/load.php';
 	}
 
 	/**
@@ -355,6 +367,15 @@ class Bootstrap {
 			}
 		);
 		$this->container->register(
+			JetpackWooCommerceAnalytics::class,
+			function( Container $container ) {
+				$asset_api                  = $container->get( AssetApi::class );
+				$asset_data_registry        = $container->get( AssetDataRegistry::class );
+				$block_templates_controller = $container->get( BlockTemplatesController::class );
+				return new JetpackWooCommerceAnalytics( $asset_api, $asset_data_registry, $block_templates_controller );
+			}
+		);
+		$this->container->register(
 			Notices::class,
 			function( Container $container ) {
 				return new Notices( $container->get( Package::class ) );
@@ -421,6 +442,12 @@ class Bootstrap {
 				$asset_api           = $container->get( AssetApi::class );
 				$asset_data_registry = $container->get( AssetDataRegistry::class );
 				return new ShippingController( $asset_api, $asset_data_registry );
+			}
+		);
+		$this->container->register(
+			TasksController::class,
+			function() {
+				return new TasksController();
 			}
 		);
 	}

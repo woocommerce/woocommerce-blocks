@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isNumber } from '@woocommerce/types';
+import { isNumber, isEmpty } from '@woocommerce/types';
 import {
 	BlockAttributes,
 	BlockConfiguration,
@@ -46,7 +46,7 @@ export const registerBlockSingleProductTemplate = ( {
 
 		// With GB 16.3.0 the return type can be a number: https://github.com/WordPress/gutenberg/issues/53230
 		currentTemplateId = parseTemplateId(
-			store?.getEditedPostId() as string | number | undefined
+			store?.getEditedPostId< string | number | undefined >()
 		);
 		const hasChangedTemplate = previousTemplateId !== currentTemplateId;
 		const hasTemplateId = Boolean( currentTemplateId );
@@ -80,19 +80,17 @@ export const registerBlockSingleProductTemplate = ( {
 
 		if ( ! isBlockRegistered ) {
 			if ( isVariationBlock ) {
-				registerBlockVariation( blockName, {
-					...blockSettings,
-					// @ts-expect-error: `ancestor` key is typed in WordPress core
-					ancestor: ! currentTemplateId?.includes( 'single-product' )
-						? blockSettings?.ancestor
-						: undefined,
-				} );
+				// @ts-expect-error: `registerBlockType` is not typed in WordPress core
+				registerBlockVariation( blockName, blockSettings );
 			} else {
-				// @ts-expect-error: `registerBlockType` is typed in WordPress core
+				const ancestor = isEmpty( blockSettings?.ancestor )
+					? [ 'woocommerce/single-product' ]
+					: blockSettings?.ancestor;
+				// @ts-expect-error: `registerBlockType` is not typed in WordPress core
 				registerBlockType( blockMetadata, {
 					...blockSettings,
 					ancestor: ! currentTemplateId?.includes( 'single-product' )
-						? blockSettings?.ancestor
+						? ancestor
 						: undefined,
 				} );
 			}

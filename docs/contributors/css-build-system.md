@@ -15,7 +15,7 @@ CSS files are built with Webpack, which gathers all SCSS files in the app and pr
 
 ## Right-to-left
 
-All files described above are generated in a LTR version and a RTL version. The RTL version is generated automatically with `webpack-rtl-plugin` and has a `-rtl` suffix at the end of the file name.
+All files described above are generated in a LTR version and a RTL version. The RTL version is generated automatically with `@automattic/webpack-rtl-plugin` and has a `.rtl.css` suffix at the end of the file name.
 
 ## Relevant files
 
@@ -31,6 +31,7 @@ Webpack config is split between several files, some relevant ones for the CSS bu
 
 [We're hiring!](https://woocommerce.com/careers/) Come work with us!
 
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/documentation-guidelines.md)
+🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/contributors/css-build-system.md)
 
 <!-- /FEEDBACK -->
+

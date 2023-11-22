@@ -164,18 +164,34 @@ Every release includes specific testing instructions for new features and bug fi
     -   [10.6.3](./1063.md)
     -   [10.6.4](./1064.md)
     -   [10.6.5](./1065.md)
+    -   [10.6.6](./1066.md)
 -   [10.7.0](./1070.md)
 -   [10.8.0](./1080.md)
     -   [10.8.1](./1081.md)
     -   [10.8.2](./1082.md)
-
-
-<!-- FEEDBACK -->
-
----
-
-[We're hiring!](https://woocommerce.com/careers/) Come work with us!
-
-🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/internal-developers/testing/releases/README.md)
-
-<!-- /FEEDBACK -->
+    -   [10.8.3](./1083.md)
+-   [10.9.0](./1090.md)
+    -   [10.9.1](./1091.md)
+    -   [10.9.2](./1092.md)
+    -   [10.9.3](./1093.md)
+-   [11.0.0](./1100.md)
+-   [11.1.0](./1110.md)
+    -   [11.1.1](./1111.md)
+    -   [11.1.2](./1112.md)
+    -   [11.1.3](./1113.md)
+-   [11.2.0](./1120.md)
+-   [11.3.0](./1130.md)
+    -   [11.3.1](./1131.md)
+-   [11.4.0](./1140.md)
+    -   [11.4.1](./1141.md)
+    -   [11.4.2](./1142.md)
+    -   [11.4.3](./1143.md)
+    -   [11.4.4](./1144.md)
+    -   [11.4.5](./1145.md)
+    -   [11.4.6](./1146.md)
+    -   [11.4.7](./1147.md)
+    -   [11.4.8](./1148.md)
+    -   [11.4.9](./1149.md)
+-   [11.5.0](./1150.md)
+    -   [11.5.1](./1151.md)
+    -   [11.5.4](./1154.md)

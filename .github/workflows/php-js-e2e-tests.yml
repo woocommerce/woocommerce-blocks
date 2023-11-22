@@ -27,7 +27,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Setup node version and npm cache
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -66,7 +66,6 @@ jobs:
       - name: E2E Tests (WP latest with Gutenberg plugin)
         env:
           WOOCOMMERCE_BLOCKS_PHASE: 3
-          GUTENBERG_EDITOR_CONTEXT: 'gutenberg'
         run: |
           node ./bin/wp-env-with-gutenberg.js
           npm run wp-env start
@@ -112,7 +111,7 @@ jobs:
             ${{ runner.os }}-modified-
 
       - name: Setup node version and npm cache
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -153,8 +152,10 @@ jobs:
         env:
           WOOCOMMERCE_BLOCKS_PHASE: 3
         run: |
+          node ./bin/wp-env-with-wp-641.js
           npm run wp-env start
           npm run wp-env:config && npx cross-env NODE_CONFIG_DIR=tests/e2e-jest/config wp-scripts test-e2e --config tests/e2e-jest/config/jest.config.js --listTests > ~/.jest-e2e-tests
+          npx cross-env JEST_PUPPETEER_CONFIG=tests/e2e-jest/config/jest-puppeteer.config.js cross-env NODE_CONFIG_DIR=tests/e2e-jest/config wp-scripts test-e2e --config tests/e2e-jest/config/jest.config.js --runInBand --runTestsByPath $( awk 'NR % 5 == ${{ matrix.part }} - 1' < ~/.jest-e2e-tests ) --listTests
           npx cross-env JEST_PUPPETEER_CONFIG=tests/e2e-jest/config/jest-puppeteer.config.js cross-env NODE_CONFIG_DIR=tests/e2e-jest/config wp-scripts test-e2e --config tests/e2e-jest/config/jest.config.js --runInBand --runTestsByPath $( awk 'NR % 5 == ${{ matrix.part }} - 1' < ~/.jest-e2e-tests )
 
       - name: Upload artifacts on failure

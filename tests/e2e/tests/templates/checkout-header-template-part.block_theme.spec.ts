@@ -3,7 +3,6 @@
  */
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
 
-const permalink = '/checkout';
 const templatePath = 'woocommerce/woocommerce//checkout-header';
 const templateType = 'wp_template_part';
 
@@ -14,18 +13,21 @@ test.afterAll( async ( { requestUtils } ) => {
 
 test.describe( 'Test the checkout header template part', async () => {
 	test( 'Template can be opened in the site editor', async ( { page } ) => {
-		await page.goto( '/wp-admin/site-editor.php' );
-		await page.getByRole( 'button', { name: /Template Parts/i } ).click();
-		await page.getByRole( 'button', { name: /Checkout Header/i } ).click();
+		await page.goto(
+			'/wp-admin/site-editor.php?path=/wp_template_part/all'
+		);
+		await page.getByText( 'Checkout Header', { exact: true } ).click();
 
-		const editButton = page.getByRole( 'button', { name: /Edit/i } );
+		const editButton = page.getByRole( 'button', {
+			name: 'Edit',
+			exact: true,
+		} );
 		await expect( editButton ).toBeVisible();
 	} );
 
 	test( 'Template can be modified', async ( {
-		page,
+		frontendUtils,
 		admin,
-		editor,
 		editorUtils,
 	} ) => {
 		await admin.visitSiteEditor( {
@@ -33,14 +35,17 @@ test.describe( 'Test the checkout header template part', async () => {
 			postType: templateType,
 		} );
 		await editorUtils.enterEditMode();
-		await editor.insertBlock( {
+		await editorUtils.editor.insertBlock( {
 			name: 'core/paragraph',
-			attributes: { content: 'Hello World' },
+			attributes: { content: 'Hello World in the header' },
 		} );
-		await editor.saveSiteEditorEntities();
-
-		await page.goto( permalink, { waitUntil: 'commit' } );
-
-		await expect( page.getByText( 'Hello World' ).first() ).toBeVisible();
+		await editorUtils.saveTemplate();
+		await frontendUtils.goToShop();
+		await frontendUtils.emptyCart();
+		await frontendUtils.addToCart( 'Beanie' );
+		await frontendUtils.goToCheckout();
+		await expect(
+			frontendUtils.page.getByText( 'Hello World in the header' ).first()
+		).toBeVisible();
 	} );
 } );

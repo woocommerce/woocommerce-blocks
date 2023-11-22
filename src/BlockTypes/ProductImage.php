@@ -105,7 +105,7 @@ class ProductImage extends AbstractBlock {
 			<span class="screen-reader-text">Product on sale</span>
 		</div>
 	',
-			$attributes['saleBadgeAlign'],
+			esc_attr( $attributes['saleBadgeAlign'] ),
 			isset( $font_size['class'] ) ? esc_attr( $font_size['class'] ) : '',
 			isset( $font_size['style'] ) ? esc_attr( $font_size['style'] ) : '',
 			esc_html__( 'Sale', 'woo-gutenberg-products-block' )
@@ -157,6 +157,9 @@ class ProductImage extends AbstractBlock {
 		}
 		if ( ! empty( $attributes['scale'] ) ) {
 			$image_style .= sprintf( 'object-fit:%s;', $attributes['scale'] );
+		}
+		if ( ! empty( $attributes['aspectRatio'] ) ) {
+			$image_style .= sprintf( 'aspect-ratio:%s;', $attributes['aspectRatio'] );
 		}
 
 		if ( ! $product->get_image_id() ) {
