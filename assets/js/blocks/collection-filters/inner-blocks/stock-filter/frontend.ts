@@ -1,10 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	store as interactivityStore,
-	navigate,
-} from '@woocommerce/interactivity';
+import { store, navigate, getContext } from '@woocommerce/interactivity';
 import { DropdownContext } from '@woocommerce/interactivity-components/dropdown';
 import { HTMLElementEvent } from '@woocommerce/types';
 
@@ -34,7 +31,7 @@ type ActionProps = {
 	event: HTMLElementEvent< HTMLInputElement >;
 };
 
-interactivityStore( {
+store( 'woocommerce/collection-stock-filter', {
 	state: {
 		filters: {
 			stockStatus: '',
@@ -42,7 +39,9 @@ interactivityStore( {
 	},
 	actions: {
 		filters: {
-			navigate: ( { context }: { context: DropdownContext } ) => {
+			navigate: () => {
+				const context: DropdownContext = getContext();
+
 				navigate(
 					getUrl(
 						context.woocommerceDropdown.selectedItem.value || ''
