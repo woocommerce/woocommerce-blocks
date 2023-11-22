@@ -49,7 +49,7 @@ interactivityStore( {
 					)
 				);
 			},
-			updateProducts: ( { event }: ActionProps ) => {
+			updateProductsWithStockFilters: ( { event }: ActionProps ) => {
 				// get the active filters from the url:
 				const url = new URL( window.location.href );
 				const currentFilters =
