@@ -66,7 +66,7 @@ setExtensionData(
 
 ### 4. Processing the Checkout POST Request
 
-To process the added field data, extend the Store API. We can do this within the `initialize` of your `IntegrationInterface` class.
+To process the added field data, we'll need extend the Store API to tell it to expect additional data. A good place to start this process off is within the `initialize` function of our `IntegrationInterface` class.
 
 #### Code Example
 
