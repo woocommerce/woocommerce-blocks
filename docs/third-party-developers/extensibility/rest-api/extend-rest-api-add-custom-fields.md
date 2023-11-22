@@ -1,10 +1,10 @@
-# Extending the WooCommerce Checkout Block to Add Custom Fields
+# Extending the WooCommerce Checkout Block to Add a new Field Block
 
 This documentation addresses the requirement for extending the WooCommerce checkout block to accept additional data from a new inner block.
 
 ## Overview
 
-Developers can extend the checkout block to add new fields and process additional data through the checkout POST request. This involves leveraging the extensibility interfaces provided by WooCommerce Blocks, as demonstrated in [our tutorial](https://developer.woocommerce.com/2023/08/07/extending-the-woocommerce-checkout-block-to-add-custom-shipping-options/) for adding a "Not at home" shipping option.
+Developers can extend the checkout block to add new field blocks and process additional data through the checkout POST request. This involves leveraging the extensibility interfaces provided by WooCommerce Blocks, as demonstrated in [our tutorial](https://developer.woocommerce.com/2023/08/07/extending-the-woocommerce-checkout-block-to-add-custom-shipping-options/) for adding a "Not at home" shipping option.
 
 ## Prerequisites
 
@@ -22,14 +22,12 @@ Ensure you have the following files in your project:
 - `block.json`: Provides metadata and configurations for the block.
 - `block.js`: Manages the block's state and user interactions.
 - `frontend.js`: Registers the checkout block component for the frontend.
-- `shipping-workshop-blocks-integration.php`: Integrates the checkout block within WooCommerce.
-- `shipping-workshop-extend-store-endpoint.php`: Extends the Store API for the block's functionality.
 
 Refer to [this tutorial](https://developer.woocommerce.com/2023/08/07/extending-the-woocommerce-checkout-block-to-add-custom-shipping-options/) for an example of adding a custom shipping option to the checkout block.
 
-### 2. Add a custom field to the Checkout Block
+### 2. Add a new field block to the Checkout Block
 
-To add your custom field to the Checkout Block you will need to add the following entries to the `block.json` file of your block:
+To add a field block to the Checkout Block you will need to add the following entries to the `block.json` file of your block:
 
 ```json
 "parent": [ "woocommerce/checkout-shipping-methods-block" ],
@@ -49,7 +47,7 @@ To add your custom field to the Checkout Block you will need to add the followin
 
 ### 3. Setting custom checkout data
 
-We can set the added field data to passe it to the `wc/store/checkout` endpoint when processing orders using the function `setExtensionData`:
+We can set the added field data to send it to the `wc/store/checkout` endpoint when processing orders using the function `setExtensionData`:
 
 ```JavaScript
 setExtensionData(
@@ -73,7 +71,7 @@ To process the added field data, extend the Store API. We can do this within the
 
 We will use the following PHP files in our example:
 
-- The `custom-field-blocks-integration.php` file:
+- The `custom-inner-block-blocks-integration.php` file:
 
 ```php
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
@@ -81,28 +79,28 @@ use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 /**
  * Class for integrating with WooCommerce Blocks
  */
-class Custom_Field_Blocks_Integration implements IntegrationInterface {
+class Custom_Inner_Block_Blocks_Integration implements IntegrationInterface {
 	// ... Some code here
 
 	/**
 	 * When called invokes any initialization/setup for the integration.
 	 */
 	public function initialize() {
-		require_once __DIR__ . '/custom-field-extend-store-endpoint.php';
+		require_once __DIR__ . '/custom-inner-block-extend-store-endpoint.php';
 		// ... Some code here: (e.g. init functions that registers scripts and styles, and other instructions)
 		$this->extend_store_api();
 	}
 
 	/**
-	 * Extends the cart schema to include the custom-field value.
+	 * Extends the cart schema to include the custom-inner-block value.
 	 */
 	private function extend_store_api() {
-		Custom_Field_Extend_Store_Endpoint::init();
+		Custom_Inner_Block_Extend_Store_Endpoint::init();
 	}
 }
 ```
 
-- The `custom-field-extend-store-endpoint.php` file: extends the [Store API](https://github.com/woocommerce/woocommerce-blocks/tree/trunk/src/StoreApi) and adds hooks to save and display your custom field instructions.
+- The `custom-inner-block-extend-store-endpoint.php` file: extends the [Store API](https://github.com/woocommerce/woocommerce-blocks/tree/trunk/src/StoreApi) and adds hooks to save and display your new field block instructions.
 
 ```php
 use Automattic\WooCommerce\Blocks\Package;
@@ -110,9 +108,9 @@ use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
 use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CheckoutSchema;
 
 /**
- * Your Custom Field Extend Store API.
+ * Your New Field Block Extend Store API.
  */
-class Custom_Field_Extend_Store_Endpoint {
+class Custom_Inner_Block_Extend_Store_Endpoint {
 	/**
 	 * Stores Rest Extending instance.
 	 *
@@ -125,7 +123,7 @@ class Custom_Field_Extend_Store_Endpoint {
 	 *
 	 * @var string
 	 */
-	const IDENTIFIER = 'custom-field';
+	const IDENTIFIER = 'new-field-block';
 
 	/**
 	 * Bootstraps the class and hooks required data.
@@ -145,7 +143,7 @@ class Custom_Field_Extend_Store_Endpoint {
 				[
 					'endpoint'        => CheckoutSchema::IDENTIFIER,
 					'namespace'       => self::IDENTIFIER,
-					'schema_callback' => [ 'Custom_Field_Extend_Store_Endpoint', 'extend_checkout_schema' ],
+					'schema_callback' => [ 'Custom_Inner_Block_Extend_Store_Endpoint', 'extend_checkout_schema' ],
 					'schema_type'     => ARRAY_A,
 				]
 			);
@@ -175,4 +173,4 @@ class Custom_Field_Extend_Store_Endpoint {
 
 ## Conclusion
 
-By following the steps above, you can add and process custom fields in the WooCommerce checkout block. For complete implementation and additional examples, refer to the provided [tutorial](https://developer.woocommerce.com/2023/08/07/extending-the-woocommerce-checkout-block-to-add-custom-shipping-options/) and the corresponding [GitHub repository](https://github.com).
+By following the steps above, you can add and process new field blocks in the WooCommerce checkout block. For complete implementation and additional examples, refer to the provided [tutorial](https://developer.woocommerce.com/2023/08/07/extending-the-woocommerce-checkout-block-to-add-custom-shipping-options/) and the corresponding [GitHub repository](https://github.com).
