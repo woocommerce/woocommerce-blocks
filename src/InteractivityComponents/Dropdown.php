@@ -17,19 +17,24 @@ class Dropdown {
 	public static function render( $props ) {
 		wp_enqueue_script( 'wc-interactivity-dropdown' );
 
-		$selected_item = $props['selected_item'] ?? array(
-			'label' => null,
-			'value' => null,
+		$selected_items = $props['selected_items'] ?? array(
+			array(
+				'label' => null,
+				'value' => null,
+			),
 		);
+
+		$is_multi_select = $props['is_multi_select'] ?? false;
 
 		$dropdown_context = array(
 			'woocommerceDropdown' => array(
-				'selectedItem' => $selected_item,
-				'hoveredItem'  => array(
+				'selectedItems' => $selected_items,
+				'hoveredItem'   => array(
 					'label' => null,
 					'value' => null,
 				),
-				'isOpen'       => false,
+				'isOpen'        => false,
+				'isMultiSelect' => $is_multi_select,
 			),
 		);
 

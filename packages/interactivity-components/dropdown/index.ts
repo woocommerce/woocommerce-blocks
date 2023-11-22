@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { store as interactivityStore } from '@woocommerce/interactivity';
+import { arrayDifferenceBy } from '../../../assets/js/utils';
 
 export type DropdownContext = {
 	woocommerceDropdown: {
@@ -9,28 +10,30 @@ export type DropdownContext = {
 			label: string;
 			value: string;
 		};
-		selectedItem: {
+		selectedItems: {
 			label: string | null;
 			value: string | null;
-		};
+		}[];
 		hoveredItem: {
 			label: string | null;
 			value: string | null;
 		};
 		isOpen: boolean;
+		isMultiSelect: boolean;
 	};
 };
 
-interactivityStore( {
+interactivityStore( 'wc-dropdown', {
 	state: {},
 	selectors: {
 		woocommerceDropdown: {
 			placeholderText: ( { context }: { context: DropdownContext } ) => {
 				const {
-					woocommerceDropdown: { selectedItem },
+					woocommerceDropdown: { selectedItems },
 				} = context;
 
-				return selectedItem.label || 'Select an option';
+				// @TODO - What should we render for multiple selected items?
+				return selectedItems[ 0 ].label || 'Select an option';
 			},
 			isSelected: ( { context }: { context: DropdownContext } ) => {
 				const {
@@ -39,10 +42,14 @@ interactivityStore( {
 					},
 				} = context;
 
-				return (
-					context.woocommerceDropdown.selectedItem.value === value ||
-					context.woocommerceDropdown.hoveredItem.value === value
-				);
+				const isHovered =
+					context.woocommerceDropdown.hoveredItem.value === value;
+				const isSelected =
+					context.woocommerceDropdown.selectedItems.some(
+						( item ) => item.value === value
+					);
+
+				return isHovered || isSelected;
 			},
 		},
 	},
@@ -65,18 +72,26 @@ interactivityStore( {
 					},
 				} = context;
 
-				const { selectedItem } = context.woocommerceDropdown;
+				const { selectedItems } = context.woocommerceDropdown;
 
-				if (
-					selectedItem.value === value &&
-					selectedItem.label === label
-				) {
-					context.woocommerceDropdown.selectedItem = {
-						label: null,
-						value: null,
-					};
+				const currentItemIsSelected = selectedItems.some( ( item ) => {
+					return item.value === value && item.label === label;
+				} );
+
+				if ( currentItemIsSelected ) {
+					// deselect it from the array
+					context.woocommerceDropdown.selectedItems =
+						arrayDifferenceBy(
+							selectedItems,
+							[ { label, value } ],
+							'value'
+						);
 				} else {
-					context.woocommerceDropdown.selectedItem = { label, value };
+					// add it to the array
+					context.woocommerceDropdown.selectedItems = [
+						...selectedItems,
+						{ label, value },
+					];
 				}
 
 				context.woocommerceDropdown.isOpen = false;
