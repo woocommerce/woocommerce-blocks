@@ -113,7 +113,7 @@ export interface SearchListControlProps< T extends object = object > {
 	isHierarchical?: boolean;
 	// Whether the list of items is still loading.
 	isLoading?: boolean;
-	//Restrict selections to one item.
+	// Restrict selections to one item.
 	isSingle: boolean;
 	// A complete list of item objects, each with id, name properties. This is displayed as a clickable/keyboard-able list, and possibly filtered by the search term (searches name).
 	list: SearchListItem< T >[];

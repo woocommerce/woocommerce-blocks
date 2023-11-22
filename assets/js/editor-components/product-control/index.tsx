@@ -38,6 +38,9 @@ interface ProductControlProps {
 	 * Callback to update the selected products.
 	 */
 	onChange: () => void;
+	/**
+	 * Whether or not the search control should be displayed in a compact way, so it occupies less space.
+	 */
 	isCompact?: boolean;
 	/**
 	 * The ID of the currently expanded product.
