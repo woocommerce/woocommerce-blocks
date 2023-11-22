@@ -1,6 +1,6 @@
 # Add a new inner block containing a custom field to the WooCommerce Checkout Block
 
-This documentation addresses the requirement for extending the WooCommerce checkout block to accept additional data from a new inner block.
+This document describes how a developer can insert an input field into the Checkout block and have its value passed to the Store API so it's available when processing the checkout.
 
 ## Overview
 
