@@ -75,7 +75,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Load wp-env
-        run: npm run env:start
+        run: npm run env:restart
 
       - name: Run Playwright tests
         run: npm run test:e2e -- --config=tests/e2e/${{ matrix.config.file }}
