@@ -4,7 +4,8 @@ This document describes how a developer can insert an input field into the Check
 
 ## Overview
 
-Developers can extend the checkout block to add new field blocks and process additional data through the checkout POST request. This involves leveraging the extensibility interfaces provided by WooCommerce Blocks, as demonstrated in [our tutorial](https://developer.woocommerce.com/2023/08/07/extending-the-woocommerce-checkout-block-to-add-custom-shipping-options/) for adding a "Not at home" shipping option.
+Developers can extend the Checkout block to add new inner blocks and process additional data through the checkout POST request. This involves leveraging the extensibility interfaces provided by Gutenberg and WooCommerce Blocks. This is demonstrated in more detail in our tutorial: [Tutorial: Extending the WooCommerce Checkout Block
+](https://developer.woocommerce.com/2023/08/07/extending-the-woocommerce-checkout-block-to-add-custom-shipping-options/).
 
 ## Prerequisites
 
