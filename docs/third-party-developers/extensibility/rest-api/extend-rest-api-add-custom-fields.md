@@ -1,4 +1,4 @@
-# Extending the WooCommerce Checkout Block to Add a new Field Block
+# Add a new inner block containing a custom field to the WooCommerce Checkout Block
 
 This documentation addresses the requirement for extending the WooCommerce checkout block to accept additional data from a new inner block.
 
