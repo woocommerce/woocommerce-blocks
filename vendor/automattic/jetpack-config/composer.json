@@ -1,0 +1,31 @@
+{
+	"name": "automattic/jetpack-config",
+	"description": "Jetpack configuration package that initializes other packages and configures Jetpack's functionality. Can be used as a base for all variants of Jetpack package usage.",
+	"type": "jetpack-library",
+	"license": "GPL-2.0-or-later",
+	"require": {},
+	"require-dev": {
+		"automattic/jetpack-changelogger": "^3.3.9"
+	},
+	"suggest": {
+		"automattic/jetpack-autoloader": "Allow for better interoperability with other plugins that use this package."
+	},
+	"autoload": {
+		"classmap": [
+			"src/"
+		]
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"extra": {
+		"autotagger": true,
+		"mirror-repo": "Automattic/jetpack-config",
+		"textdomain": "jetpack-config",
+		"changelogger": {
+			"link-template": "https://github.com/Automattic/jetpack-config/compare/v${old}...v${new}"
+		},
+		"branch-alias": {
+			"dev-trunk": "1.15.x-dev"
+		}
+	}
+}
