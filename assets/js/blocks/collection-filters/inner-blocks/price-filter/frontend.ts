@@ -33,10 +33,14 @@ const getHrefWithFilters = ( { state }: StateProps ) => {
 	return url.href;
 };
 
-store( {
+const { state } = store( 'woocommerce/price-filter', {
 	state: {
 		filters: {
-			rangeStyle: ( { state }: StateProps ) => {
+			minPrice: '',
+			maxPrice: '',
+			minRange: '',
+			maxRange: '',
+			rangeStyle: () => {
 				const { minPrice, maxPrice, minRange, maxRange } =
 					state.filters;
 				return [
@@ -50,11 +54,11 @@ store( {
 					}%`,
 				].join( ';' );
 			},
-			formattedMinPrice: ( { state }: StateProps ) => {
+			formattedMinPrice: () => {
 				const { minPrice } = state.filters;
 				return formatPrice( minPrice, getCurrency( { minorUnit: 0 } ) );
 			},
-			formattedMaxPrice: ( { state }: StateProps ) => {
+			formattedMaxPrice: () => {
 				const { maxPrice } = state.filters;
 				return formatPrice( maxPrice, getCurrency( { minorUnit: 0 } ) );
 			},
@@ -62,7 +66,7 @@ store( {
 	},
 	actions: {
 		filters: {
-			setMinPrice: ( { state, event }: ActionProps ) => {
+			setMinPrice: ( event: HTMLElementEvent< HTMLInputElement > ) => {
 				const value = parseFloat( event.target.value );
 				state.filters.minPrice = Math.min(
 					Number.isNaN( value ) ? state.filters.minRange : value,
@@ -84,10 +88,10 @@ store( {
 					state.filters.maxPrice - 1
 				);
 			},
-			updateProductsWithPriceFilter: ( { state }: ActionProps ) => {
+			updateProductsWithPriceFilter: () => {
 				navigate( getHrefWithFilters( { state } ) );
 			},
-			reset: ( { state }: ActionProps ) => {
+			reset: () => {
 				state.filters.minPrice = 0;
 				state.filters.maxPrice = state.filters.maxRange;
 				navigate( getHrefWithFilters( { state } ) );

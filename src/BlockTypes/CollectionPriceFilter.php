@@ -35,7 +35,10 @@ final class CollectionPriceFilter extends AbstractBlock {
 
 		$price_range = $block->context['collectionData']['price_range'];
 
-		$wrapper_attributes  = get_block_wrapper_attributes();
+		$wrapper_attributes = get_block_wrapper_attributes(
+			array( 'data-wc-interactive' => array( 'namespace' => 'woocommerce/collection-price-filter' ) )
+		);
+
 		$min_range           = $price_range['min_price'] / 10 ** $price_range['currency_minor_unit'];
 		$max_range           = $price_range['max_price'] / 10 ** $price_range['currency_minor_unit'];
 		$min_price           = intval( get_query_var( self::MIN_PRICE_QUERY_VAR, $min_range ) );
@@ -52,7 +55,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 			'formattedMaxPrice' => $formatted_max_price,
 		);
 
-		wc_store(
+		wc_initial_state(
 			array(
 				'state' => array(
 					'filters' => $data,
