@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { getBlockMap } from '@woocommerce/atomic-utils';
 import { Suspense } from '@wordpress/element';
 import { ProductResponseItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { getBlockMap } from '~/atomic/utils';
 import { LayoutConfig } from '../types';
 
 /**

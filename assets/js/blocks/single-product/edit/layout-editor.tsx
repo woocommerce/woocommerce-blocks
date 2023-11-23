@@ -8,7 +8,6 @@ import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
-import { createBlocksFromTemplate } from '@woocommerce/atomic-utils';
 import { PanelBody, Button } from '@wordpress/components';
 import { backup } from '@wordpress/icons';
 import { ProductResponseItem } from '@woocommerce/types';
@@ -23,6 +22,7 @@ import {
 /**
  * Internal dependencies
  */
+import { createBlocksFromTemplate } from '~/atomic/utils';
 import { DEFAULT_INNER_BLOCKS, ALLOWED_INNER_BLOCKS } from '../constants';
 import metadata from '../block.json';
 

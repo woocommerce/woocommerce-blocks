@@ -5,13 +5,13 @@ import { BlockAttributes, InnerBlockTemplate } from '@wordpress/blocks';
 import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { stacks } from '@woocommerce/icons';
-import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { registerBlockSingleProductTemplate } from '~/atomic/utils';
 import { QUERY_LOOP_ID } from '../constants';
 
 import { VARIATION_NAME as PRODUCT_TEMPLATE_ID } from './elements/product-template';

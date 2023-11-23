@@ -2,11 +2,11 @@
  * External dependencies
  */
 import type { BlockConfiguration } from '@wordpress/blocks';
-import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
 
 /**
  * Internal dependencies
  */
+import { registerBlockSingleProductTemplate } from '~/atomic/utils';
 import sharedConfig from '../shared/config';
 import edit from './edit';
 import { BLOCK_ICON as icon } from './constants';

@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { renderParentBlock } from '@woocommerce/atomic-utils';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 
 /**
  * Internal dependencies
  */
+import { renderParentBlock } from '~/atomic/utils';
 import Block from './block';
 
 renderParentBlock( {

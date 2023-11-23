@@ -27,7 +27,6 @@ import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
-import { getBlockMap } from '@woocommerce/atomic-utils';
 import { previewProducts } from '@woocommerce/resource-previews';
 import { getSetting } from '@woocommerce/settings';
 import { blocksConfig } from '@woocommerce/block-settings';
@@ -35,6 +34,7 @@ import { blocksConfig } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
+import { getBlockMap } from '~/atomic/utils';
 import { getBlockClassName } from '../utils';
 import {
 	renderHiddenContentPlaceholder,

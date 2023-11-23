@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
 import { Icon } from '@wordpress/icons';
 import { productDetails } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
  */
+import { registerBlockSingleProductTemplate } from '~/atomic/utils';
 import metadata from './block.json';
 import edit from './edit';
 import './style.scss';

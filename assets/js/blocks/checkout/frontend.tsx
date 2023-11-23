@@ -9,11 +9,11 @@ import {
 	useValidation,
 } from '@woocommerce/base-context/hooks';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
-import { renderParentBlock } from '@woocommerce/atomic-utils';
 
 /**
  * Internal dependencies
  */
+import { renderParentBlock } from '~/atomic/utils';
 import './inner-blocks/register-components';
 import Block from './block';
 import { blockName, blockAttributes } from './attributes';

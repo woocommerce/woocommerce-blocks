@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { box as icon } from '@wordpress/icons';
-import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
 
 /**
  * Internal dependencies
  */
+import { registerBlockSingleProductTemplate } from '~/atomic/utils';
 import edit from './edit';
 import save from './save';
 import metadata from './block.json';

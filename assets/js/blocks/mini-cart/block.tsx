@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { renderParentBlock } from '@woocommerce/atomic-utils';
 import Drawer from '@woocommerce/base-components/drawer';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import {
@@ -33,6 +32,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import { renderParentBlock } from '~/atomic/utils';
 import type { BlockAttributes } from './types';
 import QuantityBadge from './quantity-badge';
 import { MiniCartContentsBlock } from './mini-cart-contents/block';

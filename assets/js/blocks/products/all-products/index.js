@@ -3,11 +3,11 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, grid } from '@wordpress/icons';
-import '@woocommerce/atomic-blocks';
 
 /**
  * Internal dependencies
  */
+import '~/atomic/blocks';
 import metadata from './block.json';
 import deprecated from './deprecated';
 import edit from './edit';

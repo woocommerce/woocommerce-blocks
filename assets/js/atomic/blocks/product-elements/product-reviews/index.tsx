@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { registerBlockSingleProductTemplate } from '@woocommerce/atomic-utils';
-
-/**
  * Internal dependencies
  */
+import { registerBlockSingleProductTemplate } from '~/atomic/utils';
 import metadata from './block.json';
 import edit from './edit';
 import './style.scss';
