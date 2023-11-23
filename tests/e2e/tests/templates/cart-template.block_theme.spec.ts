@@ -39,7 +39,7 @@ test.describe( 'Test the cart template', async () => {
 			editor.canvas.locator( 'h1:has-text("Cart")' ).first()
 		).toBeVisible();
 		await editor.openDocumentSettingsSidebar();
-		await page.getByRole( 'button', { name: 'Edit template' } ).click();
+		await page.getByLabel( 'Template options' ).click();
 		await expect(
 			editor.canvas.locator( 'h1:has-text("Cart")' ).first()
 		).toBeVisible();
