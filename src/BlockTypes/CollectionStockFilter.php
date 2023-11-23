@@ -47,18 +47,6 @@ final class CollectionStockFilter extends AbstractBlock {
 		$stock_status_counts = $block->context['collectionData']['stock_status_counts'] ?? [];
 		$wrapper_attributes  = get_block_wrapper_attributes();
 
-		wc_initial_state(
-			'woocommerce',
-			array(
-				'state' => array(
-					'filters' => array(
-						'stockStatus'   => $stock_status_counts,
-						'activeFilters' => '',
-					),
-				),
-			)
-		);
-
 		return sprintf(
 			'<div %1$s>
 				<div class="wc-block-stock-filter__controls">%2$s</div>
@@ -129,7 +117,7 @@ final class CollectionStockFilter extends AbstractBlock {
 											class="wc-block-components-checkbox__input" 
 											type="checkbox" 
 											aria-invalid="false" 
-											data-wc-on--change="actions.filters.updateProductsWithStockFilters" 
+											data-wc-on--change="actions.updateProductsWithStockFilters" 
 											value="<?php echo esc_attr( $stock_count['status'] ); ?>"
 											<?php checked( strpos( $selected_stock_status, $stock_count['status'] ) !== false, 1 ); ?>
 										>
@@ -168,7 +156,7 @@ final class CollectionStockFilter extends AbstractBlock {
 				echo Dropdown::render(
 					array(
 						'items'         => $list_items,
-						'action'        => 'woocommerce/collection-stock-filter::actions.filters.navigate',
+						'action'        => 'woocommerce/collection-stock-filter::actions.navigate',
 						'selected_item' => $selected_item,
 					)
 				);
