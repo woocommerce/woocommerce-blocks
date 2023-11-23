@@ -17,6 +17,7 @@ test.describe( 'Test the cart template', async () => {
 		await page.getByRole( 'button', { name: /Templates/i } ).click();
 		await page.getByRole( 'button', { name: /Page: Cart/i } ).click();
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
 		await expect(
 			page
 				.frameLocator( 'iframe[title="Editor canvas"i]' )
@@ -35,6 +36,7 @@ test.describe( 'Test the cart template', async () => {
 		await editor.page.getByRole( 'button', { name: /Pages/i } ).click();
 		await editor.page.getByRole( 'button', { name: /Cart/i } ).click();
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
 		await expect(
 			editor.canvas.locator( 'h1:has-text("Cart")' ).first()
 		).toBeVisible();
@@ -73,6 +75,7 @@ test.describe( 'Test editing the cart template', async () => {
 		await page.getByRole( 'button', { name: /Templates/i } ).click();
 		await page.getByRole( 'button', { name: /Page: Checkout/i } ).click();
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
 		await editor.setContent(
 			'<!-- wp:woocommerce/classic-shortcode {"shortcode":"cart"} /-->'
 		);
@@ -99,6 +102,7 @@ test.describe( 'Test editing the cart template', async () => {
 			postType: templateType,
 		} );
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
 		await editorUtils.editor.insertBlock( {
 			name: 'core/paragraph',
 			attributes: { content: 'Hello World in the template' },
