@@ -1,10 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	store as interactivityStore,
-	navigate,
-} from '@woocommerce/interactivity';
+import { store, navigate, getContext } from '@woocommerce/interactivity';
 import { DropdownContext } from '@woocommerce/interactivity-components/dropdown';
 import { HTMLElementEvent } from '@woocommerce/types';
 
@@ -12,15 +9,6 @@ type AttributeFilterContext = {
 	attributeSlug: string;
 	queryType: 'or' | 'and';
 	selectType: 'single' | 'multiple';
-};
-
-interface AttributeFilterDropdownContext
-	extends AttributeFilterContext,
-		DropdownContext {}
-
-type ActionProps = {
-	event: HTMLElementEvent< HTMLInputElement >;
-	context: AttributeFilterContext;
 };
 
 function getUrl(
@@ -49,32 +37,35 @@ function getSelectedTermsFromUrl( slug: string ) {
 		.filter( Boolean );
 }
 
-interactivityStore( {
+store( 'woocommerce/collection-attribute-filter', {
 	state: {
 		filters: {},
 	},
 	actions: {
 		filters: {
-			navigateWithAttributeFilter: ( {
-				context,
-			}: {
-				context: AttributeFilterDropdownContext;
-			} ) => {
-				if ( context.woocommerceDropdown.selectedItem.value ) {
+			navigateWithAttributeFilter: () => {
+				const dropdownContext = getContext< DropdownContext >(
+					'woocommerce/interactivity-dropdown'
+				);
+
+				const context = getContext< AttributeFilterContext >();
+
+				if ( dropdownContext.selectedItem.value ) {
 					navigate(
 						getUrl(
-							[ context.woocommerceDropdown.selectedItem.value ],
+							[ dropdownContext.selectedItem.value ],
 							context.attributeSlug,
 							context.queryType
 						)
 					);
 				}
 			},
-			updateProductsWithAttributeFilter: ( {
-				event,
-				context,
-			}: ActionProps ) => {
+			updateProductsWithAttributeFilter: (
+				event: HTMLElementEvent< HTMLInputElement >
+			) => {
 				if ( ! event.target.value ) return;
+
+				const context = getContext< AttributeFilterContext >();
 
 				let selectedTerms = getSelectedTermsFromUrl(
 					context.attributeSlug
@@ -93,6 +84,7 @@ interactivityStore( {
 						( value ) => value !== event.target.value
 					);
 				}
+
 				navigate(
 					getUrl(
 						selectedTerms,

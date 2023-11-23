@@ -79,7 +79,8 @@ final class CollectionAttributeFilter extends AbstractBlock {
 			'<div %1$s>%2$s</div>',
 			get_block_wrapper_attributes(
 				array(
-					'data-wc-context' => wp_json_encode( $context ),
+					'data-wc-context'     => wp_json_encode( $context ),
+					'data-wc-interactive' => wp_json_encode( array( 'namespace' => 'woocommerce/collection-attribute-filter' ) ),
 				)
 			),
 			$filter_content
@@ -112,7 +113,7 @@ final class CollectionAttributeFilter extends AbstractBlock {
 		return Dropdown::render(
 			array(
 				'items'         => $list_items,
-				'action'        => 'actions.filters.navigateWithAttributeFilter',
+				'action'        => 'woocommerce/collection-attribute-filter::actions.filters.navigateWithAttributeFilter',
 				'selected_item' => $selected_item,
 			)
 		);
