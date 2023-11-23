@@ -97,6 +97,9 @@ class StoreTitle extends AbstractRoute {
 		}
 
 		$ai_generated_title = $this->generate_ai_title( $business_description );
+		if ( is_wp_error( $ai_generated_title ) ) {
+			return $this->error_to_response( $ai_generated_title );
+		}
 
 		update_option( self::STORE_TITLE_OPTION_NAME, $ai_generated_title );
 
