@@ -3,14 +3,10 @@
  */
 import { store, navigate } from '@woocommerce/interactivity';
 import { formatPrice, getCurrency } from '@woocommerce/price-format';
+import { HTMLElementEvent } from '@woocommerce/types';
 
-/**
- * Internal dependencies
- */
-import { ActionProps, StateProps } from './types';
-
-const getHrefWithFilters = ( { state }: StateProps ) => {
-	const { minPrice, maxPrice } = state.filters;
+const getHrefWithFilters = ( params: typeof state ) => {
+	const { minPrice, maxPrice, maxRange } = params;
 	const url = new URL( window.location.href );
 	const { searchParams } = url;
 
@@ -20,7 +16,7 @@ const getHrefWithFilters = ( { state }: StateProps ) => {
 		searchParams.delete( 'min_price' );
 	}
 
-	if ( maxPrice < state.filters.maxRange ) {
+	if ( maxPrice < maxRange ) {
 		searchParams.set( 'max_price', maxPrice.toString() );
 	} else {
 		searchParams.delete( 'max_price' );
@@ -33,69 +29,57 @@ const getHrefWithFilters = ( { state }: StateProps ) => {
 	return url.href;
 };
 
-const { state } = store( 'woocommerce/price-filter', {
+const { state } = store( 'woocommerce/collection-price-filter', {
 	state: {
-		filters: {
-			minPrice: '',
-			maxPrice: '',
-			minRange: '',
-			maxRange: '',
-			rangeStyle: () => {
-				const { minPrice, maxPrice, minRange, maxRange } =
-					state.filters;
-				return [
-					`--low: ${
-						( 100 * ( minPrice - minRange ) ) /
-						( maxRange - minRange )
-					}%`,
-					`--high: ${
-						( 100 * ( maxPrice - minRange ) ) /
-						( maxRange - minRange )
-					}%`,
-				].join( ';' );
-			},
-			formattedMinPrice: () => {
-				const { minPrice } = state.filters;
-				return formatPrice( minPrice, getCurrency( { minorUnit: 0 } ) );
-			},
-			formattedMaxPrice: () => {
-				const { maxPrice } = state.filters;
-				return formatPrice( maxPrice, getCurrency( { minorUnit: 0 } ) );
-			},
+		minPrice: 0,
+		maxPrice: 0,
+		minRange: 0,
+		maxRange: 0,
+		rangeStyle: () => {
+			const { minPrice, maxPrice, minRange, maxRange } = state;
+
+			return [
+				`--low: ${
+					( 100 * ( minPrice - minRange ) ) / ( maxRange - minRange )
+				}%`,
+				`--high: ${
+					( 100 * ( maxPrice - minRange ) ) / ( maxRange - minRange )
+				}%`,
+			].join( ';' );
+		},
+		formattedMinPrice: () => {
+			const { minPrice } = state;
+			return formatPrice( minPrice, getCurrency( { minorUnit: 0 } ) );
+		},
+		formattedMaxPrice: () => {
+			const { maxPrice } = state;
+			return formatPrice( maxPrice, getCurrency( { minorUnit: 0 } ) );
 		},
 	},
 	actions: {
-		filters: {
-			setMinPrice: ( event: HTMLElementEvent< HTMLInputElement > ) => {
-				const value = parseFloat( event.target.value );
-				state.filters.minPrice = Math.min(
-					Number.isNaN( value ) ? state.filters.minRange : value,
-					state.filters.maxRange - 1
-				);
-				state.filters.maxPrice = Math.max(
-					state.filters.maxPrice,
-					state.filters.minPrice + 1
-				);
-			},
-			setMaxPrice: ( { state, event }: ActionProps ) => {
-				const value = parseFloat( event.target.value );
-				state.filters.maxPrice = Math.max(
-					Number.isNaN( value ) ? state.filters.maxRange : value,
-					state.filters.minRange + 1
-				);
-				state.filters.minPrice = Math.min(
-					state.filters.minPrice,
-					state.filters.maxPrice - 1
-				);
-			},
-			updateProductsWithPriceFilter: () => {
-				navigate( getHrefWithFilters( { state } ) );
-			},
-			reset: () => {
-				state.filters.minPrice = 0;
-				state.filters.maxPrice = state.filters.maxRange;
-				navigate( getHrefWithFilters( { state } ) );
-			},
+		setMinPrice: ( event: HTMLElementEvent< HTMLInputElement > ) => {
+			const value = parseFloat( event.target.value );
+			state.minPrice = Math.min(
+				Number.isNaN( value ) ? state.minRange : value,
+				state.maxRange - 1
+			);
+			state.maxPrice = Math.max( state.maxPrice, state.minPrice + 1 );
+		},
+		setMaxPrice: ( event: HTMLElementEvent< HTMLInputElement > ) => {
+			const value = parseFloat( event.target.value );
+			state.maxPrice = Math.max(
+				Number.isNaN( value ) ? state.maxRange : value,
+				state.minRange + 1
+			);
+			state.minPrice = Math.min( state.minPrice, state.maxPrice - 1 );
+		},
+		updateProductsWithPriceFilter: () => {
+			navigate( getHrefWithFilters( state ) );
+		},
+		reset: () => {
+			state.minPrice = 0;
+			state.maxPrice = state.maxRange;
+			navigate( getHrefWithFilters( state ) );
 		},
 	},
 } );
