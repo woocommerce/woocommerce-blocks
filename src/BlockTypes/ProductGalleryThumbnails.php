@@ -133,7 +133,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 
 			if ( $product ) {
 				$post_thumbnail_id      = $product->get_image_id();
-				$crop_images            = $block->context['cropImages'] ?? '';
+				$crop_images            = $block->context['cropImages'] ?? false;
 				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'full', array(), 'wc-block-product-gallery-thumbnails__thumbnail', $crop_images );
 
 				if ( $product_gallery_images && $post_thumbnail_id ) {
