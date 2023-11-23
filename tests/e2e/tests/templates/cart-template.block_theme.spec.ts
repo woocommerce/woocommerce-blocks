@@ -25,9 +25,7 @@ test.describe( 'Test the cart template', async () => {
 		).toBeVisible();
 	} );
 
-	// Remove the skip once this ticket is resolved: https://github.com/woocommerce/woocommerce-blocks/issues/11671
-	// eslint-disable-next-line playwright/no-skipped-test
-	test.skip( 'Template can be accessed from the page editor', async ( {
+	test( 'Template can be accessed from the page editor', async ( {
 		admin,
 		editor,
 		page,
