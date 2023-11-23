@@ -11,6 +11,7 @@ $gallery-next-previous-inside-image: "#{$gallery}:not([data-next-previous-button
 $outside-image-offset: 30px;
 $outside-image-max-width: calc(100% - (2 * $outside-image-offset));
 $thumbnails-gap: 15px;
+$default-number-of-thumbnails: 3;
 
 // Product Gallery
 #{$gallery} {
@@ -257,13 +258,26 @@ $thumbnails-gap: 15px;
 	#{$gallery}:not([data-thumbnails-position='bottom']) & {
 		flex-direction: column;
 		gap: 15px 0;
-		$i: 3;
-		flex-basis: calc((100% - (#{$i - 1} * 15px) - (#{$i} * 3px)) / #{$i});
+
+		// Calculate the total width occupied by the gaps between thumbnails.
+		$gap-width: $thumbnails-gap * ($default-number-of-thumbnails - 1);
+
+		// Calculate the border width, which is multiplied by 2 to account for both sides of each thumbnail.
+		$border-width: #{$default-number-of-thumbnails * 1px * 2};
+
+		// Calculate the width of each thumbnail by accounting for the gap, border, and additional space.
+		flex-basis: calc((100% - #{$gap-width} - #{$border-width} - 4px) / #{$default-number-of-thumbnails});
 	}
 
 	@for $i from 3 through 8 {
 		#{$gallery}[data-thumbnails-number-of-thumbnails='#{$i}']:not([data-thumbnails-position='bottom']) & {
-			flex-basis: calc((100% - (#{$i - 1} * 15px) - (#{$i} * 3px)) / #{$i});
+			// Calculate the total width occupied by the gaps between thumbnails.
+			$gap-width: $thumbnails-gap * ($i - 1);
+
+			// Calculate the border width, which is multiplied by 2 to account for both sides of each thumbnail.
+			$border-width: $i * 1px * 2;
+
+			flex-basis: calc((100% - #{$gap-width} - #{$border-width}) / $i);
 		}
 	}
 
@@ -292,8 +306,14 @@ $thumbnails-gap: 15px;
 
 		@for $i from 3 through 8 {
 			#{$gallery}[data-thumbnails-number-of-thumbnails='#{$i}'][data-thumbnails-position="bottom"] & {
-				$total-gap-width: $thumbnails-gap * ($i - 1);
-				$thumbnail-width: calc((100% - #{$total-gap-width} - (#{$i} * 2px)) / #{$i});
+				// Calculate the total width occupied by the gaps between thumbnails.
+				$gap-width: $thumbnails-gap * ($i - 1);
+
+				// Calculate the border width, which is multiplied by 2 to account for both sides of each thumbnail.
+				$border-width: $i * 1px * 2;
+
+				$thumbnail-width: calc((100% - #{$gap-width} - #{$border-width}) / $i);
+
 				flex: 0 0 $thumbnail-width;
 			}
 		}
