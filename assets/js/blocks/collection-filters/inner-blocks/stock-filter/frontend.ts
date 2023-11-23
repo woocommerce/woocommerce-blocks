@@ -28,7 +28,7 @@ store( 'woocommerce/collection-stock-filter', {
 		filters: {
 			// on select handler passed to the dropdown component.
 			navigate: () => {
-				const context: DropdownContext = getContext(
+				const context = getContext< DropdownContext >(
 					'woocommerce/interactivity-dropdown'
 				);
 
