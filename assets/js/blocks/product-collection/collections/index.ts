@@ -18,11 +18,11 @@ import onSale from './on-sale';
 import featured from './featured';
 
 const collections: BlockVariation[] = [
-	newArrivals,
-	topRated,
-	bestSellers,
-	onSale,
 	featured,
+	topRated,
+	onSale,
+	bestSellers,
+	newArrivals,
 ];
 
 const registerCollections = () => {

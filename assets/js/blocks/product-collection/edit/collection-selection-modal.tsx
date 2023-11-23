@@ -101,13 +101,13 @@ const PatternSelectionModal = ( props: {
 
 	// Get Collections
 	const blockCollections = [
+		defaultQuery,
 		...useSelect( ( select ) => {
 			// @ts-expect-error Type definitions are missing
 			// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/selectors.d.ts
 			const { getBlockVariations } = select( blocksStore );
 			return getBlockVariations( blockJson.name );
 		}, [] ),
-		defaultQuery,
 	];
 
 	// Prepare Collections
