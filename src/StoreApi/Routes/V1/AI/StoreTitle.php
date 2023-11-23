@@ -33,6 +33,13 @@ class StoreTitle extends AbstractRoute {
 	const STORE_TITLE_OPTION_NAME = 'blogname';
 
 	/**
+	 * The default store title.
+	 *
+	 * @var string
+	 */
+	const DEFAULT_TITLE = 'Site Title';
+
+	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string
@@ -85,7 +92,7 @@ class StoreTitle extends AbstractRoute {
 		}
 
 		$store_title = get_option( 'blogname' );
-		if ( ! empty( $store_title ) ) {
+		if ( ! ( empty( $store_title ) || self::DEFAULT_TITLE === $store_title ) ) {
 			return rest_ensure_response( array( 'ai_content_generated' => true ) );
 		}
 
