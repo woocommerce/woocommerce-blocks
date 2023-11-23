@@ -161,7 +161,7 @@ export const INNER_BLOCKS_PAGINATION_TEMPLATE: InnerBlockTemplate = [
 ];
 
 export const INNER_BLOCKS_NO_RESULTS_TEMPLATE: InnerBlockTemplate = [
-	'core/query-no-results',
+	'woocommerce/product-collection-no-results',
 ];
 
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
