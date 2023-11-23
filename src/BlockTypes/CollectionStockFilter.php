@@ -116,7 +116,7 @@ final class CollectionStockFilter extends AbstractBlock {
 		ob_start();
 		?>
 
-		<div data-wc-interactive='<?php echo $data_directive; ?>'>
+		<div data-wc-interactive='<?php echo esc_attr( $data_directive ); ?>'>
 			<?php if ( 'list' === $display_style ) : ?>
 				<div class="wc-block-stock-filter style-list">
 					<ul class="wc-block-checkbox-list wc-block-components-checkbox-list wc-block-stock-filter-list">
@@ -168,7 +168,7 @@ final class CollectionStockFilter extends AbstractBlock {
 				echo Dropdown::render(
 					array(
 						'items'         => $list_items,
-						'action'        => 'actions.filters.navigate',
+						'action'        => 'woocommerce/collection-stock-filter::actions.filters.navigate',
 						'selected_item' => $selected_item,
 					)
 				);

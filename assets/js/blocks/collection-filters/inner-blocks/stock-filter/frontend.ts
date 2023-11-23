@@ -18,19 +18,6 @@ const getUrl = ( activeFilters: string ) => {
 	return url.href;
 };
 
-type StockFilterState = {
-	filters: {
-		stockStatus: string;
-		activeFilters: string;
-		showDropdown: boolean;
-	};
-};
-
-type ActionProps = {
-	state: StockFilterState;
-	event: HTMLElementEvent< HTMLInputElement >;
-};
-
 store( 'woocommerce/collection-stock-filter', {
 	state: {
 		filters: {
@@ -39,16 +26,17 @@ store( 'woocommerce/collection-stock-filter', {
 	},
 	actions: {
 		filters: {
+			// on select handler passed to the dropdown component.
 			navigate: () => {
-				const context: DropdownContext = getContext();
-
-				navigate(
-					getUrl(
-						context.woocommerceDropdown.selectedItem.value || ''
-					)
+				const context: DropdownContext = getContext(
+					'woocommerce/interactivity-dropdown'
 				);
+
+				navigate( getUrl( context.selectedItem.value || '' ) );
 			},
-			updateProductsWithStockFilters: ( { event }: ActionProps ) => {
+			updateProductsWithStockFilters: (
+				event: HTMLElementEvent< HTMLInputElement >
+			) => {
 				// get the active filters from the url:
 				const url = new URL( window.location.href );
 				const currentFilters =
