@@ -4,11 +4,8 @@
 import { __ } from '@wordpress/i18n';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useCallback, useEffect, useRef } from '@wordpress/element';
-import PaymentMethodLabel from '@woocommerce/base-components/cart-checkout/payment-method-label';
-import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payment-method-icons';
 import { getSetting } from '@woocommerce/settings';
 import deprecated from '@wordpress/deprecated';
-import LoadingMask from '@woocommerce/base-components/loading-mask';
 import type { PaymentMethodInterface } from '@woocommerce/types';
 import { useSelect, useDispatch } from '@wordpress/data';
 import {
@@ -21,6 +18,9 @@ import { ValidationInputError } from '@woocommerce/blocks-components';
 /**
  * Internal dependencies
  */
+import PaymentMethodLabel from '~/base/components/cart-checkout/payment-method-label';
+import PaymentMethodIcons from '~/base/components/cart-checkout/payment-method-icons';
+import LoadingMask from '~/base/components/loading-mask';
 import { useStoreCart } from '../cart/use-store-cart';
 import { useStoreCartCoupons } from '../cart/use-store-cart-coupons';
 import { noticeContexts, responseTypes } from '../../event-emit';

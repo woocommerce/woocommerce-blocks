@@ -7,11 +7,11 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, ExternalLink } from '@wordpress/components';
 import { ADMIN_URL } from '@woocommerce/settings';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
  */
+import Noninteractive from '~/base/components/noninteractive';
 import {
 	FormStepBlock,
 	AdditionalFields,

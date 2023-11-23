@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import prepareAddressFields from '@woocommerce/base-components/cart-checkout/address-form/prepare-address-fields';
 import { isEmail } from '@wordpress/url';
 import type {
 	CartResponseBillingAddress,
@@ -17,6 +16,11 @@ import {
 	SHIPPING_COUNTRIES,
 	SHIPPING_STATES,
 } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import prepareAddressFields from '~/base/components/cart-checkout/address-form/prepare-address-fields';
 
 /**
  * Compare two addresses and see if they are the same.

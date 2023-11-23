@@ -2,9 +2,13 @@
  * External dependencies
  */
 import classnames from 'classnames';
+
+/**
+ * Internal dependencies
+ */
 import NoticeBanner, {
 	NoticeBannerProps,
-} from '@woocommerce/base-components/notice-banner';
+} from '~/base/components/notice-banner';
 
 /**
  * Wrapper for NoticeBanner component.

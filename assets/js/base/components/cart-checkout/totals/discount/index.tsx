@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { RemovableChip, TotalsItem } from '@woocommerce/blocks-components';
 import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 import { getSetting } from '@woocommerce/settings';
@@ -17,6 +16,7 @@ import {
  * Internal dependencies
  */
 import './style.scss';
+import LoadingMask from '~/base/components/loading-mask';
 
 export interface TotalsDiscountProps {
 	cartCoupons: LooselyMustHave<

@@ -1,14 +1,19 @@
 /**
  * External dependencies
  */
-import Summary from '@woocommerce/base-components/summary';
 import { blocksConfig } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import Summary from '~/base/components/summary';
 
 interface ProductSummaryProps {
 	className?: string;
 	shortDescription?: string;
 	fullDescription?: string;
 }
+
 /**
  * Returns an element containing a summary of the product.
  *

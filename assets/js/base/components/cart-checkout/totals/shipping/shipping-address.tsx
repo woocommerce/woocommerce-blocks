@@ -5,13 +5,13 @@ import { __ } from '@wordpress/i18n';
 import { formatShippingAddress } from '@woocommerce/base-utils';
 import { useEditorContext } from '@woocommerce/base-context';
 import { ShippingAddress as ShippingAddressType } from '@woocommerce/settings';
-import PickupLocation from '@woocommerce/base-components/cart-checkout/pickup-location';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import PickupLocation from '~/base/components/cart-checkout/pickup-location';
 import ShippingLocation from '../../shipping-location';
 import { CalculatorButton, CalculatorButtonProps } from './calculator-button';
 

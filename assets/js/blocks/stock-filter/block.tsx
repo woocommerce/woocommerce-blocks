@@ -19,11 +19,6 @@ import {
 	useRef,
 } from '@wordpress/element';
 import { CheckboxList } from '@woocommerce/blocks-components';
-import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
-import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
-import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
-import Label from '@woocommerce/base-components/filter-element-label';
-import FormTokenField from '@woocommerce/base-components/form-token-field';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { isBoolean, objectHasProp } from '@woocommerce/types';
@@ -38,6 +33,11 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import FilterSubmitButton from '~/base/components/filter-submit-button';
+import FilterResetButton from '~/base/components/filter-reset-button';
+import FilterTitlePlaceholder from '~/base/components/filter-placeholder';
+import Label from '~/base/components/filter-element-label';
+import FormTokenField from '~/base/components/form-token-field';
 import { previewOptions } from './preview';
 import './style.scss';
 import { formatSlug, getActiveFilters, generateUniqueId } from './utils';

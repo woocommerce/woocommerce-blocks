@@ -2,13 +2,13 @@
  * External dependencies
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
-import { Sidebar } from '@woocommerce/base-components/sidebar-layout';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
+import { Sidebar } from '~/base/components/sidebar-layout';
 import {
 	useForcedLayout,
 	getAllowedBlocks,

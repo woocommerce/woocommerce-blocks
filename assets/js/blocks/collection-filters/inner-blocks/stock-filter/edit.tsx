@@ -9,8 +9,6 @@ import { __ } from '@wordpress/i18n';
 import { Icon, chevronDown } from '@wordpress/icons';
 import { ProductQueryContext as Context } from '@woocommerce/blocks/product-query/types';
 import { CheckboxList } from '@woocommerce/blocks-components';
-import Label from '@woocommerce/base-components/filter-element-label';
-import FormTokenField from '@woocommerce/base-components/form-token-field';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { getSetting } from '@woocommerce/settings';
 import {
@@ -21,6 +19,8 @@ import {
 /**
  * Internal dependencies
  */
+import Label from '~/base/components/filter-element-label';
+import FormTokenField from '~/base/components/form-token-field';
 import { BlockProps } from './types';
 import { Inspector } from './components/inspector';
 

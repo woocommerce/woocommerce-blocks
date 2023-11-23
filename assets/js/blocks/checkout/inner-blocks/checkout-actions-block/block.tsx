@@ -3,10 +3,6 @@
  */
 import classnames from 'classnames';
 import { getSetting } from '@woocommerce/settings';
-import {
-	PlaceOrderButton,
-	ReturnToCartButton,
-} from '@woocommerce/base-components/cart-checkout';
 import { useCheckoutSubmit } from '@woocommerce/base-context/hooks';
 import { noticeContexts } from '@woocommerce/base-context';
 import { StoreNoticesContainer } from '@woocommerce/blocks-components';
@@ -15,6 +11,10 @@ import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 /**
  * Internal dependencies
  */
+import {
+	PlaceOrderButton,
+	ReturnToCartButton,
+} from '~/base/components/cart-checkout';
 import { defaultPlaceOrderButtonLabel } from './constants';
 import './style.scss';
 

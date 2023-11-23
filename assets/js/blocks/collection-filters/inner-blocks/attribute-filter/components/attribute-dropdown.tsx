@@ -1,9 +1,13 @@
 /**
  * External dependencies
  */
-import FormTokenField from '@woocommerce/base-components/form-token-field';
 import { __, sprintf } from '@wordpress/i18n';
 import { Icon, chevronDown } from '@wordpress/icons';
+
+/**
+ * Internal dependencies
+ */
+import FormTokenField from '~/base/components/form-token-field';
 
 type Props = {
 	label: string;

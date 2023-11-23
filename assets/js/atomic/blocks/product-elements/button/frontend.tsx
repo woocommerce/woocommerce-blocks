@@ -6,7 +6,11 @@ import { select, subscribe, dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { Cart } from '@woocommerce/type-defs/cart';
 import { createRoot } from '@wordpress/element';
-import NoticeBanner from '@woocommerce/base-components/notice-banner';
+
+/**
+ * Internal dependencies
+ */
+import NoticeBanner from '~/base/components/notice-banner';
 
 interface Context {
 	isLoading: boolean;

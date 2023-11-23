@@ -24,7 +24,6 @@
 		"types": [ "jest", "jquery" ],
 		"paths": {
 			"~/*": [ "assets/js/*" ],
-			"@woocommerce/base-components/*": [ "assets/js/base/components/*" ],
 			"@woocommerce/base-context": [ "assets/js/base/context" ],
 			"@woocommerce/base-context/*": [ "assets/js/base/context/*" ],
 			"@woocommerce/base-context/hooks": [

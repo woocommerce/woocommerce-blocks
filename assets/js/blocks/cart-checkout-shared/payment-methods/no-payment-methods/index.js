@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
 /**
  * Internal dependencies
  */
+import NoticeBanner from '~/base/components/notice-banner';
 import './style.scss';
 
 /**

@@ -7,7 +7,6 @@ import { useState } from '@wordpress/element';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { TotalsItem } from '@woocommerce/blocks-components';
 import type { Currency } from '@woocommerce/types';
-import { ShippingVia } from '@woocommerce/base-components/cart-checkout/totals/shipping/shipping-via';
 import {
 	isAddressComplete,
 	isPackageRateCollectable,
@@ -18,6 +17,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import { ShippingVia } from '~/base/components/cart-checkout/totals/shipping/shipping-via';
 import ShippingCalculator from '../../shipping-calculator';
 import {
 	hasShippingRate,

@@ -4,8 +4,6 @@
 import classnames from 'classnames';
 import { sprintf, _n } from '@wordpress/i18n';
 import { Label } from '@woocommerce/blocks-components';
-import ProductPrice from '@woocommerce/base-components/product-price';
-import ProductName from '@woocommerce/base-components/product-name';
 import {
 	getCurrencyFromPriceResponse,
 	formatPrice,
@@ -20,6 +18,8 @@ import { CartItem, isString } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
+import ProductPrice from '~/base/components/product-price';
+import ProductName from '~/base/components/product-name';
 import ProductBackorderBadge from '../product-backorder-badge';
 import ProductImage from '../product-image';
 import ProductLowStockBadge from '../product-low-stock-badge';

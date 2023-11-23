@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import { Skeleton } from '@woocommerce/base-components/skeleton';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { Skeleton } from '~/base/components/skeleton';
 
 const Edit = (): JSX.Element => {
 	const blockProps = useBlockProps( {

@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
  */
+import Noninteractive from '~/base/components/noninteractive';
 import Block from './block';
 import './editor.scss';
 

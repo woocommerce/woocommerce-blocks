@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
-import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout';
 import {
 	getShippingRatesPackageCount,
@@ -14,12 +13,13 @@ import {
 	useEditorContext,
 	useShippingData,
 } from '@woocommerce/base-context';
-import NoticeBanner from '@woocommerce/base-components/notice-banner';
 import { isObject } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import LoadingMask from '~/base/components/loading-mask';
+import NoticeBanner from '~/base/components/notice-banner';
 import ShippingRatesControlPackage from '../shipping-rates-control-package';
 import { speakFoundShippingOptions } from './utils';
 import type { PackagesProps, ShippingRatesControlProps } from './types';

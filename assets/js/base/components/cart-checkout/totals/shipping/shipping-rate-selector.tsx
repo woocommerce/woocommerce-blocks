@@ -3,11 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import type { CartResponseShippingRate } from '@woocommerce/types';
-import NoticeBanner from '@woocommerce/base-components/notice-banner';
 
 /**
  * Internal dependencies
  */
+import NoticeBanner from '~/base/components/notice-banner';
 import ShippingRatesControl from '../../shipping-rates-control';
 
 export interface ShippingRateSelectorProps {

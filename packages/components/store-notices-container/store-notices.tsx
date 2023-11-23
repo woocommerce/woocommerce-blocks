@@ -9,11 +9,11 @@ import { useDispatch } from '@wordpress/data';
 import { usePrevious } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { NoticeType } from '@woocommerce/types';
-import type { NoticeBannerProps } from '@woocommerce/base-components/notice-banner';
 
 /**
  * Internal dependencies
  */
+import type { NoticeBannerProps } from '~/base/components/notice-banner';
 import StoreNotice from '../store-notice';
 
 const StoreNotices = ( {

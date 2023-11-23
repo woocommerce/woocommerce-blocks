@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import Label from '@woocommerce/base-components/filter-element-label';
+import Label from '~/base/components/filter-element-label';
 
 export const previewOptions = [
 	{

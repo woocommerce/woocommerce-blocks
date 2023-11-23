@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { DrawerCloseButton } from '@woocommerce/base-components/drawer';
 import { CartEventsProvider } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import { DrawerCloseButton } from '~/base/components/drawer';
 import './inner-blocks/register-components';
 
 type MiniCartContentsBlockProps = {

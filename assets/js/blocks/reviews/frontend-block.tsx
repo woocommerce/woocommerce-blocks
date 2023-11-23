@@ -3,18 +3,15 @@
  */
 import { __ } from '@wordpress/i18n';
 import { getSetting } from '@woocommerce/settings';
-import LoadMoreButton from '@woocommerce/base-components/load-more-button';
-import {
-	ReviewList,
-	ReviewSortSelect,
-} from '@woocommerce/base-components/reviews';
 import withReviews from '@woocommerce/base-hocs/with-reviews';
 import type { ChangeEventHandler, MouseEventHandler } from 'react';
-import { Review } from '@woocommerce/base-components/reviews/types';
 
 /**
  * Internal dependencies
  */
+import { Review } from '~/base/components/reviews/types';
+import LoadMoreButton from '~/base/components/load-more-button';
+import { ReviewList, ReviewSortSelect } from '~/base/components/reviews';
 import { ReviewBlockAttributes } from './attributes';
 
 interface FrontendBlockProps {

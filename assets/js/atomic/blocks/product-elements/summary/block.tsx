@@ -2,9 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import Summary from '@woocommerce/base-components/summary';
 import { blocksConfig } from '@woocommerce/block-settings';
-
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
@@ -18,6 +16,7 @@ import type { HTMLAttributes } from 'react';
  */
 import './style.scss';
 import type { BlockAttributes } from './types';
+import Summary from '~/base/components/summary';
 
 type Props = BlockAttributes & HTMLAttributes< HTMLDivElement >;
 

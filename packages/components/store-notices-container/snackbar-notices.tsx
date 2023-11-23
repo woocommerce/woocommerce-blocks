@@ -2,9 +2,13 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import SnackbarList from '@woocommerce/base-components/snackbar-list';
 import { useDispatch } from '@wordpress/data';
 import type { NoticeType } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import SnackbarList from '~/base/components/snackbar-list';
 
 const SnackbarNotices = ( {
 	className,

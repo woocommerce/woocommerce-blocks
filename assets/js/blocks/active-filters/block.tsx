@@ -15,13 +15,13 @@ import {
 	isStockStatusOptions,
 } from '@woocommerce/types';
 import { getUrlParameter } from '@woocommerce/utils';
-import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import { useIsMounted } from '@woocommerce/base-hooks';
 import type { BlockAttributes } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
+import FilterTitlePlaceholder from '~/base/components/filter-placeholder';
 import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';
 import {

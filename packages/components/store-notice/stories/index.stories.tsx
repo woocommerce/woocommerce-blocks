@@ -2,11 +2,12 @@
  * External dependencies
  */
 import type { StoryFn, Meta } from '@storybook/react';
-import { NoticeBannerProps } from '@woocommerce/base-components/notice-banner';
+
 /**
  * Internal dependencies
  */
 import StoreNotice from '../';
+import { NoticeBannerProps } from '~/base/components/notice-banner';
 
 export default {
 	title: 'External Components/StoreNotice',

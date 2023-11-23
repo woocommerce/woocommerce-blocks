@@ -2,12 +2,12 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
+import { SidebarLayout } from '~/base/components/sidebar-layout';
 import { useCartBlockContext } from '../../context';
 
 const FrontendBlock = ( {

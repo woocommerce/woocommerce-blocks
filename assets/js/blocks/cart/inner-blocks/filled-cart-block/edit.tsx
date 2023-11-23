@@ -4,13 +4,13 @@
 import classnames from 'classnames';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
-import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import type { TemplateArray } from '@wordpress/blocks';
 import { useEditorContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import { SidebarLayout } from '~/base/components/sidebar-layout';
 import {
 	useForcedLayout,
 	getAllowedBlocks,

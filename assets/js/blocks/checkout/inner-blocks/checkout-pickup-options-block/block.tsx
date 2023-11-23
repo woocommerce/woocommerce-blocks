@@ -23,12 +23,12 @@ import {
 	getShippingRatesPackageCount,
 } from '@woocommerce/base-utils';
 import { ExperimentalOrderLocalPickupPackages } from '@woocommerce/blocks-checkout';
-import { LocalPickupSelect } from '@woocommerce/base-components/cart-checkout/local-pickup-select';
 
 /**
  * Internal dependencies
  */
-import ShippingRatesControlPackage from '../../../../base/components/cart-checkout/shipping-rates-control-package';
+import { LocalPickupSelect } from '~/base/components/cart-checkout/local-pickup-select';
+import ShippingRatesControlPackage from '~/base/components/cart-checkout/shipping-rates-control-package';
 
 const getPickupLocation = (
 	option: CartShippingPackageShippingRate

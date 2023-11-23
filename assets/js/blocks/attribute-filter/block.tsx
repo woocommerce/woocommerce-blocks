@@ -10,9 +10,6 @@ import {
 	useCollectionData,
 } from '@woocommerce/base-context/hooks';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
-import Label from '@woocommerce/base-components/filter-element-label';
-import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
-import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { getSettingWithCoercion } from '@woocommerce/settings';
@@ -31,13 +28,16 @@ import {
 	PREFIX_QUERY_ARG_FILTER_TYPE,
 	PREFIX_QUERY_ARG_QUERY_TYPE,
 } from '@woocommerce/utils';
-import FormTokenField from '@woocommerce/base-components/form-token-field';
-import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import Label from '~/base/components/filter-element-label';
+import FilterResetButton from '~/base/components/filter-reset-button';
+import FilterSubmitButton from '~/base/components/filter-submit-button';
+import FormTokenField from '~/base/components/form-token-field';
+import FilterTitlePlaceholder from '~/base/components/filter-placeholder';
 import { getAttributeFromID } from '../../utils/attributes';
 import { updateAttributeFilter } from '../../utils/attributes-query';
 import { previewAttributeObject, previewOptions } from './preview';

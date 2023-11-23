@@ -9,11 +9,11 @@ import { ADMIN_URL, getSetting } from '@woocommerce/settings';
 import ExternalLinkCard from '@woocommerce/editor-components/external-link-card';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
  */
+import Noninteractive from '~/base/components/noninteractive';
 import {
 	FormStepBlock,
 	AdditionalFields,

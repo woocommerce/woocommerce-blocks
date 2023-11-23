@@ -14,7 +14,11 @@ import {
 	getRegisteredBlocks,
 	hasInnerBlocks,
 } from '@woocommerce/blocks-checkout';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
+
+/**
+ * Internal dependencies
+ */
+import BlockErrorBoundary from '~/base/components/block-error-boundary';
 
 /**
  * This file contains logic used on the frontend to convert DOM elements (saved by the block editor) to React

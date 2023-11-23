@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import Drawer from '@woocommerce/base-components/drawer';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import {
 	getValidBlockAttributes,
@@ -32,6 +31,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import Drawer from '~/base/components/drawer';
 import { renderParentBlock } from '~/atomic/utils';
 import type { BlockAttributes } from './types';
 import QuantityBadge from './quantity-badge';

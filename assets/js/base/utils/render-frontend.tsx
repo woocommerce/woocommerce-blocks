@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { render, Suspense } from '@wordpress/element';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
+
+/**
+ * Internal dependencies
+ */
+import BlockErrorBoundary from '~/base/components/block-error-boundary';
 
 // Some blocks take care of rendering their inner blocks automatically. For
 // example, the empty cart. In those cases, we don't want to trigger the render

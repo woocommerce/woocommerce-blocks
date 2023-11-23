@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { useState, useCallback, useEffect } from '@wordpress/element';
-import { AddressForm } from '@woocommerce/base-components/cart-checkout';
 import { useCheckoutAddress, useStoreEvents } from '@woocommerce/base-context';
 import type {
 	ShippingAddress,
@@ -15,6 +14,7 @@ import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
+import { AddressForm } from '~/base/components/cart-checkout';
 import AddressWrapper from '../../address-wrapper';
 import AddressCard from '../../address-card';
 

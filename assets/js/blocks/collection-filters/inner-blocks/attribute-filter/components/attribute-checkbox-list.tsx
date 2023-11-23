@@ -1,9 +1,13 @@
 /**
  * External dependencies
  */
-import FilterElementLabel from '@woocommerce/base-components/filter-element-label';
 import { CheckboxList } from '@woocommerce/blocks-components';
 import { AttributeTerm } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import FilterElementLabel from '~/base/components/filter-element-label';
 
 type Props = {
 	attributeTerms: AttributeTerm[];

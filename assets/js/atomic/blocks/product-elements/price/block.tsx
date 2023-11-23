@@ -2,7 +2,6 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import ProductPrice from '@woocommerce/base-components/product-price';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import {
 	useInnerBlockLayoutContext,
@@ -16,6 +15,7 @@ import type { HTMLAttributes } from 'react';
 /**
  * Internal dependencies
  */
+import ProductPrice from '~/base/components/product-price';
 import type { BlockAttributes } from './types';
 
 type Props = BlockAttributes & HTMLAttributes< HTMLDivElement >;

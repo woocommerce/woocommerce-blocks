@@ -8,7 +8,6 @@ import {
 } from '@woocommerce/shared-context';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
-import ProductName from '@woocommerce/base-components/product-name';
 import { useStoreEvents } from '@woocommerce/base-context/hooks';
 import { useStyleProps } from '@woocommerce/base-hooks';
 import type { HTMLAttributes } from 'react';
@@ -17,6 +16,7 @@ import type { HTMLAttributes } from 'react';
  * Internal dependencies
  */
 import './style.scss';
+import ProductName from '~/base/components/product-name';
 import { Attributes } from './types';
 
 type Props = Attributes & HTMLAttributes< HTMLDivElement >;

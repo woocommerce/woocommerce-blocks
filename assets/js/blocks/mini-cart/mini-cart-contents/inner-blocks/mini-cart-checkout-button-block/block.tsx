@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { CHECKOUT_URL } from '@woocommerce/block-settings';
-import Button from '@woocommerce/base-components/button';
 import classNames from 'classnames';
 import { useStyleProps } from '@woocommerce/base-hooks';
 import {
@@ -13,6 +12,7 @@ import {
 /**
  * Internal dependencies
  */
+import Button from '~/base/components/button';
 import { defaultCheckoutButtonLabel } from './constants';
 import { getVariant } from '../utils';
 

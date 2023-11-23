@@ -4,9 +4,6 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import { Icon, chevronDown } from '@wordpress/icons';
-import Rating, {
-	RatingValues,
-} from '@woocommerce/base-components/product-rating';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	useQueryStateByKey,
@@ -18,9 +15,6 @@ import { isBoolean, isObject, objectHasProp } from '@woocommerce/types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
 import { CheckboxList } from '@woocommerce/blocks-components';
-import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
-import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
-import FormTokenField from '@woocommerce/base-components/form-token-field';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { changeUrl, normalizeQueryParams } from '@woocommerce/utils';
 import classnames from 'classnames';
@@ -29,6 +23,10 @@ import type { ReactElement } from 'react';
 /**
  * Internal dependencies
  */
+import Rating, { RatingValues } from '~/base/components/product-rating';
+import FilterSubmitButton from '~/base/components/filter-submit-button';
+import FilterResetButton from '~/base/components/filter-reset-button';
+import FormTokenField from '~/base/components/form-token-field';
 import { previewOptions } from './preview';
 import './style.scss';
 import { Attributes } from './types';

@@ -4,11 +4,11 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import { Component } from '@wordpress/element';
-import { Review } from '@woocommerce/base-components/reviews/types';
 
 /**
  * Internal dependencies
  */
+import { Review } from '~/base/components/reviews/types';
 import { getSortArgs } from './utils';
 import FrontendBlock from './frontend-block';
 import { ReviewBlockAttributes } from './attributes';

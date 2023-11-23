@@ -1,10 +1,14 @@
 /**
  * External dependencies
  */
-import { TotalsCoupon } from '@woocommerce/base-components/cart-checkout';
 import { useStoreCartCoupons } from '@woocommerce/base-context/hooks';
 import { getSetting } from '@woocommerce/settings';
 import { TotalsWrapper } from '@woocommerce/blocks-components';
+
+/**
+ * Internal dependencies
+ */
+import { TotalsCoupon } from '~/base/components/cart-checkout';
 
 const Block = ( { className }: { className: string } ): JSX.Element | null => {
 	const couponsEnabled = getSetting( 'couponsEnabled', true );

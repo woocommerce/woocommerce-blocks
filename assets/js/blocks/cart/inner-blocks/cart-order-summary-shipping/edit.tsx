@@ -5,11 +5,11 @@ import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ExternalLink } from '@wordpress/components';
 import { ADMIN_URL, getSetting } from '@woocommerce/settings';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
  */
+import Noninteractive from '~/base/components/noninteractive';
 import Block from './block';
 
 export const Edit = ( {

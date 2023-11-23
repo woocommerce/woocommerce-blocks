@@ -5,13 +5,13 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { hasShippingRate } from '@woocommerce/base-components/cart-checkout/totals/shipping/utils';
 import { hasCollectableRate } from '@woocommerce/base-utils';
 import { isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { hasShippingRate } from '~/base/components/cart-checkout/totals/shipping/utils';
 import { useShippingData } from './shipping/use-shipping-data';
 
 export const useShowShippingTotalWarning = () => {

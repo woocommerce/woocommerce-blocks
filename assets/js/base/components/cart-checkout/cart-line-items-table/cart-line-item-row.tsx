@@ -4,9 +4,6 @@
 import classnames from 'classnames';
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
-import QuantitySelector from '@woocommerce/base-components/quantity-selector';
-import ProductPrice from '@woocommerce/base-components/product-price';
-import ProductName from '@woocommerce/base-components/product-name';
 import {
 	useStoreCartItemQuantity,
 	useStoreEvents,
@@ -23,6 +20,9 @@ import { getSetting } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
+import QuantitySelector from '~/base/components/quantity-selector';
+import ProductPrice from '~/base/components/product-price';
+import ProductName from '~/base/components/product-name';
 import ProductBackorderBadge from '../product-backorder-badge';
 import ProductImage from '../product-image';
 import ProductLowStockBadge from '../product-low-stock-badge';

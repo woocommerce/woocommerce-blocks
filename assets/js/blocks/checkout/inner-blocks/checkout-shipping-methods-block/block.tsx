@@ -6,7 +6,6 @@ import {
 	useCustomerData,
 	useShippingData,
 } from '@woocommerce/base-context/hooks';
-import { ShippingRatesControl } from '@woocommerce/base-components/cart-checkout';
 import {
 	getShippingRatesPackageCount,
 	hasCollectableRate,
@@ -24,8 +23,13 @@ import type {
 	PackageRateOption,
 	CartShippingPackageShippingRate,
 } from '@woocommerce/types';
-import NoticeBanner from '@woocommerce/base-components/notice-banner';
 import type { ReactElement } from 'react';
+
+/**
+ * Internal dependencies
+ */
+import { ShippingRatesControl } from '~/base/components/cart-checkout';
+import NoticeBanner from '~/base/components/notice-banner';
 
 /**
  * Renders a shipping rate control option.

@@ -5,7 +5,11 @@ import { render, screen } from '@testing-library/react';
 import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { dispatch } from '@wordpress/data';
 import { previewCart } from '@woocommerce/resource-previews';
-import PickupLocation from '@woocommerce/base-components/cart-checkout/pickup-location';
+
+/**
+ * Internal dependencies
+ */
+import PickupLocation from '~/base/components/cart-checkout/pickup-location';
 
 jest.mock( '@woocommerce/settings', () => {
 	const originalModule = jest.requireActual( '@woocommerce/settings' );

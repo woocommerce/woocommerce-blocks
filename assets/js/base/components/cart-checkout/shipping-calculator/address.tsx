@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import Button from '@woocommerce/base-components/button';
 import { useState } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import type { ShippingAddress, AddressFields } from '@woocommerce/settings';
@@ -13,6 +12,7 @@ import { useDispatch, useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import './style.scss';
+import Button from '~/base/components/button';
 import { AddressForm } from '../address-form';
 
 interface ShippingCalculatorAddressProps {

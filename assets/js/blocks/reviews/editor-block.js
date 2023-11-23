@@ -7,12 +7,13 @@ import PropTypes from 'prop-types';
 import { Disabled } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
-import LoadMoreButton from '@woocommerce/base-components/load-more-button';
-import {
-	ReviewList,
-	ReviewSortSelect,
-} from '@woocommerce/base-components/reviews';
 import withReviews from '@woocommerce/base-hocs/with-reviews';
+
+/**
+ * Internal dependencies
+ */
+import LoadMoreButton from '~/base/components/load-more-button';
+import { ReviewList, ReviewSortSelect } from '~/base/components/reviews';
 
 /**
  * Block rendered in the editor.

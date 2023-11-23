@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { useEditorContext, noticeContexts } from '@woocommerce/base-context';
 import { Title, StoreNoticesContainer } from '@woocommerce/blocks-components';
-import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import { CHECKOUT_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
@@ -12,6 +11,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import LoadingMask from '~/base/components/loading-mask';
 import ExpressPaymentMethods from '../express-payment-methods';
 import './style.scss';
 

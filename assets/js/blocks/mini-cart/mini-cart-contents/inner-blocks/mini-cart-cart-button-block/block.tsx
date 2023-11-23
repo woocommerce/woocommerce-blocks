@@ -2,13 +2,13 @@
  * External dependencies
  */
 import { CART_URL } from '@woocommerce/block-settings';
-import Button from '@woocommerce/base-components/button';
 import classNames from 'classnames';
 import { useStyleProps } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
+import Button from '~/base/components/button';
 import { defaultCartButtonLabel } from './constants';
 import { getVariant } from '../utils';
 

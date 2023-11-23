@@ -4,7 +4,6 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import fastDeepEqual from 'fast-deep-equal/es6';
 import classnames from 'classnames';
-import Pagination from '@woocommerce/base-components/pagination';
 import { useEffect } from '@wordpress/element';
 import { usePrevious } from '@woocommerce/base-hooks';
 import {
@@ -20,6 +19,7 @@ import { speak } from '@wordpress/a11y';
 /**
  * Internal dependencies
  */
+import Pagination from '~/base/components/pagination';
 import NoProducts from './no-products';
 import NoMatchingProducts from './no-matching-products';
 import ProductSortSelect from './product-sort-select';

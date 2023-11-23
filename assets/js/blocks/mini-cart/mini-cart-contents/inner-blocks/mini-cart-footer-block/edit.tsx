@@ -9,7 +9,6 @@ import {
 	usePaymentMethods,
 	useStoreCart,
 } from '@woocommerce/base-context/hooks';
-import PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payment-method-icons';
 import { getIconsFromPaymentMethods } from '@woocommerce/base-utils';
 import { getSetting } from '@woocommerce/settings';
 import { PaymentEventsProvider } from '@woocommerce/base-context';
@@ -17,6 +16,7 @@ import { PaymentEventsProvider } from '@woocommerce/base-context';
 /**
  * Internal dependencies
  */
+import PaymentMethodIcons from '~/base/components/cart-checkout/payment-method-icons';
 import './editor.scss';
 
 const PaymentMethodIconsElement = (): JSX.Element => {

@@ -1,10 +1,14 @@
 /**
  * External dependencies
  */
-import { TotalsShipping } from '@woocommerce/base-components/cart-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { TotalsWrapper } from '@woocommerce/blocks-checkout';
+
+/**
+ * Internal dependencies
+ */
+import { TotalsShipping } from '~/base/components/cart-checkout';
 
 const Block = ( {
 	className = '',

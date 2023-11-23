@@ -3,10 +3,11 @@
  */
 import { PluginArea } from '@wordpress/plugins';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
+
 /**
  * Internal dependencies
  */
+import BlockErrorBoundary from '~/base/components/block-error-boundary';
 import { PaymentEventsProvider } from './payment-events';
 import { ShippingDataProvider } from './shipping';
 import { CheckoutEventsProvider } from './checkout-events';

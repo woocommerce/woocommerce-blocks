@@ -2,10 +2,14 @@
  * External dependencies
  */
 import { render, screen } from '@testing-library/react';
-import ShippingAddress from '@woocommerce/base-components/cart-checkout/totals/shipping/shipping-address';
 import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { dispatch } from '@wordpress/data';
 import { previewCart } from '@woocommerce/resource-previews';
+
+/**
+ * Internal dependencies
+ */
+import ShippingAddress from '~/base/components/cart-checkout/totals/shipping/shipping-address';
 
 jest.mock( '@woocommerce/settings', () => {
 	const originalModule = jest.requireActual( '@woocommerce/settings' );

@@ -3,7 +3,6 @@
  */
 import classnames from 'classnames';
 import { useState, useEffect, useMemo } from '@wordpress/element';
-import Button from '@woocommerce/base-components/button';
 import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
 import { getSetting } from '@woocommerce/settings';
@@ -16,6 +15,7 @@ import { useCartEventsContext } from '@woocommerce/base-context/providers';
 /**
  * Internal dependencies
  */
+import Button from '~/base/components/button';
 import { defaultButtonLabel } from './constants';
 
 /**

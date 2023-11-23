@@ -13,7 +13,6 @@ import {
 } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import { __, isRTL } from '@wordpress/i18n';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
 import { isSiteEditorPage } from '@woocommerce/utils';
 import type { ReactElement } from 'react';
 import { select } from '@wordpress/data';
@@ -26,6 +25,7 @@ import type { ColorPaletteOption } from '@woocommerce/editor-components/color-pa
 /**
  * Internal dependencies
  */
+import Noninteractive from '~/base/components/noninteractive';
 import QuantityBadge from './quantity-badge';
 import { defaultColorItem } from './utils/defaults';
 import { migrateAttributesToColorPanel } from './utils/data';

@@ -8,8 +8,6 @@ import {
 	useCollectionData,
 } from '@woocommerce/base-context/hooks';
 import { useCallback, useState, useEffect } from '@wordpress/element';
-import PriceSlider from '@woocommerce/base-components/price-slider';
-import FilterTitlePlaceholder from '@woocommerce/base-components/filter-placeholder';
 import { useDebouncedCallback } from 'use-debounce';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
@@ -25,6 +23,8 @@ import {
 /**
  * Internal dependencies
  */
+import PriceSlider from '~/base/components/price-slider';
+import FilterTitlePlaceholder from '~/base/components/filter-placeholder';
 import usePriceConstraints from './use-price-constraints';
 import './style.scss';
 import { Attributes } from './types';

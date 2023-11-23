@@ -1,8 +1,12 @@
 /**
  * External dependencies
  */
-import Button, { ButtonProps } from '@woocommerce/base-components/button';
 import { RichText } from '@wordpress/block-editor';
+
+/**
+ * Internal dependencies
+ */
+import Button, { ButtonProps } from '~/base/components/button';
 
 export interface EditableButtonProps
 	extends Omit< ButtonProps, 'onChange' | 'placeholder' | 'value' > {

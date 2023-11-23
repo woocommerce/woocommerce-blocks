@@ -1,8 +1,12 @@
 /**
  * External dependencies
  */
-import Label from '@woocommerce/base-components/filter-element-label';
 import { AttributeObject } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import Label from '~/base/components/filter-element-label';
 
 export const previewOptions = [
 	{

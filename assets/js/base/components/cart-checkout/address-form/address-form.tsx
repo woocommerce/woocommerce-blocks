@@ -6,14 +6,6 @@ import {
 	ValidatedTextInput,
 	type ValidatedTextInputHandle,
 } from '@woocommerce/blocks-components';
-import {
-	BillingCountryInput,
-	ShippingCountryInput,
-} from '@woocommerce/base-components/country-input';
-import {
-	BillingStateInput,
-	ShippingStateInput,
-} from '@woocommerce/base-components/state-input';
 import { useEffect, useMemo, useRef } from '@wordpress/element';
 import { useInstanceId } from '@wordpress/compose';
 import { useShallowEqual } from '@woocommerce/base-hooks';
@@ -23,6 +15,14 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 /**
  * Internal dependencies
  */
+import {
+	BillingCountryInput,
+	ShippingCountryInput,
+} from '~/base/components/country-input';
+import {
+	BillingStateInput,
+	ShippingStateInput,
+} from '~/base/components/state-input';
 import {
 	AddressFormProps,
 	FieldType,

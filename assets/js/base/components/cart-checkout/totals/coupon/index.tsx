@@ -3,8 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import Button from '@woocommerce/base-components/button';
-import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { withInstanceId } from '@wordpress/compose';
 import {
 	ValidatedTextInput,
@@ -19,6 +17,8 @@ import type { MouseEvent, MouseEventHandler } from 'react';
  * Internal dependencies
  */
 import './style.scss';
+import Button from '~/base/components/button';
+import LoadingMask from '~/base/components/loading-mask';
 
 export interface TotalsCouponProps {
 	/**

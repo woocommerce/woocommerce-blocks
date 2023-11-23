@@ -11,7 +11,6 @@ import {
 } from '@woocommerce/base-context';
 import { CheckboxControl } from '@woocommerce/blocks-checkout';
 import { StoreNoticesContainer } from '@woocommerce/blocks-components';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type {
 	BillingAddress,
 	AddressField,
@@ -23,6 +22,7 @@ import { CART_STORE_KEY } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
+import Noninteractive from '~/base/components/noninteractive';
 import CustomerAddress from './customer-address';
 
 const Block = ( {

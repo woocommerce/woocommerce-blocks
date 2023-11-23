@@ -4,7 +4,11 @@
 import classnames from 'classnames';
 import { useCheckoutSubmit } from '@woocommerce/base-context/hooks';
 import { Icon, check } from '@wordpress/icons';
-import Button from '@woocommerce/base-components/button';
+
+/**
+ * Internal dependencies
+ */
+import Button from '~/base/components/button';
 
 interface PlaceOrderButton {
 	label: string;

@@ -4,9 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { useEffect } from '@wordpress/element';
-import LoadingMask from '@woocommerce/base-components/loading-mask';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import { translateJQueryEventToNative } from '@woocommerce/base-utils';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import {
@@ -20,6 +18,8 @@ import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 /**
  * Internal dependencies
  */
+import BlockErrorBoundary from '~/base/components/block-error-boundary';
+import LoadingMask from '~/base/components/loading-mask';
 import { CartBlockContext } from './context';
 import './style.scss';
 

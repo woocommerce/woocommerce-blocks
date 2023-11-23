@@ -5,13 +5,13 @@ import { useEffect } from '@wordpress/element';
 import { useBlockProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { Disabled, Tooltip } from '@wordpress/components';
-import { Skeleton } from '@woocommerce/base-components/skeleton';
 import { BlockEditProps } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import './editor.scss';
+import { Skeleton } from '~/base/components/skeleton';
 import { useIsDescendentOfSingleProductBlock } from '../shared/use-is-descendent-of-single-product-block';
 export interface Attributes {
 	className?: string;

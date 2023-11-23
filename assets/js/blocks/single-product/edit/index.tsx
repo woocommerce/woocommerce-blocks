@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 import { Placeholder, Button, PanelBody } from '@wordpress/components';
 import { withProduct } from '@woocommerce/block-hocs';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
 import EditProductLink from '@woocommerce/editor-components/edit-product-link';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { ProductResponseItem } from '@woocommerce/types';
@@ -15,10 +14,12 @@ import ErrorPlaceholder, {
 
 import { PRODUCTS_STORE_NAME, Product } from '@woocommerce/data';
 import { useSelect } from '@wordpress/data';
+
 /**
  * Internal dependencies
  */
 import './editor.scss';
+import BlockErrorBoundary from '~/base/components/block-error-boundary';
 import SharedProductControl from './shared-product-control';
 import EditorBlockControls from './editor-block-controls';
 import LayoutEditor from './layout-editor';

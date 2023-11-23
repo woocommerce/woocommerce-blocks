@@ -2,14 +2,14 @@
 /**
  * External dependencies
  */
-import type PaymentMethodLabel from '@woocommerce/base-components/cart-checkout/payment-method-label';
-import type PaymentMethodIcons from '@woocommerce/base-components/cart-checkout/payment-method-icons';
-import type LoadingMask from '@woocommerce/base-components/loading-mask';
 import type { ValidationInputError } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies
  */
+import type PaymentMethodLabel from '~/base/components/cart-checkout/payment-method-label';
+import type PaymentMethodIcons from '~/base/components/cart-checkout/payment-method-icons';
+import type LoadingMask from '~/base/components/loading-mask';
 import type { Currency } from './currency';
 import type { CartBillingAddress, CartShippingRate } from './cart';
 import type {

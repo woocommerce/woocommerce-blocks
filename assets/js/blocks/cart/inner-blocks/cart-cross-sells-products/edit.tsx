@@ -5,11 +5,11 @@ import { __ } from '@wordpress/i18n';
 import { PanelBody, RangeControl } from '@wordpress/components';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { getSetting } from '@woocommerce/settings';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
  */
+import Noninteractive from '~/base/components/noninteractive';
 import Block from './block';
 import './editor.scss';
 

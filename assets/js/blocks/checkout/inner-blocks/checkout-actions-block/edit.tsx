@@ -10,13 +10,13 @@ import PageSelector from '@woocommerce/editor-components/page-selector';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import { getSetting } from '@woocommerce/settings';
-import { ReturnToCartButton } from '@woocommerce/base-components/cart-checkout';
 import EditableButton from '@woocommerce/editor-components/editable-button';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
 
 /**
  * Internal dependencies
  */
+import { ReturnToCartButton } from '~/base/components/cart-checkout';
+import Noninteractive from '~/base/components/noninteractive';
 import { defaultPlaceOrderButtonLabel } from './constants';
 
 export const Edit = ( {

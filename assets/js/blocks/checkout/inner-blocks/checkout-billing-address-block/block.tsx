@@ -8,7 +8,6 @@ import {
 	useEditorContext,
 	noticeContexts,
 } from '@woocommerce/base-context';
-import Noninteractive from '@woocommerce/base-components/noninteractive';
 import type {
 	ShippingAddress,
 	AddressField,
@@ -22,6 +21,7 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 /**
  * Internal dependencies
  */
+import Noninteractive from '~/base/components/noninteractive';
 import CustomerAddress from './customer-address';
 
 const Block = ( {

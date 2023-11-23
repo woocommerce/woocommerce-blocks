@@ -9,8 +9,6 @@ import {
 	useShowShippingTotalWarning,
 } from '@woocommerce/base-context/hooks';
 import { CheckoutProvider, noticeContexts } from '@woocommerce/base-context';
-import BlockErrorBoundary from '@woocommerce/base-components/block-error-boundary';
-import { SidebarLayout } from '@woocommerce/base-components/sidebar-layout';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
@@ -24,6 +22,8 @@ import {
 /**
  * Internal dependencies
  */
+import BlockErrorBoundary from '~/base/components/block-error-boundary';
+import { SidebarLayout } from '~/base/components/sidebar-layout';
 import './styles/style.scss';
 import EmptyCart from './empty-cart';
 import CheckoutOrderError from './checkout-order-error';

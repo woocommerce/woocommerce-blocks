@@ -2,11 +2,11 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { Sidebar } from '@woocommerce/base-components/sidebar-layout';
 
 /**
  * Internal dependencies
  */
+import { Sidebar } from '~/base/components/sidebar-layout';
 import './style.scss';
 
 const FrontendBlock = ( {
