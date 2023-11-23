@@ -68,7 +68,7 @@ const defaultQuery = {
 	title: 'All Products',
 	icon: <Icon icon={ loop } />,
 	description:
-		'Display all products. Results may be limited by the current template context.',
+		'Display all products in your catalog. Results may change to match the current template, page, or search term.',
 };
 
 const getDefaultChosenCollection = (

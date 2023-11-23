@@ -18,7 +18,7 @@ const collection = {
 	title: __( 'Best Sellers', 'woo-gutenberg-products-block' ),
 	icon: ( <Icon icon={ chartBar } /> ) as BlockIcon,
 	description: __(
-		'Display a grid of the best selling products.',
+		'Recommend your best-selling products.',
 		'woo-gutenberg-products-block'
 	),
 	keywords: [ 'best selling' ],
@@ -48,7 +48,7 @@ const heading: InnerBlockTemplate = [
 	{
 		textAlign: 'center',
 		level: 2,
-		content: __( 'Best Selling Products', 'woo-gutenberg-products-block' ),
+		content: __( 'Best selling products', 'woo-gutenberg-products-block' ),
 		style: { spacing: { margin: { bottom: '1rem' } } },
 	},
 ];

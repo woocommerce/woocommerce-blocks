@@ -22,7 +22,7 @@ const collection = {
 	title: __( 'Featured', 'woo-gutenberg-products-block' ),
 	icon: ( <Icon icon={ starFilled } /> ) as BlockIcon,
 	description: __(
-		'Products that have been marked as featured.',
+		'Showcase your featured products.',
 		'woo-gutenberg-products-block'
 	),
 	keywords: [],
@@ -51,7 +51,7 @@ const heading: [ string, BlockAttributes?, InnerBlockTemplate[]? ] = [
 	{
 		textAlign: 'center',
 		level: 2,
-		content: __( 'Featured Products', 'woo-gutenberg-products-block' ),
+		content: __( 'Featured products', 'woo-gutenberg-products-block' ),
 		style: { spacing: { margin: { bottom: '1rem' } } },
 	},
 ];

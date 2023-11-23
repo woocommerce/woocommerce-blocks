@@ -22,7 +22,7 @@ const collection = {
 	title: __( 'Top Rated', 'woo-gutenberg-products-block' ),
 	icon: ( <Icon icon={ starEmpty } /> ) as BlockIcon,
 	description: __(
-		'Products gaining popularity based on recent activity.',
+		'Recommend products with the highest review ratings.',
 		'woo-gutenberg-products-block'
 	),
 	keywords: [],
@@ -52,7 +52,7 @@ const heading: [ string, BlockAttributes?, InnerBlockTemplate[]? ] = [
 	{
 		textAlign: 'center',
 		level: 2,
-		content: __( 'Top Rated Products', 'woo-gutenberg-products-block' ),
+		content: __( 'Top rated products', 'woo-gutenberg-products-block' ),
 		style: { spacing: { margin: { bottom: '1rem' } } },
 	},
 ];

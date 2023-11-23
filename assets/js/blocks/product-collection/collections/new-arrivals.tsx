@@ -22,7 +22,7 @@ const collection = {
 	title: __( 'New Arrivals', 'woo-gutenberg-products-block' ),
 	icon: ( <Icon icon={ calendar } /> ) as BlockIcon,
 	description: __(
-		'Display a grid of your newest products.',
+		'Recommend your newest products..',
 		'woo-gutenberg-products-block'
 	),
 	keywords: [ 'newest products' ],
@@ -52,7 +52,7 @@ const heading: [ string, BlockAttributes?, InnerBlockTemplate[]? ] = [
 	{
 		textAlign: 'center',
 		level: 2,
-		content: __( 'Newest Products', 'woo-gutenberg-products-block' ),
+		content: __( 'New arrivals', 'woo-gutenberg-products-block' ),
 		style: { spacing: { margin: { bottom: '1rem' } } },
 	},
 ];
