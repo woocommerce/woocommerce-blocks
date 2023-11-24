@@ -3,6 +3,7 @@
  */
 import { getProducts } from '@woocommerce/editor-components/utils';
 import { ProductResponseItem } from '@woocommerce/types';
+import { decodeEntities } from '@wordpress/html-entities';
 import { useState, useEffect, useCallback, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
@@ -16,25 +17,6 @@ import {
  * Internal dependencies
  */
 import { QueryControlProps } from '../types';
-
-/**
- * Decodes HTML entities in a string.
- * Example:
- * decodeHTMLEntities( 'foo &amp; bar' ) // 'foo & bar'
- * decodeHTMLEntities( 'Hoodie &#8211; Black' ) // 'Hoodie – Black'
- *
- * @param {string} str - The string containing HTML entities.
- * @return {string} - The decoded string.
- */
-function decodeHTMLEntities( str?: string ) {
-	if ( ! str ) {
-		return '';
-	}
-
-	const txt = document.createElement( 'textarea' );
-	txt.innerHTML = str;
-	return txt.value;
-}
 
 /**
  * Returns:
@@ -119,12 +101,12 @@ const HandPickedProductsControl = ( {
 		const parsedToken = Number( token );
 
 		if ( Number.isNaN( parsedToken ) ) {
-			return decodeHTMLEntities( token );
+			return decodeEntities( token ) || '';
 		}
 
 		const product = productsMap.get( parsedToken );
 
-		return decodeHTMLEntities( product?.name );
+		return decodeEntities( product?.name ) || '';
 	};
 
 	return (
