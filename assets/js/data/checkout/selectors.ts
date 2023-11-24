@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { select } from '@wordpress/data';
-import { isString, objectHasProp } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isString, objectHasProp } from '~/types';
 import { hasCollectableRate } from '~/base/utils';
 import { STATUS } from './constants';
 import { CheckoutState } from './default-state';

@@ -15,13 +15,13 @@ import {
 import { CheckboxList } from '@woocommerce/blocks-components';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
-import { isBoolean, objectHasProp } from '@woocommerce/types';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { isBoolean, objectHasProp } from '~/types';
 import {
 	changeUrl,
 	PREFIX_QUERY_ARG_FILTER_TYPE,

@@ -8,12 +8,12 @@ import {
 	currencyDollar as bill,
 	payment as card,
 } from '@wordpress/icons';
-import { isString, objectHasProp } from '@woocommerce/types';
 import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { isString, objectHasProp } from '~/types';
 import { checkPayment } from '~/icons';
 import './style.scss';
 

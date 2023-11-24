@@ -2,15 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import type {
-	CartShippingAddress,
-	CartBillingAddress,
-} from '@woocommerce/types';
 import { AddressFields, AddressField } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
+import type { CartShippingAddress, CartBillingAddress } from '~/types';
 import { ALLOWED_COUNTRIES } from '~/settings/blocks';
 import './style.scss';
 

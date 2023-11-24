@@ -5,7 +5,6 @@ import type { BlockEditProps } from '@wordpress/blocks';
 import { InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { type ElementType, useMemo } from '@wordpress/element';
-import { EditorBlock } from '@woocommerce/types';
 import { addFilter } from '@wordpress/hooks';
 import {
 	// @ts-expect-error Using experimental features
@@ -16,6 +15,7 @@ import {
 /**
  * Internal dependencies
  */
+import { EditorBlock } from '~/types';
 import { ProductCollectionFeedbackPrompt } from '~/editor-components/feedback-prompt';
 import {
 	enableAutoUpdate,

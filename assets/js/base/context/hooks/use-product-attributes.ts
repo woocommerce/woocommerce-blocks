@@ -2,15 +2,11 @@
  * External dependencies
  */
 import { useEffect, useRef, useState } from '@wordpress/element';
-import {
-	AttributeObject,
-	AttributeTerm,
-	AttributeWithTerms,
-} from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { AttributeObject, AttributeTerm, AttributeWithTerms } from '~/types';
 import { getAttributes, getTerms } from '~/editor-components/utils';
 import { formatError } from '~/base/utils';
 

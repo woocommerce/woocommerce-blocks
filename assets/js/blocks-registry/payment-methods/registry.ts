@@ -2,6 +2,11 @@
  * External dependencies
  */
 import deprecated from '@wordpress/deprecated';
+import { dispatch } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
 import type {
 	PaymentMethodConfiguration,
 	ExpressPaymentMethodConfiguration,
@@ -9,12 +14,7 @@ import type {
 	PaymentMethodConfigInstance,
 	PaymentMethods,
 	ExpressPaymentMethods,
-} from '@woocommerce/types';
-import { dispatch } from '@wordpress/data';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { default as PaymentMethodConfig } from './payment-method-config';
 import { default as ExpressPaymentMethodConfig } from './express-payment-method-config';
 import { canMakePaymentExtensionsCallbacks } from './extensions-config';

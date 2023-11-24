@@ -5,11 +5,11 @@ import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
-import { ProductResponseItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { ProductResponseItem } from '~/types';
 import { Block as ProductImage } from '../../../atomic/blocks/product-elements/image/block';
 import { Block as ProductName } from '../../../atomic/blocks/product-elements/title/block';
 import { Block as ProductRating } from '../../../atomic/blocks/product-elements/rating/block';

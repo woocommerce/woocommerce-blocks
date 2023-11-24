@@ -10,7 +10,6 @@ import {
 } from '@woocommerce/shared-context';
 import { PanelBody, Button } from '@wordpress/components';
 import { backup } from '@wordpress/icons';
-import { ProductResponseItem } from '@woocommerce/types';
 import {
 	InnerBlocks,
 	InspectorControls,
@@ -22,6 +21,7 @@ import {
 /**
  * Internal dependencies
  */
+import { ProductResponseItem } from '~/types';
 import { createBlocksFromTemplate } from '~/atomic/utils';
 import { DEFAULT_INNER_BLOCKS, ALLOWED_INNER_BLOCKS } from '../constants';
 import metadata from '../block.json';

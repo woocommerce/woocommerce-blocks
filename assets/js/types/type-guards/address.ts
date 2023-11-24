@@ -2,7 +2,11 @@
  * External dependencies
  */
 import type { BillingAddress, ShippingAddress } from '@woocommerce/settings';
-import { objectHasProp } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { objectHasProp } from '~/types';
 
 export const isShippingAddress = (
 	address: unknown

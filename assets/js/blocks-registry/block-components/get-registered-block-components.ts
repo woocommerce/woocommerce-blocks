@@ -2,11 +2,11 @@
  * External dependencies
  */
 import deprecated from '@wordpress/deprecated';
-import type { RegisteredBlockComponent } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { RegisteredBlockComponent } from '~/types';
 import { registeredBlockComponents } from './registered-block-components-init';
 
 /**

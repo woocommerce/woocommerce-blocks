@@ -4,13 +4,13 @@
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import type { UniqueIdentifier } from '@dnd-kit/core';
-import { isBoolean } from '@woocommerce/types';
 import { ToggleControl, Button, ExternalLink } from '@wordpress/components';
 import styled from '@emotion/styled';
 
 /**
  * Internal dependencies
  */
+import { isBoolean } from '~/types';
 import {
 	SettingsSection,
 	SortableTable,

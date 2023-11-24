@@ -9,15 +9,15 @@ import {
 } from '@woocommerce/blocks-components';
 import { decodeEntities } from '@wordpress/html-entities';
 import { getSetting } from '@woocommerce/settings';
-import type {
-	PackageRateOption,
-	CartShippingPackageShippingRate,
-} from '@woocommerce/types';
 import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
  */
+import type {
+	PackageRateOption,
+	CartShippingPackageShippingRate,
+} from '~/types';
 import {
 	getShippingRatesPackageCount,
 	hasCollectableRate,

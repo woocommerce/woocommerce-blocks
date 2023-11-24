@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import type { ProductResponseItem } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import type { ProductResponseItem } from '~/types';
 import type { SearchListItem } from '~/editor-components/search-list-control/types';
 
 /**

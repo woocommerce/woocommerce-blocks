@@ -2,10 +2,11 @@
  * External dependencies
  */
 import { registerPaymentMethodExtensionCallbacks } from '@woocommerce/blocks-registry';
-import type { PaymentMethodConfigInstance } from '@woocommerce/types';
+
 /**
  * Internal dependencies
  */
+import type { PaymentMethodConfigInstance } from '~/types';
 import PaymentMethodConfig from '../payment-method-config';
 import * as paymentMethodConfigHelpers from '../payment-method-config-helper';
 

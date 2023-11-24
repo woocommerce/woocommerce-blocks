@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { Suspense } from '@wordpress/element';
-import { ProductResponseItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { ProductResponseItem } from '~/types';
 import { getBlockMap } from '~/atomic/utils';
 import { LayoutConfig } from '../types';
 

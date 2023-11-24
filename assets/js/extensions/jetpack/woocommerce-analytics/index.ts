@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { Cart, isObject, objectHasProp } from '@woocommerce/types';
 import { select } from '@wordpress/data';
 import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
+import { Cart, isObject, objectHasProp } from '~/types';
 import { STORE_KEY as CART_STORE_KEY } from '../../../data/cart/constants';
 
 declare global {

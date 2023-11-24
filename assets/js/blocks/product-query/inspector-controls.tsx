@@ -6,7 +6,6 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { type ElementType } from '@wordpress/element';
-import { EditorBlock, isNumber } from '@woocommerce/types';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import {
 	FormTokenField,
@@ -20,6 +19,7 @@ import {
 /**
  * Internal dependencies
  */
+import { EditorBlock, isNumber } from '~/types';
 import { ProductQueryFeedbackPrompt } from '~/editor-components/feedback-prompt';
 import { ProductQueryBlockQuery } from '~/blocks/product-query/types';
 import {

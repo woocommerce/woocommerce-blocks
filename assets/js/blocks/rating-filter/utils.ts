@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { isString } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { isString } from '~/types';
 import { getUrlParameter } from '~/utils';
 import metadata from './block.json';
 

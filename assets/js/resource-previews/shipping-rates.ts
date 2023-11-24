@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { __, _x } from '@wordpress/i18n';
-import type { CartResponseShippingRate } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import type { CartResponseShippingRate } from '~/types';
 
 export const previewShippingRates: CartResponseShippingRate[] = [
 	{

@@ -8,12 +8,6 @@ import {
 } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import {
-	isBoolean,
-	isString,
-	isCartResponseTotals,
-	isNumber,
-} from '@woocommerce/types';
-import {
 	unmountComponentAtNode,
 	useCallback,
 	useEffect,
@@ -26,6 +20,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import { isBoolean, isString, isCartResponseTotals, isNumber } from '~/types';
 import {
 	getValidBlockAttributes,
 	translateJQueryEventToNative,

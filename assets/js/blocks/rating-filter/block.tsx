@@ -5,7 +5,6 @@ import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import { Icon, chevronDown } from '@wordpress/icons';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isBoolean, isObject, objectHasProp } from '@woocommerce/types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
 import { CheckboxList } from '@woocommerce/blocks-components';
@@ -16,6 +15,7 @@ import type { ReactElement } from 'react';
 /**
  * Internal dependencies
  */
+import { isBoolean, isObject, objectHasProp } from '~/types';
 import { changeUrl, normalizeQueryParams } from '~/utils';
 import { usePrevious, useShallowEqual } from '~/base/hooks';
 import {

@@ -6,16 +6,11 @@ import { useDebouncedCallback } from 'use-debounce';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import {
-	CurrencyResponse,
-	isBoolean,
-	isString,
-	objectHasProp,
-} from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { CurrencyResponse, isBoolean, isString, objectHasProp } from '~/types';
 import { changeUrl, getUrlParameter } from '~/utils';
 import { usePrevious } from '~/base/hooks';
 import {

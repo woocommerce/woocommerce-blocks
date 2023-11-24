@@ -4,9 +4,13 @@
 import { decodeEntities } from '@wordpress/html-entities';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { FormattedMonetaryAmount } from '@woocommerce/blocks-components';
-import type { PackageRateOption } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
-import { CartShippingPackageShippingRate } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import type { PackageRateOption } from '~/types';
+import { CartShippingPackageShippingRate } from '~/types';
 
 /**
  * Default render function for package rate options.

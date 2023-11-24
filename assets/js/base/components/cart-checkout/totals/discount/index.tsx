@@ -5,16 +5,16 @@ import { __, sprintf } from '@wordpress/i18n';
 import { RemovableChip, TotalsItem } from '@woocommerce/blocks-components';
 import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 import { getSetting } from '@woocommerce/settings';
+
+/**
+ * Internal dependencies
+ */
 import {
 	CartResponseCouponItemWithLabel,
 	CartTotalsItem,
 	Currency,
 	LooselyMustHave,
-} from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import './style.scss';
 import LoadingMask from '~/base/components/loading-mask';
 

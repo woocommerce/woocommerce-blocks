@@ -8,13 +8,12 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { applyCheckoutFilter, mustContain } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
 import { forwardRef, useMemo } from '@wordpress/element';
-import type { CartItem } from '@woocommerce/types';
-import { objectHasProp, Currency } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
+import { objectHasProp, Currency, CartItem } from '~/types';
 import {
 	useStoreCartItemQuantity,
 	useStoreEvents,

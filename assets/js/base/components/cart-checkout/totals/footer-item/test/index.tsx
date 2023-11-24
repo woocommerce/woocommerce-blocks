@@ -3,11 +3,11 @@
  */
 import { render } from '@testing-library/react';
 import { allSettings } from '@woocommerce/settings';
-import { Currency, CartResponseTotals } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { Currency, CartResponseTotals } from '~/types';
 import TotalsFooterItem from '../index';
 
 describe( 'TotalsFooterItem', () => {

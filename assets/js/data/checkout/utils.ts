@@ -1,15 +1,15 @@
 /**
  * External dependencies
  */
-import { isString, isObject } from '@woocommerce/types';
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-import type { PaymentResult, CheckoutResponse } from '@woocommerce/types';
 import type { createErrorNotice as originalCreateErrorNotice } from '@wordpress/notices/store/actions';
 
 /**
  * Internal dependencies
  */
+import { isString, isObject } from '~/types';
+import type { PaymentResult, CheckoutResponse } from '~/types';
 import {
 	isErrorResponse,
 	isFailResponse,

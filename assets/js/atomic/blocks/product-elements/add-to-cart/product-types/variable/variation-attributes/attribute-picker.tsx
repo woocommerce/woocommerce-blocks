@@ -3,11 +3,11 @@
  */
 import { useState, useEffect, useMemo } from '@wordpress/element';
 import type { SelectControl } from '@wordpress/components';
-import { Dictionary, ProductResponseAttributeItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { Dictionary, ProductResponseAttributeItem } from '~/types';
 import { useShallowEqual } from '~/base/hooks';
 import AttributeSelectControl from './attribute-select-control';
 import {

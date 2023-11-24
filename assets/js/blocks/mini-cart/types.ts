@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { CartResponseTotals } from '@woocommerce/types';
+import { CartResponseTotals } from '~/types';
 
 export type IconType = 'cart' | 'bag' | 'bag-alt' | undefined;
 

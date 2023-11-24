@@ -12,11 +12,11 @@ import {
 	LocaleSpecificAddressField,
 } from '@woocommerce/settings';
 import { __, sprintf } from '@wordpress/i18n';
-import { isNumber, isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isNumber, isString } from '~/types';
 import { COUNTRY_LOCALE } from '~/settings/blocks';
 
 /**

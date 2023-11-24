@@ -3,11 +3,11 @@
  */
 import type { Story, Meta } from '@storybook/react';
 import { allSettings } from '@woocommerce/settings';
-import { Currency } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { Currency } from '~/types';
 import FooterItem, { TotalsFooterItemProps } from '..';
 
 const NZD: Currency = {

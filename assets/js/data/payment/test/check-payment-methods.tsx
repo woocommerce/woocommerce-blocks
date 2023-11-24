@@ -9,11 +9,11 @@ import {
 	__experimentalDeRegisterPaymentMethod,
 	__experimentalDeRegisterExpressPaymentMethod,
 } from '@woocommerce/blocks-registry';
-import { CanMakePaymentArgument } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { CanMakePaymentArgument } from '~/types';
 import { previewCart } from '~/resource-previews';
 import { checkPaymentMethodsCanPay } from '../utils/check-payment-methods';
 

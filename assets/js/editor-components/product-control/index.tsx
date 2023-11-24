@@ -2,19 +2,19 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { isEmpty } from '@woocommerce/types';
 import { withInstanceId } from '@wordpress/compose';
-import type {
-	ProductResponseItem,
-	WithInjectedInstanceId,
-	WithInjectedProductVariations,
-	WithInjectedSearchedProducts,
-} from '@woocommerce/types';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { isEmpty } from '~/types';
+import type {
+	ProductResponseItem,
+	WithInjectedInstanceId,
+	WithInjectedProductVariations,
+	WithInjectedSearchedProducts,
+} from '~/types';
 import { convertProductResponseItemToSearchItem } from '~/utils';
 import {
 	withProductVariations,

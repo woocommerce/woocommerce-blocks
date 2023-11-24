@@ -5,11 +5,11 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { decodeEntities } from '@wordpress/html-entities';
-import type { CartItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { CartItem } from '~/types';
 import { useStoreCart } from './cart/use-store-cart';
 
 /**

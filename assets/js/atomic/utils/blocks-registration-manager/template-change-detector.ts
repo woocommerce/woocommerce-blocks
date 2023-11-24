@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { subscribe, select } from '@wordpress/data';
-import { isNumber } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { isNumber } from '~/types';
 
 interface TemplateChangeDetectorSubject {
 	add( observer: TemplateChangeDetectorObserver ): void;

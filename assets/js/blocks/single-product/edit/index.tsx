@@ -5,13 +5,13 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 import { Placeholder, Button, PanelBody } from '@wordpress/components';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { ProductResponseItem } from '@woocommerce/types';
 import { PRODUCTS_STORE_NAME, Product } from '@woocommerce/data';
 import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import { ProductResponseItem } from '~/types';
 import { withProduct } from '~/hocs';
 import EditProductLink from '~/editor-components/edit-product-link';
 import ErrorPlaceholder, {

@@ -12,12 +12,12 @@ import {
 } from '@wordpress/element';
 import classnames from 'classnames';
 import { FormattedMonetaryAmount } from '@woocommerce/blocks-components';
-import { Currency, isObject } from '@woocommerce/types';
 import { useDebouncedCallback } from 'use-debounce';
 
 /**
  * Internal dependencies
  */
+import { Currency, isObject } from '~/types';
 import './style.scss';
 import { constrainRangeSliderValues } from './constrain-range-slider-values';
 import FilterSubmitButton from '../filter-submit-button';

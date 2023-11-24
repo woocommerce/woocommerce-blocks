@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { isObject } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { isObject } from '~/types';
 import { hasInnerBlocks } from './get-registered-blocks';
 
 /**

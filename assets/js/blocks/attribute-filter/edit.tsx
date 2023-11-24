@@ -12,7 +12,6 @@ import {
 import { Icon, category, external } from '@wordpress/icons';
 import { getAdminLink, getSetting } from '@woocommerce/settings';
 import classnames from 'classnames';
-import { AttributeSetting } from '@woocommerce/types';
 import {
 	Placeholder,
 	Disabled,
@@ -31,6 +30,7 @@ import {
 /**
  * Internal dependencies
  */
+import { AttributeSetting } from '~/types';
 import { SearchListControl } from '~/editor-components/search-list-control';
 import BlockTitle from '~/editor-components/block-title';
 import { SearchListItem } from '~/editor-components/search-list-control/types';

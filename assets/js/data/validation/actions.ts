@@ -2,11 +2,11 @@
  * External dependencies
  */
 import deprecated from '@wordpress/deprecated';
-import { FieldValidationStatus } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { FieldValidationStatus } from '~/types';
 import { ACTION_TYPES as types } from './action-types';
 import { ReturnOrGeneratorYieldUnion } from '../mapped-types';
 

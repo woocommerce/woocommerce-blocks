@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { isObject } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { isObject } from '~/types';
 import { isBillingAddress, isShippingAddress } from '../address';
 
 describe( 'type-guards', () => {

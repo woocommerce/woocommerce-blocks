@@ -3,11 +3,11 @@
  */
 import type { Notice } from '@wordpress/notices/';
 import { DataRegistry } from '@wordpress/data';
-import { FieldValidationStatus } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { FieldValidationStatus } from '~/types';
 import type { EventObserversType } from '../../base/context/event-emit/types';
 import type { CheckoutState } from './default-state';
 import type { PaymentState } from '../payment/default-state';

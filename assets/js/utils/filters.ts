@@ -3,7 +3,11 @@
  */
 import { getQueryArg, getQueryArgs, addQueryArgs } from '@wordpress/url';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isBoolean } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { isBoolean } from '~/types';
 
 const filteringForPhpTemplate = getSettingWithCoercion(
 	'isRenderingPhpTemplate',

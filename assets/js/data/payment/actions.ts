@@ -1,15 +1,8 @@
 /**
- * External dependencies
- */
-import {
-	PlainPaymentMethods,
-	PlainExpressPaymentMethods,
-} from '@woocommerce/types';
-import type { PaymentResult } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { PlainPaymentMethods, PlainExpressPaymentMethods } from '~/types';
+import type { PaymentResult } from '~/types';
 import { ACTION_TYPES } from './action-types';
 import { checkPaymentMethodsCanPay } from './utils/check-payment-methods';
 import { setDefaultPaymentMethod } from './utils/set-default-payment-method';

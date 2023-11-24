@@ -2,13 +2,13 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isString, isObject } from '@woocommerce/types';
 import type { Style as StyleEngineProperties } from '@wordpress/style-engine/src/types';
 import type { CSSProperties } from 'react';
 
 /**
  * Internal dependencies
  */
+import { isString, isObject } from '~/types';
 import { useTypographyProps } from './use-typography-props';
 import {
 	getColorClassesAndStyles,

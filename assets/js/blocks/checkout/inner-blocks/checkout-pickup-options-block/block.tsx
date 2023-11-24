@@ -16,12 +16,12 @@ import {
 import { decodeEntities } from '@wordpress/html-entities';
 import { getSetting } from '@woocommerce/settings';
 import { Icon, mapMarker } from '@wordpress/icons';
-import { CartShippingPackageShippingRate } from '@woocommerce/types';
 import { ExperimentalOrderLocalPickupPackages } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
+import { CartShippingPackageShippingRate } from '~/types';
 import {
 	isPackageRateCollectable,
 	getShippingRatesPackageCount,

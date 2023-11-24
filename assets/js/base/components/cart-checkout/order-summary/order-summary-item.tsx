@@ -12,11 +12,11 @@ import { applyCheckoutFilter, mustContain } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
 import { getSetting } from '@woocommerce/settings';
 import { useMemo } from '@wordpress/element';
-import { CartItem, isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { CartItem, isString } from '~/types';
 import { useStoreCart } from '~/base/context/hooks';
 import ProductPrice from '~/base/components/product-price';
 import ProductName from '~/base/components/product-name';

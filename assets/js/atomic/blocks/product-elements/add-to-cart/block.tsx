@@ -3,12 +3,12 @@
  */
 import classnames from 'classnames';
 import { useProductDataContext } from '@woocommerce/shared-context';
-import { isEmpty } from '@woocommerce/types';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 
 /**
  * Internal dependencies
  */
+import { isEmpty } from '~/types';
 import {
 	AddToCartFormContextProvider,
 	useAddToCartFormContext,

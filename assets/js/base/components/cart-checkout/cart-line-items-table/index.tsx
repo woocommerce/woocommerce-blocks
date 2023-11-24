@@ -3,13 +3,13 @@
  */
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
-import { CartResponseItem } from '@woocommerce/types';
 import { createRef, useEffect, useRef } from '@wordpress/element';
 import type { RefObject } from 'react';
 
 /**
  * Internal dependencies
  */
+import { CartResponseItem } from '~/types';
 import CartLineItemRow from './cart-line-item-row';
 import './style.scss';
 

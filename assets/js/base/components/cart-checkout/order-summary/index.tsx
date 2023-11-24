@@ -3,11 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Panel } from '@woocommerce/blocks-components';
-import type { CartItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { CartItem } from '~/types';
 import { useContainerWidthContext } from '~/base/context';
 import OrderSummaryItem from './order-summary-item';
 import './style.scss';

@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { ProductResponseItem } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { ProductResponseItem } from '~/types';
 import CartCrossSellsProduct from './cart-cross-sells-product';
 
 interface CrossSellsProductListProps {

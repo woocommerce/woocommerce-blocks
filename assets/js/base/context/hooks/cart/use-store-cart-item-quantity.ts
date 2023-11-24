@@ -9,6 +9,10 @@ import {
 	processErrorResponse,
 } from '@woocommerce/block-data';
 import { useDebounce } from 'use-debounce';
+
+/**
+ * Internal dependencies
+ */
 import {
 	CartItem,
 	StoreCartItemQuantity,
@@ -16,11 +20,7 @@ import {
 	isObject,
 	isString,
 	objectHasProp,
-} from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { usePrevious } from '~/base/hooks';
 import { useStoreCart } from './use-store-cart';
 

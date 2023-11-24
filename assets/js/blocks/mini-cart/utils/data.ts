@@ -6,17 +6,13 @@ import {
 	getCurrencyFromPriceResponse,
 	formatPrice,
 } from '@woocommerce/price-format';
-import {
-	CartResponse,
-	CartResponseTotals,
-	isBoolean,
-} from '@woocommerce/types';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
  */
+import { CartResponse, CartResponseTotals, isBoolean } from '~/types';
 import type { ColorPaletteOption } from '~/editor-components/color-panel/types';
 import { Attributes } from '../edit';
 

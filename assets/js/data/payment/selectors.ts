@@ -1,14 +1,14 @@
 /**
  * External dependencies
  */
-import { objectHasProp } from '@woocommerce/types';
 import deprecated from '@wordpress/deprecated';
 import { getSetting } from '@woocommerce/settings';
-import type { GlobalPaymentMethod } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { objectHasProp } from '~/types';
+import type { GlobalPaymentMethod } from '~/types';
 import { PaymentState } from './default-state';
 import { filterActiveSavedPaymentMethods } from './utils/filter-active-saved-payment-methods';
 import { STATUS as PAYMENT_STATUS } from './constants';

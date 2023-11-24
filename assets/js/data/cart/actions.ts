@@ -1,6 +1,11 @@
 /**
  * External dependencies
  */
+import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
+
+/**
+ * Internal dependencies
+ */
 import type {
 	Cart,
 	CartResponse,
@@ -10,12 +15,7 @@ import type {
 	ApiErrorResponse,
 	CartShippingPackageShippingRate,
 	CartShippingRate,
-} from '@woocommerce/types';
-import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import {
 	triggerAddedToCartEvent,
 	triggerAddingToCartEvent,

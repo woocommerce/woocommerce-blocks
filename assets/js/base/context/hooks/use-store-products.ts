@@ -1,10 +1,7 @@
 /**
- * External dependencies
- */
-import { Query, ProductResponseItem } from '@woocommerce/types';
-/**
  * Internal dependencies
  */
+import { Query, ProductResponseItem } from '~/types';
 import { useCollectionHeader, useCollection } from './collections';
 
 /**

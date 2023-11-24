@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
-import type { RegisteredBlockComponent } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { RegisteredBlockComponent } from '~/types';
 import '../blocks/component-init';
 
 /**

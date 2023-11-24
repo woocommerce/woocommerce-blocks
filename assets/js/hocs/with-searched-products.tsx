@@ -3,14 +3,14 @@
  */
 import { useEffect, useState, useCallback, useRef } from '@wordpress/element';
 import { useDebouncedCallback } from 'use-debounce';
-import type {
-	ProductResponseItem,
-	WithInjectedSearchedProducts,
-} from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type {
+	ProductResponseItem,
+	WithInjectedSearchedProducts,
+} from '~/types';
 import { blocksConfig } from '~/settings/blocks';
 import { getProducts } from '~/editor-components/utils';
 import { formatError } from '../base/utils/errors';

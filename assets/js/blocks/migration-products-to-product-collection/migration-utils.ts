@@ -4,11 +4,11 @@
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { type BlockInstance } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
-import { isBoolean, isNumber } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isBoolean, isNumber } from '~/types';
 import { MIGRATION_STATUS_LS_KEY, getInitialStatusLSValue } from './constants';
 import type {
 	IsBlockType,

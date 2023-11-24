@@ -20,12 +20,12 @@ import {
 	TextareaControl,
 	ExternalLink,
 } from '@wordpress/components';
-import { LooselyMustHave, ProductResponseItem } from '@woocommerce/types';
 import type { ComponentType } from 'react';
 
 /**
  * Internal dependencies
  */
+import { LooselyMustHave, ProductResponseItem } from '~/types';
 import { useBackgroundImage } from './use-background-image';
 import { BLOCK_NAMES } from './constants';
 import { FeaturedItemRequiredAttributes } from './with-featured-item';

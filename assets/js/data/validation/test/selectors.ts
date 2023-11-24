@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { FieldValidationStatus } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { FieldValidationStatus } from '~/types';
 import {
 	getValidationErrorId,
 	getValidationError,

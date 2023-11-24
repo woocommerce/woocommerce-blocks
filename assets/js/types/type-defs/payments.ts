@@ -2,11 +2,11 @@
  * External dependencies
  */
 import type { ReactNode } from 'react';
-import { ApiErrorResponse } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { ApiErrorResponse } from '~/types';
 import type { CartTotals } from './cart';
 import type {
 	CartResponse,

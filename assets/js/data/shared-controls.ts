@@ -4,11 +4,15 @@
 import { __ } from '@wordpress/i18n';
 import triggerFetch, { APIFetchOptions } from '@wordpress/api-fetch';
 import DataLoader from 'dataloader';
+
+/**
+ * Internal dependencies
+ */
 import {
 	ApiResponse,
 	assertBatchResponseIsValid,
 	assertResponseIsValid,
-} from '@woocommerce/types';
+} from '~/types';
 
 const EMPTY_OBJECT = {};
 

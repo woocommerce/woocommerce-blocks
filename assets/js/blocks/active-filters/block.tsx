@@ -6,18 +6,18 @@ import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import { useMemo, useEffect, useState } from '@wordpress/element';
 import classnames from 'classnames';
 import { Label } from '@woocommerce/blocks-components';
+import type { BlockAttributes } from '@wordpress/blocks';
+
+/**
+ * Internal dependencies
+ */
 import {
 	isAttributeQueryCollection,
 	isBoolean,
 	isRatingQueryCollection,
 	isStockStatusQueryCollection,
 	isStockStatusOptions,
-} from '@woocommerce/types';
-import type { BlockAttributes } from '@wordpress/blocks';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { getUrlParameter } from '~/utils';
 import { useIsMounted } from '~/base/hooks';
 import { useQueryStateByKey } from '~/base/context/hooks';

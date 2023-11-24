@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { AttributeObject } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { AttributeObject } from '~/types';
 import Label from '~/base/components/filter-element-label';
 
 export const previewOptions = [

@@ -1,6 +1,11 @@
 /**
  * External dependencies
  */
+import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
+
+/**
+ * Internal dependencies
+ */
 import type {
 	Cart,
 	CartTotals,
@@ -8,12 +13,7 @@ import type {
 	CartItem,
 	CartShippingRate,
 	ApiErrorResponse,
-} from '@woocommerce/types';
-import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { CartState, defaultCartState } from './default-state';
 
 /**

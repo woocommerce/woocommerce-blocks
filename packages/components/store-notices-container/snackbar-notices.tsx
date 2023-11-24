@@ -3,11 +3,11 @@
  */
 import classnames from 'classnames';
 import { useDispatch } from '@wordpress/data';
-import type { NoticeType } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { NoticeType } from '~/types';
 import SnackbarList from '~/base/components/snackbar-list';
 
 const SnackbarNotices = ( {

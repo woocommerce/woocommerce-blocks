@@ -3,11 +3,11 @@
  */
 import { paramCase as kebabCase } from 'change-case';
 import { decodeEntities } from '@wordpress/html-entities';
-import type { ProductResponseItemData } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { ProductResponseItemData } from '~/types';
 import './style.scss';
 
 interface ProductDetailsProps {

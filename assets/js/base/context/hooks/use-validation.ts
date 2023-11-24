@@ -2,12 +2,13 @@
  * External dependencies
  */
 import { useCallback } from '@wordpress/element';
-import type {
-	ValidationData,
-	ValidationContextError,
-} from '@woocommerce/types';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
+
+/**
+ * Internal dependencies
+ */
+import type { ValidationData, ValidationContextError } from '~/types';
 
 /**
  * Custom hook for setting for adding errors to the validation system.

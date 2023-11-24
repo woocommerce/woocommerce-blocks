@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { isEmpty } from '@woocommerce/types';
+import { isEmpty } from '~/types';
 
 describe( 'Testing isEmpty()', () => {
 	it( 'Correctly handles null', () => {

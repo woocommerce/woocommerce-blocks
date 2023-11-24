@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { isObject } from '@woocommerce/types';
+import { isObject } from '~/types';
 
 type Variant = 'text' | 'contained' | 'outlined';
 

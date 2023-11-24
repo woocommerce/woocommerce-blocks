@@ -1,10 +1,10 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
 import type {
 	PaymentMethods,
 	PaymentMethodIcons as PaymentMethodIconsType,
-} from '@woocommerce/types';
+} from '~/types';
 
 /**
  * Get the provider icons from payment methods data.

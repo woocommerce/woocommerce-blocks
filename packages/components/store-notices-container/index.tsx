@@ -8,11 +8,11 @@ import {
 } from '@woocommerce/block-data';
 import type { Notice } from '@wordpress/notices';
 import { useMemo, useEffect } from '@wordpress/element';
-import type { NoticeType } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { NoticeType } from '~/types';
 import { getNoticeContexts } from '~/base/utils';
 import './style.scss';
 import StoreNotices from './store-notices';

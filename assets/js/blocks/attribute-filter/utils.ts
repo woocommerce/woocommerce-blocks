@@ -3,11 +3,11 @@
  */
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { QueryArgs } from '@wordpress/url/build-types/get-query-args';
-import { AttributeObject, isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { AttributeObject, isString } from '~/types';
 import {
 	getUrlParameter,
 	PREFIX_QUERY_ARG_FILTER_TYPE,

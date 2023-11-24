@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { objectHasProp } from '@woocommerce/types';
 import type { BlockInstance } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
+import { objectHasProp } from '~/types';
 import type { ProductCollectionQuery } from '~/blocks/product-collection/types';
 
 function mergeAttributeParams(

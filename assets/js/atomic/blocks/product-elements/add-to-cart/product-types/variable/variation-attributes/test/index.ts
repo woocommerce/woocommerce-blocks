@@ -1,11 +1,11 @@
 /**
  * External dependencies
  */
-import { ProductResponseAttributeItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { ProductResponseAttributeItem } from '~/types';
 import {
 	getAttributes,
 	getVariationAttributes,

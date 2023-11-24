@@ -2,7 +2,6 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import type { NoticeType } from '@woocommerce/types';
 import { useReducedMotion } from '@wordpress/compose';
 import { useRef } from '@wordpress/element';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -10,6 +9,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 /**
  * Internal dependencies
  */
+import type { NoticeType } from '~/types';
 import './style.scss';
 import Snackbar from './snackbar';
 

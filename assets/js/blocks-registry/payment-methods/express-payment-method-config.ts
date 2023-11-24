@@ -2,16 +2,16 @@
  * External dependencies
  */
 import type { ReactNode } from 'react';
+
+/**
+ * Internal dependencies
+ */
 import type {
 	ExpressPaymentMethodConfiguration,
 	Supports,
 	CanMakePaymentCallback,
 	ExpressPaymentMethodConfigInstance,
-} from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { getCanMakePayment } from './payment-method-config-helper';
 import { assertConfigHasProperties, assertValidElement } from './assertions';
 

@@ -1,8 +1,12 @@
 /**
  * External dependencies
  */
-import { ProductResponseItem } from '@woocommerce/types';
 import { createContext, useContext } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import { ProductResponseItem } from '~/types';
 
 /**
  * Default product shape matching API response.

@@ -3,12 +3,12 @@
  */
 import { useState, useEffect, useMemo } from '@wordpress/element';
 import { useDebounce } from 'use-debounce';
-import { objectHasProp } from '@woocommerce/types';
 import { sort } from 'fast-sort';
 
 /**
  * Internal dependencies
  */
+import { objectHasProp } from '~/types';
 import { useShallowEqual } from '~/base/hooks';
 import { useQueryStateByContext, useQueryStateByKey } from '../use-query-state';
 import { useCollection } from './use-collection';

@@ -3,11 +3,11 @@
  */
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import type { InnerBlockTemplate } from '@wordpress/blocks';
-import { isBoolean } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isBoolean } from '~/types';
 import { objectOmit } from '~/utils';
 import { QueryBlockAttributes } from './types';
 import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';

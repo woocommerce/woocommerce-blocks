@@ -3,11 +3,11 @@
  */
 import { useSelect } from '@wordpress/data';
 import { addFilter, hasFilter } from '@wordpress/hooks';
-import type { EditorBlock } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { EditorBlock } from '~/types';
 import Switcher from './switcher';
 import { findParentBlockEditorViews } from './utils';
 

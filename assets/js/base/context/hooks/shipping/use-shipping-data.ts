@@ -6,13 +6,13 @@ import {
 	processErrorResponse,
 } from '@woocommerce/block-data';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { isObject } from '@woocommerce/types';
 import { useEffect, useRef, useCallback } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
  */
+import { isObject } from '~/types';
 import { previewCart } from '~/resource-previews';
 import { hasCollectableRate, deriveSelectedShippingRates } from '~/base/utils';
 import { useStoreEvents } from '../use-store-events';

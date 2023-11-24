@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import type { CurrencyCode } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import type { CurrencyCode } from '~/types';
 import {
 	MetaKeyValue,
 	ShippingRateItem,

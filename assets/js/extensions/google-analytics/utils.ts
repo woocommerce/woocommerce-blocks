@@ -1,11 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import type {
-	ProductResponseItem,
-	CartResponseItem,
-	StoreCart,
-} from '@woocommerce/types';
+import type { ProductResponseItem, CartResponseItem, StoreCart } from '~/types';
 
 interface ImpressionItem extends Gtag.Item {
 	list_name?: string;

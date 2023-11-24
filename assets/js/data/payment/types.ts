@@ -1,20 +1,17 @@
 /**
  * External dependencies
  */
-import {
-	PlainPaymentMethods,
-	PlainExpressPaymentMethods,
-} from '@woocommerce/types';
-import type {
-	EmptyObjectType,
-	ObjectType,
-	FieldValidationStatus,
-} from '@woocommerce/types';
 import { DataRegistry } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import { PlainPaymentMethods, PlainExpressPaymentMethods } from '~/types';
+import type {
+	EmptyObjectType,
+	ObjectType,
+	FieldValidationStatus,
+} from '~/types';
 import type { EventObserversType } from '../../base/context/event-emit';
 import type { DispatchFromMap } from '../mapped-types';
 import * as actions from './actions';

@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { withRestApi } from '@woocommerce/e2e-utils';
-import type { TaxRate, ProductResponseItem } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import type { TaxRate, ProductResponseItem } from '~/types';
 
 export async function showTaxes( onoff: boolean ): Promise< void > {
 	await withRestApi.updateSettingOption(

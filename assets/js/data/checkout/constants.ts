@@ -7,7 +7,10 @@ import {
 	ShippingAddress,
 } from '@woocommerce/settings';
 
-import { CheckoutResponseSuccess } from '@woocommerce/types';
+/**
+ * Internal dependencies
+ */
+import { CheckoutResponseSuccess } from '~/types';
 
 export const STORE_KEY = 'wc/store/checkout';
 

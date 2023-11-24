@@ -2,10 +2,6 @@
  * External dependencies
  */
 import { isEmail } from '@wordpress/url';
-import type {
-	CartResponseBillingAddress,
-	CartResponseShippingAddress,
-} from '@woocommerce/types';
 import {
 	defaultAddressFields,
 	ShippingAddress,
@@ -16,6 +12,10 @@ import { decodeEntities } from '@wordpress/html-entities';
 /**
  * Internal dependencies
  */
+import type {
+	CartResponseBillingAddress,
+	CartResponseShippingAddress,
+} from '~/types';
 import { SHIPPING_COUNTRIES, SHIPPING_STATES } from '~/settings/blocks';
 import prepareAddressFields from '~/base/components/cart-checkout/address-form/prepare-address-fields';
 

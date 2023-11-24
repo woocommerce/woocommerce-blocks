@@ -6,11 +6,6 @@ import { useEffect, useState } from '@wordpress/element';
 import { BlockControls, useBlockProps } from '@wordpress/block-editor';
 import { getSetting } from '@woocommerce/settings';
 import {
-	AttributeSetting,
-	AttributeTerm,
-	objectHasProp,
-} from '@woocommerce/types';
-import {
 	Disabled,
 	Button,
 	ToolbarGroup,
@@ -21,6 +16,7 @@ import {
 /**
  * Internal dependencies
  */
+import { AttributeSetting, AttributeTerm, objectHasProp } from '~/types';
 import { useCollection } from '~/base/context/hooks';
 import { EditProps, isAttributeCounts } from './types';
 import {

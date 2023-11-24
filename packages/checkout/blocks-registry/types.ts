@@ -3,7 +3,11 @@
  */
 import type { LazyExoticComponent } from '@wordpress/element';
 import type { BlockConfiguration } from '@wordpress/blocks';
-import type { RegisteredBlockComponent } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import type { RegisteredBlockComponent } from '~/types';
 
 export enum innerBlockAreas {
 	CHECKOUT = 'woocommerce/checkout',

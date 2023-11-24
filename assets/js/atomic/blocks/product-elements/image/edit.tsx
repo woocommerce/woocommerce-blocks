@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { createInterpolateElement, useEffect } from '@wordpress/element';
 import { getAdminLink, getSettingWithCoercion } from '@woocommerce/settings';
-import { isBoolean } from '@woocommerce/types';
 import type { BlockEditProps } from '@wordpress/blocks';
 import {
 	Disabled,
@@ -24,6 +23,7 @@ import {
 /**
  * Internal dependencies
  */
+import { isBoolean } from '~/types';
 import { ProductQueryContext as Context } from '~/blocks/product-query/types';
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';

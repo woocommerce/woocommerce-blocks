@@ -5,17 +5,17 @@ import { useEffect } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import { __ } from '@wordpress/i18n';
 import { getSettingWithCoercion } from '@woocommerce/settings';
+
+/**
+ * Internal dependencies
+ */
 import {
 	AttributeObject,
 	AttributeTerm,
 	isAttributeQueryCollection,
 	isAttributeTermCollection,
 	isBoolean,
-} from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { useCollection, useQueryStateByKey } from '~/base/context/hooks';
 import { renderRemovableListItem, removeArgsFromFilterUrl } from './utils';
 import { removeAttributeFilterBySlug } from '../../utils/attributes-query';

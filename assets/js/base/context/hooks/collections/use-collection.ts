@@ -4,11 +4,11 @@
 import { COLLECTIONS_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 import { useRef } from '@wordpress/element';
-import { isError } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isError } from '~/types';
 import { useShallowEqual, useThrowError } from '~/base/hooks';
 
 /**

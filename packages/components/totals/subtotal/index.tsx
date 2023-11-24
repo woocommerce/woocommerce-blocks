@@ -3,12 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { getSetting } from '@woocommerce/settings';
-import type { Currency } from '@woocommerce/types';
 import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
  */
+import type { Currency } from '~/types';
 import TotalsItem from '../item';
 
 interface Values {

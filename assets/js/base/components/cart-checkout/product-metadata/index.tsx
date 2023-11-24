@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { ProductResponseItemData, CartVariationItem } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { ProductResponseItemData, CartVariationItem } from '~/types';
 import ProductDetails from '../product-details';
 import ProductSummary from '../product-summary';
 import './style.scss';

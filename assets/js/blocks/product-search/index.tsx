@@ -7,7 +7,6 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { Icon, search } from '@wordpress/icons';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isBoolean } from '@woocommerce/types';
 import { Button } from '@wordpress/components';
 import {
 	// @ts-ignore waiting for @types/wordpress__blocks update
@@ -19,6 +18,7 @@ import {
 /**
  * Internal dependencies
  */
+import { isBoolean } from '~/types';
 import './style.scss';
 import './editor.scss';
 import Block from './block';

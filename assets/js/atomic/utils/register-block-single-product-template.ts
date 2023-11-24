@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { isNumber, isEmpty } from '@woocommerce/types';
 import {
 	BlockAttributes,
 	BlockConfiguration,
@@ -13,6 +12,11 @@ import {
 	unregisterBlockVariation,
 } from '@wordpress/blocks';
 import { subscribe, select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { isNumber, isEmpty } from '~/types';
 
 // Creating a local cache to prevent multiple registration tries.
 const blocksRegistered = new Set();

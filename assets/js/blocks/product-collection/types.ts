@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { AttributeMetadata } from '@woocommerce/types';
+import { AttributeMetadata } from '~/types';
 
 export interface ProductCollectionAttributes {
 	query: ProductCollectionQuery;

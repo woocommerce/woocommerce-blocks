@@ -10,16 +10,12 @@ import {
 } from '@woocommerce/blocks-components';
 import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 import { getSetting } from '@woocommerce/settings';
-import {
-	CartResponseTotals,
-	Currency,
-	LooselyMustHave,
-} from '@woocommerce/types';
 import { formatPrice } from '@woocommerce/price-format';
 
 /**
  * Internal dependencies
  */
+import { CartResponseTotals, Currency, LooselyMustHave } from '~/types';
 import { useStoreCart } from '~/base/context/hooks';
 import './style.scss';
 

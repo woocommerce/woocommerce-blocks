@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { CheckboxList } from '@woocommerce/blocks-components';
-import { AttributeTerm } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { AttributeTerm } from '~/types';
 import FilterElementLabel from '~/base/components/filter-element-label';
 
 type Props = {

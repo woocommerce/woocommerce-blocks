@@ -3,10 +3,14 @@
  */
 import { isValidElement } from '@wordpress/element';
 import type { ReactNode } from 'react';
+
+/**
+ * Internal dependencies
+ */
 import type {
 	PaymentMethodConfiguration,
 	ExpressPaymentMethodConfiguration,
-} from '@woocommerce/types';
+} from '~/types';
 
 export const assertValidPaymentMethodComponent = (
 	component: () => unknown,

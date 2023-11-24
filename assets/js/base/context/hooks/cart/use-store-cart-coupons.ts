@@ -5,12 +5,12 @@ import { __, sprintf } from '@wordpress/i18n';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CART_STORE_KEY, VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 import { decodeEntities } from '@wordpress/html-entities';
-import type { StoreCartCoupon } from '@woocommerce/types';
 import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
+import type { StoreCartCoupon } from '~/types';
 import { useStoreCart } from './use-store-cart';
 
 /**

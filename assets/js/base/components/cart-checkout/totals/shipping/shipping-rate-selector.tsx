@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import type { CartResponseShippingRate } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { CartResponseShippingRate } from '~/types';
 import NoticeBanner from '~/base/components/notice-banner';
 import ShippingRatesControl from '../../shipping-rates-control';
 

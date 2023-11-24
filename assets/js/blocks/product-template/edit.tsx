@@ -17,11 +17,11 @@ import { Spinner } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isNumber } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isNumber } from '~/types';
 import { ProductCollectionAttributes } from '~/blocks/product-collection/types';
 
 const ProductTemplateInnerBlocks = () => {

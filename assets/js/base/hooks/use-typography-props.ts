@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { isObject, isString } from '@woocommerce/types';
 import type { Style as StyleEngineProperties } from '@wordpress/style-engine/src/types';
 
 /**
  * Internal dependencies
  */
+import { isObject, isString } from '~/types';
 import type { StyleProps } from './use-style-props';
 
 type blockAttributes = {

@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { select, dispatch } from '@wordpress/data';
-import { PlainPaymentMethods } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { PlainPaymentMethods } from '~/types';
 import { STORE_KEY as PAYMENT_STORE_KEY } from '../constants';
 
 export const setDefaultPaymentMethod = async (

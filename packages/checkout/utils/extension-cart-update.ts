@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { dispatch } from '@wordpress/data';
-import { CartResponse, ExtensionCartUpdateArgs } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { CartResponse, ExtensionCartUpdateArgs } from '~/types';
 import { STORE_KEY } from '../../../assets/js/data/cart/constants';
 
 /**

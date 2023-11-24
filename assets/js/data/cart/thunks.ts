@@ -1,16 +1,12 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
 import {
 	Cart,
 	CartResponse,
 	ApiErrorResponse,
 	isApiErrorResponse,
-} from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { camelCaseKeys } from '~/base/utils';
 import { notifyQuantityChanges } from './notify-quantity-changes';
 import { notifyCartErrors } from './notify-errors';

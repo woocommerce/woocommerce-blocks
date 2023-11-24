@@ -8,15 +8,15 @@ import {
 	currencyControl,
 	INTERACTION_TIMEOUT,
 } from '@woocommerce/storybook-controls';
-import {
-	CartResponseCouponItemWithLabel,
-	CartTotalsItem,
-	LooselyMustHave,
-} from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import {
+	CartResponseCouponItemWithLabel,
+	CartTotalsItem,
+	LooselyMustHave,
+} from '~/types';
 import Discount, { TotalsDiscountProps } from '..';
 
 const EXAMPLE_COUPONS: CartResponseCouponItemWithLabel[] = [

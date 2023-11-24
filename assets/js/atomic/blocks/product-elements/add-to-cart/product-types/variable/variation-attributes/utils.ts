@@ -2,17 +2,17 @@
  * External dependencies
  */
 import { decodeEntities } from '@wordpress/html-entities';
+
+/**
+ * Internal dependencies
+ */
 import {
 	Dictionary,
 	isObject,
 	ProductResponseAttributeItem,
 	ProductResponseTermItem,
 	ProductResponseVariationsItem,
-} from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { keyBy } from '~/base/utils';
 import { AttributesMap } from '../types';
 

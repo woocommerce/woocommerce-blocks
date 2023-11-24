@@ -1,11 +1,6 @@
 /**
  * External dependencies
  */
-import {
-	CanMakePaymentArgument,
-	ExpressPaymentMethodConfigInstance,
-	PaymentMethodConfigInstance,
-} from '@woocommerce/types';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { dispatch, select } from '@wordpress/data';
 import { __, sprintf } from '@wordpress/i18n';
@@ -17,6 +12,11 @@ import {
 /**
  * Internal dependencies
  */
+import {
+	CanMakePaymentArgument,
+	ExpressPaymentMethodConfigInstance,
+	PaymentMethodConfigInstance,
+} from '~/types';
 import { previewCart } from '~/resource-previews';
 import {
 	deriveSelectedShippingRates,

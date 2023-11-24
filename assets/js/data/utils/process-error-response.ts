@@ -2,15 +2,11 @@
  * External dependencies
  */
 import { decodeEntities } from '@wordpress/html-entities';
-import {
-	objectHasProp,
-	ApiErrorResponse,
-	isApiErrorResponse,
-} from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { objectHasProp, ApiErrorResponse, isApiErrorResponse } from '~/types';
 import { createNotice, DEFAULT_ERROR_MESSAGE } from '~/base/utils';
 import { noticeContexts } from '~/base/context/event-emit/utils';
 

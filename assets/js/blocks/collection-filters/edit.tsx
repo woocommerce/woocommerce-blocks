@@ -6,11 +6,11 @@ import { useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { sprintf, __ } from '@wordpress/i18n';
 import { getSetting } from '@woocommerce/settings';
-import type { AttributeSetting } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { AttributeSetting } from '~/types';
 import { useCollection } from '~/base/context/hooks';
 import { formatQuery, getQueryParams } from './utils';
 import type { EditProps } from './type';

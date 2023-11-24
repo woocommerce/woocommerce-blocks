@@ -4,8 +4,12 @@
 import classnames from 'classnames';
 import { paramCase as kebabCase } from 'change-case';
 import { getCSSRules } from '@wordpress/style-engine';
-import { isObject } from '@woocommerce/types';
 import type { Style as StyleEngineProperties } from '@wordpress/style-engine/src/types';
+
+/**
+ * Internal dependencies
+ */
+import { isObject } from '~/types';
 
 /**
  * Returns the inline styles to add depending on the style object

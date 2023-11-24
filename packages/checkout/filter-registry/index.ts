@@ -6,7 +6,11 @@ import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import deprecated from '@wordpress/deprecated';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import type { ComparableObject } from '@wordpress/is-shallow-equal';
-import { isNull, isObject, objectHasProp } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { isNull, isObject, objectHasProp } from '~/types';
 
 /**
  * A function that always return true.

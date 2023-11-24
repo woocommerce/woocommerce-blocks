@@ -5,11 +5,11 @@ import { BlockAttributes, InnerBlockTemplate } from '@wordpress/blocks';
 import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import { isBoolean } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isBoolean } from '~/types';
 import { registerBlockSingleProductTemplate } from '~/atomic/utils';
 import { QUERY_LOOP_ID } from '../constants';
 import { stacks } from '~/icons';

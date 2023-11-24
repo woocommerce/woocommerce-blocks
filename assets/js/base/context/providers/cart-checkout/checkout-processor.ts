@@ -22,16 +22,16 @@ import {
 	getPaymentMethods,
 	getExpressPaymentMethods,
 } from '@woocommerce/blocks-registry';
+
+/**
+ * Internal dependencies
+ */
 import {
 	ApiResponse,
 	CheckoutResponseSuccess,
 	CheckoutResponseError,
 	assertResponseIsValid,
-} from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { emptyHiddenAddressFields, removeAllNotices } from '~/base/utils';
 import { preparePaymentData, processCheckoutResponseHeaders } from './utils';
 import { useCheckoutEventsContext } from './checkout-events';

@@ -6,11 +6,11 @@ import {
 	RadioControl,
 	RadioControlOptionLayout,
 } from '@woocommerce/blocks-components';
-import type { CartShippingPackageShippingRate } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { CartShippingPackageShippingRate } from '~/types';
 import { usePrevious } from '~/base/hooks';
 import { renderPackageRateOption } from './render-package-rate-option';
 import type { PackageRateRenderOption } from '../shipping-rates-control-package';

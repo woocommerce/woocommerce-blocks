@@ -2,11 +2,11 @@
  * External dependencies
  */
 import apiFetch from '@wordpress/api-fetch';
-import { CartResponse } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { CartResponse } from '~/types';
 import { CART_API_ERROR } from './constants';
 import type { CartDispatchFromMap, CartResolveSelectFromMap } from './index';
 

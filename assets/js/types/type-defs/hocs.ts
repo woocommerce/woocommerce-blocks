@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import type { ProductResponseItem } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import type { ProductResponseItem } from '~/types';
 import { ErrorObject } from '~/editor-components/error-placeholder';
 
 export interface WithInjectedProductVariations {

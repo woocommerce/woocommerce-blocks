@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { FieldValidationStatus, isObject } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { FieldValidationStatus, isObject } from '~/types';
 import type { EventObserversType, ObserverType } from './types';
 
 export const getObserversByPriority = (

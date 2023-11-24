@@ -2,11 +2,11 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isString } from '~/types';
 import { useStyleProps } from '~/base/hooks';
 import Block from './block';
 import { parseAttributes } from './utils';

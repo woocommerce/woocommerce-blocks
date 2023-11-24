@@ -4,12 +4,12 @@
 import classnames from 'classnames';
 import { isValidElement } from '@wordpress/element';
 import type { ReactElement, ReactNode } from 'react';
-import type { Currency } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import type { Currency } from '~/types';
 import FormattedMonetaryAmount from '../../formatted-monetary-amount';
 
 export interface TotalsItemProps {

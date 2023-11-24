@@ -28,11 +28,11 @@ import {
 import { useEffect, useState } from '@wordpress/element';
 import { store as noticesStore } from '@wordpress/notices';
 import { useEntityRecord } from '@wordpress/core-data';
-import { isNumber } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isNumber } from '~/types';
 import { WC_BLOCKS_IMAGE_URL } from '~/settings/blocks';
 import { woo } from '~/icons';
 import { debounce } from '~/base/utils';

@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	CartResponseTotals,
-	objectHasProp,
-	isString,
-} from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { CartResponseTotals, objectHasProp, isString } from '~/types';
 
 export interface CartTotalItem {
 	key: string;

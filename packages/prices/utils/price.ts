@@ -2,12 +2,16 @@
  * External dependencies
  */
 import { CURRENCY } from '@woocommerce/settings';
+
+/**
+ * Internal dependencies
+ */
 import type {
 	Currency,
 	CurrencyResponse,
 	CartShippingPackageShippingRate,
 	SymbolPosition,
-} from '@woocommerce/types';
+} from '~/types';
 
 /**
  * Get currency prefix.

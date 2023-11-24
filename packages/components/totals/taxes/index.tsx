@@ -4,12 +4,12 @@
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { getSetting } from '@woocommerce/settings';
-import type { CartTotalsTaxLineItem, Currency } from '@woocommerce/types';
 import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
  */
+import type { CartTotalsTaxLineItem, Currency } from '~/types';
 import TotalsItem from '../item';
 
 interface Values {

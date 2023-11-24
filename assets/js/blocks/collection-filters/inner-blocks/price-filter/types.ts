@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { BlockEditProps } from '@wordpress/blocks';
-import { HTMLElementEvent } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { HTMLElementEvent } from '~/types';
 
 export type BlockAttributes = {
 	showInputFields: boolean;

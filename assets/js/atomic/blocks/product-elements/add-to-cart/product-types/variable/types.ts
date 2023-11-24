@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { Dictionary } from '@woocommerce/types';
+import { Dictionary } from '~/types';
 
 export type AttributesMap = Record<
 	string,

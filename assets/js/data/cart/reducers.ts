@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import type { CartItem } from '@woocommerce/types';
 import type { Reducer } from 'redux';
 
 /**
  * Internal dependencies
  */
+import type { CartItem } from '~/types';
 import { ACTION_TYPES as types } from './action-types';
 import { defaultCartState, CartState } from './default-state';
 import { EMPTY_CART_ERRORS } from '../constants';

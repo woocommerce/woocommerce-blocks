@@ -10,11 +10,11 @@ import {
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { getPaymentMethods } from '@woocommerce/blocks-registry';
-import { isNull } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isNull } from '~/types';
 import {
 	usePaymentMethodInterface,
 	useStoreEvents,

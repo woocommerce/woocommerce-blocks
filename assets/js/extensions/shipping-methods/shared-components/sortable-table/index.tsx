@@ -23,7 +23,11 @@ import {
 	arrayMove,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { objectHasProp } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { objectHasProp } from '~/types';
 
 export interface SortableData extends Record< string, unknown > {
 	id: UniqueIdentifier;

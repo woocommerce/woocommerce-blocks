@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { Cart, CartItem } from '@woocommerce/types';
 import { dispatch, select } from '@wordpress/data';
 import { __, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
+import { Cart, CartItem } from '~/types';
 import { STORE_KEY as CART_STORE_KEY } from './constants';
 
 interface NotifyQuantityChangesArgs {

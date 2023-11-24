@@ -3,11 +3,12 @@
  */
 import { cleanForSlug } from '@wordpress/url';
 import { __ } from '@wordpress/i18n';
-import { isObject } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
+
 /**
  * Internal dependencies
  */
+import { isObject } from '~/types';
 import type {
 	PickupLocation,
 	SortablePickupLocation,

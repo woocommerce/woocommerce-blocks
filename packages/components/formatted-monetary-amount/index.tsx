@@ -8,11 +8,11 @@ import type {
 } from 'react-number-format';
 import classNames from 'classnames';
 import type { ReactElement } from 'react';
-import type { Currency } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { Currency } from '~/types';
 import './style.scss';
 
 export interface FormattedMonetaryAmountProps

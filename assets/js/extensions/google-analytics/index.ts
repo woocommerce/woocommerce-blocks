@@ -3,11 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import { addAction } from '@wordpress/hooks';
-import type { ProductResponseItem, CartResponseItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { ProductResponseItem, CartResponseItem } from '~/types';
 import { namespace, actionPrefix } from './constants';
 import {
 	getProductFieldObject,

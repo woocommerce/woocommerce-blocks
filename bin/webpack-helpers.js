@@ -84,8 +84,8 @@ const getAlias = ( options = {} ) => {
 			__dirname,
 			`../assets/js/${ pathPart }resource-previews/`
 		),
-		'@woocommerce/types': path.resolve( __dirname, `../assets/js/types/` ),
 		'~/utils': path.resolve( __dirname, `../assets/js/utils/` ),
+		'~/types': path.resolve( __dirname, `../assets/js/types/` ),
 	};
 };
 

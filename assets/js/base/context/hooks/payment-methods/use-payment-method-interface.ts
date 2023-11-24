@@ -6,7 +6,6 @@ import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useCallback, useEffect, useRef } from '@wordpress/element';
 import { getSetting } from '@woocommerce/settings';
 import deprecated from '@wordpress/deprecated';
-import type { PaymentMethodInterface } from '@woocommerce/types';
 import { useSelect, useDispatch } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
@@ -18,6 +17,7 @@ import { ValidationInputError } from '@woocommerce/blocks-components';
 /**
  * Internal dependencies
  */
+import type { PaymentMethodInterface } from '~/types';
 import PaymentMethodLabel from '~/base/components/cart-checkout/payment-method-label';
 import PaymentMethodIcons from '~/base/components/cart-checkout/payment-method-icons';
 import LoadingMask from '~/base/components/loading-mask';

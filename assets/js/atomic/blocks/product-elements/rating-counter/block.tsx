@@ -8,12 +8,12 @@ import {
 	useProductDataContext,
 } from '@woocommerce/shared-context';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
-import { isNumber, ProductResponseItem } from '@woocommerce/types';
 import { Disabled } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import { isNumber, ProductResponseItem } from '~/types';
 import { useStyleProps } from '~/base/hooks';
 
 const getRatingCount = ( product: ProductResponseItem ) => {

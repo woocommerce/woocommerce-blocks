@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { CartShippingRate } from '@woocommerce/types';
+import { CartShippingRate } from '~/types';
 
 /**
  * Get an array of selected shipping rates keyed by Package ID.

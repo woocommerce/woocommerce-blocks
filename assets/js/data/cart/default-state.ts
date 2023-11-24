@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import type { Cart, CartMeta, ApiErrorResponse } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import type { Cart, CartMeta, ApiErrorResponse } from '~/types';
 import {
 	EMPTY_CART_COUPONS,
 	EMPTY_CART_ITEMS,

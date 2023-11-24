@@ -3,16 +3,16 @@
  */
 import { select } from '@wordpress/data';
 import { isEmail } from '@wordpress/url';
+
+/**
+ * Internal dependencies
+ */
 import {
 	CartBillingAddress,
 	CartShippingAddress,
 	Cart,
 	CartResponse,
-} from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { camelCaseKeys } from '~/base/utils';
 import { STORE_KEY as VALIDATION_STORE_KEY } from '../validation/constants';
 

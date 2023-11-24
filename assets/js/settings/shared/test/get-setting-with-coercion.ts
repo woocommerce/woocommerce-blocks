@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { isBoolean, isString } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { isBoolean, isString } from '~/types';
 import { ADMIN_URL } from '../default-constants';
 import { getSettingWithCoercion } from '..';
 

@@ -1,17 +1,17 @@
 /**
  * External dependencies
  */
-import {
-	CartBillingAddress,
-	CartShippingAddress,
-	BillingAddressShippingAddress,
-} from '@woocommerce/types';
 import { select, dispatch } from '@wordpress/data';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
  */
+import {
+	CartBillingAddress,
+	CartShippingAddress,
+	BillingAddressShippingAddress,
+} from '~/types';
 import { removeAllNotices, debounce, pick } from '~/base/utils';
 import { STORE_KEY } from './constants';
 import { processErrorResponse } from '../utils';

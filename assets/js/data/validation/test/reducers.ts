@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { FieldValidationStatus } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { FieldValidationStatus } from '~/types';
 import reducer from '../reducers';
 import { ACTION_TYPES as types } from '.././action-types';
 import { ValidationAction } from '../actions';

@@ -5,7 +5,11 @@ import {
 	RadioControl,
 	RadioControlOptionType,
 } from '@woocommerce/blocks-components';
-import { CartShippingPackageShippingRate } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { CartShippingPackageShippingRate } from '~/types';
 
 interface LocalPickupSelectProps {
 	title?: string | undefined;

@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import type { CartShippingAddress } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import type { CartShippingAddress } from '~/types';
 import type { ShippingDataContextType, ShippingErrorTypes } from './types';
 
 export const ERROR_TYPES = {

@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { useState, useEffect } from '@wordpress/element';
-import type { HTMLElementEvent } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import type { HTMLElementEvent } from '~/types';
 import ProductList from './product-list';
 import { ProductListContainerProps } from './types';
 

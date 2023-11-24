@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import {
-	AttributeObject,
-	AttributeQuery,
-	AttributeTerm,
-} from '@woocommerce/types';
 import { sort } from 'fast-sort';
+
+/**
+ * Internal dependencies
+ */
+import { AttributeObject, AttributeQuery, AttributeTerm } from '~/types';
 
 /**
  * Given a query object, removes an attribute filter by a single slug.

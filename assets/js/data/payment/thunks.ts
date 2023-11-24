@@ -4,11 +4,11 @@
 import { store as noticesStore } from '@wordpress/notices';
 import deprecated from '@wordpress/deprecated';
 import type { BillingAddress, ShippingAddress } from '@woocommerce/settings';
-import { isObject, isString, objectHasProp } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isObject, isString, objectHasProp } from '~/types';
 import {
 	emitEventWithAbort,
 	isErrorResponse,

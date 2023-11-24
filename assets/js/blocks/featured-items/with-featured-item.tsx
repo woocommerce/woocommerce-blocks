@@ -4,7 +4,6 @@
  * External dependencies
  */
 import type { BlockAlignment } from '@wordpress/blocks';
-import { ProductResponseItem, isEmpty } from '@woocommerce/types';
 import { Icon, Placeholder, Spinner } from '@wordpress/components';
 import classnames from 'classnames';
 import { useCallback, useState } from '@wordpress/element';
@@ -14,6 +13,7 @@ import type { ComponentType, Dispatch, SetStateAction } from 'react';
 /**
  * Internal dependencies
  */
+import { ProductResponseItem, isEmpty } from '~/types';
 import { useStyleProps } from '~/base/hooks';
 import { CallToAction } from './call-to-action';
 import { ConstrainedResizable } from './constrained-resizable';

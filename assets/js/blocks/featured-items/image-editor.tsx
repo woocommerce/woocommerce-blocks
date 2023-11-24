@@ -5,7 +5,6 @@
  */
 import { useCallback, useEffect, useRef, useState } from '@wordpress/element';
 import { WP_REST_API_Category } from 'wp-types';
-import { ProductResponseItem } from '@woocommerce/types';
 import {
 	__experimentalImageEditingProvider as ImageEditingProvider,
 	__experimentalImageEditor as GutenbergImageEditor,
@@ -15,6 +14,7 @@ import type { ComponentType, Dispatch, SetStateAction } from 'react';
 /**
  * Internal dependencies
  */
+import { ProductResponseItem } from '~/types';
 import { BLOCK_NAMES, DEFAULT_EDITOR_SIZE } from './constants';
 import { EditorBlock } from './types';
 import { useBackgroundImage } from './use-background-image';

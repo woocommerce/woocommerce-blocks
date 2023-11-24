@@ -3,17 +3,17 @@
  */
 import deprecated from '@wordpress/deprecated';
 import type { ReactNode } from 'react';
+
+/**
+ * Internal dependencies
+ */
 import type {
 	PaymentMethodConfiguration,
 	Supports,
 	CanMakePaymentCallback,
 	PaymentMethodConfigInstance,
 	PaymentMethodIcons,
-} from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { getCanMakePayment } from './payment-method-config-helper';
 import {
 	assertConfigHasProperties,

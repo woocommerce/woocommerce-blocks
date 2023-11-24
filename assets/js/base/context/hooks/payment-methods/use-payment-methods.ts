@@ -1,12 +1,6 @@
 /**
  * External dependencies
  */
-import type {
-	PaymentMethods,
-	ExpressPaymentMethods,
-	PaymentMethodConfigInstance,
-	ExpressPaymentMethodConfigInstance,
-} from '@woocommerce/types';
 import {
 	getPaymentMethods,
 	getExpressPaymentMethods,
@@ -17,6 +11,12 @@ import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
+import type {
+	PaymentMethods,
+	ExpressPaymentMethods,
+	PaymentMethodConfigInstance,
+	ExpressPaymentMethodConfigInstance,
+} from '~/types';
 import { useShallowEqual } from '~/base/hooks';
 
 interface PaymentMethodState {

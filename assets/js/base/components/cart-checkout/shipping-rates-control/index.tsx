@@ -4,11 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
 import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout';
-import { isObject } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isObject } from '~/types';
 import {
 	getShippingRatesPackageCount,
 	getShippingRatesRateCount,

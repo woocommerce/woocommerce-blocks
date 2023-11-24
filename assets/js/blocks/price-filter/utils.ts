@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { isString } from '@woocommerce/types';
-
-/**
  * Internal dependencies
  */
+import { isString } from '~/types';
 import metadata from './block.json';
 
 export const parseAttributes = ( data: Record< string, unknown > ) => {

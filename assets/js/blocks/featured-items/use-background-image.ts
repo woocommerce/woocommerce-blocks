@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { WP_REST_API_Category } from 'wp-types';
-import { ProductResponseItem } from '@woocommerce/types';
 import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { ProductResponseItem } from '~/types';
 import { getImageSrcFromProduct, getImageIdFromProduct } from '~/utils';
 import { BLOCK_NAMES } from './constants';
 import {

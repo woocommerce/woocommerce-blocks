@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { ApiErrorResponse, isApiErrorResponse } from '@woocommerce/types';
 import { decodeEntities } from '@wordpress/html-entities';
 import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import { ApiErrorResponse, isApiErrorResponse } from '~/types';
 import { createNotice } from '~/base/utils';
 
 /**

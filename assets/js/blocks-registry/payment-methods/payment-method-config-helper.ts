@@ -1,14 +1,10 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
 import type {
 	CanMakePaymentCallback,
 	CanMakePaymentExtensionCallback,
-} from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import {
 	NamespacedCanMakePaymentExtensionsCallbacks,
 	PaymentMethodName,

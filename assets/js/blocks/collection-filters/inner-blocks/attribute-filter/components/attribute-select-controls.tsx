@@ -4,11 +4,11 @@
 import { sort } from 'fast-sort';
 import { __, sprintf, _n } from '@wordpress/i18n';
 import { getSetting } from '@woocommerce/settings';
-import { AttributeSetting } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { AttributeSetting } from '~/types';
 import { SearchListControl } from '~/editor-components/search-list-control';
 import { SearchListItem } from '~/editor-components/search-list-control/types';
 

@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { isString } from '@woocommerce/types';
+import { isString } from '~/types';
 
 interface LazyLoadScriptParams {
 	handle: string;

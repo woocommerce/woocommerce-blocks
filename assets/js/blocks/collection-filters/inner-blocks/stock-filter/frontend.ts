@@ -6,7 +6,11 @@ import {
 	navigate,
 } from '@woocommerce/interactivity';
 import { DropdownContext } from '@woocommerce/interactivity-components/dropdown';
-import { HTMLElementEvent } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { HTMLElementEvent } from '~/types';
 
 const getUrl = ( activeFilters: string ) => {
 	const url = new URL( window.location.href );

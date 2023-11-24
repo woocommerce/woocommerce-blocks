@@ -7,6 +7,12 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { getQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { Icon, chevronDown } from '@wordpress/icons';
+import classnames from 'classnames';
+
+/**
+ * Internal dependencies
+ */
 import {
 	AttributeQuery,
 	AttributeTerm,
@@ -14,13 +20,7 @@ import {
 	isBoolean,
 	isString,
 	objectHasProp,
-} from '@woocommerce/types';
-import { Icon, chevronDown } from '@wordpress/icons';
-import classnames from 'classnames';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import {
 	changeUrl,
 	PREFIX_QUERY_ARG_FILTER_TYPE,

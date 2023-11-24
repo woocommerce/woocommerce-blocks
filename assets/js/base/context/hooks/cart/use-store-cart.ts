@@ -21,6 +21,10 @@ import {
 } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
+
+/**
+ * Internal dependencies
+ */
 import type {
 	StoreCart,
 	CartResponseTotals,
@@ -29,11 +33,7 @@ import type {
 	CartResponseShippingAddress,
 	CartResponseCouponItem,
 	CartResponseCoupons,
-} from '@woocommerce/types';
-
-/**
- * Internal dependencies
- */
+} from '~/types';
 import { emptyHiddenAddressFields } from '~/base/utils';
 import { useEditorContext } from '../../providers/editor-context';
 import { useStoreCartEventListeners } from './use-store-cart-event-listeners';

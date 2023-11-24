@@ -7,13 +7,13 @@ import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, ExternalLink } from '@wordpress/components';
 import { ADMIN_URL, getSetting } from '@woocommerce/settings';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
-import { GlobalPaymentMethod } from '@woocommerce/types';
 import { useSelect } from '@wordpress/data';
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
+import { GlobalPaymentMethod } from '~/types';
 import { trimCharacters, trimWords } from '~/utils';
 import { blocksConfig } from '~/settings/blocks';
 import ExternalLinkCard from '~/editor-components/external-link-card';
