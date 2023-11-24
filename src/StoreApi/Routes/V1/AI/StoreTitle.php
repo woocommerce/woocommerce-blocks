@@ -93,7 +93,7 @@ class StoreTitle extends AbstractRoute {
 
 		$store_title = get_option( 'blogname' );
 		if ( ! ( empty( $store_title ) || self::DEFAULT_TITLE === $store_title ) ) {
-			return rest_ensure_response( array( 'ai_content_generated' => true ) );
+			return rest_ensure_response( array( 'ai_content_generated' => false ) );
 		}
 
 		$ai_generated_title = $this->generate_ai_title( $business_description );
