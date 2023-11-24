@@ -132,9 +132,9 @@ final class CollectionStockFilter extends AbstractBlock {
 													// translators: %s: number of products.
 													$screen_reader_text = sprintf( _n( '%s product', '%s products', $stock_count['count'], 'woo-gutenberg-products-block' ), number_format_i18n( $stock_count['count'] ) );
 													?>
-													<span class="wc-filter-element-label-list-count">
+													<span>
 														<span aria-hidden="true">
-															<?php $show_counts ? print( esc_html( $stock_count['count'] ) ) : null; ?>
+															<?php $show_counts ? print( esc_html( '(' . $stock_count['count'] . ')' ) ) : null; ?>
 														</span>
 														<span class="screen-reader-text">
 															<?php esc_html( $screen_reader_text ); ?>
