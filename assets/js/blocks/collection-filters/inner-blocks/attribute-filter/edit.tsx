@@ -147,7 +147,7 @@ const Edit = ( props: EditProps ) => {
 					}
 				/>
 				<Button
-					isPrimary
+					variant="primary"
 					onClick={ () => {
 						setIsEditing( false );
 						debouncedSpeak(
