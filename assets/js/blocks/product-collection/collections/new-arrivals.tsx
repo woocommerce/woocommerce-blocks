@@ -22,7 +22,7 @@ const collection = {
 	title: __( 'New Arrivals', 'woo-gutenberg-products-block' ),
 	icon: ( <Icon icon={ calendar } /> ) as BlockIcon,
 	description: __(
-		'Recommend your newest products..',
+		'Recommend your newest products.',
 		'woo-gutenberg-products-block'
 	),
 	keywords: [ 'newest products' ],

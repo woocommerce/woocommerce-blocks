@@ -43,13 +43,13 @@ type Collections =
 	| 'defaultQuery';
 
 const collectionToButtonNameMap = {
-	newArrivals: 'New Arrivals Display a grid of your newest products.',
-	topRated: 'Top Rated Products gaining popularity based on recent activity.',
-	bestSellers: 'Best Sellers Display a grid of the best selling products.',
-	onSale: 'On Sale Products currently marked on sale.',
-	featured: 'Featured Products that have been marked as featured.',
+	newArrivals: 'New Arrivals Recommend your newest products.',
+	topRated: 'Top Rated Recommend products with the highest review ratings.',
+	bestSellers: 'Best Sellers Recommend your best-selling products.',
+	onSale: 'On Sale Highlight products that are currently on sale.',
+	featured: 'Featured Showcase your featured products.',
 	defaultQuery:
-		'All Products Display all products. Results may be limited by the current template context.',
+		'All Products Display all products in your catalog. Results may change to match the current template, page, or search term.',
 };
 
 class ProductCollectionPage {
