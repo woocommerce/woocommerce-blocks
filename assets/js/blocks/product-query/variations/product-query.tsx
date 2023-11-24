@@ -9,12 +9,12 @@ import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { isWpVersion, getSettingWithCoercion } from '@woocommerce/settings';
 import { select, subscribe } from '@wordpress/data';
-import { isSiteEditorPage } from '@woocommerce/utils';
 import { isNumber } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { isSiteEditorPage } from '~/utils';
 import { stacks } from '~/icons';
 import {
 	QueryBlockAttributes,

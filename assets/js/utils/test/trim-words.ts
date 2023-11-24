@@ -1,12 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import {
-	appendMoreText,
-	removeTags,
-	trimCharacters,
-	trimWords,
-} from '@woocommerce/utils';
+import { appendMoreText, removeTags, trimCharacters, trimWords } from '~/utils';
 
 describe( 'trim-words', () => {
 	describe( 'removeTags', () => {

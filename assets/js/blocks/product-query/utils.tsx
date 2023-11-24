@@ -3,11 +3,11 @@
  */
 import { useSelect } from '@wordpress/data';
 import { store as WP_BLOCKS_STORE } from '@wordpress/blocks';
-import { isSiteEditorPage } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
+import { isSiteEditorPage } from '~/utils';
 import { QUERY_LOOP_ID } from './constants';
 import {
 	ProductQueryBlock,

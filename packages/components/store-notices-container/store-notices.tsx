@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useRef, useEffect, RawHTML } from '@wordpress/element';
-import { sanitizeHTML } from '@woocommerce/utils';
 import { useDispatch } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { NoticeType } from '@woocommerce/types';
@@ -12,6 +11,7 @@ import type { NoticeType } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
+import { sanitizeHTML } from '~/utils';
 import { usePrevious } from '~/base/hooks';
 import type { NoticeBannerProps } from '~/base/components/notice-banner';
 import StoreNotice from '../store-notice';

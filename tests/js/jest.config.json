@@ -20,7 +20,6 @@
 		"~/base/utils(.*)$": "assets/js/base/utils",
 		"~/resource-previews": "assets/js/resource-previews",
 		"~/settings/blocks": "assets/js/settings/blocks",
-
 		"@woocommerce/blocks-registry": "assets/js/blocks-registry",
 		"@woocommerce/settings": "assets/js/settings/shared",
 		"@woocommerce/block-data": "assets/js/data",
@@ -35,7 +34,7 @@
 
 		"@woocommerce/blocks-test-utils": "tests/utils",
 		"@woocommerce/types": "assets/js/types",
-		"@woocommerce/utils": "assets/js/utils",
+		"~/utils": "assets/js/utils",
 		"^react$": "<rootDir>/node_modules/react",
 		"^react-dom$": "<rootDir>/node_modules/react-dom"
 	},

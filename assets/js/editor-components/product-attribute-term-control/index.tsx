@@ -5,11 +5,11 @@ import classNames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { SelectControl } from '@wordpress/components';
 import { withInstanceId } from '@wordpress/compose';
-import { convertAttributeObjectToSearchItem } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
+import { convertAttributeObjectToSearchItem } from '~/utils';
 import {
 	SearchListControl,
 	SearchListItem,

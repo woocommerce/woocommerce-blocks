@@ -10,13 +10,13 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
 import { CheckboxList } from '@woocommerce/blocks-components';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { changeUrl, normalizeQueryParams } from '@woocommerce/utils';
 import classnames from 'classnames';
 import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
  */
+import { changeUrl, normalizeQueryParams } from '~/utils';
 import { usePrevious, useShallowEqual } from '~/base/hooks';
 import {
 	useQueryStateByKey,

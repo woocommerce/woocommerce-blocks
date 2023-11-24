@@ -17,16 +17,16 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
 import { isBoolean, objectHasProp } from '@woocommerce/types';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import {
-	changeUrl,
-	PREFIX_QUERY_ARG_FILTER_TYPE,
-	normalizeQueryParams,
-} from '@woocommerce/utils';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import {
+	changeUrl,
+	PREFIX_QUERY_ARG_FILTER_TYPE,
+	normalizeQueryParams,
+} from '~/utils';
 import { usePrevious, useShallowEqual } from '~/base/hooks';
 import {
 	useQueryStateByKey,

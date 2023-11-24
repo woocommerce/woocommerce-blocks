@@ -3,15 +3,12 @@
  */
 import { WP_REST_API_Category } from 'wp-types';
 import { ProductResponseItem } from '@woocommerce/types';
-import {
-	getImageSrcFromProduct,
-	getImageIdFromProduct,
-} from '@woocommerce/utils';
 import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { getImageSrcFromProduct, getImageIdFromProduct } from '~/utils';
 import { BLOCK_NAMES } from './constants';
 import {
 	getCategoryImageSrc,

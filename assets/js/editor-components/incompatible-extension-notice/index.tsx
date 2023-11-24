@@ -21,11 +21,11 @@ import { store as noticesStore } from '@wordpress/notices';
 import { store as coreStore } from '@wordpress/core-data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 import { recordEvent } from '@woocommerce/tracks';
-import { findBlock } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
+import { findBlock } from '~/utils';
 import { Alert } from '~/icons';
 import { useCombinedIncompatibilityNotice } from './use-combined-incompatibility-notice';
 import { ModalContent } from './modal';

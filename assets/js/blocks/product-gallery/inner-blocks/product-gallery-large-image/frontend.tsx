@@ -6,11 +6,11 @@ import {
 	getContext as getContextFn,
 	getElement,
 } from '@woocommerce/interactivity';
-import { StorePart } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
+import { StorePart } from '~/utils';
 import type { ProductGalleryContext, ProductGallery } from '../../frontend';
 
 type Context = {

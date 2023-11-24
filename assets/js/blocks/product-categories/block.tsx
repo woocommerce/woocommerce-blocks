@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import { Icon, listView } from '@wordpress/icons';
-import { isSiteEditorPage, isWidgetEditorPage } from '@woocommerce/utils';
 import { useSelect } from '@wordpress/data';
 import {
 	Disabled,
@@ -17,9 +16,11 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
+
 /**
  * Internal dependencies
  */
+import { isSiteEditorPage, isWidgetEditorPage } from '~/utils';
 import type { ProductCategoriesBlockProps } from './types';
 
 const EmptyPlaceholder = () => (

@@ -10,11 +10,11 @@ import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { GlobalPaymentMethod } from '@woocommerce/types';
 import { useSelect } from '@wordpress/data';
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
-import { trimCharacters, trimWords } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
+import { trimCharacters, trimWords } from '~/utils';
 import { blocksConfig } from '~/settings/blocks';
 import ExternalLinkCard from '~/editor-components/external-link-card';
 import Noninteractive from '~/base/components/noninteractive';

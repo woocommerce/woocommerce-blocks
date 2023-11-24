@@ -3,11 +3,11 @@
  */
 import { BlockAttributes, BlockInstance } from '@wordpress/blocks';
 import { select, dispatch } from '@wordpress/data';
-import { findBlock } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
+import { findBlock } from '~/utils';
 import { ThumbnailsPosition } from './inner-blocks/product-gallery-thumbnails/constants';
 import { getNextPreviousImagesWithClassName } from './inner-blocks/product-gallery-large-image-next-previous/utils';
 import { NextPreviousButtonSettingValues } from './inner-blocks/product-gallery-large-image-next-previous/types';

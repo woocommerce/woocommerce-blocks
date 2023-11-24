@@ -6,7 +6,6 @@ import { useDebouncedCallback } from 'use-debounce';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { changeUrl, getUrlParameter } from '@woocommerce/utils';
 import {
 	CurrencyResponse,
 	isBoolean,
@@ -17,6 +16,7 @@ import {
 /**
  * Internal dependencies
  */
+import { changeUrl, getUrlParameter } from '~/utils';
 import { usePrevious } from '~/base/hooks';
 import {
 	useQueryStateByKey,

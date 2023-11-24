@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { isString } from '@woocommerce/types';
-import { getUrlParameter } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
+import { getUrlParameter } from '~/utils';
 import metadata from './block.json';
 
 export const getActiveFilters = ( queryParamKey = 'filter_rating' ) => {

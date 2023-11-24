@@ -2,12 +2,13 @@
  * External dependencies
  */
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
-import { objectOmit } from '@woocommerce/utils';
 import type { InnerBlockTemplate } from '@wordpress/blocks';
 import { isBoolean } from '@woocommerce/types';
+
 /**
  * Internal dependencies
  */
+import { objectOmit } from '~/utils';
 import { QueryBlockAttributes } from './types';
 import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
 import { VARIATION_NAME as PRODUCT_TEMPLATE_ID } from './variations/elements/product-template';

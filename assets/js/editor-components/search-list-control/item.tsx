@@ -4,12 +4,12 @@
 import classNames from 'classnames';
 import { CheckboxControl } from '@wordpress/components';
 import { useCallback } from '@wordpress/element';
-import { arrayDifferenceBy, arrayUnionBy } from '@woocommerce/utils';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
  */
+import { arrayDifferenceBy, arrayUnionBy } from '~/utils';
 import type {
 	renderItemArgs,
 	SearchListItem as SearchListItemProps,

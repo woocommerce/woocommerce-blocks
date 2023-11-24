@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { store, getContext as getContextFn } from '@woocommerce/interactivity';
-import { StorePart } from '@woocommerce/utils';
+
+/**
+ * Internal dependencies
+ */
+import { StorePart } from '~/utils';
 
 export interface ProductGalleryContext {
 	selectedImage: string;

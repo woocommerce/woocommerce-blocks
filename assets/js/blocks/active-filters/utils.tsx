@@ -5,13 +5,13 @@ import { __, sprintf } from '@wordpress/i18n';
 import { formatPrice } from '@woocommerce/price-format';
 import { Label, RemovableChip } from '@woocommerce/blocks-components';
 import { getQueryArgs, addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { changeUrl } from '@woocommerce/utils';
 import { Icon, closeSmall } from '@wordpress/icons';
 import { isString } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { changeUrl } from '~/utils';
 import metadata from './block.json';
 
 /**

@@ -10,12 +10,12 @@ import type {
 	WithInjectedProductVariations,
 	WithInjectedSearchedProducts,
 } from '@woocommerce/types';
-import { convertProductResponseItemToSearchItem } from '@woocommerce/utils';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { convertProductResponseItemToSearchItem } from '~/utils';
 import {
 	withProductVariations,
 	withSearchedProducts,

@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { getSetting } from '@woocommerce/settings';
-import { objectOmit } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
+import { objectOmit } from '~/utils';
 import {
 	ProductCollectionAttributes,
 	TProductCollectionOrder,

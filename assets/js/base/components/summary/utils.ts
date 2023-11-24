@@ -2,8 +2,12 @@
  * External dependencies
  */
 import { autop } from '@wordpress/autop';
-import { trimCharacters, trimWords } from '@woocommerce/utils';
 import { count, CountType } from '@wordpress/wordcount';
+
+/**
+ * Internal dependencies
+ */
+import { trimCharacters, trimWords } from '~/utils';
 
 /**
  * Get first paragraph from some HTML text, or return whole string.

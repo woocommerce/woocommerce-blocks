@@ -16,16 +16,16 @@ import {
 	objectHasProp,
 } from '@woocommerce/types';
 import { Icon, chevronDown } from '@wordpress/icons';
-import {
-	changeUrl,
-	PREFIX_QUERY_ARG_FILTER_TYPE,
-	PREFIX_QUERY_ARG_QUERY_TYPE,
-} from '@woocommerce/utils';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import {
+	changeUrl,
+	PREFIX_QUERY_ARG_FILTER_TYPE,
+	PREFIX_QUERY_ARG_QUERY_TYPE,
+} from '~/utils';
 import { usePrevious, useShallowEqual } from '~/base/hooks';
 import {
 	useCollection,

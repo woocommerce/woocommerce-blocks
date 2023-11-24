@@ -9,9 +9,6 @@ import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, useMemo } from '@wordpress/element';
 import { useEntityRecord } from '@wordpress/core-data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
-import { isSiteEditorPage } from '@woocommerce/utils';
-
-// eslint-disable-next-line @woocommerce/dependency-group
 import {
 	registerPlugin,
 	unregisterPlugin,
@@ -21,6 +18,7 @@ import {
 /**
  * Internal dependencies
  */
+import { isSiteEditorPage } from '~/utils';
 import './style.scss';
 
 const hasLegacyTemplateBlock = ( blocks: Array< BlockInstance > ): boolean => {
