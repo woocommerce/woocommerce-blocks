@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { DEFAULT_QUERY } from '@woocommerce/blocks/product-collection/constants';
-
-/**
  * Internal dependencies
  */
+import { DEFAULT_QUERY } from '~/blocks/product-collection/constants';
 import { sharedParams, mappedParams, formatQuery } from '../utils';
 
 describe( 'formatQuery: transform Product Collection Block query to Product Collection Data Store API query', () => {

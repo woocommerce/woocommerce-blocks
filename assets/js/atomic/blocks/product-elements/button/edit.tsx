@@ -17,11 +17,11 @@ import {
 } from '@wordpress/block-editor';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
-import { ProductQueryContext as Context } from '@woocommerce/blocks/product-query/types';
 
 /**
  * Internal dependencies
  */
+import { ProductQueryContext as Context } from '~/blocks/product-query/types';
 import Block from './block';
 import { BlockAttributes } from './types';
 

@@ -11,7 +11,7 @@
 		"~/atomic/blocks": "assets/js/atomic/blocks",
 		"@woocommerce/icons": "assets/js/icons",
 		"@woocommerce/settings": "assets/js/settings/shared",
-		"@woocommerce/blocks/(.*)$": "assets/js/blocks/$1",
+		"~/blocks/(.*)$": "assets/js/blocks/$1",
 		"@woocommerce/block-settings": "assets/js/settings/blocks",
 		"@woocommerce/editor-components(.*)$": "assets/js/editor-components/$1",
 		"@woocommerce/blocks-registry": "assets/js/blocks-registry",

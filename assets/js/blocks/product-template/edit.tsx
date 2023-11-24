@@ -16,9 +16,13 @@ import {
 import { Spinner } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
 import type { BlockEditProps } from '@wordpress/blocks';
-import { ProductCollectionAttributes } from '@woocommerce/blocks/product-collection/types';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isNumber } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { ProductCollectionAttributes } from '~/blocks/product-collection/types';
 
 const ProductTemplateInnerBlocks = () => {
 	const innerBlocksProps = useInnerBlocksProps(

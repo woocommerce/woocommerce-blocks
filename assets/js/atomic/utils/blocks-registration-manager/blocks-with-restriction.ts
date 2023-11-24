@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { BlockConfiguration } from '@wordpress/blocks';
-import { ProductGalleryBlockSettings } from '@woocommerce/blocks/product-gallery/settings';
 
 /**
  * Internal dependencies
  */
+import { ProductGalleryBlockSettings } from '~/blocks/product-gallery/settings';
 import productGalleryBlockMetadata from '../../../blocks/product-gallery/block.json';
 
 export interface BlocksWithRestriction {

@@ -7,7 +7,6 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { Disabled } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Icon, chevronDown } from '@wordpress/icons';
-import { ProductQueryContext as Context } from '@woocommerce/blocks/product-query/types';
 import { CheckboxList } from '@woocommerce/blocks-components';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { getSetting } from '@woocommerce/settings';
@@ -15,6 +14,7 @@ import { getSetting } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
+import { ProductQueryContext as Context } from '~/blocks/product-query/types';
 import {
 	useCollectionData,
 	useQueryStateByContext,

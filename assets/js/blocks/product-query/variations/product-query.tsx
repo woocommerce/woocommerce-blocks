@@ -10,16 +10,16 @@ import { __ } from '@wordpress/i18n';
 import { stacks } from '@woocommerce/icons';
 import { isWpVersion, getSettingWithCoercion } from '@woocommerce/settings';
 import { select, subscribe } from '@wordpress/data';
-import {
-	QueryBlockAttributes,
-	ProductQueryBlockQuery,
-} from '@woocommerce/blocks/product-query/types';
 import { isSiteEditorPage } from '@woocommerce/utils';
 import { isNumber } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import {
+	QueryBlockAttributes,
+	ProductQueryBlockQuery,
+} from '~/blocks/product-query/types';
 import {
 	PRODUCT_QUERY_VARIATION_NAME,
 	DEFAULT_ALLOWED_CONTROLS,

@@ -9,13 +9,6 @@ import { EditorBlock } from '@woocommerce/types';
 import { addFilter } from '@wordpress/hooks';
 import { ProductCollectionFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import {
-	enableAutoUpdate,
-	revertMigration,
-	getUpgradeStatus,
-	HOURS_TO_DISPLAY_UPGRADE_NOTICE,
-	UPGRADE_NOTICE_DISPLAY_COUNT_THRESHOLD,
-} from '@woocommerce/blocks/migration-products-to-product-collection';
-import {
 	// @ts-expect-error Using experimental features
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToolsPanel as ToolsPanel,
@@ -24,6 +17,13 @@ import {
 /**
  * Internal dependencies
  */
+import {
+	enableAutoUpdate,
+	revertMigration,
+	getUpgradeStatus,
+	HOURS_TO_DISPLAY_UPGRADE_NOTICE,
+	UPGRADE_NOTICE_DISPLAY_COUNT_THRESHOLD,
+} from '~/blocks/migration-products-to-product-collection';
 import metadata from '../block.json';
 import { ProductCollectionAttributes } from '../types';
 import { setQueryAttribute } from '../utils';

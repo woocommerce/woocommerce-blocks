@@ -7,7 +7,6 @@ import { createInterpolateElement, useEffect } from '@wordpress/element';
 import { getAdminLink, getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean } from '@woocommerce/types';
 import type { BlockEditProps } from '@wordpress/blocks';
-import { ProductQueryContext as Context } from '@woocommerce/blocks/product-query/types';
 import {
 	Disabled,
 	PanelBody,
@@ -25,6 +24,7 @@ import {
 /**
  * Internal dependencies
  */
+import { ProductQueryContext as Context } from '~/blocks/product-query/types';
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import {

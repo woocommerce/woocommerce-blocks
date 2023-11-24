@@ -2,10 +2,6 @@
  * External dependencies
  */
 import {
-	BLOCK_ATTRIBUTES,
-	INNER_BLOCKS_TEMPLATE,
-} from '@woocommerce/blocks/product-query/variations';
-import {
 	InnerBlocks,
 	InspectorControls,
 	useBlockProps,
@@ -17,6 +13,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import {
+	BLOCK_ATTRIBUTES,
+	INNER_BLOCKS_TEMPLATE,
+} from '~/blocks/product-query/variations';
 import './editor.scss';
 
 const Edit = () => {

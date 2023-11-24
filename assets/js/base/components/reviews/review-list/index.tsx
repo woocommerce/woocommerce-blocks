@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { getSetting } from '@woocommerce/settings';
-import { ReviewBlockAttributes } from '@woocommerce/blocks/reviews/attributes';
 
 /**
  * Internal dependencies
  */
+import { ReviewBlockAttributes } from '~/blocks/reviews/attributes';
 import ReviewListItem from '../review-list-item';
 import type { Review } from '../types';
 import './style.scss';

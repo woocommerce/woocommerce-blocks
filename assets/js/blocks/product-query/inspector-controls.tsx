@@ -8,12 +8,7 @@ import { addFilter } from '@wordpress/hooks';
 import { type ElementType } from '@wordpress/element';
 import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { EditorBlock, isNumber } from '@woocommerce/types';
-import {
-	manualUpdate,
-	MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
-} from '@woocommerce/blocks/migration-products-to-product-collection';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import { ProductQueryBlockQuery } from '@woocommerce/blocks/product-query/types';
 import {
 	FormTokenField,
 	ToggleControl,
@@ -26,6 +21,11 @@ import {
 /**
  * Internal dependencies
  */
+import { ProductQueryBlockQuery } from '~/blocks/product-query/types';
+import {
+	manualUpdate,
+	MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
+} from '~/blocks/migration-products-to-product-collection';
 import { usePrevious } from '~/base/hooks';
 import {
 	ProductQueryArguments,

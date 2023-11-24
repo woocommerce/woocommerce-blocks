@@ -3,11 +3,11 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import classNames from 'classnames';
-import { ReviewBlockAttributes } from '@woocommerce/blocks/reviews/attributes';
 
 /**
  * Internal dependencies
  */
+import { ReviewBlockAttributes } from '~/blocks/reviews/attributes';
 import ReadMore from '~/base/components/read-more';
 import './style.scss';
 import type { Review } from '../types';

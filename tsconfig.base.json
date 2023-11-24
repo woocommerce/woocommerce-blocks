@@ -26,7 +26,6 @@
 			"~/*": [ "assets/js/*" ],
 			"@woocommerce/interactivity": [ "assets/js/interactivity" ],
 			"@woocommerce/interactivity/*": [ "assets/js/interactivity/*" ],
-			"@woocommerce/blocks/*": [ "assets/js/blocks/*" ],
 			"@woocommerce/editor-components/*": [
 				"assets/js/editor-components/*"
 			],

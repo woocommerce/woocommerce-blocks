@@ -8,15 +8,15 @@ import {
 	useEffect,
 	useRef,
 } from '@wordpress/element';
-import {
-	MIGRATION_STATUS_LS_KEY,
-	getInitialStatusLSValue,
-	incrementUpgradeStatusDisplayCount,
-} from '@woocommerce/blocks/migration-products-to-product-collection';
 
 /**
  * Internal dependencies
  */
+import {
+	MIGRATION_STATUS_LS_KEY,
+	getInitialStatusLSValue,
+	incrementUpgradeStatusDisplayCount,
+} from '~/blocks/migration-products-to-product-collection';
 import { useLocalStorageState } from '~/base/hooks';
 
 const notice = createInterpolateElement(

@@ -4,12 +4,12 @@
 import EditProductLink from '@woocommerce/editor-components/edit-product-link';
 import { useBlockProps } from '@wordpress/block-editor';
 import type { BlockEditProps } from '@wordpress/blocks';
-import { ProductQueryContext as Context } from '@woocommerce/blocks/product-query/types';
 import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { ProductQueryContext as Context } from '~/blocks/product-query/types';
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import {

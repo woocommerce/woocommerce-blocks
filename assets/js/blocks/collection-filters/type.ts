@@ -2,7 +2,11 @@
  * External dependencies
  */
 import type { BlockEditProps } from '@wordpress/blocks';
-import type { ProductCollectionQuery } from '@woocommerce/blocks/product-collection/types';
+
+/**
+ * Internal dependencies
+ */
+import type { ProductCollectionQuery } from '~/blocks/product-collection/types';
 
 type BlockAttributes = {
 	collectionData: unknown[];
