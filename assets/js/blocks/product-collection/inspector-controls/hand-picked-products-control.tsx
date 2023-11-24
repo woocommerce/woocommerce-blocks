@@ -18,6 +18,25 @@ import {
 import { QueryControlProps } from '../types';
 
 /**
+ * Decodes HTML entities in a string.
+ * Example:
+ * decodeHTMLEntities( 'foo &amp; bar' ) // 'foo & bar'
+ * decodeHTMLEntities( 'Hoodie &#8211; Black' ) // 'Hoodie – Black'
+ *
+ * @param {string} str - The string containing HTML entities.
+ * @return {string} - The decoded string.
+ */
+function decodeHTMLEntities( str?: string ) {
+	if ( ! str ) {
+		return '';
+	}
+
+	const txt = document.createElement( 'textarea' );
+	txt.innerHTML = str;
+	return txt.value;
+}
+
+/**
  * Returns:
  * - productsMap: Map of products by id and name.
  * - productsList: List of products retrieved.
@@ -91,16 +110,21 @@ const HandPickedProductsControl = ( {
 		);
 	}, [ productsList, selectedProductIds ] );
 
+	/**
+	 * Transforms a token into a product name.
+	 * - If the token is a number, it will be used to lookup the product name.
+	 * - Otherwise, the token will be used as is.
+	 */
 	const transformTokenIntoProductName = ( token: string ) => {
 		const parsedToken = Number( token );
 
 		if ( Number.isNaN( parsedToken ) ) {
-			return token;
+			return decodeHTMLEntities( token );
 		}
 
 		const product = productsMap.get( parsedToken );
 
-		return product?.name || '';
+		return decodeHTMLEntities( product?.name );
 	};
 
 	return (
