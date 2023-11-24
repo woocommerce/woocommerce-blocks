@@ -17,15 +17,15 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { getSetting } from '@woocommerce/settings';
 import { Icon, mapMarker } from '@wordpress/icons';
 import { CartShippingPackageShippingRate } from '@woocommerce/types';
-import {
-	isPackageRateCollectable,
-	getShippingRatesPackageCount,
-} from '@woocommerce/base-utils';
 import { ExperimentalOrderLocalPickupPackages } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
+import {
+	isPackageRateCollectable,
+	getShippingRatesPackageCount,
+} from '~/base/utils';
 import { useShippingData, useStoreCart } from '~/base/context/hooks';
 import { LocalPickupSelect } from '~/base/components/cart-checkout/local-pickup-select';
 import ShippingRatesControlPackage from '~/base/components/cart-checkout/shipping-rates-control-package';

@@ -6,7 +6,6 @@ import {
 	PAYMENT_STORE_KEY,
 	STORE_NOTICES_STORE_KEY,
 } from '@woocommerce/block-data';
-import { getNoticeContexts } from '@woocommerce/base-utils';
 import type { Notice } from '@wordpress/notices';
 import { useMemo, useEffect } from '@wordpress/element';
 import type { NoticeType } from '@woocommerce/types';
@@ -14,6 +13,7 @@ import type { NoticeType } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
+import { getNoticeContexts } from '~/base/utils';
 import './style.scss';
 import StoreNotices from './store-notices';
 import SnackbarNotices from './snackbar-notices';

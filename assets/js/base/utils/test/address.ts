@@ -1,11 +1,11 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
 import {
 	emptyHiddenAddressFields,
 	isAddressComplete,
 	formatShippingAddress,
-} from '@woocommerce/base-utils';
+} from '~/base/utils';
 
 describe( 'emptyHiddenAddressFields', () => {
 	it( "Removes state from an address where the country doesn't use states", () => {

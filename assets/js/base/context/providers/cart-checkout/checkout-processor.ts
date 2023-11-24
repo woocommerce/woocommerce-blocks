@@ -10,10 +10,6 @@ import {
 	useState,
 	useMemo,
 } from '@wordpress/element';
-import {
-	emptyHiddenAddressFields,
-	removeAllNotices,
-} from '@woocommerce/base-utils';
 import { useDispatch, useSelect, select as selectStore } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
@@ -36,6 +32,7 @@ import {
 /**
  * Internal dependencies
  */
+import { emptyHiddenAddressFields, removeAllNotices } from '~/base/utils';
 import { preparePaymentData, processCheckoutResponseHeaders } from './utils';
 import { useCheckoutEventsContext } from './checkout-events';
 import { useShippingDataContext } from './shipping';

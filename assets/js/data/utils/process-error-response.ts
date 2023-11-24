@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { createNotice, DEFAULT_ERROR_MESSAGE } from '@woocommerce/base-utils';
 import { decodeEntities } from '@wordpress/html-entities';
 import {
 	objectHasProp,
@@ -12,6 +11,7 @@ import {
 /**
  * Internal dependencies
  */
+import { createNotice, DEFAULT_ERROR_MESSAGE } from '~/base/utils';
 import { noticeContexts } from '~/base/context/event-emit/utils';
 
 type ApiParamError = {

@@ -29,13 +29,13 @@ import {
 import { useEffect, useState } from '@wordpress/element';
 import { store as noticesStore } from '@wordpress/notices';
 import { useEntityRecord } from '@wordpress/core-data';
-import { debounce } from '@woocommerce/base-utils';
 import { woo } from '@woocommerce/icons';
 import { isNumber } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { debounce } from '~/base/utils';
 import './editor.scss';
 import './style.scss';
 import { BLOCK_SLUG, TEMPLATES, TYPES } from './constants';

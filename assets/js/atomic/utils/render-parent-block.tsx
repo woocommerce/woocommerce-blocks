@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { renderFrontend } from '@woocommerce/base-utils';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import {
 	Fragment,
@@ -18,6 +17,7 @@ import {
 /**
  * Internal dependencies
  */
+import { renderFrontend } from '~/base/utils';
 import BlockErrorBoundary from '~/base/components/block-error-boundary';
 
 /**

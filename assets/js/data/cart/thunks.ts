@@ -7,11 +7,11 @@ import {
 	ApiErrorResponse,
 	isApiErrorResponse,
 } from '@woocommerce/types';
-import { camelCaseKeys } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import { camelCaseKeys } from '~/base/utils';
 import { notifyQuantityChanges } from './notify-quantity-changes';
 import { notifyCartErrors } from './notify-errors';
 import { CartDispatchFromMap, CartSelectFromMap } from './index';

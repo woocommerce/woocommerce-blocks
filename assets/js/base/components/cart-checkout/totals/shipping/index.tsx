@@ -6,16 +6,13 @@ import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { TotalsItem } from '@woocommerce/blocks-components';
 import type { Currency } from '@woocommerce/types';
-import {
-	isAddressComplete,
-	isPackageRateCollectable,
-} from '@woocommerce/base-utils';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import { isAddressComplete, isPackageRateCollectable } from '~/base/utils';
 import { useStoreCart } from '~/base/context/hooks';
 import { ShippingVia } from '~/base/components/cart-checkout/totals/shipping/shipping-via';
 import ShippingCalculator from '../../shipping-calculator';

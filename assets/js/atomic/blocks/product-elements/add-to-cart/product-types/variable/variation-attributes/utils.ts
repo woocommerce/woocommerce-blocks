@@ -9,11 +9,11 @@ import {
 	ProductResponseTermItem,
 	ProductResponseVariationsItem,
 } from '@woocommerce/types';
-import { keyBy } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import { keyBy } from '~/base/utils';
 import { AttributesMap } from '../types';
 
 /**

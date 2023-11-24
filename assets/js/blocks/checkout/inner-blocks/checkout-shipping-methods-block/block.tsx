@@ -2,11 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	getShippingRatesPackageCount,
-	hasCollectableRate,
-	isAddressComplete,
-} from '@woocommerce/base-utils';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import {
 	FormattedMonetaryAmount,
@@ -23,6 +18,11 @@ import type { ReactElement } from 'react';
 /**
  * Internal dependencies
  */
+import {
+	getShippingRatesPackageCount,
+	hasCollectableRate,
+	isAddressComplete,
+} from '~/base/utils';
 import { useEditorContext, noticeContexts } from '~/base/context';
 import { useCustomerData, useShippingData } from '~/base/context/hooks';
 import { ShippingRatesControl } from '~/base/components/cart-checkout';

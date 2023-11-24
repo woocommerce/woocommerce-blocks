@@ -4,15 +4,15 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
 import { ExperimentalOrderShippingPackages } from '@woocommerce/blocks-checkout';
-import {
-	getShippingRatesPackageCount,
-	getShippingRatesRateCount,
-} from '@woocommerce/base-utils';
 import { isObject } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import {
+	getShippingRatesPackageCount,
+	getShippingRatesRateCount,
+} from '~/base/utils';
 import {
 	useStoreCart,
 	useEditorContext,

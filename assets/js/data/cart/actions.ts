@@ -12,15 +12,15 @@ import type {
 	CartShippingRate,
 } from '@woocommerce/types';
 import { BillingAddress, ShippingAddress } from '@woocommerce/settings';
-import {
-	triggerAddedToCartEvent,
-	triggerAddingToCartEvent,
-	camelCaseKeys,
-} from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import {
+	triggerAddedToCartEvent,
+	triggerAddingToCartEvent,
+	camelCaseKeys,
+} from '~/base/utils';
 import { ACTION_TYPES as types } from './action-types';
 import { apiFetchWithHeaders } from '../shared-controls';
 import { ReturnOrGeneratorYieldUnion } from '../mapped-types';

@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { Children, cloneElement, isValidElement } from '@wordpress/element';
-import { getValidBlockAttributes } from '@woocommerce/base-utils';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 
 /**
  * Internal dependencies
  */
+import { getValidBlockAttributes } from '~/base/utils';
 import { useCheckoutExtensionData, useValidation } from '~/base/context/hooks';
 import { useStoreCart } from '~/base/context';
 import { renderParentBlock } from '~/atomic/utils';

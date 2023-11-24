@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { getValidBlockAttributes } from '@woocommerce/base-utils';
 import { Children, cloneElement, isValidElement } from '@wordpress/element';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 
 /**
  * Internal dependencies
  */
+import { getValidBlockAttributes } from '~/base/utils';
 import { useStoreCart } from '~/base/context';
 import { renderParentBlock } from '~/atomic/utils';
 import './inner-blocks/register-components';

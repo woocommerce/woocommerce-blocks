@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { useEffect } from '@wordpress/element';
-import { dispatchEvent } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import { dispatchEvent } from '~/base/utils';
 import { useStoreCart } from '~/base/context/hooks';
 import './style.scss';
 

@@ -1,14 +1,10 @@
 /**
- * External dependencies
- */
-import preloadScript from '@woocommerce/base-utils/preload-script';
-import lazyLoadScript from '@woocommerce/base-utils/lazy-load-script';
-import getNavigationType from '@woocommerce/base-utils/get-navigation-type';
-import { translateJQueryEventToNative } from '@woocommerce/base-utils/legacy-events';
-
-/**
  * Internal dependencies
  */
+import preloadScript from '~/base/utils/preload-script';
+import lazyLoadScript from '~/base/utils/lazy-load-script';
+import getNavigationType from '~/base/utils/get-navigation-type';
+import { translateJQueryEventToNative } from '~/base/utils/legacy-events';
 import {
 	getMiniCartTotalsFromLocalStorage,
 	getMiniCartTotalsFromServer,

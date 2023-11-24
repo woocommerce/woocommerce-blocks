@@ -1,10 +1,6 @@
 /**
  * External dependencies
  */
-import {
-	getValidBlockAttributes,
-	translateJQueryEventToNative,
-} from '@woocommerce/base-utils';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 import {
 	formatPrice,
@@ -30,6 +26,10 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import {
+	getValidBlockAttributes,
+	translateJQueryEventToNative,
+} from '~/base/utils';
 import { useStoreCart } from '~/base/context/hooks';
 import Drawer from '~/base/components/drawer';
 import { renderParentBlock } from '~/atomic/utils';

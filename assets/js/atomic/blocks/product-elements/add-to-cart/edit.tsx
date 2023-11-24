@@ -12,11 +12,11 @@ import {
 	Notice,
 } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
-import { productSupportsAddToCartForm } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import { productSupportsAddToCartForm } from '~/base/utils';
 import './style.scss';
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';

@@ -3,7 +3,11 @@
  */
 import { getSetting } from '@woocommerce/settings';
 import type { CartResponseShippingRate } from '@woocommerce/type-defs/cart-response';
-import { hasCollectableRate } from '@woocommerce/base-utils';
+
+/**
+ * Internal dependencies
+ */
+import { hasCollectableRate } from '~/base/utils';
 
 /**
  * Searches an array of packages/rates to see if there are actually any rates

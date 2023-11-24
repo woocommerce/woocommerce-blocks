@@ -5,11 +5,11 @@ import type { ShippingAddress } from '@woocommerce/settings';
 import { dispatch } from '@wordpress/data';
 import { CART_STORE_KEY, processErrorResponse } from '@woocommerce/block-data';
 import { StoreNoticesContainer } from '@woocommerce/blocks-components';
-import { removeNoticesWithContext } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import { removeNoticesWithContext } from '~/base/utils';
 import { useCustomerData } from '~/base/context/hooks';
 import ShippingCalculatorAddress from './address';
 import './style.scss';

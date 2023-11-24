@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { formatShippingAddress } from '@woocommerce/base-utils';
 import { ShippingAddress as ShippingAddressType } from '@woocommerce/settings';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
@@ -10,6 +9,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import { formatShippingAddress } from '~/base/utils';
 import { useEditorContext } from '~/base/context';
 import PickupLocation from '~/base/components/cart-checkout/pickup-location';
 import ShippingLocation from '../../shipping-location';

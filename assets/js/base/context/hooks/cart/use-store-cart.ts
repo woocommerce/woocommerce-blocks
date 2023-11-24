@@ -30,11 +30,11 @@ import type {
 	CartResponseCouponItem,
 	CartResponseCoupons,
 } from '@woocommerce/types';
-import { emptyHiddenAddressFields } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import { emptyHiddenAddressFields } from '~/base/utils';
 import { useEditorContext } from '../../providers/editor-context';
 import { useStoreCartEventListeners } from './use-store-cart-event-listeners';
 

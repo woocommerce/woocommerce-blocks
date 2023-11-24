@@ -2,10 +2,6 @@
  * External dependencies
  */
 import {
-	hasCollectableRate,
-	isPackageRateCollectable,
-} from '@woocommerce/base-utils';
-import {
 	CartShippingRate,
 	CartShippingPackageShippingRate,
 } from '@woocommerce/type-defs/cart';
@@ -14,6 +10,7 @@ import * as blockSettings from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
+import { hasCollectableRate, isPackageRateCollectable } from '~/base/utils';
 import {
 	getLocalPickupPrices,
 	getShippingPrices,

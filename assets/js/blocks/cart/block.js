@@ -4,13 +4,13 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
-import { translateJQueryEventToNative } from '@woocommerce/base-utils';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies
  */
+import { translateJQueryEventToNative } from '~/base/utils';
 import withScrollToTop from '~/base/hocs/with-scroll-to-top';
 import { useStoreCart } from '~/base/context/hooks';
 import {

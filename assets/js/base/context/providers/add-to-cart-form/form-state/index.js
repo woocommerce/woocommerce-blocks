@@ -9,16 +9,16 @@ import {
 	useEffect,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import {
-	productIsPurchasable,
-	productSupportsAddToCartForm,
-} from '@woocommerce/base-utils';
 import { useDispatch } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
+import {
+	productIsPurchasable,
+	productSupportsAddToCartForm,
+} from '~/base/utils';
 import { useShallowEqual } from '~/base/hooks';
 import { actions } from './actions';
 import { reducer } from './reducer';

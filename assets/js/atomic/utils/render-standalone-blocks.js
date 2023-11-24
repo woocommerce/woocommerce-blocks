@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { renderFrontend } from '@woocommerce/base-utils';
-
-/**
  * Internal dependencies
  */
+import { renderFrontend } from '~/base/utils';
 import { getBlockMap } from './get-block-map';
 
 export const renderStandaloneBlocks = () => {

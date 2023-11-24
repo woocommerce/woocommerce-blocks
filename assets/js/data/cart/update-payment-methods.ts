@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { dispatch, select } from '@wordpress/data';
-import { debounce } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import { debounce } from '~/base/utils';
 import { STORE_KEY as PAYMENT_STORE_KEY } from '../payment/constants';
 import { STORE_KEY } from './constants';
 

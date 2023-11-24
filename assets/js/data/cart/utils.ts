@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { select } from '@wordpress/data';
-import { camelCaseKeys } from '@woocommerce/base-utils';
 import { isEmail } from '@wordpress/url';
 import {
 	CartBillingAddress,
@@ -14,6 +13,7 @@ import {
 /**
  * Internal dependencies
  */
+import { camelCaseKeys } from '~/base/utils';
 import { STORE_KEY as VALIDATION_STORE_KEY } from '../validation/constants';
 
 export const mapCartResponseToCart = ( responseCart: CartResponse ): Cart => {

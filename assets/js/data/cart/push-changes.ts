@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { removeAllNotices, debounce, pick } from '@woocommerce/base-utils';
 import {
 	CartBillingAddress,
 	CartShippingAddress,
@@ -13,6 +12,7 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 /**
  * Internal dependencies
  */
+import { removeAllNotices, debounce, pick } from '~/base/utils';
 import { STORE_KEY } from './constants';
 import { processErrorResponse } from '../utils';
 import { getDirtyKeys, validateDirtyProps, BaseAddressKey } from './utils';

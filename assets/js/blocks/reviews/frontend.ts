@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { renderFrontend } from '@woocommerce/base-utils';
-
-/**
  * Internal dependencies
  */
+import { renderFrontend } from '~/base/utils';
 import FrontendContainerBlock from './frontend-container-block';
 
 const selector = `

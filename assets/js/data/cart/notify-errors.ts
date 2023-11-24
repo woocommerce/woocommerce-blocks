@@ -2,9 +2,13 @@
  * External dependencies
  */
 import { ApiErrorResponse, isApiErrorResponse } from '@woocommerce/types';
-import { createNotice } from '@woocommerce/base-utils';
 import { decodeEntities } from '@wordpress/html-entities';
 import { dispatch } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { createNotice } from '~/base/utils';
 
 /**
  * This function is used to notify the user of cart item errors/conflicts

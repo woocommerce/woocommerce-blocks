@@ -4,11 +4,11 @@
 import { dispatch, select } from '@wordpress/data';
 import { previewCart } from '@woocommerce/resource-previews';
 import { Cart } from '@woocommerce/types';
-import { camelCaseKeys } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import { camelCaseKeys } from '~/base/utils';
 import { notifyQuantityChanges } from '../notify-quantity-changes';
 
 // Deep clone an object to avoid mutating it later.

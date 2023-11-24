@@ -8,16 +8,13 @@ import {
 import { useSelect, useDispatch } from '@wordpress/data';
 import { isObject } from '@woocommerce/types';
 import { useEffect, useRef, useCallback } from '@wordpress/element';
-import {
-	hasCollectableRate,
-	deriveSelectedShippingRates,
-} from '@woocommerce/base-utils';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { previewCart } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
  */
+import { hasCollectableRate, deriveSelectedShippingRates } from '~/base/utils';
 import { useStoreEvents } from '../use-store-events';
 import type { ShippingData } from './types';
 

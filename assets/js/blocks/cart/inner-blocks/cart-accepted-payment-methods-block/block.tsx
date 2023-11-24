@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { getIconsFromPaymentMethods } from '@woocommerce/base-utils';
-
-/**
  * Internal dependencies
  */
+import { getIconsFromPaymentMethods } from '~/base/utils';
 import { usePaymentMethods } from '~/base/context/hooks';
 import { PaymentMethodIcons } from '~/base/components/cart-checkout';
 

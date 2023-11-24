@@ -8,10 +8,6 @@ import {
 } from '@woocommerce/types';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { dispatch, select } from '@wordpress/data';
-import {
-	deriveSelectedShippingRates,
-	emptyHiddenAddressFields,
-} from '@woocommerce/base-utils';
 import { __, sprintf } from '@wordpress/i18n';
 import {
 	getExpressPaymentMethods,
@@ -22,6 +18,10 @@ import { previewCart } from '@woocommerce/resource-previews';
 /**
  * Internal dependencies
  */
+import {
+	deriveSelectedShippingRates,
+	emptyHiddenAddressFields,
+} from '~/base/utils';
 import { STORE_KEY as CART_STORE_KEY } from '../../cart/constants';
 import { STORE_KEY as PAYMENT_STORE_KEY } from '../constants';
 import { noticeContexts } from '../../../base/context/event-emit';

@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { isSameAddress } from '@woocommerce/base-utils';
-
-/**
  * Internal dependencies
  */
+import { isSameAddress } from '~/base/utils';
 import { STATUS, checkoutData } from './constants';
 
 export type CheckoutState = {

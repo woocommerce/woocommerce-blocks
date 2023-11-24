@@ -3,13 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import { debounce } from '@woocommerce/base-utils';
 import { Placeholder } from '@wordpress/components';
 import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
+import { debounce } from '~/base/utils';
 import EditorBlock from './editor-block.js';
 import { getBlockClassName, getSortArgs } from './utils.js';
 

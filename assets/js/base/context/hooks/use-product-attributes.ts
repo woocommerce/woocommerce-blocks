@@ -8,7 +8,11 @@ import {
 	AttributeTerm,
 	AttributeWithTerms,
 } from '@woocommerce/types';
-import { formatError } from '@woocommerce/base-utils';
+
+/**
+ * Internal dependencies
+ */
+import { formatError } from '~/base/utils';
 
 export default function useProductAttributes( shouldLoadAttributes: boolean ) {
 	const [ errorLoadingAttributes, setErrorLoadingAttributes ] =

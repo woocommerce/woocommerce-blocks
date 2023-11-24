@@ -2,7 +2,11 @@
  * External dependencies
  */
 import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
-import { hasCollectableRate } from '@woocommerce/base-utils';
+
+/**
+ * Internal dependencies
+ */
+import { hasCollectableRate } from '~/base/utils';
 
 export interface minMaxPrices {
 	min: CartShippingPackageShippingRate | undefined;

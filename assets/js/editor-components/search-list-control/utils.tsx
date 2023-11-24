@@ -3,11 +3,11 @@
  */
 import { Fragment } from '@wordpress/element';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { keyBy } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import { keyBy } from '~/base/utils';
 import type { SearchListItem } from './types';
 
 export const defaultMessages = {

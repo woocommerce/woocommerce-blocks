@@ -66,7 +66,7 @@ const getAlias = ( options = {} ) => {
 			__dirname,
 			`../assetwoocommerce/base-contexts/js/${ pathPart }interactivity/`
 		),
-		'@woocommerce/base-utils': path.resolve(
+		'~/base/utils': path.resolve(
 			__dirname,
 			`../assets/js/${ pathPart }base/utils/`
 		),
