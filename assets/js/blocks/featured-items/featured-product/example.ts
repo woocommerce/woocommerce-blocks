@@ -1,8 +1,12 @@
 /**
  * External dependencies
  */
-import { previewProducts } from '@woocommerce/resource-previews';
 import type { Block } from '@wordpress/blocks';
+
+/**
+ * Internal dependencies
+ */
+import { previewProducts } from '~/resource-previews';
 
 type ExampleBlock = Block[ 'example' ] & {
 	attributes: {

@@ -5,11 +5,11 @@ import { __ } from '@wordpress/i18n';
 import ServerSideRender from '@wordpress/server-side-render';
 import { Placeholder } from '@wordpress/components';
 import { Icon, file } from '@wordpress/icons';
-import { gridBlockPreview } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
  */
+import { gridBlockPreview } from '~/resource-previews';
 import { Props } from './types';
 
 const EmptyPlaceholder = () => (

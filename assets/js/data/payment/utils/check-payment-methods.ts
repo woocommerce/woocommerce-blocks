@@ -13,11 +13,11 @@ import {
 	getExpressPaymentMethods,
 	getPaymentMethods,
 } from '@woocommerce/blocks-registry';
-import { previewCart } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import {
 	deriveSelectedShippingRates,
 	emptyHiddenAddressFields,

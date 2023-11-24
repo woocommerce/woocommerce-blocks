@@ -9,7 +9,6 @@ import {
 	waitFor,
 	waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { previewCart } from '@woocommerce/resource-previews';
 import { dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
@@ -19,6 +18,7 @@ import userEvent from '@testing-library/user-event';
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import Block from '../block';
 import { defaultCartState } from '../../../data/cart/default-state';
 

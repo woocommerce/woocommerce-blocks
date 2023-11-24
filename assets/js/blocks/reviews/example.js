@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { previewReviews } from '@woocommerce/resource-previews';
+import { previewReviews } from '~/resource-previews';
 
 export const example = {
 	attributes: {

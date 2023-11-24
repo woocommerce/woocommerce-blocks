@@ -2,7 +2,6 @@
  * External dependencies
  */
 import * as wpDataFunctions from '@wordpress/data';
-import { previewCart } from '@woocommerce/resource-previews';
 import { PAYMENT_STORE_KEY, CART_STORE_KEY } from '@woocommerce/block-data';
 import {
 	registerPaymentMethod,
@@ -15,6 +14,7 @@ import { CanMakePaymentArgument } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import { checkPaymentMethodsCanPay } from '../utils/check-payment-methods';
 
 const requiredKeyCheck = ( args: CanMakePaymentArgument ) => {

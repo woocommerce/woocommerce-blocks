@@ -4,12 +4,12 @@
 import { __ } from '@wordpress/i18n';
 import { Disabled, Placeholder } from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
-import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { Icon, percent } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { gridBlockPreview } from '~/resource-previews';
 import { Attributes } from './types';
 import { ProductOnSaleInspectorControls } from './inspector-controls';
 

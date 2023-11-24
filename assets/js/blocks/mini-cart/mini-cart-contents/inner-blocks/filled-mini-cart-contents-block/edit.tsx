@@ -4,11 +4,11 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
-import { previewCart } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import { EditorProvider, useEditorContext } from '~/base/context';
 import {
 	useForcedLayout,

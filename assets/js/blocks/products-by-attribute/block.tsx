@@ -2,11 +2,11 @@
  * External dependencies
  */
 import ServerSideRender from '@wordpress/server-side-render';
-import { gridBlockPreview } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
  */
+import { gridBlockPreview } from '~/resource-previews';
 import { Props } from './types';
 
 export const ProductsByAttributeBlock = ( props: Props ): JSX.Element => {

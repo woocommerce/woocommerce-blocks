@@ -5,12 +5,12 @@ import { __ } from '@wordpress/i18n';
 import { Disabled, PanelBody } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
-import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
+import { gridBlockPreview } from '~/resource-previews';
 import GridContentControl from '~/editor-components/grid-content-control';
 import GridLayoutControl from '~/editor-components/grid-layout-control';
 import ProductCategoryControl from '~/editor-components/product-category-control';

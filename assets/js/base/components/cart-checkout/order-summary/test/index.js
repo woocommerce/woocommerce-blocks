@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { render, screen } from '@testing-library/react';
-import { previewCart } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import OrderSummary from '../index';
 
 jest.mock( '~/base/context', () => ( {

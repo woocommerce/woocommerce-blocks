@@ -3,11 +3,11 @@
  */
 import { Disabled } from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
-import { gridBlockPreview } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
  */
+import { gridBlockPreview } from '~/resource-previews';
 import { Props } from './types';
 import { ProductBestSellersInspectorControls } from './inspector-controls';
 

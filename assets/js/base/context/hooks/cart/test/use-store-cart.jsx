@@ -3,12 +3,12 @@
  */
 import TestRenderer, { act } from 'react-test-renderer';
 import { createRegistry, RegistryProvider } from '@wordpress/data';
-import { previewCart } from '@woocommerce/resource-previews';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import { defaultCartData, useStoreCart } from '../use-store-cart';
 import { useEditorContext } from '../../../providers/editor-context';
 

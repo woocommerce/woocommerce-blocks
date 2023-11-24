@@ -4,11 +4,11 @@
 import { render, screen } from '@testing-library/react';
 import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { dispatch } from '@wordpress/data';
-import { previewCart } from '@woocommerce/resource-previews';
 
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import ShippingAddress from '~/base/components/cart-checkout/totals/shipping/shipping-address';
 
 jest.mock( '@woocommerce/settings', () => {

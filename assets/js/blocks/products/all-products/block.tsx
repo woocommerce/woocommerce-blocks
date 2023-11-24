@@ -3,13 +3,13 @@
  */
 import { Component } from '@wordpress/element';
 import { InnerBlockLayoutContextProvider } from '@woocommerce/shared-context';
-import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 import { Attributes as ProductListAttributes } from 'assets/js/base/components/product-list/types';
 
 /**
  * Internal dependencies
  */
+import { gridBlockPreview } from '~/resource-previews';
 import { ProductListContainer } from '~/base/components/product-list';
 
 interface BlockProps {

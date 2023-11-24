@@ -26,13 +26,13 @@ import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
-import { previewProducts } from '@woocommerce/resource-previews';
 import { getSetting } from '@woocommerce/settings';
 import { blocksConfig } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { previewProducts } from '~/resource-previews';
 import GridLayoutControl from '~/editor-components/grid-layout-control';
 import { getBlockMap } from '~/atomic/utils';
 import { getBlockClassName } from '../utils';

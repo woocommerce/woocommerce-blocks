@@ -3,17 +3,17 @@
  * External dependencies
  */
 import { render, screen, waitFor, act } from '@testing-library/react';
-import { previewCart } from '@woocommerce/resource-previews';
 import { dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { default as fetchMock } from 'jest-fetch-mock';
 import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
 import { registerPlugin } from '@wordpress/plugins';
+
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import { defaultCartState } from '../../../data/cart/default-state';
-
 import Cart from '../block';
 import OrderSummaryBlock from '../inner-blocks/cart-order-summary-block/frontend';
 

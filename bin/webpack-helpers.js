@@ -74,19 +74,15 @@ const getAlias = ( options = {} ) => {
 			__dirname,
 			`../assets/js/${ pathPart }editor-components/`
 		),
-		'@woocommerce/interactivity': path.resolve(
-			__dirname,
-			`../assetwoocommerce/base-contexts/js/${ pathPart }interactivity/`
-		),
 		'~/hocs': path.resolve( __dirname, `../assets/js/${ pathPart }hocs` ),
 		'@woocommerce/block-settings': path.resolve(
 			__dirname,
 			'../assets/js/settings/blocks'
 		),
 		'~/icons': path.resolve( __dirname, `../assets/js/icons` ),
-		'@woocommerce/resource-previews': path.resolve(
+		'~/resource-previews': path.resolve(
 			__dirname,
-			`../assets/js/${ pathPart }previews/`
+			`../assets/js/${ pathPart }resource-previews/`
 		),
 		'@woocommerce/types': path.resolve( __dirname, `../assets/js/types/` ),
 		'@woocommerce/utils': path.resolve( __dirname, `../assets/js/utils/` ),

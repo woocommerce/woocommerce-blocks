@@ -3,7 +3,6 @@
  */
 import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { previewCart } from '@woocommerce/resource-previews';
 import * as wpDataFunctions from '@wordpress/data';
 import {
 	CART_STORE_KEY as storeKey,
@@ -20,6 +19,7 @@ import { default as fetchMock } from 'jest-fetch-mock';
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import {
 	CheckoutExpressPayment,
 	SavedPaymentMethodOptions,

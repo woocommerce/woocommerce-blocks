@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { render, screen, waitFor, act } from '@testing-library/react';
-import { previewCart } from '@woocommerce/resource-previews';
 import { dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { default as fetchMock } from 'jest-fetch-mock';
@@ -11,17 +10,14 @@ import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import { defaultCartState } from '../../../data/cart/default-state';
 import { allSettings } from '../../../settings/shared/settings-init';
-
 import Cart from '../block';
-
 import FilledCart from '../inner-blocks/filled-cart-block/frontend';
 import EmptyCart from '../inner-blocks/empty-cart-block/frontend';
-
 import ItemsBlock from '../inner-blocks/cart-items-block/frontend';
 import TotalsBlock from '../inner-blocks/cart-totals-block/frontend';
-
 import LineItemsBlock from '../inner-blocks/cart-line-items-block/block';
 import OrderSummaryBlock from '../inner-blocks/cart-order-summary-block/frontend';
 import ExpressPaymentBlock from '../inner-blocks/cart-express-payment-block/block';

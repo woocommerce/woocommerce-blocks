@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { dispatch, select } from '@wordpress/data';
-import { previewCart } from '@woocommerce/resource-previews';
 import { Cart } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import { camelCaseKeys } from '~/base/utils';
 import { notifyQuantityChanges } from '../notify-quantity-changes';
 

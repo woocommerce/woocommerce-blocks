@@ -16,13 +16,13 @@ import {
 } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
 import { Icon, tag } from '@wordpress/icons';
-import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import { isNumber } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { gridBlockPreview } from '~/resource-previews';
 import GridContentControl from '~/editor-components/grid-content-control';
 import GridLayoutControl from '~/editor-components/grid-layout-control';
 import ProductTagControl from '~/editor-components/product-tag-control';

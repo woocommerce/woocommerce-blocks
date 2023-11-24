@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { act, render, screen, waitFor } from '@testing-library/react';
-import { previewCart } from '@woocommerce/resource-previews';
 import * as wpDataFunctions from '@wordpress/data';
 import { CART_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 import { default as fetchMock } from 'jest-fetch-mock';
@@ -16,6 +15,7 @@ import { dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import PaymentMethods from '../payment-methods';
 
 jest.mock( '../saved-payment-method-options', () => ( { onChange } ) => {

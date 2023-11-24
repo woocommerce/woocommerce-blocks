@@ -3,12 +3,12 @@
  */
 import { screen, render } from '@testing-library/react';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
-import { previewCart as mockPreviewCart } from '@woocommerce/resource-previews';
 import * as wpData from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import { previewCart as mockPreviewCart } from '~/resource-previews';
 import * as baseContextHooks from '~/base/context/hooks';
 import { TotalsShipping } from '../index';
 

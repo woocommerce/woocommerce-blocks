@@ -9,10 +9,6 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import {
-	previewCart,
-	previewSavedPaymentMethods,
-} from '@woocommerce/resource-previews';
-import {
 	PanelBody,
 	ToggleControl,
 	CheckboxControl,
@@ -26,6 +22,7 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import { previewCart, previewSavedPaymentMethods } from '~/resource-previews';
 import { CheckoutProvider, EditorProvider } from '~/base/context';
 import { SidebarLayout } from '~/base/components/sidebar-layout';
 import './inner-blocks';

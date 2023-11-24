@@ -9,7 +9,6 @@ import {
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { previewCart } from '@woocommerce/resource-previews';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 import { useEffect, useRef } from '@wordpress/element';
 import { getQueryArg } from '@wordpress/url';
@@ -18,6 +17,7 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import { previewCart } from '~/resource-previews';
 import { EditorProvider, CartProvider } from '~/base/context';
 import BlockErrorBoundary from '~/base/components/block-error-boundary';
 import './inner-blocks';
