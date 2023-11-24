@@ -75,9 +75,7 @@ const blocks = {
 	},
 	'product-new': {},
 	'product-on-sale': {},
-	'product-query': {
-		isExperimental: true,
-	},
+	'product-query': {},
 	'product-results-count': {},
 	'product-search': {},
 	'product-tag': {},
@@ -105,6 +103,10 @@ const blocks = {
 	},
 	'collection-price-filter': {
 		customDir: 'collection-filters/inner-blocks/price-filter',
+		isExperimental: true,
+	},
+	'collection-attribute-filter': {
+		customDir: 'collection-filters/inner-blocks/attribute-filter',
 		isExperimental: true,
 	},
 	'order-confirmation-summary': {
