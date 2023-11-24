@@ -11,7 +11,7 @@ import { ProductResponseItem } from '@woocommerce/types';
 import { Block } from '../block';
 import { ImageSizing } from '../types';
 
-jest.mock( '@woocommerce/base-hooks', () => ( {
+jest.mock( '~/base/hooks', () => ( {
 	__esModule: true,
 	useStyleProps: jest.fn( () => ( {
 		className: '',

@@ -9,7 +9,6 @@ import {
 	processErrorResponse,
 } from '@woocommerce/block-data';
 import { useDebounce } from 'use-debounce';
-import { usePrevious } from '@woocommerce/base-hooks';
 import {
 	CartItem,
 	StoreCartItemQuantity,
@@ -22,6 +21,7 @@ import {
 /**
  * Internal dependencies
  */
+import { usePrevious } from '~/base/hooks';
 import { useStoreCart } from './use-store-cart';
 
 /**

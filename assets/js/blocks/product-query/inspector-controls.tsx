@@ -8,7 +8,6 @@ import { addFilter } from '@wordpress/hooks';
 import { type ElementType } from '@wordpress/element';
 import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { EditorBlock, isNumber } from '@woocommerce/types';
-import { usePrevious } from '@woocommerce/base-hooks';
 import {
 	manualUpdate,
 	MANUAL_REPLACE_PRODUCTS_WITH_PRODUCT_COLLECTION,
@@ -27,6 +26,7 @@ import {
 /**
  * Internal dependencies
  */
+import { usePrevious } from '~/base/hooks';
 import {
 	ProductQueryArguments,
 	ProductQueryBlock,

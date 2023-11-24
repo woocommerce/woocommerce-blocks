@@ -8,13 +8,13 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import { useStyleProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { HTMLAttributes } from 'react';
 
 /**
  * Internal dependencies
  */
+import { useStyleProps } from '~/base/hooks';
 import './style.scss';
 import type { BlockAttributes } from './types';
 

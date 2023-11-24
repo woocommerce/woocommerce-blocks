@@ -7,10 +7,14 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import { useStyleProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import { isNumber, ProductResponseItem } from '@woocommerce/types';
 import { Disabled } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import { useStyleProps } from '~/base/hooks';
 
 const getRatingCount = ( product: ProductResponseItem ) => {
 	const count = isNumber( product.review_count )

@@ -3,11 +3,11 @@
  */
 import classNames from 'classnames';
 import { _n, sprintf } from '@wordpress/i18n';
-import { useStyleProps } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
+import { useStyleProps } from '~/base/hooks';
 import { useStoreCart } from '~/base/context';
 
 type Props = {

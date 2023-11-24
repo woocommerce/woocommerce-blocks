@@ -14,12 +14,12 @@ import {
 	isStockStatusOptions,
 } from '@woocommerce/types';
 import { getUrlParameter } from '@woocommerce/utils';
-import { useIsMounted } from '@woocommerce/base-hooks';
 import type { BlockAttributes } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
+import { useIsMounted } from '~/base/hooks';
 import { useQueryStateByKey } from '~/base/context/hooks';
 import FilterTitlePlaceholder from '~/base/components/filter-placeholder';
 import './style.scss';

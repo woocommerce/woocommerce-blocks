@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { usePrevious } from '@woocommerce/base-hooks';
 import { useCallback, useState, useEffect } from '@wordpress/element';
 import { useDebouncedCallback } from 'use-debounce';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
@@ -18,6 +17,7 @@ import {
 /**
  * Internal dependencies
  */
+import { usePrevious } from '~/base/hooks';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,

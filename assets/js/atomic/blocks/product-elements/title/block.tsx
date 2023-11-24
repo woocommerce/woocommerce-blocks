@@ -8,12 +8,12 @@ import {
 } from '@woocommerce/shared-context';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
-import { useStyleProps } from '@woocommerce/base-hooks';
 import type { HTMLAttributes } from 'react';
 
 /**
  * Internal dependencies
  */
+import { useStyleProps } from '~/base/hooks';
 import { useStoreEvents } from '~/base/context/hooks';
 import './style.scss';
 import ProductName from '~/base/components/product-name';

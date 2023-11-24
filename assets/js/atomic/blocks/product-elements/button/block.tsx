@@ -3,7 +3,6 @@
  */
 import classnames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { useStyleProps } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 import { CART_URL } from '@woocommerce/block-settings';
 import { getSetting } from '@woocommerce/settings';
@@ -16,6 +15,7 @@ import { withProductDataContext } from '@woocommerce/shared-hocs';
 /**
  * Internal dependencies
  */
+import { useStyleProps } from '~/base/hooks';
 import { useStoreEvents, useStoreAddToCart } from '~/base/context/hooks';
 import './style.scss';
 import type {

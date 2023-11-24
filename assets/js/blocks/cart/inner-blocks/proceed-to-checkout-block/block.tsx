@@ -4,7 +4,6 @@
 import classnames from 'classnames';
 import { useState, useEffect, useMemo } from '@wordpress/element';
 import { CHECKOUT_URL } from '@woocommerce/block-settings';
-import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
 import { getSetting } from '@woocommerce/settings';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
@@ -13,6 +12,7 @@ import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 /**
  * Internal dependencies
  */
+import { usePositionRelativeToViewport } from '~/base/hooks';
 import { isErrorResponse } from '~/base/context';
 import { useCartEventsContext } from '~/base/context/providers';
 import Button from '~/base/components/button';

@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { isSiteEditorPage } from '@woocommerce/utils';
-import { usePrevious } from '@woocommerce/base-hooks';
 import { select } from '@wordpress/data';
 import { useMemo } from '@wordpress/element';
 import {
@@ -16,6 +15,7 @@ import {
 /**
  * Internal dependencies
  */
+import { usePrevious } from '~/base/hooks';
 import { ProductCollectionQuery } from '../types';
 import { DEFAULT_QUERY } from '../constants';
 import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';

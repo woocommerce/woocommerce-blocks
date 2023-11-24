@@ -9,12 +9,12 @@ import {
 } from '@woocommerce/shared-context';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { HTMLAttributes } from 'react';
-import { useStyleProps } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
 import './style.scss';
+import { useStyleProps } from '~/base/hooks';
 import type { Attributes } from './types';
 
 type Props = Attributes & HTMLAttributes< HTMLDivElement >;

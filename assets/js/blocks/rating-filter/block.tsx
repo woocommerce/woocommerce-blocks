@@ -4,7 +4,6 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import { Icon, chevronDown } from '@wordpress/icons';
-import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean, isObject, objectHasProp } from '@woocommerce/types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
@@ -18,6 +17,7 @@ import type { ReactElement } from 'react';
 /**
  * Internal dependencies
  */
+import { usePrevious, useShallowEqual } from '~/base/hooks';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,

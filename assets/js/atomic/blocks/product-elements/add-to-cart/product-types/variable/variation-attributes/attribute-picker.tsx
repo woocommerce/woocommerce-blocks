@@ -2,13 +2,13 @@
  * External dependencies
  */
 import { useState, useEffect, useMemo } from '@wordpress/element';
-import { useShallowEqual } from '@woocommerce/base-hooks';
 import type { SelectControl } from '@wordpress/components';
 import { Dictionary, ProductResponseAttributeItem } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { useShallowEqual } from '~/base/hooks';
 import AttributeSelectControl from './attribute-select-control';
 import {
 	getVariationMatchingSelectedAttributes,

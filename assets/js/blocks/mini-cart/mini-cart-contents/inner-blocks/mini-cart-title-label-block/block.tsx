@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { useStyleProps } from '@woocommerce/base-hooks';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { useStyleProps } from '~/base/hooks';
 import { defaultYourCartLabel } from './constants';
 
 type Props = {

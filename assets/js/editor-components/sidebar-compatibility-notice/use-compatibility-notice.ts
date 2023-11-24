@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { useEffect, useState } from '@wordpress/element';
-import { useLocalStorageState } from '@woocommerce/base-hooks';
+
+/**
+ * Internal dependencies
+ */
+import { useLocalStorageState } from '~/base/hooks';
 
 const initialDismissedNotices: string[] = [];
 

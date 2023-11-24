@@ -5,13 +5,13 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 import fastDeepEqual from 'fast-deep-equal/es6';
 import classnames from 'classnames';
 import { useEffect } from '@wordpress/element';
-import { usePrevious } from '@woocommerce/base-hooks';
 import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import { speak } from '@wordpress/a11y';
 
 /**
  * Internal dependencies
  */
+import { usePrevious } from '~/base/hooks';
 import withScrollToTop from '~/base/hocs/with-scroll-to-top';
 import {
 	useStoreEvents,

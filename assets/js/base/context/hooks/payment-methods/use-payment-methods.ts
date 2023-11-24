@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { useShallowEqual } from '@woocommerce/base-hooks';
 import type {
 	PaymentMethods,
 	ExpressPaymentMethods,
@@ -14,6 +13,11 @@ import {
 } from '@woocommerce/blocks-registry';
 import { useSelect } from '@wordpress/data';
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
+
+/**
+ * Internal dependencies
+ */
+import { useShallowEqual } from '~/base/hooks';
 
 interface PaymentMethodState {
 	paymentMethods: PaymentMethods;

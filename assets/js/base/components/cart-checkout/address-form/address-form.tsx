@@ -8,13 +8,13 @@ import {
 } from '@woocommerce/blocks-components';
 import { useEffect, useMemo, useRef } from '@wordpress/element';
 import { useInstanceId } from '@wordpress/compose';
-import { useShallowEqual } from '@woocommerce/base-hooks';
 import { defaultAddressFields } from '@woocommerce/settings';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 
 /**
  * Internal dependencies
  */
+import { useShallowEqual } from '~/base/hooks';
 import {
 	BillingCountryInput,
 	ShippingCountryInput,

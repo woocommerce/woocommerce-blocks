@@ -11,7 +11,6 @@ import {
 	useEffect,
 	useCallback,
 } from '@wordpress/element';
-import { usePrevious } from '@woocommerce/base-hooks';
 import deprecated from '@wordpress/deprecated';
 import { useDispatch, useSelect } from '@wordpress/data';
 import {
@@ -23,6 +22,7 @@ import {
 /**
  * Internal dependencies
  */
+import { usePrevious } from '~/base/hooks';
 import { useEventEmitters, reducer as emitReducer } from './event-emit';
 import { emitterCallback, noticeContexts } from '../../../event-emit';
 import { useStoreEvents } from '../../../hooks/use-store-events';

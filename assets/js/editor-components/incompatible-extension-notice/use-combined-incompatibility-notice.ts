@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { useState, useEffect } from '@wordpress/element';
-import { useLocalStorageState } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
+import { useLocalStorageState } from '~/base/hooks';
 import { useIncompatiblePaymentGatewaysNotice } from './use-incompatible-payment-gateways-notice';
 import { useIncompatibleExtensionNotice } from './use-incompatible-extensions-notice';
 

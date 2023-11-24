@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { usePrevious } from '@woocommerce/base-hooks';
-
-/**
  * Internal dependencies
  */
+import { usePrevious } from '~/base/hooks';
 import { ROUND_UP, ROUND_DOWN } from './constants';
 
 /**

@@ -5,11 +5,11 @@ import { useState, useEffect, useMemo } from '@wordpress/element';
 import { useDebounce } from 'use-debounce';
 import { objectHasProp } from '@woocommerce/types';
 import { sort } from 'fast-sort';
-import { useShallowEqual } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
+import { useShallowEqual } from '~/base/hooks';
 import { useQueryStateByContext, useQueryStateByKey } from '../use-query-state';
 import { useCollection } from './use-collection';
 import { useQueryStateContext } from '../../providers/query-state-context';

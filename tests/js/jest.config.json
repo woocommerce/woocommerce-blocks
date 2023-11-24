@@ -22,7 +22,7 @@
 		"~/base/components(.*)$": "assets/js/base/components/$1",
 		"~/base/context(.*)$": "assets/js/base/context/$1",
 		"~/base/hocs(.*)$": "assets/js/base/hocs/$1",
-		"@woocommerce/base-hooks(.*)$": "assets/js/base/hooks/$1",
+		"~/base/hooks(.*)$": "assets/js/base/hooks/$1",
 		"@woocommerce/base-utils(.*)$": "assets/js/base/utils",
 		"@woocommerce/block-data": "assets/js/data",
 		"@woocommerce/resource-previews": "assets/js/previews",

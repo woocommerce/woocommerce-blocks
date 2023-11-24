@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Notice, Button } from '@wordpress/components';
-import { useLocalStorageState } from '@woocommerce/base-hooks';
 import {
 	createInterpolateElement,
 	useEffect,
@@ -14,6 +13,11 @@ import {
 	getInitialStatusLSValue,
 	incrementUpgradeStatusDisplayCount,
 } from '@woocommerce/blocks/migration-products-to-product-collection';
+
+/**
+ * Internal dependencies
+ */
+import { useLocalStorageState } from '~/base/hooks';
 
 const notice = createInterpolateElement(
 	__(

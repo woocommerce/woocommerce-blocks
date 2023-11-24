@@ -9,12 +9,12 @@ import { Icon, Placeholder, Spinner } from '@wordpress/components';
 import classnames from 'classnames';
 import { useCallback, useState } from '@wordpress/element';
 import { WP_REST_API_Category } from 'wp-types';
-import { useStyleProps } from '@woocommerce/base-hooks';
 import type { ComponentType, Dispatch, SetStateAction } from 'react';
 
 /**
  * Internal dependencies
  */
+import { useStyleProps } from '~/base/hooks';
 import { CallToAction } from './call-to-action';
 import { ConstrainedResizable } from './constrained-resizable';
 import { EditorBlock, GenericBlockUIConfig } from './types';

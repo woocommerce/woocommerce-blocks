@@ -6,13 +6,13 @@ import classnames from 'classnames';
 import { useRef, useEffect, RawHTML } from '@wordpress/element';
 import { sanitizeHTML } from '@woocommerce/utils';
 import { useDispatch } from '@wordpress/data';
-import { usePrevious } from '@woocommerce/base-hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 import type { NoticeType } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { usePrevious } from '~/base/hooks';
 import type { NoticeBannerProps } from '~/base/components/notice-banner';
 import StoreNotice from '../store-notice';
 

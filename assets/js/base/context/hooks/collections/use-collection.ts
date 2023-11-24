@@ -4,8 +4,12 @@
 import { COLLECTIONS_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
 import { useRef } from '@wordpress/element';
-import { useShallowEqual, useThrowError } from '@woocommerce/base-hooks';
 import { isError } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { useShallowEqual, useThrowError } from '~/base/hooks';
 
 /**
  * This is a custom hook that is wired up to the `wc/store/collections` data

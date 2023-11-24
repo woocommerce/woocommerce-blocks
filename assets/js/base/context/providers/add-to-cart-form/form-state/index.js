@@ -9,7 +9,6 @@ import {
 	useEffect,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	productIsPurchasable,
 	productSupportsAddToCartForm,
@@ -20,6 +19,7 @@ import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
+import { useShallowEqual } from '~/base/hooks';
 import { actions } from './actions';
 import { reducer } from './reducer';
 import { DEFAULT_STATE, STATUS } from './constants';

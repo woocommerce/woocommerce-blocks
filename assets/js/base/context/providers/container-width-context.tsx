@@ -2,8 +2,12 @@
  * External dependencies
  */
 import { createContext, useContext } from '@wordpress/element';
-import { useContainerQueries } from '@woocommerce/base-hooks';
 import classNames from 'classnames';
+
+/**
+ * Internal dependencies
+ */
+import { useContainerQueries } from '~/base/hooks';
 
 export type ContainerWidthContextProps = {
 	hasContainerWidth: boolean;

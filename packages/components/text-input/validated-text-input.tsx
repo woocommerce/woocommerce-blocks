@@ -13,12 +13,12 @@ import classnames from 'classnames';
 import { isObject } from '@woocommerce/types';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
-import { usePrevious } from '@woocommerce/base-hooks';
 import { useInstanceId } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
+import { usePrevious } from '~/base/hooks';
 import TextInput from './text-input';
 import './style.scss';
 import { ValidationInputError } from '../validation-input-error';

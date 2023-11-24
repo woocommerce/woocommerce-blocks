@@ -3,9 +3,13 @@
  */
 import classnames from 'classnames';
 import { useProductDataContext } from '@woocommerce/shared-context';
-import { useStyleProps } from '@woocommerce/base-hooks';
 import { __ } from '@wordpress/i18n';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
+
+/**
+ * Internal dependencies
+ */
+import { useStyleProps } from '~/base/hooks';
 
 type ProductAverageRatingProps = {
 	className?: string;

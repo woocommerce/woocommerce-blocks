@@ -4,7 +4,6 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import { Icon, chevronDown } from '@wordpress/icons';
-import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import {
 	useCallback,
@@ -28,6 +27,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import { usePrevious, useShallowEqual } from '~/base/hooks';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,

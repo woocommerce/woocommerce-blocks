@@ -3,11 +3,11 @@
  */
 import { COLLECTIONS_STORE_KEY as storeKey } from '@woocommerce/block-data';
 import { useSelect } from '@wordpress/data';
-import { useShallowEqual } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
+import { useShallowEqual } from '~/base/hooks';
 import { useCollectionOptions } from '.';
 
 /**

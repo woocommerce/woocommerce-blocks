@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -27,6 +26,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import { usePrevious, useShallowEqual } from '~/base/hooks';
 import {
 	useCollection,
 	useQueryStateByKey,

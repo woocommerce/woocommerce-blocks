@@ -7,7 +7,6 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import { useStyleProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import { CurrencyCode } from '@woocommerce/type-defs/currency';
 import type { HTMLAttributes } from 'react';
@@ -15,6 +14,7 @@ import type { HTMLAttributes } from 'react';
 /**
  * Internal dependencies
  */
+import { useStyleProps } from '~/base/hooks';
 import ProductPrice from '~/base/components/product-price';
 import type { BlockAttributes } from './types';
 

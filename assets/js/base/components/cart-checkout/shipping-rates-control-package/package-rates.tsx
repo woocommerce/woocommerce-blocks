@@ -7,11 +7,11 @@ import {
 	RadioControlOptionLayout,
 } from '@woocommerce/blocks-components';
 import type { CartShippingPackageShippingRate } from '@woocommerce/types';
-import { usePrevious } from '@woocommerce/base-hooks';
 
 /**
  * Internal dependencies
  */
+import { usePrevious } from '~/base/hooks';
 import { renderPackageRateOption } from './render-package-rate-option';
 import type { PackageRateRenderOption } from '../shipping-rates-control-package';
 
