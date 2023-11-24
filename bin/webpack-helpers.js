@@ -76,7 +76,7 @@ const getAlias = ( options = {} ) => {
 		),
 		'@woocommerce/interactivity': path.resolve(
 			__dirname,
-			`../assets/js/${ pathPart }interactivity/`
+			`../assetwoocommerce/base-contexts/js/${ pathPart }interactivity/`
 		),
 		'~/hocs': path.resolve( __dirname, `../assets/js/${ pathPart }hocs` ),
 		'@woocommerce/block-settings': path.resolve(

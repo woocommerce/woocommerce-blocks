@@ -1,7 +1,7 @@
 /**
- * Internal dependencies
+ * External dependencies
  */
-import { store as interactivityStore } from '~/interactivity';
+import { store as interactivityStore } from '@woocommerce/interactivity';
 
 export type DropdownContext = {
 	woocommerceDropdown: {
