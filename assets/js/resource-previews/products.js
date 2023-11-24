@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import { WC_BLOCKS_IMAGE_URL } from '~/settings/blocks';
 
 const shortDescription = __(
 	'Fly your WordPress banner with this beauty! Deck out your office space or add it to your kids walls. This banner will spruce up any space it’s hung!',

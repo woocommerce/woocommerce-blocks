@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { SHOP_URL } from '@woocommerce/block-settings';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { SHOP_URL } from '~/settings/blocks';
 import Button from '~/base/components/button';
 import { defaultStartShoppingButtonLabel } from './constants';
 import { getVariant } from '../utils';

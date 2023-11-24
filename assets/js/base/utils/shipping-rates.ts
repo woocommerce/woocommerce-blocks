@@ -6,7 +6,11 @@ import {
 	CartShippingRate,
 } from '@woocommerce/type-defs/cart';
 import { getSetting } from '@woocommerce/settings';
-import { LOCAL_PICKUP_ENABLED } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import { LOCAL_PICKUP_ENABLED } from '~/settings/blocks';
 
 /**
  * Get the number of packages in a shippingRates array.

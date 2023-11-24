@@ -39,13 +39,13 @@ jest.mock( '@wordpress/block-editor', () => ( {
 	InspectorControls: jest.fn( ( { children } ) => <div>{ children }</div> ),
 } ) );
 
-jest.mock( '@woocommerce/block-settings', () => ( {
-	...jest.requireActual( '@woocommerce/block-settings' ),
+jest.mock( '~/settings/blocks', () => ( {
+	...jest.requireActual( '~/settings/blocks' ),
 	PRIVACY_URL: '/privacy-policy',
 	TERMS_URL: '/terms-and-conditions',
 } ) );
 
-const blockSettingsMock = jest.requireMock( '@woocommerce/block-settings' );
+const blockSettingsMock = jest.requireMock( '~/settings/blocks' );
 
 describe( 'Edit', () => {
 	it( 'Renders a checkbox if the checkbox attribute is true', async () => {

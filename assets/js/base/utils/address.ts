@@ -12,14 +12,11 @@ import {
 	BillingAddress,
 } from '@woocommerce/settings';
 import { decodeEntities } from '@wordpress/html-entities';
-import {
-	SHIPPING_COUNTRIES,
-	SHIPPING_STATES,
-} from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { SHIPPING_COUNTRIES, SHIPPING_STATES } from '~/settings/blocks';
 import prepareAddressFields from '~/base/components/cart-checkout/address-form/prepare-address-fields';
 
 /**

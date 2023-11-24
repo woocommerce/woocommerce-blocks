@@ -4,10 +4,14 @@
 /**
  * External dependencies
  */
-import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
 import { Notice } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import { WC_BLOCKS_IMAGE_URL } from '~/settings/blocks';
 
 export const ProductReviews = () => {
 	const blockProps = useBlockProps();

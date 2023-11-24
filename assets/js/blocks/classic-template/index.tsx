@@ -10,7 +10,6 @@ import {
 	parse,
 } from '@wordpress/blocks';
 import type { BlockEditProps } from '@wordpress/blocks';
-import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import {
 	useBlockProps,
 	BlockPreview,
@@ -34,6 +33,7 @@ import { isNumber } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
+import { WC_BLOCKS_IMAGE_URL } from '~/settings/blocks';
 import { woo } from '~/icons';
 import { debounce } from '~/base/utils';
 import './editor.scss';

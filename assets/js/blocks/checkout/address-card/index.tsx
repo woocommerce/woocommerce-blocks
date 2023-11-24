@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { ALLOWED_COUNTRIES } from '@woocommerce/block-settings';
 import type {
 	CartShippingAddress,
 	CartBillingAddress,
@@ -12,6 +11,7 @@ import { AddressFields, AddressField } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
+import { ALLOWED_COUNTRIES } from '~/settings/blocks';
 import './style.scss';
 
 const AddressCard = ( {

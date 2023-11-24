@@ -24,7 +24,7 @@ jest.mock( 'use-debounce', () => {
 	};
 } );
 
-jest.mock( '@woocommerce/block-settings', () => ( {
+jest.mock( '~/settings/blocks', () => ( {
 	__esModule: true,
 	blocksConfig: {
 		productCount: 101,

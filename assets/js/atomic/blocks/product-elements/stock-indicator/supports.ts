@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import {
 	// @ts-expect-error We check if this exists before using it.
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -11,6 +10,7 @@ import {
 /**
  * Internal dependencies
  */
+import { isFeaturePluginBuild } from '~/settings/blocks';
 import sharedConfig from '../shared/config';
 
 export const supports = {

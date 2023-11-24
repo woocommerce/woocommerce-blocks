@@ -6,10 +6,10 @@ import { withFilteredAttributes } from '@woocommerce/shared-hocs';
 import { FormStep } from '@woocommerce/blocks-components';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
-import { LOCAL_PICKUP_ENABLED } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
+import { LOCAL_PICKUP_ENABLED } from '~/settings/blocks';
 import Block from './block';
 import attributes from './attributes';
 

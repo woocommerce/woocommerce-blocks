@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { lazy } from '@wordpress/element';
-import { WC_BLOCKS_BUILD_URL } from '@woocommerce/block-settings';
 import { registerCheckoutBlock } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
+import { WC_BLOCKS_BUILD_URL } from '~/settings/blocks';
 import metadata from './component-metadata';
 
 // Modify webpack publicPath at runtime based on location of WordPress Plugin.

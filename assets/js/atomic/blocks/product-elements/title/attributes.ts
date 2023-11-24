@@ -2,7 +2,11 @@
  * External dependencies
  */
 import type { BlockAttributes } from '@wordpress/blocks';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import { isFeaturePluginBuild } from '~/settings/blocks';
 
 let blockAttributes: BlockAttributes = {
 	headingLevel: {

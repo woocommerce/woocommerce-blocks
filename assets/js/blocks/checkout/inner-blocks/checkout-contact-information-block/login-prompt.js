@@ -3,9 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { getSetting } from '@woocommerce/settings';
-import { LOGIN_URL } from '@woocommerce/block-settings';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
+
+/**
+ * Internal dependencies
+ */
+import { LOGIN_URL } from '~/settings/blocks';
 
 const LOGIN_TO_CHECKOUT_URL = `${ LOGIN_URL }?redirect_to=${ encodeURIComponent(
 	window.location.href

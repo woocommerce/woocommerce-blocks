@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { CHECKOUT_URL } from '~/settings/blocks';
 import { useStyleProps } from '~/base/hooks';
 import { isErrorResponse, useCartEventsContext } from '~/base/context';
 import Button from '~/base/components/button';

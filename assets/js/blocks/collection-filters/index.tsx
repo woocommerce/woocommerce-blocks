@@ -3,11 +3,11 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 import { Icon, more } from '@wordpress/icons';
-import { isExperimentalBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { isExperimentalBuild } from '~/settings/blocks';
 import metadata from './block.json';
 import edit from './edit';
 import save from './save';

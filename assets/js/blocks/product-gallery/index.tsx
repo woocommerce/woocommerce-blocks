@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { isExperimentalBuild } from '@woocommerce/block-settings';
 import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
+import { isExperimentalBuild } from '~/settings/blocks';
 import metadata from './block.json';
 import { ProductGalleryBlockSettings } from './settings';
 import './style.scss';

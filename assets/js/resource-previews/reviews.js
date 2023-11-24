@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { blocksConfig } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import { blocksConfig } from '~/settings/blocks';
 
 export const previewReviews = [
 	{

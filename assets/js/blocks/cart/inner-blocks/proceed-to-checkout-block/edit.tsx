@@ -5,11 +5,11 @@ import { useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { CART_PAGE_ID } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { CART_PAGE_ID } from '~/settings/blocks';
 import EditableButton from '~/editor-components/editable-button';
 import PageSelector from '~/editor-components/page-selector';
 import { defaultButtonLabel } from './constants';

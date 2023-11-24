@@ -6,13 +6,13 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import type { HTMLAttributes } from 'react';
 
 /**
  * Internal dependencies
  */
+import { isFeaturePluginBuild } from '~/settings/blocks';
 import { useStyleProps } from '~/base/hooks';
 import { useStoreEvents } from '~/base/context/hooks';
 import './style.scss';

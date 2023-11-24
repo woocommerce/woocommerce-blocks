@@ -1,8 +1,8 @@
 /* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
+import { isFeaturePluginBuild } from '~/settings/blocks';
 
 export const supports = {
 	...( isFeaturePluginBuild() && {

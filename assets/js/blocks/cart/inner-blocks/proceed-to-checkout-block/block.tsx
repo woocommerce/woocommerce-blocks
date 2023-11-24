@@ -3,7 +3,6 @@
  */
 import classnames from 'classnames';
 import { useState, useEffect, useMemo } from '@wordpress/element';
-import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import { getSetting } from '@woocommerce/settings';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
@@ -12,6 +11,7 @@ import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
 /**
  * Internal dependencies
  */
+import { CHECKOUT_URL } from '~/settings/blocks';
 import { usePositionRelativeToViewport } from '~/base/hooks';
 import { isErrorResponse } from '~/base/context';
 import { useCartEventsContext } from '~/base/context/providers';

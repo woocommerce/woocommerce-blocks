@@ -2,17 +2,17 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	PRIVACY_URL,
-	TERMS_URL,
-	PRIVACY_PAGE_NAME,
-	TERMS_PAGE_NAME,
-} from '@woocommerce/block-settings';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
  */
+import {
+	PRIVACY_URL,
+	TERMS_URL,
+	PRIVACY_PAGE_NAME,
+	TERMS_PAGE_NAME,
+} from '~/settings/blocks';
 import './style.scss';
 
 const Policies = (): JSX.Element => {

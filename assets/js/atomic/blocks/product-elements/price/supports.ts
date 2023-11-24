@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
+import { isFeaturePluginBuild } from '~/settings/blocks';
 import sharedConfig from '../shared/config';
 
 export const supports = {

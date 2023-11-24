@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { Icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { isFeaturePluginBuild } from '~/settings/blocks';
 import metadata from './block.json';
 import edit from './edit';
 import { queryPaginationIcon } from './icon';

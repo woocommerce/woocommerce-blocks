@@ -7,11 +7,11 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
-import { LOCAL_PICKUP_ENABLED } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { LOCAL_PICKUP_ENABLED } from '~/settings/blocks';
 import {
 	FormStepBlock,
 	AdditionalFields,

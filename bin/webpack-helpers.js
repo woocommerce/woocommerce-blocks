@@ -75,7 +75,7 @@ const getAlias = ( options = {} ) => {
 			`../assets/js/${ pathPart }editor-components/`
 		),
 		'~/hocs': path.resolve( __dirname, `../assets/js/${ pathPart }hocs` ),
-		'@woocommerce/block-settings': path.resolve(
+		'~/settings/blocks': path.resolve(
 			__dirname,
 			'../assets/js/settings/blocks'
 		),

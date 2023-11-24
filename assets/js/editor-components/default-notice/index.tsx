@@ -7,7 +7,6 @@ import triggerFetch from '@wordpress/api-fetch';
 import { store as coreStore } from '@wordpress/core-data';
 import { Notice } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { CHECKOUT_PAGE_ID, CART_PAGE_ID } from '@woocommerce/block-settings';
 import {
 	useCallback,
 	useState,
@@ -17,6 +16,7 @@ import {
 /**
  * Internal dependencies
  */
+import { CHECKOUT_PAGE_ID, CART_PAGE_ID } from '~/settings/blocks';
 import './editor.scss';
 
 export function DefaultNotice( { block }: { block: string } ) {

@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { registerExperimentalBlockType } from '@woocommerce/block-settings';
-
-/**
  * Internal dependencies
  */
+import { registerExperimentalBlockType } from '~/settings/blocks';
 import sharedConfig from '../shared/config';
 import edit from './edit';
 import attributes from './attributes';

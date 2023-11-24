@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, useState } from '@wordpress/element';
 import { ADMIN_URL, getSetting } from '@woocommerce/settings';
-import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import {
 	CheckboxControl,
 	SelectControl,
@@ -17,6 +16,7 @@ import styled from '@emotion/styled';
 /**
  * Internal dependencies
  */
+import { CHECKOUT_PAGE_ID } from '~/settings/blocks';
 import { SettingsCard, SettingsSection } from '../shared-components';
 import { useSettingsContext } from './settings-context';
 

@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { memo, useMemo } from '@wordpress/element';
 import classNames from 'classnames';
@@ -9,6 +8,7 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
+import { WC_BLOCKS_IMAGE_URL } from '~/settings/blocks';
 import largeImageNextPreviousButtonMetadata from '../product-gallery-large-image-next-previous/block.json';
 import pagerMetadata from '../product-gallery-pager/block.json';
 import './editor.scss';

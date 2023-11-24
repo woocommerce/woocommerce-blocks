@@ -4,7 +4,6 @@
 import classnames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-import { CART_URL } from '@woocommerce/block-settings';
 import { getSetting } from '@woocommerce/settings';
 import {
 	useInnerBlockLayoutContext,
@@ -15,6 +14,7 @@ import { withProductDataContext } from '@woocommerce/shared-hocs';
 /**
  * Internal dependencies
  */
+import { CART_URL } from '~/settings/blocks';
 import { useStyleProps } from '~/base/hooks';
 import { useStoreEvents, useStoreAddToCart } from '~/base/context/hooks';
 import './style.scss';

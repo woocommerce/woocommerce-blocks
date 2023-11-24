@@ -4,7 +4,11 @@
 import { addQueryArgs } from '@wordpress/url';
 import apiFetch from '@wordpress/api-fetch';
 import { getSetting } from '@woocommerce/settings';
-import { blocksConfig } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import { blocksConfig } from '~/settings/blocks';
 
 /**
  * Get product query requests for the Store API.

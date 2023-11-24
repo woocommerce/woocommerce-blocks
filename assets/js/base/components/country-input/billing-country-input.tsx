@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { ALLOWED_COUNTRIES } from '@woocommerce/block-settings';
-
-/**
  * Internal dependencies
  */
+import { ALLOWED_COUNTRIES } from '~/settings/blocks';
 import CountryInput from './country-input';
 import type { CountryInputProps } from './CountryInputProps';
 

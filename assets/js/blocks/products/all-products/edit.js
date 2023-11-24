@@ -27,11 +27,11 @@ import {
 	ProductDataContextProvider,
 } from '@woocommerce/shared-context';
 import { getSetting } from '@woocommerce/settings';
-import { blocksConfig } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { blocksConfig } from '~/settings/blocks';
 import { previewProducts } from '~/resource-previews';
 import GridLayoutControl from '~/editor-components/grid-layout-control';
 import { getBlockMap } from '~/atomic/utils';

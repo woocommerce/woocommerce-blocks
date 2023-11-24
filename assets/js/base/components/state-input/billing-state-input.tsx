@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { ALLOWED_STATES } from '@woocommerce/block-settings';
-
-/**
  * Internal dependencies
  */
+import { ALLOWED_STATES } from '~/settings/blocks';
 import StateInput from './state-input';
 import type { StateInputProps } from './StateInputProps';
 

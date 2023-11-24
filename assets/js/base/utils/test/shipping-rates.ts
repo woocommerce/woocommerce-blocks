@@ -5,11 +5,11 @@ import {
 	CartShippingRate,
 	CartShippingPackageShippingRate,
 } from '@woocommerce/type-defs/cart';
-import * as blockSettings from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import * as blockSettings from '~/settings/blocks';
 import { hasCollectableRate, isPackageRateCollectable } from '~/base/utils';
 import {
 	getLocalPickupPrices,
@@ -30,9 +30,9 @@ jest.mock( '@woocommerce/settings', () => {
 		} ),
 	};
 } );
-jest.mock( '@woocommerce/block-settings', () => ( {
+jest.mock( '~/settings/blocks', () => ( {
 	__esModule: true,
-	...jest.requireActual( '@woocommerce/block-settings' ),
+	...jest.requireActual( '~/settings/blocks' ),
 	LOCAL_PICKUP_ENABLED: true,
 } ) );
 

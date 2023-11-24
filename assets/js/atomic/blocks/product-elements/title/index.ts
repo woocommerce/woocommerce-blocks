@@ -4,12 +4,12 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
+import { isFeaturePluginBuild } from '~/settings/blocks';
 import sharedConfig from '../shared/config';
 import attributes from './attributes';
 import edit from './edit';

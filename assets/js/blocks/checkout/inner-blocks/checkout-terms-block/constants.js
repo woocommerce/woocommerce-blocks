@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { PRIVACY_URL, TERMS_URL } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import { PRIVACY_URL, TERMS_URL } from '~/settings/blocks';
 
 const termsPageLink = TERMS_URL
 	? `<a href="${ TERMS_URL }" target="_blank">${ __(

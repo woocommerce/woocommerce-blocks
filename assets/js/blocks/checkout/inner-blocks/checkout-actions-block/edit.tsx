@@ -7,12 +7,12 @@ import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
-import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
+import { CHECKOUT_PAGE_ID } from '~/settings/blocks';
 import PageSelector from '~/editor-components/page-selector';
 import EditableButton from '~/editor-components/editable-button';
 import { ReturnToCartButton } from '~/base/components/cart-checkout';

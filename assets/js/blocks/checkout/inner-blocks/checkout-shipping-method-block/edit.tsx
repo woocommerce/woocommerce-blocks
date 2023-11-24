@@ -12,7 +12,6 @@ import {
 } from '@wordpress/components';
 import { Icon, store, shipping } from '@wordpress/icons';
 import { ADMIN_URL } from '@woocommerce/settings';
-import { LOCAL_PICKUP_ENABLED } from '@woocommerce/block-settings';
 import {
 	InspectorControls,
 	useBlockProps,
@@ -25,6 +24,7 @@ import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
+import { LOCAL_PICKUP_ENABLED } from '~/settings/blocks';
 import ExternalLinkCard from '~/editor-components/external-link-card';
 import { useShippingData } from '~/base/context/hooks';
 import {

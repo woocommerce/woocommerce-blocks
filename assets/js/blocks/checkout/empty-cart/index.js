@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SHOP_URL } from '@woocommerce/block-settings';
 import { Icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { SHOP_URL } from '~/settings/blocks';
 import { cart } from '~/icons';
 import './style.scss';
 

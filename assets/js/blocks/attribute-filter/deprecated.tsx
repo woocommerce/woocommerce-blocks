@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { isFeaturePluginBuild } from '~/settings/blocks';
 import type { BlockAttributes } from './types';
 import { blockAttributes } from './attributes';
 import metadata from './block.json';

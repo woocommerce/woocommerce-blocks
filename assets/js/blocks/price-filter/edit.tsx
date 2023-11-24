@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { getAdminLink } from '@woocommerce/settings';
-import { blocksConfig } from '@woocommerce/block-settings';
 import { Icon, currencyDollar, external } from '@wordpress/icons';
 import type { BlockEditProps } from '@wordpress/blocks';
 import {
@@ -22,6 +21,7 @@ import {
 /**
  * Internal dependencies
  */
+import { blocksConfig } from '~/settings/blocks';
 import BlockTitle from '~/editor-components/block-title';
 import Block from './block';
 import './editor.scss';

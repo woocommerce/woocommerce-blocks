@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { WC_BLOCKS_BUILD_URL } from '@woocommerce/block-settings';
 import { registerCheckoutBlock } from '@woocommerce/blocks-checkout';
 import { lazy } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import { WC_BLOCKS_BUILD_URL } from '~/settings/blocks';
 import emptyMiniCartContentsMetadata from './empty-mini-cart-contents-block/block.json';
 import filledMiniCartMetadata from './filled-mini-cart-contents-block/block.json';
 import miniCartTitleMetadata from './mini-cart-title-block/block.json';

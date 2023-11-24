@@ -17,11 +17,11 @@ import { isSiteEditorPage } from '@woocommerce/utils';
 import type { ReactElement } from 'react';
 import { select } from '@wordpress/data';
 import { Icon } from '@wordpress/icons';
-import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { WC_BLOCKS_IMAGE_URL } from '~/settings/blocks';
 import { cartOutline, bag, bagAlt } from '~/icons';
 import { ColorPanel } from '~/editor-components/color-panel';
 import type { ColorPaletteOption } from '~/editor-components/color-panel/types';

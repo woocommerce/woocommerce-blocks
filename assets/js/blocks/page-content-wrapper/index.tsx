@@ -9,12 +9,12 @@ import {
 import { __ } from '@wordpress/i18n';
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 import { page } from '@wordpress/icons';
-import { CHECKOUT_PAGE_ID, CART_PAGE_ID } from '@woocommerce/block-settings';
 import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { CHECKOUT_PAGE_ID, CART_PAGE_ID } from '~/settings/blocks';
 import metadata from './block.json';
 import './editor.scss';
 

@@ -4,12 +4,12 @@
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { Disabled, PanelBody } from '@wordpress/components';
 import type { BlockEditProps } from '@wordpress/blocks';
-import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { WC_BLOCKS_IMAGE_URL } from '~/settings/blocks';
 import './editor.scss';
 import { ProductGalleryThumbnailsBlockSettings } from './block-settings';
 import type {

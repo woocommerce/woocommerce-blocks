@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { blocksConfig } from '@woocommerce/block-settings';
-
-/**
  * Internal dependencies
  */
+import { blocksConfig } from '~/settings/blocks';
 import Summary from '~/base/components/summary';
 
 interface ProductSummaryProps {

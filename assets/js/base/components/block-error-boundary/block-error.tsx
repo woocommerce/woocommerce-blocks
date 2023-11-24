@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { WC_BLOCKS_IMAGE_URL } from '~/settings/blocks';
 import type { BlockErrorProps } from './types';
 
 const BlockError = ( {

@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { CART_URL } from '@woocommerce/block-settings';
 import { Icon, arrowLeft } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { CART_URL } from '~/settings/blocks';
 import './style.scss';
 
 interface ReturnToCartButtonProps {

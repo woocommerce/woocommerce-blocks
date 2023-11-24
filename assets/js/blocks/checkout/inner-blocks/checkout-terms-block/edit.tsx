@@ -14,12 +14,12 @@ import {
 	Notice,
 	ExternalLink,
 } from '@wordpress/components';
-import { PRIVACY_URL, TERMS_URL } from '@woocommerce/block-settings';
 import { ADMIN_URL } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
+import { PRIVACY_URL, TERMS_URL } from '~/settings/blocks';
 import './editor.scss';
 import { termsConsentDefaultText, termsCheckboxDefaultText } from './constants';
 

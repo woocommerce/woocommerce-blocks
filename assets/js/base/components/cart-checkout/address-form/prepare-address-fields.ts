@@ -13,7 +13,11 @@ import {
 } from '@woocommerce/settings';
 import { __, sprintf } from '@wordpress/i18n';
 import { isNumber, isString } from '@woocommerce/types';
-import { COUNTRY_LOCALE } from '@woocommerce/block-settings';
+
+/**
+ * Internal dependencies
+ */
+import { COUNTRY_LOCALE } from '~/settings/blocks';
 
 /**
  * Gets props from the core locale, then maps them to the shape we require in the client.

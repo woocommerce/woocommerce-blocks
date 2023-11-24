@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { RawHTML, useMemo } from '@wordpress/element';
-import { WordCountType } from '@woocommerce/block-settings';
 import type { CSSProperties } from 'react';
 
 /**
  * Internal dependencies
  */
+import { WordCountType } from '~/settings/blocks';
 import { generateSummary } from './utils';
 
 interface SummaryProps {

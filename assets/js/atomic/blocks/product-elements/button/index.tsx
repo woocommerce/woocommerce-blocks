@@ -3,11 +3,12 @@
  */
 import { Icon, button } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { __experimentalGetSpacingClassesAndStyles } from '@wordpress/block-editor';
+
 /**
  * Internal dependencies
  */
+import { isFeaturePluginBuild } from '~/settings/blocks';
 import edit from './edit';
 import save from './save';
 import metadata from './block.json';

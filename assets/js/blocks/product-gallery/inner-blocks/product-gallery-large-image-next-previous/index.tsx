@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { isExperimentalBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { isExperimentalBuild } from '~/settings/blocks';
 import { Edit } from './edit';
 import metadata from './block.json';
 import { Save } from './save';

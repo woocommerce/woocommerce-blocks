@@ -10,11 +10,11 @@ import {
 	AlignmentToolbar,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { isFeaturePluginBuild } from '~/settings/blocks';
 import HeadingToolbar from '~/editor-components/heading-toolbar';
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';

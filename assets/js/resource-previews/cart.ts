@@ -2,13 +2,13 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import { CartResponse } from '@woocommerce/types';
 import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
+import { WC_BLOCKS_IMAGE_URL } from '~/settings/blocks';
 import { previewShippingRates } from './shipping-rates';
 
 /**

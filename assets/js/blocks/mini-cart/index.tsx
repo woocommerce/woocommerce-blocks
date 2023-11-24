@@ -3,12 +3,12 @@
  */
 import { Icon } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import { addFilter } from '@wordpress/hooks';
 
 /**
  * Internal dependencies
  */
+import { isFeaturePluginBuild } from '~/settings/blocks';
 import { miniCartAlt } from '~/icons';
 import metadata from './block.json';
 import edit from './edit';

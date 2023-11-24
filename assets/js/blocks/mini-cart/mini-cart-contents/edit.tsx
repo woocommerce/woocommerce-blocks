@@ -7,7 +7,6 @@ import {
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 import type { TemplateArray } from '@wordpress/blocks';
 import { useEffect } from '@wordpress/element';
 import type { FocusEvent, ReactElement } from 'react';
@@ -21,6 +20,7 @@ import {
 /**
  * Internal dependencies
  */
+import { isFeaturePluginBuild } from '~/settings/blocks';
 import { EditorProvider } from '~/base/context';
 import { useForcedLayout } from '../../cart-checkout-shared';
 import { MiniCartInnerBlocksStyle } from './inner-blocks-style';
