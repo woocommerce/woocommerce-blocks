@@ -144,7 +144,7 @@ const HandPickedProductsControl = ( {
 				disabled={ ! productsMap.size }
 				displayTransform={ transformTokenIntoProductName }
 				label={ __(
-					'Pick some products',
+					'Hand-picked Products',
 					'woo-gutenberg-products-block'
 				) }
 				onChange={ onTokenChange }
@@ -159,6 +159,7 @@ const HandPickedProductsControl = ( {
 						: selectedProductIds || []
 				}
 				__experimentalExpandOnFocus={ true }
+				__experimentalShowHowTo={ false }
 			/>
 		</ToolsPanelItem>
 	);
