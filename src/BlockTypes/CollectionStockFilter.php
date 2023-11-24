@@ -75,7 +75,7 @@ final class CollectionStockFilter extends AbstractBlock {
 
 		$list_items = array_map(
 			function( $item ) use ( $stock_statuses, $show_counts ) {
-				$label = $show_counts ? $stock_statuses[ $item['status'] ] . '(' . $item['count'] . ')' : $stock_statuses[ $item['status'] ];
+				$label = $show_counts ? $stock_statuses[ $item['status'] ] . ' (' . $item['count'] . ')' : $stock_statuses[ $item['status'] ];
 				return array(
 					'label' => $label,
 					'value' => $item['status'],
