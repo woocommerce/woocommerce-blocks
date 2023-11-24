@@ -9,6 +9,7 @@
 	"moduleDirectories": [ "node_modules" ],
 	"moduleNameMapper": {
 		"~/atomic/blocks": "assets/js/atomic/blocks",
+		"~/atomic/utils": "assets/js/atomic/utils",
 		"~/icons": "assets/js/icons",
 		"~/blocks/(.*)$": "assets/js/blocks/$1",
 		"~/editor-components(.*)$": "assets/js/editor-components/$1",

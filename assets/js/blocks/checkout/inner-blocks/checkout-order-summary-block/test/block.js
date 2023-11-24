@@ -6,7 +6,7 @@ import { render, findByText, queryByText } from '@testing-library/react';
 /**
  * Internal dependencies
  */
-import { previewCart as mockPreviewCart } from '../../../../../previews/cart';
+import { previewCart as mockPreviewCart } from '../../../../../resource-previews/cart';
 import {
 	textContentMatcher,
 	textContentMatcherAcrossSiblings,

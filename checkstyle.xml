@@ -640,7 +640,7 @@
 <file name="assets/js/data/cart/controls.js">
 <error line="18" column="31" severity="error" message="Parameter &apos;preserveCartData&apos; implicitly has an &apos;any&apos; type." source="TS7006" />
 </file>
-<file name="assets/js/previews/cart.ts">
+<file name="assets/js/resource-previews/cart.ts">
 <error line="75" column="4" severity="error" message="Property &apos;price_range&apos; is missing in type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; but required in type &apos;CartItemPrices&apos;." source="TS2741" />
 <error line="141" column="4" severity="error" message="Property &apos;price_range&apos; is missing in type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; but required in type &apos;CartItemPrices&apos;." source="TS2741" />
 <error line="191" column="5" severity="error" message="Type &apos;{ currency_code: &quot;USD&quot;; currency_symbol: string; currency_minor_unit: number; currency_decimal_separator: string; currency_thousand_separator: string; currency_prefix: string; currency_suffix: string; price: string; regular_price: string; sale_price: string; raw_prices: { ...; }; }&apos; is not assignable to type &apos;ProductResponseItemPrices&apos;.
