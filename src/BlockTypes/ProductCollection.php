@@ -209,6 +209,7 @@ class ProductCollection extends AbstractBlock {
 		$handpicked_products = $request->get_param( 'woocommerceHandPickedProducts' );
 		$featured            = $request->get_param( 'featured' );
 		$time_frame          = $request->get_param( 'timeFrame' );
+		$price_range         = $request->get_param( 'priceRange' );
 		// This argument is required for the tests to PHP Unit Tests to run correctly.
 		// Most likely this argument is being accessed in the test environment image.
 		$args['author'] = '';
@@ -223,6 +224,7 @@ class ProductCollection extends AbstractBlock {
 				'handpicked_products' => $handpicked_products,
 				'featured'            => $featured,
 				'timeFrame'           => $time_frame,
+				'priceRange'          => $price_range,
 			)
 		);
 	}
@@ -322,6 +324,7 @@ class ProductCollection extends AbstractBlock {
 				'handpicked_products' => $handpicked_products,
 				'featured'            => $query['featured'] ?? false,
 				'timeFrame'           => $time_frame,
+				'priceRange'          => $query['priceRange'] ?? null,
 			),
 			$is_exclude_applied_filters
 		);
@@ -347,11 +350,12 @@ class ProductCollection extends AbstractBlock {
 		$taxonomies_query    = $query['taxonomies_query'] ?? [];
 		$tax_query           = $this->merge_tax_queries( $visibility_query, $attributes_query, $taxonomies_query, $featured_query );
 		$date_query          = $this->get_date_query( $query['timeFrame'] ?? [] );
+		$price_query         = $this->get_price_range_query( $query['priceRange'] ?? null );
 
 		// We exclude applied filters to generate product ids for the filter blocks.
 		$applied_filters_query = $is_exclude_applied_filters ? [] : $this->get_queries_by_applied_filters();
 
-		$merged_query = $this->merge_queries( $common_query_values, $orderby_query, $on_sale_query, $stock_query, $tax_query, $applied_filters_query, $date_query );
+		$merged_query = $this->merge_queries( $common_query_values, $orderby_query, $on_sale_query, $stock_query, $tax_query, $applied_filters_query, $date_query, $price_query );
 
 		return $this->filter_query_to_only_include_ids( $merged_query, $handpicked_products );
 	}
@@ -1032,5 +1036,42 @@ class ProductCollection extends AbstractBlock {
 		);
 	}
 
+	/**
+	 * Return a query to filter products by price range.
+	 * - If the price range is not set, return an empty array.
+	 * - If the price range is set, return a meta query to filter products by price.
+	 *
+	 * @param array $price_range Price range.
+	 * @return array Query to filter products by price range.
+	 */
+	private function get_price_range_query( $price_range ): array {
+		if ( empty( $price_range ) ) {
+			return [];
+		}
 
+		$meta_query = [];
+
+		if ( isset( $price_range['min'] ) ) {
+			$meta_query[] = [
+				'key'     => '_price',
+				'value'   => $price_range['min'],
+				'compare' => '>=',
+				'type'    => 'NUMERIC',
+			];
+		}
+
+		if ( isset( $price_range['max'] ) ) {
+			$meta_query[] = [
+				'key'     => '_price',
+				'value'   => $price_range['max'],
+				'compare' => '<=',
+				'type'    => 'NUMERIC',
+			];
+		}
+
+		return [
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+			'meta_query' => $meta_query,
+		];
+	}
 }

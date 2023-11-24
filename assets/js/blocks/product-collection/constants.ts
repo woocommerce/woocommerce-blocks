@@ -51,6 +51,7 @@ export const DEFAULT_QUERY: ProductCollectionQuery = {
 	woocommerceAttributes: [],
 	woocommerceHandPickedProducts: [],
 	timeFrame: undefined,
+	priceRange: undefined,
 };
 
 export const DEFAULT_ATTRIBUTES: Partial< ProductCollectionAttributes > = {
@@ -90,4 +91,5 @@ export const DEFAULT_FILTERS: Partial< ProductCollectionQuery > = {
 	woocommerceHandPickedProducts: [],
 	featured: DEFAULT_QUERY.featured,
 	timeFrame: undefined,
+	priceRange: undefined,
 };
