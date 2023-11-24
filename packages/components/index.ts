@@ -1,4 +1,5 @@
 export { default as Button } from './button';
+export { default as CheckboxControl } from './checkbox-control';
 export { default as CheckboxList } from './checkbox-list';
 export { Chip, RemovableChip } from './chip';
 export { default as FormStep } from './form-step';
@@ -23,4 +24,6 @@ export {
 } from './text-input/validated-text-input';
 export { default as TextInput } from './text-input/text-input';
 export { default as Title } from './title';
+export * from './totals';
+export { default as TotalsWrapper } from './totals-wrapper';
 export { default as ValidationInputError } from './validation-input-error';
