@@ -4,12 +4,12 @@
 import { store, getContext as getContextFn } from '@woocommerce/interactivity';
 import { select, subscribe, dispatch } from '@wordpress/data';
 import { CART_STORE_KEY as storeKey } from '@woocommerce/block-data';
-import { Cart } from '@woocommerce/type-defs/cart';
 import { createRoot } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { Cart } from '~/types/type-defs';
 import NoticeBanner from '~/base/components/notice-banner';
 
 interface Context {

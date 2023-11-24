@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { getSetting } from '@woocommerce/settings';
-import type { CartResponseShippingRate } from '@woocommerce/type-defs/cart-response';
 
 /**
  * Internal dependencies
  */
+import type { CartResponseShippingRate } from '~/types/type-defs/cart-response';
 import { hasCollectableRate } from '~/base/utils';
 
 /**

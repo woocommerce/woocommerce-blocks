@@ -2,15 +2,12 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-	Cart,
-	CartShippingPackageShippingRate,
-} from '@woocommerce/type-defs/cart';
 import { Component } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { Cart, CartShippingPackageShippingRate } from '~/types/type-defs/cart';
 import { createSlotFill } from '../../slot';
 import type { RadioControlOption } from '../../../../packages/components/radio-control/types';
 

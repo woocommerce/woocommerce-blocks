@@ -1,4 +1,4 @@
-/** @typedef { import('@woocommerce/type-defs/hooks').StoreCart } StoreCart */
+/** @typedef { import('~/types/type-defs/hooks').StoreCart } StoreCart */
 
 /**
  * External dependencies

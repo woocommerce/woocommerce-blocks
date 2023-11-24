@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { CartResponseShippingRate } from '@woocommerce/type-defs/cart-response';
 import type { ReactElement } from 'react';
 
 /**
  * Internal dependencies
  */
+import { CartResponseShippingRate } from '~/types/type-defs/cart-response';
 import {
 	PackageRateRenderOption,
 	TernaryFlag,

@@ -1,14 +1,10 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
 import {
 	CartShippingRate,
 	CartShippingPackageShippingRate,
-} from '@woocommerce/type-defs/cart';
-
-/**
- * Internal dependencies
- */
+} from '~/types/type-defs/cart';
 import * as blockSettings from '~/settings/blocks';
 import { hasCollectableRate, isPackageRateCollectable } from '~/base/utils';
 import {

@@ -1,5 +1,5 @@
 /**
- * @type {import("@woocommerce/type-defs/add-to-cart-form").AddToCartFormStatusConstants}
+ * @type {import("~/types/type-defs/add-to-cart-form").AddToCartFormStatusConstants}
  */
 export const STATUS = {
 	PRISTINE: 'pristine',

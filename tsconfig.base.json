@@ -33,8 +33,6 @@
 			"@woocommerce/blocks-checkout": [ "packages/checkout" ],
 			"@woocommerce/blocks-components": [ "packages/components" ],
 			"@woocommerce/interactivity": [ "assets/js/interactivity" ],
-
-			"@woocommerce/type-defs/*": [ "assets/js/types/type-defs/*" ],
 			"@woocommerce/interactivity-components/*": [
 				"packages/interactivity-components/*"
 			],

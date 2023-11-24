@@ -1,4 +1,4 @@
-/** @typedef { import('@woocommerce/type-defs/address-fields').CountryAddressFields } CountryAddressFields */
+/** @typedef { import('~/types/type-defs/address-fields').CountryAddressFields } CountryAddressFields */
 
 /**
  * External dependencies

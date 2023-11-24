@@ -13,7 +13,7 @@ import type { CartItem } from '~/types';
 import { useStoreCart } from './cart/use-store-cart';
 
 /**
- * @typedef {import('@woocommerce/type-defs/hooks').StoreCartItemAddToCart} StoreCartItemAddToCart
+ * @typedef {import('~/types/type-defs/hooks').StoreCartItemAddToCart} StoreCartItemAddToCart
  */
 
 interface StoreAddToCart {

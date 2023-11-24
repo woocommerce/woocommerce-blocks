@@ -7,7 +7,11 @@ import { getSetting } from '@woocommerce/settings';
 import { createInterpolateElement } from '@wordpress/element';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { FormattedMonetaryAmount } from '@woocommerce/blocks-components';
-import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
+
+/**
+ * Internal dependencies
+ */
+import type { CartShippingPackageShippingRate } from '~/types/type-defs/cart';
 
 export const RatePrice = ( {
 	minRate,

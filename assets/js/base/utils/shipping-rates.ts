@@ -1,15 +1,15 @@
 /**
  * External dependencies
  */
-import {
-	CartShippingPackageShippingRate,
-	CartShippingRate,
-} from '@woocommerce/type-defs/cart';
 import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
+import {
+	CartShippingPackageShippingRate,
+	CartShippingRate,
+} from '~/types/type-defs/cart';
 import { LOCAL_PICKUP_ENABLED } from '~/settings/blocks';
 
 /**

@@ -8,12 +8,12 @@ import {
 	useProductDataContext,
 } from '@woocommerce/shared-context';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
-import { CurrencyCode } from '@woocommerce/type-defs/currency';
 import type { HTMLAttributes } from 'react';
 
 /**
  * Internal dependencies
  */
+import { CurrencyCode } from '~/types/type-defs/currency';
 import { useStyleProps } from '~/base/hooks';
 import ProductPrice from '~/base/components/product-price';
 import type { BlockAttributes } from './types';

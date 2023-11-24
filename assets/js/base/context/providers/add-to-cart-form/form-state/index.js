@@ -34,9 +34,9 @@ import { isErrorResponse, isFailResponse } from '../../../event-emit';
 import { removeNoticesByStatus } from '../../../../../utils/notices';
 
 /**
- * @typedef {import('@woocommerce/type-defs/add-to-cart-form').AddToCartFormDispatchActions} AddToCartFormDispatchActions
- * @typedef {import('@woocommerce/type-defs/add-to-cart-form').AddToCartFormEventRegistration} AddToCartFormEventRegistration
- * @typedef {import('@woocommerce/type-defs/contexts').AddToCartFormContext} AddToCartFormContext
+ * @typedef {import('~/types/type-defs/add-to-cart-form').AddToCartFormDispatchActions} AddToCartFormDispatchActions
+ * @typedef {import('~/types/type-defs/add-to-cart-form').AddToCartFormEventRegistration} AddToCartFormEventRegistration
+ * @typedef {import('~/types/type-defs/contexts').AddToCartFormContext} AddToCartFormContext
  */
 
 const AddToCartFormContext = createContext( {

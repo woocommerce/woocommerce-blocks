@@ -2,8 +2,12 @@
  * External dependencies
  */
 import type { ReactElement } from 'react';
-import type { PackageRateOption } from '@woocommerce/type-defs/shipping';
-import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
+
+/**
+ * Internal dependencies
+ */
+import type { PackageRateOption } from '~/types/type-defs/shipping';
+import type { CartShippingPackageShippingRate } from '~/types/type-defs/cart';
 
 export interface PackageItem {
 	name: string;
