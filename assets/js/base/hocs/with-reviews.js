@@ -4,7 +4,6 @@
 import { Component } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
-import { createHigherOrderComponent } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -17,8 +16,8 @@ import { formatError } from '../utils/errors';
  *
  * @param {Function} OriginalComponent Component being wrapped.
  */
-const withReviews = createHigherOrderComponent( ( OriginalComponent ) => {
-	return class WrappedComponent extends Component {
+const withReviews = ( OriginalComponent ) => {
+	class WrappedComponent extends Component {
 		static propTypes = {
 			order: PropTypes.oneOf( [ 'asc', 'desc' ] ).isRequired,
 			orderby: PropTypes.string.isRequired,
@@ -208,7 +207,13 @@ const withReviews = createHigherOrderComponent( ( OriginalComponent ) => {
 				/>
 			);
 		}
-	};
-}, 'withReviews' );
+	}
+
+	const { displayName = OriginalComponent.name || 'Component' } =
+		OriginalComponent;
+	WrappedComponent.displayName = `WithReviews( ${ displayName } )`;
+
+	return WrappedComponent;
+};
 
 export default withReviews;
