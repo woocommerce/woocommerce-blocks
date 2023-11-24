@@ -295,15 +295,25 @@ class JetpackWooCommerceAnalytics {
 			return $info;
 		}
 
+		$guest_checkout = ucfirst( get_option( 'woocommerce_enable_guest_checkout', 'No' ) );
+		$create_account = ucfirst( get_option( 'woocommerce_enable_signup_and_login_from_checkout', 'No' ) );
+		$info           = array(
+			'device'         => wp_is_mobile() ? 'mobile' : 'desktop',
+			'guest_checkout' => 'Yes' === $guest_checkout ? 'Yes' : 'No',
+			'create_account' => 'Yes' === $create_account ? 'Yes' : 'No',
+			'store_currency' => get_woocommerce_currency(),
+		);
+
 		$cart_page_id     = wc_get_page_id( 'cart' );
 		$checkout_page_id = wc_get_page_id( 'checkout' );
 
 		if ( ! wp_is_block_theme() ) {
 
 			$info = array_merge(
-				array(),
+				$info,
 				$this->get_cart_page_block_usage( $cart_page_id ),
-				$this->get_checkout_page_block_usage( $checkout_page_id )
+				$this->get_checkout_page_block_usage( $checkout_page_id ),
+				$this->get_common_properties()
 			);
 
 			set_transient( $transient_name, $info, DAY_IN_SECONDS );
@@ -315,8 +325,6 @@ class JetpackWooCommerceAnalytics {
 		$cart_template_id     = null;
 		$checkout_template_id = null;
 		$templates            = $this->block_templates_controller->get_block_templates( array( 'cart', 'checkout', 'page-checkout', 'page-cart' ) );
-		$guest_checkout       = ucfirst( get_option( 'woocommerce_enable_guest_checkout', 'No' ) );
-		$create_account       = ucfirst( get_option( 'woocommerce_enable_signup_and_login_from_checkout', 'No' ) );
 
 		foreach ( $templates as $template ) {
 			if ( 'cart' === $template->slug || 'page-cart' === $template->slug ) {
@@ -339,21 +347,27 @@ class JetpackWooCommerceAnalytics {
 			$checkout_template = get_block_template( $checkout_template_id );
 		}
 
-		// Something failed with the template retrieval, return early with 0 values rather than let a warning appear.
 		if ( ! $cart_template || ! $checkout_template ) {
-			return array(
-				'cart_page_contains_cart_block'         => 0,
-				'cart_page_contains_cart_shortcode'     => 0,
-				'checkout_page_contains_checkout_block' => 0,
-				'checkout_page_contains_checkout_shortcode' => 0,
+			// Something failed with the template retrieval, return early with 0 values rather than let a warning appear.
+			$info = array_merge(
+				$info,
+				array(
+					'cart_page_contains_cart_block'     => 0,
+					'cart_page_contains_cart_shortcode' => 0,
+					'checkout_page_contains_checkout_block' => 0,
+					'checkout_page_contains_checkout_shortcode' => 0,
+				),
+				$this->get_common_properties()
 			);
+			set_transient( $transient_name, $info, DAY_IN_SECONDS );
+			return $info;
 		}
 
 		// Update the info transient with data we got from the templates, if the site isn't using WC Blocks we
 		// won't be doing this so no concern about overwriting.
 		// Sites that load this code will be loading it on a page using the relevant block, but we still need to check
 		// the other page to see if it's using the block or shortcode.
-		$info = array(
+		$template_info = array(
 			'cart_page_contains_cart_block'             => str_contains( $cart_template->content, '<!-- wp:woocommerce/cart' ) ? 1 : 0,
 			'cart_page_contains_cart_shortcode'         => ( str_contains( $cart_template->content, '[woocommerce_cart]' ) || str_contains( $cart_template->content, '<!-- wp:woocommerce/classic-shortcode' ) ) ? 1 : 0,
 			'checkout_page_contains_checkout_block'     => str_contains( $checkout_template->content, '<!-- wp:woocommerce/checkout' ) ? 1 : 0,
@@ -366,11 +380,8 @@ class JetpackWooCommerceAnalytics {
 				$checkout_template->content,
 				array( 'woocommerce/checkout' )
 			),
-			'device'                                    => wp_is_mobile() ? 'mobile' : 'desktop',
-			'guest_checkout'                            => 'Yes' === $guest_checkout ? 'Yes' : 'No',
-			'create_account'                            => 'Yes' === $create_account ? 'Yes' : 'No',
-			'store_currency'                            => get_woocommerce_currency(),
 		);
+		$info          = array_merge( $info, $template_info );
 
 		$is_cart_using_page_content     = str_contains( $cart_template->content, '<!-- wp:woocommerce/page-content-wrapper {"page":"cart"}' );
 		$is_checkout_using_page_content = str_contains( $checkout_template->content, '<!-- wp:woocommerce/page-content-wrapper {"page":"checkout"}' );
@@ -382,8 +393,13 @@ class JetpackWooCommerceAnalytics {
 			$info = array_merge( $info, $this->get_checkout_page_block_usage( $checkout_page_id ) );
 		}
 
+		$info = array_merge(
+			$this->get_common_properties(),
+			$info
+		);
+
 		set_transient( $transient_name, $info, DAY_IN_SECONDS );
-		return array_merge( $this->get_common_properties(), $info );
+		return $info;
 	}
 
 	/**
