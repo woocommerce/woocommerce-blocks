@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { usePaymentMethods } from '@woocommerce/base-context/hooks';
 import { getIconsFromPaymentMethods } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import { usePaymentMethods } from '~/base/context/hooks';
 import { PaymentMethodIcons } from '~/base/components/cart-checkout';
 
 const Block = ( { className }: { className: string } ): JSX.Element => {

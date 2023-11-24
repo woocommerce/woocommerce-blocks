@@ -4,18 +4,15 @@
 import { __ } from '@wordpress/i18n';
 import { TotalsItem } from '@woocommerce/blocks-components';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
-import {
-	usePaymentMethods,
-	useStoreCart,
-} from '@woocommerce/base-context/hooks';
 import { getIconsFromPaymentMethods } from '@woocommerce/base-utils';
 import { getSetting } from '@woocommerce/settings';
-import { PaymentEventsProvider } from '@woocommerce/base-context';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { usePaymentMethods, useStoreCart } from '~/base/context/hooks';
+import { PaymentEventsProvider } from '~/base/context';
 import PaymentMethodIcons from '~/base/components/cart-checkout/payment-method-icons';
 import CartButton from '../mini-cart-cart-button-block/block';
 import CheckoutButton from '../mini-cart-checkout-button-block/block';

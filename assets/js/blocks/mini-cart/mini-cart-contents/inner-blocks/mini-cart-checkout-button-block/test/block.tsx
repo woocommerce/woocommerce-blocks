@@ -1,16 +1,13 @@
 /**
  * External dependencies
  */
-import {
-	CartEventsProvider,
-	useCartEventsContext,
-} from '@woocommerce/base-context';
 import { useEffect } from '@wordpress/element';
 import { render, screen, waitFor } from '@testing-library/react';
 
 /**
  * Internal dependencies
  */
+import { CartEventsProvider, useCartEventsContext } from '~/base/context';
 import Block from '../block';
 
 describe( 'Mini Cart Checkout Button Block', () => {

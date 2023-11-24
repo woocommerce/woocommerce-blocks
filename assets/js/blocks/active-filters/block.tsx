@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { useQueryStateByKey } from '@woocommerce/base-context/hooks';
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import { useMemo, useEffect, useState } from '@wordpress/element';
 import classnames from 'classnames';
@@ -21,6 +20,7 @@ import type { BlockAttributes } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
+import { useQueryStateByKey } from '~/base/context/hooks';
 import FilterTitlePlaceholder from '~/base/components/filter-placeholder';
 import './style.scss';
 import { getAttributeFromTaxonomy } from '../../utils/attributes';

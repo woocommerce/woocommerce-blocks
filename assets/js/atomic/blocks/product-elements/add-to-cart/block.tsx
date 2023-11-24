@@ -2,10 +2,6 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import {
-	AddToCartFormContextProvider,
-	useAddToCartFormContext,
-} from '@woocommerce/base-context';
 import { useProductDataContext } from '@woocommerce/shared-context';
 import { isEmpty } from '@woocommerce/types';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
@@ -13,6 +9,10 @@ import { withProductDataContext } from '@woocommerce/shared-hocs';
 /**
  * Internal dependencies
  */
+import {
+	AddToCartFormContextProvider,
+	useAddToCartFormContext,
+} from '~/base/context';
 import './style.scss';
 import { AddToCartButton } from './shared';
 import {

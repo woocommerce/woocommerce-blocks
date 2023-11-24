@@ -4,14 +4,11 @@
 import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import classNames from 'classnames';
 import { useStyleProps } from '@woocommerce/base-hooks';
-import {
-	isErrorResponse,
-	useCartEventsContext,
-} from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import { isErrorResponse, useCartEventsContext } from '~/base/context';
 import Button from '~/base/components/button';
 import { defaultCheckoutButtonLabel } from './constants';
 import { getVariant } from '../utils';

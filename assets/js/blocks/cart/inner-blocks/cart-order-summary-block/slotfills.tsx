@@ -2,7 +2,11 @@
  * External dependencies
  */
 import { ExperimentalOrderMeta } from '@woocommerce/blocks-checkout';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+
+/**
+ * Internal dependencies
+ */
+import { useStoreCart } from '~/base/context/hooks';
 
 export const OrderMetaSlotFill = (): JSX.Element => {
 	// Prepare props to pass to the ExperimentalOrderMeta slot fill. We need to pluck out receiveCart.

@@ -3,22 +3,22 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
-	useExpressPaymentMethods,
-	usePaymentMethodInterface,
-} from '@woocommerce/base-context/hooks';
-import {
 	cloneElement,
 	isValidElement,
 	useCallback,
 	useRef,
 } from '@wordpress/element';
-import { useEditorContext } from '@woocommerce/base-context';
 import deprecated from '@wordpress/deprecated';
 import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import {
+	useExpressPaymentMethods,
+	usePaymentMethodInterface,
+} from '~/base/context/hooks';
+import { useEditorContext } from '~/base/context';
 import PaymentMethodErrorBoundary from './payment-method-error-boundary';
 import { STORE_KEY as PAYMENT_STORE_KEY } from '../../../data/payment/constants';
 

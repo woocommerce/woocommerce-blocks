@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 import { BlockControls, useBlockProps } from '@wordpress/block-editor';
 import { getSetting } from '@woocommerce/settings';
-import { useCollection } from '@woocommerce/base-context/hooks';
 import {
 	AttributeSetting,
 	AttributeTerm,
@@ -22,6 +21,7 @@ import {
 /**
  * Internal dependencies
  */
+import { useCollection } from '~/base/context/hooks';
 import { EditProps, isAttributeCounts } from './types';
 import {
 	NoAttributesPlaceholder,

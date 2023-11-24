@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { useStoreCart } from '@woocommerce/base-context/hooks';
-
-/**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 import { CartLineItemsTable } from '~/base/components/cart-checkout';
 
 const Block = ( { className }: { className: string } ): JSX.Element => {

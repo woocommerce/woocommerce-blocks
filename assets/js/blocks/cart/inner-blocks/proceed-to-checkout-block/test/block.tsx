@@ -4,12 +4,12 @@
 
 import { render, screen, waitFor } from '@testing-library/react';
 import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
-import { useCartEventsContext } from '@woocommerce/base-context';
 import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { useCartEventsContext } from '~/base/context';
 import Block from '../block';
 import { CartEventsProvider } from '../../../../../base/context/providers';
 

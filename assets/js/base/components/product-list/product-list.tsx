@@ -6,12 +6,6 @@ import fastDeepEqual from 'fast-deep-equal/es6';
 import classnames from 'classnames';
 import { useEffect } from '@wordpress/element';
 import { usePrevious } from '@woocommerce/base-hooks';
-import {
-	useStoreEvents,
-	useStoreProducts,
-	useSynchronizedQueryState,
-	useQueryStateByKey,
-} from '@woocommerce/base-context/hooks';
 import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 import { speak } from '@wordpress/a11y';
@@ -19,6 +13,12 @@ import { speak } from '@wordpress/a11y';
 /**
  * Internal dependencies
  */
+import {
+	useStoreEvents,
+	useStoreProducts,
+	useSynchronizedQueryState,
+	useQueryStateByKey,
+} from '~/base/context/hooks';
 import Pagination from '~/base/components/pagination';
 import NoProducts from './no-products';
 import NoMatchingProducts from './no-matching-products';

@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useShippingData } from '@woocommerce/base-context/hooks';
 import {
 	__experimentalRadio as Radio,
 	__experimentalRadioGroup as RadioGroup,
@@ -18,6 +17,7 @@ import { getSetting } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
+import { useShippingData } from '~/base/context/hooks';
 import { RatePrice, getLocalPickupPrices, getShippingPrices } from './shared';
 import type { minMaxPrices } from './shared';
 import { defaultLocalPickupText, defaultShippingText } from './constants';

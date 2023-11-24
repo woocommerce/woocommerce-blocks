@@ -3,11 +3,6 @@
  */
 import { useMemo, Fragment } from '@wordpress/element';
 import { useEffectOnce } from 'usehooks-ts';
-import {
-	useCheckoutAddress,
-	useEditorContext,
-	noticeContexts,
-} from '@woocommerce/base-context';
 import type {
 	ShippingAddress,
 	AddressField,
@@ -21,6 +16,11 @@ import isShallowEqual from '@wordpress/is-shallow-equal';
 /**
  * Internal dependencies
  */
+import {
+	useCheckoutAddress,
+	useEditorContext,
+	noticeContexts,
+} from '~/base/context';
 import Noninteractive from '~/base/components/noninteractive';
 import CustomerAddress from './customer-address';
 

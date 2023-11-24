@@ -3,7 +3,11 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import { _n, sprintf } from '@wordpress/i18n';
-import { useStoreCart } from '@woocommerce/base-context';
+
+/**
+ * Internal dependencies
+ */
+import { useStoreCart } from '~/base/context';
 
 export const Edit = (): JSX.Element => {
 	const blockProps = useBlockProps();

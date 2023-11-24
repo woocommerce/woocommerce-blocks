@@ -9,11 +9,11 @@ import {
 	createBlocksFromInnerBlocksTemplate,
 	TemplateArray,
 } from '@wordpress/blocks';
-import { useEditorContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import { useEditorContext } from '~/base/context';
 import { getMissingBlocks, findBlockPosition } from './utils';
 
 /**

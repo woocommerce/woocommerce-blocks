@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { useStoreCart } from '@woocommerce/base-context/hooks';
-
-/**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 import CartCrossSellsProductList from '../../cart-cross-sells-product-list';
 import metadata from './block.json';
 

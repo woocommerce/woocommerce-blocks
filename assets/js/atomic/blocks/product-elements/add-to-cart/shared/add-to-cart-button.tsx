@@ -4,16 +4,13 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { Icon, check } from '@wordpress/icons';
 import { useState, useEffect } from '@wordpress/element';
-import { useAddToCartFormContext } from '@woocommerce/base-context';
-import {
-	useStoreEvents,
-	useStoreAddToCart,
-} from '@woocommerce/base-context/hooks';
 import { useInnerBlockLayoutContext } from '@woocommerce/shared-context';
 
 /**
  * Internal dependencies
  */
+import { useAddToCartFormContext } from '~/base/context';
+import { useStoreEvents, useStoreAddToCart } from '~/base/context/hooks';
 import Button, { ButtonProps } from '~/base/components/button';
 
 type LinkProps = Pick< ButtonProps, 'className' | 'href' | 'onClick' | 'text' >;

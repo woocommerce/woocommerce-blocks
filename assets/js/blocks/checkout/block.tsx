@@ -4,11 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { createInterpolateElement, useEffect } from '@wordpress/element';
-import {
-	useStoreCart,
-	useShowShippingTotalWarning,
-} from '@woocommerce/base-context/hooks';
-import { CheckoutProvider, noticeContexts } from '@woocommerce/base-context';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
@@ -22,6 +17,11 @@ import {
 /**
  * Internal dependencies
  */
+import {
+	useStoreCart,
+	useShowShippingTotalWarning,
+} from '~/base/context/hooks';
+import { CheckoutProvider, noticeContexts } from '~/base/context';
 import BlockErrorBoundary from '~/base/components/block-error-boundary';
 import { SidebarLayout } from '~/base/components/sidebar-layout';
 import './styles/style.scss';

@@ -5,12 +5,12 @@ import { __, sprintf } from '@wordpress/i18n';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
-import { useEditorContext } from '@woocommerce/base-context';
 import { SHOP_URL } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import { useEditorContext } from '~/base/context';
 import {
 	useForcedLayout,
 	getAllowedBlocks,

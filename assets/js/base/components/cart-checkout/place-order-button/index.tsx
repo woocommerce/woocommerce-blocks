@@ -2,12 +2,12 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useCheckoutSubmit } from '@woocommerce/base-context/hooks';
 import { Icon, check } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { useCheckoutSubmit } from '~/base/context/hooks';
 import Button from '~/base/components/button';
 
 interface PlaceOrderButton {

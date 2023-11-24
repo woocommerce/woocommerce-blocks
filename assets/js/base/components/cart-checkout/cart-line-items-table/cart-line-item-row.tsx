@@ -4,11 +4,6 @@
 import classnames from 'classnames';
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
-import {
-	useStoreCartItemQuantity,
-	useStoreEvents,
-	useStoreCart,
-} from '@woocommerce/base-context/hooks';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { applyCheckoutFilter, mustContain } from '@woocommerce/blocks-checkout';
 import Dinero from 'dinero.js';
@@ -20,6 +15,11 @@ import { getSetting } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
+import {
+	useStoreCartItemQuantity,
+	useStoreEvents,
+	useStoreCart,
+} from '~/base/context/hooks';
 import QuantitySelector from '~/base/components/quantity-selector';
 import ProductPrice from '~/base/components/product-price';
 import ProductName from '~/base/components/product-name';

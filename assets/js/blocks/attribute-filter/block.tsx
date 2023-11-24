@@ -3,12 +3,6 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
-import {
-	useCollection,
-	useQueryStateByKey,
-	useQueryStateByContext,
-	useCollectionData,
-} from '@woocommerce/base-context/hooks';
 import { useCallback, useEffect, useState, useMemo } from '@wordpress/element';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -33,6 +27,12 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import {
+	useCollection,
+	useQueryStateByKey,
+	useQueryStateByContext,
+	useCollectionData,
+} from '~/base/context/hooks';
 import Label from '~/base/components/filter-element-label';
 import FilterResetButton from '~/base/components/filter-reset-button';
 import FilterSubmitButton from '~/base/components/filter-submit-button';

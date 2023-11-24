@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { useEffect } from '@wordpress/element';
 import { dispatchEvent } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 import './style.scss';
 
 const FrontendBlock = ( {

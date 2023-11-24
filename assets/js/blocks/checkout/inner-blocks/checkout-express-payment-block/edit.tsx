@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import { useExpressPaymentMethods } from '@woocommerce/base-context/hooks';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { useExpressPaymentMethods } from '~/base/context/hooks';
 import Block from './block';
 import './editor.scss';
 

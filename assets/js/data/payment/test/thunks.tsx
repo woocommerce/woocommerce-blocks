@@ -2,11 +2,11 @@
  * External dependencies
  */
 import * as wpDataFunctions from '@wordpress/data';
-import { EventObserversType } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import { EventObserversType } from '~/base/context';
 import { PAYMENT_STORE_KEY } from '../index';
 import { __internalEmitPaymentProcessingEvent } from '../thunks';
 

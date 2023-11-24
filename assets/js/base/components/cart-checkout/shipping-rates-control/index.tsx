@@ -8,16 +8,16 @@ import {
 	getShippingRatesPackageCount,
 	getShippingRatesRateCount,
 } from '@woocommerce/base-utils';
-import {
-	useStoreCart,
-	useEditorContext,
-	useShippingData,
-} from '@woocommerce/base-context';
 import { isObject } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import {
+	useStoreCart,
+	useEditorContext,
+	useShippingData,
+} from '~/base/context';
 import LoadingMask from '~/base/components/loading-mask';
 import NoticeBanner from '~/base/components/notice-banner';
 import ShippingRatesControlPackage from '../shipping-rates-control-package';

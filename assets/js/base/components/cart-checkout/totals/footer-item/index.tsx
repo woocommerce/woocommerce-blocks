@@ -9,7 +9,6 @@ import {
 	TotalsItem,
 } from '@woocommerce/blocks-components';
 import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { getSetting } from '@woocommerce/settings';
 import {
 	CartResponseTotals,
@@ -21,6 +20,7 @@ import { formatPrice } from '@woocommerce/price-format';
 /**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 import './style.scss';
 
 export interface TotalsFooterItemProps {

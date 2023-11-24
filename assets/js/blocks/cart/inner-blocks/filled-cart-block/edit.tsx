@@ -5,11 +5,11 @@ import classnames from 'classnames';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import type { TemplateArray } from '@wordpress/blocks';
-import { useEditorContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import { useEditorContext } from '~/base/context';
 import { SidebarLayout } from '~/base/components/sidebar-layout';
 import {
 	useForcedLayout,

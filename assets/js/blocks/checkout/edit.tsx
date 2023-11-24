@@ -8,7 +8,6 @@ import {
 	useBlockProps,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { CheckoutProvider, EditorProvider } from '@woocommerce/base-context';
 import {
 	previewCart,
 	previewSavedPaymentMethods,
@@ -27,6 +26,7 @@ import { dispatch, select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import { CheckoutProvider, EditorProvider } from '~/base/context';
 import { SidebarLayout } from '~/base/components/sidebar-layout';
 import './inner-blocks';
 import './styles/editor.scss';

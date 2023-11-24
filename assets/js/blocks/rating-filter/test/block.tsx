@@ -3,18 +3,18 @@
  */
 import React from '@wordpress/element';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
-import * as hooks from '@woocommerce/base-context/hooks';
 import userEvent from '@testing-library/user-event';
 
 /**
  * Internal dependencies
  */
+import * as hooks from '~/base/context/hooks';
 import RatingFilterBlock from '../block';
 import { Attributes } from '../types';
 
-jest.mock( '@woocommerce/base-context/hooks', () => ( {
+jest.mock( '~/base/context/hooks', () => ( {
 	__esModule: true,
-	...jest.requireActual( '@woocommerce/base-context/hooks' ),
+	...jest.requireActual( '~/base/context/hooks' ),
 } ) );
 
 const setWindowUrl = ( { url }: { url: string } ) => {

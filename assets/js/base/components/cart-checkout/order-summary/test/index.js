@@ -9,8 +9,8 @@ import { previewCart } from '@woocommerce/resource-previews';
  */
 import OrderSummary from '../index';
 
-jest.mock( '@woocommerce/base-context', () => ( {
-	...jest.requireActual( '@woocommerce/base-context' ),
+jest.mock( '~/base/context', () => ( {
+	...jest.requireActual( '~/base/context' ),
 	useContainerWidthContext: () => ( {
 		isLarge: true,
 		hasContainerWidth: true,

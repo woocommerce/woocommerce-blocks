@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { useStoreCartCoupons } from '@woocommerce/base-context/hooks';
 import { getSetting } from '@woocommerce/settings';
 import { TotalsWrapper } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies
  */
+import { useStoreCartCoupons } from '~/base/context/hooks';
 import { TotalsCoupon } from '~/base/components/cart-checkout';
 
 const Block = ( {

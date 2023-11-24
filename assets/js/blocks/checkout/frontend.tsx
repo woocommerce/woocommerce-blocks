@@ -3,16 +3,13 @@
  */
 import { Children, cloneElement, isValidElement } from '@wordpress/element';
 import { getValidBlockAttributes } from '@woocommerce/base-utils';
-import { useStoreCart } from '@woocommerce/base-context';
-import {
-	useCheckoutExtensionData,
-	useValidation,
-} from '@woocommerce/base-context/hooks';
 import { getRegisteredBlockComponents } from '@woocommerce/blocks-registry';
 
 /**
  * Internal dependencies
  */
+import { useCheckoutExtensionData, useValidation } from '~/base/context/hooks';
+import { useStoreCart } from '~/base/context';
 import { renderParentBlock } from '~/atomic/utils';
 import './inner-blocks/register-components';
 import Block from './block';

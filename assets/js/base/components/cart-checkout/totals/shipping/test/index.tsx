@@ -5,11 +5,11 @@ import { screen, render } from '@testing-library/react';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
 import { previewCart as mockPreviewCart } from '@woocommerce/resource-previews';
 import * as wpData from '@wordpress/data';
-import * as baseContextHooks from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
+import * as baseContextHooks from '~/base/context/hooks';
 import { TotalsShipping } from '../index';
 
 jest.mock( '@wordpress/data', () => ( {
@@ -51,10 +51,10 @@ const shippingAddress = {
 	phone: '+1234567890',
 };
 
-jest.mock( '@woocommerce/base-context/hooks', () => {
+jest.mock( '~/base/context/hooks', () => {
 	return {
 		__esModule: true,
-		...jest.requireActual( '@woocommerce/base-context/hooks' ),
+		...jest.requireActual( '~/base/context/hooks' ),
 		useShippingData: jest.fn(),
 		useStoreCart: jest.fn(),
 	};

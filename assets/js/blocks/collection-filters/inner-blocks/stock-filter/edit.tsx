@@ -11,14 +11,14 @@ import { ProductQueryContext as Context } from '@woocommerce/blocks/product-quer
 import { CheckboxList } from '@woocommerce/blocks-components';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { getSetting } from '@woocommerce/settings';
-import {
-	useCollectionData,
-	useQueryStateByContext,
-} from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
+import {
+	useCollectionData,
+	useQueryStateByContext,
+} from '~/base/context/hooks';
 import Label from '~/base/components/filter-element-label';
 import FormTokenField from '~/base/components/form-token-field';
 import { BlockProps } from './types';

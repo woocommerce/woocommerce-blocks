@@ -2,11 +2,6 @@
  * External dependencies
  */
 import { usePrevious } from '@woocommerce/base-hooks';
-import {
-	useQueryStateByKey,
-	useQueryStateByContext,
-	useCollectionData,
-} from '@woocommerce/base-context/hooks';
 import { useCallback, useState, useEffect } from '@wordpress/element';
 import { useDebouncedCallback } from 'use-debounce';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
@@ -23,6 +18,11 @@ import {
 /**
  * Internal dependencies
  */
+import {
+	useQueryStateByKey,
+	useQueryStateByContext,
+	useCollectionData,
+} from '~/base/context/hooks';
 import PriceSlider from '~/base/components/price-slider';
 import FilterTitlePlaceholder from '~/base/components/filter-placeholder';
 import usePriceConstraints from './use-price-constraints';

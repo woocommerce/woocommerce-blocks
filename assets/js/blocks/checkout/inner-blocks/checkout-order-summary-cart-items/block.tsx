@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { TotalsWrapper } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 import { OrderSummary } from '~/base/components/cart-checkout';
 
 const Block = ( { className }: { className: string } ): JSX.Element => {

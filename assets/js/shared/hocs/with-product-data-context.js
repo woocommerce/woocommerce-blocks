@@ -1,11 +1,15 @@
 /**
  * External dependencies
  */
-import { useStoreProducts } from '@woocommerce/base-context/hooks';
 import {
 	ProductDataContextProvider,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+
+/**
+ * Internal dependencies
+ */
+import { useStoreProducts } from '~/base/context/hooks';
 
 const getProductById = ( products, id ) =>
 	products.find( ( product ) => product.id === id );

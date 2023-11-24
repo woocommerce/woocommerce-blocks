@@ -5,11 +5,6 @@ import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import { Icon, chevronDown } from '@wordpress/icons';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
-import {
-	useQueryStateByKey,
-	useQueryStateByContext,
-	useCollectionData,
-} from '@woocommerce/base-context/hooks';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean, isObject, objectHasProp } from '@woocommerce/types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
@@ -23,6 +18,11 @@ import type { ReactElement } from 'react';
 /**
  * Internal dependencies
  */
+import {
+	useQueryStateByKey,
+	useQueryStateByContext,
+	useCollectionData,
+} from '~/base/context/hooks';
 import Rating, { RatingValues } from '~/base/components/product-rating';
 import FilterSubmitButton from '~/base/components/filter-submit-button';
 import FilterResetButton from '~/base/components/filter-reset-button';

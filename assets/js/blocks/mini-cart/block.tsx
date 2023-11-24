@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 import {
 	getValidBlockAttributes,
 	translateJQueryEventToNative,
@@ -31,6 +30,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 import Drawer from '~/base/components/drawer';
 import { renderParentBlock } from '~/atomic/utils';
 import type { BlockAttributes } from './types';

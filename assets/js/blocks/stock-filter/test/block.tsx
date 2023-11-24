@@ -30,9 +30,9 @@ const mockResults = {
 	],
 };
 
-jest.mock( '@woocommerce/base-context/hooks', () => {
+jest.mock( '~/base/context/hooks', () => {
 	return {
-		...jest.requireActual( '@woocommerce/base-context/hooks' ),
+		...jest.requireActual( '~/base/context/hooks' ),
 		useCollectionData: () => ( { isLoading: false, results: mockResults } ),
 	};
 } );

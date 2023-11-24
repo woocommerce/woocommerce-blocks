@@ -3,12 +3,12 @@
  */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CheckoutProvider } from '@woocommerce/base-context';
-import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
+import { useCheckoutAddress } from '~/base/context/hooks';
+import { CheckoutProvider } from '~/base/context';
 import AddressForm from '../address-form';
 
 const renderInCheckoutProvider = ( ui, options = {} ) => {

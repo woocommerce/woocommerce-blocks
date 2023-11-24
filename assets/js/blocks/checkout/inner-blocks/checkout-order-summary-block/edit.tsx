@@ -5,11 +5,11 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import type { TemplateArray } from '@wordpress/blocks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 import { TotalsFooterItem } from '~/base/components/cart-checkout';
 import {
 	useForcedLayout,

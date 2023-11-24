@@ -2,7 +2,6 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { withFilteredAttributes } from '@woocommerce/shared-hocs';
 import {
 	FormStep,
@@ -10,11 +9,12 @@ import {
 } from '@woocommerce/blocks-components';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
-import { noticeContexts } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
+import { noticeContexts } from '~/base/context';
 import Block from './block';
 import attributes from './attributes';
 

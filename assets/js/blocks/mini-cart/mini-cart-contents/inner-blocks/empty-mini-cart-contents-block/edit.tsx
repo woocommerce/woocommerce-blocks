@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
-import { useEditorContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import { useEditorContext } from '~/base/context';
 import { getMiniCartAllowedBlocks } from '../allowed-blocks';
 
 export const Edit = (): JSX.Element => {

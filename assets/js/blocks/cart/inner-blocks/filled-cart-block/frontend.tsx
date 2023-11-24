@@ -2,11 +2,11 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 import { SidebarLayout } from '~/base/components/sidebar-layout';
 import { useCartBlockContext } from '../../context';
 

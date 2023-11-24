@@ -2,12 +2,12 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useStoreEvents } from '@woocommerce/base-context/hooks';
 import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { useStoreEvents } from '~/base/context/hooks';
 import { Main } from '~/base/components/sidebar-layout';
 
 const FrontendBlock = ( {

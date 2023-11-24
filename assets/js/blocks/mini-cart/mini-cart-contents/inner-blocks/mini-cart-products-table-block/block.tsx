@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 import { CartLineItemsTable } from '~/base/components/cart-checkout';
 
 type MiniCartProductsTableBlockProps = {

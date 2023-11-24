@@ -8,7 +8,6 @@ import {
 	useCallback,
 	createInterpolateElement,
 } from '@wordpress/element';
-import { useShippingData, useStoreCart } from '@woocommerce/base-context/hooks';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import {
 	FormattedMonetaryAmount,
@@ -27,6 +26,7 @@ import { ExperimentalOrderLocalPickupPackages } from '@woocommerce/blocks-checko
 /**
  * Internal dependencies
  */
+import { useShippingData, useStoreCart } from '~/base/context/hooks';
 import { LocalPickupSelect } from '~/base/components/cart-checkout/local-pickup-select';
 import ShippingRatesControlPackage from '~/base/components/cart-checkout/shipping-rates-control-package';
 

@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { useCartEventsContext } from '@woocommerce/base-context';
 import { useEffect } from '@wordpress/element';
 import { render, screen, waitFor } from '@testing-library/react';
 
 /**
  * Internal dependencies
  */
+import { useCartEventsContext } from '~/base/context';
 import { CartEventsProvider } from '../index';
 import Block from '../../../../../../blocks/cart/inner-blocks/proceed-to-checkout-block/block';
 

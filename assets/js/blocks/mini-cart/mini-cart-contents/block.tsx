@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import { CartEventsProvider } from '@woocommerce/base-context';
-
-/**
  * Internal dependencies
  */
+import { CartEventsProvider } from '~/base/context';
 import { DrawerCloseButton } from '~/base/components/drawer';
 import './inner-blocks/register-components';
 

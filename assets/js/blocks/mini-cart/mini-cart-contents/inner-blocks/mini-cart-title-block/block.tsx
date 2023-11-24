@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 import TitleItemsCounter from '../mini-cart-title-items-counter-block/block';
 import TitleYourCart from '../mini-cart-title-label-block/block';
 import { hasChildren } from '../utils';

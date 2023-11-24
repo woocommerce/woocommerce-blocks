@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { useEffect, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 
 type EmptyMiniCartContentsBlockProps = {
 	children: JSX.Element | JSX.Element[];

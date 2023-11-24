@@ -5,11 +5,6 @@ import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import { Icon, chevronDown } from '@wordpress/icons';
 import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
-import {
-	useQueryStateByKey,
-	useQueryStateByContext,
-	useCollectionData,
-} from '@woocommerce/base-context/hooks';
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
 import {
 	useCallback,
@@ -33,6 +28,11 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import {
+	useQueryStateByKey,
+	useQueryStateByContext,
+	useCollectionData,
+} from '~/base/context/hooks';
 import FilterSubmitButton from '~/base/components/filter-submit-button';
 import FilterResetButton from '~/base/components/filter-reset-button';
 import FilterTitlePlaceholder from '~/base/components/filter-placeholder';

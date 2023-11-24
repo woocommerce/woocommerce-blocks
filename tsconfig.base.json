@@ -24,14 +24,6 @@
 		"types": [ "jest", "jquery" ],
 		"paths": {
 			"~/*": [ "assets/js/*" ],
-			"@woocommerce/base-context": [ "assets/js/base/context" ],
-			"@woocommerce/base-context/*": [ "assets/js/base/context/*" ],
-			"@woocommerce/base-context/hooks": [
-				"assets/js/base/context/hooks"
-			],
-			"@woocommerce/base-context/components": [
-				"assets/js/base/context/components"
-			],
 			"@woocommerce/base-hocs/*": [ "assets/js/base/hocs/*" ],
 			"@woocommerce/base-hooks": [ "assets/js/base/hooks" ],
 			"@woocommerce/interactivity": [ "assets/js/interactivity" ],

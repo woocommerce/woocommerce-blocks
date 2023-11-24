@@ -2,10 +2,6 @@
  * External dependencies
  */
 import { useEffect } from '@wordpress/element';
-import {
-	useCollection,
-	useQueryStateByKey,
-} from '@woocommerce/base-context/hooks';
 import { decodeEntities } from '@wordpress/html-entities';
 import { __ } from '@wordpress/i18n';
 import { getSettingWithCoercion } from '@woocommerce/settings';
@@ -20,6 +16,7 @@ import {
 /**
  * Internal dependencies
  */
+import { useCollection, useQueryStateByKey } from '~/base/context/hooks';
 import { renderRemovableListItem, removeArgsFromFilterUrl } from './utils';
 import { removeAttributeFilterBySlug } from '../../utils/attributes-query';
 

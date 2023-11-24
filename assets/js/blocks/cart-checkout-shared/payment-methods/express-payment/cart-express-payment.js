@@ -2,8 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useExpressPaymentMethods } from '@woocommerce/base-context/hooks';
-import { noticeContexts } from '@woocommerce/base-context';
 import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 import { useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
@@ -11,6 +9,8 @@ import { CHECKOUT_STORE_KEY, PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 /**
  * Internal dependencies
  */
+import { useExpressPaymentMethods } from '~/base/context/hooks';
+import { noticeContexts } from '~/base/context';
 import LoadingMask from '~/base/components/loading-mask';
 import ExpressPaymentMethods from '../express-payment-methods';
 import './style.scss';

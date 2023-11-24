@@ -11,7 +11,7 @@ import {
 	textContentMatcher,
 	textContentMatcherAcrossSiblings,
 } from '../../../../../../../tests/utils/find-by-text';
-const baseContextHooks = jest.requireMock( '@woocommerce/base-context/hooks' );
+const baseContextHooks = jest.requireMock( '~/base/context/hooks' );
 const woocommerceSettings = jest.requireMock( '@woocommerce/settings' );
 import SummaryBlock from '../frontend';
 import SubtotalBlock from '../../checkout-order-summary-subtotal/frontend';
@@ -46,8 +46,8 @@ const defaultUseStoreCartValue = {
 	cartHasCalculatedShipping: mockPreviewCart.has_calculated_shipping,
 };
 
-jest.mock( '@woocommerce/base-context/hooks', () => ( {
-	...jest.requireActual( '@woocommerce/base-context/hooks' ),
+jest.mock( '~/base/context/hooks', () => ( {
+	...jest.requireActual( '~/base/context/hooks' ),
 
 	/*
 	We need to redefine this here despite the defaultUseStoreCartValue above
@@ -169,8 +169,8 @@ jest.mock( '@woocommerce/base-context/hooks', () => ( {
 	} ),
 } ) );
 
-jest.mock( '@woocommerce/base-context', () => ( {
-	...jest.requireActual( '@woocommerce/base-context' ),
+jest.mock( '~/base/context', () => ( {
+	...jest.requireActual( '~/base/context' ),
 	useContainerWidthContext: jest.fn().mockReturnValue( {
 		hasContainerWidth: true,
 		isLarge: true,

@@ -8,11 +8,11 @@ import { PanelBody, ExternalLink } from '@wordpress/components';
 import { ADMIN_URL, getSetting } from '@woocommerce/settings';
 import ExternalLinkCard from '@woocommerce/editor-components/external-link-card';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
-import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
+import { useCheckoutAddress } from '~/base/context/hooks';
 import Noninteractive from '~/base/components/noninteractive';
 import {
 	FormStepBlock,

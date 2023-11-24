@@ -4,13 +4,13 @@
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { FormStep } from '@woocommerce/blocks-components';
-import { useShippingData } from '@woocommerce/base-context/hooks';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
+import { useShippingData } from '~/base/context/hooks';
 import CheckoutOrderNotes from '../../order-notes';
 
 const Block = ( { className }: { className?: string } ): JSX.Element => {

@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { useStoreCart } from '~/base/context/hooks';
 import { CartExpressPayment } from '../../../cart-checkout-shared/payment-methods';
 
 const Block = ( { className }: { className: string } ): JSX.Element | null => {

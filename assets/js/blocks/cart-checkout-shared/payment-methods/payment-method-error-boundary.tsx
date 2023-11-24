@@ -5,12 +5,18 @@ import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { CURRENT_USER_IS_ADMIN } from '@woocommerce/settings';
 import { StoreNoticesContainer } from '@woocommerce/blocks-components';
-import { noticeContexts } from '@woocommerce/base-context';
 import { NoticeType } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { noticeContexts } from '~/base/context';
+
 interface PaymentMethodErrorBoundaryProps {
 	isEditor: boolean;
 	children: React.ReactNode;
 }
+
 const PaymentMethodErrorBoundary = ( {
 	isEditor,
 	children,

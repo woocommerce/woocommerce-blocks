@@ -18,7 +18,6 @@ import {
 	useBlockProps,
 	RichText,
 } from '@wordpress/block-editor';
-import { useShippingData } from '@woocommerce/base-context/hooks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
@@ -27,6 +26,7 @@ import ExternalLinkCard from '@woocommerce/editor-components/external-link-card'
 /**
  * Internal dependencies
  */
+import { useShippingData } from '~/base/context/hooks';
 import {
 	FormStepBlock,
 	AdditionalFields,

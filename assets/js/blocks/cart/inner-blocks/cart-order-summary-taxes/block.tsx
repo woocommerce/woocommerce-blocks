@@ -3,8 +3,12 @@
  */
 import { TotalsTaxes, TotalsWrapper } from '@woocommerce/blocks-components';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
-import { useStoreCart } from '@woocommerce/base-context/hooks';
 import { getSetting } from '@woocommerce/settings';
+
+/**
+ * Internal dependencies
+ */
+import { useStoreCart } from '~/base/context/hooks';
 
 const Block = ( {
 	className,

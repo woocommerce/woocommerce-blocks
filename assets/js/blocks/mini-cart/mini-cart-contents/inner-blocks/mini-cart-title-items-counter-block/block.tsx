@@ -1,10 +1,14 @@
 /**
  * External dependencies
  */
-import { useStoreCart } from '@woocommerce/base-context';
 import classNames from 'classnames';
 import { _n, sprintf } from '@wordpress/i18n';
 import { useStyleProps } from '@woocommerce/base-hooks';
+
+/**
+ * Internal dependencies
+ */
+import { useStoreCart } from '~/base/context';
 
 type Props = {
 	className?: string;

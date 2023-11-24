@@ -2,7 +2,6 @@
  * External dependencies
  */
 import type { ShippingAddress } from '@woocommerce/settings';
-import { useCustomerData } from '@woocommerce/base-context/hooks';
 import { dispatch } from '@wordpress/data';
 import { CART_STORE_KEY, processErrorResponse } from '@woocommerce/block-data';
 import { StoreNoticesContainer } from '@woocommerce/blocks-components';
@@ -11,6 +10,7 @@ import { removeNoticesWithContext } from '@woocommerce/base-utils';
 /**
  * Internal dependencies
  */
+import { useCustomerData } from '~/base/context/hooks';
 import ShippingCalculatorAddress from './address';
 import './style.scss';
 

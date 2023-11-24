@@ -4,7 +4,6 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
-import { useCollection } from '@woocommerce/base-context/hooks';
 import { sprintf, __ } from '@wordpress/i18n';
 import { getSetting } from '@woocommerce/settings';
 import type { AttributeSetting } from '@woocommerce/types';
@@ -12,6 +11,7 @@ import type { AttributeSetting } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
+import { useCollection } from '~/base/context/hooks';
 import { formatQuery, getQueryParams } from './utils';
 import type { EditProps } from './type';
 

@@ -1,12 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	usePaymentMethodInterface,
-	useStoreEvents,
-} from '@woocommerce/base-context/hooks';
 import { cloneElement, useCallback } from '@wordpress/element';
-import { useEditorContext } from '@woocommerce/base-context';
 import classNames from 'classnames';
 import { RadioControlAccordion } from '@woocommerce/blocks-components';
 import { useDispatch, useSelect } from '@wordpress/data';
@@ -15,6 +10,11 @@ import { getPaymentMethods } from '@woocommerce/blocks-registry';
 /**
  * Internal dependencies
  */
+import {
+	usePaymentMethodInterface,
+	useStoreEvents,
+} from '~/base/context/hooks';
+import { useEditorContext } from '~/base/context';
 import PaymentMethodCard from './payment-method-card';
 import { noticeContexts } from '../../../base/context/event-emit';
 import { STORE_KEY as PAYMENT_STORE_KEY } from '../../../data/payment/constants';

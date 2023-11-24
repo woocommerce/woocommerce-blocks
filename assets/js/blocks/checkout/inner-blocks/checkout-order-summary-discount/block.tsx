@@ -3,15 +3,12 @@
  */
 import { TotalsWrapper } from '@woocommerce/blocks-components';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
-import {
-	useStoreCartCoupons,
-	useStoreCart,
-} from '@woocommerce/base-context/hooks';
 import { ExperimentalDiscountsMeta } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
+import { useStoreCartCoupons, useStoreCart } from '~/base/context/hooks';
 import { TotalsDiscount } from '~/base/components/cart-checkout';
 
 const DiscountSlotFill = (): JSX.Element => {

@@ -8,7 +8,11 @@ import {
 	ApiErrorResponse,
 	isApiErrorResponse,
 } from '@woocommerce/types';
-import { noticeContexts } from '@woocommerce/base-context/event-emit/utils';
+
+/**
+ * Internal dependencies
+ */
+import { noticeContexts } from '~/base/context/event-emit/utils';
 
 type ApiParamError = {
 	param: string;

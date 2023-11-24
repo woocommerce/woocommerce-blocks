@@ -3,10 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
-	useCustomerData,
-	useShippingData,
-} from '@woocommerce/base-context/hooks';
-import {
 	getShippingRatesPackageCount,
 	hasCollectableRate,
 	isAddressComplete,
@@ -16,7 +12,6 @@ import {
 	FormattedMonetaryAmount,
 	StoreNoticesContainer,
 } from '@woocommerce/blocks-components';
-import { useEditorContext, noticeContexts } from '@woocommerce/base-context';
 import { decodeEntities } from '@wordpress/html-entities';
 import { getSetting } from '@woocommerce/settings';
 import type {
@@ -28,6 +23,8 @@ import type { ReactElement } from 'react';
 /**
  * Internal dependencies
  */
+import { useEditorContext, noticeContexts } from '~/base/context';
+import { useCustomerData, useShippingData } from '~/base/context/hooks';
 import { ShippingRatesControl } from '~/base/components/cart-checkout';
 import NoticeBanner from '~/base/components/notice-banner';
 

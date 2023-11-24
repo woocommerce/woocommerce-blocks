@@ -1,8 +1,12 @@
 /**
  * External dependencies
  */
-import { ObserverResponse } from '@woocommerce/base-context';
 import { isObject, objectHasProp } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { ObserverResponse } from '~/base/context';
 
 /**
  * Whether the passed object is an ObserverResponse.

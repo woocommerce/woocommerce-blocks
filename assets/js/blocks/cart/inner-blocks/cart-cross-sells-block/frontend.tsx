@@ -1,7 +1,7 @@
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { useStoreCart } from '@woocommerce/base-context/hooks';
+import { useStoreCart } from '~/base/context/hooks';
 
 interface Props {
 	children?: JSX.Element | JSX.Element[];

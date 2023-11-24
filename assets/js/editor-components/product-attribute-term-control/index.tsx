@@ -9,7 +9,6 @@ import {
 } from '@woocommerce/editor-components/search-list-control';
 import { SelectControl } from '@wordpress/components';
 import { withInstanceId } from '@wordpress/compose';
-import useProductAttributes from '@woocommerce/base-context/hooks/use-product-attributes';
 import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
 import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item';
 import {
@@ -22,6 +21,7 @@ import { convertAttributeObjectToSearchItem } from '@woocommerce/utils';
 /**
  * Internal dependencies
  */
+import useProductAttributes from '~/base/context/hooks/use-product-attributes';
 import './style.scss';
 
 interface Props

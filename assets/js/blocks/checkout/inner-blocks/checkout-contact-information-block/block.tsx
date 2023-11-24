@@ -2,11 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useCheckoutAddress,
-	useStoreEvents,
-	noticeContexts,
-} from '@woocommerce/base-context';
 import { getSetting } from '@woocommerce/settings';
 import { CheckboxControl } from '@woocommerce/blocks-checkout';
 import {
@@ -16,6 +11,15 @@ import {
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { isEmail } from '@wordpress/url';
+
+/**
+ * Internal dependencies
+ */
+import {
+	useCheckoutAddress,
+	useStoreEvents,
+	noticeContexts,
+} from '~/base/context';
 
 const Block = (): JSX.Element => {
 	const { customerId, shouldCreateAccount } = useSelect( ( select ) => {

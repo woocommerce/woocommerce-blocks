@@ -2,11 +2,11 @@
  * External dependencies
  */
 import classNames from 'classnames';
-import { ContainerWidthContextProvider } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import { ContainerWidthContextProvider } from '~/base/context';
 import './style.scss';
 interface SidebarLayoutProps {
 	children: JSX.Element | JSX.Element[];

@@ -3,12 +3,12 @@
  */
 import classnames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
-import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
+import { useCheckoutAddress } from '~/base/context/hooks';
 import {
 	FormStepBlock,
 	AdditionalFields,

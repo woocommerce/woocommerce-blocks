@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useAddToCartFormContext } from '@woocommerce/base-context';
 
 /**
  * Internal dependencies
  */
+import { useAddToCartFormContext } from '~/base/context';
 import {
 	AddToCartButton,
 	QuantityInput,
