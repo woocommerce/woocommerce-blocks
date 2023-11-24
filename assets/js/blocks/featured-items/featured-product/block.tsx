@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { withProduct } from '@woocommerce/block-hocs';
 import { withSpokenMessages } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
@@ -10,6 +9,7 @@ import { starEmpty } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
+import { withProduct } from '~/hocs';
 import { withBlockControls } from '../block-controls';
 import { withImageEditor } from '../image-editor';
 import { withInspectorControls } from '../inspector-controls';

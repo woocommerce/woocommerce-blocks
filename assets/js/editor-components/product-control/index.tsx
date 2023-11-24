@@ -4,11 +4,6 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { isEmpty } from '@woocommerce/types';
 import { withInstanceId } from '@wordpress/compose';
-import {
-	withProductVariations,
-	withSearchedProducts,
-	withTransformSingleSelectToMultipleSelect,
-} from '@woocommerce/block-hocs';
 import type {
 	ProductResponseItem,
 	WithInjectedInstanceId,
@@ -21,6 +16,11 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
+import {
+	withProductVariations,
+	withSearchedProducts,
+	withTransformSingleSelectToMultipleSelect,
+} from '~/hocs';
 import {
 	SearchListControl,
 	SearchListItem,

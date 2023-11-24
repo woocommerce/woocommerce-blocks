@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { withCategory } from '@woocommerce/block-hocs';
 import { withSpokenMessages } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
@@ -9,6 +8,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import { withCategory } from '~/hocs';
 import { folderStarred } from '~/icons';
 import { withBlockControls } from '../block-controls';
 import { withImageEditor } from '../image-editor';

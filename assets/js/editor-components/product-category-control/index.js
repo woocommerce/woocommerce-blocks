@@ -4,12 +4,12 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { SelectControl } from '@wordpress/components';
-import { withCategories } from '@woocommerce/block-hocs';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { withCategories } from '~/hocs';
 import {
 	SearchListControl,
 	SearchListItem,

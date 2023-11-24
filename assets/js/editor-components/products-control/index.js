@@ -3,12 +3,12 @@
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import { withSearchedProducts } from '@woocommerce/block-hocs';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
  */
+import { withSearchedProducts } from '~/hocs';
 import ErrorMessage from '~/editor-components/error-placeholder/error-message';
 import { SearchListControl } from '~/editor-components/search-list-control';
 

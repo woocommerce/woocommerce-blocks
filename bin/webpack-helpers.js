@@ -62,10 +62,6 @@ const getAlias = ( options = {} ) => {
 			__dirname,
 			`../assets/js/${ pathPart }base/hooks/`
 		),
-		'@woocommerce/interactivity': path.resolve(
-			__dirname,
-			`../assetwoocommerce/base-contexts/js/${ pathPart }interactivity/`
-		),
 		'~/base/utils': path.resolve(
 			__dirname,
 			`../assets/js/${ pathPart }base/utils/`
@@ -78,10 +74,11 @@ const getAlias = ( options = {} ) => {
 			__dirname,
 			`../assets/js/${ pathPart }editor-components/`
 		),
-		'@woocommerce/block-hocs': path.resolve(
+		'@woocommerce/interactivity': path.resolve(
 			__dirname,
-			`../assets/js/${ pathPart }hocs`
+			`../assetwoocommerce/base-contexts/js/${ pathPart }interactivity/`
 		),
+		'~/hocs': path.resolve( __dirname, `../assets/js/${ pathPart }hocs` ),
 		'@woocommerce/block-settings': path.resolve(
 			__dirname,
 			'../assets/js/settings/blocks'
