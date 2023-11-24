@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { cart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
@@ -11,6 +10,7 @@ import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
+import { cart } from '~/icons';
 import edit, { Save as save } from './edit';
 import { blockName, attributes } from './attributes';
 import './inner-blocks';

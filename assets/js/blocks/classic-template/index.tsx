@@ -29,12 +29,12 @@ import {
 import { useEffect, useState } from '@wordpress/element';
 import { store as noticesStore } from '@wordpress/notices';
 import { useEntityRecord } from '@wordpress/core-data';
-import { woo } from '@woocommerce/icons';
 import { isNumber } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
+import { woo } from '~/icons';
 import { debounce } from '~/base/utils';
 import './editor.scss';
 import './style.scss';

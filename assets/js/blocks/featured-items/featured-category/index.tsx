@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { folderStarred } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { folderStarred } from '~/icons';
 import './style.scss';
 import './editor.scss';
 import Block from './block';

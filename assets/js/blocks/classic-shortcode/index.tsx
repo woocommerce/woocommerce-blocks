@@ -24,12 +24,12 @@ import { shortcode, Icon } from '@wordpress/icons';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useState, createInterpolateElement } from '@wordpress/element';
 import { store as noticesStore } from '@wordpress/notices';
-import { woo } from '@woocommerce/icons';
 import { findBlock } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
+import { woo } from '~/icons';
 import './editor.scss';
 import './style.scss';
 import { CartPlaceholder, CheckoutPlaceholder } from './placeholder';

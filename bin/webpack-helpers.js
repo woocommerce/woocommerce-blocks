@@ -86,7 +86,7 @@ const getAlias = ( options = {} ) => {
 			__dirname,
 			'../assets/js/settings/blocks'
 		),
-		'@woocommerce/icons': path.resolve( __dirname, `../assets/js/icons` ),
+		'~/icons': path.resolve( __dirname, `../assets/js/icons` ),
 		'@woocommerce/resource-previews': path.resolve(
 			__dirname,
 			`../assets/js/${ pathPart }previews/`

@@ -4,11 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { Icon } from '@wordpress/icons';
-import { sparkles } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
  */
+import { sparkles } from '~/icons';
 import sharedAttributes, {
 	sharedAttributeBlockTypes,
 } from '../../utils/shared-attributes';

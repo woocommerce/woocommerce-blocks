@@ -7,7 +7,6 @@ import {
 } from '@wordpress/blocks';
 import { Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { stacks } from '@woocommerce/icons';
 import { isWpVersion, getSettingWithCoercion } from '@woocommerce/settings';
 import { select, subscribe } from '@wordpress/data';
 import { isSiteEditorPage } from '@woocommerce/utils';
@@ -16,6 +15,7 @@ import { isNumber } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
+import { stacks } from '~/icons';
 import {
 	QueryBlockAttributes,
 	ProductQueryBlockQuery,

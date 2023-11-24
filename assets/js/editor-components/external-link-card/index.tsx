@@ -5,11 +5,11 @@ import { __ } from '@wordpress/i18n';
 import { Icon, external } from '@wordpress/icons';
 import { VisuallyHidden } from '@wordpress/components';
 import { sanitizeHTML } from '@woocommerce/utils';
-import { Alert } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
  */
+import { Alert } from '~/icons';
 import './editor.scss';
 
 export interface ExternalLinkCardProps {

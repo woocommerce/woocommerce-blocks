@@ -3,12 +3,12 @@
  */
 import { getCategories, setCategories } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
-import { woo } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { woo } from '~/icons';
 import '../css/editor.scss';
 import '../css/style.scss';
 import './filters/block-list-block';

@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { cart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
+import { cart } from '~/icons';
 import { Edit, Save } from './edit';
 
 registerBlockType( 'woocommerce/checkout-order-summary-cart-items-block', {

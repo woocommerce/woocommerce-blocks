@@ -3,12 +3,12 @@
  */
 import { registerBlockType, registerBlockVariation } from '@wordpress/blocks';
 import { Icon } from '@wordpress/icons';
-import { customerAccount } from '@woocommerce/icons';
 import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
+import { customerAccount } from '~/icons';
 import metadata from './block.json';
 import edit from './edit';
 import './style.scss';

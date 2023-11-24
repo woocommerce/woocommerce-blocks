@@ -4,7 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import { getSetting } from '@woocommerce/settings';
 import { Icon } from '@wordpress/icons';
-import { filledCart, removeCart } from '@woocommerce/icons';
+
+/**
+ * Internal dependencies
+ */
+import { filledCart, removeCart } from '~/icons';
 
 export const blockName = 'woocommerce/cart';
 export const blockAttributes = {

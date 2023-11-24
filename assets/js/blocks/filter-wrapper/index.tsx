@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
 import type { BlockInstance } from '@wordpress/blocks';
-import { toggle } from '@woocommerce/icons';
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import {
 	Icon,
@@ -17,6 +16,7 @@ import {
 /**
  * Internal dependencies
  */
+import { toggle } from '~/icons';
 import edit from './edit';
 import metadata from './block.json';
 

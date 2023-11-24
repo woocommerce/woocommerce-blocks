@@ -3,7 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon } from '@wordpress/icons';
-import { filledCart, removeCart } from '@woocommerce/icons';
+
+/**
+ * Internal dependencies
+ */
+import { filledCart, removeCart } from '~/icons';
 
 export const blockName = 'woocommerce/mini-cart-contents';
 

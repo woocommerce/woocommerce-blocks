@@ -3,10 +3,6 @@
  */
 import classNames from 'classnames';
 import { Icon } from '@wordpress/icons';
-import {
-	customerAccountStyle,
-	customerAccountStyleAlt,
-} from '@woocommerce/icons';
 import { InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import type { BlockAttributes } from '@wordpress/blocks';
@@ -25,6 +21,7 @@ import {
 /**
  * Internal dependencies
  */
+import { customerAccountStyle, customerAccountStyleAlt } from '~/icons';
 import { DisplayStyle, IconStyle } from './types';
 
 interface BlockSettingsProps {

@@ -2,16 +2,13 @@
  * External dependencies
  */
 import { Icon } from '@wordpress/icons';
-import {
-	customerAccountStyle,
-	customerAccountStyleAlt,
-} from '@woocommerce/icons';
 import { getSetting } from '@woocommerce/settings';
 import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
+import { customerAccountStyle, customerAccountStyleAlt } from '~/icons';
 import { Attributes, DisplayStyle, IconStyle } from './types';
 
 const AccountIcon = ( {

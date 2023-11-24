@@ -4,11 +4,6 @@
 import { store as blockEditorStore } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { Icon } from '@wordpress/icons';
-import {
-	thumbnailsPositionLeft,
-	thumbnailsPositionBottom,
-	thumbnailsPositionRight,
-} from '@woocommerce/icons';
 import { useDispatch } from '@wordpress/data';
 import {
 	RangeControl,
@@ -25,6 +20,11 @@ import {
 /**
  * Internal dependencies
  */
+import {
+	thumbnailsPositionLeft,
+	thumbnailsPositionBottom,
+	thumbnailsPositionRight,
+} from '~/icons';
 import { ThumbnailsPosition } from '../constants';
 import type { ProductGalleryThumbnailsSettingsProps } from '../../../types';
 

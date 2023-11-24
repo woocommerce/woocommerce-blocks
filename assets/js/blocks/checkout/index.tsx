@@ -2,7 +2,6 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { fields } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { registerBlockType, createBlock } from '@wordpress/blocks';
 import type { BlockInstance } from '@wordpress/blocks';
@@ -10,6 +9,7 @@ import type { BlockInstance } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
+import { fields } from '~/icons';
 import { Edit, Save } from './edit';
 import { blockAttributes, deprecatedAttributes } from './attributes';
 import './inner-blocks';

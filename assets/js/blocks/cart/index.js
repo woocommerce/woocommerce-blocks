@@ -4,12 +4,13 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { InnerBlocks } from '@wordpress/block-editor';
-import { cart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { registerBlockType, createBlock } from '@wordpress/blocks';
+
 /**
  * Internal dependencies
  */
+import { cart } from '~/icons';
 import { Edit, Save } from './edit';
 import './style.scss';
 import { blockName, blockAttributes } from './attributes';

@@ -14,7 +14,6 @@ import {
 	useEffect,
 	useState,
 } from '@wordpress/element';
-import { Alert } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { createBlock, BlockInstance } from '@wordpress/blocks';
@@ -27,6 +26,7 @@ import { findBlock } from '@woocommerce/utils';
 /**
  * Internal dependencies
  */
+import { Alert } from '~/icons';
 import { useCombinedIncompatibilityNotice } from './use-combined-incompatibility-notice';
 import { ModalContent } from './modal';
 import './editor.scss';

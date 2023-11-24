@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { toggle } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import classNames from 'classnames';
 import { useBlockProps } from '@wordpress/block-editor';
@@ -10,6 +9,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
+import { toggle } from '~/icons';
 import edit from './edit';
 import metadata from './block.json';
 import { blockAttributes } from './attributes';

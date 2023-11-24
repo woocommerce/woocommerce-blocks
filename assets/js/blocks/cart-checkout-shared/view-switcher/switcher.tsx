@@ -7,11 +7,11 @@ import { useSelect } from '@wordpress/data';
 import { ToolbarGroup, ToolbarDropdownMenu } from '@wordpress/components';
 import { BlockControls } from '@wordpress/block-editor';
 import { Icon } from '@wordpress/icons';
-import { eye } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
  */
+import { eye } from '~/icons';
 import type { View } from './types';
 import { getView, selectView } from './utils';
 

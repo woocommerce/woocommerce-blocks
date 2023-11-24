@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { Icon } from '@wordpress/icons';
-import { productMeta } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
  */
+import { productMeta } from '~/icons';
 import { registerBlockSingleProductTemplate } from '~/atomic/utils';
 import edit from './edit';
 import save from './save';

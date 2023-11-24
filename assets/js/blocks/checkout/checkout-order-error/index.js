@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { CART_URL } from '@woocommerce/block-settings';
-import { removeCart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { getSetting } from '@woocommerce/settings';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -11,6 +10,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 /**
  * Internal dependencies
  */
+import { removeCart } from '~/icons';
 import './style.scss';
 import {
 	PRODUCT_OUT_OF_STOCK,

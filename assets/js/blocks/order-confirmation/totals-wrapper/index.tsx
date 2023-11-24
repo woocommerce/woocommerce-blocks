@@ -4,11 +4,11 @@
 import { registerBlockType, type BlockConfiguration } from '@wordpress/blocks';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { Icon } from '@wordpress/icons';
-import { totals } from '@woocommerce/icons';
 
 /**
  * Internal dependencies
  */
+import { totals } from '~/icons';
 import edit from './edit';
 import metadata from './block.json';
 import attributes from './attributes';

@@ -2,8 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { cart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
+
+/**
+ * Internal dependencies
+ */
+import { cart } from '~/icons';
 
 export const BLOCK_TITLE = __( 'Add to Cart', 'woo-gutenberg-products-block' );
 export const BLOCK_ICON = (

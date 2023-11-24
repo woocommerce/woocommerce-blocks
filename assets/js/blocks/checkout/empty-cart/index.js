@@ -3,12 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { SHOP_URL } from '@woocommerce/block-settings';
-import { cart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { cart } from '~/icons';
 import './style.scss';
 
 const EmptyCart = () => {

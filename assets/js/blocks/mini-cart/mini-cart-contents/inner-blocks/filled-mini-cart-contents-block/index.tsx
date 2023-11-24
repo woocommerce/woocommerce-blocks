@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { filledCart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
+import { filledCart } from '~/icons';
 import { Edit, Save } from './edit';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

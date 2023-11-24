@@ -3,12 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
-import { thumbUp } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { thumbUp } from '~/icons';
 import metadata from './block.json';
 import sharedAttributes, {
 	sharedAttributeBlockTypes,

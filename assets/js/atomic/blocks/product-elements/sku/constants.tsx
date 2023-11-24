@@ -2,8 +2,12 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { barcode } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
+
+/**
+ * Internal dependencies
+ */
+import { barcode } from '~/icons';
 
 export const BLOCK_TITLE: string = __(
 	'Product SKU',

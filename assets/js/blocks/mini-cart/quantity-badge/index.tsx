@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { cartOutline, bag, bagAlt } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { cartOutline, bag, bagAlt } from '~/icons';
 import './style.scss';
 import { IconType, ColorItem } from '.././types';
 

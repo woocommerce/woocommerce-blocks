@@ -2,7 +2,6 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { checkPayment } from '@woocommerce/icons';
 import {
 	Icon,
 	institution as bank,
@@ -15,6 +14,7 @@ import { useCallback } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import { checkPayment } from '~/icons';
 import './style.scss';
 
 interface NamedIcons {
