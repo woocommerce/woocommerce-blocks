@@ -38,61 +38,56 @@ function getSelectedTermsFromUrl( slug: string ) {
 }
 
 store( 'woocommerce/collection-attribute-filter', {
-	state: {
-		filters: {},
-	},
 	actions: {
-		filters: {
-			navigateWithAttributeFilter: () => {
-				const dropdownContext = getContext< DropdownContext >(
-					'woocommerce/interactivity-dropdown'
-				);
+		navigateWithAttributeFilter: () => {
+			const dropdownContext = getContext< DropdownContext >(
+				'woocommerce/interactivity-dropdown'
+			);
 
-				const context = getContext< AttributeFilterContext >();
+			const context = getContext< AttributeFilterContext >();
 
-				if ( dropdownContext.selectedItem.value ) {
-					navigate(
-						getUrl(
-							[ dropdownContext.selectedItem.value ],
-							context.attributeSlug,
-							context.queryType
-						)
-					);
-				}
-			},
-			updateProductsWithAttributeFilter: (
-				event: HTMLElementEvent< HTMLInputElement >
-			) => {
-				if ( ! event.target.value ) return;
-
-				const context = getContext< AttributeFilterContext >();
-
-				let selectedTerms = getSelectedTermsFromUrl(
-					context.attributeSlug
-				);
-
-				if (
-					event.target.checked &&
-					! selectedTerms.includes( event.target.value )
-				) {
-					if ( context.selectType === 'multiple' )
-						selectedTerms.push( event.target.value );
-					if ( context.selectType === 'single' )
-						selectedTerms = [ event.target.value ];
-				} else {
-					selectedTerms = selectedTerms.filter(
-						( value ) => value !== event.target.value
-					);
-				}
-
+			if ( dropdownContext.selectedItem.value ) {
 				navigate(
 					getUrl(
-						selectedTerms,
+						[ dropdownContext.selectedItem.value ],
 						context.attributeSlug,
 						context.queryType
 					)
 				);
-			},
+			}
+		},
+		updateProductsWithAttributeFilter: (
+			event: HTMLElementEvent< HTMLInputElement >
+		) => {
+			if ( ! event.target.value ) return;
+
+			const context = getContext< AttributeFilterContext >();
+
+			let selectedTerms = getSelectedTermsFromUrl(
+				context.attributeSlug
+			);
+
+			if (
+				event.target.checked &&
+				! selectedTerms.includes( event.target.value )
+			) {
+				if ( context.selectType === 'multiple' )
+					selectedTerms.push( event.target.value );
+				if ( context.selectType === 'single' )
+					selectedTerms = [ event.target.value ];
+			} else {
+				selectedTerms = selectedTerms.filter(
+					( value ) => value !== event.target.value
+				);
+			}
+
+			navigate(
+				getUrl(
+					selectedTerms,
+					context.attributeSlug,
+					context.queryType
+				)
+			);
 		},
 	},
 } );
