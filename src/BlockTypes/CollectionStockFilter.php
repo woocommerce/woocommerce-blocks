@@ -117,7 +117,7 @@ final class CollectionStockFilter extends AbstractBlock {
 											class="wc-block-components-checkbox__input" 
 											type="checkbox" 
 											aria-invalid="false" 
-											data-wc-on--change="actions.updateProductsWithStockFilters" 
+											data-wc-on--change="actions.updateProducts" 
 											value="<?php echo esc_attr( $stock_count['status'] ); ?>"
 											<?php checked( strpos( $selected_stock_status, $stock_count['status'] ) !== false, 1 ); ?>
 										>

@@ -28,9 +28,7 @@ store( 'woocommerce/collection-stock-filter', {
 
 			navigate( getUrl( context.selectedItem.value || '' ) );
 		},
-		updateProductsWithStockFilters: (
-			event: HTMLElementEvent< HTMLInputElement >
-		) => {
+		updateProducts: ( event: HTMLElementEvent< HTMLInputElement > ) => {
 			// get the active filters from the url:
 			const url = new URL( window.location.href );
 			const currentFilters =
