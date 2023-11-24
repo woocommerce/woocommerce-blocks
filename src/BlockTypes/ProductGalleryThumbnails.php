@@ -136,7 +136,7 @@ class ProductGalleryThumbnails extends AbstractBlock {
 				$crop_images            = $block->context['cropImages'] ?? false;
 				$product_gallery_images = ProductGalleryUtils::get_product_gallery_images( $post_id, 'full', array(), 'wc-block-product-gallery-thumbnails__thumbnail', $crop_images );
 
-				if ( $product_gallery_images && $post_thumbnail_id ) {
+				if ( $product_gallery_images && count( $product_gallery_images ) > 1 && $post_thumbnail_id ) {
 					$html                 = '';
 					$number_of_thumbnails = isset( $block->context['thumbnailsNumberOfThumbnails'] ) ? $block->context['thumbnailsNumberOfThumbnails'] : 3;
 					$mode                 = $block->context['mode'] ?? '';
