@@ -6,11 +6,11 @@ import { Component } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import { Disabled } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
-import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 
 /**
  * Internal dependencies
  */
+import ErrorPlaceholder from '~/editor-components/error-placeholder';
 import withReviews from '~/base/hocs/with-reviews';
 import LoadMoreButton from '~/base/components/load-more-button';
 import { ReviewList, ReviewSortSelect } from '~/base/components/reviews';

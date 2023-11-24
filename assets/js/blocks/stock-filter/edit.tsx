@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import BlockTitle from '@woocommerce/editor-components/block-title';
 import type { BlockEditProps } from '@wordpress/blocks';
 import {
 	Disabled,
@@ -20,6 +19,7 @@ import {
 /**
  * Internal dependencies
  */
+import BlockTitle from '~/editor-components/block-title';
 import Block from './block';
 import './editor.scss';
 import { Attributes } from './types';

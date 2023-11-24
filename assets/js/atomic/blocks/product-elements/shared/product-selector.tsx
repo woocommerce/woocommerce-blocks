@@ -2,11 +2,15 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import ProductControl from '@woocommerce/editor-components/product-control';
 import { Placeholder, Button, ToolbarGroup } from '@wordpress/components';
 import { BlockControls } from '@wordpress/block-editor';
-import TextToolbarButton from '@woocommerce/editor-components/text-toolbar-button';
 import { useState } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import ProductControl from '~/editor-components/product-control';
+import TextToolbarButton from '~/editor-components/text-toolbar-button';
 
 export const ProductSelector = ( {
 	productId,

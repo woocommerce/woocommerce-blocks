@@ -9,13 +9,13 @@ import {
 	Placeholder,
 	withSpokenMessages,
 } from '@wordpress/components';
-import { SearchListItem } from '@woocommerce/editor-components/search-list-control';
-import ProductControl from '@woocommerce/editor-components/product-control';
 import { commentContent, Icon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import { SearchListItem } from '~/editor-components/search-list-control';
+import ProductControl from '~/editor-components/product-control';
 import EditorContainerBlock from '../editor-container-block.js';
 import NoReviewsPlaceholder from './no-reviews-placeholder.js';
 import {

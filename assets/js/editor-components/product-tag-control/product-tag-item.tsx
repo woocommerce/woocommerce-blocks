@@ -2,12 +2,12 @@
  * External dependencies
  */
 import { _n, sprintf } from '@wordpress/i18n';
-import { SearchListItem } from '@woocommerce/editor-components/search-list-control';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import { SearchListItem } from '~/editor-components/search-list-control';
 import type { renderItemArgs } from '../search-list-control/types';
 
 export const ProductTagItem = ( {

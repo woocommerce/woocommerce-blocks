@@ -4,14 +4,14 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
 import { getSetting } from '@woocommerce/settings';
-import GridContentControl from '@woocommerce/editor-components/grid-content-control';
-import ProductCategoryControl from '@woocommerce/editor-components/product-category-control';
 
 /**
  * Internal dependencies
  */
+import GridLayoutControl from '~/editor-components/grid-layout-control';
+import GridContentControl from '~/editor-components/grid-content-control';
+import ProductCategoryControl from '~/editor-components/product-category-control';
 import { Props } from './types';
 
 export const ProductBestSellersInspectorControls = (

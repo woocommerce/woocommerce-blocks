@@ -1,8 +1,12 @@
 /**
  * External dependencies
  */
-import type { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
 import type { ProductResponseItem } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import type { SearchListItem } from '~/editor-components/search-list-control/types';
 
 /**
  * Converts a Product object into a shape compatible with the `SearchListControl`

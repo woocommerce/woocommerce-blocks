@@ -74,7 +74,7 @@ const getAlias = ( options = {} ) => {
 			__dirname,
 			`../assets/js/${ pathPart }/blocks`
 		),
-		'@woocommerce/editor-components': path.resolve(
+		'~/editor-components': path.resolve(
 			__dirname,
 			`../assets/js/${ pathPart }editor-components/`
 		),

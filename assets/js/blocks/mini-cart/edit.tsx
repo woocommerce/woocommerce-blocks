@@ -19,12 +19,12 @@ import { select } from '@wordpress/data';
 import { cartOutline, bag, bagAlt } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
-import { ColorPanel } from '@woocommerce/editor-components/color-panel';
-import type { ColorPaletteOption } from '@woocommerce/editor-components/color-panel/types';
 
 /**
  * Internal dependencies
  */
+import { ColorPanel } from '~/editor-components/color-panel';
+import type { ColorPaletteOption } from '~/editor-components/color-panel/types';
 import Noninteractive from '~/base/components/noninteractive';
 import QuantityBadge from './quantity-badge';
 import { defaultColorItem } from './utils/defaults';

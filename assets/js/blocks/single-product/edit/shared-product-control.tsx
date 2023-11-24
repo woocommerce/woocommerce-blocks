@@ -1,11 +1,7 @@
 /**
- * External dependencies
- */
-import ProductControl from '@woocommerce/editor-components/product-control';
-
-/**
  * Internal dependencies
  */
+import ProductControl from '~/editor-components/product-control';
 import { Attributes } from '../types';
 
 interface SharedProductControlProps {

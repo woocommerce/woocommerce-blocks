@@ -4,16 +4,16 @@
 import { __ } from '@wordpress/i18n';
 import { PanelBody } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
-import GridContentControl from '@woocommerce/editor-components/grid-content-control';
-import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
-import ProductCategoryControl from '@woocommerce/editor-components/product-category-control';
-import ProductOrderbyControl from '@woocommerce/editor-components/product-orderby-control';
-import ProductStockControl from '@woocommerce/editor-components/product-stock-control';
 import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
+import GridContentControl from '~/editor-components/grid-content-control';
+import GridLayoutControl from '~/editor-components/grid-layout-control';
+import ProductCategoryControl from '~/editor-components/product-category-control';
+import ProductOrderbyControl from '~/editor-components/product-orderby-control';
+import ProductStockControl from '~/editor-components/product-stock-control';
 import { Attributes } from './types';
 
 interface ProductOnSaleInspectorControlsProps {

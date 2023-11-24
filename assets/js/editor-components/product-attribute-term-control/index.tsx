@@ -3,24 +3,24 @@
  */
 import classNames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import {
-	SearchListControl,
-	SearchListItem,
-} from '@woocommerce/editor-components/search-list-control';
 import { SelectControl } from '@wordpress/components';
 import { withInstanceId } from '@wordpress/compose';
-import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
-import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item';
-import {
-	renderItemArgs,
-	SearchListControlProps,
-	SearchListItem as SearchListItemProps,
-} from '@woocommerce/editor-components/search-list-control/types';
 import { convertAttributeObjectToSearchItem } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
+import {
+	SearchListControl,
+	SearchListItem,
+} from '~/editor-components/search-list-control';
+import ErrorMessage from '~/editor-components/error-placeholder/error-message';
+import ExpandableSearchListItem from '~/editor-components/expandable-search-list-item/expandable-search-list-item';
+import {
+	renderItemArgs,
+	SearchListControlProps,
+	SearchListItem as SearchListItemProps,
+} from '~/editor-components/search-list-control/types';
 import useProductAttributes from '~/base/context/hooks/use-product-attributes';
 import './style.scss';
 

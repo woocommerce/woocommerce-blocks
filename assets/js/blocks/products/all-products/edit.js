@@ -22,7 +22,6 @@ import { Component } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import { Icon, grid } from '@wordpress/icons';
-import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
 import {
 	InnerBlockLayoutContextProvider,
 	ProductDataContextProvider,
@@ -34,6 +33,7 @@ import { blocksConfig } from '@woocommerce/block-settings';
 /**
  * Internal dependencies
  */
+import GridLayoutControl from '~/editor-components/grid-layout-control';
 import { getBlockMap } from '~/atomic/utils';
 import { getBlockClassName } from '../utils';
 import {

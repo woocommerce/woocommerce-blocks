@@ -5,13 +5,13 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, RangeControl, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { getSetting } from '@woocommerce/settings';
-import GridContentControl from '@woocommerce/editor-components/grid-content-control';
-import ProductOrderbyControl from '@woocommerce/editor-components/product-orderby-control';
-import ProductsControl from '@woocommerce/editor-components/products-control';
 
 /**
  * Internal dependencies
  */
+import GridContentControl from '~/editor-components/grid-content-control';
+import ProductOrderbyControl from '~/editor-components/product-orderby-control';
+import ProductsControl from '~/editor-components/products-control';
 import { Props } from './types';
 
 export const HandpickedProductsInspectorControls = (

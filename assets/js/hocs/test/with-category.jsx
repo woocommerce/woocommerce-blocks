@@ -5,15 +5,15 @@
  * External dependencies
  */
 import TestRenderer from 'react-test-renderer';
-import * as mockUtils from '@woocommerce/editor-components/utils';
 
 /**
  * Internal dependencies
  */
+import * as mockUtils from '~/editor-components/utils';
 import withCategory from '../with-category';
 import * as mockBaseUtils from '../../base/utils/errors';
 
-jest.mock( '@woocommerce/editor-components/utils', () => ( {
+jest.mock( '~/editor-components/utils', () => ( {
 	getCategory: jest.fn(),
 } ) );
 

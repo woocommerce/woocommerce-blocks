@@ -2,11 +2,15 @@
  * External dependencies
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
 import PropTypes from 'prop-types';
 import { withSearchedProducts } from '@woocommerce/block-hocs';
-import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
 import { decodeEntities } from '@wordpress/html-entities';
+
+/**
+ * Internal dependencies
+ */
+import ErrorMessage from '~/editor-components/error-placeholder/error-message';
+import { SearchListControl } from '~/editor-components/search-list-control';
 
 /**
  * The products control exposes a custom selector for searching and selecting

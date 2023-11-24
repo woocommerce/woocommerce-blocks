@@ -10,11 +10,8 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 import { Icon, category, external } from '@wordpress/icons';
-import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
 import { getAdminLink, getSetting } from '@woocommerce/settings';
-import BlockTitle from '@woocommerce/editor-components/block-title';
 import classnames from 'classnames';
-import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
 import { AttributeSetting } from '@woocommerce/types';
 import {
 	Placeholder,
@@ -34,6 +31,9 @@ import {
 /**
  * Internal dependencies
  */
+import { SearchListControl } from '~/editor-components/search-list-control';
+import BlockTitle from '~/editor-components/block-title';
+import { SearchListItem } from '~/editor-components/search-list-control/types';
 import Block from './block';
 import './editor.scss';
 import type { EditProps, GetNotice } from './types';

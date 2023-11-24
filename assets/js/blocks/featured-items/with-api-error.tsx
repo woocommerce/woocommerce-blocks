@@ -1,15 +1,15 @@
 /**
  * External dependencies
  */
-import ErrorPlaceholder, {
-	ErrorObject,
-} from '@woocommerce/editor-components/error-placeholder';
 import type { Block } from '@wordpress/blocks';
 import type { ComponentType } from 'react';
 
 /**
  * Internal dependencies
  */
+import ErrorPlaceholder, {
+	ErrorObject,
+} from '~/editor-components/error-placeholder';
 import { BLOCK_NAMES } from './constants';
 import { getClassPrefixFromName } from './utils';
 

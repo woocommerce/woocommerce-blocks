@@ -12,12 +12,12 @@ import {
 	isBoolean,
 } from '@woocommerce/types';
 import { getSettingWithCoercion } from '@woocommerce/settings';
-import type { ColorPaletteOption } from '@woocommerce/editor-components/color-panel/types';
 import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
  */
+import type { ColorPaletteOption } from '~/editor-components/color-panel/types';
 import { Attributes } from '../edit';
 
 const getPrice = ( totals: CartResponseTotals, showIncludingTax: boolean ) => {

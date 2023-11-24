@@ -5,11 +5,11 @@ import { Component } from '@wordpress/element';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import PropTypes from 'prop-types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
-import { getProductVariations } from '@woocommerce/editor-components/utils';
 
 /**
  * Internal dependencies
  */
+import { getProductVariations } from '~/editor-components/utils';
 import { formatError } from '../base/utils/errors';
 
 /**

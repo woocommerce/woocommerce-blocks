@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
 import { getSetting } from '@woocommerce/settings';
 import {
 	AttributeObject,
@@ -11,6 +10,11 @@ import {
 	isAttributeTerm,
 } from '@woocommerce/types';
 import { dispatch, select } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { SearchListItem } from '~/editor-components/search-list-control/types';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 

@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import EditableButton from '@woocommerce/editor-components/editable-button';
 
 /**
  * Internal dependencies
  */
+import EditableButton from '~/editor-components/editable-button';
 import { defaultStartShoppingButtonLabel } from './constants';
 import { getVariant } from '../utils';
 

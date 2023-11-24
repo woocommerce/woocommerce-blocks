@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { useEffect, useRef, useState } from '@wordpress/element';
-import { getAttributes, getTerms } from '@woocommerce/editor-components/utils';
 import {
 	AttributeObject,
 	AttributeTerm,
@@ -12,6 +11,7 @@ import {
 /**
  * Internal dependencies
  */
+import { getAttributes, getTerms } from '~/editor-components/utils';
 import { formatError } from '~/base/utils';
 
 export default function useProductAttributes( shouldLoadAttributes: boolean ) {

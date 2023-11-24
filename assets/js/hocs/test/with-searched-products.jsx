@@ -5,12 +5,12 @@
  * External dependencies
  */
 import TestRenderer, { act } from 'react-test-renderer';
-import * as mockUtils from '@woocommerce/editor-components/utils';
 import { useDebouncedCallback } from 'use-debounce';
 
 /**
  * Internal dependencies
  */
+import * as mockUtils from '~/editor-components/utils';
 import withSearchedProducts from '../with-searched-products';
 
 // Add a mock implementation of debounce for testing so we can spy on the onSearch call.

@@ -26,9 +26,6 @@
 			"~/*": [ "assets/js/*" ],
 			"@woocommerce/interactivity": [ "assets/js/interactivity" ],
 			"@woocommerce/interactivity/*": [ "assets/js/interactivity/*" ],
-			"@woocommerce/editor-components/*": [
-				"assets/js/editor-components/*"
-			],
 			"@woocommerce/block-data": [ "assets/js/data" ],
 			"@woocommerce/block-hocs": [ "assets/js/hocs" ],
 			"@woocommerce/blocks-registry": [ "assets/js/blocks-registry" ],

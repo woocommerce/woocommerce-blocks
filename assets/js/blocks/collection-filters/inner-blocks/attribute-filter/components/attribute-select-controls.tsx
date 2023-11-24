@@ -3,10 +3,14 @@
  */
 import { sort } from 'fast-sort';
 import { __, sprintf, _n } from '@wordpress/i18n';
-import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
 import { getSetting } from '@woocommerce/settings';
-import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
 import { AttributeSetting } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { SearchListControl } from '~/editor-components/search-list-control';
+import { SearchListItem } from '~/editor-components/search-list-control/types';
 
 const ATTRIBUTES = getSetting< AttributeSetting[] >( 'attributes', [] );
 

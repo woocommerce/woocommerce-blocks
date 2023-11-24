@@ -8,14 +8,18 @@ import {
 } from '@wordpress/block-editor';
 import { addFilter, hasFilter } from '@wordpress/hooks';
 import type { StoreDescriptor } from '@wordpress/data';
-import { CartCheckoutSidebarCompatibilityNotice } from '@woocommerce/editor-components/sidebar-compatibility-notice';
-import { NoPaymentMethodsNotice } from '@woocommerce/editor-components/no-payment-methods-notice';
 import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
-import { DefaultNotice } from '@woocommerce/editor-components/default-notice';
-import { IncompatibleExtensionsNotice } from '@woocommerce/editor-components/incompatible-extension-notice';
 import { useSelect } from '@wordpress/data';
-import { CartCheckoutFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { useState } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import { CartCheckoutSidebarCompatibilityNotice } from '~/editor-components/sidebar-compatibility-notice';
+import { NoPaymentMethodsNotice } from '~/editor-components/no-payment-methods-notice';
+import { DefaultNotice } from '~/editor-components/default-notice';
+import { IncompatibleExtensionsNotice } from '~/editor-components/incompatible-extension-notice';
+import { CartCheckoutFeedbackPrompt } from '~/editor-components/feedback-prompt';
 
 declare module '@wordpress/editor' {
 	let store: StoreDescriptor;

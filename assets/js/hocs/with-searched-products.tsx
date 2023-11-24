@@ -3,7 +3,6 @@
  */
 import { useEffect, useState, useCallback, useRef } from '@wordpress/element';
 import { blocksConfig } from '@woocommerce/block-settings';
-import { getProducts } from '@woocommerce/editor-components/utils';
 import { useDebouncedCallback } from 'use-debounce';
 import type {
 	ProductResponseItem,
@@ -13,6 +12,7 @@ import type {
 /**
  * Internal dependencies
  */
+import { getProducts } from '~/editor-components/utils';
 import { formatError } from '../base/utils/errors';
 
 interface WithSearchedProductProps {

@@ -5,17 +5,18 @@ import { __ } from '@wordpress/i18n';
 import { Disabled, PanelBody } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
-import GridContentControl from '@woocommerce/editor-components/grid-content-control';
-import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
-import ProductCategoryControl from '@woocommerce/editor-components/product-category-control';
-import ProductStockControl from '@woocommerce/editor-components/product-stock-control';
 import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
  */
+import GridContentControl from '~/editor-components/grid-content-control';
+import GridLayoutControl from '~/editor-components/grid-layout-control';
+import ProductCategoryControl from '~/editor-components/product-category-control';
+import ProductStockControl from '~/editor-components/product-stock-control';
 import { Props } from './types';
+
 /**
  * Component to handle edit mode of "Top Rated Products".
  */

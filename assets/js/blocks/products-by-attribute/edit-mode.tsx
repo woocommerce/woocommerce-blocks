@@ -4,11 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import { Button, Placeholder } from '@wordpress/components';
 import { category, Icon } from '@wordpress/icons';
-import ProductAttributeTermControl from '@woocommerce/editor-components/product-attribute-term-control';
 
 /**
  * Internal dependencies
  */
+import ProductAttributeTermControl from '~/editor-components/product-attribute-term-control';
 import { Props } from './types';
 
 export interface EditModeProps extends Props {

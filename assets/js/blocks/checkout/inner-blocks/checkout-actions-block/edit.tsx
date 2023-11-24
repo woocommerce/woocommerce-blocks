@@ -6,15 +6,15 @@ import { useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import PageSelector from '@woocommerce/editor-components/page-selector';
 import { PanelBody, ToggleControl } from '@wordpress/components';
 import { CHECKOUT_PAGE_ID } from '@woocommerce/block-settings';
 import { getSetting } from '@woocommerce/settings';
-import EditableButton from '@woocommerce/editor-components/editable-button';
 
 /**
  * Internal dependencies
  */
+import PageSelector from '~/editor-components/page-selector';
+import EditableButton from '~/editor-components/editable-button';
 import { ReturnToCartButton } from '~/base/components/cart-checkout';
 import Noninteractive from '~/base/components/noninteractive';
 import { defaultPlaceOrderButtonLabel } from './constants';

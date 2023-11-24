@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import EditProductLink from '@woocommerce/editor-components/edit-product-link';
 import { useProductDataContext } from '@woocommerce/shared-context';
 import classnames from 'classnames';
 import {
@@ -16,6 +15,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
+import EditProductLink from '~/editor-components/edit-product-link';
 import { productSupportsAddToCartForm } from '~/base/utils';
 import './style.scss';
 import Block from './block';

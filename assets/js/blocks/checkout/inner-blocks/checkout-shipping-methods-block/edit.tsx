@@ -6,12 +6,12 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, ExternalLink } from '@wordpress/components';
 import { ADMIN_URL, getSetting } from '@woocommerce/settings';
-import ExternalLinkCard from '@woocommerce/editor-components/external-link-card';
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 
 /**
  * Internal dependencies
  */
+import ExternalLinkCard from '~/editor-components/external-link-card';
 import { useCheckoutAddress } from '~/base/context/hooks';
 import Noninteractive from '~/base/components/noninteractive';
 import {

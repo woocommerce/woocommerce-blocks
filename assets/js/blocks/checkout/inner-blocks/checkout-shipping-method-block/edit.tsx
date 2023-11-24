@@ -21,11 +21,11 @@ import {
 import { innerBlockAreas } from '@woocommerce/blocks-checkout';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
-import ExternalLinkCard from '@woocommerce/editor-components/external-link-card';
 
 /**
  * Internal dependencies
  */
+import ExternalLinkCard from '~/editor-components/external-link-card';
 import { useShippingData } from '~/base/context/hooks';
 import {
 	FormStepBlock,

@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
-import ProductAttributeTermControl from '@woocommerce/editor-components/product-attribute-term-control';
 import {
 	ExternalLink,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -13,6 +12,7 @@ import {
 /**
  * Internal dependencies
  */
+import ProductAttributeTermControl from '~/editor-components/product-attribute-term-control';
 import { ProductQueryBlock } from '../types';
 import { setQueryAttribute } from '../utils';
 import { EDIT_ATTRIBUTES_URL } from '../constants';

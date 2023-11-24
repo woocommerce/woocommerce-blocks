@@ -6,7 +6,6 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { type ElementType } from '@wordpress/element';
-import { ProductQueryFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import { EditorBlock, isNumber } from '@woocommerce/types';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import {
@@ -21,6 +20,7 @@ import {
 /**
  * Internal dependencies
  */
+import { ProductQueryFeedbackPrompt } from '~/editor-components/feedback-prompt';
 import { ProductQueryBlockQuery } from '~/blocks/product-query/types';
 import {
 	manualUpdate,

@@ -3,18 +3,18 @@
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import {
-	SearchListControl,
-	SearchListItem,
-} from '@woocommerce/editor-components/search-list-control';
 import { SelectControl } from '@wordpress/components';
 import { withCategories } from '@woocommerce/block-hocs';
-import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import {
+	SearchListControl,
+	SearchListItem,
+} from '~/editor-components/search-list-control';
+import ErrorMessage from '~/editor-components/error-placeholder/error-message';
 import './style.scss';
 
 /**

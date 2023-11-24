@@ -4,14 +4,14 @@
 import { useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import EditableButton from '@woocommerce/editor-components/editable-button';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import PageSelector from '@woocommerce/editor-components/page-selector';
 import { CART_PAGE_ID } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
  */
+import EditableButton from '~/editor-components/editable-button';
+import PageSelector from '~/editor-components/page-selector';
 import { defaultButtonLabel } from './constants';
 
 export const Edit = ( {

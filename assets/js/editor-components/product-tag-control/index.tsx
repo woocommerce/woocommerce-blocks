@@ -3,7 +3,6 @@
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { useState, useEffect, useCallback, useMemo } from '@wordpress/element';
-import { SearchListControl } from '@woocommerce/editor-components/search-list-control';
 import { SelectControl } from '@wordpress/components';
 import { getSetting } from '@woocommerce/settings';
 import { useDebouncedCallback } from 'use-debounce';
@@ -11,6 +10,7 @@ import { useDebouncedCallback } from 'use-debounce';
 /**
  * Internal dependencies
  */
+import { SearchListControl } from '~/editor-components/search-list-control';
 import type { SearchListItem as SearchListItemProps } from '../search-list-control/types';
 import ProductTagItem from './product-tag-item';
 import type { ProductTagControlProps } from './types';

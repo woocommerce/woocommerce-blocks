@@ -2,9 +2,13 @@
  * External dependencies
  */
 import { Spinner } from '@wordpress/components';
-import { SearchListItem } from '@woocommerce/editor-components/search-list-control';
-import { renderItemArgs } from '@woocommerce/editor-components/search-list-control/types';
 import classNames from 'classnames';
+
+/**
+ * Internal dependencies
+ */
+import { SearchListItem } from '~/editor-components/search-list-control';
+import { renderItemArgs } from '~/editor-components/search-list-control/types';
 
 interface ExpandableSearchListItemProps extends renderItemArgs {
 	isLoading: boolean;

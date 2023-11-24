@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import type { BlockEditProps } from '@wordpress/blocks';
-import BlockTitle from '@woocommerce/editor-components/block-title';
 import {
 	Disabled,
 	PanelBody,
@@ -18,6 +17,7 @@ import {
 /**
  * Internal dependencies
  */
+import BlockTitle from '~/editor-components/block-title';
 import Block from './block';
 import type { Attributes } from './types';
 import './editor.scss';

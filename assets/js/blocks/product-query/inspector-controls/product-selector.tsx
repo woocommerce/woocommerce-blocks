@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { getProducts } from '@woocommerce/editor-components/utils';
 import { ProductResponseItem } from '@woocommerce/types';
 import { objectOmit } from '@woocommerce/utils';
 import { useState, useEffect } from '@wordpress/element';
@@ -15,6 +14,7 @@ import {
 /**
  * Internal dependencies
  */
+import { getProducts } from '~/editor-components/utils';
 import { ProductQueryBlock } from '../types';
 import { setQueryAttribute } from '../utils';
 

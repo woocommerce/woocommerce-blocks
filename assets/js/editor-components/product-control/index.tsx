@@ -3,14 +3,6 @@
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
 import { isEmpty } from '@woocommerce/types';
-import {
-	SearchListControl,
-	SearchListItem,
-} from '@woocommerce/editor-components/search-list-control';
-import type {
-	SearchListControlProps,
-	renderItemArgs,
-} from '@woocommerce/editor-components/search-list-control/types';
 import { withInstanceId } from '@wordpress/compose';
 import {
 	withProductVariations,
@@ -24,13 +16,21 @@ import type {
 	WithInjectedSearchedProducts,
 } from '@woocommerce/types';
 import { convertProductResponseItemToSearchItem } from '@woocommerce/utils';
-import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
 import classNames from 'classnames';
-import ExpandableSearchListItem from '@woocommerce/editor-components/expandable-search-list-item/expandable-search-list-item';
 
 /**
  * Internal dependencies
  */
+import {
+	SearchListControl,
+	SearchListItem,
+} from '~/editor-components/search-list-control';
+import type {
+	SearchListControlProps,
+	renderItemArgs,
+} from '~/editor-components/search-list-control/types';
+import ErrorMessage from '~/editor-components/error-placeholder/error-message';
+import ExpandableSearchListItem from '~/editor-components/expandable-search-list-item/expandable-search-list-item';
 import './style.scss';
 
 interface ProductControlProps {

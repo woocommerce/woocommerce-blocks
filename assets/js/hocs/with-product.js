@@ -3,11 +3,11 @@
  */
 import { Component } from '@wordpress/element';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { getProduct } from '@woocommerce/editor-components/utils';
 
 /**
  * Internal dependencies
  */
+import { getProduct } from '~/editor-components/utils';
 import { formatError } from '../base/utils/errors';
 
 /**

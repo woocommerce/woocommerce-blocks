@@ -15,11 +15,6 @@ import {
 	withSpokenMessages,
 } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
-import GridContentControl from '@woocommerce/editor-components/grid-content-control';
-import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
-import ProductTagControl from '@woocommerce/editor-components/product-tag-control';
-import ProductOrderbyControl from '@woocommerce/editor-components/product-orderby-control';
-import ProductStockControl from '@woocommerce/editor-components/product-stock-control';
 import { Icon, tag } from '@wordpress/icons';
 import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { getSetting, getSettingWithCoercion } from '@woocommerce/settings';
@@ -28,7 +23,13 @@ import { isNumber } from '@woocommerce/types';
 /**
  * Internal dependencies
  */
+import GridContentControl from '~/editor-components/grid-content-control';
+import GridLayoutControl from '~/editor-components/grid-layout-control';
+import ProductTagControl from '~/editor-components/product-tag-control';
+import ProductOrderbyControl from '~/editor-components/product-orderby-control';
+import ProductStockControl from '~/editor-components/product-stock-control';
 import type { ProductsByTagBlockProps } from './types';
+
 /**
  * Component to handle edit mode of "Products by Tag".
  */

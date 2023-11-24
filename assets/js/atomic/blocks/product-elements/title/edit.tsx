@@ -11,11 +11,11 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 import { isFeaturePluginBuild } from '@woocommerce/block-settings';
-import HeadingToolbar from '@woocommerce/editor-components/heading-toolbar';
 
 /**
  * Internal dependencies
  */
+import HeadingToolbar from '~/editor-components/heading-toolbar';
 import Block from './block';
 import withProductSelector from '../shared/with-product-selector';
 import { BLOCK_TITLE, BLOCK_ICON } from './constants';

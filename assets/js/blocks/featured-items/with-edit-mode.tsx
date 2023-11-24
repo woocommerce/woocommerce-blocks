@@ -6,13 +6,13 @@ import { WP_REST_API_Category } from 'wp-types';
 import { ProductResponseItem } from '@woocommerce/types';
 import { Placeholder, Icon, Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import ProductCategoryControl from '@woocommerce/editor-components/product-category-control';
-import ProductControl from '@woocommerce/editor-components/product-control';
 import type { ComponentType } from 'react';
 
 /**
  * Internal dependencies
  */
+import ProductCategoryControl from '~/editor-components/product-category-control';
+import ProductControl from '~/editor-components/product-control';
 import { BLOCK_NAMES } from './constants';
 import { EditorBlock, GenericBlockUIConfig } from './types';
 import { getClassPrefixFromName } from './utils';

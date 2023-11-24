@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { getProducts } from '@woocommerce/editor-components/utils';
 import { ProductResponseItem } from '@woocommerce/types';
 import { useState, useEffect, useCallback, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -15,6 +14,7 @@ import {
 /**
  * Internal dependencies
  */
+import { getProducts } from '~/editor-components/utils';
 import { QueryControlProps } from '../types';
 
 /**

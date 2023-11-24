@@ -5,19 +5,18 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
 import { Placeholder, Button, PanelBody } from '@wordpress/components';
 import { withProduct } from '@woocommerce/block-hocs';
-import EditProductLink from '@woocommerce/editor-components/edit-product-link';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { ProductResponseItem } from '@woocommerce/types';
-import ErrorPlaceholder, {
-	ErrorObject,
-} from '@woocommerce/editor-components/error-placeholder';
-
 import { PRODUCTS_STORE_NAME, Product } from '@woocommerce/data';
 import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import EditProductLink from '~/editor-components/edit-product-link';
+import ErrorPlaceholder, {
+	ErrorObject,
+} from '~/editor-components/error-placeholder';
 import './editor.scss';
 import BlockErrorBoundary from '~/base/components/block-error-boundary';
 import SharedProductControl from './shared-product-control';

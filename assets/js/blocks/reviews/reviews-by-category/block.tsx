@@ -10,12 +10,12 @@ import {
 	ToggleControl,
 	withSpokenMessages,
 } from '@wordpress/components';
-import ProductCategoryControl from '@woocommerce/editor-components/product-category-control';
 import { Icon, commentContent } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
+import ProductCategoryControl from '~/editor-components/product-category-control';
 import EditorContainerBlock from '../editor-container-block.js';
 import NoReviewsPlaceholder from './no-reviews-placeholder';
 import {

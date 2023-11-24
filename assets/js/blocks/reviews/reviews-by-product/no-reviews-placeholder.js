@@ -4,10 +4,14 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { Placeholder, Spinner } from '@wordpress/components';
 import PropTypes from 'prop-types';
-import ErrorPlaceholder from '@woocommerce/editor-components/error-placeholder';
 import { Icon, commentContent } from '@wordpress/icons';
 import { withProduct } from '@woocommerce/block-hocs';
 import { decodeEntities } from '@wordpress/html-entities';
+
+/**
+ * Internal dependencies
+ */
+import ErrorPlaceholder from '~/editor-components/error-placeholder';
 
 const NoReviewsPlaceholder = ( { error, getProduct, isLoading, product } ) => {
 	const renderApiError = () => (

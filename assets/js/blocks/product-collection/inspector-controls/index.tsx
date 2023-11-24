@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
 import { type ElementType, useMemo } from '@wordpress/element';
 import { EditorBlock } from '@woocommerce/types';
 import { addFilter } from '@wordpress/hooks';
-import { ProductCollectionFeedbackPrompt } from '@woocommerce/editor-components/feedback-prompt';
 import {
 	// @ts-expect-error Using experimental features
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -17,6 +16,7 @@ import {
 /**
  * Internal dependencies
  */
+import { ProductCollectionFeedbackPrompt } from '~/editor-components/feedback-prompt';
 import {
 	enableAutoUpdate,
 	revertMigration,

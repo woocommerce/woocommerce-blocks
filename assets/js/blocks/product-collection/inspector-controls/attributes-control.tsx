@@ -2,8 +2,6 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import ProductAttributeTermControl from '@woocommerce/editor-components/product-attribute-term-control';
-import { SearchListItem } from '@woocommerce/editor-components/search-list-control/types';
 import { ADMIN_URL } from '@woocommerce/settings';
 import {
 	ExternalLink,
@@ -15,6 +13,8 @@ import {
 /**
  * Internal dependencies
  */
+import ProductAttributeTermControl from '~/editor-components/product-attribute-term-control';
+import { SearchListItem } from '~/editor-components/search-list-control/types';
 import { QueryControlProps } from '../types';
 
 const EDIT_ATTRIBUTES_URL = `${ ADMIN_URL }edit.php?post_type=product&page=product_attributes`;

@@ -3,12 +3,12 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import type { BlockEditProps } from '@wordpress/blocks';
-import EditProductLink from '@woocommerce/editor-components/edit-product-link';
 import { useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import EditProductLink from '~/editor-components/edit-product-link';
 import { ProductQueryContext as Context } from '~/blocks/product-query/types';
 import Block from './block';
 import type { Attributes } from './types';
