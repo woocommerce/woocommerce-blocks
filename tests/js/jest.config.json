@@ -21,7 +21,7 @@
 		"@woocommerce/block-hocs(.*)$": "assets/js/hocs/$1",
 		"~/base/components(.*)$": "assets/js/base/components/$1",
 		"~/base/context(.*)$": "assets/js/base/context/$1",
-		"@woocommerce/base-hocs(.*)$": "assets/js/base/hocs/$1",
+		"~/base/hocs(.*)$": "assets/js/base/hocs/$1",
 		"@woocommerce/base-hooks(.*)$": "assets/js/base/hooks/$1",
 		"@woocommerce/base-utils(.*)$": "assets/js/base/utils",
 		"@woocommerce/block-data": "assets/js/data",

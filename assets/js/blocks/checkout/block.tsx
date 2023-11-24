@@ -7,7 +7,6 @@ import { createInterpolateElement, useEffect } from '@wordpress/element';
 import { CURRENT_USER_IS_ADMIN, getSetting } from '@woocommerce/settings';
 import { StoreNoticesContainer } from '@woocommerce/blocks-components';
 import { SlotFillProvider } from '@woocommerce/blocks-checkout';
-import withScrollToTop from '@woocommerce/base-hocs/with-scroll-to-top';
 import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	CHECKOUT_STORE_KEY,
@@ -17,6 +16,7 @@ import {
 /**
  * Internal dependencies
  */
+import withScrollToTop from '~/base/hocs/with-scroll-to-top';
 import {
 	useStoreCart,
 	useShowShippingTotalWarning,

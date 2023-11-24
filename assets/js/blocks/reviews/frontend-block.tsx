@@ -3,12 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { getSetting } from '@woocommerce/settings';
-import withReviews from '@woocommerce/base-hocs/with-reviews';
 import type { ChangeEventHandler, MouseEventHandler } from 'react';
 
 /**
  * Internal dependencies
  */
+import withReviews from '~/base/hocs/with-reviews';
 import { Review } from '~/base/components/reviews/types';
 import LoadMoreButton from '~/base/components/load-more-button';
 import { ReviewList, ReviewSortSelect } from '~/base/components/reviews';
