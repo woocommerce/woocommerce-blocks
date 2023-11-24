@@ -109,6 +109,10 @@ const blocks = {
 		customDir: 'collection-filters/inner-blocks/attribute-filter',
 		isExperimental: true,
 	},
+	'collection-active-filters': {
+		customDir: 'collection-filters/inner-blocks/active-filters',
+		isExperimental: true,
+	},
 	'order-confirmation-summary': {
 		customDir: 'order-confirmation/summary',
 	},

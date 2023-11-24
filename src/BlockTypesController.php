@@ -300,6 +300,7 @@ final class BlockTypesController {
 			$block_types[] = 'CollectionStockFilter';
 			$block_types[] = 'CollectionPriceFilter';
 			$block_types[] = 'CollectionAttributeFilter';
+			$block_types[] = 'CollectionActiveFilters';
 		}
 
 		/**
