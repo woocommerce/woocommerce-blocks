@@ -1,12 +1,13 @@
 /**
  * External dependencies
  */
-import {
-	store as interactivityStore,
-	navigate,
-} from '@woocommerce/interactivity';
 import { DropdownContext } from '@woocommerce/interactivity-components/dropdown';
 import { HTMLElementEvent } from '@woocommerce/types';
+
+/**
+ * Internal dependencies
+ */
+import { store as interactivityStore, navigate } from '~/interactivity';
 
 type AttributeFilterContext = {
 	attributeSlug: string;

@@ -1,16 +1,12 @@
 /**
  * External dependencies
  */
-import {
-	store,
-	getContext as getContextFn,
-	getElement,
-} from '@woocommerce/interactivity';
 import { StorePart } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
  */
+import { store, getContext as getContextFn, getElement } from '~/interactivity';
 import type { ProductGalleryContext, ProductGallery } from '../../frontend';
 
 type Context = {

@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { store, navigate } from '@woocommerce/interactivity';
 import { formatPrice, getCurrency } from '@woocommerce/price-format';
 
 /**
  * Internal dependencies
  */
+import { store, navigate } from '~/interactivity';
 import { ActionProps, StateProps } from './types';
 
 const getHrefWithFilters = ( { state }: StateProps ) => {
