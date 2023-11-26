@@ -16,6 +16,68 @@ final class CollectionAttributeFilter extends AbstractBlock {
 	protected $block_name = 'collection-attribute-filter';
 
 	/**
+	 * Initialize this block type.
+	 *
+	 * - Hook into WP lifecycle.
+	 * - Register the block with WordPress.
+	 */
+	protected function initialize() {
+		parent::initialize();
+
+		add_filter( 'collection_active_filters_data', function( $active_filters, $query_id ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+
+			$parsed_url   = wp_parse_url( esc_url_raw( $request_uri ) );
+
+			parse_str( $parsed_url['query'], $params );
+
+			$active_product_attributes = array_reduce( array_keys( $params ), function( $acc, $attribute ) {
+				if ( strpos( $attribute, 'filter_' ) === 0 ) {
+					$acc[] = str_replace( 'filter_', '', $attribute );
+				}
+				return $acc;
+			}, array() );
+
+			$product_attributes_map = array_reduce(
+				wc_get_attribute_taxonomies(),
+				function( $acc, $attribute_object ) {
+					$acc[$attribute_object->attribute_name] = $attribute_object->attribute_label;
+					return $acc;
+				},
+				array()
+			);
+
+			$active_product_attributes = array_filter(
+				$active_product_attributes,
+				function( $item ) use ( $product_attributes_map ) {
+					return in_array( $item, array_keys( $product_attributes_map ), true );
+				}
+			);
+
+			foreach ( $active_product_attributes as $product_attribute ) {
+				$terms = explode( ',', get_query_var( "filter_{$product_attribute}" ) );
+
+				// Get attribute term by slug
+				$terms = array_map( function( $term ) use ( $product_attribute ) {
+					$term_object = get_term_by( 'slug', $term, "pa_{$product_attribute}" );
+					return array(
+						'title' => $term_object->name,
+						'attributes' => array(),
+					);
+				}, $terms );
+
+				$active_filters[ $product_attribute ] = array(
+					'type'    => $product_attributes_map[ $product_attribute ],
+					'options' => $terms,
+				);
+			}
+
+			return $active_filters;
+		}, 10, 2 );
+	}
+
+	/**
 	 * Render the block.
 	 *
 	 * @param array    $attributes Block attributes.
