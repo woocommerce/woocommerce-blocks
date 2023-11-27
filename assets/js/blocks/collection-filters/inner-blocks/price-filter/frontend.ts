@@ -82,8 +82,8 @@ const { state } = store( 'woocommerce/collection-price-filter', {
 			);
 			state.minPrice = Math.min( state.minPrice, state.maxPrice - 1 );
 		},
-		updateProductsWithPriceFilter: () => {
-			navigate( getHrefWithFilters( { state } ) );
+		updateProducts: () => {
+			navigate( getHrefWithFilters( state ) );
 		},
 		reset: () => {
 			state.minPrice = 0;
