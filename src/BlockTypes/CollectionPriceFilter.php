@@ -44,13 +44,14 @@ final class CollectionPriceFilter extends AbstractBlock {
 		$formatted_max_price = wc_price( $max_price, array( 'decimals' => 0 ) );
 
 		$data = array(
-			'minPrice'          => $min_price,
-			'maxPrice'          => $max_price,
-			'minRange'          => $min_range,
-			'maxRange'          => $max_range,
+			'minPrice' => $min_price,
+			'maxPrice' => $max_price,
+			'minRange' => $min_range,
+			'maxRange' => $max_range,
 		);
 
-		wc_initial_state('woocommerce/collection-price-filter',
+		wc_initial_state(
+			'woocommerce/collection-price-filter',
 			$data
 		);
 
@@ -69,12 +70,12 @@ final class CollectionPriceFilter extends AbstractBlock {
 		$__high      = 100 * ( $max_price - $min_range ) / ( $max_range - $min_range );
 		$range_style = "--low: $__low%; --high: $__high%";
 
-		$data_directive = wp_json_encode( array( 'namespace' => 'woocommerce/collection-price-filter'));
+		$data_directive = wp_json_encode( array( 'namespace' => 'woocommerce/collection-price-filter' ) );
 
 		$wrapper_attributes = get_block_wrapper_attributes(
 			array(
-				'class' => $show_input_fields && $inline_input ? 'inline-input' : '',
-				'data-wc-interactive'=> $data_directive,
+				'class'               => $show_input_fields && $inline_input ? 'inline-input' : '',
+				'data-wc-interactive' => $data_directive,
 			)
 		);
 
