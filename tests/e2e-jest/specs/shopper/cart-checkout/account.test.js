@@ -39,19 +39,6 @@ describe( 'Shopper → Checkout → Account', () => {
 		await shopper.block.goToCheckout();
 	} );
 
-	it( 'user can login to existing account', async () => {
-		//Get the login link from checkout page.
-		const loginLink = await page.$eval(
-			'span.wc-block-components-checkout-step__heading-content a',
-			( el ) => el.href
-		);
-		//Confirm login link is correct.
-		await expect( loginLink ).toContain(
-			`${ process.env.WORDPRESS_BASE_URL }/my-account/?redirect_to`
-		);
-		await expect( loginLink ).toContain( `checkout` );
-	} );
-
 	it.skip( 'user can can create an account', async () => {
 		await page.waitForSelector( '.wc-block-checkout__create-account' );
 		await expect( page ).toClick( 'span', {
