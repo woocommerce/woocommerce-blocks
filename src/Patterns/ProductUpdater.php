@@ -52,6 +52,11 @@ class ProductUpdater {
 
 		$products_information_list = $this->assign_ai_selected_images_to_dummy_products( $dummy_products_to_update, $images );
 
+		$check = $this->check_products_link( $dummy_products_to_update );
+		if ( is_wp_error( $check ) ) {
+			return $check;
+		}
+
 		return $this->assign_ai_generated_content_to_dummy_products( $ai_connection, $token, $products_information_list, $business_description );
 	}
 
@@ -401,5 +406,27 @@ class ProductUpdater {
 		return array(
 			'product_content' => $products_information_list,
 		);
+	}
+
+	/**
+	 * Check if the product link is valid by making a request to the product URL.
+	 *
+	 * @param array $products The products.
+	 *
+	 * @return null|WP_Error Null if the product link is valid. An error if the product link is invalid.
+	 */
+	private function check_products_link( array $products ) {
+		$product_url = $products[0]->get_permalink();
+
+		$response = wp_remote_get( $product_url );
+		if ( is_wp_error( $response ) ) {
+			return new \WP_Error( 'failed_to_retrieve_product', __( 'Failed to retrieve product', 'woo-gutenberg-products-block' ) );
+		} else {
+			if ( 404 === wp_remote_retrieve_response_code( $response ) ) {
+				flush_rewrite_rules();
+			}
+		}
+
+		return null;
 	}
 }
