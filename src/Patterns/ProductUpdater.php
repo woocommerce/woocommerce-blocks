@@ -257,6 +257,14 @@ class ProductUpdater {
 		$product->set_name( $ai_generated_product_content['title'] );
 		$product->set_description( $ai_generated_product_content['description'] );
 		$product->set_regular_price( $ai_generated_product_content['price'] );
+		$new_slug = sanitize_title( $ai_generated_product_content['title'] );
+
+		wp_update_post(
+			array(
+				'ID'        => $product->get_id(),
+				'post_name' => $new_slug,
+			)
+		);
 
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
