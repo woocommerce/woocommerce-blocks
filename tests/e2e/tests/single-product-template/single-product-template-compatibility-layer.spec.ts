@@ -20,9 +20,27 @@ type Scenario = {
 
 const singleOccurranceScenarios: Scenario[] = [
 	{
+		title: 'Before Main Content',
+		dataTestId: 'woocommerce_before_main_content',
+		content: 'Hook: woocommerce_before_main_content',
+		amount: 1,
+	},
+	{
+		title: 'Sidebar',
+		dataTestId: 'woocommerce_sidebar',
+		content: 'Hook: woocommerce_sidebar',
+		amount: 1,
+	},
+	{
 		title: 'Before Single Product',
 		dataTestId: 'woocommerce_before_single_product',
 		content: 'Hook: woocommerce_before_single_product',
+		amount: 1,
+	},
+	{
+		title: 'Before Single Product Summary',
+		dataTestId: 'woocommerce_before_single_product_summary',
+		content: 'Hook: woocommerce_before_single_product_summary',
 		amount: 1,
 	},
 	{
@@ -41,6 +59,18 @@ const singleOccurranceScenarios: Scenario[] = [
 		title: 'Product Meta Start',
 		dataTestId: 'woocommerce_product_meta_start',
 		content: 'Hook: woocommerce_product_meta_start',
+		amount: 1,
+	},
+	{
+		title: 'Product Meta End',
+		dataTestId: 'woocommerce_product_meta_end',
+		content: 'Hook: woocommerce_product_meta_end',
+		amount: 1,
+	},
+	{
+		title: 'Share',
+		dataTestId: 'woocommerce_share',
+		content: 'Hook: woocommerce_share',
 		amount: 1,
 	},
 	{
