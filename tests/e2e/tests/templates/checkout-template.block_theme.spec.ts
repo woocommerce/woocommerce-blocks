@@ -17,8 +17,6 @@ test.describe( 'Test the checkout template', async () => {
 			postId: templatePath,
 			postType: templateType,
 		} );
-		await page.getByRole( 'button', { name: /Templates/i } ).click();
-		await page.getByRole( 'button', { name: /Page: Checkout/i } ).click();
 		await editorUtils.enterEditMode();
 		await editorUtils.closeWelcomeGuideModal();
 		await expect(
@@ -78,14 +76,11 @@ test.describe( 'Test editing the checkout template', async () => {
 		admin,
 		editorUtils,
 		editor,
-		page,
 	} ) => {
 		await admin.visitSiteEditor( {
 			postId: templatePath,
 			postType: templateType,
 		} );
-		await page.getByRole( 'button', { name: /Templates/i } ).click();
-		await page.getByRole( 'button', { name: /Page: Checkout/i } ).click();
 		await editorUtils.enterEditMode();
 		await editorUtils.closeWelcomeGuideModal();
 		await editor.setContent(
