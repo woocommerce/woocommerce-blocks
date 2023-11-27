@@ -64,6 +64,47 @@ setExtensionData(
 - key `string` - The key of your data.
 - value `any` - The value of your data.
 
+#### How it works
+
+ 1. `setExtensionData` is passed to inner blocks via props.
+ 2. It updates the `extensionData` key of the `wc/store/checkout` data store.
+ 3. This key is passed as part of the request body when POSTing to the checkout endpoint.
+
+#### Code Example
+
+```JavaScript
+// block.js
+export const Block = ( { checkoutExtensionData, extensions } ) => {
+/**
+	 * setExtensionData will update the wc/store/checkout data store with the values supplied. It
+	 * can be used to pass data from the client to the server when submitting the checkout form.
+	 */
+	const { setExtensionData } = checkoutExtensionData;
+}
+
+// ... Some code here
+
+useEffect( () => {
+/**
+	* This code should use `setExtensionData` to update the `key-of-your-data` key
+	* in the `namespace-of-your-block` namespace of the checkout data store.
+*/
+setExtensionData(
+	'namespace-of-your-block',
+	'key-of-your-data',
+	value
+);
+}, [ setExtensionData, value ] );
+```
+
+#### Screenshots
+
+Screenshots of Redux Dev tool showing the data store before and after the setExtensionData call:
+
+| Before | After |
+| ------ | ----- |
+|    <img width="713" alt="image" src="https://github.com/woocommerce/woocommerce-blocks/assets/14235870/948581f5-fdc2-4df1-963f-9aeb4b18b042">    |    <img width="723" alt="image" src="https://github.com/woocommerce/woocommerce-blocks/assets/14235870/ddc7dbe7-3fad-44cd-bd19-ce78bc49b951">   |
+
 ### 4. Processing the Checkout POST Request
 
 To process the added field data, we'll need extend the Store API to tell it to expect additional data. A good place to start this process off is within the `initialize` function of our `IntegrationInterface` class.
