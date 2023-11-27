@@ -142,7 +142,7 @@ class Custom_Inner_Block_Blocks_Integration implements IntegrationInterface {
 }
 ```
 
-- The `custom-inner-block-extend-store-endpoint.php` file: extends the [Store API](https://github.com/woocommerce/woocommerce-blocks/tree/trunk/src/StoreApi) and adds hooks to save and display your new field block instructions.
+- The `custom-inner-block-extend-store-endpoint.php` file: extends the [Store API](https://github.com/woocommerce/woocommerce-blocks/tree/trunk/src/StoreApi) and adds hooks to save and display your new field block instructions. This doesn't save the data from the custom block anywhere by default, but you can add your own logic to save the data to the database.
 
 ```php
 use Automattic\WooCommerce\Blocks\Package;
@@ -193,7 +193,7 @@ class Custom_Inner_Block_Extend_Store_Endpoint {
 	}
 
 	/**
-	 * Register shipping workshop schema into the Checkout endpoint.
+	 * Register the new field block schema into the Checkout endpoint.
 	 *
 	 * @return array Registered schema.
 	 *
@@ -201,15 +201,40 @@ class Custom_Inner_Block_Extend_Store_Endpoint {
 	public static function extend_checkout_schema() {
 		return [
             'Value_1'   => [
-                'description' => // ... description of the field
-                'type'        => // ... type of the field, this should be a string
-                'context'     => // ... context of the field, this should be an array containing 'view' and 'edit'
-                'readonly'    => // ... whether the field is readonly or not, this should be a boolean
-                'optional'    => // ... whether the field is optional or not, this should be a boolean
+                'description' => 'A description of the field',
+                'type'        => 'string', // ... type of the field, this should be a string
+                'context'     => [ 'view', 'edit' ], // ... context of the field, this should be an array containing 'view' and 'edit'
+                'readonly'    => true, // ... whether the field is readonly or not, this should be a boolean
+                'optional'    => true, // ... whether the field is optional or not, this should be a boolean
             ],
 			// ... other values
         ];
 	}
+}
+```
+
+Here is an example from our [tutorial](https://developer.woocommerce.com/2023/08/07/extending-the-woocommerce-checkout-block-to-add-custom-shipping-options/) of how to get this custom field's data while processing the checkout. This example is from the `shipping-workshop-blocks-integration.php` file. The complete code can be found in this [GitHub repository](https://github.com/woocommerce/wceu23-shipping-workshop-final/blob/main/shipping-workshop-blocks-integration.php#L42-L83).
+
+```php
+private function save_shipping_instructions() {
+	/**
+	 * We write a hook, using the `woocommerce_store_api_checkout_update_order_from_request` action
+	 * that will update the order metadata with the shipping-workshop alternate shipping instruction.
+	 *
+	 * The documentation for this hook is at: https://github.com/woocommerce/woocommerce-blocks/blob/b73fbcacb68cabfafd7c3e7557cf962483451dc1/docs/third-party-developers/extensibility/hooks/actions.md#woocommerce_store_api_checkout_update_order_from_request
+	 */
+	add_action(
+		'woocommerce_store_api_checkout_update_order_from_request',
+		function( \WC_Order $order, \WP_REST_Request $request ) {
+			$shipping_workshop_request_data = $request['extensions'][$this->get_name()];
+			$alternate_shipping_instruction = $shipping_workshop_request_data['alternateShippingInstruction'];
+			$other_shipping_value           = $shipping_workshop_request_data['otherShippingValue'];
+			$order->update_meta_data( 'shipping_workshop_alternate_shipping_instruction', $alternate_shipping_instruction );
+			$order->save();
+		},
+		10,
+		2
+	);
 }
 ```
 
