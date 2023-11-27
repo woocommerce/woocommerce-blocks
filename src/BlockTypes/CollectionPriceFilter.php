@@ -48,14 +48,14 @@ final class CollectionPriceFilter extends AbstractBlock {
 			'maxPrice'          => $max_price,
 			'minRange'          => $min_range,
 			'maxRange'          => $max_range,
-			'formattedMinPrice' => $formatted_min_price,
-			'formattedMaxPrice' => $formatted_max_price,
+			// 'formattedMinPrice' => $formatted_min_price,
+			// 'formattedMaxPrice' => $formatted_max_price,
 		);
 
-		wc_store(
+		wc_initial_state('woocommerce/collection-price-filter',
 			array(
 				'state' => array(
-					'filters' => $data,
+					$data,
 				),
 			)
 		);
@@ -87,13 +87,13 @@ final class CollectionPriceFilter extends AbstractBlock {
 					class="min"
 					type="text"
 					value="%d"
-					data-wc-bind--value="state.filters.minPrice"
-					data-wc-on--input="actions.filters.setMinPrice"
-					data-wc-on--change="actions.filters.updateProductsWithPriceFilter"
+					data-wc-bind--value="state.minPrice"
+					data-wc-on--input="actions.setMinPrice"
+					data-wc-on--change="actions.updateProductsWithPriceFilter"
 				/>',
 				esc_attr( $min_price )
 			) : sprintf(
-				'<span data-wc-text="state.filters.formattedMinPrice">%s</span>',
+				'<span data-wc-text="selectors.formattedMinPrice">%s</span>',
 				esc_attr( $formatted_min_price )
 			);
 
@@ -103,13 +103,13 @@ final class CollectionPriceFilter extends AbstractBlock {
 					class="max"
 					type="text"
 					value="%d"
-					data-wc-bind--value="state.filters.maxPrice"
-					data-wc-on--input="actions.filters.setMaxPrice"
-					data-wc-on--change="actions.filters.updateProductsWithPriceFilter"
+					data-wc-bind--value="state.maxPrice"
+					data-wc-on--input="actions.setMaxPrice"
+					data-wc-on--change="actions.updateProductsWithPriceFilter"
 				/>',
 				esc_attr( $max_price )
 			) : sprintf(
-				'<span data-wc-text="state.filters.formattedMaxPrice">%s</span>',
+				'<span data-wc-text="selectors.formattedMaxPrice">%s</span>',
 				esc_attr( $formatted_max_price )
 			);
 
@@ -119,7 +119,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 				<div
 					class="range"
 					style="<?php echo esc_attr( $range_style ); ?>"
-					data-wc-bind--style="state.filters.rangeStyle"
+					data-wc-bind--style="state.rangeStyle"
 				>
 					<div class="range-bar"></div>
 					<input
@@ -128,11 +128,11 @@ final class CollectionPriceFilter extends AbstractBlock {
 						min="<?php echo esc_attr( $min_range ); ?>"
 						max="<?php echo esc_attr( $max_range ); ?>"
 						value="<?php echo esc_attr( $min_price ); ?>"
-						data-wc-bind--max="state.filters.maxRange"
-						data-wc-bind--value="state.filters.minPrice"
-						data-wc-class--active="state.filters.isMinActive"
-						data-wc-on--input="actions.filters.setMinPrice"
-						data-wc-on--change="actions.filters.updateProductsWithPriceFilter"
+						data-wc-bind--max="state.maxRange"
+						data-wc-bind--value="state.minPrice"
+						data-wc-class--active="state.isMinActive"
+						data-wc-on--input="actions.setMinPrice"
+						data-wc-on--change="actions.updateProductsWithPriceFilter"
 					>
 					<input
 						type="range"
@@ -140,11 +140,11 @@ final class CollectionPriceFilter extends AbstractBlock {
 						min="<?php echo esc_attr( $min_range ); ?>"
 						max="<?php echo esc_attr( $max_range ); ?>"
 						value="<?php echo esc_attr( $max_price ); ?>"
-						data-wc-bind--max="state.filters.maxRange"
-						data-wc-bind--value="state.filters.maxPrice"
-						data-wc-class--active="state.filters.isMaxActive"
-						data-wc-on--input="actions.filters.setMaxPrice"
-						data-wc-on--change="actions.filters.updateProductsWithPriceFilter"
+						data-wc-bind--max="state.maxRange"
+						data-wc-bind--value="state.maxPrice"
+						data-wc-class--active="state.isMaxActive"
+						data-wc-on--input="actions.setMaxPrice"
+						data-wc-on--change="actions.updateProductsWithPriceFilter"
 					>
 				</div>
 				<div class="text">
