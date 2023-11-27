@@ -56,10 +56,7 @@ const ColumnsControl = ( props: DisplayLayoutToolbarProps ) => {
 		<>
 			<ToolsPanelItem
 				label={ columnsLabel }
-				hasValue={ () =>
-					defaultLayout?.columns !== columns ||
-					defaultLayout?.type !== type
-				}
+				hasValue={ () => defaultLayout?.columns !== columns }
 				isShownByDefault
 				onDeselect={ onPanelDeselect }
 			>
