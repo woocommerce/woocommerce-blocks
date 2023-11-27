@@ -44,7 +44,7 @@ To add a field block to the Checkout Block you will need to add the following en
 ```
 
 - The [lock attribute](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-templates/#individual-block-locking) is an object that controls whether the block can be removed or moved. By default, the lock attribute is set to allow the block to be removed and moved. However, by modifying the lock attribute, you can “force” the block to be non-removable. For example, you can set both remove and move properties to false in order to prevent the block from being removed or moved.
-- The [parent attribute](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#parent) specifies the parent block that this block should be nested within it. It determines where the block will render. In our example, the block is a child of the `woocommerce/checkout-shipping-methods-block`. This means that the your block will be rendered within the `woocommerce/checkout-shipping-methods-block`.
+- The [parent attribute](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#parent) specifies the parent block that this block should be nested within it. It determines where the block will render. In our example, the block is a child of the `woocommerce/checkout-shipping-methods-block`. This means that your block will be rendered within the `woocommerce/checkout-shipping-methods-block`. If the shipping methods block is not required, your block will not be rendered.
 
 ### 3. Setting custom checkout data
 
