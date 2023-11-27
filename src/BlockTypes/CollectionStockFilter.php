@@ -47,18 +47,6 @@ final class CollectionStockFilter extends AbstractBlock {
 		$stock_status_counts = $block->context['collectionData']['stock_status_counts'] ?? [];
 		$wrapper_attributes  = get_block_wrapper_attributes();
 
-		wc_initial_state(
-			'woocommerce',
-			array(
-				'state' => array(
-					'filters' => array(
-						'stockStatus'   => $stock_status_counts,
-						'activeFilters' => '',
-					),
-				),
-			)
-		);
-
 		return sprintf(
 			'<div %1$s>
 				<div class="wc-block-stock-filter__controls">%2$s</div>
@@ -87,7 +75,7 @@ final class CollectionStockFilter extends AbstractBlock {
 
 		$list_items = array_map(
 			function( $item ) use ( $stock_statuses, $show_counts ) {
-				$label = $show_counts ? $stock_statuses[ $item['status'] ] . '(' . $item['count'] . ')' : $stock_statuses[ $item['status'] ];
+				$label = $show_counts ? $stock_statuses[ $item['status'] ] . ' (' . $item['count'] . ')' : $stock_statuses[ $item['status'] ];
 				return array(
 					'label' => $label,
 					'value' => $item['status'],
@@ -129,7 +117,7 @@ final class CollectionStockFilter extends AbstractBlock {
 											class="wc-block-components-checkbox__input" 
 											type="checkbox" 
 											aria-invalid="false" 
-											data-wc-on--change="actions.filters.updateProductsWithStockFilters" 
+											data-wc-on--change="actions.updateProducts" 
 											value="<?php echo esc_attr( $stock_count['status'] ); ?>"
 											<?php checked( strpos( $selected_stock_status, $stock_count['status'] ) !== false, 1 ); ?>
 										>
@@ -144,9 +132,9 @@ final class CollectionStockFilter extends AbstractBlock {
 													// translators: %s: number of products.
 													$screen_reader_text = sprintf( _n( '%s product', '%s products', $stock_count['count'], 'woo-gutenberg-products-block' ), number_format_i18n( $stock_count['count'] ) );
 													?>
-													<span class="wc-filter-element-label-list-count">
+													<span>
 														<span aria-hidden="true">
-															<?php $show_counts ? print( esc_html( $stock_count['count'] ) ) : null; ?>
+															<?php $show_counts ? print( esc_html( '(' . $stock_count['count'] . ')' ) ) : null; ?>
 														</span>
 														<span class="screen-reader-text">
 															<?php esc_html( $screen_reader_text ); ?>
@@ -168,7 +156,7 @@ final class CollectionStockFilter extends AbstractBlock {
 				echo Dropdown::render(
 					array(
 						'items'         => $list_items,
-						'action'        => 'woocommerce/collection-stock-filter::actions.filters.navigate',
+						'action'        => 'woocommerce/collection-stock-filter::actions.navigate',
 						'selected_item' => $selected_item,
 					)
 				);
