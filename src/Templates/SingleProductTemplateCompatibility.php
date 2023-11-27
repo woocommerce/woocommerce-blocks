@@ -69,10 +69,9 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 	private function inject_hook_to_first_and_last_blocks( $block_content, $block, $block_hooks ) {
 		$first_block_hook = array(
 			'before' => array(
-				'woocommerce_before_main_content'    => $this->hook_data['woocommerce_before_main_content'],
-				'woocommerce_before_single_product'  => $this->hook_data['woocommerce_before_single_product'],
+				'woocommerce_before_main_content'   => $this->hook_data['woocommerce_before_main_content'],
+				'woocommerce_before_single_product' => $this->hook_data['woocommerce_before_single_product'],
 				'woocommerce_before_single_product_summary' => $this->hook_data['woocommerce_before_single_product_summary'],
-				'woocommerce_single_product_summary' => $this->hook_data['woocommerce_single_product_summary'],
 			),
 			'after'  => array(),
 		);
@@ -207,7 +206,7 @@ class SingleProductTemplateCompatibility extends AbstractTemplateCompatibility {
 				),
 			),
 			'woocommerce_single_product_summary'        => array(
-				'block_names' => array(),
+				'block_names' => array( 'core/post-excerpt' ),
 				'position'    => 'before',
 				'hooked'      => array(
 					'woocommerce_template_single_title'   => 5,
