@@ -8,6 +8,7 @@ import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
  * Internal dependencies
  */
 import { CheckoutPage } from './checkout.page';
+import { REGULAR_PRICED_PRODUCT_NAME } from './constants';
 
 const blockData: BlockData = {
 	name: 'Checkout',
@@ -54,6 +55,27 @@ test.describe( 'Merchant → Checkout', () => {
 				page.getByText( 'Terms & Privacy pages teared down.' )
 			).toBeVisible();
 			await page.close();
+		} );
+
+		test( 'Merchant can see T&S and Privacy Policy links without checkbox', async ( {
+			frontendUtils,
+			checkoutPageObject,
+		} ) => {
+			await frontendUtils.goToShop();
+			await frontendUtils.addToCart( REGULAR_PRICED_PRODUCT_NAME );
+			await frontendUtils.goToCheckout();
+			await expect(
+				frontendUtils.page.getByText(
+					'By proceeding with your purchase you agree to our Terms and Conditions and Privacy Policy'
+				)
+			).toBeVisible();
+			await checkoutPageObject.fillInCheckoutWithTestData();
+			await checkoutPageObject.placeOrder();
+			await expect(
+				frontendUtils.page.getByText(
+					'Thank you. Your order has been received.'
+				)
+			).toBeVisible();
 		} );
 	} );
 
