@@ -9,8 +9,8 @@
 -   [Selectors](#selectors)
     -   [getRoute( state, namespace, resourceName, ids = \[\] )](#getroute-state-namespace-resourcename-ids---)
     -   [getRoutes( state, namespace )](#getroutes-state-namespace-)
-    -   [getRouteFromResourceEntries( state, namespace, resourceName, resourceValues )](#getroutefromresourceentries-state-namespace-resourcename-resourcevalues)
-    -   [assembleRouteWithPlaceholders( state, namespace, resourceName, resourceValues )](#assembleroutewithplaceholders-state-namespace-resourcename-resourcevalues)
+    -   [getRouteFromResourceEntries](#getroutefromresourceentries)
+    -   [assembleRouteWithPlaceholders](#assembleroutewithplaceholders)
 
 
 ## Overview
@@ -84,7 +84,7 @@ This will return all the registered routes for the given namespace as a flat arr
 
 -   `array`: An array of all routes for the given namespace.
 
-### getRouteFromResourceEntries( state, namespace, resourceName, resourceValues )
+### getRouteFromResourceEntries
 
 This will return the route for the given resource entries.
 
@@ -106,7 +106,7 @@ const store = select( 'wc/store/schema' );
 const route = store.getRouteFromResourceEntries(state, namespace, resourceName, resourceValues);
 ```
 
-### assembleRouteWithPlaceholders( state, namespace, resourceName, resourceValues )
+### assembleRouteWithPlaceholders
 
 This will return the assembled route with placeholders.
 
