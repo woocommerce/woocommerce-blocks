@@ -448,7 +448,7 @@ const paymentResult = store.getPaymentResult();
 
 ### getIncompatiblePaymentMethods
 
-Returns the list of payment methods that are incompatible with the current cart contents.
+Returns the list of payment methods that are incompatible with Checkout block.
 
 #### _Parameters_ <!-- omit in toc -->
 
