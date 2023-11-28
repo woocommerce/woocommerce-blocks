@@ -249,8 +249,18 @@ class ProductUpdater {
 			return;
 		}
 
-		$product->set_name( $ai_generated_product_content['title'] );
-		$product->set_description( $ai_generated_product_content['description'] );
+		wp_update_post(
+			array(
+				'ID'           => $product->get_id(),
+				'post_title'   => $ai_generated_product_content['title'],
+				'post_content' => $ai_generated_product_content['description'],
+				'post_name'    => sanitize_title( $ai_generated_product_content['title'] ),
+				'meta_input'   => array(
+					'_regular_price' => $ai_generated_product_content['price'],
+				),
+			)
+		);
+		flush_rewrite_rules();
 
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -292,6 +302,7 @@ class ProductUpdater {
 			$products_information_list[] = [
 				'title'       => 'A product title',
 				'description' => 'A product description',
+				'price'       => 'The product price',
 				'image'       => [
 					'src' => esc_url( $image_src ),
 					'alt' => esc_attr( $image_alt ),
@@ -321,20 +332,24 @@ class ProductUpdater {
 		$prompts = [];
 		foreach ( $products_information_list as $product_information ) {
 			if ( ! empty( $product_information['image']['alt'] ) ) {
-				$prompts[] = sprintf( 'Generate a product name that exactly matches the following image description: "%s" and also is related to the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans. The returned result should not refer to people, only objects.', $product_information['image']['alt'], $business_description );
+				$prompts[] = sprintf( 'Generate a product name for a product that could be sold in a store and could be associated with the following image description: "%s" and also is related to the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans. The returned result should not refer to people, only objects.', $product_information['image']['alt'], $business_description );
 			} else {
-				$prompts[] = sprintf( 'Generate a product name that matches the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans.', $business_description );
+				$prompts[] = sprintf( 'Generate a product name for a product that could be sold in a store and matches the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans.', $business_description );
 			}
 		}
 
 		$expected_results_format = [];
 		foreach ( $products_information_list as $index => $product ) {
-			$expected_results_format[ $index ] = '';
+			$expected_results_format[ $index ] = [
+				'title' => '',
+				'price' => '',
+			];
 		}
 
 		$formatted_prompt = sprintf(
-			"Generate two-words titles for products using the following prompts for each one of them: '%s'. Ensure each entry is unique and does not repeat the given examples. Do not include backticks or the word json in the response. Here's an example format: '%s'.",
+			"Generate two-words titles and price for products using the following prompts for each one of them: '%s'. Ensure each entry is unique and does not repeat the given examples. It should be a number and it's not too low or too high for the corresponding product title being advertised. Convert the price to this currency: '%s'. Do not include backticks or the word json in the response. Here's an example format: '%s'.",
 			wp_json_encode( $prompts ),
+			get_woocommerce_currency(),
 			wp_json_encode( $expected_results_format )
 		);
 
@@ -381,7 +396,8 @@ class ProductUpdater {
 			}
 
 			foreach ( $products_information_list as $index => $product_information ) {
-				$products_information_list[ $index ]['title'] = str_replace( '"', '', $completion[ $index ] );
+				$products_information_list[ $index ]['title'] = str_replace( '"', '', $completion[ $index ]['title'] );
+				$products_information_list[ $index ]['price'] = $completion[ $index ]['price'];
 			}
 
 			$success = true;
