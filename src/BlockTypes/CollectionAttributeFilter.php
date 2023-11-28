@@ -113,7 +113,7 @@ final class CollectionAttributeFilter extends AbstractBlock {
 		return Dropdown::render(
 			array(
 				'items'         => $list_items,
-				'action'        => 'woocommerce/collection-attribute-filter::actions.navigateWithAttributeFilter',
+				'action'        => 'woocommerce/collection-attribute-filter::actions.navigate',
 				'selected_item' => $selected_item,
 			)
 		);
@@ -161,7 +161,7 @@ final class CollectionAttributeFilter extends AbstractBlock {
 						class="wc-block-components-checkbox__input"
 						type="checkbox"
 						aria-invalid="false"
-						data-wc-on--change="actions.updateProductsWithAttributeFilter"
+						data-wc-on--change="actions.updateProducts"
 						data-wc-context=\'{ "attributeTermSlug": "%5$s" }\'
 						value="%5$s"
 						%4$s

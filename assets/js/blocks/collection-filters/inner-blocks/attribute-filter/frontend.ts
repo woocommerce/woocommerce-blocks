@@ -39,7 +39,7 @@ function getSelectedTermsFromUrl( slug: string ) {
 
 store( 'woocommerce/collection-attribute-filter', {
 	actions: {
-		navigateWithAttributeFilter: () => {
+		navigate: () => {
 			const dropdownContext = getContext< DropdownContext >(
 				'woocommerce/interactivity-dropdown'
 			);
@@ -56,9 +56,7 @@ store( 'woocommerce/collection-attribute-filter', {
 				);
 			}
 		},
-		updateProductsWithAttributeFilter: (
-			event: HTMLElementEvent< HTMLInputElement >
-		) => {
+		updateProducts: ( event: HTMLElementEvent< HTMLInputElement > ) => {
 			if ( ! event.target.value ) return;
 
 			const context = getContext< AttributeFilterContext >();
