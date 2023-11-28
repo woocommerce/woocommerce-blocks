@@ -10,6 +10,12 @@ import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
 import { CheckoutPage } from './checkout.page';
 import { REGULAR_PRICED_PRODUCT_NAME } from './constants';
 
+declare global {
+	interface Window {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		wcSettings: { storePages: any };
+	}
+}
 const blockData: BlockData = {
 	name: 'Checkout',
 	slug: 'woocommerce/checkout',
@@ -69,6 +75,33 @@ test.describe( 'Merchant → Checkout', () => {
 					'By proceeding with your purchase you agree to our Terms and Conditions and Privacy Policy'
 				)
 			).toBeVisible();
+
+			const termsAndConditions = frontendUtils.page
+				.getByRole( 'link' )
+				.getByText( 'Terms and Conditions' )
+				.first();
+			const privacyPolicy = frontendUtils.page
+				.getByRole( 'link' )
+				.getByText( 'Privacy Policy' )
+				.first();
+
+			const { termsPageUrl, privacyPageUrl } =
+				await frontendUtils.page.evaluate( () => {
+					return {
+						termsPageUrl:
+							window.wcSettings.storePages.terms.permalink,
+						privacyPageUrl:
+							window.wcSettings.storePages.privacy.permalink,
+					};
+				} );
+			await expect( termsAndConditions ).toHaveAttribute(
+				'href',
+				termsPageUrl
+			);
+			await expect( privacyPolicy ).toHaveAttribute(
+				'href',
+				privacyPageUrl
+			);
 			await checkoutPageObject.fillInCheckoutWithTestData();
 			await checkoutPageObject.placeOrder();
 			await expect(
