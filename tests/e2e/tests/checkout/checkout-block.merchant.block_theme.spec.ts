@@ -42,6 +42,7 @@ test.describe( 'Merchant → Checkout', () => {
 			await expect(
 				page.getByText( 'Terms & Privacy pages set up.' )
 			).toBeVisible();
+			await page.close();
 		} );
 
 		test.afterAll( async ( { browser } ) => {
@@ -52,6 +53,7 @@ test.describe( 'Merchant → Checkout', () => {
 			await expect(
 				page.getByText( 'Terms & Privacy pages teared down.' )
 			).toBeVisible();
+			await page.close();
 		} );
 	} );
 
