@@ -1056,7 +1056,7 @@ class ProductCollection extends AbstractBlock {
 				'key'     => '_price',
 				'value'   => $price_range['min'],
 				'compare' => '>=',
-				'type'    => 'NUMERIC',
+				'type'    => 'DECIMAL(10,3)',
 			];
 		}
 
@@ -1065,7 +1065,7 @@ class ProductCollection extends AbstractBlock {
 				'key'     => '_price',
 				'value'   => $price_range['max'],
 				'compare' => '<=',
-				'type'    => 'NUMERIC',
+				'type'    => 'DECIMAL(10,3)',
 			];
 		}
 
