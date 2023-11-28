@@ -171,16 +171,18 @@ export function IncompatibleExtensionsNotice( {
 					{ entries.length > 2 && (
 						<details>
 							<summary>
-								{ sprintf(
-									// translators: %s is the number of incompatible extensions.
-									_n(
-										'%s more incompatibility',
-										'%s more incompatibilites',
-										remainingEntries,
-										'woo-gutenberg-products-block'
-									),
-									remainingEntries
-								) }
+								<span>
+									{ sprintf(
+										// translators: %s is the number of incompatible extensions.
+										_n(
+											'%s more incompatibility',
+											'%s more incompatibilites',
+											remainingEntries,
+											'woo-gutenberg-products-block'
+										),
+										remainingEntries
+									) }
+								</span>
 								<Icon icon={ chevronDown } />
 							</summary>
 							<ul>

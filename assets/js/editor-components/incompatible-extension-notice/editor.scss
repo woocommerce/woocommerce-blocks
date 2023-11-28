@@ -33,6 +33,10 @@
 				text-decoration: underline;
 				margin: $gap 0;
 
+				span {
+					text-decoration: underline; // Ensure text-decoration works in Safari.
+				}
+
 				&::-webkit-details-marker {
 					display: none; // Remove marker for Webkit-based browsers.
 				}
