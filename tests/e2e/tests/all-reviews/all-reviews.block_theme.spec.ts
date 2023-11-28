@@ -19,7 +19,7 @@ test.describe( `${ blockData.name } Block`, () => {
 	let firstReviewId: number;
 	let secondReviewId: number;
 
-	// Create product and review.
+	// Create product and reviews.
 	test.beforeAll( async ( { baseURL } ) => {
 		const api = new WooCommerceRestApi( {
 			url: baseURL,
@@ -29,7 +29,7 @@ test.describe( `${ blockData.name } Block`, () => {
 		} );
 		await api
 			.post( 'products', {
-				name: 'Product to search',
+				name: 'Product with reviews',
 				type: 'simple',
 				regular_price: '12.99',
 			} )
@@ -60,7 +60,7 @@ test.describe( `${ blockData.name } Block`, () => {
 			} );
 	} );
 
-	// Remove product and review.
+	// Remove product and reviews.
 	test.afterAll( async ( { baseURL } ) => {
 		const api = new WooCommerceRestApi( {
 			url: baseURL,
