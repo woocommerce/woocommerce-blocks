@@ -9,6 +9,10 @@
 -   [Selectors](#selectors)
     -   [getCollection](#getcollection)
     -   [getCollectionHeader](#getcollectionheader)
+    -   [getFromState](#getfromstate)
+    -   [getCollectionHeaders](#getcollectionheaders)
+    -   [getCollectionError](#getcollectionerror)
+    -   [getCollectionLastModified](#getcollectionlastmodified)
 
 ## Overview
 
@@ -72,6 +76,91 @@ or
     -   _header_ `string`: The header key for the header.
     -   _query_ `Object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.
     -   _ids_ `Array`: If the collection route has placeholders for ids you provide the values for those placeholders in this array (in order).
+
+### getFromState
+
+This selector will return the state from the collections store.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `state: Object`: The current state of the store.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `Object`: The state from the collections store.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/collections' );
+const state = store.getFromState();
+```
+
+### getCollectionHeaders
+
+This selector will return the headers for a collection.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `state: Object`: The current state of the store.
+-   `namespace: string`: The route namespace for the collection, eg. `/wc/blocks`.
+-   `resourceName: string`: The resource name for the collection (eg. `products/attributes`).
+-   `queryString: string`: An additional query string to add to the request for the collection.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `Object`: The headers for the collection.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/collections' );
+const headers = store.getCollectionHeaders(state, namespace, resourceName, queryString);
+```
+
+### getCollectionError
+
+This selector will return any error that occurred while fetching a collection.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `state: Object`: The current state of the store.
+-   `namespace: string`: The route namespace for the collection, eg. `/wc/blocks`.
+-   `resourceName: string`: The resource name for the collection (eg. `products/attributes`).
+-   `queryString: string`: An additional query string to add to the request for the collection.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `Error`: The error that occurred while fetching the collection, or `null` if there was no error.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/collections' );
+const error = store.getCollectionError(state, namespace, resourceName, queryString);
+```
+
+### getCollectionLastModified
+
+This selector will return the last modified date for a collection.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `state: Object`: The current state of the store.
+-   `namespace: string`: The route namespace for the collection, eg. `/wc/blocks`.
+-   `resourceName: string`: The resource name for the collection (eg. `products/attributes`).
+-   `queryString: string`: An additional query string to add to the request for the collection.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `Date`: The last modified date for the collection, or `null` if there was no last modified date.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/collections' );
+const lastModified = store.getCollectionLastModified(state, namespace, resourceName, queryString);
+```
 
 <!-- FEEDBACK -->
 

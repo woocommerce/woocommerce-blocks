@@ -9,6 +9,9 @@
 -   [Selectors](#selectors)
     -   [getRoute( state, namespace, resourceName, ids = \[\] )](#getroute-state-namespace-resourcename-ids---)
     -   [getRoutes( state, namespace )](#getroutes-state-namespace-)
+    -   [getRouteFromResourceEntries( state, namespace, resourceName, resourceValues )](#getroutefromresourceentries-state-namespace-resourcename-resourcevalues)
+    -   [assembleRouteWithPlaceholders( state, namespace, resourceName, resourceValues )](#assembleroutewithplaceholders-state-namespace-resourcename-resourcevalues)
+
 
 ## Overview
 
@@ -80,6 +83,50 @@ This will return all the registered routes for the given namespace as a flat arr
 #### _Returns_ <!-- omit in toc -->
 
 -   `array`: An array of all routes for the given namespace.
+
+### getRouteFromResourceEntries( state, namespace, resourceName, resourceValues )
+
+This will return the route for the given resource entries.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `state: Object`: The current state of the store.
+-   `namespace: string`: The route namespace for the collection, eg. `/wc/blocks`.
+-   `resourceName: string`: The resource name for the collection (eg. `products/attributes`).
+-   `resourceValues: Array`: An array of resource values.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `string`: The route for the given resource entries, or `null` if no route is found.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/schema' );
+const route = store.getRouteFromResourceEntries(state, namespace, resourceName, resourceValues);
+```
+
+### assembleRouteWithPlaceholders( state, namespace, resourceName, resourceValues )
+
+This will return the assembled route with placeholders.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `state: Object`: The current state of the store.
+-   `namespace: string`: The route namespace for the collection, eg. `/wc/blocks`.
+-   `resourceName: string`: The resource name for the collection (eg. `products/attributes`).
+-   `resourceValues: Array`: An array of resource values.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `string`: The assembled route with placeholders replaced by actual values, or `null` if no route is found.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/schema' );
+const route = store.assembleRouteWithPlaceholders(state, namespace, resourceName, resourceValues);
+```
 
 <!-- FEEDBACK -->
 

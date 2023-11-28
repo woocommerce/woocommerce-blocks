@@ -22,6 +22,8 @@
     -   [paymentMethodsInitialized](#paymentmethodsinitialized)
     -   [expressPaymentMethodsInitialized](#expresspaymentmethodsinitialized)
     -   [getPaymentResult](#getpaymentresult)
+    -   [getIncompatiblePaymentMethods](#getincompatiblepaymentmethods)
+    -   [getState](#getstate)
     -   [(@deprecated) isPaymentPristine](#deprecated-ispaymentpristine)
     -   [(@deprecated) isPaymentStarted](#deprecated-ispaymentstarted)
     -   [(@deprecated) isPaymentSuccess](#deprecated-ispaymentsuccess)
@@ -442,6 +444,44 @@ Returns the result of the last payment attempt.
 ```js
 const store = select( 'wc/store/payment' );
 const paymentResult = store.getPaymentResult();
+```
+
+### getIncompatiblePaymentMethods
+
+Returns the list of payment methods that are incompatible with the current cart contents.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `state: Object`: The current state of the store.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `Array`: An array of incompatible payment method names.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/payment' );
+const incompatiblePaymentMethods = store.getIncompatiblePaymentMethods();
+```
+
+### getState
+
+Returns the current state of the payment store.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `state: Object`: The current state of the store.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `Object`: The current state of the payment store.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/payment' );
+const currentState = store.getState();
 ```
 
 ### (@deprecated) isPaymentPristine

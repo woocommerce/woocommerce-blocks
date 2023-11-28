@@ -27,6 +27,7 @@
     -   [isAfterProcessing](#isafterprocessing)
     -   [isComplete](#iscomplete)
     -   [isCalculating](#iscalculating)
+    -   [prefersCollection](#preferscollection)
 
 ## Overview
 
@@ -288,6 +289,25 @@ This is true when the total is being re-calculated for the order. There are nume
 ```js
 const store = select( 'wc/store/checkout' );
 const isCalculating = store.isCalculating();
+```
+
+### prefersCollection
+
+Returns true if the customer prefers to collect their order, and false otherwise.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `state: CheckoutState`: The current checkout state.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `boolean`: True if the customer prefers collection, false otherwise.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( 'wc/store/checkout' );
+const prefersCollection = store.prefersCollection();
 ```
 
 <!-- FEEDBACK -->
