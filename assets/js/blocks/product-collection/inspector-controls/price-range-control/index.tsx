@@ -4,10 +4,9 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
+	BaseControl,
 	// @ts-expect-error Using experimental features
 	__experimentalHStack as HStack,
-	// @ts-expect-error Using experimental features
-	__experimentalText as Text,
 	// @ts-expect-error Using experimental features
 	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
@@ -34,7 +33,10 @@ const PriceRangeControl = ( props: QueryControlProps ) => {
 			} }
 			className="wc-block-product-price-range-control"
 		>
-			<Text>{ __( 'PRICE RANGE', 'woo-gutenberg-products-block' ) }</Text>
+			<BaseControl.VisualLabel>
+				{ __( 'PRICE RANGE', 'woo-gutenberg-products-block' ) }
+			</BaseControl.VisualLabel>
+
 			<HStack
 				spacing="3"
 				expanded={ false }
