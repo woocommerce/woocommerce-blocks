@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __, _n, sprintf } from '@wordpress/i18n';
 import {
 	Notice,
 	ExternalLink,
@@ -15,7 +15,7 @@ import {
 	useState,
 } from '@wordpress/element';
 import { Alert } from '@woocommerce/icons';
-import { Icon } from '@wordpress/icons';
+import { Icon, chevronDown } from '@wordpress/icons';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { createBlock, BlockInstance } from '@wordpress/blocks';
 import { store as noticesStore } from '@wordpress/notices';
@@ -138,6 +138,9 @@ export function IncompatibleExtensionsNotice( {
 		}
 	};
 
+	const entries = Object.entries( incompatiblePaymentMethods );
+	const remainingEntries = entries.length - 2;
+
 	return (
 		<Notice
 			className="wc-blocks-incompatible-extensions-notice"
@@ -154,18 +157,45 @@ export function IncompatibleExtensionsNotice( {
 					<p>{ noticeContent }</p>
 					{ numberOfIncompatiblePaymentMethods > 1 && (
 						<ul>
-							{ Object.entries( incompatiblePaymentMethods ).map(
-								( [ id, title ] ) => (
+							{ entries.slice( 0, 2 ).map( ( [ id, title ] ) => (
+								<li
+									key={ id }
+									className="wc-blocks-incompatible-extensions-notice__element"
+								>
+									{ title }
+								</li>
+							) ) }
+						</ul>
+					) }
+
+					{ entries.length > 2 && (
+						<details>
+							<summary>
+								{ sprintf(
+									// translators: %s is the number of incompatible extensions.
+									_n(
+										'%s more incompatible extension',
+										'%s more incompatible extensions',
+										remainingEntries,
+										'woo-gutenberg-products-block'
+									),
+									remainingEntries
+								) }
+								<Icon icon={ chevronDown } />
+							</summary>
+							<ul>
+								{ entries.slice( 2 ).map( ( [ id, title ] ) => (
 									<li
 										key={ id }
 										className="wc-blocks-incompatible-extensions-notice__element"
 									>
 										{ title }
 									</li>
-								)
-							) }
-						</ul>
+								) ) }
+							</ul>
+						</details>
 					) }
+
 					<Button
 						variant={ 'secondary' }
 						onClick={ () => {
