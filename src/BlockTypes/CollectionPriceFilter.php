@@ -92,7 +92,8 @@ final class CollectionPriceFilter extends AbstractBlock {
 				esc_attr( $min_price )
 			) : sprintf(
 				'<span data-wc-text="state.formattedMinPrice">%s</span>',
-				esc_attr( $formatted_min_price )
+				// Not escaped, as this is HTML.
+				$formatted_min_price
 			);
 
 		$price_max = $show_input_fields ?
@@ -108,7 +109,8 @@ final class CollectionPriceFilter extends AbstractBlock {
 				esc_attr( $max_price )
 			) : sprintf(
 				'<span data-wc-text="state.formattedMaxPrice">%s</span>',
-				esc_attr( $formatted_max_price )
+				// Not escaped, as this is HTML.
+				$formatted_max_price
 			);
 
 		ob_start();
