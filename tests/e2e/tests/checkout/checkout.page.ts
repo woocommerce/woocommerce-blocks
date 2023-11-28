@@ -86,7 +86,7 @@ export class CheckoutPage {
 	 */
 	async placeOrder( waitForRedirect = true ) {
 		await this.page.getByText( 'Place Order', { exact: true } ).click();
-		if ( ! waitForRedirect ) {
+		if ( waitForRedirect ) {
 			await this.page.waitForURL( /order-received/ );
 		}
 	}
