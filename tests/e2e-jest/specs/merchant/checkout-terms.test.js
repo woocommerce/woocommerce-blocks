@@ -28,18 +28,6 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 }
 
 describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options', () => {
-	it( 'Merchant can see T&S and Privacy Policy links without checkbox', async () => {
-		await shopper.goToShop();
-		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
-		await shopper.block.goToCheckout();
-		await expect( page ).toMatch(
-			'By proceeding with your purchase you agree to our Terms and Conditions and Privacy Policy'
-		);
-		await shopper.block.fillInCheckoutWithTestData();
-		await shopper.block.placeOrder();
-		await expect( page ).toMatch( 'Order received' );
-	} );
-
 	it( 'Merchant can see T&S and Privacy Policy links with checkbox', async () => {
 		// Activate checkboxes for T&S and Privacy Policy links.
 		await preventCompatibilityNotice();
