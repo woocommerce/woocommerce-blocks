@@ -174,8 +174,8 @@ export function IncompatibleExtensionsNotice( {
 								{ sprintf(
 									// translators: %s is the number of incompatible extensions.
 									_n(
-										'%s more incompatible extension',
-										'%s more incompatible extensions',
+										'%s more incompatibility',
+										'%s more incompatibilites',
 										remainingEntries,
 										'woo-gutenberg-products-block'
 									),
