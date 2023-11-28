@@ -21,6 +21,28 @@ test.describe( 'Merchant → Checkout', () => {
 	// `as string` is safe here because we know the variable is a string, it is defined above.
 	const blockSelectorInEditor = blockData.selectors.editor.block as string;
 
+	test.describe( 'Can adjust T&S and Privacy Policy options', () => {
+		test.beforeAll( async ( { browser } ) => {
+			const page = await browser.newPage();
+			await page.goto(
+				`${ process.env.WORDPRESS_BASE_URL }/?setup_terms_and_privacy`
+			);
+			await expect(
+				page.getByText( 'Terms & Privacy pages set up.' )
+			).toBeVisible();
+		} );
+
+		test.afterAll( async ( { browser } ) => {
+			const page = await browser.newPage();
+			await page.goto(
+				`${ process.env.WORDPRESS_BASE_URL }/?teardown_terms_and_privacy`
+			);
+			await expect(
+				page.getByText( 'Terms & Privacy pages teared down.' )
+			).toBeVisible();
+		} );
+	} );
+
 	test.describe( 'in page editor', () => {
 		test.beforeEach( async ( { editorUtils, admin, editor } ) => {
 			await admin.visitSiteEditor( {
