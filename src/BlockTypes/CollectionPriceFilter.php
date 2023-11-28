@@ -91,7 +91,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 				/>',
 				esc_attr( $min_price )
 			) : sprintf(
-				'<span data-wc-text="selectors.formattedMinPrice">%s</span>',
+				'<span data-wc-text="state.formattedMinPrice">%s</span>',
 				esc_attr( $formatted_min_price )
 			);
 
@@ -107,7 +107,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 				/>',
 				esc_attr( $max_price )
 			) : sprintf(
-				'<span data-wc-text="selectors.formattedMaxPrice">%s</span>',
+				'<span data-wc-text="state.formattedMaxPrice">%s</span>',
 				esc_attr( $formatted_max_price )
 			);
 
@@ -117,7 +117,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 				<div
 					class="range"
 					style="<?php echo esc_attr( $range_style ); ?>"
-					data-wc-bind--style="selectors.rangeStyle"
+					data-wc-bind--style="state.rangeStyle"
 				>
 					<div class="range-bar"></div>
 					<input
