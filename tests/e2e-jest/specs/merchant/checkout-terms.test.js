@@ -18,7 +18,6 @@ import {
 	reactivateCompatibilityNotice,
 } from '../../../utils';
 import {
-	BASE_URL,
 	BILLING_DETAILS,
 	SIMPLE_VIRTUAL_PRODUCT_NAME,
 } from '../../../utils/constants';
@@ -29,21 +28,6 @@ if ( process.env.WOOCOMMERCE_BLOCKS_PHASE < 2 ) {
 }
 
 describe( 'Merchant → Checkout → Can adjust T&S and Privacy Policy options', () => {
-	beforeAll( async () => {
-		await shopper.goToShop();
-		await page.goto( `${ BASE_URL }/?setup_terms_and_privacy` );
-		// eslint-disable-next-line jest/no-standalone-expect
-		await expect( page ).toMatch( 'Terms & Privacy pages set up.' );
-		await shopper.block.emptyCart();
-	} );
-
-	afterAll( async () => {
-		await shopper.block.emptyCart();
-		await page.goto( `${ BASE_URL }/?teardown_terms_and_privacy` );
-		// eslint-disable-next-line jest/no-standalone-expect
-		await expect( page ).toMatch( 'Terms & Privacy pages teared down.' );
-	} );
-
 	it( 'Merchant can see T&S and Privacy Policy links without checkbox', async () => {
 		await shopper.goToShop();
 		await shopper.addToCartFromShopPage( SIMPLE_VIRTUAL_PRODUCT_NAME );
