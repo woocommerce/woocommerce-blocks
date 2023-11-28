@@ -46,7 +46,7 @@ const PriceRangeControl = ( props: QueryControlProps ) => {
 				<PriceTextField
 					label={ __( 'MIN', 'woo-gutenberg-products-block' ) }
 					value={ value?.min as number }
-					onChange={ ( min: number ) => {
+					onChange={ ( min?: number ) => {
 						setQueryAttribute( {
 							priceRange: {
 								min: min === 0 ? undefined : min,
@@ -59,7 +59,7 @@ const PriceRangeControl = ( props: QueryControlProps ) => {
 				<PriceTextField
 					label={ __( 'MAX', 'woo-gutenberg-products-block' ) }
 					value={ value?.max as number }
-					onChange={ ( max: number ) => {
+					onChange={ ( max?: number ) => {
 						setQueryAttribute( {
 							priceRange: {
 								min: value?.min as number,

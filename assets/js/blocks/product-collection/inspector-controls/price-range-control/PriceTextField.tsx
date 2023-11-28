@@ -3,17 +3,21 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { getCurrency } from '@woocommerce/price-format';
 import {
 	// @ts-expect-error Using experimental features
 	__experimentalNumberControl as NumberControl,
 	// @ts-expect-error Using experimental features
 	__experimentalInputControlPrefixWrapper as InputControlPrefixWrapper,
+	// @ts-expect-error Using experimental features
+	__experimentalInputControlSuffixWrapper as InputControlSuffixWrapper,
 } from '@wordpress/components';
 
 interface PriceTextFieldProps {
 	value: number;
-	onChange: ( min: number ) => void;
+	onChange: ( value: number ) => void;
 	label?: string;
+	suffix?: string;
 }
 
 const PriceTextField: React.FC< PriceTextFieldProps > = ( {
@@ -21,15 +25,22 @@ const PriceTextField: React.FC< PriceTextFieldProps > = ( {
 	onChange,
 	label,
 } ) => {
+	const currency = getCurrency();
+
 	return (
 		<NumberControl
 			value={ value }
-			onChange={ ( min: string ) => {
-				onChange( Number( min ) );
+			onChange={ ( val: string ) => {
+				onChange( Number( val ) );
 			} }
 			label={ label }
 			prefix={
 				<InputControlPrefixWrapper>{ label }</InputControlPrefixWrapper>
+			}
+			suffix={
+				<InputControlSuffixWrapper>
+					{ currency?.symbol }
+				</InputControlSuffixWrapper>
 			}
 			placeholder={ __( 'Auto', 'woo-gutenberg-products-block' ) }
 			isPressEnterToChange
@@ -41,6 +52,7 @@ const PriceTextField: React.FC< PriceTextFieldProps > = ( {
 				textAlign: 'right',
 			} }
 			__next40pxDefaultSize
+			step="any"
 		/>
 	);
 };
