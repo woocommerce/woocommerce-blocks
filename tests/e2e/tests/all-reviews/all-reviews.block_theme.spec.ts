@@ -14,13 +14,6 @@ const blockData = {
 	},
 };
 
-const publishAndVisitPost = async ( { page, editor } ) => {
-	await editor.publishPost();
-	const url = new URL( page.url() );
-	const postId = url.searchParams.get( 'post' );
-	await page.goto( `/?p=${ postId }`, { waitUntil: 'commit' } );
-};
-
 test.describe( `${ blockData.name } Block`, () => {
 	let productId: number;
 	let firstReviewId: number;
@@ -90,13 +83,14 @@ test.describe( `${ blockData.name } Block`, () => {
 		admin,
 		editor,
 		page,
+		editorUtils,
 	} ) => {
 		await admin.createNewPost();
 		await editor.insertBlock( { name: blockData.name } );
 
 		await expect( page.getByText( 'Nice album!' ) ).toBeVisible();
 
-		await publishAndVisitPost( { page, editor } );
+		await editorUtils.publishAndVisitPost();
 
 		await expect( page.getByText( 'Nice album!' ) ).toBeVisible();
 	} );
@@ -106,10 +100,11 @@ test.describe( `${ blockData.name } Block`, () => {
 		editor,
 		page,
 		frontendUtils,
+		editorUtils,
 	} ) => {
 		await admin.createNewPost();
 		await editor.insertBlock( { name: blockData.name } );
-		await publishAndVisitPost( { page, editor } );
+		await editorUtils.publishAndVisitPost();
 
 		const block = await frontendUtils.getBlockByName( blockData.name );
 		let firstReview;
