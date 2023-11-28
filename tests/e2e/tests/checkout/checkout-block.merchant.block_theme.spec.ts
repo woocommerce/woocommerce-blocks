@@ -2,7 +2,12 @@
  * External dependencies
  */
 import { BlockData } from '@woocommerce/e2e-types';
-import { test, expect } from '@woocommerce/e2e-playwright-utils';
+import { test as base, expect } from '@woocommerce/e2e-playwright-utils';
+
+/**
+ * Internal dependencies
+ */
+import { CheckoutPage } from './checkout.page';
 
 const blockData: BlockData = {
 	name: 'Checkout',
@@ -16,7 +21,14 @@ const blockData: BlockData = {
 		frontend: {},
 	},
 };
-
+const test = base.extend< { checkoutPageObject: CheckoutPage } >( {
+	checkoutPageObject: async ( { page }, use ) => {
+		const pageObject = new CheckoutPage( {
+			page,
+		} );
+		await use( pageObject );
+	},
+} );
 test.describe( 'Merchant → Checkout', () => {
 	// `as string` is safe here because we know the variable is a string, it is defined above.
 	const blockSelectorInEditor = blockData.selectors.editor.block as string;
