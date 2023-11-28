@@ -110,6 +110,73 @@ test.describe( 'Merchant → Checkout', () => {
 				)
 			).toBeVisible();
 		} );
+		test( 'Merchant can see T&S and Privacy Policy links with checkbox', async ( {
+			frontendUtils,
+			checkoutPageObject,
+			editorUtils,
+			admin,
+			editor,
+		} ) => {
+			await admin.visitSiteEditor( {
+				postId: 'woocommerce/woocommerce//page-checkout',
+				postType: 'wp_template',
+			} );
+			await editorUtils.enterEditMode();
+			await editor.openDocumentSettingsSidebar();
+			await editor.selectBlocks(
+				blockSelectorInEditor +
+					'  [data-type="woocommerce/checkout-terms-block"]'
+			);
+			let requireTermsCheckbox = editor.page.getByRole( 'checkbox', {
+				name: 'Require checkbox',
+				exact: true,
+			} );
+			await requireTermsCheckbox.check();
+			await editor.saveSiteEditorEntities();
+			await frontendUtils.goToShop();
+			await frontendUtils.addToCart( REGULAR_PRICED_PRODUCT_NAME );
+			await frontendUtils.goToCheckout();
+			await checkoutPageObject.fillInCheckoutWithTestData();
+			await checkoutPageObject.placeOrder( false );
+
+			const checkboxWithError = frontendUtils.page.getByLabel(
+				'You must accept our Terms and Conditions and Privacy Policy to continue with your purchase.'
+			);
+			await expect( checkboxWithError ).toHaveAttribute(
+				'aria-invalid',
+				'true'
+			);
+
+			await frontendUtils.page
+				.getByLabel(
+					'You must accept our Terms and Conditions and Privacy Policy to continue with your purchase.'
+				)
+				.check();
+
+			await checkoutPageObject.placeOrder();
+			await expect(
+				frontendUtils.page.getByText(
+					'Thank you. Your order has been received'
+				)
+			).toBeVisible();
+
+			await admin.visitSiteEditor( {
+				postId: 'woocommerce/woocommerce//page-checkout',
+				postType: 'wp_template',
+			} );
+			await editorUtils.enterEditMode();
+			await editor.openDocumentSettingsSidebar();
+			await editor.selectBlocks(
+				blockSelectorInEditor +
+					'  [data-type="woocommerce/checkout-terms-block"]'
+			);
+			requireTermsCheckbox = editor.page.getByRole( 'checkbox', {
+				name: 'Require checkbox',
+				exact: true,
+			} );
+			await requireTermsCheckbox.uncheck();
+			await editor.saveSiteEditorEntities();
+		} );
 	} );
 
 	test.describe( 'in page editor', () => {
