@@ -213,17 +213,6 @@ export class EditorUtils {
 		return firstBlockIndex < secondBlockIndex;
 	}
 
-	async waitForSiteEditorFinishLoading() {
-		await this.page
-			.frameLocator( 'iframe[title="Editor canvas"i]' )
-			.locator( 'body > *' )
-			.first()
-			.waitFor();
-		await this.page
-			.locator( '.edit-site-canvas-spinner' )
-			.waitFor( { state: 'hidden' } );
-	}
-
 	async setLayoutOption(
 		option:
 			| 'Align Top'
@@ -281,20 +270,24 @@ export class EditorUtils {
 	}
 
 	async transformIntoBlocks() {
-		const isNotTransformedIntoBlocks = await this.page
+		// Select the block, so the button is visible.
+		const block = this.page
 			.frameLocator( 'iframe[name="editor-canvas"]' )
-			.getByRole( 'button', { name: 'Transform into blocks' } )
-			.count();
+			.locator( `[data-type="woocommerce/legacy-template"]` )
+			.first();
 
-		if ( isNotTransformedIntoBlocks ) {
-			await this.page
-				.frameLocator( 'iframe[name="editor-canvas"]' )
-				.getByRole( 'group' )
-				.click();
-			await this.page
-				.frameLocator( 'iframe[name="editor-canvas"]' )
-				.getByRole( 'button', { name: 'Transform into blocks' } )
-				.click();
+		if ( ! ( await block.isVisible() ) ) {
+			return;
+		}
+
+		await this.editor.selectBlocks( block );
+
+		const transformButton = block.getByRole( 'button', {
+			name: 'Transform into blocks',
+		} );
+
+		if ( transformButton ) {
+			await transformButton.click();
 
 			// save changes
 			await this.saveSiteEditorEntities();

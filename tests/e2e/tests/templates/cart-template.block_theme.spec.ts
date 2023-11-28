@@ -13,15 +13,16 @@ test.describe( 'Test the cart template', async () => {
 		page,
 		editorUtils,
 	} ) => {
-		await admin.visitAdminPage( 'site-editor.php' );
-		await editorUtils.waitForSiteEditorFinishLoading();
-		await page.getByRole( 'button', { name: /Templates/i } ).click();
-		await page.getByRole( 'button', { name: /Page: Cart/i } ).click();
+		await admin.visitSiteEditor( {
+			postId: templatePath,
+			postType: templateType,
+		} );
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
 		await expect(
 			page
 				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h2:has-text("Cart")' )
+				.locator( 'h1:has-text("Cart")' )
 				.first()
 		).toBeVisible();
 	} );
@@ -34,18 +35,22 @@ test.describe( 'Test the cart template', async () => {
 		page,
 		editorUtils,
 	} ) => {
-		await admin.visitAdminPage( 'site-editor.php' );
-		await editorUtils.waitForSiteEditorFinishLoading();
+		await admin.visitSiteEditor( {
+			postId: templatePath,
+			postType: templateType,
+		} );
 		await editor.page.getByRole( 'button', { name: /Pages/i } ).click();
 		await editor.page.getByRole( 'button', { name: /Cart/i } ).click();
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
 		await expect(
-			editor.canvas.locator( 'h2:has-text("Cart")' ).first()
+			editor.canvas.locator( 'h1:has-text("Cart")' ).first()
 		).toBeVisible();
 		await editor.openDocumentSettingsSidebar();
+		await page.getByLabel( 'Template options' ).click();
 		await page.getByRole( 'button', { name: 'Edit template' } ).click();
 		await expect(
-			editor.canvas.locator( 'h2:has-text("Cart")' ).first()
+			editor.canvas.locator( 'h1:has-text("Cart")' ).first()
 		).toBeVisible();
 	} );
 
@@ -55,7 +60,7 @@ test.describe( 'Test the cart template', async () => {
 		await expect(
 			admin.page
 				.frameLocator( 'iframe[title="Editor canvas"i]' )
-				.locator( 'h2:has-text("Cart")' )
+				.locator( 'h1:has-text("Cart")' )
 				.first()
 		).toBeVisible();
 	} );
@@ -71,13 +76,13 @@ test.describe( 'Test editing the cart template', async () => {
 		admin,
 		editorUtils,
 		editor,
-		page,
 	} ) => {
-		await admin.visitAdminPage( 'site-editor.php' );
-		await editorUtils.waitForSiteEditorFinishLoading();
-		await page.getByRole( 'button', { name: /Templates/i } ).click();
-		await page.getByRole( 'button', { name: /Page: Checkout/i } ).click();
+		await admin.visitSiteEditor( {
+			postId: templatePath,
+			postType: templateType,
+		} );
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
 		await editor.setContent(
 			'<!-- wp:woocommerce/classic-shortcode {"shortcode":"cart"} /-->'
 		);
@@ -104,6 +109,7 @@ test.describe( 'Test editing the cart template', async () => {
 			postType: templateType,
 		} );
 		await editorUtils.enterEditMode();
+		await editorUtils.closeWelcomeGuideModal();
 		await editorUtils.editor.insertBlock( {
 			name: 'core/paragraph',
 			attributes: { content: 'Hello World in the template' },

@@ -7,9 +7,6 @@
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
 
-$content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/hero-product-3-split' );
-$images  = PatternsHelper::get_pattern_images( 'woocommerce-blocks/hero-product-3-split' );
-
 $main_title   = $content['titles'][0]['default'] ?? '';
 $first_title  = $content['titles'][1]['default'] ?? '';
 $second_title = $content['titles'][2]['default'] ?? '';
@@ -24,13 +21,13 @@ $third_description  = $content['descriptions'][2]['default'] ?? '';
 <div class="wp-block-columns alignwide" style="margin-top:0px;margin-bottom:80px">
 	<!-- wp:column -->
 	<div class="wp-block-column">
-		<!-- wp:cover {"url":"<?php echo esc_url( PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/man-person-winter-photography-statue-coat.png' ) ); ?>","dimRatio":0,"minHeight":800,"minHeightUnit":"px","isDark":false,"layout":{"type":"constrained"}} -->
+		<!-- wp:cover {"url":"<?php echo esc_url( PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/drinkware-liquid-tableware-dishware-bottle-fluid.jpg' ) ); ?>","dimRatio":0,"minHeight":800,"minHeightUnit":"px","isDark":false,"layout":{"type":"constrained"}} -->
 		<div class="wp-block-cover is-light" style="min-height:800px">
 			<span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span>
 			<img
 				class="wp-block-cover__image-background"
 				alt="<?php esc_attr_e( 'Placeholder image used to represent a product being showcased.', 'woo-gutenberg-products-block' ); ?>"
-				src="<?php echo esc_url( PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/man-person-winter-photography-statue-coat.png' ) ); ?>"
+				src="<?php echo esc_url( PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/drinkware-liquid-tableware-dishware-bottle-fluid.jpg' ) ); ?>"
 				data-object-fit="cover" />
 			<div class="wp-block-cover__inner-container">
 				<!-- wp:paragraph {"align":"center","placeholder":" ","fontSize":"large"} -->
@@ -101,7 +98,7 @@ $third_description  = $content['descriptions'][2]['default'] ?? '';
 			<!-- wp:buttons -->
 			<div class="wp-block-buttons"><!-- wp:button -->
 				<div class="wp-block-button">
-					<a class="wp-block-button__link wp-element-button" href="https://store.local/shop/classic-shop/">Shop now</a>
+					<a href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" class="wp-block-button__link wp-element-button"><?php esc_html_e( 'Shop now', 'woo-gutenberg-products-block' ); ?></a>
 				</div>
 				<!-- /wp:button -->
 			</div>

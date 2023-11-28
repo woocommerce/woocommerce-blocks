@@ -11,6 +11,7 @@ import { ProductGalleryPage } from './product-gallery.page';
 
 const blockData = {
 	name: 'woocommerce/product-gallery',
+	title: 'Product Gallery',
 	selectors: {
 		frontend: {},
 		editor: {
@@ -47,7 +48,7 @@ export const getVisibleLargeImageId = async (
 
 	const mainImageParsedContext = JSON.parse( mainImageContext );
 
-	return mainImageParsedContext.woocommerce.imageId;
+	return mainImageParsedContext.imageId;
 };
 
 const waitForJavascriptFrontendFileIsLoaded = async ( page: Page ) => {
@@ -68,7 +69,7 @@ const getThumbnailImageIdByNth = async (
 		'data-wc-context'
 	) ) as string;
 
-	const imageId = JSON.parse( imageContext ).woocommerce.imageId;
+	const imageId = JSON.parse( imageContext ).imageId;
 
 	return imageId;
 };
@@ -240,6 +241,54 @@ test.describe( `${ blockData.name }`, () => {
 		} );
 	} );
 
+	test.describe( 'block availability', () => {
+		test( 'should be available on the Single Product Template', async ( {
+			page,
+			editorUtils,
+		} ) => {
+			await editorUtils.openGlobalBlockInserter();
+			await page.getByRole( 'tab', { name: 'Blocks' } ).click();
+			const productGalleryBlockOption = page
+				.getByRole( 'listbox', { name: 'WooCommerce' } )
+				.getByRole( 'option', { name: blockData.title } );
+
+			await expect( productGalleryBlockOption ).toBeVisible();
+		} );
+
+		test( 'should be available on the Product Gallery template part', async ( {
+			admin,
+			editorUtils,
+			page,
+		} ) => {
+			await admin.visitSiteEditor( {
+				postId: `woocommerce/woocommerce//product-gallery`,
+				postType: 'wp_template_part',
+			} );
+			await editorUtils.enterEditMode();
+			await editorUtils.openGlobalBlockInserter();
+			await page.getByRole( 'tab', { name: 'Blocks' } ).click();
+			const productGalleryBlockOption = page
+				.getByRole( 'listbox', { name: 'WooCommerce' } )
+				.getByRole( 'option', { name: blockData.title } );
+
+			await expect( productGalleryBlockOption ).toBeVisible();
+		} );
+
+		test( 'should be hidden on the post editor', async ( {
+			admin,
+			page,
+			editorUtils,
+		} ) => {
+			await admin.createNewPost( { legacyCanvas: true } );
+			await editorUtils.openGlobalBlockInserter();
+			const productGalleryBlockOption = page
+				.getByRole( 'listbox', { name: 'WooCommerce' } )
+				.getByRole( 'option', { name: blockData.title } );
+
+			await expect( productGalleryBlockOption ).toBeHidden();
+		} );
+	} );
+
 	test( 'should show (square) cropped main product images when crop option is enabled', async ( {
 		page,
 		editorUtils,
@@ -278,6 +327,8 @@ test.describe( `${ blockData.name }`, () => {
 		const width = image?.width;
 
 		// Allow 1 pixel of difference.
-		expect( width === height + 1 || width === height - 1 ).toBeTruthy();
+		expect(
+			width === height + 1 || width === height - 1 || width === height
+		).toBeTruthy();
 	} );
 } );
