@@ -81,6 +81,7 @@ class Product extends AbstractRoute {
 		}
 
 		$product_updater->update_product_content( $product_information );
+		flush_rewrite_rules();
 
 		return rest_ensure_response(
 			array(
