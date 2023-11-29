@@ -2,6 +2,8 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useCustomerData } from '@woocommerce/base-context/hooks';
+import { isAddressComplete } from '@woocommerce/base-utils';
 
 /**
  * Internal dependencies
@@ -21,20 +23,28 @@ export const ShippingPlaceholder = ( {
 	setIsShippingCalculatorOpen,
 	isCheckout = false,
 }: ShippingPlaceholderProps ): JSX.Element => {
+	const { shippingAddress } = useCustomerData();
+	const addressComplete = isAddressComplete( shippingAddress );
+
 	if ( ! showCalculator ) {
-		return (
-			<em>
-				{ isCheckout
-					? __(
-							'No shipping options available',
-							'woo-gutenberg-products-block'
-					  )
-					: __(
-							'Calculated during checkout',
-							'woo-gutenberg-products-block'
-					  ) }
-			</em>
+		let message = __(
+			'Calculated during checkout',
+			'woo-gutenberg-products-block'
 		);
+
+		if ( isCheckout ) {
+			message = addressComplete
+				? __(
+						'No shipping options available',
+						'woo-gutenberg-products-block'
+				  )
+				: __(
+						'Add an address for shipping options',
+						'woo-gutenberg-products-block'
+				  );
+		}
+
+		return <>{ message }</>;
 	}
 
 	return (

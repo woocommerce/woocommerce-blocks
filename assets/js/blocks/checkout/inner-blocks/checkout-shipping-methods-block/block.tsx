@@ -88,12 +88,16 @@ const Block = ( { noShippingPlaceholder = null } ): ReactElement | null => {
 
 	if ( ! hasCalculatedShipping && ! shippingRatesPackageCount ) {
 		return (
-			<p>
+			<NoticeBanner
+				isDismissible={ false }
+				className="wc-block-components-shipping-rates-control__no-results-notice"
+				status="warning"
+			>
 				{ __(
 					'Shipping options will be displayed here after entering your full shipping address.',
 					'woo-gutenberg-products-block'
 				) }
-			</p>
+			</NoticeBanner>
 		);
 	}
 	const addressComplete = isAddressComplete( shippingAddress );
