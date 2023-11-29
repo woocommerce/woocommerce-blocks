@@ -14,7 +14,7 @@ jobs:
         steps:
             # Checkout defaults to using the branch which triggered the event, which
             # isn't necessarily `trunk` (e.g. in the case of a merge).
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
               with:
                   repository: WordPress/gutenberg
                   ref: trunk
