@@ -37,14 +37,7 @@ const PriceRangeControl = ( props: QueryControlProps ) => {
 				{ __( 'PRICE RANGE', 'woo-gutenberg-products-block' ) }
 			</BaseControl.VisualLabel>
 
-			<HStack
-				spacing="3"
-				expanded={ false }
-				justify="start"
-				style={ {
-					marginTop: '8px',
-				} }
-			>
+			<HStack spacing="2">
 				<PriceTextField
 					label={ __( 'MIN', 'woo-gutenberg-products-block' ) }
 					value={ value?.min as number }
