@@ -95,13 +95,14 @@ test.describe( `${ blockData.name } Block`, () => {
 		editor,
 		page,
 		frontendUtils,
+		editorUtils,
 	} ) => {
 		await admin.createNewPost( { legacyCanvas: true } );
 		await editor.insertBlock( { name: blockData.name } );
 
 		await selectIconAndTextOption( { page } );
 
-		await publishAndVisitPost( { page, editor } );
+		await editorUtils.publishAndVisitPost();
 
 		const block = await frontendUtils.getBlockByName( blockData.name );
 
