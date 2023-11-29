@@ -249,9 +249,18 @@ class ProductUpdater {
 			return;
 		}
 
-		$product->set_name( $ai_generated_product_content['title'] );
-		$product->set_description( $ai_generated_product_content['description'] );
-		$product->set_regular_price( $ai_generated_product_content['price'] );
+		wp_update_post(
+			array(
+				'ID'           => $product->get_id(),
+				'post_title'   => $ai_generated_product_content['title'],
+				'post_content' => $ai_generated_product_content['description'],
+				'post_name'    => sanitize_title( $ai_generated_product_content['title'] ),
+				'meta_input'   => array(
+					'_regular_price' => $ai_generated_product_content['price'],
+				),
+			)
+		);
+		flush_rewrite_rules();
 
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -323,9 +332,9 @@ class ProductUpdater {
 		$prompts = [];
 		foreach ( $products_information_list as $product_information ) {
 			if ( ! empty( $product_information['image']['alt'] ) ) {
-				$prompts[] = sprintf( 'Generate a product name that exactly matches the following image description: "%s" and also is related to the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans. The returned result should not refer to people, only objects.', $product_information['image']['alt'], $business_description );
+				$prompts[] = sprintf( 'Generate a product name for a product that could be sold in a store and could be associated with the following image description: "%s" and also is related to the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans. The returned result should not refer to people, only objects.', $product_information['image']['alt'], $business_description );
 			} else {
-				$prompts[] = sprintf( 'Generate a product name that matches the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans.', $business_description );
+				$prompts[] = sprintf( 'Generate a product name for a product that could be sold in a store and matches the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans.', $business_description );
 			}
 		}
 
