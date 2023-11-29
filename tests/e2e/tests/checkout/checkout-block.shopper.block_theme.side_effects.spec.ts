@@ -6,7 +6,10 @@ import { expect, test as base } from '@woocommerce/e2e-playwright-utils';
 /**
  * Internal dependencies
  */
-import { REGULAR_PRICED_PRODUCT_NAME } from './constants';
+import {
+	REGULAR_PRICED_PRODUCT_NAME,
+	SIMPLE_PHYSICAL_PRODUCT_NAME,
+} from './constants';
 import { CheckoutPage } from './checkout.page';
 
 const test = base.extend< { checkoutPageObject: CheckoutPage } >( {
@@ -86,5 +89,61 @@ test.describe( 'Shopper → Account', () => {
 			.then( ( response ) => {
 				expect( response[ 0 ].email ).toBe( testEmail );
 			} );
+	} );
+} );
+
+test.describe( 'shopper → Local pickup', () => {
+	test.beforeEach( async ( { admin } ) => {
+		// Enable local pickup.
+		await admin.visitAdminPage(
+			'admin.php?page=wc-settings&tab=shipping&section=pickup_location'
+		);
+		await admin.page.getByLabel( 'Enable local pickup' ).check();
+		await admin.page
+			.getByRole( 'button', { name: 'Add pickup location' } )
+			.click();
+		await admin.page.getByLabel( 'Location name' ).fill( 'Testing' );
+		await admin.page.getByPlaceholder( 'Address' ).fill( 'Test Address' );
+		await admin.page.getByPlaceholder( 'City' ).fill( 'Test City' );
+		await admin.page.getByPlaceholder( 'Postcode / ZIP' ).fill( '90210' );
+		await admin.page
+			.getByLabel( 'Pickup details' )
+			.fill( 'Pickup method.' );
+		await admin.page.getByRole( 'button', { name: 'Done' } ).click();
+		await admin.page
+			.getByRole( 'button', { name: 'Save changes' } )
+			.click();
+	} );
+	test.afterEach( async ( { admin } ) => {
+		// Enable local pickup.
+		await admin.visitAdminPage(
+			'admin.php?page=wc-settings&tab=shipping&section=pickup_location'
+		);
+		await admin.page.getByRole( 'button', { name: 'Edit' } ).last().click();
+		await admin.page
+			.getByRole( 'button', { name: 'Delete location' } )
+			.click();
+		await admin.page
+			.getByRole( 'button', { name: 'Save changes' } )
+			.click();
+	} );
+	test( 'The shopper can choose a local pickup option', async ( {
+		page,
+		frontendUtils,
+		checkoutPageObject,
+	} ) => {
+		await frontendUtils.emptyCart();
+		await frontendUtils.goToShop();
+		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
+		await frontendUtils.goToCheckout();
+		await page.getByRole( 'radio', { name: 'Local Pickup free' } ).click();
+		await expect( page.getByLabel( 'Testing' ).last() ).toBeVisible();
+		await page.getByLabel( 'Testing' ).last().check();
+		await checkoutPageObject.fillInCheckoutWithTestData();
+		await checkoutPageObject.placeOrder();
+		await expect(
+			page.getByText( 'Collection from Testing' )
+		).toBeVisible();
+		await checkoutPageObject.verifyBillingDetails();
 	} );
 } );
