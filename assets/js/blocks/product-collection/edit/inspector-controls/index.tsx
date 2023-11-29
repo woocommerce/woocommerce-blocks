@@ -28,7 +28,7 @@ import metadata from '../../block.json';
 import { ProductCollectionAttributes } from '../../types';
 import { setQueryAttribute } from '../../utils';
 import { DEFAULT_FILTERS, getDefaultSettings } from '../../constants';
-import { defaultQuery } from '../../collections';
+import { collections } from '../../collections';
 import UpgradeNotice from './upgrade-notice';
 import ColumnsControl from './columns-control';
 import InheritQueryControl from './inherit-query-control';
@@ -43,6 +43,35 @@ import LayoutOptionsControl from './layout-options-control';
 import FeaturedProductsControl from './featured-products-control';
 import CreatedControl from './created-control';
 
+const shouldDisplayOrderBy = ( collection?: string ) => {
+	if ( ! collection ) {
+		return true;
+	}
+
+	const collectionsToHideOrderBy = [
+		collections.bestSellers.name,
+		collections.newArrivals.name,
+		collections.topRated.name,
+	];
+	return ! collectionsToHideOrderBy.includes( collection );
+};
+
+const shouldDisplayFeatured = ( collection?: string ) => {
+	if ( ! collection ) {
+		return true;
+	}
+
+	return collection !== collections.featured.name;
+};
+
+const shouldDisplayOnSale = ( collection?: string ) => {
+	if ( ! collection ) {
+		return true;
+	}
+
+	return collection !== collections.onSale.name;
+};
+
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
 ) => {
@@ -51,8 +80,11 @@ const ProductCollectionInspectorControls = (
 	// To be changed - inherit control will be hidden completely once Custom
 	// collection is introduced
 	const displayInheritQueryControls =
-		isEmpty( collection ) || collection === defaultQuery.name;
+		isEmpty( collection ) || collection === collections.defaultQuery.name;
 	const displayQueryControls = inherit === false;
+	const displayOrderBy = shouldDisplayOrderBy( collection );
+	const displayFeatured = shouldDisplayFeatured( collection );
+	const displayOnSale = shouldDisplayOnSale( collection );
 
 	const setQueryAttributeBind = useMemo(
 		() => setQueryAttribute.bind( null, props ),
@@ -85,7 +117,7 @@ const ProductCollectionInspectorControls = (
 				{ displayInheritQueryControls ? (
 					<InheritQueryControl { ...queryControlProps } />
 				) : null }
-				{ displayQueryControls ? (
+				{ displayQueryControls && displayOrderBy ? (
 					<OrderByControl { ...queryControlProps } />
 				) : null }
 			</ToolsPanel>
@@ -101,13 +133,17 @@ const ProductCollectionInspectorControls = (
 					} }
 					className="wc-block-editor-product-collection-inspector-toolspanel__filters"
 				>
-					<OnSaleControl { ...queryControlProps } />
+					{ displayOnSale ? (
+						<OnSaleControl { ...queryControlProps } />
+					) : null }
 					<StockStatusControl { ...queryControlProps } />
 					<HandPickedProductsControl { ...queryControlProps } />
 					<KeywordControl { ...queryControlProps } />
 					<AttributesControl { ...queryControlProps } />
 					<TaxonomyControls { ...queryControlProps } />
-					<FeaturedProductsControl { ...queryControlProps } />
+					{ displayFeatured ? (
+						<FeaturedProductsControl { ...queryControlProps } />
+					) : null }
 					<CreatedControl { ...queryControlProps } />
 				</ToolsPanel>
 			) : null }

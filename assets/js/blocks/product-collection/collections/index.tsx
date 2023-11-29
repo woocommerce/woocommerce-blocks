@@ -18,7 +18,7 @@ import bestSellers from './best-sellers';
 import onSale from './on-sale';
 import featured from './featured';
 
-export const defaultQuery = {
+const defaultQuery = {
 	name: 'woocommerce-blocks/product-collection/default-query',
 	title: 'All Products',
 	icon: <Icon icon={ loop } />,
@@ -26,7 +26,16 @@ export const defaultQuery = {
 		'Display all products. Results may be limited by the current template context.',
 };
 
-const collections: BlockVariation[] = [
+export const collections = {
+	newArrivals,
+	topRated,
+	bestSellers,
+	onSale,
+	featured,
+	defaultQuery,
+};
+
+const collectionsArray: BlockVariation[] = [
 	featured,
 	topRated,
 	onSale,
@@ -34,8 +43,8 @@ const collections: BlockVariation[] = [
 	newArrivals,
 ];
 
-const registerCollections = () => {
-	collections.forEach( ( collection ) => {
+export const registerCollections = () => {
+	collectionsArray.forEach( ( collection ) => {
 		const isActive = (
 			blockAttrs: BlockAttributes,
 			variationAttributes: BlockAttributes

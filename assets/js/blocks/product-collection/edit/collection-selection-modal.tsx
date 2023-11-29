@@ -23,7 +23,7 @@ import { store as blockEditorStore } from '@wordpress/block-editor';
 import type { ProductCollectionAttributes } from '../types';
 import { getDefaultProductCollection } from '../constants';
 import blockJson from '../block.json';
-import { defaultQuery } from '../collections';
+import { collections } from '../collections';
 
 type CollectionButtonProps = {
 	active: boolean;
@@ -73,7 +73,7 @@ const getDefaultChosenCollection = (
 	// configured. So it's either a collection or we need to return defaultQuery
 	// collection name;
 	if ( attributes.query ) {
-		return attributes.collection || defaultQuery.name;
+		return attributes.collection || collections.defaultQuery.name;
 	}
 
 	// Otherwise it should be the first available choice. We control collections
@@ -93,7 +93,7 @@ const PatternSelectionModal = ( props: {
 
 	// Get Collections
 	const blockCollections = [
-		defaultQuery,
+		collections.defaultQuery,
 		...useSelect( ( select ) => {
 			// @ts-expect-error Type definitions are missing
 			// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/selectors.d.ts
