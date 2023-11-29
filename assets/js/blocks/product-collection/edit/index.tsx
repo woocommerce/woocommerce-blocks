@@ -9,16 +9,16 @@ import { useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { ImageSizing } from '../../atomic/blocks/product-elements/image/types';
+import { ImageSizing } from '../../../atomic/blocks/product-elements/image/types';
 import type {
 	ProductCollectionAttributes,
 	ProductCollectionQuery,
-} from './types';
-import { VARIATION_NAME as PRODUCT_TITLE_ID } from './variations/elements/product-title';
+} from '../types';
+import { VARIATION_NAME as PRODUCT_TITLE_ID } from '../variations/elements/product-title';
 import InspectorControls from './inspector-controls';
-import { DEFAULT_ATTRIBUTES } from './constants';
+import { DEFAULT_ATTRIBUTES } from '../constants';
 import './editor.scss';
-import { getDefaultValueOfInheritQueryFromTemplate } from './utils';
+import { getDefaultValueOfInheritQueryFromTemplate } from '../utils';
 import ToolbarControls from './toolbar-controls';
 
 export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
