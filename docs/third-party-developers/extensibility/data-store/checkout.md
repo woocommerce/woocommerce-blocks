@@ -27,6 +27,8 @@
     -   [isAfterProcessing](#isafterprocessing)
     -   [isComplete](#iscomplete)
     -   [isCalculating](#iscalculating)
+-   [Actions](#actions)
+    -   [setPrefersCollection](#setpreferscollection)
 
 ## Overview
 
@@ -288,6 +290,23 @@ This is true when the total is being re-calculated for the order. There are nume
 ```js
 const store = select( 'wc/store/checkout' );
 const isCalculating = store.isCalculating();
+```
+
+## Actions
+
+### setPrefersCollection
+
+Sets the `prefersCollection` flag to true or false.
+
+#### _Arguments_ <!-- omit in toc -->
+
+-   `boolean`: True if the shopper prefers to collect their order.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = dispatch( 'wc/store/checkout' );
+store.setPrefersCollection( true );
 ```
 
 <!-- FEEDBACK -->

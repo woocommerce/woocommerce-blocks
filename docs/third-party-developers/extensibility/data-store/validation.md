@@ -12,6 +12,7 @@
     -   [hideValidationError( errorId )](#hidevalidationerror-errorid-)
     -   [showValidationError( errorId )](#showvalidationerror-errorid-)
     -   [showAllValidationErrors](#showallvalidationerrors)
+    -   [clearAllValidationErrors](#clearallvalidationerrors)
 -   [Selectors](#selectors)
     -   [getValidationError( errorId )](#getvalidationerror-errorid-)
     -   [getValidationErrorId( errorId )](#getvalidationerrorid-errorid-)
@@ -271,6 +272,17 @@ const { dispatch } = wp.data;
 const { showAllValidationErrors } = dispatch( 'wc/store/validation' );
 
 showAllValidationErrors();
+```
+
+### clearAllValidationErrors
+
+Clears all validation errors by removing them from the store.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { clearAllValidationErrors } = dispatch( 'wc/store/validation' );
+clearAllValidationErrors();
 ```
 
 ## Selectors

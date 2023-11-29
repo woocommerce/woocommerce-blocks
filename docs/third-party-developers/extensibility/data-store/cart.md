@@ -31,6 +31,29 @@
     -   [isShippingRateBeingSelected](#isshippingratebeingselected)
     -   [getItemsPendingQuantityUpdate](#getitemspendingquantityupdate)
     -   [getItemsPendingDelete](#getitemspendingdelete)
+-   [Actions](#actions)
+    -   [setCartData](#setcartdata)
+    -   [setErrorData](#seterrordata)
+    -   [receiveCartContents](#receivecartcontents)
+    -   [receiveApplyingCoupon](#receiveapplyingcoupon)
+    -   [receiveRemovingCoupon](#receiveremovingcoupon)
+    -   [receiveCartItem](#receivecartitem)
+    -   [itemIsPendingQuantity](#itemispendingquantity)
+    -   [itemIsPendingDelete](#itemispendingdelete)
+    -   [setIsCartDataStale](#setiscartdatastale)
+    -   [updatingCustomerData](#updatingcustomerdata)
+    -   [shippingRatesBeingSelected](#shippingratesbeingselected)
+    -   [applyExtensionCartUpdate](#applyextensioncartupdate)
+    -   [applyCoupon](#applycoupon)
+    -   [removeCoupon](#removecoupon)
+    -   [addItemToCart](#additemtocart)
+    -   [removeItemFromCart](#removeitemfromcart)
+    -   [changeCartItemQuantity](#changecartitemquantity)
+    -   [selectShippingRate](#selectshippingrate)
+    -   [setBillingAddress](#setbillingaddress)
+    -   [setShippingAddress](#setshippingaddress)
+    -   [updateCustomerData](#updatecustomerdata)
+
 
 ## Overview
 
@@ -446,6 +469,334 @@ Retrieves the item keys for items that are currently being deleted.
 ```js
 const store = select( 'wc/store/cart' );
 const itemsPendingDelete = store.getItemsPendingDelete();
+```
+
+## Actions
+
+### setCartData
+
+This action is used to set the cart data in the store.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `cartData: Object`: The new cart data.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+setCartData( newCartData );
+```
+
+### setErrorData
+
+This action is used to set the error data in the store.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `errorData: Object`: The new error data.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+setErrorData( newErrorData );
+```
+
+### receiveCartContents
+
+Returns an action object used in updating the store with the provided cart.
+
+This action will also update the cart meta data.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `cartContents: Object`: The new cart contents.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `Object`: The action object.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+receiveCartContents( newCartContents );
+```
+
+### receiveApplyingCoupon
+
+This action is used to update the status of whether a coupon is being applied in the store.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `isApplying: boolean`: The new status of whether a coupon is being applied.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+receiveApplyingCoupon( isApplying );
+```
+
+### receiveRemovingCoupon
+
+This action is used to update the status of whether a coupon is being removed in the store.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `isRemoving: boolean`: The new status of whether a coupon is being removed.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+receiveRemovingCoupon( isRemoving );
+```
+
+### receiveCartItem
+
+This action is used to update a specific item in the cart.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `cartItem: Object`: The new cart item data.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+receiveCartItem( newCartItem );
+```
+
+### itemIsPendingQuantity
+
+This action is used to update the status of whether a cart item's quantity is being updated.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `cartItemKey: string`: The key of the cart item.
+-   `isPending: boolean`: The new status of whether the cart item's quantity is being updated.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+itemIsPendingQuantity( cartItemKey, isPending );
+```
+
+### itemIsPendingDelete
+
+This action is used to update the status of whether a cart item is being deleted.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `cartItemKey: string`: The key of the cart item.
+-   `isPending: boolean`: The new status of whether the cart item is being deleted.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+itemIsPendingDelete( cartItemKey, isPending );
+```
+
+### setIsCartDataStale
+
+This action is used to update the status of whether the cart data is stale.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `isStale: boolean`: The new status of whether the cart data is stale.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+setIsCartDataStale( isStale );
+```
+
+### updatingCustomerData
+
+This action is used to update the status of whether the customer data is being updated.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `isUpdating: boolean`: The new status of whether the customer data is being updated.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+updatingCustomerData( isUpdating );
+```
+
+### shippingRatesBeingSelected
+
+This action is used to update the status of whether the shipping rates are being selected.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `isSelecting: boolean`: The new status of whether the shipping rates are being selected.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+shippingRatesBeingSelected( isSelecting );
+```
+
+### applyExtensionCartUpdate
+
+This action is used to apply an extension update to the cart.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `extension: string`: The name of the extension.
+-   `update: Object`: The update to apply to the cart.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+applyExtensionCartUpdate( extension, update );
+```
+
+### applyCoupon
+
+This action is used to apply a coupon to the cart.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `couponCode: string`: The code of the coupon to apply.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+applyCoupon( couponCode );
+```
+
+### removeCoupon
+
+This action is used to remove a coupon from the cart.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `couponCode: string`: The code of the coupon to remove.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+removeCoupon( couponCode );
+```
+
+### addItemToCart
+
+This action is used to add an item to the cart.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `itemId: string`: The ID of the item to add.
+-   `quantity: number`: The quantity of the item to add.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+addItemToCart( itemId, quantity );
+```
+
+### removeItemFromCart
+
+This action is used to remove an item from the cart.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `itemId: string`: The ID of the item to remove.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+removeItemFromCart( itemId );
+```
+
+### changeCartItemQuantity
+
+This action is used to change the quantity of an item in the cart.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `itemId: string`: The ID of the item to change.
+-   `quantity: number`: The new quantity of the item.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+changeCartItemQuantity( itemId, quantity );
+```
+
+### selectShippingRate
+
+This action is used to select a shipping rate for the cart.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `rateId: string`: The ID of the shipping rate to select.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+selectShippingRate( rateId );
+```
+
+### setBillingAddress
+
+This action is used to set the billing address for the cart.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `address: Object`: The new billing address.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+setBillingAddress( address );
+```
+
+### setShippingAddress
+
+This action is used to set the shipping address for the cart.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `address: Object`: The new shipping address.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+setShippingAddress( address );
+```
+
+### updateCustomerData
+
+This action is used to update the customer data in the cart.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   `customerData: Object`: The new customer data.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( 'wc/store/cart' );
+updateCustomerData( customerData );
 ```
 
 <!-- FEEDBACK -->
