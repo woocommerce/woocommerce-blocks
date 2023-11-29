@@ -24,18 +24,6 @@
 						<!-- wp:navigation {"overlayMenu":"never","layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"blockGap":"10px"}}} /-->
 					</div>
 					<!-- /wp:column -->
-
-					<!-- wp:column -->
-					<div class="wp-block-column">
-						<!-- wp:navigation {"overlayMenu":"never","layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"blockGap":"10px"}}} /-->
-					</div>
-					<!-- /wp:column -->
-
-					<!-- wp:column -->
-					<div class="wp-block-column">
-						<!-- wp:navigation {"overlayMenu":"never","layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"blockGap":"10px"}}} /-->
-					</div>
-					<!-- /wp:column -->
 				</div>
 				<!-- /wp:columns -->
 			</div>
