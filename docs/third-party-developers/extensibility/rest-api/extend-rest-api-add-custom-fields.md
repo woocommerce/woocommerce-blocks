@@ -107,13 +107,13 @@ Screenshots of Redux Dev tool showing the data store before and after the setExt
 
 ### 4. Processing the Checkout POST Request
 
-To process the added field data, we'll need extend the Store API to tell it to expect additional data. A good place to start this process off is within the `initialize` function of our `IntegrationInterface` class.
+To process the added field data, we'll need extend the Store API to tell it to expect additional data. See more details in the [Exposing your data in the Store API](https://github.com/woocommerce/woocommerce-blocks/blob/trunk/docs/third-party-developers/extensibility/rest-api/extend-rest-api-add-data.md)
 
 #### Code Example
 
 We will use the following PHP files in our example:
 
-- The `custom-inner-block-blocks-integration.php` file:
+- The `custom-inner-block-blocks-integration.php` file: Enqueue scripts, styles, and data on the frontend when the Checkout blocks is being used. See more details in the [IntegrationInterface](https://github.com/woocommerce/woocommerce-blocks/blob/trunk/docs/third-party-developers/extensibility/checkout-block/integration-interface.md) documentation.
 
 ```php
 use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
@@ -122,23 +122,24 @@ use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
  * Class for integrating with WooCommerce Blocks
  */
 class Custom_Inner_Block_Blocks_Integration implements IntegrationInterface {
-	// ... Some code here
+
+	/**
+	 * The name of the integration.
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return 'new-field-block';
+	}
 
 	/**
 	 * When called invokes any initialization/setup for the integration.
 	 */
 	public function initialize() {
-		require_once __DIR__ . '/custom-inner-block-extend-store-endpoint.php';
 		// ... Some code here: (e.g. init functions that registers scripts and styles, and other instructions)
-		$this->extend_store_api();
 	}
 
-	/**
-	 * Extends the cart schema to include the custom-inner-block value.
-	 */
-	private function extend_store_api() {
-		Custom_Inner_Block_Extend_Store_Endpoint::init();
-	}
+	// ... Other functions here
 }
 ```
 
