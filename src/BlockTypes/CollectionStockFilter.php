@@ -29,14 +29,23 @@ final class CollectionStockFilter extends AbstractBlock {
 		add_filter( 'collection_active_filters_data', function( $active_filters, $params ) {
 			$stock_status_options = wc_get_product_stock_status_options();
 
+			$active_stock_statuses = array_filter( explode( ',', get_query_var( self::STOCK_STATUS_QUERY_VAR ) ) );
+
+			if ( empty( $active_stock_statuses ) ) {
+				return $active_filters;
+			}
+
 			$active_stock_statuses = array_map(
 				function( $status ) use ( $stock_status_options ) {
 					return array(
 						'title' => $stock_status_options[ $status ],
-						'attributes' => array(),
+						'attributes' => array(
+							'data-wc-on--click' => 'woocommerce/collection-stock-filter::actions.removeFilter',
+							'data-wc-context'   => 'woocommerce/collection-stock-filter::' . wp_json_encode( array( 'value' => $status ) ),
+						),
 					);
 				},
-				explode( ',', get_query_var( self::STOCK_STATUS_QUERY_VAR ) )
+				$active_stock_statuses
 			);
 
 			$active_filters['stock'] = array(

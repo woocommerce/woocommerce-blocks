@@ -21,7 +21,7 @@ final class CollectionActiveFilters extends AbstractBlock {
 	const CHIP_ITEM_TEMPLATE = '<li class="wc-block-active-filters__list-item">
 		<span class="is-removable wc-block-components-chip wc-block-components-chip--radius-large">
 			<span aria-hidden="false" class="wc-block-components-chip__text">%1$s</span>
-				<button class="wc-block-components-chip__remove" aria-label="%2$s" %3$s>
+			<button class="wc-block-components-chip__remove" aria-label="%2$s" %3$s>
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" role="img" class="wc-block-components-chip__remove-icon" aria-hidden="true" focusable="false"><path d="M12 13.06l3.712 3.713 1.061-1.06L13.061 12l3.712-3.712-1.06-1.06L12 10.938 8.288 7.227l-1.061 1.06L10.939 12l-3.712 3.712 1.06 1.061L12 13.061z"></path></svg>
 			</button>
 		</span>
@@ -56,14 +56,14 @@ final class CollectionActiveFilters extends AbstractBlock {
 				$element_attributes = array_reduce(
 					array_keys( $option['attributes'] ),
 					function( $acc, $key ) use ( $option ) {
-						$acc .= sprintf( ' %1$s="%2$s"', $key, $option['attributes'][ $key ] );
+						$acc .= sprintf( ' %1$s="%2$s"', esc_attr( $key ), esc_attr( $option['attributes'][ $key ] ) );
 						return $acc;
 					},
 					'' );
 
 				$acc .= sprintf(
 					$attributes['displayStyle'] === 'chips' ? self::CHIP_ITEM_TEMPLATE : self::LIST_ITEM_TEMPLATE,
-					$option['title'],
+					esc_html( $option['title'] ),
 					sprintf( 'Remove %s filter', $option['title'] ),
 					$element_attributes
 				);
@@ -73,7 +73,7 @@ final class CollectionActiveFilters extends AbstractBlock {
 
 			$acc .= sprintf(
 				self::LIST_TEMPLATE,
-				$filter['type'],
+				esc_attr( $filter['type'] ),
 				$items_content
 			);
 
@@ -85,6 +85,7 @@ final class CollectionActiveFilters extends AbstractBlock {
 			get_block_wrapper_attributes(
 				array(
 					'class' => 'wc-block-active-filters',
+					'data-wc-interactive' => wp_json_encode( array( 'namespace' => 'woocommerce/collection-active-filters' ) ),
 				)
 			),
 			$filter_content,
@@ -103,6 +104,10 @@ final class CollectionActiveFilters extends AbstractBlock {
 		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
 
 		$parsed_url   = wp_parse_url( esc_url_raw( $request_uri ) );
+
+		if ( empty( $parsed_url['query'] ) ) {
+			return array();
+		}
 
 		parse_str( $parsed_url['query'], $params );
 
