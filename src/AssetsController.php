@@ -66,6 +66,7 @@ final class AssetsController {
 
 		// Register the interactivity components here for now.
 		$this->api->register_script( 'wc-interactivity-dropdown', 'build/wc-interactivity-dropdown.js', [] );
+		$this->api->register_script( 'wc-interactivity-checkbox-list', 'build/wc-interactivity-checkbox-list.js', [] );
 
 		wp_add_inline_script(
 			'wc-blocks-middleware',

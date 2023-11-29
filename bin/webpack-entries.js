@@ -109,6 +109,10 @@ const blocks = {
 		customDir: 'collection-filters/inner-blocks/attribute-filter',
 		isExperimental: true,
 	},
+	'collection-rating-filter': {
+		customDir: 'collection-filters/inner-blocks/rating-filter',
+		isExperimental: true,
+	},
 	'order-confirmation-summary': {
 		customDir: 'order-confirmation/summary',
 	},
@@ -209,6 +213,8 @@ const entries = {
 		// interactivity components, exported as separate entries for now
 		'wc-interactivity-dropdown':
 			'./packages/interactivity-components/dropdown/index.ts',
+		'wc-interactivity-checkbox-list':
+			'./packages/interactivity-components/checkbox-list/index.ts',
 	},
 	main: {
 		// Shared blocks code
