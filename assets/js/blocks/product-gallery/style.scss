@@ -340,6 +340,7 @@ $default-number-of-thumbnails: 3;
 		.wc-block-product-gallery-thumbnails__thumbnail__view-all {
 			@include font-size(smaller);
 			text-decoration: underline;
+			text-align: center;
 		}
 
 		.wc-block-product-gallery-thumbnails__thumbnail__remaining-thumbnails-count,
