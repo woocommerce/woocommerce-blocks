@@ -111,7 +111,7 @@ This will return the assembled route with placeholders.
 #### _Parameters_ <!-- omit in toc -->
 
 -   `route: string`: The route to assemble.
--  `routePlaceholders: Array`: An array of route placeholders.
+-   `routePlaceholders: Array`: An array of route placeholders.
 -   `ids: Array`: An array of id references that are to be replaced in route placeholders.
 
 #### _Returns_ <!-- omit in toc -->
