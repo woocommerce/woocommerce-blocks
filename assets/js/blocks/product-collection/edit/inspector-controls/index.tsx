@@ -28,6 +28,7 @@ import metadata from '../../block.json';
 import { ProductCollectionAttributes } from '../../types';
 import { setQueryAttribute } from '../../utils';
 import { DEFAULT_FILTERS, getDefaultSettings } from '../../constants';
+import { defaultQuery } from '../../collections';
 import UpgradeNotice from './upgrade-notice';
 import ColumnsControl from './columns-control';
 import InheritQueryControl from './inherit-query-control';
@@ -47,7 +48,10 @@ const ProductCollectionInspectorControls = (
 ) => {
 	const { query, collection } = props.attributes;
 	const inherit = query?.inherit;
-	const displayInheritQueryControls = isEmpty( collection );
+	// To be changed - inherit control will be hidden completely once Custom
+	// collection is introduced
+	const displayInheritQueryControls =
+		isEmpty( collection ) || collection === defaultQuery.name;
 	const displayQueryControls = inherit === false;
 
 	const setQueryAttributeBind = useMemo(

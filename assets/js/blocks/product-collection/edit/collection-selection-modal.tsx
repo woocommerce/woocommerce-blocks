@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { Modal, Button } from '@wordpress/components';
-import { Icon, loop } from '@wordpress/icons';
 import {
 	// @ts-expect-error Type definitions for this function are missing in Guteberg
 	store as blocksStore,
@@ -24,6 +23,7 @@ import { store as blockEditorStore } from '@wordpress/block-editor';
 import type { ProductCollectionAttributes } from '../types';
 import { getDefaultProductCollection } from '../constants';
 import blockJson from '../block.json';
+import { defaultQuery } from '../collections';
 
 type CollectionButtonProps = {
 	active: boolean;
@@ -61,14 +61,6 @@ const CollectionButton = ( {
 			</div>
 		</Button>
 	);
-};
-
-const defaultQuery = {
-	name: 'woocommerce-blocks/product-collection/default-query',
-	title: 'All Products',
-	icon: <Icon icon={ loop } />,
-	description:
-		'Display all products in your catalog. Results may change to match the current template, page, or search term.',
 };
 
 const getDefaultChosenCollection = (
