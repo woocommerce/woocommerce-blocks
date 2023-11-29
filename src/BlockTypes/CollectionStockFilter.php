@@ -18,6 +18,37 @@ final class CollectionStockFilter extends AbstractBlock {
 	const STOCK_STATUS_QUERY_VAR = 'filter_stock_status';
 
 	/**
+	 * Initialize this block type.
+	 *
+	 * - Hook into WP lifecycle.
+	 * - Register the block with WordPress.
+	 */
+	protected function initialize() {
+		parent::initialize();
+
+		add_filter( 'collection_active_filters_data', function( $active_filters, $params ) {
+			$stock_status_options = wc_get_product_stock_status_options();
+
+			$active_stock_statuses = array_map(
+				function( $status ) use ( $stock_status_options ) {
+					return array(
+						'title' => $stock_status_options[ $status ],
+						'attributes' => array(),
+					);
+				},
+				explode( ',', get_query_var( self::STOCK_STATUS_QUERY_VAR ) )
+			);
+
+			$active_filters['stock'] = array(
+				'type' => __( 'Stock Status', 'woo-gutenberg-products-block' ),
+				'options' => $active_stock_statuses,
+			);
+
+			return $active_filters;
+		}, 10, 2 );
+	}
+
+	/**
 	 * Extra data passed through from server to client for block.
 	 *
 	 * @param array $stock_statuses  Any stock statuses that currently are available from the block.
@@ -112,12 +143,12 @@ final class CollectionStockFilter extends AbstractBlock {
 							<li>
 								<div class="wc-block-components-checkbox wc-block-checkbox-list__checkbox">
 									<label for="<?php echo esc_attr( $stock_count['status'] ); ?>">
-										<input 
-											id="<?php echo esc_attr( $stock_count['status'] ); ?>" 
-											class="wc-block-components-checkbox__input" 
-											type="checkbox" 
-											aria-invalid="false" 
-											data-wc-on--change="actions.updateProducts" 
+										<input
+											id="<?php echo esc_attr( $stock_count['status'] ); ?>"
+											class="wc-block-components-checkbox__input"
+											type="checkbox"
+											aria-invalid="false"
+											data-wc-on--change="actions.updateProducts"
 											value="<?php echo esc_attr( $stock_count['status'] ); ?>"
 											<?php checked( strpos( $selected_stock_status, $stock_count['status'] ) !== false, 1 ); ?>
 										>
