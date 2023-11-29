@@ -39,13 +39,13 @@ const ProductCollectionPlaceholder = (
 					'woo-gutenberg-products-block'
 				) }
 				instructions={ __(
-					'Choose from pre-existing collections or add default one.',
+					'Choose a product collection to display, or create your own.',
 					'woo-gutenberg-products-block'
 				) }
 			>
 				<Button variant="primary" onClick={ openPatternSelectionModal }>
 					{ __(
-						'Choose Collection',
+						'Choose collection',
 						'woo-gutenberg-products-block'
 					) }
 				</Button>
@@ -53,10 +53,7 @@ const ProductCollectionPlaceholder = (
 					variant="tertiary"
 					onClick={ addDefaultProductCollection }
 				>
-					{ __(
-						'Use default collection',
-						'woo-gutenberg-products-block'
-					) }
+					{ __( 'Create custom', 'woo-gutenberg-products-block' ) }
 				</Button>
 			</Placeholder>
 		</div>

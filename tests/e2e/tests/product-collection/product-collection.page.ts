@@ -90,11 +90,11 @@ class ProductCollectionPage {
 	async chooseCollectionInPost( collection?: Collections ) {
 		if ( ! collection ) {
 			await this.admin.page
-				.getByRole( 'button', { name: 'Use default collection' } )
+				.getByRole( 'button', { name: 'Create custom' } )
 				.click();
 		} else {
 			await this.admin.page
-				.getByRole( 'button', { name: 'Choose Collection' } )
+				.getByRole( 'button', { name: 'Choose collection' } )
 				.click();
 
 			await this.admin.page.waitForSelector(
@@ -116,12 +116,12 @@ class ProductCollectionPage {
 		if ( ! collection ) {
 			await this.admin.page
 				.frameLocator( 'iframe[name="editor-canvas"]' )
-				.getByRole( 'button', { name: 'Use default collection' } )
+				.getByRole( 'button', { name: 'Create custom' } )
 				.click();
 		} else {
 			await this.admin.page
 				.frameLocator( 'iframe[name="editor-canvas"]' )
-				.getByRole( 'button', { name: 'Choose Collection' } )
+				.getByRole( 'button', { name: 'Choose collection' } )
 				.click();
 
 			await this.admin.page.waitForSelector(
