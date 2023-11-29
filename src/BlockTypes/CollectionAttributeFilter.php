@@ -56,7 +56,14 @@ final class CollectionAttributeFilter extends AbstractBlock {
 					$term_object = get_term_by( 'slug', $term, "pa_{$product_attribute}" );
 					return array(
 						'title' => $term_object->name,
-						'attributes' => array(),
+						'attributes' => array(
+							'data-wc-on--click' => 'woocommerce/collection-attribute-filter::actions.removeFilter',
+							'data-wc-context'   => 'woocommerce/collection-attribute-filter::' . wp_json_encode( array(
+								'value'         => $term,
+								'attributeSlug' => $product_attribute,
+								'queryType'     => get_query_var( "query_type_{$product_attribute}" ),
+							) ),
+						),
 					);
 				}, $terms );
 
