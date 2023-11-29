@@ -1,7 +1,12 @@
 /**
  * External dependencies
  */
-import { store } from '@woocommerce/interactivity';
+import { getContext, store } from '@woocommerce/interactivity';
+
+/**
+ * Internal dependencies
+ */
+import { HTMLElementEvent } from '../../../assets/js/types';
 
 /**
  * Internal dependencies
@@ -9,6 +14,12 @@ import { store } from '@woocommerce/interactivity';
 import './style.scss';
 
 export type CheckboxListContext = {
+	items: {
+		id: string;
+		label: string;
+		value: string;
+		checked: boolean;
+	}[];
 	// currentItem: {
 	// 	label: string;
 	// 	value: string;
@@ -26,43 +37,20 @@ export type CheckboxListContext = {
 
 store( 'woocommerce/interactivity-checkbox-list', {
 	state: {},
-	selectors: {
-		placeholderText: () => {
-			// const context = getContext< CheckboxListContext >();
-			// const { selectedItem } = context;
-			// return selectedItem.label || 'Select an option';
-		},
-		isSelected: () => {
-			// const context = getContext< CheckboxListContext >();
-			// const {
-			// 	currentItem: { value },
-			// } = context;
-			// return (
-			// 	context.selectedItem.value === value ||
-			// 	context.hoveredItem.value === value
-			// );
-		},
-	},
 	actions: {
-		selectCheckboxItem: () => {
-			// const context = getContext< CheckboxListContext >();
-			// const {
-			// 	currentItem: { label, value },
-			// } = context;
-			// const { selectedItem } = context;
-			// if (
-			// 	selectedItem.value === value &&
-			// 	selectedItem.label === label
-			// ) {
-			// 	context.selectedItem = {
-			// 		label: null,
-			// 		value: null,
-			// 	};
-			// } else {
-			// 	context.selectedItem = { label, value };
-			// }
-			// context.isOpen = false;
-			// event.stopPropagation();
+		selectCheckboxItem: ( event: HTMLElementEvent< HTMLInputElement > ) => {
+			const context = getContext< CheckboxListContext >();
+			const value = event.target.value;
+
+			context.items = context.items.map( ( item ) => {
+				if ( item.value.toString() === value ) {
+					return {
+						...item,
+						checked: ! item.checked,
+					};
+				}
+				return item;
+			} );
 		},
 	},
 } );

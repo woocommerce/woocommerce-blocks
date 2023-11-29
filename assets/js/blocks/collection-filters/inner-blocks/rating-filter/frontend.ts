@@ -27,7 +27,24 @@
  */
 import { store } from '@woocommerce/interactivity';
 
+/**
+ * Internal dependencies
+ */
+// import { CheckboxListContext } from '../../../../../../packages/interactivity-components/checkbox-list';
+
 store( 'woocommerce/collection-rating-filter', {
 	state: {},
-	actions: {},
+	actions: {
+		updateSelectedFilters: () => {
+			// const checkboxContext = getContext< CheckboxListContext >(
+			// 	'woocommerce/interactivity-checkbox-list'
+			// );
+			// console.log(
+			// 	'selected filters changed. Do a thing here',
+			// 	checkboxContext.items.map( ( item ) => {
+			// 		return { ...item };
+			// 	} )
+			// );
+		},
+	},
 } );

@@ -41,42 +41,45 @@ final class CollectionRatingFilter extends AbstractBlock {
 			return '';
 		}
 
-		$checkbox_list_props = array(
-			'items' => array(
-				array(
-					'id'      => 'rating-5',
+		$checkbox_list_items = array_map(
+			function( $rating ) {
+				return array(
+					'id'      => 'rating-' . $rating,
 					'checked' => true,
-					'label'   => '5',
-					'value'   => '5',
-				),
-				array(
-					'id'      => 'rating-4',
-					'checked' => true,
-					'label'   => '4',
-					'value'   => '4',
-				),
-				array(
-					'id'      => 'rating-3',
-					'checked' => true,
-					'label'   => '3',
-					'value'   => '3',
-				),
-				array(
-					'id'      => 'rating-2',
-					'checked' => true,
-					'label'   => '2',
-					'value'   => '2',
-				),
-				array(
-					'id'      => 'rating-1',
-					'checked' => true,
-					'label'   => '1',
-					'value'   => '1',
-				),
-			),
+					'label'   => $this->render_rating_label( $rating ),
+					'value'   => $rating,
+				);
+			},
+			range( 1, 5 )
 		);
 
-		return CheckboxList::render( $checkbox_list_props );
+		return CheckboxList::render(
+			array(
+				'items'     => $checkbox_list_items,
+				'on_change' => 'woocommerce/collection-rating-filter::actions.updateSelectedFilters',
+			)
+		);
+	}
+
+	/**
+	 * Render the rating label.
+	 *
+	 * @param int $rating The rating to render.
+	 * @return string|false
+	 */
+	private function render_rating_label( $rating ) {
+		$width = $rating * 20;
+		ob_start();
+		?>
+		<div class="wc-block-components-product-rating">
+			<div class="wc-block-components-product-rating__stars" role="img" aria-label="Rated <?php echo esc_attr( $rating ); ?> out of 5">
+				<span style="width: <?php echo esc_attr( $width ); ?>%">
+					Rated <strong class="rating"><?php echo esc_html( $rating ); ?></strong> out of 5
+				</span>
+			</div>
+		</div>
+		<?php
+		return ob_get_clean();
 	}
 
 
