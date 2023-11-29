@@ -170,13 +170,14 @@ class ProductGalleryThumbnails extends AbstractBlock {
 					}
 
 					return sprintf(
-						'<div class="wc-block-product-gallery-thumbnails wp-block-woocommerce-product-gallery-thumbnails %1$s" style="%2$s" data-wc-interactive=\'%4$s\'>
-							%3$s
+						'<div class="wc-block-product-gallery-thumbnails wp-block-woocommerce-product-gallery-thumbnails %1$s wc-block-product-gallery-thumbnails__total-count-%2$s" style="%3$s" data-wc-interactive=\'%4$s\'>
+							%5$s
 						</div>',
 						esc_attr( $classes_and_styles['classes'] ),
+						esc_attr( $number_of_thumbnails ),
 						esc_attr( $classes_and_styles['styles'] ),
-						$html,
-						wp_json_encode( array( 'namespace' => 'woocommerce/product-gallery' ) )
+						wp_json_encode( array( 'namespace' => 'woocommerce/product-gallery' ) ),
+						$html
 					);
 				}
 			}
