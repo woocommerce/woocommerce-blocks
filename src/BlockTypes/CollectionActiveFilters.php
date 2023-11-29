@@ -35,7 +35,7 @@ final class CollectionActiveFilters extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
-		$active_filters = apply_filters( 'collection_active_filters_data', array(), $block->context['queryId'] );
+		$active_filters = apply_filters( 'collection_active_filters_data', array(), $this->get_filter_query_params( $block->context['queryId'] ) );
 
 		if ( empty( $active_filters ) ) {
 			return $content;
@@ -81,5 +81,22 @@ final class CollectionActiveFilters extends AbstractBlock {
 			),
 			$filter_content
 		);
+	}
+
+	/**
+	 * Parse the filter parameters from the URL.
+	 *
+	 * @param int $query_id Query ID.
+	 * @return array Parsed filter params.
+	 */
+	private function get_filter_query_params( $query_id ) {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+
+		$parsed_url   = wp_parse_url( esc_url_raw( $request_uri ) );
+
+		parse_str( $parsed_url['query'], $params );
+
+		return $params;
 	}
 }

@@ -24,21 +24,7 @@ final class CollectionAttributeFilter extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 
-		add_filter( 'collection_active_filters_data', function( $active_filters, $query_id ) {
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
-
-			$parsed_url   = wp_parse_url( esc_url_raw( $request_uri ) );
-
-			parse_str( $parsed_url['query'], $params );
-
-			$active_product_attributes = array_reduce( array_keys( $params ), function( $acc, $attribute ) {
-				if ( strpos( $attribute, 'filter_' ) === 0 ) {
-					$acc[] = str_replace( 'filter_', '', $attribute );
-				}
-				return $acc;
-			}, array() );
-
+		add_filter( 'collection_active_filters_data', function( $active_filters, $params ) {
 			$product_attributes_map = array_reduce(
 				wc_get_attribute_taxonomies(),
 				function( $acc, $attribute_object ) {
@@ -47,6 +33,13 @@ final class CollectionAttributeFilter extends AbstractBlock {
 				},
 				array()
 			);
+
+			$active_product_attributes = array_reduce( array_keys( $params ), function( $acc, $attribute ) {
+				if ( strpos( $attribute, 'filter_' ) === 0 ) {
+					$acc[] = str_replace( 'filter_', '', $attribute );
+				}
+				return $acc;
+			}, array() );
 
 			$active_product_attributes = array_filter(
 				$active_product_attributes,
