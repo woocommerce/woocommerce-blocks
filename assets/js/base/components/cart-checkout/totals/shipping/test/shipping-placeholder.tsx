@@ -19,7 +19,7 @@ describe( 'ShippingPlaceholder', () => {
 			/>
 		);
 		expect(
-			screen.getByText( 'No shipping options available' )
+			screen.getByText( 'Add an address for shipping options' )
 		).toBeInTheDocument();
 		rerender(
 			<ShippingPlaceholder
