@@ -81,7 +81,7 @@ This action is used to set the cart data in the store.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-setCartData( newCartData );
+dispatch( setCartData( newCartData ) );
 ```
 
 ### setErrorData
@@ -96,7 +96,7 @@ This action is used to set the error data in the store.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-setErrorData( newErrorData );
+dispatch( setErrorData( newErrorData ) );
 ```
 
 ### receiveCartContents
@@ -115,7 +115,7 @@ This action returns an action object used in updating the store with the provide
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-receiveCartContents( newCartContents );
+dispatch( receiveCartContents( newCartContents ) );
 ```
 
 ### receiveApplyingCoupon
@@ -134,7 +134,7 @@ This action returns an action object used to track when a coupon is applying.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-receiveApplyingCoupon( couponCode );
+dispatch( receiveApplyingCoupon( couponCode ) );
 ```
 
 ### receiveRemovingCoupon
@@ -153,7 +153,7 @@ This action returns an action object used to track when a coupon is removing.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-receiveRemovingCoupon( couponCode );
+dispatch( receiveRemovingCoupon( couponCode ) );
 ```
 
 ### receiveCartItem
@@ -172,7 +172,7 @@ This action is used to update a specific item in the cart.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-receiveCartItem( CartResponseItem );
+dispatch( receiveCartItem( CartResponseItem ) );
 ```
 
 ### itemIsPendingQuantity
@@ -192,7 +192,7 @@ This action returns an action object to indicate if the specified cart item quan
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-itemIsPendingQuantity( cartItemKey, isPending );
+dispatch( itemIsPendingQuantity( cartItemKey, isPending ) );
 ```
 
 ### itemIsPendingDelete
@@ -212,7 +212,7 @@ This action returns an action object to indicate if the specified cart item is b
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-itemIsPendingDelete( cartItemKey, isPending );
+dispatch( itemIsPendingDelete( cartItemKey, isPending ) );
 ```
 
 ### setIsCartDataStale
@@ -231,7 +231,7 @@ This action returns an action object to indicate if the cart data is stale.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-setIsCartDataStale( isCartDataStale );
+dispatch( setIsCartDataStale( isCartDataStale ) );
 ```
 
 ### updatingCustomerData
@@ -250,7 +250,7 @@ This action returns an action object to indicate if the customer data is being u
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-updatingCustomerData( isResolving );
+dispatch( updatingCustomerData( isResolving ) );
 ```
 
 ### shippingRatesBeingSelected
@@ -269,7 +269,7 @@ This action returns an action object to indicate if the shipping rates are being
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-shippingRatesBeingSelected( isResolving );
+dispatch( shippingRatesBeingSelected( isResolving ) );
 ```
 
 ### applyExtensionCartUpdate
@@ -284,7 +284,7 @@ This action is used to send POSTs request to the /cart/extensions endpoint with 
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-applyExtensionCartUpdate( args );
+dispatch( applyExtensionCartUpdate( args ) );
 ```
 
 ### applyCoupon
@@ -299,7 +299,7 @@ This action is used to apply a coupon to the cart.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-applyCoupon( couponCode );
+dispatch( applyCoupon( couponCode ) );
 ```
 
 ### removeCoupon
@@ -314,7 +314,7 @@ This action is used to remove a coupon from the cart.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-removeCoupon( couponCode );
+dispatch( removeCoupon( couponCode ) );
 ```
 
 ### addItemToCart
@@ -330,7 +330,7 @@ This action is used to add an item to the cart.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-addItemToCart( productId, quantity );
+dispatch( addItemToCart( productId, quantity ) );
 ```
 
 ### removeItemFromCart
@@ -345,7 +345,7 @@ This action is used to remove an item from the cart.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-removeItemFromCart( cartItemKey );
+dispatch( removeItemFromCart( cartItemKey ) );
 ```
 
 ### changeCartItemQuantity
@@ -361,7 +361,7 @@ This action is used to change the quantity of an item in the cart.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-changeCartItemQuantity( cartItemKey, quantity );
+dispatch( changeCartItemQuantity( cartItemKey, quantity ) );
 ```
 
 ### selectShippingRate
@@ -377,7 +377,7 @@ This action is used to select a shipping rate for the cart.
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-selectShippingRate( rateId, packageId );
+dispatch( selectShippingRate( rateId, packageId ) );
 ```
 
 ### setBillingAddress
@@ -392,7 +392,7 @@ This action is used to set the billing address for the cart locally, as opposed 
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-setBillingAddress( billingAddress );
+dispatch( setBillingAddress( billingAddress ) );
 ```
 
 ### setShippingAddress
@@ -407,7 +407,7 @@ This action is used to set the shipping address for the cart locally, as opposed
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-setShippingAddress( shippingAddress );
+dispatch( setShippingAddress( shippingAddress ) );
 ```
 
 ### updateCustomerData
@@ -423,7 +423,7 @@ This action is used to updates the shipping and/or billing address for the custo
 
 ```js
 const { dispatch } = useDispatch( 'wc/store/cart' );
-updateCustomerData( customerData, editing );
+dispatch( updateCustomerData( customerData, editing ) );
 ```
 
 
