@@ -80,7 +80,7 @@ This action is used to set the cart data in the store.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( setCartData( newCartData ) );
 ```
 
@@ -95,7 +95,7 @@ This action is used to set the error data in the store.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( setErrorData( newErrorData ) );
 ```
 
@@ -114,7 +114,7 @@ This action returns an action object used in updating the store with the provide
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( receiveCartContents( newCartContents ) );
 ```
 
@@ -133,7 +133,7 @@ This action returns an action object used to track when a coupon is applying.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( receiveApplyingCoupon( couponCode ) );
 ```
 
@@ -152,7 +152,7 @@ This action returns an action object used to track when a coupon is removing.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( receiveRemovingCoupon( couponCode ) );
 ```
 
@@ -171,7 +171,7 @@ This action is used to update a specific item in the cart.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( receiveCartItem( CartResponseItem ) );
 ```
 
@@ -191,7 +191,7 @@ This action returns an action object to indicate if the specified cart item quan
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( itemIsPendingQuantity( cartItemKey, isPending ) );
 ```
 
@@ -211,7 +211,7 @@ This action returns an action object to indicate if the specified cart item is b
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( itemIsPendingDelete( cartItemKey, isPending ) );
 ```
 
@@ -230,7 +230,7 @@ This action returns an action object to indicate if the cart data is stale.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( setIsCartDataStale( isCartDataStale ) );
 ```
 
@@ -249,7 +249,7 @@ This action returns an action object to indicate if the customer data is being u
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( updatingCustomerData( isResolving ) );
 ```
 
@@ -268,7 +268,7 @@ This action returns an action object to indicate if the shipping rates are being
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( shippingRatesBeingSelected( isResolving ) );
 ```
 
@@ -283,7 +283,7 @@ This action is used to send POSTs request to the /cart/extensions endpoint with 
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( applyExtensionCartUpdate( args ) );
 ```
 
@@ -298,7 +298,7 @@ This action is used to apply a coupon to the cart.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( applyCoupon( couponCode ) );
 ```
 
@@ -313,7 +313,7 @@ This action is used to remove a coupon from the cart.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( removeCoupon( couponCode ) );
 ```
 
@@ -329,7 +329,7 @@ This action is used to add an item to the cart.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( addItemToCart( productId, quantity ) );
 ```
 
@@ -344,7 +344,7 @@ This action is used to remove an item from the cart.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( removeItemFromCart( cartItemKey ) );
 ```
 
@@ -360,7 +360,7 @@ This action is used to change the quantity of an item in the cart.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( changeCartItemQuantity( cartItemKey, quantity ) );
 ```
 
@@ -376,7 +376,7 @@ This action is used to select a shipping rate for the cart.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( selectShippingRate( rateId, packageId ) );
 ```
 
@@ -391,7 +391,7 @@ This action is used to set the billing address for the cart locally, as opposed 
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( setBillingAddress( billingAddress ) );
 ```
 
@@ -406,7 +406,7 @@ This action is used to set the shipping address for the cart locally, as opposed
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( setShippingAddress( shippingAddress ) );
 ```
 
@@ -422,10 +422,9 @@ This action is used to updates the shipping and/or billing address for the custo
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const { dispatch } = useDispatch( 'wc/store/cart' );
+const { dispatch } = useDispatch( CART_STORE_KEY );
 dispatch( updateCustomerData( customerData, editing ) );
 ```
-
 
 ## Selectors
 
@@ -456,7 +455,7 @@ Returns the Cart data from the state.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const cartData = store.getCartData();
 ```
 
@@ -482,7 +481,7 @@ Returns the shipping and billing address from the state.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const customerData = store.getCustomerData();
 ```
 
@@ -497,7 +496,7 @@ Returns the shipping rates from the state.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const shippingRates = store.getShippingRates();
 ```
 
@@ -512,7 +511,7 @@ Queries whether the cart needs shipping.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const needsShipping = store.getNeedsShipping();
 ```
 
@@ -527,7 +526,7 @@ Queries whether the cart shipping has been calculated.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const hasCalculatedShipping = store.getHasCalculatedShipping();
 ```
 
@@ -560,7 +559,7 @@ Returns the cart totals from state.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const cartTotals = store.getCartTotals();
 ```
 
@@ -580,7 +579,7 @@ Returns the cart meta from state.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const cartMeta = store.getCartMeta();
 ```
 
@@ -595,7 +594,7 @@ Returns the cart errors from state if cart receives customer facing errors from 
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const cartErrors = store.getCartErrors();
 ```
 
@@ -610,7 +609,7 @@ Queries whether a coupon is being applied.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const isApplyingCoupon = store.isApplyingCoupon();
 ```
 
@@ -625,7 +624,7 @@ Queries whether the cart data is stale.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const isCartDataStale = store.isCartDataStale();
 ```
 
@@ -640,7 +639,7 @@ Returns the coupon code being applied.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const couponBeingApplied = store.getCouponBeingApplied();
 ```
 
@@ -655,7 +654,7 @@ Queries whether a coupon is being removed.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const isRemovingCoupon = store.isRemovingCoupon();
 ```
 
@@ -670,7 +669,7 @@ Returns the coupon code being removed.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const couponBeingRemoved = store.getCouponBeingRemoved();
 ```
 
@@ -729,7 +728,7 @@ Returns a cart item from the state.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const cartItem = store.getCartItem( cartItemKey );
 ```
 
@@ -748,7 +747,7 @@ Queries whether a cart item is pending quantity.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const isItemPendingQuantity = store.isItemPendingQuantity( cartItemKey );
 ```
 
@@ -767,7 +766,7 @@ Queries whether a cart item is pending delete.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const isItemPendingDelete = store.isItemPendingDelete( cartItemKey );
 ```
 
@@ -782,7 +781,7 @@ Queries whether the customer data is being updated.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const isCustomerDataUpdating = store.isCustomerDataUpdating();
 ```
 
@@ -797,7 +796,7 @@ Queries whether a shipping rate is being selected.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const isShippingRateBeingSelected = store.isShippingRateBeingSelected();
 ```
 
@@ -812,7 +811,7 @@ Retrieves the item keys for items whose quantity is currently being updated.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const itemsPendingQuantityUpdate = store.getItemsPendingQuantityUpdate();
 ```
 
@@ -827,7 +826,7 @@ Retrieves the item keys for items that are currently being deleted.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/cart' );
+const store = select( CART_STORE_KEY );
 const itemsPendingDelete = store.getItemsPendingDelete();
 ```
 

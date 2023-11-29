@@ -7,6 +7,7 @@
 -   [Actions](#actions)
     -   [receiveCollection( namespace, resourceName, queryString, ids = \[\], items = \[\], replace = false )](#receivecollection-namespace-resourcename-querystring-ids---items---replace--false-)
     -   [receiveCollectionError](#receivecollectionerror)
+    -   [receiveLastModified](#receivelastmodified)
 -   [Selectors](#selectors)
     -   [getCollection](#getcollection)
     -   [getCollectionHeader](#getcollectionheader)
@@ -40,6 +41,13 @@ This will return an action object for the given arguments used in dispatching th
 -   _response_ `Object`: An object containing a `items` property with the collection items from the response (array), and a `headers` property that is matches the `window.Headers` interface containing the headers from the response.
 -   _replace_ `boolean`: Whether or not to replace any existing items in the store for the given indexes (namespace, resourceName, queryString) if there are already values in the store.
 
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( COLLECTIONS_STORE_KEY );
+dispatch( receiveCollection( namespace, resourceName, queryString, ids, response ) );
+```
+
 ### receiveCollectionError
 
 This will return an action object for the given arguments used in dispatching an error to the store.
@@ -47,15 +55,31 @@ This will return an action object for the given arguments used in dispatching an
 #### _Parameters_ <!-- omit in toc -->
 
 -   _namespace_ `string`: The route namespace for the collection, eg. `/wc/blocks`.
--   _resourceName_ `string`: The resource name for the collection (eg. `products/attributes`.
+-   _resourceName_ `string`: The resource name for the collection, eg. `products/attributes`.
 -   _queryString_ `string`: An additional query string to add to the request for the collection. Note, collections are cached by the query string, eg. `?order=ASC`.
+-   _ids_ `array`: If the collection route has placeholders for ids, you provide them via this argument in the order of how the placeholders appear in the route.
 -   _error_ `Object`: The error object.
 
 #### _Example_ <!-- omit in toc -->
 
 ```js
 const { dispatch } = useDispatch( COLLECTIONS_STORE_KEY );
-receiveCollectionError( namespace, resourceName, queryString, error );
+dispatch( receiveCollectionError( namespace, resourceName, queryString, ids, error ) );
+```
+
+### receiveLastModified
+
+This will return an action object for the given arguments used in dispatching the last modified date to the store.
+
+#### _Parameters_ <!-- omit in toc -->
+
+-   _timestamp_ `number`: The timestamp of the last modified date.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const { dispatch } = useDispatch( COLLECTIONS_STORE_KEY );
+dispatch( receiveLastModified( timestamp ) );
 ```
 
 ## Selectors
