@@ -195,6 +195,10 @@ const entries = {
 			'./assets/js/atomic/blocks/product-elements/add-to-cart-form/index.tsx',
 		...getBlockEntries( '{index,block,frontend}.{t,j}s{,x}' ),
 
+		// Interactivity component styling
+		'wc-interactivity-checkbox-list':
+			'./packages/interactivity-components/checkbox-list/index.ts',
+
 		// Templates
 		'wc-blocks-classic-template-revert-button-style':
 			'./assets/js/templates/revert-button/index.tsx',

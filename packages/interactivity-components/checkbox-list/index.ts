@@ -3,6 +3,11 @@
  */
 import { store } from '@woocommerce/interactivity';
 
+/**
+ * Internal dependencies
+ */
+import './style.scss';
+
 export type CheckboxListContext = {
 	// currentItem: {
 	// 	label: string;

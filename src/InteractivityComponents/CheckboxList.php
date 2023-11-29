@@ -22,6 +22,7 @@ class CheckboxList {
 	 */
 	public static function render( $props ) {
 		wp_enqueue_script( 'wc-interactivity-checkbox-list' );
+		wp_enqueue_style( 'wc-interactivity-checkbox-list' );
 
 		$items = $props['items'] ?? [];
 
