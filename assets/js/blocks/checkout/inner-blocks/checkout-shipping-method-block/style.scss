@@ -27,13 +27,13 @@
 	&.components-button:focus:not(:disabled),
 	&:focus,
 	&:hover {
-		background-color: $universal-background-light;
+		background-color: $universal-background;
 		border-color: #d5d5d5;
 		color: #333;
 	}
 	&.wc-block-checkout__shipping-method-option--selected {
-		outline: 1px solid $universal-border-dark;
-		background-color: $universal-background-light;
+		outline: 1px solid $universal-border-strong;
+		background-color: $universal-background;
 	}
 }
 

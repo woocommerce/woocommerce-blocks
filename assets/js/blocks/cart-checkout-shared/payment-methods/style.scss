@@ -172,7 +172,7 @@
 
 .wc-block-checkout__payment-method {
 	.wc-block-components-radio-control__option {
-		padding-left: 56px;
+		padding-left: em($gap-huge);
 
 		&::after {
 			content: none;
