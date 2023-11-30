@@ -63,8 +63,8 @@ final class CollectionActiveFilters extends AbstractBlock {
 
 				$acc .= sprintf(
 					$attributes['displayStyle'] === 'chips' ? self::CHIP_ITEM_TEMPLATE : self::LIST_ITEM_TEMPLATE,
-					esc_html( $option['title'] ),
-					sprintf( 'Remove %s filter', $option['title'] ),
+					wp_kses_post( $option['title'] ),
+					sprintf( 'Remove %s filter', esc_attr( strip_tags( $option['title'] ) ) ),
 					$element_attributes
 				);
 

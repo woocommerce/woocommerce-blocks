@@ -17,6 +17,54 @@ final class CollectionPriceFilter extends AbstractBlock {
 	const MAX_PRICE_QUERY_VAR = 'max_price';
 
 	/**
+	 * Initialize this block type.
+	 *
+	 * - Hook into WP lifecycle.
+	 * - Register the block with WordPress.
+	 */
+	protected function initialize() {
+		parent::initialize();
+
+		add_filter( 'collection_active_filters_data', function( $active_filters, $params ) {
+			$min_price           = intval( get_query_var( self::MIN_PRICE_QUERY_VAR, 0 ) );
+			$max_price           = intval( get_query_var( self::MAX_PRICE_QUERY_VAR, 0 ) );
+			$formatted_min_price = $min_price ? wc_price( $min_price, array( 'decimals' => 0 ) ) : null;
+			$formatted_max_price = $max_price ? wc_price( $max_price, array( 'decimals' => 0 ) ) : null;
+
+			if ( ! $formatted_min_price && ! $formatted_max_price ) {
+				return $active_filters;
+			}
+
+			if ( $formatted_min_price && $formatted_max_price ) {
+				$title = sprintf( __( 'Between %1$s and %2$s', 'woo-gutenberg-products-block' ), $formatted_min_price, $formatted_max_price );
+			}
+
+			if ( ! $formatted_min_price ) {
+				$title = sprintf( __( 'Up to %s', 'woo-gutenberg-products-block' ), $formatted_max_price );
+			}
+
+			if ( ! $formatted_max_price ) {
+				$title = sprintf( __( 'From %s', 'woo-gutenberg-products-block' ), $formatted_min_price );
+			}
+
+
+			$active_filters[ 'price' ] = array(
+				'type'    => __( 'Price', 'woo-gutenberg-products-block' ),
+				'options' => array(
+					array(
+						'title' => $title,
+						'attributes' => array(
+							'data-wc-on--click' => 'woocommerce/collection-price-filter::actions.reset',
+						),
+					),
+				),
+			);
+
+			return $active_filters;
+		}, 10, 2 );
+	}
+
+	/**
 	 * Render the block.
 	 *
 	 * @param array    $attributes Block attributes.
