@@ -42,7 +42,29 @@ final class CollectionActiveFilters extends AbstractBlock {
 	 * @param WP_Block $block      Block instance.
 	 * @return string Rendered block type output.
 	 */
+
 	protected function render( $attributes, $content, $block ) {
+		/**
+		 * Filters the active filter data provided by filter blocks.
+		 *
+		 *	$data = array(
+		 *		<id> => array(
+		 *			'type' => string,
+		 *			'options' => array(
+		 *				array(
+		 *					'title' => string,
+		 *					'attributes' => array(
+		 *						<key> => string
+		 *					)
+		 *				)
+		 *			)
+		 *		),
+		 *	);
+		 *
+		 * @param array $data   The active filter data
+		 * @param array $params The query param parsed from the URL.
+		 * @return array
+		 */
 		$active_filters = apply_filters( 'collection_active_filters_data', array(), $this->get_filter_query_params( $block->context['queryId'] ) );
 
 		if ( empty( $active_filters ) ) {
