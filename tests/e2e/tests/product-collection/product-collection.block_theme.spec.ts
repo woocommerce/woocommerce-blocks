@@ -390,9 +390,9 @@ test.describe( 'Product Collection', () => {
 		} ) => {
 			await pageObject.createNewPostAndInsertBlock( 'newArrivals' );
 
-			const orderBy = await pageObject.getOrderBy();
+			const orderBy = await pageObject.getOrderByElement();
 
-			expect( orderBy ).toBe( 'date/desc' );
+			await expect( orderBy ).toBeHidden();
 
 			await expect( pageObject.products ).toHaveCount( 5 );
 
@@ -404,9 +404,9 @@ test.describe( 'Product Collection', () => {
 		test( 'Top Rated Collection can be added', async ( { pageObject } ) => {
 			await pageObject.createNewPostAndInsertBlock( 'topRated' );
 
-			const orderBy = await pageObject.getOrderBy();
+			const orderBy = await pageObject.getOrderByElement();
 
-			expect( orderBy ).toBe( 'rating/desc' );
+			await expect( orderBy ).toBeHidden();
 
 			await expect( pageObject.products ).toHaveCount( 5 );
 
@@ -420,9 +420,9 @@ test.describe( 'Product Collection', () => {
 		} ) => {
 			await pageObject.createNewPostAndInsertBlock( 'bestSellers' );
 
-			const orderBy = await pageObject.getOrderBy();
+			const orderBy = await pageObject.getOrderByElement();
 
-			expect( orderBy ).toBe( 'popularity/desc' );
+			await expect( orderBy ).toBeHidden();
 
 			await expect( pageObject.products ).toHaveCount( 5 );
 
@@ -467,7 +467,7 @@ test.describe( 'Product Collection', () => {
 		test( 'Default Query Collection can be added', async ( {
 			pageObject,
 		} ) => {
-			await pageObject.createNewPostAndInsertBlock( 'defaultQuery' );
+			await pageObject.createNewPostAndInsertBlock( 'productCatalog' );
 
 			const orderBy = await pageObject.getOrderBy();
 

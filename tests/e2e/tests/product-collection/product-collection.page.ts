@@ -252,12 +252,15 @@ class ProductCollectionPage {
 		await this.refreshLocators( 'editor' );
 	}
 
-	async getOrderBy() {
+	async getOrderByElement() {
 		const sidebarSettings = await this.locateSidebarSettings();
-		const orderByComboBox = sidebarSettings.getByRole( 'combobox', {
+		return sidebarSettings.getByRole( 'combobox', {
 			name: 'Order by',
 		} );
+	}
 
+	async getOrderBy() {
+		const orderByComboBox = await this.getOrderByElement();
 		return await orderByComboBox.inputValue();
 	}
 
