@@ -40,7 +40,7 @@ type Collections =
 	| 'bestSellers'
 	| 'onSale'
 	| 'featured'
-	| 'defaultQuery';
+	| 'productCatalog';
 
 const collectionToButtonNameMap = {
 	newArrivals: 'New Arrivals Recommend your newest products.',
@@ -48,8 +48,8 @@ const collectionToButtonNameMap = {
 	bestSellers: 'Best Sellers Recommend your best-selling products.',
 	onSale: 'On Sale Highlight products that are currently on sale.',
 	featured: 'Featured Showcase your featured products.',
-	defaultQuery:
-		'All Products Display all products in your catalog. Results may change to match the current template, page, or search term.',
+	productCatalog:
+		'Product Catalog Display all products in your catalog. Results may change to match the current template, page, or search term.',
 };
 
 class ProductCollectionPage {
