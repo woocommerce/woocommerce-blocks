@@ -20,19 +20,6 @@ export type CheckboxListContext = {
 		value: string;
 		checked: boolean;
 	}[];
-	// currentItem: {
-	// 	label: string;
-	// 	value: string;
-	// };
-	// selectedItem: {
-	// 	label: string | null;
-	// 	value: string | null;
-	// };
-	// hoveredItem: {
-	// 	label: string | null;
-	// 	value: string | null;
-	// };
-	// isOpen: boolean;
 };
 
 store( 'woocommerce/interactivity-checkbox-list', {

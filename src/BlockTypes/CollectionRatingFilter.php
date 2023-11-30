@@ -16,16 +16,7 @@ final class CollectionRatingFilter extends AbstractBlock {
 	 */
 	protected $block_name = 'collection-rating-filter';
 
-	/**
-	 * Extra data passed through from server to client for block.
-	 *
-	 * @param array $stock_statuses  Any stock statuses that currently are available from the block.
-	 *                               Note, this will be empty in the editor context when the block is
-	 *                               not in the post content on editor load.
-	 */
-	protected function enqueue_data( array $stock_statuses = [] ) {
-
-	}
+	const RATING_FILTER_QUERY_VAR = 'rating_filter';
 
 	/**
 	 * Include and render the block.
@@ -41,16 +32,23 @@ final class CollectionRatingFilter extends AbstractBlock {
 			return '';
 		}
 
+		$rating_counts = $block->context['collectionData']['rating_counts'] ?? [];
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification is not required here.
+		$selected_ratings = isset( $_GET[ self::RATING_FILTER_QUERY_VAR ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::RATING_FILTER_QUERY_VAR ] ) ) : '';
+		$ratings_array    = explode( ',', $selected_ratings );
+
 		$checkbox_list_items = array_map(
-			function( $rating ) {
+			function( $rating ) use ( $ratings_array ) {
+				$rating_str = (string) $rating['rating'];
 				return array(
-					'id'      => 'rating-' . $rating,
-					'checked' => true,
-					'label'   => $this->render_rating_label( $rating ),
-					'value'   => $rating,
+					'id'      => 'rating-' . $rating_str,
+					'checked' => in_array( $rating_str, $ratings_array, true ),
+					'label'   => $this->render_rating_label( (int) $rating_str ),
+					'value'   => $rating['rating'],
 				);
 			},
-			range( 1, 5 )
+			$rating_counts
 		);
 
 		return CheckboxList::render(
