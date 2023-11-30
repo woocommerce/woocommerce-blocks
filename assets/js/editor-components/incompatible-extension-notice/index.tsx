@@ -54,8 +54,8 @@ export function IncompatibleExtensionsNotice( {
 	const [
 		isVisible,
 		dismissNotice,
-		incompatiblePaymentMethods,
-		numberOfIncompatiblePaymentMethods,
+		incompatibleExtensions,
+		incompatibleExtensionsCount,
 	] = useCombinedIncompatibilityNotice( block );
 	const [ isOpen, setOpen ] = useState( false );
 	const openModal = () => setOpen( true );
@@ -95,7 +95,7 @@ export function IncompatibleExtensionsNotice( {
 
 	const noticeContent = (
 		<>
-			{ numberOfIncompatiblePaymentMethods > 1
+			{ incompatibleExtensionsCount > 1
 				? createInterpolateElement(
 						__(
 							'Some active extensions do not yet support this block. This may impact the shopper experience. <a>Learn more</a>',
@@ -114,7 +114,7 @@ export function IncompatibleExtensionsNotice( {
 								'<strong>%s</strong> does not yet support this block. This may impact the shopper experience. <a>Learn more</a>',
 								'woo-gutenberg-products-block'
 							),
-							Object.values( incompatiblePaymentMethods )[ 0 ]
+							Object.values( incompatibleExtensions )[ 0 ]
 						),
 						{
 							strong: <strong />,
@@ -138,7 +138,7 @@ export function IncompatibleExtensionsNotice( {
 		}
 	};
 
-	const entries = Object.entries( incompatiblePaymentMethods );
+	const entries = Object.entries( incompatibleExtensions );
 	const remainingEntries = entries.length - 2;
 
 	return (
@@ -155,7 +155,7 @@ export function IncompatibleExtensionsNotice( {
 				/>
 				<div>
 					<p>{ noticeContent }</p>
-					{ numberOfIncompatiblePaymentMethods > 1 && (
+					{ incompatibleExtensionsCount > 1 && (
 						<ul>
 							{ entries.slice( 0, 2 ).map( ( [ id, title ] ) => (
 								<li
