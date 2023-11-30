@@ -73,7 +73,7 @@ const getDefaultChosenCollection = (
 	// configured. So it's either a collection or we need to return defaultQuery
 	// collection name;
 	if ( attributes.query ) {
-		return attributes.collection || collections.defaultQuery.name;
+		return attributes.collection || collections.productCatalog.name;
 	}
 
 	// Otherwise it should be the first available choice. We control collections
@@ -93,7 +93,7 @@ const PatternSelectionModal = ( props: {
 
 	// Get Collections
 	const blockCollections = [
-		collections.defaultQuery,
+		collections.productCatalog,
 		...useSelect( ( select ) => {
 			// @ts-expect-error Type definitions are missing
 			// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/selectors.d.ts
