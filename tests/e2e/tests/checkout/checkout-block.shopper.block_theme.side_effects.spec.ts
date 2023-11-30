@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { expect, test as base } from '@woocommerce/e2e-playwright-utils';
+import { BlockData } from '@woocommerce/e2e-types';
 
 /**
  * Internal dependencies
@@ -20,6 +21,19 @@ const test = base.extend< { checkoutPageObject: CheckoutPage } >( {
 		await use( pageObject );
 	},
 } );
+
+const blockData: BlockData = {
+	name: 'Checkout',
+	slug: 'woocommerce/checkout',
+	mainClass: '.wp-block-woocommerce-checkout',
+	selectors: {
+		editor: {
+			block: '.wp-block-woocommerce-checkout',
+			insertButton: "//button//span[text()='Checkout']",
+		},
+		frontend: {},
+	},
+};
 
 test.describe( 'Shopper → Account', () => {
 	// Become a logged out user.
@@ -199,5 +213,103 @@ test.describe( 'Payment Methods', () => {
 		await expect(
 			page.getByRole( 'radio', { name: 'Cash on delivery' } )
 		).toBeChecked();
+	} );
+} );
+test.describe( 'Shipping and Billing Addresses', () => {
+	const billingTestData = {
+		firstname: 'John',
+		lastname: 'Doe',
+		company: 'Automattic',
+		addressfirstline: '123 Main Road',
+		addresssecondline: 'Unit 23',
+		city: 'San Francisco',
+		state: 'California',
+		country: 'United Kingdom',
+		postcode: 'SW1 1AA',
+		phone: '123456789',
+		email: 'john.doe@example.com',
+	};
+	const shippingTestData = {
+		firstname: 'Jane',
+		lastname: 'Doe',
+		company: 'WooCommerce',
+		addressfirstline: '123 Main Avenue',
+		addresssecondline: 'Unit 42',
+		city: 'Los Angeles',
+		phone: '987654321',
+		country: 'Albania',
+		state: 'Berat',
+		postcode: '1234',
+	};
+	// `as string` is safe here because we know the variable is a string, it is defined above.
+	const blockSelectorInEditor = blockData.selectors.editor.block as string;
+	test.beforeEach(
+		async ( { editor, frontendUtils, admin, editorUtils } ) => {
+			await admin.visitSiteEditor( {
+				postId: 'woocommerce/woocommerce//page-checkout',
+				postType: 'wp_template',
+			} );
+			await editorUtils.enterEditMode();
+			await editor.openDocumentSettingsSidebar();
+			await editor.selectBlocks(
+				blockSelectorInEditor +
+					'  [data-type="woocommerce/checkout-shipping-address-block"]'
+			);
+			const checkbox = editor.page.getByRole( 'checkbox', {
+				name: 'Company',
+				exact: true,
+			} );
+			await checkbox.check();
+			await expect( checkbox ).toBeChecked();
+			await expect(
+				editor.canvas.locator(
+					'div.wc-block-components-address-form__company'
+				)
+			).toBeVisible();
+			await editorUtils.saveSiteEditorEntities();
+			await frontendUtils.emptyCart();
+		}
+	);
+
+	test.afterEach( async ( { frontendUtils, admin, editorUtils, editor } ) => {
+		await frontendUtils.emptyCart();
+		await admin.visitSiteEditor( {
+			postId: 'woocommerce/woocommerce//page-checkout',
+			postType: 'wp_template',
+		} );
+		await editorUtils.enterEditMode();
+		await editor.openDocumentSettingsSidebar();
+		await editor.selectBlocks(
+			blockSelectorInEditor +
+				'  [data-type="woocommerce/checkout-shipping-address-block"]'
+		);
+		const checkbox = editor.page.getByRole( 'checkbox', {
+			name: 'Company',
+			exact: true,
+		} );
+		await checkbox.uncheck();
+		await expect( checkbox ).not.toBeChecked();
+		await expect(
+			editor.canvas.locator(
+				'.wc-block-checkout__shipping-fields .wc-block-components-address-form__company'
+			)
+		).toBeHidden();
+		await editorUtils.saveSiteEditorEntities();
+	} );
+
+	test( 'User can add postcodes for different countries', async ( {
+		frontendUtils,
+		page,
+		checkoutPageObject,
+	} ) => {
+		await frontendUtils.goToShop();
+		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
+		await frontendUtils.goToCheckout();
+		await page.getByLabel( 'Use same address for billing' ).uncheck();
+		await checkoutPageObject.fillShippingDetails( shippingTestData );
+		await checkoutPageObject.fillBillingDetails( billingTestData );
+		await expect(
+			page.getByText( 'Please enter a valid postcode' )
+		).toBeHidden();
 	} );
 } );
