@@ -45,27 +45,6 @@ describe( 'Shopper → Checkout', () => {
 		await shopper.block.emptyCart();
 	} );
 
-	describe.skip( 'Payment Methods', () => {
-		it( 'User can change payment methods', async () => {
-			await shopper.block.emptyCart();
-			await shopper.block.goToShop();
-			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
-			await shopper.block.goToCheckout();
-			await expect( page ).toClick(
-				'.wc-block-components-payment-method-label',
-				{
-					text: 'Direct bank transfer',
-				}
-			);
-			await expect( page ).toClick(
-				'.wc-block-components-payment-method-label',
-				{
-					text: 'Cash on delivery',
-				}
-			);
-		} );
-	} );
-
 	describe.skip( 'Shipping and Billing Addresses', () => {
 		beforeAll( async () => {
 			await preventCompatibilityNotice();
