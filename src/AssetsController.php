@@ -68,6 +68,7 @@ final class AssetsController {
 		$this->api->register_script( 'wc-interactivity-dropdown', 'build/wc-interactivity-dropdown.js', [] );
 		$this->api->register_script( 'wc-interactivity-checkbox-list', 'build/wc-interactivity-checkbox-list.js', [] );
 		$this->register_style( 'wc-interactivity-checkbox-list', plugins_url( $this->api->get_block_asset_build_path( 'wc-interactivity-checkbox-list', 'css' ), __DIR__ ), [], 'all', true );
+		$this->register_style( 'wc-interactivity-dropdown', plugins_url( $this->api->get_block_asset_build_path( 'wc-interactivity-dropdown', 'css' ), __DIR__ ), [], 'all', true );
 
 		wp_add_inline_script(
 			'wc-blocks-middleware',

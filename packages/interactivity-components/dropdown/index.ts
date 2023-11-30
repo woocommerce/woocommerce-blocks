@@ -3,6 +3,11 @@
  */
 import { getContext, store } from '@woocommerce/interactivity';
 
+/**
+ * Internal dependencies
+ */
+import './style.scss';
+
 export type DropdownContext = {
 	currentItem: {
 		label: string;

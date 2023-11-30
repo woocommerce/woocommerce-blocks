@@ -16,6 +16,7 @@ class Dropdown {
 	 */
 	public static function render( $props ) {
 		wp_enqueue_script( 'wc-interactivity-dropdown' );
+		wp_enqueue_style( 'wc-interactivity-dropdown' );
 
 		$selected_item = $props['selected_item'] ?? array(
 			'label' => null,
@@ -39,7 +40,7 @@ class Dropdown {
 		ob_start();
 		?>
 		<div data-wc-interactive='<?php echo wp_json_encode( array( 'namespace' => 'woocommerce/interactivity-dropdown' ) ); ?>'>
-			<div class="wc-block-stock-filter style-dropdown" data-wc-context='<?php echo wp_json_encode( $dropdown_context ); ?>' >
+			<div class="wc-interactivity-dropdown" data-wc-context='<?php echo esc_attr( wp_json_encode( $dropdown_context ) ); ?>' >
 				<div class="wc-blocks-components-form-token-field-wrapper single-selection" >
 					<div class="components-form-token-field" tabindex="-1">
 						<div class="components-form-token-field__input-container" 
@@ -62,11 +63,13 @@ class Dropdown {
 										data-wc-class--is-selected="state.isSelected" 
 										data-wc-on--mouseover="actions.addHoverClass" 
 										data-wc-on--mouseout="actions.removeHoverClass" 
-										data-wc-context='<?php echo wp_json_encode( $context ); ?>' 
+										data-wc-context='<?php echo esc_attr( wp_json_encode( $context ) ); ?>' 
 										class="components-form-token-field__suggestion" 
 										data-wc-bind--aria-selected="state.isSelected"
 									>
-									<?php echo esc_html( $item['label'] ); ?>
+										<?php // This attribute supports HTML so should be sanitized by caller. ?>
+										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+										<?php echo $item['label']; ?>
 									</li>
 								<?php endforeach; ?>
 							</ul>
