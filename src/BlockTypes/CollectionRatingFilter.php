@@ -2,6 +2,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use Automattic\WooCommerce\Blocks\InteractivityComponents\CheckboxList;
+use Automattic\WooCommerce\Blocks\InteractivityComponents\Dropdown;
 
 /**
  * Collection Rating Filter Block
@@ -33,29 +34,29 @@ final class CollectionRatingFilter extends AbstractBlock {
 		}
 
 		$rating_counts = $block->context['collectionData']['rating_counts'] ?? [];
+		$display_style = $attributes['displayStyle'] ?? 'list';
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification is not required here.
-		$selected_ratings = isset( $_GET[ self::RATING_FILTER_QUERY_VAR ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::RATING_FILTER_QUERY_VAR ] ) ) : '';
-		$ratings_array    = explode( ',', $selected_ratings );
+		$selected_ratings_query_param = isset( $_GET[ self::RATING_FILTER_QUERY_VAR ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::RATING_FILTER_QUERY_VAR ] ) ) : '';
 
-		$checkbox_list_items = array_map(
-			function( $rating ) use ( $ratings_array ) {
-				$rating_str = (string) $rating['rating'];
-				return array(
-					'id'      => 'rating-' . $rating_str,
-					'checked' => in_array( $rating_str, $ratings_array, true ),
-					'label'   => $this->render_rating_label( (int) $rating_str ),
-					'value'   => $rating['rating'],
-				);
-			},
-			$rating_counts
-		);
+		$wrapper_attributes = get_block_wrapper_attributes();
 
-		return CheckboxList::render(
+		$input = 'dropdown' === $display_style ? CheckboxList::render(
 			array(
-				'items'     => $checkbox_list_items,
+				'items'     => $this->get_checkbox_list_items( $rating_counts, $selected_ratings_query_param ),
 				'on_change' => 'woocommerce/collection-rating-filter::actions.updateSelectedFilters',
 			)
+		) : Dropdown::render(
+			$this->get_dropdown_props( $rating_counts, $selected_ratings_query_param )
+		);
+
+		return sprintf(
+			'<div %1$s>
+				<div class="wc-block-rating-filter__controls">%2$s</div>
+				<div class="wc-block-rating-filter__actions"></div>
+			</div>',
+			$wrapper_attributes,
+			$input
 		);
 	}
 
@@ -78,6 +79,66 @@ final class CollectionRatingFilter extends AbstractBlock {
 		</div>
 		<?php
 		return ob_get_clean();
+	}
+
+	/**
+	 * Get the checkbox list items.
+	 *
+	 * @param array  $rating_counts    The rating counts.
+	 * @param string $selected_ratings_query The url query param for selected ratings.
+	 * @return array
+	 */
+	private function get_checkbox_list_items( $rating_counts, $selected_ratings_query ) {
+		$ratings_array = explode( ',', $selected_ratings_query );
+
+		return array_map(
+			function( $rating ) use ( $ratings_array ) {
+				$rating_str = (string) $rating['rating'];
+				return array(
+					'id'      => 'rating-' . $rating_str,
+					'checked' => in_array( $rating_str, $ratings_array, true ),
+					'label'   => $this->render_rating_label( (int) $rating_str ),
+					'value'   => $rating['rating'],
+				);
+			},
+			$rating_counts
+		);
+	}
+
+	/**
+	 * Get the dropdown props.
+	 *
+	 * @param mixed $rating_counts The rating counts.
+	 * @param mixed $selected_ratings_query The url query param for selected ratings.
+	 * @return array<array-key, array>
+	 */
+	private function get_dropdown_props( $rating_counts, $selected_ratings_query ) {
+		$ratings_array = explode( ',', $selected_ratings_query );
+
+		$selected_item = $ratings_array[0] ? array(
+			/* translators: %d is referring to the average rating value */
+			'label' => sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), $ratings_array[0]['rating'] ),
+			'value' => $ratings_array[0],
+		) : array(
+			'label' => null,
+			'value' => null,
+		);
+
+		return array(
+			'items'         => array_map(
+				function ( $rating ) {
+					$rating_str = (string) $rating['rating'];
+					return array(
+						/* translators: %d is referring to the average rating value */
+						'label' => sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), $rating_str ),
+						'value' => $rating['rating'],
+					);
+				},
+				$rating_counts
+			),
+			'selected_item' => $selected_item,
+			'on_change'     => 'woocommerce/collection-rating-filter::actions.updateSelectedFilters',
+		);
 	}
 
 
