@@ -1,18 +1,7 @@
 /**
  * External dependencies
  */
-import {
-	merchant,
-	setCheckbox,
-	unsetCheckbox,
-	withRestApi,
-} from '@woocommerce/e2e-utils';
-import {
-	visitBlockPage,
-	selectBlockByName,
-	saveOrPublish,
-	getToggleIdByLabel,
-} from '@woocommerce/blocks-test-utils';
+import { merchant, withRestApi } from '@woocommerce/e2e-utils';
 import { visitAdminPage } from '@wordpress/e2e-test-utils';
 
 /**
@@ -21,15 +10,13 @@ import { visitAdminPage } from '@wordpress/e2e-test-utils';
 import {
 	shopper,
 	preventCompatibilityNotice,
-	reactivateCompatibilityNotice,
 	BILLING_DETAILS,
-	SHIPPING_DETAILS,
 	SIMPLE_PHYSICAL_PRODUCT_NAME,
 	SIMPLE_VIRTUAL_PRODUCT_NAME,
 	BASE_URL,
 } from '../../../../utils';
 import { merchant as merchantUtils } from '../../../../utils/merchant';
-import { createCoupon, openSettingsSidebar } from '../../../utils';
+import { createCoupon } from '../../../utils';
 
 let coupon;
 
@@ -43,66 +30,6 @@ describe( 'Shopper → Checkout', () => {
 		await expect( page ).toMatch( 'Woo Collection' );
 
 		await shopper.block.emptyCart();
-	} );
-
-	describe.skip( 'Shipping and Billing Addresses', () => {
-		beforeAll( async () => {
-			await preventCompatibilityNotice();
-			await merchant.login();
-			await visitBlockPage( 'Checkout Block' );
-			await openSettingsSidebar();
-			await selectBlockByName(
-				'woocommerce/checkout-shipping-address-block'
-			);
-
-			await setCheckbox( await getToggleIdByLabel( 'Company' ) );
-			await saveOrPublish();
-			await shopper.block.emptyCart();
-		} );
-
-		afterAll( async () => {
-			await shopper.block.emptyCart();
-			await visitBlockPage( 'Checkout Block' );
-			await openSettingsSidebar();
-			await selectBlockByName(
-				'woocommerce/checkout-shipping-address-block'
-			);
-			await unsetCheckbox( await getToggleIdByLabel( 'Company' ) );
-			await saveOrPublish();
-			await merchant.logout();
-			await reactivateCompatibilityNotice();
-		} );
-
-		it( 'User can add postcodes for different countries', async () => {
-			await shopper.block.goToShop();
-			await shopper.addToCartFromShopPage( SIMPLE_PHYSICAL_PRODUCT_NAME );
-			await shopper.block.goToCheckout();
-			await page.waitForSelector(
-				'.wc-block-checkout__use-address-for-billing input[type="checkbox"]'
-			);
-			await unsetCheckbox(
-				'.wc-block-checkout__use-address-for-billing input[type="checkbox"]'
-			);
-			await shopper.block.fillShippingDetails( {
-				...SHIPPING_DETAILS,
-				country: 'Albania',
-				state: 'Berat',
-				postcode: '1234',
-			} );
-
-			await shopper.block.fillBillingDetails( {
-				...BILLING_DETAILS,
-				country: 'United Kingdom',
-				postcode: 'SW1 1AA',
-			} );
-
-			await expect( page ).not.toMatchElement(
-				'.wc-block-components-validation-error p',
-				{
-					text: 'Please enter a valid postcode',
-				}
-			);
-		} );
 	} );
 
 	describe( 'Checkout Form Errors', () => {
