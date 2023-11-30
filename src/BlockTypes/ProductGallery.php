@@ -126,7 +126,8 @@ class ProductGallery extends AbstractBlock {
 		$dialog                         = isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ? $this->render_dialog() : '';
 		$post_id                        = $block->context['postId'] ?? '';
 		$product                        = wc_get_product( $post_id );
-		$product_gallery_first_image_id = reset( ProductGalleryUtils::get_product_gallery_image_ids( $product, 1 ) );
+		$product_gallery_first_image    = ProductGalleryUtils::get_product_gallery_image_ids( $product, 1 );
+		$product_gallery_first_image_id = reset( $product_gallery_first_image );
 		$product_id                     = strval( $product->get_id() );
 
 		$html = $this->inject_dialog( $content, $dialog );
