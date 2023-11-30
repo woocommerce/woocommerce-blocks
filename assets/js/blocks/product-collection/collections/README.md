@@ -1,5 +1,7 @@
 # Product Collection - Collections
 
+_Note: Collections documented here are internal implementation. It's not a public API._
+
 Collections are a variations of Product Collection block with the predefined attributes which includes:
 
 - UI aspect - you can define layout, number of columns etc.
@@ -29,4 +31,4 @@ As an example please follow `./new-arrivals.tsx`.
 
 ## Registering Collection
 
-To register collection import it in `./index.ts` file and add to the `collections` array.
+To register collection import it in `./index.ts` file and add to the `collectionsToRegister` array.
