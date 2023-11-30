@@ -25,10 +25,14 @@ import {
  * Internal dependencies
  */
 import metadata from '../../block.json';
-import { ProductCollectionAttributes } from '../../types';
+import {
+	ProductCollectionAttributes,
+	CoreFilterNames,
+	FilterName,
+} from '../../types';
 import { setQueryAttribute } from '../../utils';
 import { DEFAULT_FILTERS, getDefaultSettings } from '../../constants';
-import { collections, getUnchangeableFilters } from '../../collections';
+import { getUnchangeableFilters } from '../../collections';
 import UpgradeNotice from './upgrade-notice';
 import ColumnsControl from './columns-control';
 import InheritQueryControl from './inherit-query-control';
@@ -43,20 +47,28 @@ import LayoutOptionsControl from './layout-options-control';
 import FeaturedProductsControl from './featured-products-control';
 import CreatedControl from './created-control';
 
+const prepareShouldShowFilter =
+	( unchangeableFilters: FilterName[] ) => ( filter: FilterName ) => {
+		return ! unchangeableFilters.includes( filter );
+	};
+
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
 ) => {
 	const { query, collection } = props.attributes;
 	const inherit = query?.inherit;
+	const unchangeableFilters = getUnchangeableFilters( collection );
+	const shouldShowFilter = prepareShouldShowFilter( unchangeableFilters );
+
 	// To be changed - inherit control will be hidden completely once Custom
 	// collection is introduced
-	const displayInheritQueryControls =
-		isEmpty( collection ) || collection === collections.defaultQuery.name;
-	const displayQueryControls = inherit === false;
-	const unchangeableFilters = getUnchangeableFilters( collection );
-	const shouldDisplayFilter = ( filter ) => {
-		return ! unchangeableFilters.includes( filter );
-	};
+	const showQueryControls = inherit === false;
+	const showInheritQueryControls =
+		isEmpty( collection ) || shouldShowFilter( CoreFilterNames.INHERIT );
+	const showOrderControl =
+		showQueryControls && shouldShowFilter( CoreFilterNames.ORDER );
+	const showFeaturedControl = shouldShowFilter( CoreFilterNames.FEATURED );
+	const showOnSaleControl = shouldShowFilter( CoreFilterNames.ON_SALE );
 
 	const setQueryAttributeBind = useMemo(
 		() => setQueryAttribute.bind( null, props ),
@@ -86,15 +98,15 @@ const ProductCollectionInspectorControls = (
 			>
 				<LayoutOptionsControl { ...displayControlProps } />
 				<ColumnsControl { ...displayControlProps } />
-				{ displayInheritQueryControls ? (
+				{ showInheritQueryControls ? (
 					<InheritQueryControl { ...queryControlProps } />
 				) : null }
-				{ displayQueryControls && shouldDisplayFilter( 'orderBy' ) ? (
+				{ showOrderControl ? (
 					<OrderByControl { ...queryControlProps } />
 				) : null }
 			</ToolsPanel>
 
-			{ displayQueryControls ? (
+			{ showQueryControls ? (
 				<ToolsPanel
 					label={ __( 'Filters', 'woo-gutenberg-products-block' ) }
 					resetAll={ ( resetAllFilters: ( () => void )[] ) => {
@@ -105,7 +117,7 @@ const ProductCollectionInspectorControls = (
 					} }
 					className="wc-block-editor-product-collection-inspector-toolspanel__filters"
 				>
-					{ shouldDisplayFilter( 'onSale' ) ? (
+					{ showOnSaleControl ? (
 						<OnSaleControl { ...queryControlProps } />
 					) : null }
 					<StockStatusControl { ...queryControlProps } />
@@ -113,7 +125,7 @@ const ProductCollectionInspectorControls = (
 					<KeywordControl { ...queryControlProps } />
 					<AttributesControl { ...queryControlProps } />
 					<TaxonomyControls { ...queryControlProps } />
-					{ shouldDisplayFilter( 'featured' ) ? (
+					{ showFeaturedControl ? (
 						<FeaturedProductsControl { ...queryControlProps } />
 					) : null }
 					<CreatedControl { ...queryControlProps } />

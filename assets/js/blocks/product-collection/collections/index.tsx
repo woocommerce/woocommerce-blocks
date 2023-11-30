@@ -10,6 +10,7 @@ import {
 /**
  * Internal dependencies
  */
+import { CollectionName, FilterName } from '../types';
 import blockJson from '../block.json';
 import productCatalog from './product-catalog';
 import newArrivals from './new-arrivals';
@@ -27,7 +28,7 @@ export const collections = {
 	featured,
 };
 
-const collectionsArray: BlockVariation[] = [
+const collectionsToRegister: BlockVariation[] = [
 	featured,
 	topRated,
 	onSale,
@@ -36,7 +37,7 @@ const collectionsArray: BlockVariation[] = [
 ];
 
 export const registerCollections = () => {
-	collectionsArray.forEach( ( collection ) => {
+	collectionsToRegister.forEach( ( collection ) => {
 		const isActive = (
 			blockAttrs: BlockAttributes,
 			variationAttributes: BlockAttributes
@@ -51,18 +52,21 @@ export const registerCollections = () => {
 	} );
 };
 
-export const getCollectionByName = ( collectionName ) => {
-	return collectionsArray.find( ( { name } ) => name === collectionName );
+export const getCollectionByName = ( collectionName: CollectionName ) => {
+	return Object.values( collections ).find(
+		( { name } ) => name === collectionName
+	);
 };
 
-export const getUnchangeableFilters = ( collectionName ) => {
-	const collection = getCollectionByName( collectionName );
-
-	if ( ! collection ) {
+export const getUnchangeableFilters = (
+	collectionName?: CollectionName
+): FilterName[] => {
+	if ( ! collectionName ) {
 		return [];
 	}
 
-	return collection.unchangeableFilters;
+	const collection = getCollectionByName( collectionName );
+	return collection ? collection.unchangeableFilters : [];
 };
 
 export default registerCollections;
