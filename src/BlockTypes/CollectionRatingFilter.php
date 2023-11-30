@@ -39,12 +39,16 @@ final class CollectionRatingFilter extends AbstractBlock {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification is not required here.
 		$selected_ratings_query_param = isset( $_GET[ self::RATING_FILTER_QUERY_VAR ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::RATING_FILTER_QUERY_VAR ] ) ) : '';
 
-		$wrapper_attributes = get_block_wrapper_attributes();
+		$wrapper_attributes = get_block_wrapper_attributes(
+			array(
+				'data-wc-interactive' => 'woocommerce/collection-rating-filter',
+			)
+		);
 
 		$input = 'dropdown' === $display_style ? CheckboxList::render(
 			array(
 				'items'     => $this->get_checkbox_list_items( $rating_counts, $selected_ratings_query_param ),
-				'on_change' => 'woocommerce/collection-rating-filter::actions.updateSelectedFilters',
+				'on_change' => 'woocommerce/collection-rating-filter::actions.onCheckboxChange',
 			)
 		) : Dropdown::render(
 			$this->get_dropdown_props( $rating_counts, $selected_ratings_query_param )
@@ -117,8 +121,8 @@ final class CollectionRatingFilter extends AbstractBlock {
 
 		$selected_item = $ratings_array[0] ? array(
 			/* translators: %d is referring to the average rating value */
-			'label' => sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), $ratings_array[0]['rating'] ),
-			'value' => $ratings_array[0],
+			'label' => sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), $ratings_array[0] ),
+			'value' => (int) $ratings_array[0],
 		) : array(
 			'label' => null,
 			'value' => null,
@@ -137,7 +141,7 @@ final class CollectionRatingFilter extends AbstractBlock {
 				$rating_counts
 			),
 			'selected_item' => $selected_item,
-			'on_change'     => 'woocommerce/collection-rating-filter::actions.updateSelectedFilters',
+			'action'        => 'woocommerce/collection-rating-filter::actions.onDropdownChange',
 		);
 	}
 
