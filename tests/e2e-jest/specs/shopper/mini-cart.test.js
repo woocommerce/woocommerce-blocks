@@ -2,8 +2,8 @@
  * External dependencies
  */
 import { setDefaultOptions, getDefaultOptions } from 'expect-puppeteer';
-import { default as WooCommerceRestApi } from '@woocommerce/woocommerce-rest-api';
 import { SHOP_PAGE, SHOP_CART_PAGE } from '@woocommerce/e2e-utils';
+import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 
 /**
  * Internal dependencies

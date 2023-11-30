@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { expect, test } from '@woocommerce/e2e-playwright-utils';
-import { default as WooCommerceRestApi } from '@woocommerce/woocommerce-rest-api';
+import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 
 const blockData = {
 	name: 'woocommerce/reviews-by-product',
@@ -35,7 +35,7 @@ test.describe( `${ blockData.name } Block`, () => {
 				type: 'simple',
 				regular_price: '12.99',
 			} )
-			.then( ( response ) => {
+			.then( ( response: { data: { id: number } } ) => {
 				productId = response.data.id;
 			} );
 		await api
@@ -46,7 +46,7 @@ test.describe( `${ blockData.name } Block`, () => {
 				reviewer_email: 'john.doe@example.com',
 				rating: 5,
 			} )
-			.then( ( response ) => {
+			.then( ( response: { data: { id: number } } ) => {
 				firstReviewId = response.data.id;
 			} );
 		await api
@@ -57,7 +57,7 @@ test.describe( `${ blockData.name } Block`, () => {
 				reviewer_email: 'john.doe@example.com',
 				rating: 4,
 			} )
-			.then( ( response ) => {
+			.then( ( response: { data: { id: number } } ) => {
 				secondReviewId = response.data.id;
 			} );
 	} );
