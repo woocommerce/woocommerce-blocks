@@ -67,6 +67,11 @@
 				border-radius: 4px;
 				margin: $gap-small;
 				padding: $gap-small;
+
+				&.is-selected, &:hover {
+					background: $gray-100;
+					color: $gray-800;
+				}
 			}
 		}
 

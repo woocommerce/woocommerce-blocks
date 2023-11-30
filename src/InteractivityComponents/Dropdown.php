@@ -60,9 +60,7 @@ class Dropdown {
 										role="option" 
 										data-wc-on--click--select-item="actions.selectDropdownItem" 
 										data-wc-on--click--parent-action="<?php echo esc_attr( $action ); ?>" 
-										data-wc-class--is-selected="state.isSelected" 
-										data-wc-on--mouseover="actions.addHoverClass" 
-										data-wc-on--mouseout="actions.removeHoverClass" 
+										data-wc-class--is-selected="state.isSelected"
 										data-wc-context='<?php echo esc_attr( wp_json_encode( $context ) ); ?>' 
 										class="components-form-token-field__suggestion" 
 										data-wc-bind--aria-selected="state.isSelected"
