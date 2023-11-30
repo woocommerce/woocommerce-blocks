@@ -19,6 +19,8 @@ test.describe( `${ blockData.name } Block`, () => {
 	let productId: number;
 	let firstReviewId: number;
 	let secondReviewId: number;
+	const firstReviewContent = 'Nice album!';
+	const secondReviewContent = 'Not bad.';
 
 	// Create category, product and reviews.
 	test.beforeAll( async ( { baseURL } ) => {
@@ -48,7 +50,7 @@ test.describe( `${ blockData.name } Block`, () => {
 		await api
 			.post( 'products/reviews', {
 				product_id: productId,
-				review: 'Nice album!',
+				review: firstReviewContent,
 				reviewer: 'John Doe',
 				reviewer_email: 'john.doe@example.com',
 				rating: 5,
@@ -59,7 +61,7 @@ test.describe( `${ blockData.name } Block`, () => {
 		await api
 			.post( 'products/reviews', {
 				product_id: productId,
-				review: 'Not bad.',
+				review: secondReviewContent,
 				reviewer: 'John Doe',
 				reviewer_email: 'john.doe@example.com',
 				rating: 4,
@@ -107,11 +109,11 @@ test.describe( `${ blockData.name } Block`, () => {
 		const doneButton = page.getByRole( 'button', { name: 'Done' } );
 		await doneButton.click();
 
-		await expect( page.getByText( 'Nice album!' ) ).toBeVisible();
+		await expect( page.getByText( firstReviewContent ) ).toBeVisible();
 
 		await editorUtils.publishAndVisitPost();
 
-		await expect( page.getByText( 'Nice album!' ) ).toBeVisible();
+		await expect( page.getByText( firstReviewContent ) ).toBeVisible();
 	} );
 
 	test( 'can change sort order in the frontend', async ( {
@@ -135,12 +137,12 @@ test.describe( `${ blockData.name } Block`, () => {
 		const block = await frontendUtils.getBlockByName( blockData.name );
 		let firstReview;
 		firstReview = block.locator( blockData.selectors.frontend.firstReview );
-		await expect( firstReview ).toHaveText( 'Not bad.' );
+		await expect( firstReview ).toHaveText( secondReviewContent );
 
 		const select = page.getByLabel( 'Order by' );
 		select.selectOption( 'Highest rating' );
 
 		firstReview = block.locator( blockData.selectors.frontend.firstReview );
-		await expect( firstReview ).toHaveText( 'Nice album!' );
+		await expect( firstReview ).toHaveText( firstReviewContent );
 	} );
 } );
