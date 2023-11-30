@@ -23,6 +23,7 @@ const collection = {
 	),
 	keywords: [ 'best selling' ],
 	scope: [],
+	unchangeableFilters: [ 'order', 'orderBy' ],
 };
 
 const attributes = {

@@ -27,6 +27,7 @@ const collection = {
 	),
 	keywords: [],
 	scope: [],
+	unchangeableFilters: [ 'featured' ],
 };
 
 const attributes = {

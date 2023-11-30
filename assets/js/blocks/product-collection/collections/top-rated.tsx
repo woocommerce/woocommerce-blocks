@@ -27,6 +27,7 @@ const collection = {
 	),
 	keywords: [],
 	scope: [],
+	unchangeableFilters: [ 'order', 'orderBy' ],
 };
 
 const attributes = {

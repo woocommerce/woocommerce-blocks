@@ -27,6 +27,7 @@ const collection = {
 	),
 	keywords: [ 'newest products' ],
 	scope: [],
+	unchangeableFilters: [ 'order', 'orderBy' ],
 };
 
 const attributes = {

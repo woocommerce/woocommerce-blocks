@@ -59,4 +59,18 @@ export const registerCollections = () => {
 	} );
 };
 
+export const getCollectionByName = ( collectionName ) => {
+	return collectionsArray.find( ( { name } ) => name === collectionName );
+};
+
+export const getUnchangeableFilters = ( collectionName ) => {
+	const collection = getCollectionByName( collectionName );
+
+	if ( ! collection ) {
+		return [];
+	}
+
+	return collection.unchangeableFilters;
+};
+
 export default registerCollections;

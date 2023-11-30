@@ -28,7 +28,7 @@ import metadata from '../../block.json';
 import { ProductCollectionAttributes } from '../../types';
 import { setQueryAttribute } from '../../utils';
 import { DEFAULT_FILTERS, getDefaultSettings } from '../../constants';
-import { collections } from '../../collections';
+import { collections, getUnchangeableFilters } from '../../collections';
 import UpgradeNotice from './upgrade-notice';
 import ColumnsControl from './columns-control';
 import InheritQueryControl from './inherit-query-control';
@@ -43,35 +43,6 @@ import LayoutOptionsControl from './layout-options-control';
 import FeaturedProductsControl from './featured-products-control';
 import CreatedControl from './created-control';
 
-const shouldDisplayOrderBy = ( collection?: string ) => {
-	if ( ! collection ) {
-		return true;
-	}
-
-	const collectionsToHideOrderBy = [
-		collections.bestSellers.name,
-		collections.newArrivals.name,
-		collections.topRated.name,
-	];
-	return ! collectionsToHideOrderBy.includes( collection );
-};
-
-const shouldDisplayFeatured = ( collection?: string ) => {
-	if ( ! collection ) {
-		return true;
-	}
-
-	return collection !== collections.featured.name;
-};
-
-const shouldDisplayOnSale = ( collection?: string ) => {
-	if ( ! collection ) {
-		return true;
-	}
-
-	return collection !== collections.onSale.name;
-};
-
 const ProductCollectionInspectorControls = (
 	props: BlockEditProps< ProductCollectionAttributes >
 ) => {
@@ -82,9 +53,10 @@ const ProductCollectionInspectorControls = (
 	const displayInheritQueryControls =
 		isEmpty( collection ) || collection === collections.defaultQuery.name;
 	const displayQueryControls = inherit === false;
-	const displayOrderBy = shouldDisplayOrderBy( collection );
-	const displayFeatured = shouldDisplayFeatured( collection );
-	const displayOnSale = shouldDisplayOnSale( collection );
+	const unchangeableFilters = getUnchangeableFilters( collection );
+	const shouldDisplayFilter = ( filter ) => {
+		return ! unchangeableFilters.includes( filter );
+	};
 
 	const setQueryAttributeBind = useMemo(
 		() => setQueryAttribute.bind( null, props ),
@@ -117,7 +89,7 @@ const ProductCollectionInspectorControls = (
 				{ displayInheritQueryControls ? (
 					<InheritQueryControl { ...queryControlProps } />
 				) : null }
-				{ displayQueryControls && displayOrderBy ? (
+				{ displayQueryControls && shouldDisplayFilter( 'orderBy' ) ? (
 					<OrderByControl { ...queryControlProps } />
 				) : null }
 			</ToolsPanel>
@@ -133,7 +105,7 @@ const ProductCollectionInspectorControls = (
 					} }
 					className="wc-block-editor-product-collection-inspector-toolspanel__filters"
 				>
-					{ displayOnSale ? (
+					{ shouldDisplayFilter( 'onSale' ) ? (
 						<OnSaleControl { ...queryControlProps } />
 					) : null }
 					<StockStatusControl { ...queryControlProps } />
@@ -141,7 +113,7 @@ const ProductCollectionInspectorControls = (
 					<KeywordControl { ...queryControlProps } />
 					<AttributesControl { ...queryControlProps } />
 					<TaxonomyControls { ...queryControlProps } />
-					{ displayFeatured ? (
+					{ shouldDisplayFilter( 'featured' ) ? (
 						<FeaturedProductsControl { ...queryControlProps } />
 					) : null }
 					<CreatedControl { ...queryControlProps } />

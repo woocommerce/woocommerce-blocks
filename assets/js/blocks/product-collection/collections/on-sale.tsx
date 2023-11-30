@@ -27,6 +27,7 @@ const collection = {
 	),
 	keywords: [],
 	scope: [],
+	unchangeableFilters: [ 'onSale' ],
 };
 
 const attributes = {
