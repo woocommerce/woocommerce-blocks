@@ -61,9 +61,9 @@ final class CollectionActiveFilters extends AbstractBlock {
 		 *		),
 		 *	);
 		 *
-		 * @param array $data   The active filter data
+		 * @param array $data   The active filters data
 		 * @param array $params The query param parsed from the URL.
-		 * @return array
+		 * @return array Active filters data.
 		 */
 		$active_filters = apply_filters( 'collection_active_filters_data', array(), $this->get_filter_query_params( $block->context['queryId'] ) );
 
