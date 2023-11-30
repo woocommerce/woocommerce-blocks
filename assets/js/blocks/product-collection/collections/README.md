@@ -31,7 +31,7 @@ As an example please follow `./new-arrivals.tsx`.
 
 ## Collection can hide Inspector Controls filters from users
 
-Let's take New Arrivals as an example. What defined New Arrivals is the product ordering: from newest to oldest. User can apply additional filters on top of it, for example "On Sale" but shouldn't be able to change ordering because that would no longer be New Arrivals Collection.
+Let's take New Arrivals as an example. What defines New Arrivals is the product order: from newest to oldest. Users can apply additional filters on top of it, for example, "On Sale" but shouldn't be able to change ordering because that would no longer be New Arrivals Collection.
 
 To achieve this add additional property to collection definition:
 
