@@ -180,3 +180,24 @@ test.describe( 'shopper → Local pickup', () => {
 		);
 	} );
 } );
+test.describe( 'Payment Methods', () => {
+	test( 'User can change payment methods', async ( {
+		frontendUtils,
+		page,
+	} ) => {
+		await frontendUtils.emptyCart();
+		await frontendUtils.goToShop();
+		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
+		await frontendUtils.goToCheckout();
+		await page
+			.getByRole( 'radio', { name: 'Direct bank transfer' } )
+			.click();
+		await expect(
+			page.getByRole( 'radio', { name: 'Direct bank transfer' } )
+		).toBeChecked();
+		await page.getByRole( 'radio', { name: 'Cash on delivery' } ).click();
+		await expect(
+			page.getByRole( 'radio', { name: 'Cash on delivery' } )
+		).toBeChecked();
+	} );
+} );
