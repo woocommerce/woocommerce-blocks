@@ -102,16 +102,35 @@ final class CollectionActiveFilters extends AbstractBlock {
 			return $acc;
 		}, '' );
 
+		$clear_button = sprintf(
+			'<button class="wc-block-active-filters__clear-all" data-wc-on--click="actions.clearAll">
+				<span aria-hidden="true">%1$s</span>
+				<span class="screen-reader-text">%2$s</span>
+			</button>',
+			__( 'Clear All', 'woo-gutenberg-products-block' ),
+			__( 'Clear All Filters', 'woo-gutenberg-products-block' )
+		);
+
+		$context = array(
+			'queryId' => $block->context['queryId'],
+			'params'  => array_keys( $this->get_filter_query_params( $block->context['queryId'] ) ),
+		);
+
 		return sprintf(
-			'<div %1$s><ul class="wc-block-active-filters__list %3$s">%2$s</ul></div>',
+			'<div %1$s>
+				<ul class="wc-block-active-filters__list %3$s">%2$s</ul>
+				%4$s
+			</div>',
 			get_block_wrapper_attributes(
 				array(
 					'class' => 'wc-block-active-filters',
 					'data-wc-interactive' => wp_json_encode( array( 'namespace' => 'woocommerce/collection-active-filters' ) ),
+					'data-wc-context' => wp_json_encode( $context ),
 				)
 			),
 			$filter_content,
-			$attributes['displayStyle'] === 'chips' ? 'wc-block-active-filters__list--chips' : ''
+			$attributes['displayStyle'] === 'chips' ? 'wc-block-active-filters__list--chips' : '',
+			$clear_button
 		);
 	}
 
@@ -122,6 +141,7 @@ final class CollectionActiveFilters extends AbstractBlock {
 	 * @return array Parsed filter params.
 	 */
 	private function get_filter_query_params( $query_id ) {
+		// @todo Get the query params based on $query_id
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
 
