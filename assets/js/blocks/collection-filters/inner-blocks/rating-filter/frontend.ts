@@ -1,50 +1,35 @@
-// /**
-//  * External dependencies
-//  */
-// import { renderFrontend } from '@woocommerce/base-utils';
-
-// /**
-//  * Internal dependencies
-//  */
-// import Block from './block';
-// import { parseAttributes } from './utils';
-
-// const getProps = ( el: HTMLElement ) => {
-// 	return {
-// 		attributes: parseAttributes( el.dataset ),
-// 		isEditor: false,
-// 	};
-// };
-
-// renderFrontend( {
-// 	selector: '.wp-block-woocommerce-rating-filter',
-// 	Block,
-// 	getProps,
-// } );
-
 /**
  * External dependencies
  */
-import { store } from '@woocommerce/interactivity';
-
-/**
- * Internal dependencies
- */
-// import { CheckboxListContext } from '../../../../../../packages/interactivity-components/checkbox-list';
+import { getContext, navigate, store } from '@woocommerce/interactivity';
+import { CheckboxListContext } from '@woocommerce/interactivity-components/checkbox-list';
 
 store( 'woocommerce/collection-rating-filter', {
-	state: {},
 	actions: {
 		updateSelectedFilters: () => {
-			// const checkboxContext = getContext< CheckboxListContext >(
-			// 	'woocommerce/interactivity-checkbox-list'
-			// );
-			// console.log(
-			// 	'selected filters changed. Do a thing here',
-			// 	checkboxContext.items.map( ( item ) => {
-			// 		return { ...item };
-			// 	} )
-			// );
+			const checkboxContext = getContext< CheckboxListContext >(
+				'woocommerce/interactivity-checkbox-list'
+			);
+
+			const filters = checkboxContext.items
+				.filter( ( item ) => {
+					return item.checked;
+				} )
+				.map( ( item ) => {
+					return item.value;
+				} );
+
+			const url = new URL( window.location.href );
+
+			if ( filters.length ) {
+				// add filters to url
+				url.searchParams.set( 'rating_filter', filters.join( ',' ) );
+			} else {
+				// remove filters from url
+				url.searchParams.delete( 'rating_filter' );
+			}
+
+			navigate( url );
 		},
 	},
 } );
