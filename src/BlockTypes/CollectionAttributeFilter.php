@@ -24,7 +24,7 @@ final class CollectionAttributeFilter extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 
-		add_filter( 'collection_active_filters_data', function( $active_filters, $params ) {
+		add_filter( 'collection_active_filters_data', function( $data, $params ) {
 			$product_attributes_map = array_reduce(
 				wc_get_attribute_taxonomies(),
 				function( $acc, $attribute_object ) {
@@ -67,13 +67,13 @@ final class CollectionAttributeFilter extends AbstractBlock {
 					);
 				}, $terms );
 
-				$active_filters[ $product_attribute ] = array(
+				$data[ $product_attribute ] = array(
 					'type'    => $product_attributes_map[ $product_attribute ],
 					'options' => $terms,
 				);
 			}
 
-			return $active_filters;
+			return $data;
 		}, 10, 2 );
 	}
 

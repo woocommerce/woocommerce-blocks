@@ -26,13 +26,19 @@ final class CollectionStockFilter extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 
-		add_filter( 'collection_active_filters_data', function( $active_filters, $params ) {
+		add_filter( 'collection_active_filters_data', function( $data, $params ) {
 			$stock_status_options = wc_get_product_stock_status_options();
 
-			$active_stock_statuses = array_filter( explode( ',', get_query_var( self::STOCK_STATUS_QUERY_VAR ) ) );
+			if ( empty( $params[ self::STOCK_STATUS_QUERY_VAR ] ) ) {
+				return $data;
+			}
+
+			$active_stock_statuses = array_filter(
+				explode( ',', $params[ self::STOCK_STATUS_QUERY_VAR ] )
+			);
 
 			if ( empty( $active_stock_statuses ) ) {
-				return $active_filters;
+				return $data;
 			}
 
 			$active_stock_statuses = array_map(
@@ -48,12 +54,12 @@ final class CollectionStockFilter extends AbstractBlock {
 				$active_stock_statuses
 			);
 
-			$active_filters['stock'] = array(
+			$data['stock'] = array(
 				'type' => __( 'Stock Status', 'woo-gutenberg-products-block' ),
 				'options' => $active_stock_statuses,
 			);
 
-			return $active_filters;
+			return $data;
 		}, 10, 2 );
 	}
 

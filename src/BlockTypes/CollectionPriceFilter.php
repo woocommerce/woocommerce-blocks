@@ -25,14 +25,14 @@ final class CollectionPriceFilter extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 
-		add_filter( 'collection_active_filters_data', function( $active_filters, $params ) {
-			$min_price           = intval( get_query_var( self::MIN_PRICE_QUERY_VAR, 0 ) );
-			$max_price           = intval( get_query_var( self::MAX_PRICE_QUERY_VAR, 0 ) );
+		add_filter( 'collection_active_filters_data', function( $data, $params ) {
+			$min_price           = intval( $params[ self::MIN_PRICE_QUERY_VAR ] ?? 0 );
+			$max_price           = intval( $params[ self::MAX_PRICE_QUERY_VAR ] ?? 0 );
 			$formatted_min_price = $min_price ? wc_price( $min_price, array( 'decimals' => 0 ) ) : null;
 			$formatted_max_price = $max_price ? wc_price( $max_price, array( 'decimals' => 0 ) ) : null;
 
 			if ( ! $formatted_min_price && ! $formatted_max_price ) {
-				return $active_filters;
+				return $data;
 			}
 
 			if ( $formatted_min_price && $formatted_max_price ) {
@@ -48,7 +48,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 			}
 
 
-			$active_filters[ 'price' ] = array(
+			$data[ 'price' ] = array(
 				'type'    => __( 'Price', 'woo-gutenberg-products-block' ),
 				'options' => array(
 					array(
@@ -60,7 +60,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 				),
 			);
 
-			return $active_filters;
+			return $data;
 		}, 10, 2 );
 	}
 
