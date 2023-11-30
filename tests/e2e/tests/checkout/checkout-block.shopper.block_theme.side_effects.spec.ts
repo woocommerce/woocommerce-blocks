@@ -146,4 +146,37 @@ test.describe( 'shopper → Local pickup', () => {
 		).toBeVisible();
 		await checkoutPageObject.verifyBillingDetails();
 	} );
+	// Switching between local pickup and shipping does affect the address. We should create a ticket for this.
+	// Let's skip the test until the bug is fixed.
+	// eslint-disable-next-line playwright/no-skipped-test
+	test.skip( 'Switching between local pickup and shipping does not affect the address', async ( {
+		page,
+		frontendUtils,
+		checkoutPageObject,
+	} ) => {
+		await frontendUtils.emptyCart();
+		await frontendUtils.goToShop();
+		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
+		await frontendUtils.goToCheckout();
+		await page.getByRole( 'radio', { name: 'Local Pickup free' } ).click();
+		await expect( page.getByLabel( 'Testing' ).last() ).toBeVisible();
+		await checkoutPageObject.fillInCheckoutWithTestData();
+		await page
+			.getByLabel( 'Email address' )
+			.fill( 'thisShouldRemainHere@mail.com' );
+		await page.getByRole( 'radio', { name: 'Shipping from free' } ).click();
+		await expect(
+			page.getByRole( 'radio', { name: 'Flat rate shipping' } ).first()
+		).toBeVisible();
+		await expect( page.getByLabel( 'Email address' ) ).toHaveValue(
+			'thisShouldRemainHere@mail.com'
+		);
+		await page
+			.getByLabel( 'Email address' )
+			.fill( 'thisShouldRemainHereToo@mail.com' );
+		await page.getByLabel( 'First name' ).fill( 'Test FirstName' );
+		await expect( page.getByLabel( 'Email address' ) ).toHaveValue(
+			'thisShouldRemainHereToo@mail.com'
+		);
+	} );
 } );
