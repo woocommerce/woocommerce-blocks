@@ -6,33 +6,25 @@ import {
 	registerBlockVariation,
 	BlockAttributes,
 } from '@wordpress/blocks';
-import { Icon, loop } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
 import blockJson from '../block.json';
+import productCatalog from './product-catalog';
 import newArrivals from './new-arrivals';
 import topRated from './top-rated';
 import bestSellers from './best-sellers';
 import onSale from './on-sale';
 import featured from './featured';
 
-const defaultQuery = {
-	name: 'woocommerce-blocks/product-collection/default-query',
-	title: 'All Products',
-	icon: <Icon icon={ loop } />,
-	description:
-		'Display all products. Results may be limited by the current template context.',
-};
-
 export const collections = {
+	productCatalog,
 	newArrivals,
 	topRated,
 	bestSellers,
 	onSale,
 	featured,
-	defaultQuery,
 };
 
 const collectionsArray: BlockVariation[] = [
