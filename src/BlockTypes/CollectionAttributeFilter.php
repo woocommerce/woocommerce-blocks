@@ -30,7 +30,7 @@ final class CollectionAttributeFilter extends AbstractBlock {
 	/**
 	 * Register the active filters data.
 	 *
-	 * @param array $data   The active filters data
+	 * @param array $data   The active filters data.
 	 * @param array $params The query param parsed from the URL.
 	 * @return array Active filters data.
 	 */
@@ -38,18 +38,22 @@ final class CollectionAttributeFilter extends AbstractBlock {
 		$product_attributes_map = array_reduce(
 			wc_get_attribute_taxonomies(),
 			function( $acc, $attribute_object ) {
-				$acc[$attribute_object->attribute_name] = $attribute_object->attribute_label;
+				$acc[ $attribute_object->attribute_name ] = $attribute_object->attribute_label;
 				return $acc;
 			},
 			array()
 		);
 
-		$active_product_attributes = array_reduce( array_keys( $params ), function( $acc, $attribute ) {
-			if ( strpos( $attribute, 'filter_' ) === 0 ) {
-				$acc[] = str_replace( 'filter_', '', $attribute );
-			}
-			return $acc;
-		}, array() );
+		$active_product_attributes = array_reduce(
+			array_keys( $params ),
+			function( $acc, $attribute ) {
+				if ( strpos( $attribute, 'filter_' ) === 0 ) {
+					$acc[] = str_replace( 'filter_', '', $attribute );
+				}
+				return $acc;
+			},
+			array()
+		);
 
 		$active_product_attributes = array_filter(
 			$active_product_attributes,
@@ -61,21 +65,26 @@ final class CollectionAttributeFilter extends AbstractBlock {
 		foreach ( $active_product_attributes as $product_attribute ) {
 			$terms = explode( ',', get_query_var( "filter_{$product_attribute}" ) );
 
-			// Get attribute term by slug
-			$terms = array_map( function( $term ) use ( $product_attribute ) {
-				$term_object = get_term_by( 'slug', $term, "pa_{$product_attribute}" );
-				return array(
-					'title' => $term_object->name,
-					'attributes' => array(
-						'data-wc-on--click' => 'woocommerce/collection-attribute-filter::actions.removeFilter',
-						'data-wc-context'   => 'woocommerce/collection-attribute-filter::' . wp_json_encode( array(
-							'value'         => $term,
-							'attributeSlug' => $product_attribute,
-							'queryType'     => get_query_var( "query_type_{$product_attribute}" ),
-						) ),
-					),
-				);
-			}, $terms );
+			// Get attribute term by slug.
+			$terms = array_map(
+				function( $term ) use ( $product_attribute ) {
+					$term_object = get_term_by( 'slug', $term, "pa_{$product_attribute}" );
+					return array(
+						'title'      => $term_object->name,
+						'attributes' => array(
+							'data-wc-on--click' => 'woocommerce/collection-attribute-filter::actions.removeFilter',
+							'data-wc-context'   => 'woocommerce/collection-attribute-filter::' . wp_json_encode(
+								array(
+									'value'         => $term,
+									'attributeSlug' => $product_attribute,
+									'queryType'     => get_query_var( "query_type_{$product_attribute}" ),
+								)
+							),
+						),
+					);
+				},
+				$terms
+			);
 
 			$data[ $product_attribute ] = array(
 				'type'    => $product_attributes_map[ $product_attribute ],

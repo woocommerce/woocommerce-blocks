@@ -31,7 +31,7 @@ final class CollectionPriceFilter extends AbstractBlock {
 	/**
 	 * Register the active filters data.
 	 *
-	 * @param array $data   The active filters data
+	 * @param array $data   The active filters data.
 	 * @param array $params The query param parsed from the URL.
 	 * @return array Active filters data.
 	 */
@@ -46,23 +46,25 @@ final class CollectionPriceFilter extends AbstractBlock {
 		}
 
 		if ( $formatted_min_price && $formatted_max_price ) {
+			/* translators: %1$s and %2$s are the formatted minimum and maximum prices respectively. */
 			$title = sprintf( __( 'Between %1$s and %2$s', 'woo-gutenberg-products-block' ), $formatted_min_price, $formatted_max_price );
 		}
 
 		if ( ! $formatted_min_price ) {
+			/* translators: %s is the formatted maximum price. */
 			$title = sprintf( __( 'Up to %s', 'woo-gutenberg-products-block' ), $formatted_max_price );
 		}
 
 		if ( ! $formatted_max_price ) {
+			/* translators: %s is the formatted minimum price. */
 			$title = sprintf( __( 'From %s', 'woo-gutenberg-products-block' ), $formatted_min_price );
 		}
 
-
-		$data[ 'price' ] = array(
+		$data['price'] = array(
 			'type'    => __( 'Price', 'woo-gutenberg-products-block' ),
 			'options' => array(
 				array(
-					'title' => $title,
+					'title'      => $title,
 					'attributes' => array(
 						'data-wc-on--click' => 'woocommerce/collection-price-filter::actions.reset',
 					),

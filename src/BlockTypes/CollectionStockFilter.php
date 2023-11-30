@@ -32,7 +32,7 @@ final class CollectionStockFilter extends AbstractBlock {
 	/**
 	 * Register the active filters data.
 	 *
-	 * @param array $data   The active filters data
+	 * @param array $data   The active filters data.
 	 * @param array $params The query param parsed from the URL.
 	 * @return array Active filters data.
 	 */
@@ -54,7 +54,7 @@ final class CollectionStockFilter extends AbstractBlock {
 		$active_stock_statuses = array_map(
 			function( $status ) use ( $stock_status_options ) {
 				return array(
-					'title' => $stock_status_options[ $status ],
+					'title'      => $stock_status_options[ $status ],
 					'attributes' => array(
 						'data-wc-on--click' => 'woocommerce/collection-stock-filter::actions.removeFilter',
 						'data-wc-context'   => 'woocommerce/collection-stock-filter::' . wp_json_encode( array( 'value' => $status ) ),
@@ -65,7 +65,7 @@ final class CollectionStockFilter extends AbstractBlock {
 		);
 
 		$data['stock'] = array(
-			'type' => __( 'Stock Status', 'woo-gutenberg-products-block' ),
+			'type'    => __( 'Stock Status', 'woo-gutenberg-products-block' ),
 			'options' => $active_stock_statuses,
 		);
 
