@@ -1,21 +1,21 @@
 /**
  * External dependencies
  */
-import { store, navigate } from '@woocommerce/interactivity';
+import { store, navigate, getContext } from '@woocommerce/interactivity';
 import { formatPrice, getCurrency } from '@woocommerce/price-format';
 import { HTMLElementEvent } from '@woocommerce/types';
 
 /**
  * Internal dependencies
  */
-import { PriceFilterState } from './types';
+import type { PriceFilterContext, PriceFilterState } from './types';
 
-const getHrefWithFilters = ( state: PriceFilterState ) => {
-	const { minPrice = 0, maxPrice = 0, maxRange = 0 } = state;
+const getUrl = ( context: PriceFilterContext ) => {
+	const { minPrice, maxPrice, minRange, maxRange } = context;
 	const url = new URL( window.location.href );
 	const { searchParams } = url;
 
-	if ( minPrice > 0 ) {
+	if ( minPrice > minRange ) {
 		searchParams.set( 'min_price', minPrice.toString() );
 	} else {
 		searchParams.delete( 'min_price' );
@@ -37,77 +37,73 @@ const getHrefWithFilters = ( state: PriceFilterState ) => {
 interface PriceFilterStore {
 	state: PriceFilterState;
 	actions: {
-		setMinPrice: ( event: HTMLElementEvent< HTMLInputElement > ) => void;
-		setMaxPrice: ( event: HTMLElementEvent< HTMLInputElement > ) => void;
-		updateProducts: () => void;
+		updateProducts: ( event: HTMLElementEvent< HTMLInputElement > ) => void;
 		reset: () => void;
 	};
 }
 
-const { state } = store< PriceFilterStore >(
-	'woocommerce/collection-price-filter',
-	{
-		state: {
-			get rangeStyle(): string {
-				const {
-					minPrice = 0,
-					maxPrice = 0,
-					minRange = 0,
-					maxRange = 0,
-				} = state;
-				return [
-					`--low: ${
-						( 100 * ( minPrice - minRange ) ) /
-						( maxRange - minRange )
-					}%`,
-					`--high: ${
-						( 100 * ( maxPrice - minRange ) ) /
-						( maxRange - minRange )
-					}%`,
-				].join( ';' );
-			},
-			get formattedMinPrice(): string {
-				const { minPrice = 0 } = state;
-				return formatPrice( minPrice, getCurrency( { minorUnit: 0 } ) );
-			},
-			get formattedMaxPrice(): string {
-				const { maxPrice = 0 } = state;
-				return formatPrice( maxPrice, getCurrency( { minorUnit: 0 } ) );
-			},
+store< PriceFilterStore >( 'woocommerce/collection-price-filter', {
+	state: {
+		get rangeStyle(): string {
+			const { minPrice, maxPrice, minRange, maxRange } =
+				getContext< PriceFilterContext >();
+
+			return [
+				`--low: ${
+					( 100 * ( minPrice - minRange ) ) / ( maxRange - minRange )
+				}%`,
+				`--high: ${
+					( 100 * ( maxPrice - minRange ) ) / ( maxRange - minRange )
+				}%`,
+			].join( ';' );
 		},
-		actions: {
-			setMinPrice: ( event: HTMLElementEvent< HTMLInputElement > ) => {
-				const { minRange = 0, maxPrice = 0, maxRange = 0 } = state;
-				const value = parseFloat( event.target.value );
-				state.minPrice = Math.min(
-					Number.isNaN( value ) ? minRange : value,
-					maxRange - 1
-				);
-				state.maxPrice = Math.max( maxPrice, state.minPrice + 1 );
-			},
-			setMaxPrice: ( event: HTMLElementEvent< HTMLInputElement > ) => {
-				const {
-					minRange = 0,
-					minPrice = 0,
-					maxPrice = 0,
-					maxRange = 0,
-				} = state;
-				const value = parseFloat( event.target.value );
-				state.maxPrice = Math.max(
-					Number.isNaN( value ) ? maxRange : value,
-					minRange + 1
-				);
-				state.minPrice = Math.min( minPrice, maxPrice - 1 );
-			},
-			updateProducts: () => {
-				navigate( getHrefWithFilters( state ) );
-			},
-			reset: () => {
-				const { maxRange = 0 } = state;
-				state.minPrice = 0;
-				state.maxPrice = maxRange;
-				navigate( getHrefWithFilters( state ) );
-			},
+		get formattedMinPrice(): string {
+			const { minPrice } = getContext< PriceFilterContext >();
+			return formatPrice( minPrice, getCurrency( { minorUnit: 0 } ) );
 		},
-	}
-);
+		get formattedMaxPrice(): string {
+			const { maxPrice } = getContext< PriceFilterContext >();
+			return formatPrice( maxPrice, getCurrency( { minorUnit: 0 } ) );
+		},
+	},
+	actions: {
+		updateProducts: ( event: HTMLElementEvent< HTMLInputElement > ) => {
+			const { minRange, minPrice, maxPrice, maxRange } =
+				getContext< PriceFilterContext >();
+			const type = event.target.name;
+			const value = parseFloat( event.target.value );
+
+			navigate(
+				getUrl( {
+					minRange,
+					maxRange,
+					minPrice:
+						type === 'min'
+							? Math.min(
+									Number.isNaN( value ) ? minRange : value,
+									maxRange - 1
+							  )
+							: minPrice,
+					maxPrice:
+						type === 'max'
+							? Math.max(
+									Number.isNaN( value ) ? maxRange : value,
+									minRange + 1
+							  )
+							: maxPrice,
+				} )
+			);
+		},
+		reset: () => {
+			const { maxRange, minRange } = getContext< PriceFilterContext >();
+			navigate(
+				getUrl( {
+					minRange,
+					maxRange,
+					minPrice: minRange,
+					maxPrice: maxRange,
+				} )
+			);
+		},
+	},
+} );
