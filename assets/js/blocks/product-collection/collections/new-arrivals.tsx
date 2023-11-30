@@ -16,9 +16,10 @@ import {
 	DEFAULT_ATTRIBUTES,
 	INNER_BLOCKS_PRODUCT_TEMPLATE,
 } from '../constants';
+import { CoreCollectionNames, CoreFilterNames } from '../types';
 
 const collection = {
-	name: 'woocommerce-blocks/product-collection/new-arrivals',
+	name: CoreCollectionNames.NEW_ARRIVALS,
 	title: __( 'New Arrivals', 'woo-gutenberg-products-block' ),
 	icon: ( <Icon icon={ calendar } /> ) as BlockIcon,
 	description: __(
@@ -27,7 +28,7 @@ const collection = {
 	),
 	keywords: [ 'newest products' ],
 	scope: [],
-	unchangeableFilters: [ 'order', 'orderBy' ],
+	unchangeableFilters: [ CoreFilterNames.INHERIT, CoreFilterNames.ORDER ],
 };
 
 const attributes = {

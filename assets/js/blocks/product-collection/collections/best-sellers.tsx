@@ -12,9 +12,10 @@ import {
 	DEFAULT_ATTRIBUTES,
 	INNER_BLOCKS_PRODUCT_TEMPLATE,
 } from '../constants';
+import { CoreCollectionNames, CoreFilterNames } from '../types';
 
 const collection = {
-	name: 'woocommerce-blocks/product-collection/best-sellers',
+	name: CoreCollectionNames.BEST_SELLERS,
 	title: __( 'Best Sellers', 'woo-gutenberg-products-block' ),
 	icon: ( <Icon icon={ chartBar } /> ) as BlockIcon,
 	description: __(
@@ -23,7 +24,7 @@ const collection = {
 	),
 	keywords: [ 'best selling' ],
 	scope: [],
-	unchangeableFilters: [ 'order', 'orderBy' ],
+	unchangeableFilters: [ CoreFilterNames.INHERIT, CoreFilterNames.ORDER ],
 };
 
 const attributes = {

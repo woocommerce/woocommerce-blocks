@@ -16,9 +16,10 @@ import {
 	DEFAULT_ATTRIBUTES,
 	INNER_BLOCKS_PRODUCT_TEMPLATE,
 } from '../constants';
+import { CoreCollectionNames, CoreFilterNames } from '../types';
 
 const collection = {
-	name: 'woocommerce-blocks/product-collection/on-sale',
+	name: CoreCollectionNames.ON_SALE,
 	title: __( 'On Sale', 'woo-gutenberg-products-block' ),
 	icon: ( <Icon icon={ percent } /> ) as BlockIcon,
 	description: __(
@@ -27,7 +28,7 @@ const collection = {
 	),
 	keywords: [],
 	scope: [],
-	unchangeableFilters: [ 'onSale' ],
+	unchangeableFilters: [ CoreFilterNames.INHERIT, CoreFilterNames.ON_SALE ],
 };
 
 const attributes = {

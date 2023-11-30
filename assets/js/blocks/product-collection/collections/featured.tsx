@@ -16,9 +16,10 @@ import {
 	DEFAULT_ATTRIBUTES,
 	INNER_BLOCKS_PRODUCT_TEMPLATE,
 } from '../constants';
+import { CoreCollectionNames, CoreFilterNames } from '../types';
 
 const collection = {
-	name: 'woocommerce-blocks/product-collection/featured',
+	name: CoreCollectionNames.FEATURED,
 	title: __( 'Featured', 'woo-gutenberg-products-block' ),
 	icon: ( <Icon icon={ starFilled } /> ) as BlockIcon,
 	description: __(
@@ -27,7 +28,7 @@ const collection = {
 	),
 	keywords: [],
 	scope: [],
-	unchangeableFilters: [ 'featured' ],
+	unchangeableFilters: [ CoreFilterNames.INHERIT, CoreFilterNames.FEATURED ],
 };
 
 const attributes = {
