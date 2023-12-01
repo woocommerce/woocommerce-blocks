@@ -24,7 +24,7 @@ class ProductUpdater {
 		[
 			'title'       => 'Black and White Summer Portrait',
 			'image'       => 'white-black-black-and-white-photograph-monochrome-photography.jpg',
-			'description' => 'This 24” x 30” high-quality print just exudes summer. Hang it on the wall and forget about the world outside.',
+			'description' => 'This 24" x 30" high-quality print just exudes summer. Hang it on the wall and forget about the world outside.',
 			'price'       => 115,
 		],
 		[
@@ -113,7 +113,7 @@ class ProductUpdater {
 		$products_to_create   = max( 0, 6 - $real_products_count - $dummy_products_count );
 
 		while ( $products_to_create > 0 ) {
-			$this->create_new_product( self::DUMMY_PRODUCTS[ $products_to_create ] );
+			$this->create_new_product( self::DUMMY_PRODUCTS[ $products_to_create - 1 ] );
 			$products_to_create--;
 		}
 
@@ -198,6 +198,10 @@ class ProductUpdater {
 		$product->set_regular_price( $product_data['price'] );
 
 		$saved_product = $product->save();
+
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 
 		$product_image_id = media_sideload_image( plugins_url( $product_data['image'], dirname( __DIR__ ) ), $product->get_id(), $product_data['title'], 'id' );
 		if ( is_wp_error( $product_image_id ) ) {
@@ -405,7 +409,6 @@ class ProductUpdater {
 		while ( $ai_request_retries < 5 && ! $success ) {
 			$ai_request_retries ++;
 			$ai_response = $ai_connection->fetch_ai_response( $token, $formatted_prompt, 30 );
-
 			if ( is_wp_error( $ai_response ) ) {
 				continue;
 			}
