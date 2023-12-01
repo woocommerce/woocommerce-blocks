@@ -8,6 +8,44 @@ use WP_Error;
  * Pattern Images class.
  */
 class ProductUpdater {
+	const DUMMY_PRODUCTS = [
+		[
+			'title'       => 'Vintage Typewriter',
+			'image'       => 'watch-hand-brand-jewellery-strap-platinum.jpg',
+			'description' => 'A hit spy novel or a love letter? Anything you type using this vintage typewriter from the 20s is bound to make a mark.',
+			'price'       => 90,
+		],
+		[
+			'title'       => 'Leather-Clad Leisure Chair',
+			'image'       => 'table-wood-house-chair-floor-window.jpg',
+			'description' => 'Sit back and relax in this comfy designer chair. High-grain leather and steel frame add luxury to your your leisure.',
+			'price'       => 249,
+		],
+		[
+			'title'       => 'Black and White Summer Portrait',
+			'image'       => 'white-black-black-and-white-photograph-monochrome-photography.jpg',
+			'description' => 'This 24” x 30” high-quality print just exudes summer. Hang it on the wall and forget about the world outside.',
+			'price'       => 115,
+		],
+		[
+			'title'       => '3-Speed Bike',
+			'image'       => 'road-sport-vintage-wheel-retro-old.jpg',
+			'description' => 'Zoom through the streets on this premium 3-speed bike. Manufactured and assembled in Germany in the 80s.',
+			'price'       => 115,
+		],
+		[
+			'title'       => 'Hi-Fi Headphones',
+			'image'       => 'man-person-music-black-and-white-white-photography.jpg',
+			'description' => 'Experience your favorite songs in a new way with these premium hi-fi headphones.',
+			'price'       => 125,
+		],
+		[
+			'title'       => 'Retro Glass Jug (330 ml)',
+			'image'       => 'drinkware-liquid-tableware-dishware-bottle-fluid.jpg',
+			'description' => 'Thick glass and a classic silhouette make this jug a must-have for any retro-inspired kitchen.',
+			'price'       => 115,
+		],
+	];
 
 	/**
 	 * Generate AI content and assign AI-managed images to Products.
@@ -75,7 +113,7 @@ class ProductUpdater {
 		$products_to_create   = max( 0, 6 - $real_products_count - $dummy_products_count );
 
 		while ( $products_to_create > 0 ) {
-			$this->create_new_product();
+			$this->create_new_product( self::DUMMY_PRODUCTS[ $products_to_create ] );
 			$products_to_create--;
 		}
 
@@ -146,19 +184,28 @@ class ProductUpdater {
 	/**
 	 * Creates a new product and assigns the _headstart_post meta to it.
 	 *
-	 * @return bool|int
+	 * @param array $product_data The product data.
+	 *
+	 * @return bool|int|\WP_Error
 	 */
-	public function create_new_product() {
-		$product      = new \WC_Product();
-		$random_price = wp_rand( 5, 50 );
+	public function create_new_product( $product_data ) {
+		$product = new \WC_Product();
 
-		$product->set_name( 'My Awesome Product' );
+		$product->set_name( $product_data['title'] );
 		$product->set_status( 'publish' );
-		$product->set_description( 'Product description' );
-		$product->set_price( $random_price );
-		$product->set_regular_price( $random_price );
+		$product->set_description( $product_data['description'] );
+		$product->set_price( $product_data['price'] );
+		$product->set_regular_price( $product_data['price'] );
 
 		$saved_product = $product->save();
+
+		$product_image_id = media_sideload_image( plugins_url( $product_data['image'], dirname( __DIR__ ) ), $product->get_id(), $product_data['title'], 'id' );
+		if ( is_wp_error( $product_image_id ) ) {
+			return new \WP_Error( 'error_uploading_image', $product_image_id->get_error_message() );
+		}
+
+		$product->set_image_id( $product_image_id );
+		$product->save();
 
 		return update_post_meta( $saved_product, '_headstart_post', true );
 	}
@@ -296,8 +343,8 @@ class ProductUpdater {
 		$products_information_list = [];
 		$dummy_products_count      = count( $dummy_products_to_update );
 		for ( $i = 0; $i < $dummy_products_count; $i ++ ) {
-			$image_src = $ai_selected_images[ $i ]['URL'] ?? plugins_url( 'woocommerce-blocks/images/block-placeholders/product-image-gallery.svg' );
-			$image_alt = $ai_selected_images[ $i ]['title'] ?? '';
+			$image_src = $ai_selected_images[ $i ]['URL'];
+			$image_alt = $ai_selected_images[ $i ]['title'];
 
 			$products_information_list[] = [
 				'title'       => 'A product title',
