@@ -311,7 +311,6 @@ class ProductUpdater {
 				),
 			)
 		);
-		flush_rewrite_rules();
 
 		if ( ! empty( $ai_generated_product_content['image']['src'] ) ) {
 			require_once ABSPATH . 'wp-admin/includes/media.php';
