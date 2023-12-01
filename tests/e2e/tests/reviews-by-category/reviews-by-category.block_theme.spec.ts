@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { expect, test } from '@woocommerce/e2e-playwright-utils';
-import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+import { getWooCommerceRestApi } from 'tests/e2e/utils/api/get-woocommerce-rest-api';
 
 const blockData = {
 	name: 'woocommerce/reviews-by-category',
@@ -24,17 +24,12 @@ test.describe( `${ blockData.name } Block`, () => {
 
 	// Create category, product and reviews.
 	test.beforeAll( async ( { baseURL } ) => {
-		const api = new WooCommerceRestApi( {
-			url: baseURL,
-			consumerKey: process.env.CONSUMER_KEY,
-			consumerSecret: process.env.CONSUMER_SECRET,
-			version: 'wc/v3',
-		} );
+		const api = getWooCommerceRestApi( baseURL );
 		await api
 			.post( 'products/categories', {
 				name: 'Products with reviews',
 			} )
-			.then( ( response: { data: { id: number } } ) => {
+			.then( ( response ) => {
 				categoryId = response.data.id;
 			} );
 		await api
@@ -44,7 +39,7 @@ test.describe( `${ blockData.name } Block`, () => {
 				regular_price: '12.99',
 				categories: [ { id: categoryId } ],
 			} )
-			.then( ( response: { data: { id: number } } ) => {
+			.then( ( response ) => {
 				productId = response.data.id;
 			} );
 		await api
@@ -55,7 +50,7 @@ test.describe( `${ blockData.name } Block`, () => {
 				reviewer_email: 'john.doe@example.com',
 				rating: 5,
 			} )
-			.then( ( response: { data: { id: number } } ) => {
+			.then( ( response ) => {
 				firstReviewId = response.data.id;
 			} );
 		await api
@@ -73,12 +68,7 @@ test.describe( `${ blockData.name } Block`, () => {
 
 	// Remove category, product and reviews.
 	test.afterAll( async ( { baseURL } ) => {
-		const api = new WooCommerceRestApi( {
-			url: baseURL,
-			consumerKey: process.env.CONSUMER_KEY,
-			consumerSecret: process.env.CONSUMER_SECRET,
-			version: 'wc/v3',
-		} );
+		const api = getWooCommerceRestApi( baseURL );
 		await api.delete( `products/reviews/${ firstReviewId }`, {
 			force: true,
 		} );
