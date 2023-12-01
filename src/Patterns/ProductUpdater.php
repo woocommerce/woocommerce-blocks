@@ -11,7 +11,7 @@ class ProductUpdater {
 	const DUMMY_PRODUCTS = [
 		[
 			'title'       => 'Vintage Typewriter',
-			'image'       => 'images/pattern-placeholders/watch-hand-brand-jewellery-strap-platinum.jpg',
+			'image'       => 'images/pattern-placeholders/writing-typing-keyboard-technology-white-vintage.jpg',
 			'description' => 'A hit spy novel or a love letter? Anything you type using this vintage typewriter from the 20s is bound to make a mark.',
 			'price'       => 90,
 		],
