@@ -37,6 +37,7 @@ const test = base.extend< { checkoutPageObject: CheckoutPage } >( {
 		await use( pageObject );
 	},
 } );
+
 test.describe( 'Merchant → Checkout', () => {
 	// `as string` is safe here because we know the variable is a string, it is defined above.
 	const blockSelectorInEditor = blockData.selectors.editor.block as string;
@@ -48,6 +49,32 @@ test.describe( 'Merchant → Checkout', () => {
 		} );
 		await editorUtils.enterEditMode();
 		await editor.openDocumentSettingsSidebar();
+	} );
+
+	test( 'renders without crashing and can only be inserted once', async ( {
+		page,
+		editorUtils,
+		editor,
+	} ) => {
+		const blockPresence = await editorUtils.getBlockByName(
+			blockData.slug
+		);
+		expect( blockPresence ).toBeTruthy();
+
+		await editorUtils.openGlobalBlockInserter();
+		await page.getByPlaceholder( 'Search' ).fill( blockData.slug );
+		const checkoutBlockButton = page.getByRole( 'option', {
+			name: blockData.name,
+			exact: true,
+		} );
+		expect( await editorUtils.ensureNoErrorsOnBlockPage() ).toBe( true );
+		await expect(
+			editor.canvas.locator( blockSelectorInEditor )
+		).toBeVisible();
+		await expect( checkoutBlockButton ).toHaveAttribute(
+			'aria-disabled',
+			'true'
+		);
 	} );
 
 	test.describe( 'Can adjust T&S and Privacy Policy options', () => {
@@ -187,27 +214,6 @@ test.describe( 'Merchant → Checkout', () => {
 		} );
 		await requireTermsCheckbox.uncheck();
 		await editor.saveSiteEditorEntities();
-	} );
-
-	test( 'renders without crashing and can only be inserted once', async ( {
-		page,
-		editorUtils,
-	} ) => {
-		const blockPresence = await editorUtils.getBlockByName(
-			blockData.slug
-		);
-		expect( blockPresence ).toBeTruthy();
-
-		await editorUtils.openGlobalBlockInserter();
-		await page.getByPlaceholder( 'Search' ).fill( blockData.slug );
-		const checkoutBlockButton = page.getByRole( 'option', {
-			name: blockData.name,
-			exact: true,
-		} );
-		await expect( checkoutBlockButton ).toHaveAttribute(
-			'aria-disabled',
-			'true'
-		);
 	} );
 
 	test( 'inner blocks can be added/removed by filters', async ( {
