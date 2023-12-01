@@ -286,55 +286,6 @@ class ProductCollectionPage {
 		if ( isLocatorsRefreshNeeded ) await this.refreshLocators( 'editor' );
 	}
 
-	async getOnSaleValue() {
-		const sidebarSettings = await this.locateSidebarSettings();
-
-		const input = sidebarSettings.getByLabel(
-			SELECTORS.onSaleControlLabel
-		);
-
-		return await input.inputValue();
-	}
-
-	async setFeaturedProducts(
-		{
-			featured,
-			isLocatorsRefreshNeeded,
-		}: {
-			featured: boolean;
-			isLocatorsRefreshNeeded?: boolean;
-		} = {
-			isLocatorsRefreshNeeded: true,
-			featured: true,
-		}
-	) {
-		const sidebarSettings = await this.locateSidebarSettings();
-		const input = sidebarSettings.getByLabel(
-			SELECTORS.featuredControlLabel
-		);
-		if ( featured ) {
-			await input.check();
-		} else {
-			await input.uncheck();
-		}
-
-		if ( isLocatorsRefreshNeeded ) await this.refreshLocators( 'editor' );
-	}
-
-	async getFeaturedValue() {
-		const sidebarSettings = await this.locateSidebarSettings();
-		const visible = await sidebarSettings
-			.getByLabel( SELECTORS.featuredControlLabel )
-			.isVisible();
-
-		// If input is hidden, it's implicitly in default state, meaning off
-		if ( ! visible ) return 'off';
-
-		return await sidebarSettings
-			.getByLabel( SELECTORS.featuredControlLabel )
-			.inputValue();
-	}
-
 	async setFilterComboboxValue( filterName: string, filterValue: string[] ) {
 		const sidebarSettings = await this.locateSidebarSettings();
 		const input = sidebarSettings.getByLabel( filterName );
@@ -495,10 +446,8 @@ class ProductCollectionPage {
 		return this.page.getByTestId( testId );
 	}
 
-	async getCollectionHeading( name: string ) {
-		return this.page.getByRole( 'heading', {
-			name,
-		} );
+	async getCollectionHeading() {
+		return this.page.getByRole( 'heading' );
 	}
 
 	/**
