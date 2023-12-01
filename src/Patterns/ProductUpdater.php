@@ -11,37 +11,37 @@ class ProductUpdater {
 	const DUMMY_PRODUCTS = [
 		[
 			'title'       => 'Vintage Typewriter',
-			'image'       => 'watch-hand-brand-jewellery-strap-platinum.jpg',
+			'image'       => 'images/pattern-placeholders/watch-hand-brand-jewellery-strap-platinum.jpg',
 			'description' => 'A hit spy novel or a love letter? Anything you type using this vintage typewriter from the 20s is bound to make a mark.',
 			'price'       => 90,
 		],
 		[
 			'title'       => 'Leather-Clad Leisure Chair',
-			'image'       => 'table-wood-house-chair-floor-window.jpg',
+			'image'       => 'images/pattern-placeholders/table-wood-house-chair-floor-window.jpg',
 			'description' => 'Sit back and relax in this comfy designer chair. High-grain leather and steel frame add luxury to your your leisure.',
 			'price'       => 249,
 		],
 		[
 			'title'       => 'Black and White Summer Portrait',
-			'image'       => 'white-black-black-and-white-photograph-monochrome-photography.jpg',
+			'image'       => 'images/pattern-placeholders/white-black-black-and-white-photograph-monochrome-photography.jpg',
 			'description' => 'This 24" x 30" high-quality print just exudes summer. Hang it on the wall and forget about the world outside.',
 			'price'       => 115,
 		],
 		[
 			'title'       => '3-Speed Bike',
-			'image'       => 'road-sport-vintage-wheel-retro-old.jpg',
+			'image'       => 'images/pattern-placeholders/road-sport-vintage-wheel-retro-old.jpg',
 			'description' => 'Zoom through the streets on this premium 3-speed bike. Manufactured and assembled in Germany in the 80s.',
 			'price'       => 115,
 		],
 		[
 			'title'       => 'Hi-Fi Headphones',
-			'image'       => 'man-person-music-black-and-white-white-photography.jpg',
+			'image'       => 'images/pattern-placeholders/man-person-music-black-and-white-white-photography.jpg',
 			'description' => 'Experience your favorite songs in a new way with these premium hi-fi headphones.',
 			'price'       => 125,
 		],
 		[
 			'title'       => 'Retro Glass Jug (330 ml)',
-			'image'       => 'drinkware-liquid-tableware-dishware-bottle-fluid.jpg',
+			'image'       => 'images/pattern-placeholders/drinkware-liquid-tableware-dishware-bottle-fluid.jpg',
 			'description' => 'Thick glass and a classic silhouette make this jug a must-have for any retro-inspired kitchen.',
 			'price'       => 115,
 		],
@@ -199,16 +199,16 @@ class ProductUpdater {
 
 		$saved_product = $product->save();
 
-//		require_once ABSPATH . 'wp-admin/includes/media.php';
-//		require_once ABSPATH . 'wp-admin/includes/file.php';
-//		require_once ABSPATH . 'wp-admin/includes/image.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-//		$product_image_id = media_sideload_image( plugins_url( $product_data['image'], dirname( __DIR__ ) ), $product->get_id(), $product_data['title'], 'id' );
-//		if ( is_wp_error( $product_image_id ) ) {
-//			return new \WP_Error( 'error_uploading_image', $product_image_id->get_error_message() );
-//		}
-//
-//		$product->set_image_id( $product_image_id );
+		$product_image_id = media_sideload_image( plugins_url( $product_data['image'], dirname( __DIR__ ) ), $product->get_id(), $product_data['title'], 'id' );
+		if ( is_wp_error( $product_image_id ) ) {
+			return new \WP_Error( 'error_uploading_image', $product_image_id->get_error_message() );
+		}
+
+		$product->set_image_id( $product_image_id );
 		$product->save();
 
 		return update_post_meta( $saved_product, '_headstart_post', true );
