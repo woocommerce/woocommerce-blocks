@@ -214,6 +214,47 @@ class Custom_Inner_Block_Extend_Store_Endpoint {
 }
 ```
 
+- The `new-field-block.php` file: the main plugin file that loads the `custom-inner-block-blocks-integration.php` and `custom-inner-block-extend-store-endpoint.php` files.
+
+```php
+<?php
+/**
+ * Plugin Name:     New Field Block
+ * Version:         1.0
+ * Author:          Your Name Here
+ * License:         GPL-2.0-or-later
+ * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:     new-field-block
+ *
+ * @package         create-block
+ */
+
+// ... Some code here
+
+/**
+ * Include the dependencies needed to instantiate the block.
+ */
+add_action(
+	'woocommerce_blocks_loaded',
+	function() {
+		require_once __DIR__ . '/custom-inner-block-blocks-integration.php';
+		require_once __DIR__ . '/custom-inner-block-blocks-integration.php';
+
+		// Initialize our store endpoint extension when WC Blocks is loaded.
+		Custom_Inner_Block_Extend_Store_Endpoint::init();
+
+		add_action(
+			'woocommerce_blocks_checkout_block_registration',
+			function( $integration_registry ) {
+				$integration_registry->register( new Custom_Inner_Block_Blocks_Integration() );
+			}
+		);
+	}
+);
+
+// ... Some code here
+```
+
 Here is an example from our [tutorial](https://developer.woocommerce.com/2023/08/07/extending-the-woocommerce-checkout-block-to-add-custom-shipping-options/) of how to get this custom field's data while processing the checkout. This example is from the `shipping-workshop-blocks-integration.php` file. The complete code can be found in this [GitHub repository](https://github.com/woocommerce/wceu23-shipping-workshop-final/blob/main/shipping-workshop-blocks-integration.php#L42-L83).
 
 ```php
