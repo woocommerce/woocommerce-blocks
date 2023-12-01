@@ -38,16 +38,20 @@ final class CollectionPriceFilter extends AbstractBlock {
 	public function register_active_filters_data( $data, $params ) {
 		$min_price           = intval( $params[ self::MIN_PRICE_QUERY_VAR ] ?? 0 );
 		$max_price           = intval( $params[ self::MAX_PRICE_QUERY_VAR ] ?? 0 );
-		$formatted_min_price = $min_price ? wc_price( $min_price, array( 'decimals' => 0 ) ) : null;
-		$formatted_max_price = $max_price ? wc_price( $max_price, array( 'decimals' => 0 ) ) : null;
+		$formatted_min_price = $min_price ? wp_strip_all_tags( wc_price( $min_price, array( 'decimals' => 0 ) ) ) : null;
+		$formatted_max_price = $max_price ? wp_strip_all_tags( wc_price( $max_price, array( 'decimals' => 0 ) ) ) : null;
 
 		if ( ! $formatted_min_price && ! $formatted_max_price ) {
 			return $data;
 		}
 
 		if ( $formatted_min_price && $formatted_max_price ) {
-			/* translators: %1$s and %2$s are the formatted minimum and maximum prices respectively. */
-			$title = sprintf( __( 'Between %1$s and %2$s', 'woo-gutenberg-products-block' ), $formatted_min_price, $formatted_max_price );
+			$title = sprintf(
+				/* translators: %1$s and %2$s are the formatted minimum and maximum prices respectively. */
+				__( 'Between %1$s and %2$s', 'woo-gutenberg-products-block' ),
+				$formatted_min_price,
+				$formatted_max_price
+			);
 		}
 
 		if ( ! $formatted_min_price ) {
