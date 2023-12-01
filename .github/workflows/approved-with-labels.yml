@@ -2,15 +2,14 @@ on: pull_request_review
 name: Approved Pull Requests
 jobs:
     labelWhenApproved:
-        name: Add Labels
+        name: Update Labels
         runs-on: ubuntu-latest
         steps:
-            - name: Ready to merge label
+            - name: Needs review label
               uses: pullreminders/label-when-approved-action@master
               env:
                   APPROVALS: '1'
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  ADD_LABEL: 'status: ready to merge'
                   REMOVE_LABEL: 'status:%20needs%20review'
     milestoneWhenApproved:
         name: Add Milestone
