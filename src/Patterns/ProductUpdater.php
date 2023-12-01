@@ -313,24 +313,26 @@ class ProductUpdater {
 		);
 		flush_rewrite_rules();
 
-		require_once ABSPATH . 'wp-admin/includes/media.php';
-		require_once ABSPATH . 'wp-admin/includes/file.php';
-		require_once ABSPATH . 'wp-admin/includes/image.php';
+		if ( ! empty( $ai_generated_product_content['image']['src'] ) ) {
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		// Since the media_sideload_image function is expensive and can take longer to complete
-		// the process of downloading the external image and uploading it to the media library,
-		// here we are increasing the time limit to avoid any issues.
-		set_time_limit( 150 );
-		wp_raise_memory_limit( 'image' );
+			// Since the media_sideload_image function is expensive and can take longer to complete
+			// the process of downloading the external image and uploading it to the media library,
+			// here we are increasing the time limit to avoid any issues.
+			set_time_limit( 150 );
+			wp_raise_memory_limit( 'image' );
 
-		$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
+			$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
 
-		if ( is_wp_error( $product_image_id ) ) {
-			return $product_image_id->get_error_message();
+			if ( is_wp_error( $product_image_id ) ) {
+				return $product_image_id->get_error_message();
+			}
+
+			$product->set_image_id( $product_image_id );
+			$product->save();
 		}
-
-		$product->set_image_id( $product_image_id );
-		$product->save();
 
 		$this->create_hash_for_ai_modified_product( $product );
 	}
@@ -347,8 +349,8 @@ class ProductUpdater {
 		$products_information_list = [];
 		$dummy_products_count      = count( $dummy_products_to_update );
 		for ( $i = 0; $i < $dummy_products_count; $i ++ ) {
-			$image_src = $ai_selected_images[ $i ]['URL'];
-			$image_alt = $ai_selected_images[ $i ]['title'];
+			$image_src = $ai_selected_images[ $i ]['URL'] ?? '';
+			$image_alt = $ai_selected_images[ $i ]['title'] ?? '';
 
 			$products_information_list[] = [
 				'title'       => 'A product title',
