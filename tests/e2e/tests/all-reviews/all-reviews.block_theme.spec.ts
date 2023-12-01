@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { expect, test } from '@woocommerce/e2e-playwright-utils';
-import { getWooCommerceRestApi } from 'tests/e2e/utils/api/get-woocommerce-rest-api';
 
 const blockData = {
 	name: 'woocommerce/all-reviews',
@@ -22,53 +21,48 @@ test.describe( `${ blockData.name } Block`, () => {
 	const secondReviewContent = 'Not bad.';
 
 	// Create product and reviews.
-	test.beforeAll( async ( { baseURL } ) => {
-		const api = getWooCommerceRestApi( baseURL );
-		await api
-			.post( 'products', {
+	test.beforeAll( async ( { wcRestApiUtils } ) => {
+		await wcRestApiUtils.createProduct(
+			{
 				name: 'Product with reviews',
 				type: 'simple',
 				regular_price: '12.99',
-			} )
-			.then( ( response ) => {
+			},
+			( response ) => {
 				productId = response.data.id;
-			} );
-		await api
-			.post( 'products/reviews', {
+			}
+		);
+		await wcRestApiUtils.createProductReview(
+			{
 				product_id: productId,
 				review: firstReviewContent,
 				reviewer: 'John Doe',
 				reviewer_email: 'john.doe@example.com',
 				rating: 5,
-			} )
-			.then( ( response ) => {
+			},
+			( response ) => {
 				firstReviewId = response.data.id;
-			} );
-		await api
-			.post( 'products/reviews', {
+			}
+		);
+		await wcRestApiUtils.createProductReview(
+			{
 				product_id: productId,
 				review: secondReviewContent,
 				reviewer: 'John Doe',
 				reviewer_email: 'john.doe@example.com',
 				rating: 4,
-			} )
-			.then( ( response ) => {
+			},
+			( response ) => {
 				secondReviewId = response.data.id;
-			} );
+			}
+		);
 	} );
 
 	// Remove product and reviews.
-	test.afterAll( async ( { baseURL } ) => {
-		const api = getWooCommerceRestApi( baseURL );
-		await api.delete( `products/reviews/${ firstReviewId }`, {
-			force: true,
-		} );
-		await api.delete( `products/reviews/${ secondReviewId }`, {
-			force: true,
-		} );
-		await api.delete( `products/${ productId }`, {
-			force: true,
-		} );
+	test.afterAll( async ( { wcRestApiUtils } ) => {
+		await wcRestApiUtils.deleteProductReview( firstReviewId );
+		await wcRestApiUtils.deleteProductReview( secondReviewId );
+		await wcRestApiUtils.deleteProduct( productId );
 	} );
 
 	test( 'renders a review in the editor and the frontend', async ( {

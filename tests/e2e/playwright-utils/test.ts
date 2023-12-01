@@ -12,6 +12,7 @@ import {
 } from '@wordpress/e2e-test-utils-playwright';
 
 import {
+	WCRestApiUtils,
 	TemplateApiUtils,
 	STORAGE_STATE_PATH,
 	EditorUtils,
@@ -106,6 +107,7 @@ const test = base.extend<
 		admin: Admin;
 		editor: Editor;
 		pageUtils: PageUtils;
+		wcRestApiUtils: WCRestApiUtils;
 		templateApiUtils: TemplateApiUtils;
 		editorUtils: EditorUtils;
 		frontendUtils: FrontendUtils;
@@ -137,6 +139,7 @@ const test = base.extend<
 	pageUtils: async ( { page }, use ) => {
 		await use( new PageUtils( { page } ) );
 	},
+	wcRestApiUtils: async ( {}, use ) => await use( new WCRestApiUtils() ),
 	templateApiUtils: async ( {}, use ) =>
 		await use( new TemplateApiUtils( baseRequest ) ),
 	editorUtils: async ( { editor, page }, use ) => {
