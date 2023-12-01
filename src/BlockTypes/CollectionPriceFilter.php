@@ -65,8 +65,8 @@ final class CollectionPriceFilter extends AbstractBlock {
 		}
 
 		$data['price'] = array(
-			'type'    => __( 'Price', 'woo-gutenberg-products-block' ),
-			'options' => array(
+			'type'  => __( 'Price', 'woo-gutenberg-products-block' ),
+			'items' => array(
 				array(
 					'title'      => $title,
 					'attributes' => array(

@@ -65,8 +65,8 @@ final class CollectionStockFilter extends AbstractBlock {
 		);
 
 		$data['stock'] = array(
-			'type'    => __( 'Stock Status', 'woo-gutenberg-products-block' ),
-			'options' => $active_stock_statuses,
+			'type'  => __( 'Stock Status', 'woo-gutenberg-products-block' ),
+			'items' => $active_stock_statuses,
 		);
 
 		return $data;

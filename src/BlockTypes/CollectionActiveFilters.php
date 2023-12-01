@@ -7,26 +7,6 @@ use Automattic\WooCommerce\Blocks\InteractivityComponents\Dropdown;
  * CollectionAttributeFilter class.
  */
 final class CollectionActiveFilters extends AbstractBlock {
-
-	const LIST_TEMPLATE      = '<li><span class="wc-block-active-filters__list-item-type">%1$s: </span><ul>%2$s</ul></li>';
-	const LIST_ITEM_TEMPLATE = '<li class="wc-block-active-filters__list-item">
-		<span class="wc-block-active-filters__list-item-name">
-			<button class="wc-block-active-filters__list-item-remove" %3$s>
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="wc-block-components-chip__remove-icon" aria-hidden="true" focusable="false"><path d="M12 13.06l3.712 3.713 1.061-1.06L13.061 12l3.712-3.712-1.06-1.06L12 10.938 8.288 7.227l-1.061 1.06L10.939 12l-3.712 3.712 1.06 1.061L12 13.061z"></path></svg>
-				<span class="screen-reader-text">%2$s</span>
-			</button>
-			%1$s
-		</span>
-	</li>';
-	const CHIP_ITEM_TEMPLATE = '<li class="wc-block-active-filters__list-item">
-		<span class="is-removable wc-block-components-chip wc-block-components-chip--radius-large">
-			<span aria-hidden="false" class="wc-block-components-chip__text">%1$s</span>
-			<button class="wc-block-components-chip__remove" aria-label="%2$s" %3$s>
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" role="img" class="wc-block-components-chip__remove-icon" aria-hidden="true" focusable="false"><path d="M12 13.06l3.712 3.713 1.061-1.06L13.061 12l3.712-3.712-1.06-1.06L12 10.938 8.288 7.227l-1.061 1.06L10.939 12l-3.712 3.712 1.06 1.061L12 13.061z"></path></svg>
-			</button>
-		</span>
-	</li>';
-
 	/**
 	 * Block name.
 	 *
@@ -49,7 +29,7 @@ final class CollectionActiveFilters extends AbstractBlock {
 		 * $data = array(
 		 *     <id> => array(
 		 *         'type' => string,
-		 *         'options' => array(
+		 *         'items' => array(
 		 *             array(
 		 *                 'title' => string,
 		 *                 'attributes' => array(
@@ -72,75 +52,141 @@ final class CollectionActiveFilters extends AbstractBlock {
 			return $content;
 		}
 
-		$filter_content = array_reduce(
-			$active_filters,
-			function( $acc, $filter ) use ( $attributes ) {
-
-				$items_content = array_reduce(
-					$filter['options'],
-					function( $acc, $option ) use ( $attributes ) {
-
-						$element_attributes = array_reduce(
-							array_keys( $option['attributes'] ),
-							function( $acc, $key ) use ( $option ) {
-								$acc .= sprintf( ' %1$s="%2$s"', esc_attr( $key ), esc_attr( $option['attributes'][ $key ] ) );
-								return $acc;
-							},
-							''
-						);
-
-						$acc .= sprintf(
-							'chips' === $attributes['displayStyle'] ? self::CHIP_ITEM_TEMPLATE : self::LIST_ITEM_TEMPLATE,
-							wp_kses_post( $option['title'] ),
-							sprintf( 'Remove %s filter', esc_attr( wp_strip_all_tags( $option['title'] ) ) ),
-							$element_attributes
-						);
-
-						return $acc;
-					},
-					''
-				);
-
-				$acc .= sprintf(
-					self::LIST_TEMPLATE,
-					esc_attr( $filter['type'] ),
-					$items_content
-				);
-
-				return $acc;
-			},
-			''
-		);
-
-		$clear_button = sprintf(
-			'<button class="wc-block-active-filters__clear-all" data-wc-on--click="actions.clearAll">
-				<span aria-hidden="true">%1$s</span>
-				<span class="screen-reader-text">%2$s</span>
-			</button>',
-			__( 'Clear All', 'woo-gutenberg-products-block' ),
-			__( 'Clear All Filters', 'woo-gutenberg-products-block' )
-		);
-
 		$context = array(
 			'queryId' => $block->context['queryId'],
 			'params'  => array_keys( $this->get_filter_query_params( $block->context['queryId'] ) ),
 		);
 
-		return sprintf(
-			'<div %1$s>
-				<ul class="wc-block-active-filters__list %3$s">%2$s</ul>
-				%4$s
-			</div>',
-			get_block_wrapper_attributes(
-				array(
-					'class'               => 'wc-block-active-filters',
-					'data-wc-interactive' => wp_json_encode( array( 'namespace' => 'woocommerce/collection-active-filters' ) ),
-					'data-wc-context'     => wp_json_encode( $context ),
-				)
-			),
-			$filter_content,
-			'chips' === $attributes['displayStyle'] ? 'wc-block-active-filters__list--chips' : '',
-			$clear_button
+		$wrapper_attributes = get_block_wrapper_attributes(
+			array(
+				'class'               => 'wc-block-active-filters',
+				'data-wc-interactive' => wp_json_encode( array( 'namespace' => 'woocommerce/collection-active-filters' ) ),
+				'data-wc-context'     => wp_json_encode( $context ),
+			)
+		);
+
+		ob_start();
+		?>
+
+		<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<div <?php echo $wrapper_attributes; ?>>
+			<ul class="wc-block-active-filters__list %3$s">
+				<?php foreach ( $active_filters as $filter ) : ?>
+				<li>
+					<span class="wc-block-active-filters__list-item-type"><?php echo esc_html( $filter['type'] ); ?>: </span>
+					<ul>
+						<?php $this->render_items( $filter['items'], $attributes['displayStyle'] ); ?>
+					</ul>
+				</li>
+				<?php endforeach; ?>
+			</ul>
+			<button class="wc-block-active-filters__clear-all" data-wc-on--click="actions.clearAll">
+				<span aria-hidden="true"><?php echo esc_html__( 'Clear All', 'woo-gutenberg-products-block' ); ?></span>
+				<span class="screen-reader-text"><?php echo esc_html__( 'Clear All Filters', 'woo-gutenberg-products-block' ); ?></span>
+			</button>
+		</div>
+
+		<?php
+		return ob_get_clean();
+	}
+
+	/**
+	 * Render the list items.
+	 *
+	 * @param array  $items Items data.
+	 * @param string $style Display style: list | chips.
+	 */
+	private function render_items( $items, $style ) {
+		foreach ( $items as $item ) {
+			if ( 'chips' === $style ) {
+				$this->render_chip_item( $item );
+			} else {
+				$this->render_list_item( $item );
+			}
+		}
+	}
+
+	/**
+	 * Render the list item of an active filter.
+	 *
+	 * @param array $args Item data.
+	 * @return string Item HTML.
+	 */
+	private function render_list_item( $args ) {
+		list ( 'title' => $title, 'attributes' => $attributes ) = wp_parse_args(
+			$args,
+			array(
+				'title'      => '',
+				'attributes' => array(),
+			)
+		);
+
+		if ( ! $title || empty( $attributes ) ) {
+			return;
+		}
+
+		$remove_label = sprintf( 'Remove %s filter', wp_strip_all_tags( $title ) );
+		?>
+		<li class="wc-block-active-filters__list-item">
+			<span class="wc-block-active-filters__list-item-name">
+				<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<button class="wc-block-active-filters__list-item-remove"  <?php echo $this->get_html_attributes( $attributes ); ?>>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="wc-block-components-chip__remove-icon" aria-hidden="true" focusable="false"><path d="M12 13.06l3.712 3.713 1.061-1.06L13.061 12l3.712-3.712-1.06-1.06L12 10.938 8.288 7.227l-1.061 1.06L10.939 12l-3.712 3.712 1.06 1.061L12 13.061z"></path></svg>
+					<span class="screen-reader-text"><?php echo esc_html( $remove_label ); ?></span>
+				</button>
+				<?php echo wp_kses_post( $title ); ?>
+			</span>
+		</li>
+		<?php
+	}
+
+	/**
+	 * Render the chip item of an active filter.
+	 *
+	 * @param array $args Item data.
+	 * @return string Item HTML.
+	 */
+	private function render_chip_item( $args ) {
+		list ( 'title' => $title, 'attributes' => $attributes ) = wp_parse_args(
+			$args,
+			array(
+				'title'      => '',
+				'attributes' => array(),
+			)
+		);
+
+		if ( ! $title || empty( $attributes ) ) {
+			return;
+		}
+
+		$remove_label = sprintf( 'Remove %s filter', wp_strip_all_tags( $title ) );
+		?>
+		<li class="wc-block-active-filters__list-item">
+			<span class="is-removable wc-block-components-chip wc-block-components-chip--radius-large">
+				<span aria-hidden="false" class="wc-block-components-chip__text"><?php echo wp_kses_post( $title ); ?></span>
+				<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<button class="wc-block-components-chip__remove" aria-label="<?php echo esc_attr( $remove_label ); ?>" <?php echo $this->get_html_attributes( $attributes ); ?>>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" role="img" class="wc-block-components-chip__remove-icon" aria-hidden="true" focusable="false"><path d="M12 13.06l3.712 3.713 1.061-1.06L13.061 12l3.712-3.712-1.06-1.06L12 10.938 8.288 7.227l-1.061 1.06L10.939 12l-3.712 3.712 1.06 1.061L12 13.061z"></path></svg>
+				</button>
+			</span>
+		</li>
+		<?php
+	}
+
+	/**
+	 * Build HTML attributes string from assoc array.
+	 *
+	 * @param array $attributes Attributes data as an assoc array.
+	 * @return string Escaped HTML attributes string.
+	 */
+	private function get_html_attributes( $attributes ) {
+		return array_reduce(
+			array_keys( $attributes ),
+			function( $acc, $key ) use ( $attributes ) {
+				$acc .= sprintf( ' %1$s="%2$s"', esc_attr( $key ), esc_attr( $attributes[ $key ] ) );
+				return $acc;
+			},
+			''
 		);
 	}
 

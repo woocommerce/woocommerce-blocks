@@ -87,8 +87,8 @@ final class CollectionAttributeFilter extends AbstractBlock {
 			);
 
 			$data[ $product_attribute ] = array(
-				'type'    => $product_attributes_map[ $product_attribute ],
-				'options' => $terms,
+				'type'  => $product_attributes_map[ $product_attribute ],
+				'items' => $terms,
 			);
 		}
 
