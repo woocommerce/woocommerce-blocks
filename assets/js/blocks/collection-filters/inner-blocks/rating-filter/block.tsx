@@ -1,13 +1,11 @@
 /**
  * External dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
-import { speak } from '@wordpress/a11y';
+import { __ } from '@wordpress/i18n';
 import { Icon, chevronDown } from '@wordpress/icons';
 import Rating, {
 	RatingValues,
 } from '@woocommerce/base-components/product-rating';
-import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,
@@ -15,14 +13,11 @@ import {
 } from '@woocommerce/base-context/hooks';
 import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean, isObject, objectHasProp } from '@woocommerce/types';
-import isShallowEqual from '@wordpress/is-shallow-equal';
-import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
+import { useState, useMemo, useEffect } from '@wordpress/element';
 import { CheckboxList } from '@woocommerce/blocks-components';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
 import FormTokenField from '@woocommerce/base-components/form-token-field';
-import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
-import { changeUrl, normalizeQueryParams } from '@woocommerce/utils';
 import classnames from 'classnames';
 import type { ReactElement } from 'react';
 
@@ -37,49 +32,19 @@ import { useSetWraperVisibility } from '../../../filter-wrapper/context';
 
 export const QUERY_PARAM_KEY = 'rating_filter';
 
-const translations = {
-	ratingAdded: ( rating: string ): string =>
-		sprintf(
-			/* translators: %s is referring to the average rating value */
-			__(
-				'Rated %s out of 5 filter added.',
-				'woo-gutenberg-products-block'
-			),
-			rating
-		),
-	ratingRemoved: ( rating: string ): string =>
-		sprintf(
-			/* translators: %s is referring to the average rating value */
-			__(
-				'Rated %s out of 5 filter added.',
-				'woo-gutenberg-products-block'
-			),
-			rating
-		),
-};
-
 /**
- * Component displaying a rating filter.
+ * Component displaying a rating filter in the block editor.
  */
-const RatingFilterBlock = ( {
+const RatingFilterEditBlock = ( {
 	attributes: blockAttributes,
-	isEditor,
 	noRatingsNotice = null,
 }: {
 	attributes: Attributes;
-	isEditor: boolean;
 	noRatingsNotice?: ReactElement | null;
 } ) => {
+	const isEditor = true;
+
 	const setWrapperVisibility = useSetWraperVisibility();
-
-	const filteringForPhpTemplate = getSettingWithCoercion(
-		'isRenderingPhpTemplate',
-		false,
-		isBoolean
-	);
-	const [ hasSetFilterDefaultsFromUrl, setHasSetFilterDefaultsFromUrl ] =
-		useState( false );
-
 	const [ queryState ] = useQueryStateByContext();
 
 	const { results: filteredCounts, isLoading: filteredCountsLoading } =
@@ -121,97 +86,11 @@ const RatingFilterBlock = ( {
 	const [ displayNoProductRatingsNotice, setDisplayNoProductRatingsNotice ] =
 		useState( false );
 
-	/**
-	 * Used to redirect the page when filters are changed so templates using the Classic Template block can filter.
-	 *
-	 * @param {Array} checkedRatings Array of checked ratings.
-	 */
-	const updateFilterUrl = ( checkedRatings: string[] ) => {
-		if ( ! window ) {
-			return;
-		}
-
-		if ( checkedRatings.length === 0 ) {
-			const url = removeQueryArgs(
-				window.location.href,
-				QUERY_PARAM_KEY
-			);
-
-			if ( url !== normalizeQueryParams( window.location.href ) ) {
-				changeUrl( url );
-			}
-
-			return;
-		}
-
-		const newUrl = addQueryArgs( window.location.href, {
-			[ QUERY_PARAM_KEY ]: checkedRatings.join( ',' ),
-		} );
-
-		if ( newUrl === normalizeQueryParams( window.location.href ) ) {
-			return;
-		}
-
-		changeUrl( newUrl );
-	};
-
 	const multiple = blockAttributes.selectType !== 'single';
 
 	const showChevron = multiple
 		? ! isLoading && checked.length < displayedOptions.length
 		: ! isLoading && checked.length === 0;
-
-	const onSubmit = useCallback(
-		( checkedOptions ) => {
-			if ( isEditor ) {
-				return;
-			}
-			if ( checkedOptions && ! filteringForPhpTemplate ) {
-				setProductRatingsQuery( checkedOptions );
-			}
-
-			updateFilterUrl( checkedOptions );
-		},
-		[ isEditor, setProductRatingsQuery, filteringForPhpTemplate ]
-	);
-
-	// Track checked STATE changes - if state changes, update the query.
-	useEffect( () => {
-		if ( ! blockAttributes.showFilterButton ) {
-			onSubmit( checked );
-		}
-	}, [ blockAttributes.showFilterButton, checked, onSubmit ] );
-
-	const checkedQuery = useMemo( () => {
-		return productRatingsQuery;
-	}, [ productRatingsQuery ] );
-
-	const currentCheckedQuery = useShallowEqual( checkedQuery );
-	const previousCheckedQuery = usePrevious( currentCheckedQuery );
-	// Track Rating query changes so the block reflects current filters.
-	useEffect( () => {
-		if (
-			! isShallowEqual( previousCheckedQuery, currentCheckedQuery ) && // Checked query changed.
-			! isShallowEqual( checked, currentCheckedQuery ) // Checked query doesn't match the UI.
-		) {
-			setChecked( currentCheckedQuery );
-		}
-	}, [ checked, currentCheckedQuery, previousCheckedQuery ] );
-
-	/**
-	 * Try get the rating filter from the URL.
-	 */
-	useEffect( () => {
-		if ( ! hasSetFilterDefaultsFromUrl ) {
-			setProductRatingsQuery( initialFilters );
-			setHasSetFilterDefaultsFromUrl( true );
-		}
-	}, [
-		setProductRatingsQuery,
-		hasSetFilterDefaultsFromUrl,
-		setHasSetFilterDefaultsFromUrl,
-		initialFilters,
-	] );
 
 	/**
 	 * Compare intersection of all ratings and filtered counts to get a list of options to display.
@@ -234,7 +113,7 @@ const RatingFilterBlock = ( {
 				? [ ...filteredCounts.rating_counts ].reverse()
 				: [];
 
-		if ( isEditor && orderedRatings.length === 0 ) {
+		if ( orderedRatings.length === 0 ) {
 			setDisplayedOptions( previewOptions );
 			setDisplayNoProductRatingsNotice( true );
 			return;
@@ -267,44 +146,7 @@ const RatingFilterBlock = ( {
 		filteredCounts,
 		filteredCountsLoading,
 		productRatingsQuery,
-		isEditor,
 	] );
-
-	/**
-	 * When a checkbox in the list changes, update state.
-	 */
-	const onClick = useCallback(
-		( checkedValue: string ) => {
-			const previouslyChecked = checked.includes( checkedValue );
-
-			if ( ! multiple ) {
-				const newChecked = previouslyChecked ? [] : [ checkedValue ];
-				speak(
-					previouslyChecked
-						? translations.ratingRemoved( checkedValue )
-						: translations.ratingAdded( checkedValue )
-				);
-				setChecked( newChecked );
-				return;
-			}
-
-			if ( previouslyChecked ) {
-				const newChecked = checked.filter(
-					( value ) => value !== checkedValue
-				);
-				speak( translations.ratingRemoved( checkedValue ) );
-				setChecked( newChecked );
-				return;
-			}
-
-			const newChecked = [ ...checked, checkedValue ].sort(
-				( a, b ) => Number( b ) - Number( a )
-			);
-			speak( translations.ratingAdded( checkedValue ) );
-			setChecked( newChecked );
-		},
-		[ checked, multiple ]
-	);
 
 	if ( ! filteredCountsLoading && displayedOptions.length === 0 ) {
 		setWrapperVisibility( false );
@@ -358,37 +200,8 @@ const RatingFilterBlock = ( {
 								'Select Rating',
 								'woo-gutenberg-products-block'
 							) }
-							onChange={ ( tokens: string[] ) => {
-								if ( ! multiple && tokens.length > 1 ) {
-									tokens = [ tokens[ tokens.length - 1 ] ];
-								}
-
-								tokens = tokens.map( ( token ) => {
-									const displayOption = displayedOptions.find(
-										( option ) => option.value === token
-									);
-
-									return displayOption
-										? displayOption.value
-										: token;
-								} );
-
-								const added = [ tokens, checked ].reduce(
-									( a, b ) =>
-										a.filter( ( c ) => ! b.includes( c ) )
-								);
-
-								if ( added.length === 1 ) {
-									return onClick( added[ 0 ] );
-								}
-
-								const removed = [ checked, tokens ].reduce(
-									( a, b ) =>
-										a.filter( ( c ) => ! b.includes( c ) )
-								);
-								if ( removed.length === 1 ) {
-									onClick( removed[ 0 ] );
-								}
+							onChange={ () => {
+								// noop
 							} }
 							value={ checked }
 							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -466,8 +279,8 @@ const RatingFilterBlock = ( {
 						className={ 'wc-block-rating-filter-list' }
 						options={ displayedOptions }
 						checked={ checked }
-						onChange={ ( item ) => {
-							onClick( item.toString() );
+						onChange={ () => {
+							// noop
 						} }
 						isLoading={ isLoading }
 						isDisabled={ isDisabled }
@@ -481,7 +294,7 @@ const RatingFilterBlock = ( {
 							onClick={ () => {
 								setChecked( [] );
 								setProductRatingsQuery( [] );
-								onSubmit( [] );
+								// onSubmit( [] );
 							} }
 							screenReaderLabel={ __(
 								'Reset rating filter',
@@ -494,7 +307,9 @@ const RatingFilterBlock = ( {
 							className="wc-block-rating-filter__button"
 							isLoading={ isLoading }
 							disabled={ isLoading || isDisabled }
-							onClick={ () => onSubmit( checked ) }
+							onClick={ () => {
+								// noop
+							} }
 						/>
 					) }
 				</div>
@@ -503,4 +318,4 @@ const RatingFilterBlock = ( {
 	);
 };
 
-export default RatingFilterBlock;
+export default RatingFilterEditBlock;

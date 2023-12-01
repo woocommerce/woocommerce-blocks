@@ -157,7 +157,6 @@ const Edit = ( {
 					<Disabled>
 						<Block
 							attributes={ attributes }
-							isEditor={ true }
 							noRatingsNotice={ noRatingsNotice }
 						/>
 					</Disabled>

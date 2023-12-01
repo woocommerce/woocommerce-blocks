@@ -12,7 +12,6 @@ import { useBlockProps } from '@wordpress/block-editor';
 import edit from './edit';
 import metadata from './block.json';
 import type { Attributes } from './types';
-import deprecated from './deprecated';
 
 registerBlockType( metadata, {
 	icon: {
@@ -39,5 +38,4 @@ registerBlockType( metadata, {
 			/>
 		);
 	},
-	deprecated,
 } );
