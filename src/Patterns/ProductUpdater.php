@@ -50,6 +50,12 @@ class ProductUpdater {
 			return $dummy_products_to_update;
 		}
 
+		if ( empty( $dummy_products_to_update ) ) {
+			return array(
+				'product_content' => array(),
+			);
+		}
+
 		$products_information_list = $this->assign_ai_selected_images_to_dummy_products( $dummy_products_to_update, $images );
 
 		return $this->assign_ai_generated_content_to_dummy_products( $ai_connection, $token, $products_information_list, $business_description );
@@ -73,7 +79,6 @@ class ProductUpdater {
 		$dummy_products       = $this->fetch_product_ids( 'dummy' );
 		$dummy_products_count = count( $dummy_products );
 		$products_to_create   = max( 0, 6 - $real_products_count - $dummy_products_count );
-
 		while ( $products_to_create > 0 ) {
 			$this->create_new_product();
 			$products_to_create--;
@@ -249,19 +254,37 @@ class ProductUpdater {
 			return;
 		}
 
+		$product->set_name( $ai_generated_product_content['title'] );
+		$product->set_description( $ai_generated_product_content['description'] );
+		$product->set_regular_price( $ai_generated_product_content['price'] );
+		$product->save();
+
+		$update_product_image = $this->update_product_image( $product, $ai_generated_product_content );
+
+		if ( is_wp_error( $update_product_image ) ) {
+			return $update_product_image;
+		}
+
+		$this->create_hash_for_ai_modified_product( $product );
+
+		// Update the post permalink to match the new AI-generated product title.
 		wp_update_post(
 			array(
-				'ID'           => $product->get_id(),
-				'post_title'   => $ai_generated_product_content['title'],
-				'post_content' => $ai_generated_product_content['description'],
-				'post_name'    => sanitize_title( $ai_generated_product_content['title'] ),
-				'meta_input'   => array(
-					'_regular_price' => $ai_generated_product_content['price'],
-				),
+				'ID'        => $product->get_id(),
+				'post_name' => sanitize_title( $ai_generated_product_content['title'] ),
 			)
 		);
-		flush_rewrite_rules();
+	}
 
+	/**
+	 * Update the product images with the AI-generated image.
+	 *
+	 * @param \WC_Product $product The product.
+	 * @param array       $ai_generated_product_content The AI-generated product content.
+	 *
+	 * @return string|true
+	 */
+	public function update_product_image( $product, $ai_generated_product_content ) {
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -281,7 +304,7 @@ class ProductUpdater {
 		$product->set_image_id( $product_image_id );
 		$product->save();
 
-		$this->create_hash_for_ai_modified_product( $product );
+		return true;
 	}
 
 	/**
