@@ -199,16 +199,16 @@ class ProductUpdater {
 
 		$saved_product = $product->save();
 
-		require_once ABSPATH . 'wp-admin/includes/media.php';
-		require_once ABSPATH . 'wp-admin/includes/file.php';
-		require_once ABSPATH . 'wp-admin/includes/image.php';
+//		require_once ABSPATH . 'wp-admin/includes/media.php';
+//		require_once ABSPATH . 'wp-admin/includes/file.php';
+//		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		$product_image_id = media_sideload_image( plugins_url( $product_data['image'], dirname( __DIR__ ) ), $product->get_id(), $product_data['title'], 'id' );
-		if ( is_wp_error( $product_image_id ) ) {
-			return new \WP_Error( 'error_uploading_image', $product_image_id->get_error_message() );
-		}
-
-		$product->set_image_id( $product_image_id );
+//		$product_image_id = media_sideload_image( plugins_url( $product_data['image'], dirname( __DIR__ ) ), $product->get_id(), $product_data['title'], 'id' );
+//		if ( is_wp_error( $product_image_id ) ) {
+//			return new \WP_Error( 'error_uploading_image', $product_image_id->get_error_message() );
+//		}
+//
+//		$product->set_image_id( $product_image_id );
 		$product->save();
 
 		return update_post_meta( $saved_product, '_headstart_post', true );
