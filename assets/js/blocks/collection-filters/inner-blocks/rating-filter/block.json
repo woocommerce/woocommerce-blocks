@@ -25,7 +25,7 @@
 		},
 		"displayStyle": {
 			"type": "string",
-			"default": "list"
+			"default": "dropdown"
 		},
 		"showFilterButton": {
 			"type": "boolean",

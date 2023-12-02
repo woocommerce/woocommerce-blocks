@@ -45,7 +45,7 @@ final class CollectionRatingFilter extends AbstractBlock {
 			)
 		);
 
-		$input = 'dropdown' === $display_style ? CheckboxList::render(
+		$input = 'list' === $display_style ? CheckboxList::render(
 			array(
 				'items'     => $this->get_checkbox_list_items( $rating_counts, $selected_ratings_query_param ),
 				'on_change' => 'woocommerce/collection-rating-filter::actions.onCheckboxChange',
