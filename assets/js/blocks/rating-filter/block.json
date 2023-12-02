@@ -23,7 +23,7 @@
 		},
 		"displayStyle": {
 			"type": "string",
-			"default": "dropdown"
+			"default": "list"
 		},
 		"showFilterButton": {
 			"type": "boolean",
