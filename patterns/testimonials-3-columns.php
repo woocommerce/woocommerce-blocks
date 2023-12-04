@@ -16,14 +16,14 @@ $second_description = $content['descriptions'][1]['default'] ?? '';
 $third_description  = $content['descriptions'][2]['default'] ?? '';
 ?>
 
-<!-- wp:group {"align":"wide","style":{"spacing":{"margin":{"top":"0px","bottom":"80px"}}},"layout":{"type":"constrained","justifyContent":"left"}} -->
+<!-- wp:group {"align":"wide","style":{"spacing":{"margin":{"top":"0px","bottom":"80px"}}},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignwide" style="margin-top:0px;margin-bottom:80px">
-	<!-- wp:heading {"level":3,"align":"full","style":{"spacing":{"padding":{"right":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
-	<h3 class="wp-block-heading alignfull" style="padding-right:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)"><?php echo esc_html( $main_header ); ?></h3>
+	<!-- wp:heading {"level":3,"align":"wide"} -->
+	<h3 class="wp-block-heading alignwide"><?php echo esc_html( $main_header ); ?></h3>
 	<!-- /wp:heading -->
 
-	<!-- wp:columns {"align":"full","style":{"spacing":{"padding":{"right":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
-	<div class="wp-block-columns alignfull" style="padding-right:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)">
+	<!-- wp:columns {"align":"wide"} -->
+	<div class="wp-block-columns alignwide">
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:paragraph -->
@@ -35,7 +35,7 @@ $third_description  = $content['descriptions'][2]['default'] ?? '';
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph -->
-			<p>~ Tanner P.</p>
+			<p>~ Sophia K.</p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:column -->
@@ -52,7 +52,7 @@ $third_description  = $content['descriptions'][2]['default'] ?? '';
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph -->
-			<p>~ Abigail N.</p>
+			<p>~ Liam M.</p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:column -->
@@ -68,7 +68,7 @@ $third_description  = $content['descriptions'][2]['default'] ?? '';
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph -->
-			<p>~ Albert L.</p>
+			<p>~ Ava L.</p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:column -->
