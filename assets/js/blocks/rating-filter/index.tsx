@@ -13,6 +13,7 @@ import edit from './edit';
 import metadata from './block.json';
 import type { Attributes } from './types';
 import deprecated from './deprecated';
+import './style.scss';
 
 registerBlockType( metadata, {
 	icon: {
