@@ -35,6 +35,7 @@ final class CollectionRatingFilter extends AbstractBlock {
 
 		$rating_counts = $block->context['collectionData']['rating_counts'] ?? [];
 		$display_style = $attributes['displayStyle'] ?? 'list';
+		$show_counts   = $attributes['showCounts'] ?? false;
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification is not required here.
 		$selected_ratings_query_param = isset( $_GET[ self::RATING_FILTER_QUERY_VAR ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::RATING_FILTER_QUERY_VAR ] ) ) : '';
@@ -42,16 +43,17 @@ final class CollectionRatingFilter extends AbstractBlock {
 		$wrapper_attributes = get_block_wrapper_attributes(
 			array(
 				'data-wc-interactive' => 'woocommerce/collection-rating-filter',
+				'class'               => 'wc-block-rating-filter',
 			)
 		);
 
 		$input = 'list' === $display_style ? CheckboxList::render(
 			array(
-				'items'     => $this->get_checkbox_list_items( $rating_counts, $selected_ratings_query_param ),
+				'items'     => $this->get_checkbox_list_items( $rating_counts, $selected_ratings_query_param, $show_counts ),
 				'on_change' => 'woocommerce/collection-rating-filter::actions.onCheckboxChange',
 			)
 		) : Dropdown::render(
-			$this->get_dropdown_props( $rating_counts, $selected_ratings_query_param )
+			$this->get_dropdown_props( $rating_counts, $selected_ratings_query_param, $show_counts )
 		);
 
 		return sprintf(
@@ -67,19 +69,29 @@ final class CollectionRatingFilter extends AbstractBlock {
 	/**
 	 * Render the rating label.
 	 *
-	 * @param int $rating The rating to render.
+	 * @param int    $rating The rating to render.
+	 * @param string $count_label The count label to render.
 	 * @return string|false
 	 */
-	private function render_rating_label( $rating ) {
+	private function render_rating_label( $rating, $count_label ) {
 		$width = $rating * 20;
+
+		$rating_label = sprintf(
+			/* translators: %1$d is referring to rating value. Example: Rated 4 out of 5. */
+			__( 'Rated %1$d out of 5', 'woo-gutenberg-products-block' ),
+			$rating,
+		);
+
 		ob_start();
 		?>
 		<div class="wc-block-components-product-rating">
-			<div class="wc-block-components-product-rating__stars" role="img" aria-label="Rated <?php echo esc_attr( $rating ); ?> out of 5">
-				<span style="width: <?php echo esc_attr( $width ); ?>%">
-					Rated <strong class="rating"><?php echo esc_html( $rating ); ?></strong> out of 5
+			<div class="wc-block-components-product-rating__stars" role="img" aria-label="<?php echo esc_attr( $rating_label ); ?>">
+				<span style="width: <?php echo esc_attr( $width ); ?>%" aria-hidden="true">
 				</span>
 			</div>
+			<span class="wc-block-components-product-rating-count">
+				<?php echo esc_html( $count_label ); ?>
+			</span>
 		</div>
 		<?php
 		return ob_get_clean();
@@ -90,19 +102,23 @@ final class CollectionRatingFilter extends AbstractBlock {
 	 *
 	 * @param array  $rating_counts    The rating counts.
 	 * @param string $selected_ratings_query The url query param for selected ratings.
+	 * @param bool   $show_counts      Whether to show the counts.
 	 * @return array
 	 */
-	private function get_checkbox_list_items( $rating_counts, $selected_ratings_query ) {
+	private function get_checkbox_list_items( $rating_counts, $selected_ratings_query, $show_counts ) {
 		$ratings_array = explode( ',', $selected_ratings_query );
 
 		return array_map(
-			function( $rating ) use ( $ratings_array ) {
-				$rating_str = (string) $rating['rating'];
+			function( $rating ) use ( $ratings_array, $show_counts ) {
+				$rating_str  = (string) $rating['rating'];
+				$count       = $rating['count'];
+				$count_label = $show_counts ? "($count)" : '';
+
 				return array(
 					'id'      => 'rating-' . $rating_str,
 					'checked' => in_array( $rating_str, $ratings_array, true ),
-					'label'   => $this->render_rating_label( (int) $rating_str ),
-					'value'   => $rating['rating'],
+					'label'   => $this->render_rating_label( (int) $rating_str, $count_label ),
+					'value'   => $rating_str,
 				);
 			},
 			$rating_counts
@@ -114,27 +130,39 @@ final class CollectionRatingFilter extends AbstractBlock {
 	 *
 	 * @param mixed $rating_counts The rating counts.
 	 * @param mixed $selected_ratings_query The url query param for selected ratings.
+	 * @param mixed $show_counts Whether to show the counts.
 	 * @return array<array-key, array>
 	 */
-	private function get_dropdown_props( $rating_counts, $selected_ratings_query ) {
+	private function get_dropdown_props( $rating_counts, $selected_ratings_query, $show_counts ) {
 		$ratings_array = explode( ',', $selected_ratings_query );
 
-		$selected_item = $ratings_array[0] ? array(
-			/* translators: %d is referring to the average rating value */
-			'label' => sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), $ratings_array[0] ),
-			'value' => (int) $ratings_array[0],
-		) : array(
-			'label' => null,
-			'value' => null,
+		$selected_item = array_reduce(
+			$rating_counts,
+			function( $carry, $rating ) use ( $ratings_array, $show_counts ) {
+				if ( in_array( (string) $rating['rating'], $ratings_array, true ) ) {
+					$count       = $rating['count'];
+					$count_label = $show_counts ? "($count)" : '';
+					$rating_str  = (string) $rating['rating'];
+					return array(
+						/* translators: %d is referring to the average rating value. Example: Rated 4 out of 5. */
+						'label' => sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), $rating_str ) . ' ' . $count_label,
+						'value' => $rating['rating'],
+					);
+				}
+				return $carry;
+			},
+			array()
 		);
 
 		return array(
 			'items'         => array_map(
-				function ( $rating ) {
+				function ( $rating ) use ( $show_counts ) {
+					$count = $rating['count'];
+					$count_label = $show_counts ? "($count)" : '';
 					$rating_str = (string) $rating['rating'];
 					return array(
-						/* translators: %d is referring to the average rating value */
-						'label' => sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), $rating_str ),
+						/* translators: %d is referring to the average rating value. Example: Rated 4 out of 5. */
+						'label' => sprintf( __( 'Rated %d out of 5', 'woo-gutenberg-products-block' ), $rating_str ) . ' ' . $count_label,
 						'value' => $rating['rating'],
 					);
 				},
@@ -144,6 +172,4 @@ final class CollectionRatingFilter extends AbstractBlock {
 			'action'        => 'woocommerce/collection-rating-filter::actions.onDropdownChange',
 		);
 	}
-
-
 }
