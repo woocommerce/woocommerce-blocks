@@ -123,6 +123,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Update extensibility doc. ([11924](https://github.com/woocommerce/woocommerce-blocks/pull/11924))
 - Move `CheckboxControl` to components package and leave alias in checkout package. ([11662](https://github.com/woocommerce/woocommerce-blocks/pull/11662))
 
+= 11.6.2 - 2023-12-04 =
+
+#### Enhancements
+
+- Update the "Give us your feedback" link to point to the WooCommerce repo discussions. [#11999](https://github.com/woocommerce/woocommerce-blocks/pull/11999) [#12006](https://github.com/woocommerce/woocommerce-blocks/pull/12006)
+
 = 11.6.1 - 2023-11-23 =
 
 #### Bug Fixes
