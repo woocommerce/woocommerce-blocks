@@ -6,8 +6,3 @@ export interface Attributes {
 	showFilterButton: boolean;
 	isPreview?: boolean;
 }
-
-export interface DisplayOption {
-	label: JSX.Element;
-	value: string;
-}
