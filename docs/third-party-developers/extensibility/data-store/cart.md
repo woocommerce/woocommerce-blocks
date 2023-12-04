@@ -78,7 +78,7 @@ This action is used to set the cart data in the store.
     -   _coupons_ `array`: The coupon items in the cart.
     -   _shippingRates_ `array`: The cart shipping rates (see `getShippingRates` selector).
     -   _shippingAddress_ `object`: The shipping address (see `getCustomerData` selector).
-    -   _billingAddress_ `object`: The billing address.
+    -   _billingAddress_ `object`: The billing address (see `getCustomerData` selector).
     -   _items_ `array`: The cart items.
     -   _itemsCount_ `number`: The total number of items in the cart
     -   _itemsWeight_ `number`: The total weight of items in the cart.
@@ -116,7 +116,7 @@ This action is used to set the error data in the store.
             -  _coupons_ `array`: The coupon items in the cart.
             -  _shippingRates_ `array`: The cart shipping rates (see `getShippingRates` selector).
             -  _shippingAddress_ `object`: The shipping address (see `getCustomerData` selector).
-            -  _billingAddress_ `object`: The billing address.
+            -  _billingAddress_ `object`: The billing address (see `getCustomerData` selector).
             -  _items_ `array`: The cart items.
             -  _itemsCount_ `number`: The total number of items in the cart
             -  _itemsWeight_ `number`: The total weight of items in the cart.
@@ -129,7 +129,6 @@ This action is used to set the error data in the store.
             -  _errors_ `array`: The cart errors (see `getCartErrors` selector).
             -  _paymentRequirements_ `object`: The payment requirements for the cart.
             -  _extensions_ `object`: The extensions data.
-
 
 #### _Example_ <!-- omit in toc -->
 
@@ -148,7 +147,7 @@ This action returns an action object used in updating the store with the provide
     -  _coupons_ `array`: The coupon items in the cart.
     -  _shippingRates_ `array`: The cart shipping rates (see `getShippingRates` selector).
     -  _shippingAddress_ `object`: The shipping address (see `getCustomerData` selector).
-    -  _billingAddress_ `object`: The billing address.
+    -  _billingAddress_ `object`: The billing address (see `getCustomerData` selector).
     -  _items_ `array`: The cart items.
     -  _itemsCount_ `number`: The total number of items in the cart
     -  _itemsWeight_ `number`: The total weight of items in the cart.
