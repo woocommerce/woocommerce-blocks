@@ -2,11 +2,11 @@
  * External dependencies
  */
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
-import { Page } from '@playwright/test';
+import { FrontendUtils } from '@woocommerce/e2e-utils';
 
-const openMiniCart = async ( page: Page ) => {
-	await page.getByLabel( 'items in cart,' ).hover();
-	await page.getByLabel( 'items in cart,' ).click();
+const openMiniCart = async ( frontendUtils: FrontendUtils ) => {
+	const block = await frontendUtils.getBlockByName( 'woocommerce/mini-cart' );
+	await block.click();
 };
 
 test.describe( `Mini Cart Block`, () => {
@@ -27,8 +27,11 @@ test.describe( `Mini Cart Block`, () => {
 		await page.goto( `/mini-cart-block`, { waitUntil: 'commit' } );
 	} );
 
-	test( 'should open the empty cart drawer', async ( { page } ) => {
-		await openMiniCart( page );
+	test( 'should open the empty cart drawer', async ( {
+		page,
+		frontendUtils,
+	} ) => {
+		await openMiniCart( frontendUtils );
 
 		await expect( page.getByRole( 'dialog' ) ).toContainText(
 			'Your cart is currently empty!'
@@ -37,8 +40,9 @@ test.describe( `Mini Cart Block`, () => {
 
 	test( 'should close the drawer when clicking on the close button', async ( {
 		page,
+		frontendUtils,
 	} ) => {
-		await openMiniCart( page );
+		await openMiniCart( frontendUtils );
 
 		await expect( page.getByRole( 'dialog' ) ).toContainText(
 			'Your cart is currently empty!'
@@ -51,8 +55,9 @@ test.describe( `Mini Cart Block`, () => {
 
 	test( 'should close the drawer when clicking outside the drawer', async ( {
 		page,
+		frontendUtils,
 	} ) => {
-		await openMiniCart( page );
+		await openMiniCart( frontendUtils );
 
 		await expect( page.getByRole( 'dialog' ) ).toContainText(
 			'Your cart is currently empty!'
@@ -67,10 +72,13 @@ test.describe( `Mini Cart Block`, () => {
 		await expect( page.getByRole( 'dialog' ) ).toHaveCount( 0 );
 	} );
 
-	test( 'should open the filled cart drawer', async ( { page } ) => {
+	test( 'should open the filled cart drawer', async ( {
+		page,
+		frontendUtils,
+	} ) => {
 		await page.click( 'text=Add to cart' );
 
-		await openMiniCart( page );
+		await openMiniCart( frontendUtils );
 
 		await expect( page.getByRole( 'dialog' ) ).toContainText(
 			'Your cart (1 item)'
