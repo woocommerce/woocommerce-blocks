@@ -32,6 +32,8 @@ class Dropdown {
 			'isOpen'       => false,
 		);
 
+		wc_initial_state( 'woocommerce/interactivity-dropdown', array( 'selectedItem' => $selected_item ) );
+
 		$action = $props['action'] ?? '';
 
 		// Items should be an array of objects with a label and value property.
