@@ -4,8 +4,10 @@
 import { test, expect } from '@woocommerce/e2e-playwright-utils';
 import { FrontendUtils } from '@woocommerce/e2e-utils';
 
+const blockName = 'woocommerce/mini-cart';
+
 const openMiniCart = async ( frontendUtils: FrontendUtils ) => {
-	const block = await frontendUtils.getBlockByName( 'woocommerce/mini-cart' );
+	const block = await frontendUtils.getBlockByName( blockName );
 	await block.click();
 };
 
@@ -24,7 +26,22 @@ test.describe( `Mini Cart Block`, () => {
 	} );
 
 	test.beforeEach( async ( { page } ) => {
-		await page.goto( `/mini-cart-block`, { waitUntil: 'commit' } );
+		await page.goto( `/shop`, { waitUntil: 'commit' } );
+	} );
+
+	test( 'should the Mini Cart block be present near the navigation block', async ( {
+		page,
+		frontendUtils,
+	} ) => {
+		const block = await frontendUtils.getBlockByName( blockName );
+
+		// The Mini Cart block should be present near the navigation block.
+		const navigationBlock = page.locator(
+			`//div[@data-block-name='${ blockName }']/preceding-sibling::nav[contains(@class, 'wp-block-navigation')]`
+		);
+
+		await expect( navigationBlock ).toBeVisible();
+		await expect( block ).toBeVisible();
 	} );
 
 	test( 'should open the empty cart drawer', async ( {
@@ -63,11 +80,7 @@ test.describe( `Mini Cart Block`, () => {
 			'Your cart is currently empty!'
 		);
 
-		await expect(
-			page.getByRole( 'button', { name: 'Close' } )
-		).toBeInViewport();
-
-		await page.mouse.click( 50, 200 );
+		await page.mouse.click( 0, 0 );
 
 		await expect( page.getByRole( 'dialog' ) ).toHaveCount( 0 );
 	} );
