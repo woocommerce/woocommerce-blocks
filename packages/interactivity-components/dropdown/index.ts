@@ -26,7 +26,7 @@ export type DropdownContext = {
 
 type DropdownStore = {
 	state: {
-		selectedItem: {
+		selectedItem?: {
 			label: string | null;
 			value: string | null;
 		};
@@ -44,22 +44,17 @@ const { state } = store< DropdownStore >(
 	'woocommerce/interactivity-dropdown',
 	{
 		state: {
-			selectedItem: {
-				label: null,
-				value: null,
-			},
-
 			get placeholderText(): string {
 				const { selectedItem } = state;
 
-				return selectedItem.label || 'Select an option';
+				return selectedItem?.label || 'Select an option';
 			},
 
 			get isSelected(): boolean {
 				const { currentItem } = getContext< DropdownContext >();
 				const { selectedItem } = state;
 
-				return selectedItem.value === currentItem.value;
+				return selectedItem?.value === currentItem.value;
 			},
 		},
 		actions: {
@@ -77,8 +72,8 @@ const { state } = store< DropdownStore >(
 				} = context;
 
 				if (
-					selectedItem.value === value &&
-					selectedItem.label === label
+					selectedItem?.value === value &&
+					selectedItem?.label === label
 				) {
 					state.selectedItem = {
 						label: null,
