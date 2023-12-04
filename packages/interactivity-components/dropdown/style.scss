@@ -25,16 +25,16 @@
 		max-width: unset;
 		width: 0;
 		height: max-content;
-	
+
 		&:not(.is-loading) {
 			border: 1px solid $gray-700 !important;
 			border-radius: 4px;
 		}
-	
+
 		&.is-loading {
 			border-radius: em(4px);
 		}
-	
+
 		.components-form-token-field {
 			border-radius: inherit;
 		}
@@ -68,7 +68,8 @@
 				margin: $gap-small;
 				padding: $gap-small;
 
-				&.is-selected, &:hover {
+				&.is-selected,
+				&:hover {
 					background: $gray-100;
 					color: $gray-800;
 				}
@@ -87,7 +88,7 @@
 
 	.wc-blocks-components-form-token-field-wrapper:not(.single-selection) .components-form-token-field__input-container {
 		padding: $gap-smallest 30px $gap-smallest  $gap-smaller;
-	
+
 		.components-form-token-field__token-text {
 			background-color: $white;
 			border: 1px solid;
@@ -96,18 +97,18 @@
 			padding: em($gap-smallest) em($gap-smaller) em($gap-smallest) em($gap-small);
 			line-height: 22px;
 		}
-	
+
 		> .components-form-token-field__input {
 			margin: em($gap-smallest) 0;
 		}
-	
+
 		.components-button.components-form-token-field__remove-token {
 			background-color: $white;
 			border: 1px solid;
 			border-left: 0;
 			border-radius: 0 25px 25px 0;
 			padding: 1px em($gap-smallest) 0 0;
-	
+
 			&.has-icon svg {
 				background-color: $gray-200;
 				border-radius: 25px;
@@ -121,34 +122,24 @@
 		gap: $gap;
 		justify-content: flex-end;
 		margin-top: $gap;
-	
+
 		// The specificity here is needed to overwrite the margin-top that is inherited on WC block template pages such as Shop.
 		button[type="submit"]:not(.wp-block-search__button).wc-block-components-filter-submit-button {
 			margin-left: 0;
 			margin-top: 0;
 			@include font-size(small);
 		}
-	
+
 		.wc-block-stock-filter__button {
 			margin-top: em($gap-smaller);
 			padding: em($gap-smaller) em($gap);
 			@include font-size(small);
 		}
 	}
-	
+
 	.editor-styles-wrapper .wc-block-stock-filter .wc-block-stock-filter__button {
 		margin-top: em($gap-smaller);
 		padding: em($gap-smaller) em($gap);
 		@include font-size(small);
-	}	
+	}
 }
-
-
-
-	
-
-	
-
-
-
-
