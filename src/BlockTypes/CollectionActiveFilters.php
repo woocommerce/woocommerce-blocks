@@ -1,8 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
-use Automattic\WooCommerce\Blocks\InteractivityComponents\Dropdown;
-
 /**
  * CollectionAttributeFilter class.
  */
@@ -23,6 +21,8 @@ final class CollectionActiveFilters extends AbstractBlock {
 	 * @return string Rendered block type output.
 	 */
 	protected function render( $attributes, $content, $block ) {
+		$query_id = $block->context['queryId'] ?? 0;
+
 		/**
 		 * Filters the active filter data provided by filter blocks.
 		 *
@@ -46,15 +46,15 @@ final class CollectionActiveFilters extends AbstractBlock {
 		 * @param array $params The query param parsed from the URL.
 		 * @return array Active filters data.
 		 */
-		$active_filters = apply_filters( 'collection_active_filters_data', array(), $this->get_filter_query_params( $block->context['queryId'] ) );
+		$active_filters = apply_filters( 'collection_active_filters_data', array(), $this->get_filter_query_params( $query_id ) );
 
 		if ( empty( $active_filters ) ) {
 			return $content;
 		}
 
 		$context = array(
-			'queryId' => $block->context['queryId'],
-			'params'  => array_keys( $this->get_filter_query_params( $block->context['queryId'] ) ),
+			'queryId' => $query_id,
+			'params'  => array_keys( $this->get_filter_query_params( $query_id ) ),
 		);
 
 		$wrapper_attributes = get_block_wrapper_attributes(
@@ -207,8 +207,26 @@ final class CollectionActiveFilters extends AbstractBlock {
 			return array();
 		}
 
-		parse_str( $parsed_url['query'], $params );
+		parse_str( $parsed_url['query'], $url_query_params );
 
-		return $params;
+		/**
+		 * Filters the active filter data provided by filter blocks.
+		 *
+		 * @since 11.7.0
+		 *
+		 * @param array $filter_param_keys The active filters data
+		 * @param array $url_param_keys    The query param parsed from the URL.
+		 *
+		 * @return array Active filters params.
+		 */
+		$filter_param_keys = array_unique( apply_filters( 'collection_filter_query_param_keys', array(), array_keys( $url_query_params ) ) );
+
+		return array_filter(
+			$url_query_params,
+			function( $key ) use ( $filter_param_keys ) {
+				return in_array( $key, $filter_param_keys, true );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
 	}
 }

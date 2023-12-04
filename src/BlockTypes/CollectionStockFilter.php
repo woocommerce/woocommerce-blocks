@@ -26,7 +26,30 @@ final class CollectionStockFilter extends AbstractBlock {
 	protected function initialize() {
 		parent::initialize();
 
+		add_filter( 'collection_filter_query_param_keys', array( $this, 'get_filter_query_param_keys' ), 10, 2 );
 		add_filter( 'collection_active_filters_data', array( $this, 'register_active_filters_data' ), 10, 2 );
+	}
+
+	/**
+	 * Register the active filters data.
+	 *
+	 * @param array $filter_param_keys The active filters data.
+	 * @param array $url_param_keys    The query param parsed from the URL.
+	 *
+	 * @return array Active filters param keys.
+	 */
+	public function get_filter_query_param_keys( $filter_param_keys, $url_param_keys ) {
+		$stock_param_keys = array_filter(
+			$url_param_keys,
+			function( $param ) {
+				return self::STOCK_STATUS_QUERY_VAR === $param;
+			}
+		);
+
+		return array_merge(
+			$filter_param_keys,
+			$stock_param_keys
+		);
 	}
 
 	/**
