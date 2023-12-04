@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { getBlockType } from '@wordpress/blocks';
+
+/**
  * Internal dependencies
  */
 import {
@@ -108,6 +113,11 @@ export class BlockRegistrationManager
 			) {
 				continue;
 			}
+
+			if ( ! getBlockType( blockWithRestrictionName ) ) {
+				continue;
+			}
+
 			this.blockRegistrationStrategy = BLOCKS_WITH_RESTRICTION[
 				blockWithRestrictionName
 			].isVariationBlock
