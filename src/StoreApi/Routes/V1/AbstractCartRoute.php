@@ -73,7 +73,7 @@ abstract class AbstractCartRoute extends AbstractRoute {
 		$this->cart_schema      = $this->schema_controller->get( CartSchema::IDENTIFIER );
 		$this->cart_item_schema = $this->schema_controller->get( CartItemSchema::IDENTIFIER );
 		$this->cart_controller  = new CartController();
-		$this->order_controller = new OrderController();
+		$this->order_controller = new OrderController( $this->additional_fields_controller );
 	}
 
 	/**

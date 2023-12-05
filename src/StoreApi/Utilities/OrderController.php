@@ -19,6 +19,15 @@ class OrderController {
 	private CheckoutFields $additional_fields_controller;
 
 	/**
+	 * Constructor.
+	 *
+	 * @param CheckoutFields $additional_fields_controller Checkout fields controller.
+	 */
+	public function __construct( CheckoutFields $additional_fields_controller ) {
+		$this->additional_fields_controller = $additional_fields_controller;
+	}
+
+	/**
 	 * Create order and set props based on global settings.
 	 *
 	 * @throws RouteException Exception if invalid data is detected.
@@ -380,7 +389,15 @@ class OrderController {
 		 * We are not using wc()->counties->get_default_address_fields() here because that is filtered. Instead, this array
 		 * is based on assets/js/base/components/cart-checkout/address-form/default-address-fields.js
 		 */
-		$address_fields = $this->additional_fields_controller->get_fields_for_location( 'address' );
+		$fields              = $this->additional_fields_controller->get_fields();
+		$address_fields_keys = $this->additional_fields_controller->get_address_fields_keys();
+		$address_fields      = array_filter(
+			$fields,
+			function( $key ) use ( $address_fields_keys ) {
+				return in_array( $key, $address_fields_keys, true );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
 
 		if ( $current_locale ) {
 			foreach ( $current_locale as $key => $field ) {

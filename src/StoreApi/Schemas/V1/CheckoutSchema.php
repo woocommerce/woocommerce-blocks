@@ -4,7 +4,6 @@ namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
-use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFields;
 
 /**
  * CheckoutSchema class.
@@ -44,13 +43,6 @@ class CheckoutSchema extends AbstractSchema {
 	 * @var ImageAttachmentSchema
 	 */
 	protected $image_attachment_schema;
-
-	/**
-	 * Additional fields controller instance.
-	 *
-	 * @var CheckoutFields
-	 */
-	private CheckoutFields $additional_fields_controller;
 
 	/**
 	 * Constructor.
@@ -267,14 +259,19 @@ class CheckoutSchema extends AbstractSchema {
 	 * @return array
 	 */
 	protected function get_additional_fields_schema() {
-		$additional_fields_keys = array_merge( $this->additional_fields_controller->get_contact_fields_keys(), $this->additional_fields_controller->get_additional_fields_keys() );
-		$additional_fields      = array_filter(
-			$this->additional_fields_controller->get_fields(),
-			function( $field ) use ( $additional_fields_keys ) {
-				return in_array( $field['key'], $additional_fields_keys, true );
-			}
+		$additional_fields_keys = $this->additional_fields_controller->get_additional_fields_keys();
+
+		$fields = $this->additional_fields_controller->get_fields();
+
+		$additional_fields = array_filter(
+			$fields,
+			function( $key ) use ( $additional_fields_keys ) {
+				return in_array( $key, $additional_fields_keys, true );
+			},
+			ARRAY_FILTER_USE_KEY
 		);
-		$schema                 = [];
+
+		$schema = [];
 		foreach ( $additional_fields as $key => $field ) {
 			$schema[ $key ] = [
 				'description' => $field['label'],

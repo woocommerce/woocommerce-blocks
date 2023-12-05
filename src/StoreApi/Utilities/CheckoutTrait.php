@@ -1,7 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Utilities;
 
-use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFields;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentContext;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
@@ -12,13 +11,6 @@ use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
  * Shared functionality for checkout route.
  */
 trait CheckoutTrait {
-
-	/**
-	 * Checkout fields controller.
-	 *
-	 * @var CheckoutFields
-	 */
-	private CheckoutFields $additional_fields_controller;
 
 	/**
 	 * Prepare a single item for response. Handles setting the status based on the payment result.

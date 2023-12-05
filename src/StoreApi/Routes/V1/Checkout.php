@@ -40,12 +40,6 @@ class Checkout extends AbstractCartRoute {
 	private $order = null;
 
 	/**
-	 * Checkout fields controller.
-	 *
-	 * @var CheckoutFields
-	 */
-	private CheckoutFields $additional_fields_controller;
-	/**
 	 * Get the path of this REST route.
 	 *
 	 * @return string

@@ -1,7 +1,6 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
-use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFields;
 use Automattic\WooCommerce\StoreApi\Utilities\ValidationUtils;
 
 /**
@@ -11,12 +10,6 @@ use Automattic\WooCommerce\StoreApi\Utilities\ValidationUtils;
  */
 abstract class AbstractAddressSchema extends AbstractSchema {
 
-	/**
-	 * Checkout fields controller.
-	 *
-	 * @var CheckoutFields
-	 */
-	protected CheckoutFields $additional_fields_controller;
 
 	/**
 	 * Term properties.
@@ -187,14 +180,19 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	 */
 	protected function get_additional_address_fields_schema() {
 		$additional_fields_keys = $this->additional_fields_controller->get_address_fields_keys();
-		$additional_fields      = array_filter(
-			$this->additional_fields_controller->get_fields(),
-			function( $field ) use ( $additional_fields_keys ) {
-				return in_array( $field['key'], $additional_fields_keys, true );
-			}
+
+		$fields = $this->additional_fields_controller->get_fields();
+
+		$address_fields = array_filter(
+			$fields,
+			function( $key ) use ( $additional_fields_keys ) {
+				return in_array( $key, $additional_fields_keys, true );
+			},
+			ARRAY_FILTER_USE_KEY
 		);
-		$schema                 = [];
-		foreach ( $additional_fields as $key => $field ) {
+
+		$schema = [];
+		foreach ( $address_fields as $key => $field ) {
 			$schema[ $key ] = [
 				'description' => $field['label'],
 				'type'        => 'string',

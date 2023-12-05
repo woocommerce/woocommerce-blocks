@@ -8,7 +8,7 @@ use WC_Customer;
 /**
  * Service class managing checkout fields and its related extensibility points.
  */
-abstract class CheckoutFields {
+class CheckoutFields {
 
 
 	/**
@@ -210,7 +210,7 @@ abstract class CheckoutFields {
 					'woo-gutenberg-products-block'
 				),
 				'required'       => false,
-				'hidden'         => true,
+				'hidden'         => false,
 				'autocomplete'   => 'vat',
 				'autocapitalize' => 'characters',
 			),
@@ -221,7 +221,7 @@ abstract class CheckoutFields {
 					'woo-gutenberg-products-block'
 				),
 				'required'       => false,
-				'hidden'         => true,
+				'hidden'         => false,
 				'autocomplete'   => 'vat',
 				'autocapitalize' => 'characters',
 			),
@@ -229,7 +229,7 @@ abstract class CheckoutFields {
 
 		$this->fields_locations = array(
 			// omit email from shipping and billing fields.
-			'address'    => $this->get_address_fields_keys(), // everything here will be saved to customer and order.
+			'address'    => array_merge( \array_diff_key( array_keys( $this->core_fields ), array( 'email' ) ), array( 'plugin_vat' ) ), // everything here will be saved to customer and order.
 			// @todo handle rendering contact fields.
 			'contact'    => array( 'email' ), // everything here will be saved to order, and optionally to customer.
 			// @todo handle rendering additional fields.
@@ -282,12 +282,12 @@ abstract class CheckoutFields {
 		$id       = $options['id'];
 
 		// Check to see if field is already in the array.
-		if ( ! empty( $this->additional_fields[ $location ][ $id ] ) ) {
+		if ( ! empty( $this->additional_fields[ $id ] ) || in_array( $id, $this->fields_locations[ $location ], true ) ) {
 			return new \WP_Error( 'woocommerce_blocks_checkout_field_already_registered', __( 'The field is already registered.', 'woo-gutenberg-products-block' ) );
 		}
 
 		// Insert new field into the correct location array.
-		$this->additional_fields[ $location ][ $id ] = array(
+		$this->additional_fields[ $id ] = array(
 			'label'          => $options['label'],
 			'optionalLabel'  => ! empty( $options['optionalLabel'] ) ? $options['optionalLabel'] : '',
 			'required'       => ! empty( $options['required'] ) ? $options['required'] : false,
@@ -295,6 +295,8 @@ abstract class CheckoutFields {
 			'autocomplete'   => ! empty( $options['autocomplete'] ) ? $options['autocomplete'] : '',
 			'autocapitalize' => ! empty( $options['autocapitalize'] ) ? $options['autocapitalize'] : '',
 		);
+
+		array_push( $this->fields_locations[ $location ], $id );
 	}
 
 	/**
@@ -313,28 +315,38 @@ abstract class CheckoutFields {
 	 *
 	 * @return array An array of fields.
 	 */
-	abstract public function get_fields_for_location( $location );
+	public function get_fields_for_location( $location ) {
+		if ( in_array( $location, array_keys( $this->fields_locations ), true ) ) {
+			return $this->fields_locations[ $location ];
+		}
+	}
 
 	/**
 	 * Returns an array of fields keys for a the address group.
 	 *
 	 * @return array An array of fields keys.
 	 */
-	abstract public function get_address_fields_keys();
+	public function get_address_fields_keys() {
+		return $this->fields_locations['address'];
+	}
 
 	/**
 	 * Returns an array of fields keys for a the contact group.
 	 *
 	 * @return array An array of fields keys.
 	 */
-	abstract public function get_contact_fields_keys();
+	public function get_contact_fields_keys() {
+		return $this->fields_locations['contact'];
+	}
 
 	/**
 	 * Returns an array of fields keys for a the additional area group.
 	 *
 	 * @return array An array of fields keys.
 	 */
-	abstract public function get_additional_fields_keys();
+	public function get_additional_fields_keys() {
+		return $this->fields_locations['additional'];
+	}
 
 	/**
 	 * Validates a field value for a given group.
@@ -347,7 +359,25 @@ abstract class CheckoutFields {
 	 *
 	 * @return true|\WP_Error True if the field is valid, a WP_Error otherwise.
 	 */
-	abstract public function validate_field_for_location( $key, $value, $location );
+	public function validate_field_for_location( $key, $value, $location ) {
+		if ( ! $this->is_field( $key ) ) {
+			// translators: %s field key.
+			return new \WP_Error( 'woocommerce_blocks_checkout_field_invalid', \sprintf( __( 'The field %s is invalid.', 'woo-gutenberg-products-block' ), $key ) );
+		}
+
+		if ( ! in_array( $key, $this->fields_locations[ $location ], true ) ) {
+			// translators: %1$s field key, %2$s location.
+			return new \WP_Error( 'woocommerce_blocks_checkout_field_invalid_location', \sprintf( __( 'The field %1$s is invalid for the location %2$s.', 'woo-gutenberg-products-block' ), $key, $location ) );
+		}
+
+		$field = $this->additional_fields[ $key ];
+		if ( ! empty( $field['required'] ) && empty( $value ) ) {
+			// translators: %s field key.
+			return new \WP_Error( 'woocommerce_blocks_checkout_field_required', \sprintf( __( 'The field %s is required.', 'woo-gutenberg-products-block' ), $key ) );
+		}
+
+		return true;
+	}
 
 	/**
 	 * Returns true if the given key is a valid field.
@@ -521,15 +551,25 @@ abstract class CheckoutFields {
 
 		$fields = array();
 
-		foreach ( $billing_fields as $key => $value ) {
-			$fields[ '/billing/' . $key ] = $value;
+		if ( is_array( $billing_fields ) ) {
+			foreach ( $billing_fields as $key => $value ) {
+				$fields[ '/billing/' . $key ] = $value;
+			}
 		}
 
-		foreach ( $shipping_fields as $key => $value ) {
-			$fields[ '/shipping/' . $key ] = $value;
+		if ( is_array( $shipping_fields ) ) {
+			foreach ( $shipping_fields as $key => $value ) {
+				$fields[ '/shipping/' . $key ] = $value;
+			}
 		}
 
-		return array_merge( $fields, $additional_fields );
+		if ( is_array( $additional_fields ) ) {
+			foreach ( $additional_fields as $key => $value ) {
+				$fields[ $key ] = $value;
+			}
+		}
+
+		return $fields;
 	}
 
 	/**
