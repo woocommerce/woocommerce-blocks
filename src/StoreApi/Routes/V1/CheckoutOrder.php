@@ -7,7 +7,7 @@ use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 use Automattic\WooCommerce\StoreApi\Utilities\OrderAuthorizationTrait;
 use Automattic\WooCommerce\StoreApi\Utilities\CheckoutTrait;
 
-// @TODO: add custom fields support.
+// Custom Fields Note: This doesn't support custom fields fully yet.
 /**
  * CheckoutOrder class.
  */

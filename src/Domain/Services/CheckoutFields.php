@@ -249,7 +249,7 @@ abstract class CheckoutFields {
 	 * Add fields data to the asset data registry.
 	 */
 	public function add_fields_data() {
-		$this->asset_data_registry->add( 'defaultAddressFields', array_merge( $this->core_fields, $this->additional_fields ), true );
+		$this->asset_data_registry->add( 'defaultAddressFields', $this->get_fields(), true );
 		$this->asset_data_registry->add( 'addressFieldsLocations', $this->fields_locations, true );
 	}
 
@@ -298,6 +298,15 @@ abstract class CheckoutFields {
 	}
 
 	/**
+	 * Returns an array of all fields.
+	 *
+	 * @return array An array of fields.
+	 */
+	public function get_fields() {
+		return array_merge( $this->core_fields, $this->additional_fields );
+	}
+
+	/**
 	 * Returns an array of fields for a given group.
 	 *
 	 * @param string $location The location to get fields for (address|contact|additional).
@@ -311,21 +320,21 @@ abstract class CheckoutFields {
 	 *
 	 * @return array An array of fields keys.
 	 */
-	abstract protected function get_address_fields_keys();
+	abstract public function get_address_fields_keys();
 
 	/**
 	 * Returns an array of fields keys for a the contact group.
 	 *
 	 * @return array An array of fields keys.
 	 */
-	abstract protected function get_contact_fields_keys();
+	abstract public function get_contact_fields_keys();
 
 	/**
 	 * Returns an array of fields keys for a the additional area group.
 	 *
 	 * @return array An array of fields keys.
 	 */
-	abstract protected function get_additional_fields_keys();
+	abstract public function get_additional_fields_keys();
 
 	/**
 	 * Validates a field value for a given group.
@@ -409,7 +418,7 @@ abstract class CheckoutFields {
 	 *
 	 * @return mixed The field value.
 	 */
-	public function get_field_from_order( $field, $order, $group ) {
+	public function get_field_from_order( $field, $order, $group = '' ) {
 		return $this->get_field_from_object( $field, $order, $group );
 	}
 
@@ -523,5 +532,23 @@ abstract class CheckoutFields {
 		return array_merge( $fields, $additional_fields );
 	}
 
+	/**
+	 * From a set of fields, returns only the ones that should be saved to the customer.
+	 * For now, this only supports fields in address location.
+	 *
+	 * @param array $fields The fields to filter.
+	 *
+	 * @return array The filtered fields.
+	 */
+	public function filter_fields_for_customer( $fields ) {
+		$customer_fields_keys = $this->get_address_fields_keys();
+		return array_filter(
+			$fields,
+			function( $key ) use ( $customer_fields_keys ) {
+				return in_array( $key, $customer_fields_keys, true );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
+	}
 
 }

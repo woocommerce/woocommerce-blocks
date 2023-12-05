@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Routes\V1;
 
+use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFields;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
 use Automattic\WooCommerce\StoreApi\Exceptions\InvalidStockLevelsInCartException;
 use Automattic\WooCommerce\StoreApi\Exceptions\InvalidCartException;
@@ -38,6 +39,12 @@ class Checkout extends AbstractCartRoute {
 	 */
 	private $order = null;
 
+	/**
+	 * Checkout fields controller.
+	 *
+	 * @var CheckoutFields
+	 */
+	private CheckoutFields $additional_fields_controller;
 	/**
 	 * Get the path of this REST route.
 	 *
@@ -94,7 +101,6 @@ class Checkout extends AbstractCartRoute {
 							],
 						],
 					],
-					// @TODO: add fields schema to checkout schema.
 					$this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE )
 				),
 			],

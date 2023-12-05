@@ -3,6 +3,7 @@ namespace Automattic\WooCommerce\StoreApi\Utilities;
 
 use \Exception;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
+use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFields;
 
 /**
  * OrderController class.
@@ -15,7 +16,7 @@ class OrderController {
 	 *
 	 * @var CheckoutFields
 	 */
-	private $additional_fields_controller;
+	private CheckoutFields $additional_fields_controller;
 
 	/**
 	 * Create order and set props based on global settings.
@@ -379,7 +380,7 @@ class OrderController {
 		 * We are not using wc()->counties->get_default_address_fields() here because that is filtered. Instead, this array
 		 * is based on assets/js/base/components/cart-checkout/address-form/default-address-fields.js
 		 */
-		$address_fields = $this->additional_fields_controller->get_fields_for_group( 'address' );
+		$address_fields = $this->additional_fields_controller->get_fields_for_location( 'address' );
 
 		if ( $current_locale ) {
 			foreach ( $current_locale as $key => $field ) {
@@ -715,7 +716,7 @@ class OrderController {
 				'shipping_phone'      => wc()->customer->get_shipping_phone(),
 			]
 		);
-		$customer_fields = $this->additional_fields_controller->get_all_fields_for_customer( wc()->customer );
+		$customer_fields = $this->additional_fields_controller->get_all_fields_from_customer( wc()->customer );
 		foreach ( $customer_fields as $key => $value ) {
 			$this->additional_fields_controller->persist_field( $key, $value, $order, false );
 		}

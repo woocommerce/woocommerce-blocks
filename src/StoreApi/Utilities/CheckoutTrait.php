@@ -18,7 +18,7 @@ trait CheckoutTrait {
 	 *
 	 * @var CheckoutFields
 	 */
-	private $additional_fields_controller;
+	private CheckoutFields $additional_fields_controller;
 
 	/**
 	 * Prepare a single item for response. Handles setting the status based on the payment result.
@@ -205,12 +205,12 @@ trait CheckoutTrait {
 		$request_fields = $request['additional_fields'] ?? [];
 		foreach ( $request_fields as $key => $value ) {
 			try {
-				$this->additional_fields_controller->validate_field_for_group( $key, $value, 'additional' );
+				$this->additional_fields_controller->validate_field_for_location( $key, $value, 'additional' );
 			} catch ( \Exception $e ) {
 				$errors[] = $e->getMessage();
 				continue;
 			}
-			$this->additional_fields_controller->persist_field( $key, $value, $this->order );
+			$this->additional_fields_controller->persist_field( $key, $value, $this->order, true );
 		}
 
 		if ( $errors->has_errors() ) {

@@ -99,7 +99,6 @@ class BillingAddressSchema extends AbstractAddressSchema {
 				$billing_state = '';
 			}
 
-			// @TODO: add additional fields to the response.
 			if ( $address instanceof \WC_Order ) {
 				// get additional fields from order.
 				$additional_address_fields = $this->additional_fields_controller->get_all_fields_from_order( $address );
@@ -107,6 +106,19 @@ class BillingAddressSchema extends AbstractAddressSchema {
 				// get additional fields from customer.
 				$additional_address_fields = $this->additional_fields_controller->get_all_fields_from_customer( $address );
 			}
+
+			$additional_address_fields = array_reduce(
+				array_keys( $additional_address_fields ),
+				function( $carry, $key ) use ( $additional_address_fields ) {
+					if ( 0 === strpos( $key, '/billing/' ) ) {
+						$value         = $additional_address_fields[ $key ];
+						$key           = str_replace( '/billing/', '', $key );
+						$carry[ $key ] = $value;
+					}
+					return $carry;
+				},
+				[]
+			);
 
 			return $this->prepare_html_response(
 				\array_merge(

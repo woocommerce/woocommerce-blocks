@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
+use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFields;
 use Automattic\WooCommerce\StoreApi\Utilities\ValidationUtils;
 
 /**
@@ -9,6 +10,14 @@ use Automattic\WooCommerce\StoreApi\Utilities\ValidationUtils;
  * Provides a generic address schema for composition in other schemas.
  */
 abstract class AbstractAddressSchema extends AbstractSchema {
+
+	/**
+	 * Checkout fields controller.
+	 *
+	 * @var CheckoutFields
+	 */
+	protected CheckoutFields $additional_fields_controller;
+
 	/**
 	 * Term properties.
 	 *
@@ -93,19 +102,25 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	 */
 	public function sanitize_callback( $address, $request, $param ) {
 		$validation_util = new ValidationUtils();
+		// Custom Fields Note: this doesn't support Select or Checkbox yet, only Text.
+		$address = array_merge( array_fill_keys( array_keys( $this->get_properties() ), '' ), (array) $address );
+		$address = array_reduce(
+			array_keys( $address ),
+			function( $carry, $key ) use ( $address, $validation_util ) {
+				if ( 'country' === $key ) {
+					$carry[ $key ] = wc_strtoupper( sanitize_text_field( wp_unslash( $address[ $key ] ) ) );
+				} elseif ( 'state' === $key ) {
+					$carry[ $key ] = $validation_util->format_state( sanitize_text_field( wp_unslash( $address[ $key ] ) ), $address['country'] );
+				} elseif ( 'postcode' === $key ) {
+					$carry[ $key ] = $address['postcode'] ? wc_format_postcode( sanitize_text_field( wp_unslash( $address['postcode'] ) ), $address['country'] ) : '';
+				} else {
+					$carry[ $key ] = sanitize_text_field( wp_unslash( $address[ $key ] ) );
+				}
+				return $carry;
+			},
+			[]
+		);
 
-		$address               = array_merge( array_fill_keys( array_keys( $this->get_properties() ), '' ), (array) $address );
-		$address['country']    = wc_strtoupper( sanitize_text_field( wp_unslash( $address['country'] ) ) );
-		$address['first_name'] = sanitize_text_field( wp_unslash( $address['first_name'] ) );
-		$address['last_name']  = sanitize_text_field( wp_unslash( $address['last_name'] ) );
-		$address['company']    = sanitize_text_field( wp_unslash( $address['company'] ) );
-		$address['address_1']  = sanitize_text_field( wp_unslash( $address['address_1'] ) );
-		$address['address_2']  = sanitize_text_field( wp_unslash( $address['address_2'] ) );
-		$address['city']       = sanitize_text_field( wp_unslash( $address['city'] ) );
-		$address['state']      = $validation_util->format_state( sanitize_text_field( wp_unslash( $address['state'] ) ), $address['country'] );
-		$address['postcode']   = $address['postcode'] ? wc_format_postcode( sanitize_text_field( wp_unslash( $address['postcode'] ) ), $address['country'] ) : '';
-		$address['phone']      = sanitize_text_field( wp_unslash( $address['phone'] ) );
-		// @TODO: sanitize additional address fields.
 		return $address;
 	}
 
@@ -163,5 +178,30 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 		}
 
 		return $errors->has_errors( $errors ) ? $errors : true;
+	}
+
+	/**
+	 * Get additional address fields schema.
+	 *
+	 * @return array
+	 */
+	protected function get_additional_address_fields_schema() {
+		$additional_fields_keys = $this->additional_fields_controller->get_address_fields_keys();
+		$additional_fields      = array_filter(
+			$this->additional_fields_controller->get_fields(),
+			function( $field ) use ( $additional_fields_keys ) {
+				return in_array( $field['key'], $additional_fields_keys, true );
+			}
+		);
+		$schema                 = [];
+		foreach ( $additional_fields as $key => $field ) {
+			$schema[ $key ] = [
+				'description' => $field['label'],
+				'type'        => 'string',
+				'context'     => [ 'view', 'edit' ],
+				'required'    => true,
+			];
+		}
+		return $schema;
 	}
 }
