@@ -18,3 +18,19 @@ if ( ! function_exists( 'woocommerce_blocks_register_checkout_field' ) ) {
 		}
 	}
 }
+
+/**
+ * Example code to register a checkout field.
+ */
+woocommerce_blocks_register_checkout_field(
+	array(
+		'id'             => 'plugin/dialling-code',
+		'label'          => __( 'Dialling code', 'woo-gutenberg-products-block' ),
+		'optionalLabel'  => __( 'Dialling code (optional)', 'woo-gutenberg-products-block' ),
+		'required'       => false,
+		'hidden'         => true,
+		'autocomplete'   => 'dialling-code',
+		'autocapitalize' => 'characters',
+		'location'       => 'address',
+	)
+);
