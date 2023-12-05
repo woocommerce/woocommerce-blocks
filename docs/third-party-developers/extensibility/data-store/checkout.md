@@ -295,10 +295,6 @@ const isCalculating = store.isCalculating();
 
 Returns true if the customer prefers to collect their order, and false otherwise.
 
-#### _Parameters_ <!-- omit in toc -->
-
--   `state: CheckoutState`: The current checkout state.
-
 #### _Returns_ <!-- omit in toc -->
 
 -   `boolean`: True if the customer prefers collection, false otherwise.

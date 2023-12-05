@@ -81,13 +81,14 @@ or
 
 This selector will return the state from the collections store.
 
-#### _Parameters_ <!-- omit in toc -->
-
--   `state: Object`: The current state of the store.
-
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The state from the collections store.
+-   `object`: The state from the collections storew ith the following properties:
+   	- _namespace_ `string`: The route namespace for the collection, eg. `/wc/blocks`.
+    - _resourceName_ `string`: The resource name for the collection, eg. `products/attributes`.
+    - _query_ `object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.
+    - _ids_ `array`: If the collection route has placeholders for ids you provide the values for those placeholders in this array (in order).
+   	- _type_ `string`: type of the collections ie `items`.
 
 #### _Example_ <!-- omit in toc -->
 
@@ -100,16 +101,14 @@ const state = store.getFromState();
 
 This selector will return the headers for a collection.
 
-#### _Parameters_ <!-- omit in toc -->
-
--   `state: Object`: The current state of the store.
--   `namespace: string`: The route namespace for the collection, eg. `/wc/blocks`.
--   `resourceName: string`: The resource name for the collection (eg. `products/attributes`).
--   `queryString: string`: An additional query string to add to the request for the collection.
-
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The headers for the collection.
+-   `object`: The headers for the collection with the following keys:
+   	-   _namespace_ `string`: The route namespace for the collection, eg. `/wc/blocks`.
+   	-   _resourceName_ `string`: The resource name for the collection, eg. `products/attributes`.
+   	-   _query_ `object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.
+   	-   _ids_ `array`: If the collection route has placeholders for ids you provide the values for those placeholders in this array (in order).
+   	-   _type_ `string`: `headers` for this selector.
 
 #### _Example_ <!-- omit in toc -->
 
@@ -122,16 +121,19 @@ const headers = store.getCollectionHeaders(state, namespace, resourceName, query
 
 This selector will return any error that occurred while fetching a collection.
 
-#### _Parameters_ <!-- omit in toc -->
-
--   `state: Object`: The current state of the store.
--   `namespace: string`: The route namespace for the collection, eg. `/wc/blocks`.
--   `resourceName: string`: The resource name for the collection (eg. `products/attributes`).
--   `queryString: string`: An additional query string to add to the request for the collection.
-
 #### _Returns_ <!-- omit in toc -->
 
--   `Error`: The error that occurred while fetching the collection, or `null` if there was no error.
+-   _error_ `object`: The error that occurred while fetching the collection with the following properties:
+   	-   _namespace_ `string`: The route namespace for the collection, eg. `/wc/blocks`.
+   	-   _resourceName_ `string`: The resource name for the collection, eg. `products/attributes`.
+   	-   _query_ `object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.
+   	-   _ids_ `array`: If the collection route has placeholders for ids you provide the values for those placeholders in this array (in order).
+   	-   _type_ `string`: `error` for this selector.
+
+or
+
+- `null`: If the collection does not have any error.
+
 
 #### _Example_ <!-- omit in toc -->
 
@@ -144,16 +146,9 @@ const error = store.getCollectionError(state, namespace, resourceName, queryStri
 
 This selector will return the last modified date for a collection.
 
-#### _Parameters_ <!-- omit in toc -->
-
--   `state: Object`: The current state of the store.
--   `namespace: string`: The route namespace for the collection, eg. `/wc/blocks`.
--   `resourceName: string`: The resource name for the collection (eg. `products/attributes`).
--   `queryString: string`: An additional query string to add to the request for the collection.
-
 #### _Returns_ <!-- omit in toc -->
 
--   `Date`: The last modified date for the collection, or `null` if there was no last modified date.
+-   `Date`: The last modified date for the collection, or `0` if there was no last modified date.
 
 #### _Example_ <!-- omit in toc -->
 

@@ -450,13 +450,10 @@ const paymentResult = store.getPaymentResult();
 
 Returns the list of payment methods that are incompatible with Checkout block.
 
-#### _Parameters_ <!-- omit in toc -->
-
--   `state: Object`: The current state of the store.
-
 #### _Returns_ <!-- omit in toc -->
 
--   `Array`: An array of incompatible payment method names.
+-   `object`: A list of incompatible payment methods with the following properties:
+   	-  _name_ `string`: The name of the payment method.
 
 #### _Example_ <!-- omit in toc -->
 
@@ -469,13 +466,24 @@ const incompatiblePaymentMethods = store.getIncompatiblePaymentMethods();
 
 Returns the current state of the payment store.
 
-#### _Parameters_ <!-- omit in toc -->
-
--   `state: Object`: The current state of the store.
-
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The current state of the payment store.
+-   `object`: The current state of the payment store with the following properties:
+   	-  _status_ `string`: The current status of the payment process. Possible values are: `idle`, `started`, `processing`, `ready`, `error`, `success`, `failed`.
+   	-  _activePaymentMethod_ `string`: The ID of the active payment method.
+   	-  _activeSavedToken_ `string`: The ID of the active saved token.
+   	-  _availablePaymentMethods_ `object`: The available payment methods. This is currently just an object keyed by the payment method IDs. Each member contains a `name` entry with the payment method ID as its value.
+   	-  _availableExpressPaymentMethods_ `object`: The available express payment methods. This is currently just an object keyed by the payment method IDs. Each member contains a `name` entry with the payment method ID as its value.
+   	-  _savedPaymentMethods_ `object`: The saved payment methods for the current customer. This is an object, it will be specific to each payment method. As an example, Stripe's saved tokens are returned like so:
+   	- _paymentMethodData_ `object`: The current payment method data. This is specific to each payment method so further details cannot be provided here.
+   	- _paymentResult_ `object`: An object with the following properties:
+      		- _message_ `string`: The message returned by the payment gateway.
+      		- _paymentStatus_ `string`: The status of the payment. Possible values are: `success`, `failure`, `pending`, `error`, `not set`.
+      		- _paymentDetails_ `object`: The payment details returned by the payment gateway.
+      		- _redirectUrl_ `string`: The URL to redirect to after checkout is complete.
+   	- _paymentMethodsInitialized_ `boolean`: True if the payment methods have been initialized, false otherwise.
+   	- _expressPaymentMethodsInitialized_ `boolean`: True if the express payment methods have been initialized, false otherwise.
+   	- _shouldSavePaymentMethod_ `boolean`: True if the payment method should be saved, false otherwise.
 
 #### _Example_ <!-- omit in toc -->
 

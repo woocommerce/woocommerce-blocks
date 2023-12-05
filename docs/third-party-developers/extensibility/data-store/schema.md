@@ -90,8 +90,8 @@ This will returns the route from the given slice of the route state.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `stateSlice: Object`: Slice of the route state from a given namespace and resource name.
--   `ids: Array`: An array of id references that are to be replaced in route placeholders. If the route does not have placeholders, this can be an empty array.
+-   _stateSlice_ `object`: Slice of the route state from a given namespace and resource name.
+-   _ids_ `array`: An array of id references that are to be replaced in route placeholders. If the route does not have placeholders, this can be an empty array.
 
 #### _Returns_ <!-- omit in toc -->
 
@@ -110,9 +110,9 @@ This will return the assembled route with placeholders.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `route: string`: The route to assemble.
--   `routePlaceholders: Array`: An array of route placeholders.
--   `ids: Array`: An array of id references that are to be replaced in route placeholders.
+-   _route_ `string`: The route to assemble.
+-   _routePlaceholders_ `array`: An array of route placeholders.
+-   _ids_ `array`: An array of id references that are to be replaced in route placeholders.
 
 #### _Returns_ <!-- omit in toc -->
 
