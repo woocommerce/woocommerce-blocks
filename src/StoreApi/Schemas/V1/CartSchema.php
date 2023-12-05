@@ -366,6 +366,7 @@ class CartSchema extends AbstractSchema {
 			'errors'                  => $cart_errors,
 			'payment_methods'         => array_values( wp_list_pluck( WC()->payment_gateways->get_available_payment_gateways(), 'id' ) ),
 			self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER ),
+
 		];
 	}
 

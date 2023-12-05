@@ -42,21 +42,34 @@ class ShippingAddressSchema extends AbstractAddressSchema {
 				$shipping_state = '';
 			}
 
+			// @TODO: add additional fields to the response.
+			if ( $address instanceof \WC_Order ) {
+				// get additional fields from order.
+				$additional_address_fields = $this->additional_fields_controller->get_all_fields_from_order( $address );
+			} elseif ( $address instanceof \WC_Customer ) {
+				// get additional fields from customer.
+				$additional_address_fields = $this->additional_fields_controller->get_all_fields_from_customer( $address );
+			}
+
 			return $this->prepare_html_response(
-				[
-					'first_name' => $address->get_shipping_first_name(),
-					'last_name'  => $address->get_shipping_last_name(),
-					'company'    => $address->get_shipping_company(),
-					'address_1'  => $address->get_shipping_address_1(),
-					'address_2'  => $address->get_shipping_address_2(),
-					'city'       => $address->get_shipping_city(),
-					'state'      => $shipping_state,
-					'postcode'   => $address->get_shipping_postcode(),
-					'country'    => $shipping_country,
-					'phone'      => $address->get_shipping_phone(),
-				]
+				array_merge(
+					[
+						'first_name' => $address->get_shipping_first_name(),
+						'last_name'  => $address->get_shipping_last_name(),
+						'company'    => $address->get_shipping_company(),
+						'address_1'  => $address->get_shipping_address_1(),
+						'address_2'  => $address->get_shipping_address_2(),
+						'city'       => $address->get_shipping_city(),
+						'state'      => $shipping_state,
+						'postcode'   => $address->get_shipping_postcode(),
+						'country'    => $shipping_country,
+						'phone'      => $address->get_shipping_phone(),
+					],
+					$additional_address_fields
+				)
 			);
 		}
+
 		throw new RouteException(
 			'invalid_object_type',
 			sprintf(

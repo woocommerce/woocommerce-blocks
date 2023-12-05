@@ -1,6 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\StoreApi;
 
+use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFields;
 use Automattic\WooCommerce\Blocks\Registry\Container;
 use Automattic\WooCommerce\StoreApi\Formatters;
 use Automattic\WooCommerce\StoreApi\Authentication;
@@ -16,10 +17,21 @@ use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
  * StoreApi Main Class.
  */
 final class StoreApi {
+
 	/**
 	 * Init and hook in Store API functionality.
+	 *
+	 * @param CheckoutFields $checkout_fields Checkout fields controller.
 	 */
-	public function init() {
+	public function init( CheckoutFields $checkout_fields ) {
+
+		self::container()->register(
+			CheckoutFields::class,
+			function () use ( $checkout_fields ) {
+				return $checkout_fields;
+			}
+		);
+
 		add_action(
 			'rest_api_init',
 			function() {

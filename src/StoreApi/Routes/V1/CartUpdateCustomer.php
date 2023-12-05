@@ -182,6 +182,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 				'shipping_phone'      => $shipping['phone'] ?? null,
 			)
 		);
+		// @TODO: add additional fields here like we did with order controller.
 
 		wc_do_deprecated_action(
 			'woocommerce_blocks_cart_update_customer_from_request',
@@ -244,6 +245,8 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			'phone'      => $customer->get_billing_phone(),
 			'email'      => $customer->get_billing_email(),
 		];
+		// @TODO: also include additional address fields for billing.
+		// get_all_fields_from_customer( $customer, 'billing' ),
 	}
 
 	/**
@@ -265,5 +268,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			'country'    => $customer->get_shipping_country(),
 			'phone'      => $customer->get_shipping_phone(),
 		];
+		// @TODO: also include additional address fields for shipping.
+		// get_all_fields_from_customer( $customer, 'shipping' ),
 	}
 }

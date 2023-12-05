@@ -16,68 +16,71 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	 * @return array
 	 */
 	public function get_properties() {
-		return [
-			'first_name' => [
-				'description' => __( 'First name', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
+		return array_merge(
+			[
+				'first_name' => [
+					'description' => __( 'First name', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+					'required'    => true,
+				],
+				'last_name'  => [
+					'description' => __( 'Last name', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+					'required'    => true,
+				],
+				'company'    => [
+					'description' => __( 'Company', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+					'required'    => true,
+				],
+				'address_1'  => [
+					'description' => __( 'Address', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+					'required'    => true,
+				],
+				'address_2'  => [
+					'description' => __( 'Apartment, suite, etc.', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+					'required'    => true,
+				],
+				'city'       => [
+					'description' => __( 'City', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+					'required'    => true,
+				],
+				'state'      => [
+					'description' => __( 'State/County code, or name of the state, county, province, or district.', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+					'required'    => true,
+				],
+				'postcode'   => [
+					'description' => __( 'Postal code', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+					'required'    => true,
+				],
+				'country'    => [
+					'description' => __( 'Country/Region code in ISO 3166-1 alpha-2 format.', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+					'required'    => true,
+				],
+				'phone'      => [
+					'description' => __( 'Phone', 'woo-gutenberg-products-block' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+					'required'    => true,
+				],
 			],
-			'last_name'  => [
-				'description' => __( 'Last name', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
-			],
-			'company'    => [
-				'description' => __( 'Company', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
-			],
-			'address_1'  => [
-				'description' => __( 'Address', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
-			],
-			'address_2'  => [
-				'description' => __( 'Apartment, suite, etc.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
-			],
-			'city'       => [
-				'description' => __( 'City', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
-			],
-			'state'      => [
-				'description' => __( 'State/County code, or name of the state, county, province, or district.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
-			],
-			'postcode'   => [
-				'description' => __( 'Postal code', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
-			],
-			'country'    => [
-				'description' => __( 'Country/Region code in ISO 3166-1 alpha-2 format.', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
-			],
-			'phone'      => [
-				'description' => __( 'Phone', 'woo-gutenberg-products-block' ),
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'required'    => true,
-			],
-		];
+			$this->get_additional_address_fields_schema(),
+		);
 	}
 
 	/**
@@ -102,6 +105,7 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 		$address['state']      = $validation_util->format_state( sanitize_text_field( wp_unslash( $address['state'] ) ), $address['country'] );
 		$address['postcode']   = $address['postcode'] ? wc_format_postcode( sanitize_text_field( wp_unslash( $address['postcode'] ) ), $address['country'] ) : '';
 		$address['phone']      = sanitize_text_field( wp_unslash( $address['phone'] ) );
+		// @TODO: sanitize additional address fields.
 		return $address;
 	}
 

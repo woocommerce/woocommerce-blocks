@@ -168,6 +168,12 @@ class CheckoutSchema extends AbstractSchema {
 					],
 				],
 			],
+			'additional_fields' => [
+				'description' => __( 'Additional fields to be persisted on the order.', 'woo-gutenberg-products-block' ),
+				'type'        => 'object',
+				'context'     => [ 'view', 'edit' ],
+				'properties'  => $this->get_additional_fields_schema(),
+			],
 			self::EXTENDING_KEY => $this->get_extended_schema( self::IDENTIFIER ),
 		];
 	}
@@ -205,6 +211,7 @@ class CheckoutSchema extends AbstractSchema {
 				'payment_details' => $this->prepare_payment_details_for_response( $payment_result->payment_details ),
 				'redirect_url'    => $payment_result->redirect_url,
 			],
+			'additional_fields' => $this->get_additional_fields_response( $order ),
 			self::EXTENDING_KEY => $this->get_extended_data( self::IDENTIFIER ),
 		];
 	}

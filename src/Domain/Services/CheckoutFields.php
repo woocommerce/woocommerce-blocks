@@ -7,7 +7,7 @@ use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
 /**
  * Service class managing checkout fields and its related extensibility points.
  */
-class CheckoutFields {
+abstract class CheckoutFields {
 
 
 	/**
@@ -173,6 +173,7 @@ class CheckoutFields {
 				),
 				'required'       => false,
 				'hidden'         => false,
+				'type'           => 'tel',
 				'autocomplete'   => 'tel',
 				'autocapitalize' => 'characters',
 				'index'          => 100,
@@ -180,14 +181,25 @@ class CheckoutFields {
 		);
 
 		$this->additional_fields = array(
-			'plugin_vat' => array(
+			'plugin_vat'           => array(
 				'label'          => __( 'VAT', 'woo-gutenberg-products-block' ),
 				'optionalLabel'  => __(
 					'VAT (optional)',
 					'woo-gutenberg-products-block'
 				),
 				'required'       => false,
-				'hidden'         => false,
+				'hidden'         => true,
+				'autocomplete'   => 'vat',
+				'autocapitalize' => 'characters',
+			),
+			'plugin_delivery_hour' => array(
+				'label'          => __( 'VAT', 'woo-gutenberg-products-block' ),
+				'optionalLabel'  => __(
+					'VAT (optional)',
+					'woo-gutenberg-products-block'
+				),
+				'required'       => false,
+				'hidden'         => true,
 				'autocomplete'   => 'vat',
 				'autocapitalize' => 'characters',
 			),
@@ -195,13 +207,12 @@ class CheckoutFields {
 
 		$this->fields_locations = array(
 			// omit email from shipping and billing fields.
-			'address'    => $this->get_address_fields_keys(),
+			'address'    => $this->get_address_fields_keys(), // everything here will be saved to customer and order.
 			// @todo handle rendering contact fields.
-			'contact'    => array( 'email' ),
+			'contact'    => array( 'email' ), // everything here will be saved to order, and optionally to customer.
 			// @todo handle rendering additional fields.
-			'additional' => array(),
+			'additional' => array( 'plugin_delivery_hour' ), // everything here will only be saved to order only.
 		);
-
 	}
 
 	/**
@@ -221,14 +232,123 @@ class CheckoutFields {
 	}
 
 	/**
-	 * Get the keys of the address fields.
+	 * Registers an additional field for Checkout.
 	 *
-	 * @return array
+	 * @param array $options The field options.
+	 *
+	 * @return true|WP_Error True if the field was registered, a WP_Error otherwise.
 	 */
-	protected function get_address_fields_keys() {
-		$core_fields       = array_keys( array_diff_key( $this->core_fields, array( 'email' => '' ) ) );
-		$additional_fields = array( 'plugin_vat' );
+	abstract public function register_checkout_field( $options );
 
-		return array_merge( $core_fields, $additional_fields );
-	}
+	/**
+	 * Returns an array of fields for a given group.
+	 *
+	 * @param string $group The group to get fields for (address|contact|additional).
+	 *
+	 * @return array An array of fields.
+	 */
+	abstract public function get_fields_for_group( $group );
+
+	/**
+	 * Returns an array of fields keys for a the address group.
+	 *
+	 * @return array An array of fields keys.
+	 */
+	abstract protected function get_address_fields_keys();
+
+	/**
+	 * Returns an array of fields keys for a the contact group.
+	 *
+	 * @return array An array of fields keys.
+	 */
+	abstract protected function get_contact_fields_keys();
+
+	/**
+	 * Returns an array of fields keys for a the additional area group.
+	 *
+	 * @return array An array of fields keys.
+	 */
+	abstract protected function get_additional_fields_keys();
+
+	/**
+	 * Validates a field value for a given group.
+	 *
+	 * @param string $key The field key.
+	 * @param mixed  $value The field value.
+	 * @param string $group The group to validate the field for (address|contact|additional).
+	 *
+	 * TODO: we might not need the group param here.
+	 *
+	 * @return true|\WP_Error True if the field is valid, a WP_Error otherwise.
+	 */
+	abstract public function validate_field_for_group( $key, $value, $group );
+
+	/**
+	 * Returns true if the given key is a valid field.
+	 *
+	 * @param string $key The field key.
+	 *
+	 * @return bool True if the field is valid, false otherwise.
+	 */
+	abstract public function is_field( $key );
+
+	/**
+	 * Persists a field value for a given order. This would also optionally set the field value on the customer.
+	 *
+	 * @param string    $key The field key.
+	 * @param mixed     $value The field value.
+	 * @param \WC_Order $order The order to persist the field for.
+	 *
+	 * @return void
+	 */
+	abstract public function persist_field( $key, $value, $order );
+
+	/**
+	 * Persists a field value for a given customer.
+	 *
+	 * @param string       $key The field key.
+	 * @param mixed        $value The field value.
+	 * @param \WC_Customer $customer The customer to persist the field for.
+	 *
+	 * @return void
+	 */
+	abstract public function persist_field_for_customer( $key, $value, $customer );
+	/**
+	 * Returns a field value for a given customer.
+	 *
+	 * @param string       $field The field key.
+	 * @param \WC_Customer $customer The customer to get the field value for.
+	 *
+	 * @return mixed The field value.
+	 */
+	abstract public function get_field_from_customer( $field, $customer );
+
+	/**
+	 * Returns a field value for a given order.
+	 *
+	 * @param string    $field The field key.
+	 * @param \WC_Order $order The order to get the field value for.
+	 *
+	 * @return mixed The field value.
+	 */
+	abstract public function get_field_from_order( $field, $order );
+
+	/**
+	 * Returns an array of all fields values for a given customer.
+	 *
+	 * @param \WC_Customer $customer The customer to get the fields for.
+	 *
+	 * @return array An array of fields.
+	 */
+	abstract public function get_all_fields_from_customer( $customer );
+
+	/**
+	 * Returns an array of all fields values for a given order.
+	 *
+	 * @param \WC_Order $order The order to get the fields for.
+	 *
+	 * @return array An array of fields.
+	 */
+	abstract public function get_all_fields_from_order( $order );
+
 }

@@ -99,20 +99,32 @@ class BillingAddressSchema extends AbstractAddressSchema {
 				$billing_state = '';
 			}
 
+			// @TODO: add additional fields to the response.
+			if ( $address instanceof \WC_Order ) {
+				// get additional fields from order.
+				$additional_address_fields = $this->additional_fields_controller->get_all_fields_from_order( $address );
+			} elseif ( $address instanceof \WC_Customer ) {
+				// get additional fields from customer.
+				$additional_address_fields = $this->additional_fields_controller->get_all_fields_from_customer( $address );
+			}
+
 			return $this->prepare_html_response(
-				[
-					'first_name' => $address->get_billing_first_name(),
-					'last_name'  => $address->get_billing_last_name(),
-					'company'    => $address->get_billing_company(),
-					'address_1'  => $address->get_billing_address_1(),
-					'address_2'  => $address->get_billing_address_2(),
-					'city'       => $address->get_billing_city(),
-					'state'      => $billing_state,
-					'postcode'   => $address->get_billing_postcode(),
-					'country'    => $billing_country,
-					'email'      => $address->get_billing_email(),
-					'phone'      => $address->get_billing_phone(),
-				]
+				\array_merge(
+					[
+						'first_name' => $address->get_billing_first_name(),
+						'last_name'  => $address->get_billing_last_name(),
+						'company'    => $address->get_billing_company(),
+						'address_1'  => $address->get_billing_address_1(),
+						'address_2'  => $address->get_billing_address_2(),
+						'city'       => $address->get_billing_city(),
+						'state'      => $billing_state,
+						'postcode'   => $address->get_billing_postcode(),
+						'country'    => $billing_country,
+						'email'      => $address->get_billing_email(),
+						'phone'      => $address->get_billing_phone(),
+					],
+					$additional_address_fields
+				)
 			);
 		}
 		throw new RouteException(

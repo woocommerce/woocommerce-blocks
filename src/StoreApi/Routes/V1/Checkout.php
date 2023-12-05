@@ -94,6 +94,7 @@ class Checkout extends AbstractCartRoute {
 							],
 						],
 					],
+					// @TODO: add fields schema to checkout schema.
 					$this->schema->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE )
 				),
 			],
@@ -412,11 +413,12 @@ class Checkout extends AbstractCartRoute {
 	 */
 	private function update_customer_from_request( \WP_REST_Request $request ) {
 		$customer = wc()->customer;
-
 		// Billing address is a required field.
 		foreach ( $request['billing_address'] as $key => $value ) {
 			if ( is_callable( [ $customer, "set_billing_$key" ] ) ) {
 				$customer->{"set_billing_$key"}( $value );
+			} elseif ( $this->additional_fields_controller->is_field( $key, 'address' ) ) {
+				$this->additional_fields_controller->persist_field_for_customer( "/billing/$key", $value, $customer );
 			}
 		}
 
@@ -428,6 +430,8 @@ class Checkout extends AbstractCartRoute {
 				$customer->{"set_shipping_$key"}( $value );
 			} elseif ( 'phone' === $key ) {
 				$customer->update_meta_data( 'shipping_phone', $value );
+			} elseif ( $this->additional_fields_controller->is_field( $key, 'address' ) ) {
+				$this->additional_fields_controller->persist_field_for_customer( "/shipping/$key", $value, $customer );
 			}
 		}
 
