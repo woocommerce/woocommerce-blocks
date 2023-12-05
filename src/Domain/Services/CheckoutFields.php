@@ -258,9 +258,44 @@ abstract class CheckoutFields {
 	 *
 	 * @param array $options The field options.
 	 *
-	 * @return true|WP_Error True if the field was registered, a WP_Error otherwise.
+	 * @return \WP_Error|void True if the field was registered, a WP_Error otherwise.
 	 */
-	abstract public function register_checkout_field( $options );
+	public function register_checkout_field( $options ) {
+		if ( empty( $options['id'] ) ) {
+			return new \WP_Error( 'woocommerce_blocks_checkout_field_id_required', __( 'The field id is required.', 'woo-gutenberg-products-block' ) );
+		}
+
+		if ( empty( $options['label'] ) ) {
+			return new \WP_Error( 'woocommerce_blocks_checkout_field_label_required', __( 'The field label is required.', 'woo-gutenberg-products-block' ) );
+		}
+
+		if ( empty( $options['location'] ) ) {
+			return new \WP_Error( 'woocommerce_blocks_checkout_field_location_required', __( 'The field location is required.', 'woo-gutenberg-products-block' ) );
+		}
+
+		if ( ! in_array( $options['location'], array_keys( $this->fields_locations ), true ) ) {
+			return new \WP_Error( 'woocommerce_blocks_checkout_field_location_invalid', __( 'The field location is invalid.', 'woo-gutenberg-products-block' ) );
+		}
+
+		// At this point, the essentials fields and its location should be set.
+		$location = $options['location'];
+		$id       = $options['id'];
+
+		// Check to see if field is already in the array.
+		if ( ! empty( $this->additional_fields[ $location ][ $id ] ) ) {
+			return new \WP_Error( 'woocommerce_blocks_checkout_field_already_registered', __( 'The field is already registered.', 'woo-gutenberg-products-block' ) );
+		}
+
+		// Insert new field into the correct location array.
+		$this->additional_fields[ $location ][ $id ] = array(
+			'label'          => $options['label'],
+			'optionalLabel'  => ! empty( $options['optionalLabel'] ) ? $options['optionalLabel'] : '',
+			'required'       => ! empty( $options['required'] ) ? $options['required'] : false,
+			'hidden'         => ! empty( $options['hidden'] ) ? $options['hidden'] : false,
+			'autocomplete'   => ! empty( $options['autocomplete'] ) ? $options['autocomplete'] : '',
+			'autocapitalize' => ! empty( $options['autocapitalize'] ) ? $options['autocapitalize'] : '',
+		);
+	}
 
 	/**
 	 * Returns an array of fields for a given group.
