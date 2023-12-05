@@ -585,7 +585,7 @@ class MiniCart extends AbstractBlock {
 	 * @param string                   $position      Position of the block insertion point.
 	 * @param string                   $anchor_block  The block acting as the anchor for the inserted block.
 	 * @param \WP_Block_Template|array $context       Where the block is embedded.
-	 * @since $VID:$
+	 * @since 11.7.0
 	 * @return array An array of block slugs hooked into a given context.
 	 */
 	public function register_auto_insert( $hooked_blocks, $position, $anchor_block, $context ) {
@@ -598,7 +598,7 @@ class MiniCart extends AbstractBlock {
 		 * A list of pattern slugs to exclude from auto-insert (useful when
 		 * there are patterns that have a very specific location for the block)
 		 *
-		 * @since $VID:$
+		 * @since 11.7.0
 		 */
 		$pattern_exclude_list = apply_filters( 'woocommerce_blocks_mini_cart_auto_insert_pattern_exclude_list', [] );
 
@@ -607,7 +607,7 @@ class MiniCart extends AbstractBlock {
 		 * measure until improvements to the Block Hooks API allow for exposing
 		 * to all block themes.
 		 *
-		 * @since $VID:$
+		 * @since 11.7.0
 		 */
 		$theme_include_list = apply_filters( 'woocommerce_blocks_mini_cart_auto_insert_theme_include_list', [ 'Twenty Twenty-Four' ] );
 
@@ -631,7 +631,7 @@ class MiniCart extends AbstractBlock {
 	 *
 	 * @param array|\WP_Block_Template $context Where the block is embedded.
 	 * @param array                    $pattern_exclude_list List of pattern slugs to exclude.
-	 * @since $VID:$
+	 * @since 11.7.0
 	 * @return boolean
 	 */
 	private function pattern_is_excluded( $context, $pattern_exclude_list ) {
@@ -643,7 +643,7 @@ class MiniCart extends AbstractBlock {
 	 * Checks if the provided context contains a mini-cart block.
 	 *
 	 * @param array|\WP_Block_Template $context Where the block is embedded.
-	 * @since $VID:$
+	 * @since 11.7.0
 	 * @return boolean
 	 */
 	private function has_mini_cart_block( $context ) {
@@ -663,7 +663,7 @@ class MiniCart extends AbstractBlock {
 	 * Given a provided context, returns whether the context refers to header content.
 	 *
 	 * @param array|\WP_Block_Template $context Where the block is embedded.
-	 * @since $VID:$
+	 * @since 11.7.0
 	 * @return boolean
 	 */
 	private function is_header_part_or_pattern( $context ) {
