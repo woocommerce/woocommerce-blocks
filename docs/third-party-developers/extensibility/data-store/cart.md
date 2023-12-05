@@ -74,7 +74,7 @@ This action is used to set the cart data in the store.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `cartData: Object`: The current cart data with the following keys:
+-   _cartData_ `object`: The current cart data with the following keys:
     -   _coupons_ `array`: The coupon items in the cart.
     -   _shippingRates_ `array`: The cart shipping rates (see `getShippingRates` selector).
     -   _shippingAddress_ `object`: The shipping address (see `getCustomerData` selector).
@@ -105,14 +105,14 @@ This action is used to set the error data in the store.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `errorData: Object`: The error data that needs to be set in the store.
+-   _errorData_ `object`: The error data that needs to be set in the store.
     -  _code_ `string`: The error code.
     -  _message_ `string`: The error message.
-    -  _data_ `Object`: Additional error data. This is an optional object with the following keys:
+    -  _data_ `object`: Additional error data. This is an optional object with the following keys:
         -  _status_ `number`: The error status.
         -  _params_ `string`: The error params.
         -  _message_ `string`: The error message.
-        -  _cart_ `Object`: The cart data. This is an optional object with the following keys:
+        -  _cart_ `object`: The cart data. This is an optional object with the following keys:
             -  _coupons_ `array`: The coupon items in the cart.
             -  _shippingRates_ `array`: The cart shipping rates (see `getShippingRates` selector).
             -  _shippingAddress_ `object`: The shipping address (see `getCustomerData` selector).
@@ -143,7 +143,7 @@ This action returns an action object used in updating the store with the provide
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `cartContents: Object`:  A cart contents API response.
+-   _cartContents_ `object`:  A cart contents API response.
     -  _coupons_ `array`: The coupon items in the cart.
     -  _shippingRates_ `array`: The cart shipping rates (see `getShippingRates` selector).
     -  _shippingAddress_ `object`: The shipping address (see `getCustomerData` selector).
@@ -163,7 +163,7 @@ This action returns an action object used in updating the store with the provide
 
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The action object with the following keys:
+-   `object`: The action object with the following keys:
     -   _type_ `string`: The action type.
     -   _cartContents_ `object`: The cart contents with the following keys:
         -   _coupons_ `array`: The coupon items in the cart.
@@ -194,11 +194,11 @@ This action returns an action object used to track when a coupon is applying.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `couponCode: string`: The code of the coupon being applied.
+-   _couponCode_ `string`: The code of the coupon being applied.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The action object with following keys:
+-   `object`: The action object with following keys:
     -   _type_ `string`: The action type.
     -   _couponCode_ `string`: The code of the coupon being applied.
 
@@ -215,11 +215,11 @@ This action returns an action object used to track when a coupon is removing.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `couponCode: string`: The code of the coupon being removed.
+-   _couponCode_ `string`: The code of the coupon being removed.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The action object with the following keys:
+-   `object`: The action object with the following keys:
     -   _type_ `string`: The action type.
     -   _couponCode_ `string`: The code of the coupon being removed.
 
@@ -236,53 +236,14 @@ This action is used to update a specific item in the cart.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `CartResponseItem: `:  A cart item API response.
+-   _cartResponseItem_ `object`: Cart response object with the following keys:
+    -   _cartItem_ `object`: The cart item (see `getCartItem` selector).
 
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The action object with the following keys:
+-   `object`: The action object with the following keys:
     -   _type_ `string`: The action type.
-    -   _cartItem_ `object`: The cart item with the following keys:
-        -   _key_ `string`: The cart item key.
-        -   _id_ `number`: The cart item id.
-        -   _catalog_visibility_ `string`: The catalog visibility.
-        -   _quantity_limits_ `object`: The quantity limits.
-        -   _name_ `string`: The cart item name.
-        -   _summary_ `string`: The cart item summary.
-        -   _short_description_ `string`: The cart item short description.
-        -   _description_ `string`: The cart item description.
-        -   _sku_ `string`: The cart item sku.
-        -   _low_stock_remaining_ `null` or `number`: The low stock remaining.
-        -   _backorders_allowed_ `boolean` indicating if backorders are allowed.
-        -   _show_backorder_badge_ `boolean` indicating if the backorder badge should be shown.
-        -   _sold_individually_ `boolean` indicating if the item is sold individually.
-        -   _permalink_ `string`: The cart item permalink.
-        -   _images_ `array`: The cart item images.
-        -   _variation_ `array`: The cart item variation.
-        -   _prices_ `object`: The cart item prices with the following keys:
-            -   _currency_code_ `string`: The currency code.
-            -   _currency_symbol_ `string`: The currency symbol.
-            -   _currency_minor_unit_ `number`: The currency minor unit.
-            -   _currency_decimal_separator_ `string`: The currency decimal separator.
-            -   _currency_thousand_separator_ `string`: The currency thousand separator.
-            -   _currency_prefix_ `string`: The currency prefix.
-            -   _currency_suffix_ `string`: The currency suffix.
-            -   _price_ `string`: The cart item price.
-            -   _regular_price_ `string`: The cart item regular price.
-            -   _sale_price_ `string`: The cart item sale price.
-            -   _price_range_ `string`: The cart item price range.
-        -   _totals_ `object`: The cart item totals with the following keys:
-            -   _currency_code_ `string`: The currency code.
-            -   _currency_symbol_ `string`: The currency symbol.
-            -   _currency_minor_unit_ `number`: The currency minor unit.
-            -   _currency_decimal_separator_ `string`: The currency decimal separator.
-            -   _currency_thousand_separator_ `string`: The currency thousand separator.
-            -   _currency_prefix_ `string`: The currency prefix.
-            -   _currency_suffix_ `string`: The currency suffix.
-            -   _line_subtotal_ `string`: The cart item line subtotal.
-            -   _line_subtotal_tax_ `string`: The cart item line subtotal tax.
-            -   _line_total_ `string`: The cart item line total.
-            -   _line_total_tax_ `string`: The cart item line total tax.
+    -   _cartItem_ `object`: The cart item (see `getCartItem` selector).
 
 #### _Example_ <!-- omit in toc -->
 
@@ -297,12 +258,12 @@ This action returns an action object to indicate if the specified cart item quan
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `cartItemKey: string`: The key of the cart item.
--   `isPending: boolean` (default: `true`): Whether the cart item quantity is being updated.
+-   _cartItemKey_ `string`: The key of the cart item.
+-   _isPending_ `boolean` (default: `true`): Whether the cart item quantity is being updated.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The action object with following keys:
+-   `object`: The action object with following keys:
     -   _type_ `string`: The action type.
     -   _cartItemKey_ `string`: The key of the cart item.
     -   _isPending_ `boolean`: Whether the cart item quantity is being updated.
@@ -320,12 +281,12 @@ This action returns an action object to indicate if the specified cart item is b
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `cartItemKey: string`: The key of the cart item.
--   `isPending: boolean` (default: `true`): Whether the cart item is being deleted.
+-   _cartItemKey_ `string`: The key of the cart item.
+-   _isPending_ `boolean` (default: `true`): Whether the cart item is being deleted.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The action object with the following keys:
+-   `object`: The action object with the following keys:
     -   _type_ `string`: The action type.
     -   _cartItemKey_ `string`: The key of the cart item.
     -   _isPending_ `boolean`: Whether the cart item is being deleted.
@@ -343,11 +304,11 @@ This action returns an action object to indicate if the cart data is stale.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `isCartDataStale: boolean` (default: `true`): Flag to mark cart data as stale; true if `lastCartUpdate` timestamp is newer than the one in wcSettings.
+-   _isCartDataStale_ `boolean` (default: `true`): Flag to mark cart data as stale; true if `lastCartUpdate` timestamp is newer than the one in wcSettings.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The action object with the following keys:
+-   `object`: The action object with the following keys:
     -   _type_ `string`: The action type.
     -   _isCartDataStale_ `boolean`: Flag to mark cart data as stale; true if `lastCartUpdate` timestamp is newer than the one in wcSettings.
 
@@ -364,11 +325,11 @@ This action returns an action object to indicate if the customer data is being u
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `isResolving: boolean`: Whether the customer data is being updated.
+-   _isResolving_ `boolean`: Whether the customer data is being updated.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The action object with the following keys:
+-   `object`: The action object with the following keys:
     -   _type_ `string`: The action type.
     -   _isResolving_ `boolean`: Whether the customer data is being updated.
 
@@ -385,11 +346,11 @@ This action returns an action object to indicate if the shipping rates are being
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `isResolving: boolean`: True if shipping rate is being selected.
+-   _isResolving_ `boolean`: True if shipping rate is being selected.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `Object`: The action object with the following keys:
+-   `object`: The action object with the following keys:
     -   _type_ `string`: The action type.
     -   _isResolving_ `boolean`: True if shipping rate is being selected.
 
@@ -406,9 +367,9 @@ This action is used to send POSTs request to the /cart/extensions endpoint with 
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `args: Object`: The arguments for the request with the following keys:
+-   _args_ `object`: The arguments for the request with the following keys:
     -   _extensionId_ `string`: The extension ID.
-    -   _data_ `Object`: The data to send to the endpoint with the following keys:
+    -   _data_ `object`: The data to send to the endpoint with the following keys:
         -   _key_ `string`: The key of the extension.
         -   _value_ `string`: The value of the extension.
 
@@ -426,7 +387,7 @@ This action is used to apply a coupon to the cart.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `couponCode: string`: The code of the coupon to apply.
+-   _couponCode_ `string`: The code of the coupon to apply.
 
 #### _Example_ <!-- omit in toc -->
 
@@ -441,7 +402,7 @@ This action is used to remove a coupon from the cart.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `couponCode: string`: The code of the coupon to remove.
+-   _couponCode_ `string`: The code of the coupon to remove.
 
 #### _Example_ <!-- omit in toc -->
 
@@ -456,8 +417,8 @@ This action is used to add an item to the cart.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `productId: number`: Product ID to add to cart.
--   `quantity: number` (default: `1`): The quantity of the product to add.
+-   _productId_ `number`: Product ID to add to cart.
+-   _quantity_ `number` (default: `1`): The quantity of the product to add.
 
 #### _Example_ <!-- omit in toc -->
 
@@ -472,7 +433,7 @@ This action is used to remove an item from the cart.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `cartItemKey: string`: Cart item being updated.
+-   _cartItemKey_ `string`: Cart item being updated.
 
 #### _Example_ <!-- omit in toc -->
 
@@ -487,8 +448,8 @@ This action is used to change the quantity of an item in the cart.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `cartItemKey: string`: Cart item being updated.
--   `quantity: number`: Quantity of the item.
+-   _cartItemKey_ `string`: Cart item being updated.
+-   _quantity_ `number`: Quantity of the item.
 
 #### _Example_ <!-- omit in toc -->
 
@@ -503,8 +464,8 @@ This action is used to select a shipping rate for the cart.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `rateId: string`: The ID of the shipping rate to select.
--   `packageId: number | string` (default: `null`): The key of the packages that will select within the shipping rate.
+-   _rateId_ `string`: The ID of the shipping rate to select.
+-   _packageId_ `number | string` (default: `null`): The key of the packages that will select within the shipping rate.
 
 #### _Example_ <!-- omit in toc -->
 
@@ -519,7 +480,7 @@ This action is used to set the billing address for the cart locally, as opposed 
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `billingAddress: Object`: Billing address that needs to be set. The keys are as following:
+-   _billingAddress_ `object`: Billing address that needs to be set. The keys are as following:
     -   _first_name_ `string`: The first name.
     -   _last_name_ `string`: The last name.
     -   _company_ `string`: The company name.
@@ -543,7 +504,7 @@ This action is used to set the shipping address for the cart locally, as opposed
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `shippingAddress: Object`: Shipping address that needs to be set. The keys are as following:
+-   _shippingAddress_ `object`: Shipping address that needs to be set. The keys are as following:
     -   _first_name_ `string`: The first name.
     -   _last_name_ `string`: The last name.
     -   _company_ `string`: The company name.
@@ -567,7 +528,7 @@ This action is used to updates the shipping and/or billing address for the custo
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `customerData: Object`: Customer billing and shipping address. The keys are as following:
+-   _customerData_ `object`: Customer billing and shipping address. The keys are as following:
     -   _shippingAddress_ `object`: The shipping address with the following keys:
         -   _first_name_ `string`: The first name.
         -   _last_name_ `string`: The last name.
@@ -763,7 +724,7 @@ Returns the cart errors from state if cart receives customer facing errors from 
 -   `array`: The cart errors with the following keys:
     -   _code_ `string`: The error code.
     -   _message_ `string`: The error message.
-    -	_data_ `Object`: API response data.
+    -	_data_ `object`: API response data.
 
 
 #### _Example_ <!-- omit in toc -->

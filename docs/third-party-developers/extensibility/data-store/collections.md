@@ -58,7 +58,13 @@ This will return an action object for the given arguments used in dispatching an
 -   _resourceName_ `string`: The resource name for the collection, eg. `products/attributes`.
 -   _queryString_ `string`: An additional query string to add to the request for the collection. Note, collections are cached by the query string, eg. `?order=ASC`.
 -   _ids_ `array`: If the collection route has placeholders for ids, you provide them via this argument in the order of how the placeholders appear in the route.
--   _error_ `Object`: The error object.
+-   _error_ `object`: The error object with the following keys:
+   	-   _code_ `string`: The error code.
+   	-   _message_ `string`: The error message.
+   	-   _data_ `object`: The error data with the following keys:
+      		-   _status_ `number`: The HTTP status code.
+      		-   _params_ `object`: The parameters for the error.
+      		-   _headers_ `object`: The headers for the error.
 
 #### _Example_ <!-- omit in toc -->
 
