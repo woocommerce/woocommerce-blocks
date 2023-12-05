@@ -85,6 +85,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 #### Enhancements
 
+- The Block Hooks API is implemented to auto-inject the Mini-Cart block in header patterns and template parts when the "Twenty Twenty-Four" theme is active. The Mini-Cart block also now defaults to not show the total for the items in the cart when inserted into content. ([11745](https://github.com/woocommerce/woocommerce-blocks/pull/11745))
 - Decrease modal width. ([12003](https://github.com/woocommerce/woocommerce-blocks/pull/12003))
 - [Store Customization] Update the default content in patterns. ([11997](https://github.com/woocommerce/woocommerce-blocks/pull/11997))
 - [Store Customization] Update the "Footer with 3 Menus" pattern to remove the last 2 menus. ([11980](https://github.com/woocommerce/woocommerce-blocks/pull/11980))
