@@ -300,7 +300,7 @@ Returns true if the customer prefers to collect their order, and false otherwise
 
 #### _Returns_ <!-- omit in toc -->
 
--   `boolean`: True if the customer prefers collection, false otherwise.
+-   _prefersCollection_ `boolean`: True if the shopper prefers to collect their order.
 
 #### _Example_ <!-- omit in toc -->
 
