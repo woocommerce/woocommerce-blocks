@@ -2,7 +2,7 @@
 	"name": "@woocommerce/block-library",
 	"title": "WooCommerce Blocks",
 	"author": "Automattic",
-	"version": "11.7.0-dev",
+	"version": "11.8.0-dev",
 	"description": "WooCommerce blocks for the Gutenberg editor.",
 	"homepage": "https://github.com/woocommerce/woocommerce-gutenberg-products-block/",
 	"keywords": [
@@ -249,7 +249,7 @@
 		"storybook": "^7.5.2",
 		"storybook-addon-react-docgen": "1.2.44",
 		"terser-webpack-plugin": "5.3.6",
-		"typescript": "4.7.4",
+		"typescript": "5.3.2",
 		"utility-types": "3.10.0",
 		"webpack": "5.88.2",
 		"webpack-bundle-analyzer": "4.7.0",
