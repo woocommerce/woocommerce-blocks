@@ -1,6 +1,6 @@
 %notice-banner {
 	display: flex;
-	align-items: stretch;
+	align-items: center;
 	align-content: flex-start;
 	color: $gray-800;
 	padding: $gap !important;
@@ -20,6 +20,8 @@
 		align-self: center;
 		white-space: normal;
 		flex-basis: 100%;
+		display: flex;
+		align-items: center;
 
 		&:last-child {
 			padding-right: 0;
@@ -28,6 +30,10 @@
 		.wc-block-components-notice-banner__summary {
 			margin: 0 0 $gap-smaller;
 			font-weight: 600;
+		}
+
+		.button {
+			margin-top: 0;
 		}
 
 		ul,
