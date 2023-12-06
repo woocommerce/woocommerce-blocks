@@ -17,7 +17,7 @@ import { getSettingWithCoercion } from '@woocommerce/settings';
 import { isBoolean, isObject, objectHasProp } from '@woocommerce/types';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { useState, useCallback, useMemo, useEffect } from '@wordpress/element';
-import CheckboxList from '@woocommerce/base-components/checkbox-list';
+import { CheckboxList } from '@woocommerce/blocks-components';
 import FilterSubmitButton from '@woocommerce/base-components/filter-submit-button';
 import FilterResetButton from '@woocommerce/base-components/filter-reset-button';
 import FormTokenField from '@woocommerce/base-components/form-token-field';
@@ -73,7 +73,7 @@ const RatingFilterBlock = ( {
 	const setWrapperVisibility = useSetWraperVisibility();
 
 	const filteringForPhpTemplate = getSettingWithCoercion(
-		'is_rendering_php_template',
+		'isRenderingPhpTemplate',
 		false,
 		isBoolean
 	);
@@ -312,7 +312,7 @@ const RatingFilterBlock = ( {
 	}
 
 	const hasFilterableProducts = getSettingWithCoercion(
-		'has_filterable_products',
+		'hasFilterableProducts',
 		false,
 		isBoolean
 	);

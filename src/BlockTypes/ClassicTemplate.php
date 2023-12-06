@@ -105,13 +105,13 @@ class ClassicTemplate extends AbstractDynamicBlock {
 
 		if ( in_array( $attributes['template'], $archive_templates, true ) ) {
 			// Set this so that our product filters can detect if it's a PHP template.
-			$this->asset_data_registry->add( 'is_rendering_php_template', true, true );
+			$this->asset_data_registry->add( 'isRenderingPhpTemplate', true, true );
 
 			// Set this so filter blocks being used as widgets know when to render.
-			$this->asset_data_registry->add( 'has_filterable_products', true, true );
+			$this->asset_data_registry->add( 'hasFilterableProducts', true, true );
 
 			$this->asset_data_registry->add(
-				'page_url',
+				'pageUrl',
 				html_entity_decode( get_pagenum_link() ),
 				''
 			);
@@ -173,9 +173,16 @@ class ClassicTemplate extends AbstractDynamicBlock {
 		 */
 		do_action( 'woocommerce_before_main_content' );
 
-		while ( have_posts() ) :
+		$product_query = new \WP_Query(
+			array(
+				'post_type' => 'product',
+				'p'         => get_the_ID(),
+			)
+		);
 
-			the_post();
+		while ( $product_query->have_posts() ) :
+
+			$product_query->the_post();
 			wc_get_template_part( 'content', 'single-product' );
 
 		endwhile;

@@ -8,7 +8,7 @@ When WooCommerce Blocks is installed and activated, these components can be acce
 
 ```ts
 // Aliased import
-import { Button } from '@woocommerce/blocks-checkout';
+import { Button } from '@woocommerce/blocks-components';
 
 // Global import
 // const { Button } = wc.blocksCheckout;

@@ -14,14 +14,15 @@
 				"wp-content/plugins/gutenberg-test-plugins": "./node_modules/@wordpress/e2e-tests/plugins",
 				"wp-content/plugins/woocommerce-blocks": ".",
 				"wp-content/plugins/woocommerce-gutenberg-products-block": ".",
-				"wp-cli.yml": "./wp-cli.yml"
+				"wp-cli.yml": "./wp-cli.yml",
+				"custom-plugins" : "./tests/e2e/mocks/custom-plugins"
 			}
 		}
 	},
 	"themes": [
 		"https://downloads.wordpress.org/theme/storefront.latest-stable.zip",
 		"https://downloads.wordpress.org/theme/twentytwentyone.latest-stable.zip",
-		"https://downloads.wordpress.org/theme/twentytwentythree.latest-stable.zip",
+		"https://downloads.wordpress.org/theme/twentytwentyfour.latest-stable.zip",
 		"./tests/mocks/emptytheme",
 		"./tests/mocks/theme-with-woo-templates"
 	],

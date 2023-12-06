@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useRef } from '@wordpress/element';
 import { withInstanceId } from '@wordpress/compose';
 import { ComboboxControl } from 'wordpress-components';
-import { ValidationInputError } from '@woocommerce/blocks-checkout';
+import { ValidationInputError } from '@woocommerce/blocks-components';
 import { isObject } from '@woocommerce/types';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
@@ -121,14 +121,26 @@ const Combobox = ( {
 						// Try to match.
 						const normalizedFilterValue =
 							filterValue.toLocaleUpperCase();
-						const foundOption = options.find(
+
+						// Try to find an exact match first using values.
+						const foundValue = options.find(
 							( option ) =>
-								option.label
-									.toLocaleUpperCase()
-									.startsWith( normalizedFilterValue ) ||
 								option.value.toLocaleUpperCase() ===
-									normalizedFilterValue
+								normalizedFilterValue
 						);
+
+						if ( foundValue ) {
+							onChange( foundValue.value );
+							return;
+						}
+
+						// Fallback to a label match.
+						const foundOption = options.find( ( option ) =>
+							option.label
+								.toLocaleUpperCase()
+								.startsWith( normalizedFilterValue )
+						);
+
 						if ( foundOption ) {
 							onChange( foundOption.value );
 						}

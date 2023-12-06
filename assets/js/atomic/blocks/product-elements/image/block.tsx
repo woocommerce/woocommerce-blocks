@@ -49,6 +49,7 @@ interface ImageProps {
 	scale: string;
 	width?: string | undefined;
 	height?: string | undefined;
+	aspectRatio: string | undefined;
 }
 
 const Image = ( {
@@ -59,6 +60,7 @@ const Image = ( {
 	width,
 	scale,
 	height,
+	aspectRatio,
 }: ImageProps ): JSX.Element => {
 	const { thumbnail, src, srcset, sizes, alt } = image || {};
 	const imageProps = {
@@ -72,6 +74,7 @@ const Image = ( {
 		height,
 		width,
 		objectFit: scale,
+		aspectRatio,
 	};
 
 	return (
@@ -101,6 +104,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 		height,
 		width,
 		scale,
+		aspectRatio,
 		...restProps
 	} = props;
 	const styleProps = useStyleProps( props );
@@ -120,6 +124,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 					},
 					styleProps.className
 				) }
+				style={ styleProps.style }
 			>
 				<ImagePlaceholder />
 			</div>
@@ -153,6 +158,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 				},
 				styleProps.className
 			) }
+			style={ styleProps.style }
 		>
 			<ParentComponent { ...( showProductLink && anchorProps ) }>
 				{ !! showSaleBadge && (
@@ -169,6 +175,7 @@ export const Block = ( props: Props ): JSX.Element | null => {
 					width={ width }
 					height={ height }
 					scale={ scale }
+					aspectRatio={ aspectRatio }
 				/>
 			</ParentComponent>
 		</div>

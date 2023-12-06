@@ -46,7 +46,7 @@ export const BLOCK_ATTRIBUTES = {
 };
 
 const postTemplateHasSupportForGridView = getSettingWithCoercion(
-	'post_template_has_support_for_grid_view',
+	'postTemplateHasSupportForGridView',
 	false,
 	isBoolean
 );
@@ -57,6 +57,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 		{
 			level: 2,
 			content: __( 'Related products', 'woo-gutenberg-products-block' ),
+			style: { spacing: { margin: { top: '1rem', bottom: '1rem' } } },
 		},
 	],
 	[
@@ -64,7 +65,7 @@ export const INNER_BLOCKS_TEMPLATE: InnerBlockTemplate[] = [
 		{
 			__woocommerceNamespace: PRODUCT_TEMPLATE_ID,
 			...( postTemplateHasSupportForGridView && {
-				layout: { type: 'grid', columnCount: 3 },
+				layout: { type: 'grid', columnCount: 5 },
 			} ),
 		},
 		[

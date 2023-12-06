@@ -12,10 +12,12 @@
 		"@woocommerce/atomic-utils": "assets/js/atomic/utils",
 		"@woocommerce/icons": "assets/js/icons",
 		"@woocommerce/settings": "assets/js/settings/shared",
+		"@woocommerce/blocks/(.*)$": "assets/js/blocks/$1",
 		"@woocommerce/block-settings": "assets/js/settings/blocks",
 		"@woocommerce/editor-components(.*)$": "assets/js/editor-components/$1",
 		"@woocommerce/blocks-registry": "assets/js/blocks-registry",
 		"@woocommerce/blocks-checkout": "packages/checkout",
+		"@woocommerce/blocks-components": "packages/components",
 		"@woocommerce/price-format": "packages/prices",
 		"@woocommerce/block-hocs(.*)$": "assets/js/hocs/$1",
 		"@woocommerce/base-components(.*)$": "assets/js/base/components/$1",
@@ -29,7 +31,10 @@
 		"@woocommerce/shared-hocs": "assets/js/shared/hocs",
 		"@woocommerce/blocks-test-utils": "tests/utils",
 		"@woocommerce/types": "assets/js/types",
-		"@woocommerce/utils": "assets/js/utils"
+		"@woocommerce/utils": "assets/js/utils",
+		"@woocommerce/interactivity": "assets/js/interactivity",
+		"^react$": "<rootDir>/node_modules/react",
+		"^react-dom$": "<rootDir>/node_modules/react-dom"
 	},
 	"setupFiles": [
 		"@wordpress/jest-preset-default/scripts/setup-globals.js",
@@ -44,7 +49,7 @@
 		"<rootDir>/node_modules/",
 		"<rootDir>/vendor/"
 	],
-	"transformIgnorePatterns": [ "node_modules/(?!(simple-html-tokenizer)/)" ],
+	"transformIgnorePatterns": [ "node_modules/?!(simple-html-tokenizer|is-plain-obj|is-plain-object|memize)" ],
 	"testEnvironment": "jsdom",
 	"preset": "@wordpress/jest-preset-default",
 	"transform": {

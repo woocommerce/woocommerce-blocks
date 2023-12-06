@@ -1,9 +1,16 @@
 /**
  * External dependencies
  */
-import { store as blockEditorStore } from '@wordpress/block-editor';
-import { BlockAttributes } from '@wordpress/blocks';
+import { BlockAttributes, BlockInstance } from '@wordpress/blocks';
 import { select, dispatch } from '@wordpress/data';
+import { findBlock } from '@woocommerce/utils';
+
+/**
+ * Internal dependencies
+ */
+import { ThumbnailsPosition } from './inner-blocks/product-gallery-thumbnails/constants';
+import { getNextPreviousImagesWithClassName } from './inner-blocks/product-gallery-large-image-next-previous/utils';
+import { NextPreviousButtonSettingValues } from './inner-blocks/product-gallery-large-image-next-previous/types';
 
 /**
  * Generates layout attributes based on the position of thumbnails.
@@ -16,6 +23,9 @@ export const getGroupLayoutAttributes = (
 ): { type: string; orientation?: string; flexWrap?: string } => {
 	switch ( thumbnailsPosition ) {
 		case 'bottom':
+			// Stack
+			return { type: 'flex', orientation: 'vertical' };
+		case 'off':
 			// Stack
 			return { type: 'flex', orientation: 'vertical' };
 		default:
@@ -69,6 +79,51 @@ export const updateBlockAttributes = (
 	}
 };
 
+const controlBlocksLockAttribute = ( {
+	blocks,
+	lockBlocks,
+}: {
+	blocks: BlockInstance[];
+	lockBlocks: boolean;
+} ) => {
+	for ( const block of blocks ) {
+		if ( lockBlocks ) {
+			updateBlockAttributes(
+				getInnerBlocksLockAttributes( 'lock' ),
+				block
+			);
+		} else {
+			updateBlockAttributes(
+				getInnerBlocksLockAttributes( 'unlock' ),
+				block
+			);
+		}
+	}
+};
+
+/**
+ * Sets the layout of group block based on the thumbnails' position.
+ *
+ * @param {ThumbnailsPosition} thumbnailsPosition - The position of thumbnails.
+ * @param {string}             clientId           - The client ID of the block to update.
+ */
+const setGroupBlockLayoutByThumbnailsPosition = (
+	thumbnailsPosition: ThumbnailsPosition,
+	clientId: string
+): void => {
+	const block = select( 'core/block-editor' ).getBlock( clientId );
+	block?.innerBlocks.forEach( ( innerBlock ) => {
+		if ( innerBlock.name === 'core/group' ) {
+			updateBlockAttributes(
+				{
+					layout: getGroupLayoutAttributes( thumbnailsPosition ),
+				},
+				innerBlock
+			);
+		}
+	} );
+};
+
 /**
  * Moves inner blocks to a position based on provided attributes.
  *
@@ -79,101 +134,104 @@ export const moveInnerBlocksToPosition = (
 	attributes: BlockAttributes,
 	clientId: string
 ): void => {
-	const parentBlock = select( 'core/block-editor' ).getBlock( clientId );
+	const { getBlock, getBlockRootClientId, getBlockIndex } =
+		select( 'core/block-editor' );
+	const { moveBlockToPosition } = dispatch( 'core/block-editor' );
+	const productGalleryBlock = getBlock( clientId );
 
-	if ( parentBlock?.name === 'woocommerce/product-gallery' ) {
-		const groupBlock = parentBlock.innerBlocks.find(
-			( innerBlock ) => innerBlock.name === 'core/group'
+	if ( productGalleryBlock ) {
+		const previousLayout = productGalleryBlock.innerBlocks.length
+			? productGalleryBlock.innerBlocks[ 0 ].attributes.layout
+			: null;
+
+		const thumbnailsBlock = findBlock( {
+			blocks: [ productGalleryBlock ],
+			findCondition( block ) {
+				return block.name === 'woocommerce/product-gallery-thumbnails';
+			},
+		} );
+		const largeImageParentBlock = findBlock( {
+			blocks: [ productGalleryBlock ],
+			findCondition( block ) {
+				return Boolean(
+					block.innerBlocks?.find(
+						( innerBlock ) =>
+							innerBlock.name ===
+							'woocommerce/product-gallery-large-image'
+					)
+				);
+			},
+		} );
+		const largeImageParentBlockIndex = getBlockIndex(
+			largeImageParentBlock?.clientId || ''
+		);
+		const thumbnailsBlockIndex = getBlockIndex(
+			thumbnailsBlock?.clientId || ''
 		);
 
-		if ( groupBlock ) {
-			const largeImageBlock = groupBlock.innerBlocks.find(
-				( innerBlock ) =>
-					innerBlock.name ===
-					'woocommerce/product-gallery-large-image'
+		if (
+			largeImageParentBlock &&
+			thumbnailsBlock &&
+			largeImageParentBlockIndex !== -1 &&
+			thumbnailsBlockIndex !== -1
+		) {
+			controlBlocksLockAttribute( {
+				blocks: [ thumbnailsBlock, largeImageParentBlock ],
+				lockBlocks: false,
+			} );
+
+			const { thumbnailsPosition } = attributes;
+			setGroupBlockLayoutByThumbnailsPosition(
+				thumbnailsPosition,
+				clientId
 			);
 
-			const thumbnailsBlock = groupBlock.innerBlocks.find(
-				( innerBlock ) =>
-					innerBlock.name === 'woocommerce/product-gallery-thumbnails'
+			setGroupBlockLayoutByThumbnailsPosition(
+				thumbnailsPosition,
+				productGalleryBlock.innerBlocks[ 0 ].clientId
 			);
 
-			const thumbnailsIndex = groupBlock.innerBlocks.findIndex(
-				( innerBlock ) =>
-					innerBlock.name === 'woocommerce/product-gallery-thumbnails'
-			);
-
-			const largeImageIndex = groupBlock.innerBlocks.findIndex(
-				( innerBlock ) =>
-					innerBlock.name ===
-					'woocommerce/product-gallery-large-image'
-			);
-
-			if ( thumbnailsIndex !== -1 && largeImageIndex !== -1 ) {
+			if ( previousLayout ) {
+				const orientation =
+					getGroupLayoutAttributes( thumbnailsPosition ).orientation;
 				updateBlockAttributes(
-					getInnerBlocksLockAttributes( 'unlock' ),
-					thumbnailsBlock
-				);
-				updateBlockAttributes(
-					getInnerBlocksLockAttributes( 'unlock' ),
-					largeImageBlock
-				);
-
-				const { thumbnailsPosition } = attributes;
-				const clientIdToMove =
-					groupBlock.innerBlocks[ thumbnailsIndex ].clientId;
-
-				if (
-					thumbnailsPosition === 'bottom' ||
-					thumbnailsPosition === 'right'
-				) {
-					// @ts-expect-error - Ignoring because `moveBlocksDown` is not yet in the type definitions.
-					dispatch( blockEditorStore ).moveBlocksDown(
-						[ clientIdToMove ],
-						groupBlock.clientId
-					);
-				} else {
-					// @ts-expect-error - Ignoring because `moveBlocksUp` is not yet in the type definitions.
-					dispatch( blockEditorStore ).moveBlocksUp(
-						[ clientIdToMove ],
-						groupBlock.clientId
-					);
-				}
-
-				updateBlockAttributes(
-					getInnerBlocksLockAttributes( 'lock' ),
-					thumbnailsBlock
-				);
-				updateBlockAttributes(
-					getInnerBlocksLockAttributes( 'lock' ),
-					largeImageBlock
+					{
+						layout: { ...previousLayout, orientation },
+					},
+					productGalleryBlock.innerBlocks[ 0 ]
 				);
 			}
+
+			if (
+				( ( thumbnailsPosition === 'bottom' ||
+					thumbnailsPosition === 'right' ) &&
+					thumbnailsBlockIndex < largeImageParentBlockIndex ) ||
+				( thumbnailsPosition === 'left' &&
+					thumbnailsBlockIndex > largeImageParentBlockIndex )
+			) {
+				moveBlockToPosition(
+					thumbnailsBlock.clientId,
+					getBlockRootClientId( thumbnailsBlock.clientId ) ||
+						undefined,
+					getBlockRootClientId( largeImageParentBlock.clientId ) ||
+						undefined,
+					largeImageParentBlockIndex
+				);
+			}
+
+			controlBlocksLockAttribute( {
+				blocks: [ thumbnailsBlock, largeImageParentBlock ],
+				lockBlocks: true,
+			} );
 		}
 	}
 };
 
-/**
- * Updates the type of group block based on provided attributes.
- *
- * @param {BlockAttributes} attributes - The attributes of the parent block.
- * @param {string}          clientId   - The clientId of the parent block.
- */
-export const updateGroupBlockType = (
-	attributes: BlockAttributes,
-	clientId: string
-): void => {
-	const block = select( 'core/block-editor' ).getBlock( clientId );
-	block?.innerBlocks.forEach( ( innerBlock ) => {
-		if ( innerBlock.name === 'core/group' ) {
-			updateBlockAttributes(
-				{
-					layout: getGroupLayoutAttributes(
-						attributes.thumbnailsPosition
-					),
-				},
-				innerBlock
-			);
-		}
-	} );
+export const getClassNameByNextPreviousButtonsPosition = (
+	nextPreviousButtonsPosition: NextPreviousButtonSettingValues
+) => {
+	return `wc-block-product-gallery--has-next-previous-buttons-${
+		getNextPreviousImagesWithClassName( nextPreviousButtonsPosition )
+			?.classname
+	}`;
 };

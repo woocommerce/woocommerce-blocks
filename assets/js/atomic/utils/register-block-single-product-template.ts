@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { isNumber, isEmpty } from '@woocommerce/types';
 import {
 	BlockAttributes,
 	BlockConfiguration,
@@ -16,8 +17,10 @@ import { subscribe, select } from '@wordpress/data';
 // Creating a local cache to prevent multiple registration tries.
 const blocksRegistered = new Set();
 
-function parseTemplateId( templateId: string | undefined ) {
-	return templateId?.split( '//' )[ 1 ];
+function parseTemplateId( templateId: string | number | undefined ) {
+	// With GB 16.3.0 the return type can be a number: https://github.com/WordPress/gutenberg/issues/53230
+	const parsedTemplateId = isNumber( templateId ) ? undefined : templateId;
+	return parsedTemplateId?.split( '//' )[ 1 ];
 }
 
 export const registerBlockSingleProductTemplate = ( {
@@ -40,7 +43,11 @@ export const registerBlockSingleProductTemplate = ( {
 	subscribe( () => {
 		const previousTemplateId = currentTemplateId;
 		const store = select( 'core/edit-site' );
-		currentTemplateId = parseTemplateId( store?.getEditedPostId() );
+
+		// With GB 16.3.0 the return type can be a number: https://github.com/WordPress/gutenberg/issues/53230
+		currentTemplateId = parseTemplateId(
+			store?.getEditedPostId< string | number | undefined >()
+		);
 		const hasChangedTemplate = previousTemplateId !== currentTemplateId;
 		const hasTemplateId = Boolean( currentTemplateId );
 
@@ -73,19 +80,17 @@ export const registerBlockSingleProductTemplate = ( {
 
 		if ( ! isBlockRegistered ) {
 			if ( isVariationBlock ) {
-				registerBlockVariation( blockName, {
-					...blockSettings,
-					// @ts-expect-error: `ancestor` key is typed in WordPress core
-					ancestor: ! currentTemplateId?.includes( 'single-product' )
-						? blockSettings?.ancestor
-						: undefined,
-				} );
+				// @ts-expect-error: `registerBlockType` is not typed in WordPress core
+				registerBlockVariation( blockName, blockSettings );
 			} else {
-				// @ts-expect-error: `registerBlockType` is typed in WordPress core
+				const ancestor = isEmpty( blockSettings?.ancestor )
+					? [ 'woocommerce/single-product' ]
+					: blockSettings?.ancestor;
+				// @ts-expect-error: `registerBlockType` is not typed in WordPress core
 				registerBlockType( blockMetadata, {
 					...blockSettings,
 					ancestor: ! currentTemplateId?.includes( 'single-product' )
-						? blockSettings?.ancestor
+						? ancestor
 						: undefined,
 				} );
 			}

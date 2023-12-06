@@ -1,14 +1,19 @@
-import registerDirectives from './directives';
-import { init } from './router';
-export { store } from './store';
-export { navigate } from './router';
+// @ts-nocheck
 
 /**
- * Initialize the Interactivity API.
+ * Internal dependencies
  */
+import registerDirectives from './directives';
+import { init } from './router';
+
+export { store } from './store';
+export { directive, getContext, getElement } from './hooks';
+export { navigate, prefetch } from './router';
+export { h as createElement } from 'preact';
+export { useEffect, useContext, useMemo } from 'preact/hooks';
+export { deepSignal } from 'deepsignal';
+
 document.addEventListener( 'DOMContentLoaded', async () => {
 	registerDirectives();
 	await init();
-	// eslint-disable-next-line no-console
-	console.log( 'Interactivity API started' );
 } );

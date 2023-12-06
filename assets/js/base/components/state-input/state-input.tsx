@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import { useCallback, useMemo, useEffect, useRef } from '@wordpress/element';
 import classnames from 'classnames';
-import { ValidatedTextInput } from '@woocommerce/blocks-checkout';
+import { ValidatedTextInput } from '@woocommerce/blocks-components';
 
 /**
  * Internal dependencies
@@ -55,13 +55,15 @@ const StateInput = ( {
 	 */
 	const onChangeState = useCallback(
 		( stateValue: string ) => {
-			onChange(
+			const newValue =
 				options.length > 0
 					? optionMatcher( stateValue, options )
-					: stateValue
-			);
+					: stateValue;
+			if ( newValue !== value ) {
+				onChange( newValue );
+			}
 		},
-		[ onChange, options ]
+		[ onChange, options, value ]
 	);
 
 	/**

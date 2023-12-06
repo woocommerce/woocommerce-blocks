@@ -38,6 +38,55 @@ class OrderSchema extends AbstractSchema {
 	protected $order_controller;
 
 	/**
+	 * Coupon schema instance.
+	 *
+	 * @var OrderCouponSchema
+	 */
+	public $coupon_schema;
+
+	/**
+	 * Product item schema instance representing cross-sell items.
+	 *
+	 * @var ProductSchema
+	 */
+	public $cross_sells_item_schema;
+
+	/**
+	 * Fee schema instance.
+	 *
+	 * @var OrderFeeSchema
+	 */
+	public $fee_schema;
+
+	/**
+	 * Shipping rates schema instance.
+	 *
+	 * @var CartShippingRateSchema
+	 */
+	public $shipping_rate_schema;
+
+	/**
+	 * Shipping address schema instance.
+	 *
+	 * @var ShippingAddressSchema
+	 */
+	public $shipping_address_schema;
+
+	/**
+	 * Billing address schema instance.
+	 *
+	 * @var BillingAddressSchema
+	 */
+	public $billing_address_schema;
+
+	/**
+	 * Error schema instance.
+	 *
+	 * @var ErrorSchema
+	 */
+	public $error_schema;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param ExtendSchema     $extend Rest Extending instance.
@@ -331,7 +380,7 @@ class OrderSchema extends AbstractSchema {
 				function( $item ) {
 					return [
 						'name'  => $item->get_name(),
-						'price' => $item->get_tax_total(),
+						'price' => $this->prepare_money_response( $item->get_tax_total() ),
 						'rate'  => strval( $item->get_rate_percent() ),
 					];
 				},

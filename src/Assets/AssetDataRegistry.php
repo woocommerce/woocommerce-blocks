@@ -85,13 +85,14 @@ class AssetDataRegistry {
 			'currency'           => $this->get_currency_data(),
 			'currentUserId'      => get_current_user_id(),
 			'currentUserIsAdmin' => current_user_can( 'manage_woocommerce' ),
+			'dateFormat'         => wc_date_format(),
 			'homeUrl'            => esc_url( home_url( '/' ) ),
 			'locale'             => $this->get_locale_data(),
 			'dashboardUrl'       => wc_get_account_endpoint_url( 'dashboard' ),
 			'orderStatuses'      => $this->get_order_statuses(),
 			'placeholderImgSrc'  => wc_placeholder_img_src(),
 			'productsSettings'   => $this->get_products_settings(),
-			'siteTitle'          => get_bloginfo( 'name' ),
+			'siteTitle'          => wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
 			'storePages'         => $this->get_store_pages(),
 			'wcAssetUrl'         => plugins_url( 'assets/', WC_PLUGIN_FILE ),
 			'wcVersion'          => defined( 'WC_VERSION' ) ? WC_VERSION : '',
@@ -293,9 +294,9 @@ class AssetDataRegistry {
 	 * You can only register data that is not already in the registry identified by the given key. If there is a
 	 * duplicate found, unless $ignore_duplicates is true, an exception will be thrown.
 	 *
-	 * @param string  $key               The key used to reference the data being registered.
-	 * @param mixed   $data              If not a function, registered to the registry as is. If a function, then the
-	 *                                   callback is invoked right before output to the screen.
+	 * @param string  $key              The key used to reference the data being registered. This should use camelCase.
+	 * @param mixed   $data             If not a function, registered to the registry as is. If a function, then the
+	 *                                  callback is invoked right before output to the screen.
 	 * @param boolean $check_key_exists If set to true, duplicate data will be ignored if the key exists.
 	 *                                  If false, duplicate data will cause an exception.
 	 *

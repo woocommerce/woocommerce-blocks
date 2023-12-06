@@ -36,7 +36,7 @@ import { registerPaymentMethodExtensionCallbacks } from '@woocommerce/blocks-reg
 #### `wc global`
 
 ```js
-const { registerPaymentMethodExtensionCallbacks } = wc.wcBlocksRegistry;
+const { registerPaymentMethodExtensionCallbacks } = window.wc.wcBlocksRegistry;
 ```
 
 ### Signature
@@ -90,7 +90,7 @@ interface CanMakePaymentArgument {
 	cart: Cart;
 	cartTotals: CartTotals;
 	cartNeedsShipping: boolean;
-	billingData: CartResponseBillingAddress;
+	billingAddress: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
 	selectedShippingMethods: Record< string, unknown >;
 	paymentRequirements: Array< string >;
