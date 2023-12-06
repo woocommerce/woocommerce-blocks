@@ -66,6 +66,8 @@ class CheckoutFields {
 	 * @param AssetDataRegistry $asset_data_registry Instance of the asset data registry.
 	 */
 	public function __construct( AssetDataRegistry $asset_data_registry ) {
+		require_once __DIR__ . '/functions.php';
+
 		$this->asset_data_registry = $asset_data_registry;
 		$this->core_fields         = array(
 			'email'      => array(
