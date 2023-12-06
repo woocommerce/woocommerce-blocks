@@ -11,9 +11,9 @@ export type BlockAttributes = {
 export type EditProps = BlockEditProps< BlockAttributes >;
 
 export type PriceFilterState = {
-	rangeStyle: string;
-	formattedMinPrice: string;
-	formattedMaxPrice: string;
+	rangeStyle: () => string;
+	formattedMinPrice: () => string;
+	formattedMaxPrice: () => string;
 };
 
 export type PriceFilterContext = {

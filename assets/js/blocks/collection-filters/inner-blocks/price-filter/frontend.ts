@@ -44,7 +44,7 @@ interface PriceFilterStore {
 
 store< PriceFilterStore >( 'woocommerce/collection-price-filter', {
 	state: {
-		get rangeStyle(): string {
+		rangeStyle: () => {
 			const { minPrice, maxPrice, minRange, maxRange } =
 				getContext< PriceFilterContext >();
 
@@ -57,11 +57,11 @@ store< PriceFilterStore >( 'woocommerce/collection-price-filter', {
 				}%`,
 			].join( ';' );
 		},
-		get formattedMinPrice(): string {
+		formattedMinPrice: () => {
 			const { minPrice } = getContext< PriceFilterContext >();
 			return formatPrice( minPrice, getCurrency( { minorUnit: 0 } ) );
 		},
-		get formattedMaxPrice(): string {
+		formattedMaxPrice: () => {
 			const { maxPrice } = getContext< PriceFilterContext >();
 			return formatPrice( maxPrice, getCurrency( { minorUnit: 0 } ) );
 		},
