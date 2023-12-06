@@ -211,7 +211,7 @@ class CheckoutFields {
 					'VAT (optional)',
 					'woo-gutenberg-products-block'
 				),
-				'required'       => false,
+				'required'       => true,
 				'hidden'         => false,
 				'autocomplete'   => 'vat',
 				'autocapitalize' => 'characters',
@@ -251,7 +251,7 @@ class CheckoutFields {
 	 * Add fields data to the asset data registry.
 	 */
 	public function add_fields_data() {
-		$this->asset_data_registry->add( 'defaultAddressFields', $this->get_fields(), true );
+		$this->asset_data_registry->add( 'defaultFields', $this->get_fields(), true );
 		$this->asset_data_registry->add( 'addressFieldsLocations', $this->fields_locations, true );
 	}
 

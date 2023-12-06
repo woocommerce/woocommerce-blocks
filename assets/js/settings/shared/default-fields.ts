@@ -68,10 +68,9 @@ export interface BillingAddress extends ShippingAddress {
 export type CountryAddressFields = Record< string, AddressFields >;
 
 /**
- * Default address field properties.
+ * Default field properties.
  */
-export const defaultAddressFields: AddressFields = getSetting< AddressFields >(
-	'defaultAddressFields'
-);
+export const defaultFields: AddressFields =
+	getSetting< AddressFields >( 'defaultFields' );
 
-export default defaultAddressFields;
+export default defaultFields;
