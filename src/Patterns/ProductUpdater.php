@@ -500,6 +500,8 @@ class ProductUpdater {
 
 			$product->save();
 
+			$this->create_hash_for_ai_modified_product( $product );
+
 			$i++;
 		}
 	}
