@@ -548,6 +548,7 @@ class CheckoutFields {
 	 */
 	private function set_array_meta( $key, $value, $object ) {
 		$meta_key = '';
+
 		if ( 0 === strpos( $key, '/billing/' ) ) {
 			$meta_key = self::BILLING_FIELDS_KEY;
 			$key      = str_replace( '/billing/', '', $key );
@@ -562,8 +563,15 @@ class CheckoutFields {
 		if ( ! is_array( $meta_data ) ) {
 			$meta_data = array();
 		}
+
 		$meta_data[ $key ] = $value;
-		$object->update_meta_data( $meta_key, $meta_data );
+		// @TODO: figure out why calling `set_meta_data` on WC_Customer isn't persisting the data.
+		if ( $object instanceof \WC_Customer ) {
+			\update_user_meta( $object->get_id(), $meta_key, $meta_data );
+		} elseif ( $object instanceof \WC_Order ) {
+			$object->set_meta_data( $meta_key, $meta_data );
+		}
+
 	}
 
 	/**

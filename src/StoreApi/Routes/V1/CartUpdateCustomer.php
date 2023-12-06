@@ -239,7 +239,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 
 		$additional_fields = array_reduce(
 			array_keys( $additional_fields ),
-			function( $carry, $key, $value ) use ( $additional_fields ) {
+			function( $carry, $key ) use ( $additional_fields ) {
 				if ( 0 === strpos( $key, '/billing/' ) ) {
 					$value         = $additional_fields[ $key ];
 					$key           = str_replace( '/billing/', '', $key );
@@ -288,7 +288,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 
 		$additional_fields = array_reduce(
 			array_keys( $additional_fields ),
-			function( $carry, $key, $value ) use ( $additional_fields ) {
+			function( $carry, $key ) use ( $additional_fields ) {
 				if ( 0 === strpos( $key, '/shipping/' ) ) {
 					$value         = $additional_fields[ $key ];
 					$key           = str_replace( '/shipping/', '', $key );
