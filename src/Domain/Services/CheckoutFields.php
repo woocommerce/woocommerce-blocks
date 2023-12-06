@@ -238,6 +238,7 @@ class CheckoutFields {
 			'additional' => array( 'plugin_delivery_hour' ), // everything here will only be saved to order only.
 		);
 		add_filter( 'woocommerce_get_order_address', array( $this, 'add_additional_fields_to_address' ), 10, 3 );
+		add_filter( 'woocommerce_get_country_locale_default', array( $this, 'update_default_locale_with_fields' ) );
 	}
 
 	/**
@@ -267,6 +268,21 @@ class CheckoutFields {
 			}
 		}
 		return $address;
+	}
+
+	/**
+	 * Update the default locale with additional fields without country limitations.
+	 *
+	 * @param array $locale The locale to update.
+	 * @return mixed
+	 */
+	public function update_default_locale_with_fields( $locale ) {
+		foreach ( $this->additional_fields as $field_id => $additional_field ) {
+			if ( empty( $locale[ $field_id ] ) ) {
+				$locale[ $field_id ] = $additional_field;
+			}
+		}
+		return $locale;
 	}
 
 	/**
