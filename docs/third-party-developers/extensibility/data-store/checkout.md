@@ -300,7 +300,7 @@ Sets the `prefersCollection` flag to true or false.
 
 #### _Parameters_ <!-- omit in toc -->
 
--   `boolean`: True if the shopper prefers to collect their order.
+-   _prefersCollection_ `boolean`: True if the shopper prefers to collect their order.
 
 #### _Example_ <!-- omit in toc -->
 
