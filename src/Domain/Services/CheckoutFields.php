@@ -230,7 +230,7 @@ class CheckoutFields {
 	 * @return mixed
 	 */
 	public function update_default_locale_with_fields( $locale ) {
-		foreach ( $this->additional_fields as $field_id => $additional_field ) {
+		foreach ( $this->fields_locations['address'] as $field_id => $additional_field ) {
 			if ( empty( $locale[ $field_id ] ) ) {
 				$locale[ $field_id ] = $additional_field;
 			}
@@ -289,7 +289,7 @@ class CheckoutFields {
 			'autocapitalize' => ! empty( $options['autocapitalize'] ) ? $options['autocapitalize'] : '',
 		);
 
-		array_push( $this->fields_locations[ $location ], $id );
+		$this->fields_locations[ $location ][] = $id;
 	}
 
 	/**
