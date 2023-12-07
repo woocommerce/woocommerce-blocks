@@ -50,6 +50,9 @@ const blocks = {
 	'product-category': {},
 	'product-categories': {},
 	'product-collection': {},
+	'product-collection-no-results': {
+		customDir: 'product-collection/inner-blocks/no-results',
+	},
 	'product-gallery': {
 		isExperimental: true,
 	},
@@ -72,9 +75,7 @@ const blocks = {
 	},
 	'product-new': {},
 	'product-on-sale': {},
-	'product-query': {
-		isExperimental: true,
-	},
+	'product-query': {},
 	'product-results-count': {},
 	'product-search': {},
 	'product-tag': {},
@@ -94,6 +95,18 @@ const blocks = {
 	'single-product': {},
 	'stock-filter': {},
 	'collection-filters': {
+		isExperimental: true,
+	},
+	'collection-stock-filter': {
+		isExperimental: true,
+		customDir: 'collection-filters/inner-blocks/stock-filter',
+	},
+	'collection-price-filter': {
+		customDir: 'collection-filters/inner-blocks/price-filter',
+		isExperimental: true,
+	},
+	'collection-attribute-filter': {
+		customDir: 'collection-filters/inner-blocks/attribute-filter',
 		isExperimental: true,
 	},
 	'order-confirmation-summary': {
@@ -162,7 +175,7 @@ const getBlockEntries = ( relativePath ) => {
 const entries = {
 	styling: {
 		// Packages styles
-		'packages-style': glob.sync( './packages/**/index.js' ),
+		'packages-style': glob.sync( './packages/**/index.{t,j}s' ),
 
 		// Shared blocks code
 		'wc-blocks': './assets/js/index.js',
@@ -191,6 +204,11 @@ const entries = {
 		wcBlocksSharedHocs: './assets/js/shared/hocs/index.js',
 		priceFormat: './packages/prices/index.js',
 		blocksCheckout: './packages/checkout/index.js',
+		blocksComponents: './packages/components/index.ts',
+
+		// interactivity components, exported as separate entries for now
+		'wc-interactivity-dropdown':
+			'./packages/interactivity-components/dropdown/index.ts',
 	},
 	main: {
 		// Shared blocks code

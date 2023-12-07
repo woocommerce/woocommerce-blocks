@@ -3,6 +3,8 @@
 	"include": [
 		"./assets/js/**/*",
 		"./packages/checkout/**/*",
+		"./packages/components/**/*",
+		"./packages/interactivity-components/**/*",
 		"./assets/js/blocks/**/block.json",
 		"./assets/js/atomic/blocks/**/block.json",
 		"./assets/js/blocks/mini-cart/mini-cart-contents/inner-blocks/**/block.json",

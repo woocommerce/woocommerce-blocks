@@ -1,10 +1,12 @@
 <?php
 namespace Automattic\WooCommerce\Blocks;
 
+use Automattic\WooCommerce\Blocks\AI\Connection;
+use Automattic\WooCommerce\Blocks\Images\Pexels;
 use Automattic\WooCommerce\Blocks\Domain\Package;
+use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
 use Automattic\WooCommerce\Blocks\Patterns\PatternUpdater;
-use Automattic\WooCommerce\Blocks\Verticals\Client;
-use Automattic\WooCommerce\Blocks\Verticals\VerticalsSelector;
+use Automattic\WooCommerce\Blocks\Patterns\ProductUpdater;
 
 /**
  * Registers patterns under the `./patterns/` directory and updates their content.
@@ -32,8 +34,9 @@ use Automattic\WooCommerce\Blocks\Verticals\VerticalsSelector;
  * @internal
  */
 class BlockPatterns {
-	const SLUG_REGEX            = '/^[A-z0-9\/_-]+$/';
-	const COMMA_SEPARATED_REGEX = '/[\s,]+/';
+	const SLUG_REGEX                 = '/^[A-z0-9\/_-]+$/';
+	const COMMA_SEPARATED_REGEX      = '/[\s,]+/';
+	const PATTERNS_AI_DATA_POST_TYPE = 'patterns_ai_data';
 
 	/**
 	 * Path to the patterns directory.
@@ -51,8 +54,36 @@ class BlockPatterns {
 		$this->patterns_path = $package->get_path( 'patterns' );
 
 		add_action( 'init', array( $this, 'register_block_patterns' ) );
-		add_action( 'update_option_woo_ai_describe_store_description', array( $this, 'schedule_patterns_content_update' ), 10, 2 );
+		add_action( 'update_option_woo_ai_describe_store_description', array( $this, 'schedule_on_option_update' ), 10, 2 );
+		add_action( 'update_option_woo_ai_describe_store_description', array( $this, 'update_ai_connection_allowed_option' ), 10, 2 );
+		add_action( 'upgrader_process_complete', array( $this, 'schedule_on_plugin_update' ), 10, 2 );
 		add_action( 'woocommerce_update_patterns_content', array( $this, 'update_patterns_content' ) );
+	}
+
+	/**
+	 * Make sure the 'woocommerce_blocks_allow_ai_connection' option is set to true if the site is connected to AI.
+	 *
+	 * @param string $option The option name.
+	 * @param string $value The option value.
+	 *
+	 * @return bool
+	 */
+	public function update_ai_connection_allowed_option( $option, $value ): bool {
+		$ai_connection = new Connection();
+
+		$site_id = $ai_connection->get_site_id();
+
+		if ( is_wp_error( $site_id ) ) {
+			return update_option( 'woocommerce_blocks_allow_ai_connection', false );
+		}
+
+		$token = $ai_connection->get_jwt_token( $site_id );
+
+		if ( is_wp_error( $token ) ) {
+			return update_option( 'woocommerce_blocks_allow_ai_connection', false );
+		}
+
+		return update_option( 'woocommerce_blocks_allow_ai_connection', true );
 	}
 
 	/**
@@ -62,6 +93,22 @@ class BlockPatterns {
 		if ( ! class_exists( 'WP_Block_Patterns_Registry' ) ) {
 			return;
 		}
+
+		register_post_type(
+			self::PATTERNS_AI_DATA_POST_TYPE,
+			array(
+				'labels'           => array(
+					'name'          => __( 'Patterns AI Data', 'woo-gutenberg-products-block' ),
+					'singular_name' => __( 'Patterns AI Data', 'woo-gutenberg-products-block' ),
+				),
+				'public'           => false,
+				'hierarchical'     => false,
+				'rewrite'          => false,
+				'query_var'        => false,
+				'delete_with_user' => false,
+				'can_export'       => true,
+			)
+		);
 
 		$default_headers = array(
 			'title'         => 'Title',
@@ -82,6 +129,8 @@ class BlockPatterns {
 		if ( ! $files ) {
 			return;
 		}
+
+		$dictionary = PatternsHelper::get_patterns_dictionary();
 
 		foreach ( $files as $file ) {
 			$pattern_data = get_file_data( $file, $default_headers );
@@ -180,10 +229,27 @@ class BlockPatterns {
 				$pattern_data['description'] = translate_with_gettext_context( $pattern_data['description'], 'Pattern description', 'woo-gutenberg-products-block' );
 			}
 
+			$pattern_data_from_dictionary = $this->get_pattern_from_dictionary( $dictionary, $pattern_data['slug'] );
+
 			// The actual pattern content is the output of the file.
 			ob_start();
+
+			/*
+				For patterns that can have AI-generated content, we need to get its content from the dictionary and pass
+				it to the pattern file through the "$content" and "$images" variables.
+				This is to avoid having to access the dictionary for each pattern when it's registered or inserted.
+				Before the "$content" and "$images" variables were populated in each pattern. Since the pattern
+				registration happens in the init hook, the dictionary was being access one for each pattern and
+				for each page load. This way we only do it once on registration.
+				For more context: https://github.com/woocommerce/woocommerce-blocks/pull/11733
+			*/
+			if ( ! is_null( $pattern_data_from_dictionary ) ) {
+				$content = $pattern_data_from_dictionary['content'];
+				$images  = $pattern_data_from_dictionary['images'] ?? array();
+			}
 			include $file;
 			$pattern_data['content'] = ob_get_clean();
+
 			if ( ! $pattern_data['content'] ) {
 				continue;
 			}
@@ -210,7 +276,42 @@ class BlockPatterns {
 	 * @param string $option The option name.
 	 * @param string $value The option value.
 	 */
-	public function schedule_patterns_content_update( $option, $value ) {
+	public function schedule_on_option_update( $option, $value ) {
+		$last_business_description = get_option( 'last_business_description_with_ai_content_generated' );
+
+		if ( $last_business_description === $value ) {
+			return;
+		}
+
+		$this->schedule_patterns_content_update( $value );
+	}
+
+	/**
+	 * Update the patterns content when the WooCommerce Blocks plugin is updated.
+	 *
+	 * @param \WP_Upgrader $upgrader_object  WP_Upgrader instance.
+	 * @param array        $options  Array of bulk item update data.
+	 */
+	public function schedule_on_plugin_update( $upgrader_object, $options ) {
+		if ( 'update' === $options['action'] && 'plugin' === $options['type'] && isset( $options['plugins'] ) ) {
+			foreach ( $options['plugins'] as $plugin ) {
+				if ( str_contains( $plugin, 'woocommerce-gutenberg-products-block.php' ) || str_contains( $plugin, 'woocommerce.php' ) ) {
+					$business_description = get_option( 'woo_ai_describe_store_description' );
+
+					if ( $business_description ) {
+						$this->schedule_patterns_content_update( $business_description );
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Update the patterns content when the store description is changed.
+	 *
+	 * @param string $business_description The business description.
+	 */
+	public function schedule_patterns_content_update( $business_description ) {
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			return;
 		}
@@ -223,7 +324,7 @@ class BlockPatterns {
 
 		require_once $action_scheduler;
 
-		as_schedule_single_action( time(), 'woocommerce_update_patterns_content', array( $value ) );
+		as_schedule_single_action( time(), 'woocommerce_update_patterns_content', array( $business_description ) );
 	}
 
 	/**
@@ -231,7 +332,7 @@ class BlockPatterns {
 	 *
 	 * @param string $value The new value saved for the add_option_woo_ai_describe_store_description option.
 	 *
-	 * @return bool|int|string|\WP_Error
+	 * @return bool|string|\WP_Error
 	 */
 	public function update_patterns_content( $value ) {
 		$allow_ai_connection = get_option( 'woocommerce_blocks_allow_ai_connection' );
@@ -243,12 +344,58 @@ class BlockPatterns {
 			);
 		}
 
-		$vertical_id = ( new VerticalsSelector() )->get_vertical_id( $value );
+		$ai_connection = new Connection();
 
-		if ( is_wp_error( $vertical_id ) ) {
-			return $vertical_id;
+		$site_id = $ai_connection->get_site_id();
+
+		if ( is_wp_error( $site_id ) ) {
+			return $site_id->get_error_message();
 		}
 
-		return ( new PatternUpdater() )->create_patterns_content( $vertical_id, new Client() );
+		$token = $ai_connection->get_jwt_token( $site_id );
+
+		if ( is_wp_error( $token ) ) {
+			return $token->get_error_message();
+		}
+
+		$business_description = get_option( 'woo_ai_describe_store_description' );
+
+		$images = ( new Pexels() )->get_images( $ai_connection, $token, $business_description );
+
+		if ( is_wp_error( $images ) ) {
+			return $images->get_error_message();
+		}
+
+		$populate_patterns = ( new PatternUpdater() )->generate_content( $ai_connection, $token, $images, $business_description );
+
+		if ( is_wp_error( $populate_patterns ) ) {
+			return $populate_patterns->get_error_message();
+		}
+
+		$populate_products = ( new ProductUpdater() )->generate_content( $ai_connection, $token, $images, $business_description );
+
+		if ( is_wp_error( $populate_products ) ) {
+			return $populate_products->get_error_message();
+		}
+
+		return true;
+	}
+
+	/**
+	 * Filter the patterns dictionary to get the pattern data corresponding to the pattern slug.
+	 *
+	 * @param array  $dictionary The patterns dictionary.
+	 * @param string $slug The pattern slug.
+	 *
+	 * @return array|null
+	 */
+	private function get_pattern_from_dictionary( $dictionary, $slug ) {
+		foreach ( $dictionary as $pattern_dictionary ) {
+			if ( $pattern_dictionary['slug'] === $slug ) {
+				return $pattern_dictionary;
+			}
+		}
+
+		return null;
 	}
 }

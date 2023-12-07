@@ -4,15 +4,10 @@
 import { TotalsShipping } from '@woocommerce/base-components/cart-checkout';
 import { getCurrencyFromPriceResponse } from '@woocommerce/price-format';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
-import { TotalsWrapper } from '@woocommerce/blocks-checkout';
+import { TotalsWrapper } from '@woocommerce/blocks-components';
+import { getSetting } from '@woocommerce/settings';
 
-const Block = ( {
-	className,
-	isShippingCalculatorEnabled,
-}: {
-	className: string;
-	isShippingCalculatorEnabled: boolean;
-} ): JSX.Element | null => {
+const Block = ( { className }: { className: string } ): JSX.Element | null => {
 	const { cartTotals, cartNeedsShipping } = useStoreCart();
 
 	if ( ! cartNeedsShipping ) {
@@ -24,7 +19,10 @@ const Block = ( {
 	return (
 		<TotalsWrapper className={ className }>
 			<TotalsShipping
-				showCalculator={ isShippingCalculatorEnabled }
+				showCalculator={ getSetting< boolean >(
+					'isShippingCalculatorEnabled',
+					true
+				) }
 				showRateSelector={ true }
 				values={ cartTotals }
 				currency={ totalsCurrency }

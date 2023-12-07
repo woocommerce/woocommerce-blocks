@@ -1,10 +1,10 @@
 === WooCommerce Blocks ===
 Contributors: automattic, woocommerce, claudiulodro, tiagonoronha, jameskoster, ryelle, levinmedia, aljullu, mikejolley, nerrad, joshuawold, assassinateur, haszari, mppfeiffer, nielslange, opr18, ralucastn, tjcafferkey, danielwrobert, patriciahillebrandt, albarin, dinhtungdu, royho, imanish003, karolmanijak, sunyatasattva, alexandrelara, gigitux, danieldudzic, samueljseay, alexflorisca, opr18, tarunvijwani, pauloarromba, saadtarhi
 Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
-Requires at least: 6.3
-Tested up to: 6.3
-Requires PHP: 7.3
-Stable tag: 11.1.1
+Requires at least: 6.4
+Tested up to: 6.4
+Requires PHP: 7.4
+Stable tag: 11.6.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -81,6 +81,331 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 == Changelog ==
 
+= 11.7.0 - 2023-12-05 =
+
+#### Enhancements
+
+- The Block Hooks API is implemented to auto-inject the Mini-Cart block in header patterns and template parts when the "Twenty Twenty-Four" theme is active. The Mini-Cart block also now defaults to not show the total for the items in the cart when inserted into content. ([11745](https://github.com/woocommerce/woocommerce-blocks/pull/11745))
+- Decrease modal width. ([12003](https://github.com/woocommerce/woocommerce-blocks/pull/12003))
+- [Store Customization] Update the default content in patterns. ([11997](https://github.com/woocommerce/woocommerce-blocks/pull/11997))
+- [Store Customization] Update the "Footer with 3 Menus" pattern to remove the last 2 menus. ([11980](https://github.com/woocommerce/woocommerce-blocks/pull/11980))
+- Limit number of visible incompatible extensions in sidebar notice. ([11972](https://github.com/woocommerce/woocommerce-blocks/pull/11972))
+- Improve readability of order note. ([11944](https://github.com/woocommerce/woocommerce-blocks/pull/11944))
+- Reorganise Columns controls and fix undefined problem in Product Collection settings. ([11937](https://github.com/woocommerce/woocommerce-blocks/pull/11937))
+- Switch to NoticeBanner component inside Store Notices Block placeholder. ([11920](https://github.com/woocommerce/woocommerce-blocks/pull/11920))
+- Preserve shrinkColumns value when switching the layout type of Product Collection. ([11905](https://github.com/woocommerce/woocommerce-blocks/pull/11905))
+- Tweak the product prompt. ([11903](https://github.com/woocommerce/woocommerce-blocks/pull/11903))
+- Add DELETE `private/ai/pattern` endpoint. ([11890](https://github.com/woocommerce/woocommerce-blocks/pull/11890))
+- Update notice for default cart and checkout. ([11861](https://github.com/woocommerce/woocommerce-blocks/pull/11861))
+- Enable shrink columns option in Product Collection by default. ([11821](https://github.com/woocommerce/woocommerce-blocks/pull/11821))
+- Move `Combobox` to components package. ([11353](https://github.com/woocommerce/woocommerce-blocks/pull/11353))
+- Interactivity API: Implement the new `store()` API. ([11071](https://github.com/woocommerce/woocommerce-blocks/pull/11071))
+
+#### Bug Fixes
+
+- [CYS] Fix regression and ensure AI-generated content is assigned to products after the third attempt. ([12016](https://github.com/woocommerce/woocommerce-blocks/pull/12016))
+- [Product Collection] Fix: HTML Entity Decoding in Taxonomy Controls. ([11982](https://github.com/woocommerce/woocommerce-blocks/pull/11982))
+- Product Gallery: Add a Product Image fallback. ([11978](https://github.com/woocommerce/woocommerce-blocks/pull/11978))
+- Reviews by Product: Fix reviews count not appearing in product selector. ([11976](https://github.com/woocommerce/woocommerce-blocks/pull/11976))
+- Hook `woocommerce_single_product_summary` action to `core/post-excerpt` block. ([11953](https://github.com/woocommerce/woocommerce-blocks/pull/11953))
+- fix: Store notices always shows as an error type #11768. ([11932](https://github.com/woocommerce/woocommerce-blocks/pull/11932))
+- [Product Collection] Fix: HTML entity decoding for product names in Hand-Picked Products. ([11927](https://github.com/woocommerce/woocommerce-blocks/pull/11927))
+- Validate coupon usage against customer id AND emails. ([11860](https://github.com/woocommerce/woocommerce-blocks/pull/11860))
+- Pass order ID to woocommerce_before_thankyou hook. ([11852](https://github.com/woocommerce/woocommerce-blocks/pull/11852))
+- Translate the prefixes passed to post-terms in product-meta. ([11811](https://github.com/woocommerce/woocommerce-blocks/pull/11811))
+- Prevent fatal errors when using Cart Tokens and creating new accounts on checkout. ([11785](https://github.com/woocommerce/woocommerce-blocks/pull/11785))
+- Product Gallery Thumbnails: Add support for cropping. ([11718](https://github.com/woocommerce/woocommerce-blocks/pull/11718))
+- Fix: Product Collection show products with correct stock statuses. ([11708](https://github.com/woocommerce/woocommerce-blocks/pull/11708))
+- Product Gallery Thumbnails: Fix overflow issues and improve responsiveness. ([11665](https://github.com/woocommerce/woocommerce-blocks/pull/11665))
+
+#### Various
+
+- Update extensibility doc. ([11924](https://github.com/woocommerce/woocommerce-blocks/pull/11924))
+- Move `CheckboxControl` to components package and leave alias in checkout package. ([11662](https://github.com/woocommerce/woocommerce-blocks/pull/11662))
+
+= 11.6.2 - 2023-12-04 =
+
+#### Enhancements
+
+- Update the "Give us your feedback" link to point to the WooCommerce repo discussions. [#11999](https://github.com/woocommerce/woocommerce-blocks/pull/11999) [#12006](https://github.com/woocommerce/woocommerce-blocks/pull/12006)
+
+= 11.6.1 - 2023-11-23 =
+
+#### Bug Fixes
+
+- Add missing woocommerce classname to Classic Cart/Checkout Blocks container so UI updates when the cart is emptied. [#11919](https://github.com/woocommerce/woocommerce-blocks/pull/11919)
+- Fix an issue that caused the Order by select in Reviews blocks to always be disabled. [#11918](https://github.com/woocommerce/woocommerce-blocks/pull/11918)
+- Fix All Reviews, Reviews by Product and Reviews by Category blocks not being rendered. [#11913](https://github.com/woocommerce/woocommerce-blocks/pull/11913)
+
+= 11.6.0 - 2023-11-22 =
+
+#### Enhancements
+
+- Product Collection - New 'No Results' block with default UI. [#11783](https://github.com/woocommerce/woocommerce-blocks/pull/11783)
+- We have moved the TotalsItem, TotalsFees, Subtotal, Banner, StoreNotice, StoreNotices, Panel, TextInput, ValidatedTextInput and ValidationInputError components to the @woocommerce/blocks-components package. Previously these were available in @woocommerce/blocks-checkout . Your code will continue to work as we have added aliases to the new location. Despite this, it is recommended that you change your code to import this component from @woocommerce/blocks-components as the import from the checkout package will be deprecated in the future. [#11766](https://github.com/woocommerce/woocommerce-blocks/pull/11766) [#11698](https://github.com/woocommerce/woocommerce-blocks/pull/11698) [#11654](https://github.com/woocommerce/woocommerce-blocks/pull/11654) [#11773](https://github.com/woocommerce/woocommerce-blocks/pull/11773)
+- Improve performance in patterns registration. [#11733](https://github.com/woocommerce/woocommerce-blocks/pull/11733)
+- Patterns: remove unused author, sticky, and parents attributes from the Product Collection block in patterns. [#11673](https://github.com/woocommerce/woocommerce-blocks/pull/11673)
+- Semantic enhancement to the position of a phone field in Checkout. [#11651](https://github.com/woocommerce/woocommerce-blocks/pull/11651)
+- Migrate the Product Button to the new store() API of the Interactivity API.. [#11558](https://github.com/woocommerce/woocommerce-blocks/pull/11558)
+- Product Collection: Add support for filtering products by featured status. [#11522](https://github.com/woocommerce/woocommerce-blocks/pull/11522)
+
+#### Bug Fixes
+
+- Make "Use same address for billing" visible by default. [#11804](https://github.com/woocommerce/woocommerce-blocks/pull/11804)
+- Fix the order endpoint tax line items format. [#11796](https://github.com/woocommerce/woocommerce-blocks/pull/11796)
+- Store API/Blocks Extensibility: Fix recursive extension schema validation. [#11792](https://github.com/woocommerce/woocommerce-blocks/pull/11792)
+- Fix: Left align local pickup address. [#11772](https://github.com/woocommerce/woocommerce-blocks/pull/11772)
+- Fix typo in classic checkout modal. [#11771](https://github.com/woocommerce/woocommerce-blocks/pull/11771)
+- Fix hardcoded shop link in "Hero Product 3 Split" pattern. [#11767](https://github.com/woocommerce/woocommerce-blocks/pull/11767)
+- Fix billing address condensed address state in the editor and in Firefox. [#11765](https://github.com/woocommerce/woocommerce-blocks/pull/11765)
+- Related Products: Make the heading translated when in blockified Single Product template. [#11693](https://github.com/woocommerce/woocommerce-blocks/pull/11693)
+- Add to Cart with Options block: fix inconsistency between editor and frontend styles. [#11614](https://github.com/woocommerce/woocommerce-blocks/pull/11614)
+- Product Button: Improve the width and padding. [#11537](https://github.com/woocommerce/woocommerce-blocks/pull/11537)
+- Fix the Layout for Shipping and Billing Address Forms in the Checkout Block [#11486](https://github.com/woocommerce/woocommerce-blocks/pull/11486)
+- Minor fixes for PHP 8. [#11473](https://github.com/woocommerce/woocommerce-blocks/pull/11473)
+- Product Button: always enqueue the store. [#11858](https://github.com/woocommerce/woocommerce-blocks/pull/11858)
+- Fixed params passed to woocommerce_before_thankyou for block checkout. This should be an order ID, not an order object. [#11862](https://github.com/woocommerce/woocommerce-blocks/pull/11862)
+- Enhanced validation for limited use coupons and guest users. [#11860](https://github.com/woocommerce/woocommerce-blocks/pull/11860)
+
+#### Documentation
+
+- Updated documentation for the onProcessingSetup observer. [#11751](https://github.com/woocommerce/woocommerce-blocks/pull/11751)
+
+= 11.5.4 - 2023-11-13 =
+
+#### Bug Fixes
+
+- Prevent PHP warnings when using Jetpack WooCommerce Analytics module. [#11707](https://github.com/woocommerce/woocommerce-blocks/pull/11707)
+- Fixed address components in Firefox, and editing of address form in the editor. [#11714](https://github.com/woocommerce/woocommerce-blocks/pull/11714)
+- Fix Classic Cart/Checkout styling on non-cart and checkout pages. [#11694](https://github.com/woocommerce/woocommerce-blocks/pull/11694)
+- Fix double border in cart and notes field width on mobile. [11742](https://github.com/woocommerce/woocommerce-blocks/pull/11742)
+- Ensure that incompatible notices are displayed in Safari. [#11736](https://github.com/woocommerce/woocommerce-blocks/pull/11736)
+- Enabled the new blockified Order Confirmation by default for block-based themes. [#11615](https://github.com/woocommerce/woocommerce-blocks/pull/11615)
+
+= 11.5.3 - 2023-11-08 =
+
+#### Bug Fixes
+
+- Use wp_json_file_decode instead of json_decode [11681](https://github.com/woocommerce/woocommerce-blocks/pull/11681)
+
+= 11.5.2 - 2023-11-08 =
+
+#### Bug Fixes
+
+- Rename the Centered Header Menu with Search to Centered Header Menu. [11637](https://github.com/woocommerce/woocommerce-blocks/pull/11637)
+- Fix decoding issue and pattern. [11681](https://github.com/woocommerce/woocommerce-blocks/pull/11681)
+
+= 11.5.1 - 2023-11-08 =
+
+#### Bug Fixes
+
+- WordPress 6.4: fixed a bug which would break sites using the Classic Template block for the Single Product template. ([11455](https://github.com/woocommerce/woocommerce-blocks/pull/11455))
+- Fix an error that might appear when pre_get_block_template filter was called with wrong params. ([11690](https://github.com/woocommerce/woocommerce-blocks/pull/11690))
+
+= 11.5.0 - 2023-11-06 =
+
+#### Enhancements
+
+- Add margin bottom to the `Hero Product 3 Split` pattern. ([11573](https://github.com/woocommerce/woocommerce-blocks/pull/11573))
+- Set explicit margins in the search bar group on the `Large Header` pattern. ([11571](https://github.com/woocommerce/woocommerce-blocks/pull/11571))
+- Add aspect ratio to the `Featured Products 5 Columns` pattern. ([11570](https://github.com/woocommerce/woocommerce-blocks/pull/11570))
+- [CYS] Fix `Product Collection 4 Columns` pattern button height. ([11553](https://github.com/woocommerce/woocommerce-blocks/pull/11553))
+- Change the "chessboard" pattern structure to improve mobile view. ([11545](https://github.com/woocommerce/woocommerce-blocks/pull/11545))
+- `Footer with 3 menus` pattern: Update the spacing in the columns to improve the mobile view. ([11544](https://github.com/woocommerce/woocommerce-blocks/pull/11544))
+- Add checkout-header template to the correct area in site editor. ([11528](https://github.com/woocommerce/woocommerce-blocks/pull/11528))
+- Product gallery/add crop images. ([11482](https://github.com/woocommerce/woocommerce-blocks/pull/11482))
+- Remove authors filter from Product Collection block. ([11427](https://github.com/woocommerce/woocommerce-blocks/pull/11427))
+- Move `SortSelect` to components package. ([11411](https://github.com/woocommerce/woocommerce-blocks/pull/11411))
+- Move `Textarea` to components package. ([11384](https://github.com/woocommerce/woocommerce-blocks/pull/11384))
+- Move `Title` to components package. ([11383](https://github.com/woocommerce/woocommerce-blocks/pull/11383))
+- Use the <header> element for the checkout header. ([11222](https://github.com/woocommerce/woocommerce-blocks/pull/11222))
+
+#### Bug Fixes
+
+- Fix `Hero Product 3 Split` pattern text content. ([11612](https://github.com/woocommerce/woocommerce-blocks/pull/11612))
+- Prevent theme button border appearing in opinionated patterns. ([11564](https://github.com/woocommerce/woocommerce-blocks/pull/11564))
+- Prevent Sale badge overflowing the Product Image in some product grid blocks. ([11556](https://github.com/woocommerce/woocommerce-blocks/pull/11556))
+- Block Checkout: Add back missing render-checkout-form hook. ([11554](https://github.com/woocommerce/woocommerce-blocks/pull/11554))
+- Ensure that the "Remove Item" link on Cart block has a hover state. ([11526](https://github.com/woocommerce/woocommerce-blocks/pull/11526))
+- All Products: Add cursor pointer when hovering over pagination items. ([11502](https://github.com/woocommerce/woocommerce-blocks/pull/11502))
+- Product Collection: Fix the PHP Warning after migrating from Products (Beta). ([11494](https://github.com/woocommerce/woocommerce-blocks/pull/11494))
+- Footer with 2 Menus Dark pattern: Fix the Site Title color contrast in TT4. ([11484](https://github.com/woocommerce/woocommerce-blocks/pull/11484))
+- Essential Header Dark pattern: Fix color contrast issues in TT4. ([11480](https://github.com/woocommerce/woocommerce-blocks/pull/11480))
+- Display shipping calculator link for guests shopper. ([11442](https://github.com/woocommerce/woocommerce-blocks/pull/11442))
+- Comboboxes should match against values before looking at labels. ([11410](https://github.com/woocommerce/woocommerce-blocks/pull/11410))
+- Fix products incorrectly marked as discounted. ([11386](https://github.com/woocommerce/woocommerce-blocks/pull/11386))
+- Ensure input is validated when autofilled in Firefox. ([11062](https://github.com/woocommerce/woocommerce-blocks/pull/11062))
+
+#### compatibility
+
+- Remove bullet points and unnecessary padding from `SearchListControl`. ([11444](https://github.com/woocommerce/woocommerce-blocks/pull/11444))
+
+= 11.4.9 - 2023-11-21 =
+
+#### Bug fixes
+
+- Fixed params passed to woocommerce_before_thankyou for block checkout. This should be an order ID, not an order object. ([#11862](https://github.com/woocommerce/woocommerce-blocks/pull/11862))
+- Enhance validation for limited use coupons and guest users. ([#11860](https://github.com/woocommerce/woocommerce-blocks/pull/11860))
+
+= 11.4.8 - 2023-11-10 =
+
+#### Bug Fixes
+
+- Ensure that incompatible notices are displayed in Safari. [11736](https://github.com/woocommerce/woocommerce-blocks/pull/11736)
+
+= 11.4.7 - 2023-11-09 =
+
+#### Bug Fixes
+
+- Fixed address components in Firefox, and editing of address form in the editor. [#11714](https://github.com/woocommerce/woocommerce-blocks/pull/11714)
+
+= 11.4.6 - 2023-11-09 =
+
+#### Bug Fixes
+
+- Prevent PHP warnings when using Jetpack WooCommerce Analytics module. [#11707](https://github.com/woocommerce/woocommerce-blocks/pull/11707)
+
+= 11.4.5 - 2023-11-07 =
+
+#### Bug Fixes
+
+- WordPress 6.4: fixed a bug which would break sites using the Classic Template block for the Single Product template. https://github.com/woocommerce/woocommerce-blocks/pull/11455
+
+= 11.4.4 - 2023-11-06 =
+
+#### Enhancements
+
+- Enabled the new blockified Order Confirmation by default for block-based themes. [11615](https://github.com/woocommerce/woocommerce-blocks/pull/11615)
+
+= 11.4.3 - 2023-10-30 =
+
+#### Enhancements
+
+- Improve Hero Product Chessboard pattern. [11423](https://github.com/woocommerce/woocommerce-blocks/pull/11423)
+- Fix spacing on the "Minimal header" pattern. [11477](https://github.com/woocommerce/woocommerce-blocks/pull/11477)
+- "Product Gallery" improvements: remove product summary and update margins. [11464](https://github.com/woocommerce/woocommerce-blocks/pull/11464)
+- Patterns with Search Bar: improve style. [11478](https://github.com/woocommerce/woocommerce-blocks/pull/11478)
+- "Product Collection X Columns" patterns: align "no reviews" text with the star. [11468](https://github.com/woocommerce/woocommerce-blocks/pull/11468)
+- Rename the Footer with Simple Menu and Cart pattern. [11487](https://github.com/woocommerce/woocommerce-blocks/pull/11487)
+- Enhance the Hero Product Split pattern. [11505](https://github.com/woocommerce/woocommerce-blocks/pull/11505)
+- Simplify the Hero Product 3 Split pattern. [11495](https://github.com/woocommerce/woocommerce-blocks/pull/11495)
+- Improve the Centered Header Menu with Search pattern. [11304](https://github.com/woocommerce/woocommerce-blocks/pull/11304)
+- Large Header pattern: improve the layout on mobile view. [11490](https://github.com/woocommerce/woocommerce-blocks/pull/11490)
+- Improve the "Large footer" spacing. [11520](https://github.com/woocommerce/woocommerce-blocks/pull/11520)
+
+= 11.4.2 - 2023-10-25 =
+
+#### Enhancements
+
+- Improve the button size on the "Product Collection 4 Column" pattern. [11433](https://github.com/woocommerce/woocommerce-blocks/pull/11433)
+- Update the patterns content after a plugin update. [11210](https://github.com/woocommerce/woocommerce-blocks/pull/11210)
+- Improve the "Minimal header" pattern spacing and title. [11434](https://github.com/woocommerce/woocommerce-blocks/pull/11434)
+- Store Customization > Ensure dummy products can have AI-generated content. [11155](https://github.com/woocommerce/woocommerce-blocks/pull/11155)
+- Improve the Testimonials 3 columns pattern. [11430](https://github.com/woocommerce/woocommerce-blocks/pull/11430)
+- Add overlay to the "Featured Category Triple" pattern. [11428](https://github.com/woocommerce/woocommerce-blocks/pull/11428)
+- Improve the "Footer with 3 Menus" pattern. [11379](https://github.com/woocommerce/woocommerce-blocks/pull/11379)
+- Update the "Large footer" pattern. [11413](https://github.com/woocommerce/woocommerce-blocks/pull/11413)
+- Improve the "Essential Header". [11449](https://github.com/woocommerce/woocommerce-blocks/pull/11449)
+- Improve the mobile view for the Minimal header pattern. [11463](https://github.com/woocommerce/woocommerce-blocks/pull/11463)
+- Update the Footer with simple menu and cart pattern. [11409](https://github.com/woocommerce/woocommerce-blocks/pull/11409)
+- Update the image provider for the Customize Your Store experience, migrating from Verticals to Pexels. [11280](https://github.com/woocommerce/woocommerce-blocks/pull/11280)
+
+= 11.4.1 - 2023-10-25 =
+
+#### Bug Fixes
+
+- Regenerate package.
+
+= 11.4.0 - 2023-10-24 =
+
+#### Enhancements
+
+- Store Customization: Update the "Large Footer" pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11381)
+- Store Customization: Update the `Footer with 3 Menus` pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11356)
+- Store Customization: Update the Social pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11355)
+- Store Customization: Re-enable the `Product Hero 2 Column 2 Row` pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11346)
+- Product Collection: Shrink columns to fit. (https://github.com/woocommerce/woocommerce-blocks/pull/11320)
+- Store Customization: Adjust margins and paddings for the `Featured Category Triple`. (https://github.com/woocommerce/woocommerce-blocks/pull/11319)
+- Move `Spinner` to components package. (https://github.com/woocommerce/woocommerce-blocks/pull/11317)
+- Store Customization: Fix "Discount Banner" pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11315)
+- Move `RadioControl`and `RadioControlAccordion` components to components package. (https://github.com/woocommerce/woocommerce-blocks/pull/11312)
+- Store Customization: Fix the "Testimonials 3 Columns" title alignment. (https://github.com/woocommerce/woocommerce-blocks/pull/11281)
+- Store Customization: Fix pattern spacing in homepage template 3. (https://github.com/woocommerce/woocommerce-blocks/pull/11279)
+- Store Customization: Fix pattern spacing in homepage template 2. (https://github.com/woocommerce/woocommerce-blocks/pull/11278)
+- Store Customization: Fix pattern spacing in homepage template 1. (https://github.com/woocommerce/woocommerce-blocks/pull/11268)
+- Store Customization: Remove placeholder text from the image on the Hero Product Chessboard pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11250)
+- Move `FormStep` to the components package. (https://github.com/woocommerce/woocommerce-blocks/pull/11246)
+- Temporarily disable the `woocommerce-blocks/product-hero-2-col-2-row` pattern. (https://github.com/woocommerce/woocommerce-blocks/pull/11234)
+- Add: `menu-order` orderby option for Product Attribute Terms route. (https://github.com/woocommerce/woocommerce-blocks/pull/11232)
+- Move `FormattedMonetaryAmount` to the components package. (https://github.com/woocommerce/woocommerce-blocks/pull/11230)
+- Cart and Checkout block transforms for classic shortcodes. (https://github.com/woocommerce/woocommerce-blocks/pull/11228)
+- Use the <main> tag in Cart and Checkout templates. (https://github.com/woocommerce/woocommerce-blocks/pull/11224)
+- Move `Chip` and `RemovableChip` to components package. (https://github.com/woocommerce/woocommerce-blocks/pull/11223)
+- Move `CheckboxList` and create new `blocksComponents` package. (https://github.com/woocommerce/woocommerce-blocks/pull/11214)
+- Store Customization MVP: Add fallbacks to all the pattern titles, descriptions and buttons. (https://github.com/woocommerce/woocommerce-blocks/pull/11208)
+- Checkout Field Padding and Spacing. (https://github.com/woocommerce/woocommerce-blocks/pull/11207)
+- Make patterns full width and fix margin. (https://github.com/woocommerce/woocommerce-blocks/pull/11206)
+- Product Collection 5 Columns pattern: Update title and price to be rows instead of columns. (https://github.com/woocommerce/woocommerce-blocks/pull/11205)
+- Product Collection: Featured Products 5 Columns: Remove no results block. (https://github.com/woocommerce/woocommerce-blocks/pull/11198)
+- Add universal border radius for form elements and components. (https://github.com/woocommerce/woocommerce-blocks/pull/11193)
+- Update wording on checkout error message to try to prevent retries. (https://github.com/woocommerce/woocommerce-blocks/pull/10888)
+
+#### Bug Fixes
+
+- Remove hardcoded queryIds from patterns that include Product Collection. (https://github.com/woocommerce/woocommerce-blocks/pull/11290)
+- Fix: Mini-Cart block shows wrong total if theres multiple installs on the same domain. (https://github.com/woocommerce/woocommerce-blocks/pull/11257)
+- Fix inconsistent border focus styles. (https://github.com/woocommerce/woocommerce-blocks/pull/11203)
+- Product Gallery pattern: Use the Product Collection block. (https://github.com/woocommerce/woocommerce-blocks/pull/11194)
+- Increase number of visible products when cart is empty. (https://github.com/woocommerce/woocommerce-blocks/pull/11182)
+- Fix a bug in which shipping phone field was not being synced to the billing field. (https://github.com/woocommerce/woocommerce-blocks/pull/10603)
+- Always show the `Enable the shipping calculator on the cart page` option. (https://github.com/woocommerce/woocommerce-blocks/pull/11421)
+
+#### Documentation
+
+- Add order and checkout order endpoint documentation. (https://github.com/woocommerce/woocommerce-blocks/pull/11157)
+
+#### Various
+
+- Add Local Pickup event and Cart/Checkout page views events. (https://github.com/woocommerce/woocommerce-blocks/pull/11225)
+
+= 11.3.1 - 2023-10-16 =
+
+#### Bug Fixes
+
+- All Products: fix error during rendering on the frontend. ([11263](https://github.com/woocommerce/woocommerce-blocks/pull/11263))
+
+= 11.3.0 - 2023-10-09 =
+
+#### Enhancements
+
+- Introduced condensed address components on checkout for customers with an existing address. ([11167](https://github.com/woocommerce/woocommerce-blocks/pull/11167))
+- Update aspect ratio, icons and default text for the Social: Follow us on social media pattern. ([11161](https://github.com/woocommerce/woocommerce-blocks/pull/11161))
+- Add horizontal padding to the Featured Category Triple pattern. ([11160](https://github.com/woocommerce/woocommerce-blocks/pull/11160))
+- Remove the "no results" placeholder and pagination and set aspect ratio on the Product Collection 3 Columns, Product Collection 4 Columns, Product Collection 5 Columns, and Product Gallery patterns. ([11145](https://github.com/woocommerce/woocommerce-blocks/pull/11145))
+- Add group and padding to the Product Collection 3 Columns, Featured Category Triple and the Social: Follow us on social media patterns. ([11144](https://github.com/woocommerce/woocommerce-blocks/pull/11144))
+- New Product Collection Patterns: add the new Product Collection 3 Columns, Product Collection 4 Columns, Product Collection 5 Columns and Product Collection: Featured Products 5 Columns patterns. ([11134](https://github.com/woocommerce/woocommerce-blocks/pull/11134))
+- Add titles and padding to the Product Collection: Featured Products 5 Columns and the Product Gallery patterns. ([11131](https://github.com/woocommerce/woocommerce-blocks/pull/11131))
+- Add default image and fixed height to the Just Arrived Full Hero pattern. ([11130](https://github.com/woocommerce/woocommerce-blocks/pull/11130))
+- Add titles and padding to the Product Collection 4 Columns, Product Collection 5 Columns, and Testimonials 3 Columns patterns. ([11129](https://github.com/woocommerce/woocommerce-blocks/pull/11129))
+- Add Add to Cart button's product price data attribute. ([11117](https://github.com/woocommerce/woocommerce-blocks/pull/11117))
+- Just Arrived Full Hero pattern: wireframe the content and adjust the pattern width. ([11115](https://github.com/woocommerce/woocommerce-blocks/pull/11115))
+- Remove opinionated styles from the Hero Product 3 Split pattern. ([11110](https://github.com/woocommerce/woocommerce-blocks/pull/11110))
+- Add the Featured Category Cover Image pattern. ([11109](https://github.com/woocommerce/woocommerce-blocks/pull/11109))
+- Add fee ID to parent cart and checkout block. ([11054](https://github.com/woocommerce/woocommerce-blocks/pull/11054))
+- Update: Adjust text of incompatibility sidebar notice and show extensions, that explicitly declared incompatibility with the Cart and Checkout blocks. ([10877](https://github.com/woocommerce/woocommerce-blocks/pull/10877))
+
+#### Bug Fixes
+
+- Fix Store Notices block breaks page editors. ([11165](https://github.com/woocommerce/woocommerce-blocks/pull/11165))
+- Ensure the Just Arrived Full Hero pattern can have an AI-selected images assigned to it and add a background dim. ([11159](https://github.com/woocommerce/woocommerce-blocks/pull/11159))
+- Testimonials 3 Columns pattern > Update the width and fix the PHP warnings that could be triggered if the content saved within the wc_blocks_patterns_content option didn't match the updated patterns dictionary. ([11158](https://github.com/woocommerce/woocommerce-blocks/pull/11158))
+- Pattern: Fetch product ID with JS to prevent unnecessary queries on every page load. ([11138](https://github.com/woocommerce/woocommerce-blocks/pull/11138))
+- Fix checkout state/country field width in the site editor. ([11133](https://github.com/woocommerce/woocommerce-blocks/pull/11133))
+- Fixed PHP notice that would appear if an API endpoint failed to load. ([11128](https://github.com/woocommerce/woocommerce-blocks/pull/11128))
+- Made error icon on checkout match text color. ([11127](https://github.com/woocommerce/woocommerce-blocks/pull/11127))
+- Fix a PHP error that was occurring when the WooCommerce Product Add-ons or the WooCommerce Product Bundles plugins were enabled. ([11082](https://github.com/woocommerce/woocommerce-blocks/pull/11082))
+- Resolved an issue where the Single Product block did not respect the WooCommerce setting for redirecting to the cart page after successful addition. ([11151](https://github.com/woocommerce/woocommerce-blocks/pull/11151))
+
 = 11.2.0 - 2023-09-25 =
 
 #### Enhancements
@@ -108,6 +433,12 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - BlockTemplatesController: Check that $attributes['theme'] value isset before operating on it. ([10879](https://github.com/woocommerce/woocommerce-blocks/pull/10879))
 - Product Gallery: CSS styling tightening up. ([10867](https://github.com/woocommerce/woocommerce-blocks/pull/10867))
 - Checkout Block: Prevent changes in the selected shipping method when new rates are added or removed. ([10457](https://github.com/woocommerce/woocommerce-blocks/pull/10457))
+
+= 11.1.3 - 2023-11-08 =
+
+#### Bug Fixes
+
+- WordPress 6.4: fixed a bug which would break sites using the Classic Template block for the Single Product template. [11455](https://github.com/woocommerce/woocommerce-blocks/pull/11455)
 
 = 11.1.2 - 2023-09-27 =
 
@@ -489,7 +820,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Blockified Single Product Template: Add product-classes. ([9697](https://github.com/woocommerce/woocommerce-blocks/pull/9697))
 - Blockified Single Product Template: Show upsells. ([9636](https://github.com/woocommerce/woocommerce-blocks/pull/9636))
 - Template Placeholder Design for the Order Received Template. ([9602](https://github.com/woocommerce/woocommerce-blocks/pull/9602))
-- Mini-Cart: Update cart error notices to be non-dismissable (to match the behavior of the regular Cart). ([9578](https://github.com/woocommerce/woocommerce-blocks/pull/9578))
+- Mini-Cart: Update cart error notices to be non-dismissible (to match the behavior of the regular Cart). ([9578](https://github.com/woocommerce/woocommerce-blocks/pull/9578))
 - Classic Product Template block visible in the inserter. ([9573](https://github.com/woocommerce/woocommerce-blocks/pull/9573))
 - Hide the Product Rating when the product has no reviews. Previously, a link to the Reviews section was displayed. ([9556](https://github.com/woocommerce/woocommerce-blocks/pull/9556))
 - Reduced the amount of settings data consumed by the cart and checkout blocks. ([9552](https://github.com/woocommerce/woocommerce-blocks/pull/9552))
@@ -625,7 +956,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 - Fix: Ensure the product title within the Single Product Block matches the selected product instead of the title of the post/page where it was inserted. ([9335](https://github.com/woocommerce/woocommerce-blocks/pull/9335))
 - Fix a regression which caused the Mini Cart drawer not to open until its contents have completely loaded. ([9329](https://github.com/woocommerce/woocommerce-blocks/pull/9329))
-- Prevent email being cleared when changing shipping method or when first entering shipping informaiton. ([9328](https://github.com/woocommerce/woocommerce-blocks/pull/9328))
+- Prevent email being cleared when changing shipping method or when first entering shipping information. ([9328](https://github.com/woocommerce/woocommerce-blocks/pull/9328))
 - Product Image Gallery: Fix resize width when the window resizes. ([9299](https://github.com/woocommerce/woocommerce-blocks/pull/9299))
 - Product Image Gallery: Fix the inline displayed issue. ([9297](https://github.com/woocommerce/woocommerce-blocks/pull/9297))
 - Single Product Template - Related Products: Fix items per page option. ([9286](https://github.com/woocommerce/woocommerce-blocks/pull/9286))
@@ -789,7 +1120,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 #### Bug Fixes
 
-- Fixed an issue where extensions were unable to programatically set the shipping address during payment processing. ([8878](https://github.com/woocommerce/woocommerce-blocks/pull/8878))
+- Fixed an issue where extensions were unable to programmatically set the shipping address during payment processing. ([8878](https://github.com/woocommerce/woocommerce-blocks/pull/8878))
 - Fix border styles not visible in the editor in Featured Product and Featured Category blocks. ([8838](https://github.com/woocommerce/woocommerce-blocks/pull/8838))
 - Fix Local Pickup "Save changes" default behavior bug in the Firefox browser. ([8754](https://github.com/woocommerce/woocommerce-blocks/pull/8754))
 
@@ -847,7 +1178,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 - Products by Attributes: Fix the block rendered empty in the Editor. ([8759](https://github.com/woocommerce/woocommerce-blocks/pull/8759))
 - Fix the local pickup price in the shipping type selector and pickup options. ([8623](https://github.com/woocommerce/woocommerce-blocks/pull/8623))
 - Enable users to migrate to the blockified Single Product template.([8902](https://github.com/woocommerce/woocommerce-blocks/pull/8902))
-- Fixed an issue where extensions were unable to programatically set the shipping address during payment processing. ([8878](https://github.com/woocommerce/woocommerce-blocks/pull/8878))
+- Fixed an issue where extensions were unable to programmatically set the shipping address during payment processing. ([8878](https://github.com/woocommerce/woocommerce-blocks/pull/8878))
 - Fix unlinked border widths not being applied correctly in the frontend in WP 6.2 for some blocks. ([8893](https://github.com/woocommerce/woocommerce-blocks/pull/8893))
 
 = 9.8.0 - 2023-03-14 =
@@ -1031,7 +1362,7 @@ Release and roadmap notes available on the [WooCommerce Developers Blog](https:/
 
 #### Bug Fixes
 
-- Check if session is set before returing updated customer address. ([8537](https://github.com/woocommerce/woocommerce-blocks/pull/8537))
+- Check if session is set before returning updated customer address. ([8537](https://github.com/woocommerce/woocommerce-blocks/pull/8537))
 
 = 9.4.3 - 2023-02-01 =
 
@@ -1287,7 +1618,7 @@ Prevent Cart and Checkout notices from disappearing immediately after adding. ([
 
 #### Bug fixes
 
-- Fix a bug in which cart totals aren't recalculated aftering running CartExtensions ([#7490](https://github.com/woocommerce/woocommerce-blocks/pull/7490))
+- Fix a bug in which cart totals aren't recalculated after running CartExtensions ([#7490](https://github.com/woocommerce/woocommerce-blocks/pull/7490))
 
 = 8.8.0 - 2022-10-24 =
 
@@ -1505,7 +1836,7 @@ Prevent Cart and Checkout notices from disappearing immediately after adding. ([
 - Fix missing translations in the inspector (editor mode). ([6737](https://github.com/woocommerce/woocommerce-blocks/pull/6737))
 - Fix: Navigate through Mini Cart contents with keyboard. ([6731](https://github.com/woocommerce/woocommerce-blocks/pull/6731))
 - Fix: Ensure add to cart notices are displayed on pages containing the Mini Cart block. ([6728](https://github.com/woocommerce/woocommerce-blocks/pull/6728))
-- Fix Cart an d Checkout blocks compatiblity issue with wordpress.com in which blocks wouldn't load in the editor. ([6718](https://github.com/woocommerce/woocommerce-blocks/pull/6718))
+- Fix Cart an d Checkout blocks compatibility issue with wordpress.com in which blocks wouldn't load in the editor. ([6718](https://github.com/woocommerce/woocommerce-blocks/pull/6718))
 - Fixes an issue where search lists would not preserve the case of the original item. ([6551](https://github.com/woocommerce/woocommerce-blocks/pull/6551))
 
 = 8.1.0 - 2022-07-18 =
@@ -1532,7 +1863,7 @@ Prevent Cart and Checkout notices from disappearing immediately after adding. ([
 
 #### Bug Fixes
 
-- Fix: Correctly calculacte taxes for local pickups. ([6631](https://github.com/woocommerce/woocommerce-blocks/pull/6631))
+- Fix: Correctly calculate taxes for local pickups. ([6631](https://github.com/woocommerce/woocommerce-blocks/pull/6631))
 - Fix: Ensure WooCommerce templates show correct titles. ([6452](https://github.com/woocommerce/woocommerce-blocks/pull/6452))
 
 = 7.9.0 - 2022-06-20 =
@@ -2792,7 +3123,7 @@ You can read [more about the release here](https://woocommerce.wordpress.com/?p=
 - Show a message in the editor if no products are found rather than show nothing.
 - Show previews for all included blocks in the block inserter. Requires WordPress 5.3.
 - Products on Sale, Products Tag and Product Search blocks have new icons.
-- Officialy deprecate NPM package `@woocommerce/block-library`.
+- Officially deprecate NPM package `@woocommerce/block-library`.
 - Use Server Side Rendering for Product Category List block to remove the need to pass large amounts of data around when not needed.
 - RTL fixes to several blocks.
 - All block icons are displayed gray in the editor shortcuts inserter.

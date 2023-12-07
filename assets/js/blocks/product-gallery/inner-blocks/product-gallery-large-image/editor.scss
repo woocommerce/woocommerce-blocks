@@ -1,4 +1,6 @@
 .wc-block-editor-product-gallery-large-image {
+	width: 100%;
+
 	img {
 		max-width: 100%;
 		margin: 0 auto;
@@ -7,12 +9,5 @@
 
 	.wc-block-editor-product-gallery-large-image-next-previous--outside-image & img {
 		max-width: calc(100% - 60px);
-	}
-}
-
-.wc-block-product-gallery-large-image__inner-blocks {
-	.wc-block-editor-product-gallery-large-image-next-previous--outside-image & > * {
-		margin-left: 30px;
-		margin-right: 30px;
 	}
 }

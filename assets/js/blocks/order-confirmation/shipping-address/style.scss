@@ -14,9 +14,10 @@
 		margin-top: 0 !important;
 	}
 }
+.wc-block-order-confirmation-order-note,
 .wc-block-order-confirmation-shipping-address {
 	border: 1px solid $universal-border-light;
-	border-radius: 2px;
+	border-radius: $universal-border-radius;
 	padding: $gap;
 
 	address,
@@ -29,5 +30,12 @@
 		&:last-child {
 			margin-bottom: 0;
 		}
+	}
+}
+.wc-block-order-confirmation-order-note {
+	margin-top: $gap * 3;
+
+	.wc-block-order-confirmation-order-note__label {
+		font-weight: bold;
 	}
 }

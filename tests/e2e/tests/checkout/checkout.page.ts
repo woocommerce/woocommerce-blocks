@@ -78,9 +78,17 @@ export class CheckoutPage {
 		await this.page.evaluate( 'document.activeElement.blur()' );
 	}
 
-	async placeOrder() {
+	/**
+	 * Place order and wait for redirect to order received page.
+	 *
+	 * @param  waitForRedirect If false, then the method will not wait for the redirect to order received page. Useful
+	 *                         when testing for errors on the checkout page.
+	 */
+	async placeOrder( waitForRedirect = true ) {
 		await this.page.getByText( 'Place Order', { exact: true } ).click();
-		await this.page.waitForURL( /order-received/ );
+		if ( waitForRedirect ) {
+			await this.page.waitForURL( /order-received/ );
+		}
 	}
 
 	async verifyAddressDetails(
@@ -91,8 +99,16 @@ export class CheckoutPage {
 			...this.testData,
 			...overrideAddressDetails,
 		};
-		const selector = `.woocommerce-column--${ shippingOrBilling }-address`;
-		const addressContainer = this.page.locator( selector );
+
+		const legacySelector = `.woocommerce-column--${ shippingOrBilling }-address`;
+		const blockSelector = `.wc-block-order-confirmation-${ shippingOrBilling }-address`;
+
+		let addressContainer = this.page.locator( blockSelector );
+
+		if ( ! ( await addressContainer.isVisible() ) ) {
+			addressContainer = this.page.locator( legacySelector );
+		}
+
 		await expect(
 			addressContainer.getByText( customerAddressDetails.firstname )
 		).toBeVisible();
@@ -125,7 +141,28 @@ export class CheckoutPage {
 		}
 	}
 
+	async editBillingDetails() {
+		const editButton = this.page.locator(
+			'.wc-block-checkout__billing-fields .wc-block-components-address-address-wrapper:not(.is-editing) .wc-block-components-address-card__edit'
+		);
+
+		if ( await editButton.isVisible() ) {
+			await editButton.click();
+		}
+	}
+
+	async editShippingDetails() {
+		const editButton = this.page.locator(
+			'.wc-block-checkout__shipping-fields .wc-block-components-address-address-wrapper:not(.is-editing) .wc-block-components-address-card__edit'
+		);
+
+		if ( await editButton.isVisible() ) {
+			await editButton.click();
+		}
+	}
+
 	async fillBillingDetails( customerBillingDetails ) {
+		await this.editBillingDetails();
 		const billingForm = this.page.getByRole( 'group', {
 			name: 'Billing address',
 		} );
@@ -142,7 +179,6 @@ export class CheckoutPage {
 		const address1 = billingForm.getByLabel( 'Address', { exact: true } );
 		const address2 = billingForm.getByLabel( 'Apartment, suite, etc.' );
 		const city = billingForm.getByLabel( 'City' );
-		const state = billingForm.getByLabel( 'State', { exact: true } );
 		const phone = billingForm.getByLabel( 'Phone' );
 
 		// Using locator here since the label of this form changes depending on the country.
@@ -157,9 +193,20 @@ export class CheckoutPage {
 		await city.fill( customerBillingDetails.city );
 		await phone.fill( customerBillingDetails.phone );
 
+		let state = billingForm.getByLabel( 'State', {
+			exact: true,
+		} );
+
+		if ( ! ( await state.isVisible() ) ) {
+			state = billingForm.getByLabel( 'Province', {
+				exact: true,
+			} );
+		}
+
 		if ( await state.isVisible() ) {
 			await state.fill( customerBillingDetails.state );
 		}
+
 		if ( await postcode.isVisible() ) {
 			await postcode.fill( customerBillingDetails.postcode );
 		}
@@ -168,6 +215,7 @@ export class CheckoutPage {
 	}
 
 	async fillShippingDetails( customerShippingDetails ) {
+		await this.editShippingDetails();
 		const shippingForm = this.page.getByRole( 'group', {
 			name: 'Shipping address',
 		} );
@@ -183,7 +231,6 @@ export class CheckoutPage {
 		const address1 = shippingForm.getByLabel( 'Address', { exact: true } );
 		const address2 = shippingForm.getByLabel( 'Apartment, suite, etc.' );
 		const city = shippingForm.getByLabel( 'City' );
-		const state = shippingForm.getByLabel( 'State', { exact: true } );
 		const phone = shippingForm.getByLabel( 'Phone' );
 
 		// Using locator here since the label of this form changes depending on the country.
@@ -197,12 +244,24 @@ export class CheckoutPage {
 		await city.fill( customerShippingDetails.city );
 		await phone.fill( customerShippingDetails.phone );
 
+		let state = shippingForm.getByLabel( 'State', {
+			exact: true,
+		} );
+
+		if ( ! ( await state.isVisible() ) ) {
+			state = shippingForm.getByLabel( 'Province', {
+				exact: true,
+			} );
+		}
+
 		if ( await state.isVisible() ) {
 			await state.fill( customerShippingDetails.state );
 		}
+
 		if ( await postcode.isVisible() ) {
 			await postcode.fill( customerShippingDetails.postcode );
 		}
+
 		// Blur active field to trigger customer address update.
 		await this.page.evaluate( 'document.activeElement.blur()' );
 	}
@@ -308,6 +367,14 @@ export class CheckoutPage {
 			await expect( shippingAddressSection ).toBeHidden();
 			await expect( billingAddressSection ).toBeHidden();
 		}
+	}
+
+	async syncBillingWithShipping() {
+		await this.page.getByLabel( 'Use same address for billing' ).check();
+	}
+
+	async unsyncBillingWithShipping() {
+		await this.page.getByLabel( 'Use same address for billing' ).uncheck();
 	}
 
 	getOrderId() {

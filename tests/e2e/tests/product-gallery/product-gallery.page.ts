@@ -45,6 +45,12 @@ export class ProductGalleryPage {
 		} );
 	}
 
+	async addAddToCartWithOptionsBlock() {
+		await this.editor.insertBlock( {
+			name: 'woocommerce/add-to-cart-form',
+		} );
+	}
+
 	getZoomWhileHoveringSetting() {
 		return this.page.locator( selectors.editor.zoomWhileHoveringSetting );
 	}
@@ -122,8 +128,36 @@ export class ProductGalleryPage {
 		return this.editorUtils.getBlockByName( blockName );
 	}
 
+	async getPagerBlock( { page }: { page: 'frontend' | 'editor' } ) {
+		const blockName = 'woocommerce/product-gallery-pager';
+		if ( page === 'frontend' ) {
+			return (
+				await this.frontendUtils.getBlockByName( blockName )
+			 ).filter( {
+				has: this.page.locator( ':visible' ),
+			} );
+		}
+		return this.editorUtils.getBlockByName( blockName );
+	}
+
 	async getBlock( { page }: { page: 'frontend' | 'editor' } ) {
 		const blockName = 'woocommerce/product-gallery';
+		if ( page === 'frontend' ) {
+			return (
+				await this.frontendUtils.getBlockByName( blockName )
+			 ).filter( {
+				has: this.page.locator( ':visible' ),
+			} );
+		}
+		return this.editorUtils.getBlockByName( blockName );
+	}
+
+	async getAddToCartWithOptionsBlock( {
+		page,
+	}: {
+		page: 'frontend' | 'editor';
+	} ) {
+		const blockName = 'woocommerce/add-to-cart-form';
 		if ( page === 'frontend' ) {
 			return (
 				await this.frontendUtils.getBlockByName( blockName )

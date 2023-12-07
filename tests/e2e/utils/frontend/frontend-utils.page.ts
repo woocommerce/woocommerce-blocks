@@ -46,6 +46,12 @@ export class FrontendUtils {
 
 	async goToCheckout() {
 		await this.page.goto( '/checkout', {
+			waitUntil: 'domcontentloaded',
+		} );
+	}
+
+	async goToCart() {
+		await this.page.goto( '/cart', {
 			waitUntil: 'commit',
 		} );
 	}
