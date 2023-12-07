@@ -90,7 +90,7 @@ class ProductCollectionPage {
 	async chooseCollectionInPost( collection?: Collections ) {
 		const buttonName = collection
 			? collectionToButtonNameMap[ collection ]
-			: collectionToButtonNameMap.defaultQuery;
+			: collectionToButtonNameMap.productCatalog;
 
 		await this.admin.page
 			.getByRole( 'button', { name: buttonName } )
@@ -100,7 +100,7 @@ class ProductCollectionPage {
 	async chooseCollectionInTemplate( collection?: Collections ) {
 		const buttonName = collection
 			? collectionToButtonNameMap[ collection ]
-			: collectionToButtonNameMap.defaultQuery;
+			: collectionToButtonNameMap.productCatalog;
 
 		await this.admin.page
 			.frameLocator( 'iframe[name="editor-canvas"]' )
