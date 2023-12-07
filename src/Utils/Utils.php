@@ -23,8 +23,8 @@ class Utils {
 		}
 
 		// Replace non-alphanumeric characters with a dot.
-		$version = preg_replace( '/[^0-9a-zA-Z\.]+/i', '.', $version );
 		$current_wp_version = preg_replace( '/[^0-9a-zA-Z\.]+/i', '.', $current_wp_version);
+		$version            = preg_replace( '/[^0-9a-zA-Z\.]+/i', '.', $version );
 
 		return version_compare( $current_wp_version, $version, $operator );
 	}
