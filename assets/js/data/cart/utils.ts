@@ -45,7 +45,8 @@ export const shippingAddressHasValidationErrors = () => {
 
 export type BaseAddressKey =
 	| keyof CartBillingAddress
-	| keyof CartShippingAddress;
+	| keyof CartShippingAddress
+	| string; // string here because custom checkout fields can be added with arbitrary keys.
 
 /**
  * Normalizes address values before push.
@@ -82,12 +83,23 @@ export const getDirtyKeys = <
 		previousAddress
 	) as BaseAddressKey[];
 
-	return previousAddressKeys.filter( ( key: BaseAddressKey ) => {
-		return (
-			normalizeAddressProp( key, previousAddress[ key ] ) !==
-			normalizeAddressProp( key, address[ key ] )
-		);
-	} );
+	const addedKeys = Object.keys( address ).filter(
+		( key ) => ! previousAddressKeys.includes( key )
+	);
+
+	const removedKeys = previousAddressKeys.filter(
+		( key ) => ! Object.keys( address ).includes( key )
+	);
+
+	return previousAddressKeys
+		.filter( ( key: BaseAddressKey ) => {
+			return (
+				normalizeAddressProp( key, previousAddress[ key ] ) !==
+				normalizeAddressProp( key, address[ key ] )
+			);
+		} )
+		.concat( removedKeys )
+		.concat( addedKeys );
 };
 
 /**
