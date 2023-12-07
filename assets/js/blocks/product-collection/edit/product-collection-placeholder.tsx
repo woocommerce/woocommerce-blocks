@@ -138,6 +138,7 @@ const ProductCollectionPlaceholder = (
 	return (
 		<div { ...blockProps }>
 			<Placeholder
+				className="wc-blocks-product-collection__placeholder"
 				icon={ Icon }
 				label={ __(
 					'Product Collection',

@@ -10,8 +10,9 @@
 	}
 }
 
+.wc-blocks-product-collection__placeholder,
 .wc-blocks-product-collection__modal {
-	.wc-blocks-product-collection__selection-modal-subtitle {
+	.wc-blocks-product-collection__selection-subtitle {
 		margin-bottom: $gap-large;
 	}
 
@@ -46,6 +47,7 @@
 		box-sizing: border-box;
 		box-shadow: none;
 		padding: $gap-smallest $gap-small;
+		margin: 0;
 
 		&.is-primary {
 			border: 2px solid var(--wp-admin-theme-color-darker-10, #3858e9);

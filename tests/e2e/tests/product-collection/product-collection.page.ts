@@ -88,56 +88,24 @@ class ProductCollectionPage {
 	}
 
 	async chooseCollectionInPost( collection?: Collections ) {
-		if ( ! collection ) {
-			await this.admin.page
-				.getByRole( 'button', { name: 'Create custom' } )
-				.click();
-		} else {
-			await this.admin.page
-				.getByRole( 'button', { name: 'Choose collection' } )
-				.click();
+		const buttonName = collection
+			? collectionToButtonNameMap[ collection ]
+			: collectionToButtonNameMap.defaultQuery;
 
-			await this.admin.page.waitForSelector(
-				'.wc-blocks-product-collection__modal'
-			);
-
-			const buttonName = collectionToButtonNameMap[ collection ];
-			await this.admin.page
-				.getByRole( 'button', { name: buttonName } )
-				.click();
-
-			await this.admin.page
-				.getByRole( 'button', { name: 'Continue' } )
-				.click();
-		}
+		await this.admin.page
+			.getByRole( 'button', { name: buttonName } )
+			.click();
 	}
 
 	async chooseCollectionInTemplate( collection?: Collections ) {
-		if ( ! collection ) {
-			await this.admin.page
-				.frameLocator( 'iframe[name="editor-canvas"]' )
-				.getByRole( 'button', { name: 'Create custom' } )
-				.click();
-		} else {
-			await this.admin.page
-				.frameLocator( 'iframe[name="editor-canvas"]' )
-				.getByRole( 'button', { name: 'Choose collection' } )
-				.click();
+		const buttonName = collection
+			? collectionToButtonNameMap[ collection ]
+			: collectionToButtonNameMap.defaultQuery;
 
-			await this.admin.page.waitForSelector(
-				'.wc-blocks-product-collection__modal'
-			);
-
-			const buttonName = collectionToButtonNameMap[ collection ];
-
-			await this.admin.page
-				.getByRole( 'button', { name: buttonName } )
-				.click();
-
-			await this.admin.page
-				.getByRole( 'button', { name: 'Continue' } )
-				.click();
-		}
+		await this.admin.page
+			.frameLocator( 'iframe[name="editor-canvas"]' )
+			.getByRole( 'button', { name: buttonName } )
+			.click();
 	}
 
 	async createNewPostAndInsertBlock( collection?: Collections ) {
