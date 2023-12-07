@@ -385,6 +385,15 @@ class OrderController {
 		$address        = $order->get_address( $address_type );
 		$current_locale = isset( $all_locales[ $address['country'] ] ) ? $all_locales[ $address['country'] ] : [];
 
+		$additional_fields = $this->additional_fields_controller->get_all_fields_from_order( $order );
+
+		foreach ( $additional_fields as $field_id => $field_value ) {
+			$prefix = '/' . $address_type . '/';
+			if ( strpos( $field_id, $prefix ) === 0 ) {
+				$address[ str_replace( $prefix, '', $field_id ) ] = $field_value;
+			}
+		}
+
 		/**
 		 * We are not using wc()->counties->get_default_address_fields() here because that is filtered. Instead, this array
 		 * is based on assets/js/base/components/cart-checkout/address-form/default-fields.js

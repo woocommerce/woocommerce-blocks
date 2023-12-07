@@ -237,7 +237,6 @@ class CheckoutFields {
 			// @todo handle rendering additional fields.
 			'additional' => array( 'plugin_delivery_hour' ), // everything here will only be saved to order only.
 		);
-		add_filter( 'woocommerce_get_order_address', array( $this, 'add_additional_fields_to_address' ), 10, 3 );
 		add_filter( 'woocommerce_get_country_locale_default', array( $this, 'update_default_locale_with_fields' ) );
 	}
 
@@ -247,27 +246,6 @@ class CheckoutFields {
 	public function init() {
 		// @TODO: this should move to a class that only run on UI operations.
 		add_action( 'woocommerce_blocks_checkout_enqueue_data', array( $this, 'add_fields_data' ) );
-	}
-
-	/**
-	 * Update the address object with fields from the order.
-	 *
-	 * @param mixed     $address The address to modify.
-	 * @param string    $address_type The address type.
-	 * @param \WC_Order $order The order to get the additional field values from.
-	 * @return mixed
-	 */
-	public function add_additional_fields_to_address( $address, $address_type, $order ) {
-		$additional_fields = $this->get_all_fields_from_order( $order );
-
-		// Get additional fields on the order and insert them into the address. By default get_address does not include additional fields.
-		foreach ( $additional_fields as $field_id => $field_value ) {
-			$prefix = '/' . $address_type . '/';
-			if ( strpos( $field_id, $prefix ) === 0 ) {
-				$address[ str_replace( $prefix, '', $field_id ) ] = $field_value;
-			}
-		}
-		return $address;
 	}
 
 	/**
