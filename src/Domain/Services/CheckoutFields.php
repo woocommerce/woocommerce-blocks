@@ -204,34 +204,9 @@ class CheckoutFields {
 			),
 		);
 
-		$this->additional_fields = array(
-			'plugin_vat'           => array(
-				'label'          => __( 'VAT', 'woo-gutenberg-products-block' ),
-				'optionalLabel'  => __(
-					'VAT (optional)',
-					'woo-gutenberg-products-block'
-				),
-				'required'       => true,
-				'hidden'         => false,
-				'autocomplete'   => 'vat',
-				'autocapitalize' => 'characters',
-			),
-			'plugin_delivery_hour' => array(
-				'label'          => __( 'VAT', 'woo-gutenberg-products-block' ),
-				'optionalLabel'  => __(
-					'VAT (optional)',
-					'woo-gutenberg-products-block'
-				),
-				'required'       => false,
-				'hidden'         => false,
-				'autocomplete'   => 'vat',
-				'autocapitalize' => 'characters',
-			),
-		);
-
 		$this->fields_locations = array(
 			// omit email from shipping and billing fields.
-			'address'    => array_merge( \array_diff_key( array_keys( $this->core_fields ), array( 'email' ) ), array( 'plugin_vat' ) ), // everything here will be saved to customer and order.
+			'address'    => array_merge( \array_diff_key( array_keys( $this->core_fields ), array( 'email' ) ) ), // everything here will be saved to customer and order.
 			// @todo handle rendering contact fields.
 			'contact'    => array( 'email' ), // everything here will be saved to order, and optionally to customer.
 			// @todo handle rendering additional fields.
