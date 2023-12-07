@@ -124,6 +124,7 @@ describe( `${ block.name } Block`, () => {
 			await goToTemplateEditor( {
 				postId: productCatalogTemplateId,
 			} );
+			await waitForCanvas();
 			await insertBlock( 'WooCommerce Product Grid Block' );
 			await insertFilterByAttributeBlock();
 			await saveTemplate();
