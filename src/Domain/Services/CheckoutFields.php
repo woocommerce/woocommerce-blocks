@@ -500,7 +500,25 @@ class CheckoutFields {
 	 * @return array An array of fields.
 	 */
 	public function get_all_fields_from_customer( $customer ) {
-		return $this->get_all_fields_from_object( $customer );
+		$customer_id = $customer->get_id();
+		$meta_data   = [
+			'billing'    => [],
+			'shipping'   => [],
+			'additional' => [],
+		];
+		if ( ! $customer_id ) {
+			if ( isset( wc()->session ) ) {
+				$meta_data['billing']    = wc()->session->get( self::BILLING_FIELDS_KEY, [] );
+				$meta_data['shipping']   = wc()->session->get( self::SHIPPING_FIELDS_KEY, [] );
+				$meta_data['additional'] = wc()->session->get( self::ADDITIONAL_FIELDS_KEY, [] );
+			}
+		} else {
+			$meta_data['billing']    = get_user_meta( $customer_id, self::BILLING_FIELDS_KEY, true );
+			$meta_data['shipping']   = get_user_meta( $customer_id, self::SHIPPING_FIELDS_KEY, true );
+			$meta_data['additional'] = get_user_meta( $customer_id, self::ADDITIONAL_FIELDS_KEY, true );
+		}
+
+		return $this->format_meta_data( $meta_data );
 	}
 
 	/**
@@ -511,7 +529,17 @@ class CheckoutFields {
 	 * @return array An array of fields.
 	 */
 	public function get_all_fields_from_order( $order ) {
-		return $this->get_all_fields_from_object( $order );
+		$meta_data = [
+			'billing'    => [],
+			'shipping'   => [],
+			'additional' => [],
+		];
+		if ( $order instanceof \WC_Order ) {
+			$meta_data['billing']    = $order->get_meta( self::BILLING_FIELDS_KEY, true );
+			$meta_data['shipping']   = $order->get_meta( self::SHIPPING_FIELDS_KEY, true );
+			$meta_data['additional'] = $order->get_meta( self::ADDITIONAL_FIELDS_KEY, true );
+		}
+		return $this->format_meta_data( $meta_data );
 	}
 
 	/**
@@ -536,7 +564,16 @@ class CheckoutFields {
 			$meta_key = self::ADDITIONAL_FIELDS_KEY;
 		}
 
-		$meta_data = $object->get_meta( $meta_key, true );
+		if ( $object instanceof \WC_Customer ) {
+			if ( ! $object->get_id() ) {
+				$meta_data = wc()->session->get( $meta_key, array() );
+			} else {
+				$meta_data = get_user_meta( $object->get_id(), $meta_key, true );
+			}
+		} elseif ( $object instanceof \WC_Order ) {
+			$meta_data = $object->get_meta( $meta_key, true );
+		}
+
 		if ( ! is_array( $meta_data ) ) {
 			$meta_data = array();
 		}
@@ -544,9 +581,13 @@ class CheckoutFields {
 		$meta_data[ $key ] = $value;
 		// @TODO: figure out why calling `set_meta_data` on WC_Customer isn't persisting the data.
 		if ( $object instanceof \WC_Customer ) {
-			\update_user_meta( $object->get_id(), $meta_key, $meta_data );
+			if ( ! $object->get_id() ) {
+				wc()->session->set( $meta_key, $meta_data );
+			} else {
+				update_user_meta( $object->get_id(), $meta_key, $meta_data );
+			}
 		} elseif ( $object instanceof \WC_Order ) {
-			$object->set_meta_data( $meta_key, $meta_data );
+			$object->update_meta_data( $meta_key, $meta_data );
 		}
 
 	}
@@ -572,7 +613,15 @@ class CheckoutFields {
 			$meta_key = self::ADDITIONAL_FIELDS_KEY;
 		}
 
-		$meta_data = $object->get_meta( $meta_key, true );
+		if ( $object instanceof \WC_Customer ) {
+			if ( ! $object->get_id() ) {
+				$meta_data = wc()->session->get( $meta_key, array() );
+			} else {
+				$meta_data = get_user_meta( $object->get_id(), $meta_key, true );
+			}
+		} elseif ( $object instanceof \WC_Order ) {
+			$meta_data = $object->get_meta( $meta_key, true );
+		}
 
 		if ( ! is_array( $meta_data ) ) {
 			return '';
@@ -586,16 +635,16 @@ class CheckoutFields {
 	}
 
 	/**
-	 * Returns an array of all fields values for a given object. It would add the billing or shipping prefix to the keys.
+	 * Returns an array of all fields values for a given meta object. It would add the billing or shipping prefix to the keys.
 	 *
-	 * @param \WC_Order|\WC_Customer $object The object to get the fields for.
+	 * @param array $meta The meta data to format.
 	 *
 	 * @return array An array of fields.
 	 */
-	private function get_all_fields_from_object( $object ) {
-		$billing_fields    = $object->get_meta( self::BILLING_FIELDS_KEY, true );
-		$shipping_fields   = $object->get_meta( self::SHIPPING_FIELDS_KEY, true );
-		$additional_fields = $object->get_meta( self::ADDITIONAL_FIELDS_KEY, true );
+	private function format_meta_data( $meta ) {
+		$billing_fields    = $meta['billing'] ?? [];
+		$shipping_fields   = $meta['shipping'] ?? [];
+		$additional_fields = $meta['additional'] ?? [];
 
 		$fields = array();
 
