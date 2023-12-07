@@ -385,86 +385,121 @@ test.describe( 'Product Collection', () => {
 	} );
 
 	test.describe( 'Collections', () => {
-		test( 'New Arrivals Collection can be added', async ( {
+		test( 'New Arrivals Collection can be added and displays proper products', async ( {
 			pageObject,
 		} ) => {
 			await pageObject.createNewPostAndInsertBlock( 'newArrivals' );
 
-			const orderBy = await pageObject.getOrderByElement();
-
-			await expect( orderBy ).toBeHidden();
+			const newArrivalsProducts = [
+				'WordPress Pennant',
+				'Logo Collection',
+				'Beanie with Logo',
+				'T-Shirt with Logo',
+				'Single',
+			];
 
 			await expect( pageObject.products ).toHaveCount( 5 );
+			await expect( pageObject.productTitles ).toHaveText(
+				newArrivalsProducts
+			);
 
 			await pageObject.publishAndGoToFrontend();
 
 			await expect( pageObject.products ).toHaveCount( 5 );
 		} );
 
-		test( 'Top Rated Collection can be added', async ( { pageObject } ) => {
+		test( 'Top Rated Collection can be added and displays proper products', async ( {
+			pageObject,
+		} ) => {
 			await pageObject.createNewPostAndInsertBlock( 'topRated' );
 
-			const orderBy = await pageObject.getOrderByElement();
-
-			await expect( orderBy ).toBeHidden();
+			const topRatedProducts = [
+				'Beanie',
+				'Logo Collection',
+				'Belt',
+				'WordPress Pennant',
+				'Cap',
+			];
 
 			await expect( pageObject.products ).toHaveCount( 5 );
+			await expect( pageObject.productTitles ).toHaveText(
+				topRatedProducts
+			);
 
 			await pageObject.publishAndGoToFrontend();
 
 			await expect( pageObject.products ).toHaveCount( 5 );
 		} );
 
-		test( 'Best Sellers Collection can be added', async ( {
+		test( 'Best Sellers Collection can be added and displays proper products', async ( {
 			pageObject,
 		} ) => {
 			await pageObject.createNewPostAndInsertBlock( 'bestSellers' );
 
-			const orderBy = await pageObject.getOrderByElement();
-
-			await expect( orderBy ).toBeHidden();
+			const bestSellersProducts = [
+				'Album',
+				'Hoodie',
+				'Single',
+				'Hoodie with Logo',
+				'T-Shirt with Logo',
+			];
 
 			await expect( pageObject.products ).toHaveCount( 5 );
+			await expect( pageObject.productTitles ).toHaveText(
+				bestSellersProducts
+			);
 
 			await pageObject.publishAndGoToFrontend();
 
 			await expect( pageObject.products ).toHaveCount( 5 );
 		} );
 
-		test( 'On Sale Collection can be added', async ( { pageObject } ) => {
+		test( 'On Sale Collection can be added and displays proper products', async ( {
+			pageObject,
+		} ) => {
 			await pageObject.createNewPostAndInsertBlock( 'onSale' );
 
-			const orderBy = await pageObject.getOrderBy();
-			const featured = await pageObject.getFeaturedValue();
-
-			expect( orderBy ).toBe( 'title/asc' );
-			expect( featured ).toBe( 'off' );
+			const onSaleProducts = [
+				'Beanie',
+				'Beanie with Logo',
+				'Belt',
+				'Cap',
+				'Hoodie',
+			];
 
 			await expect( pageObject.products ).toHaveCount( 5 );
+			await expect( pageObject.productTitles ).toHaveText(
+				onSaleProducts
+			);
 
 			await pageObject.publishAndGoToFrontend();
 
 			await expect( pageObject.products ).toHaveCount( 5 );
 		} );
 
-		test( 'Featured Collection can be added', async ( { pageObject } ) => {
+		test( 'Featured Collection can be added and displays proper products', async ( {
+			pageObject,
+		} ) => {
 			await pageObject.createNewPostAndInsertBlock( 'featured' );
 
-			const orderBy = await pageObject.getOrderBy();
-			const featured = await pageObject.getFeaturedValue();
+			const featuredProducts = [
+				'Cap',
+				'Hoodie with Zipper',
+				'Sunglasses',
+				'V-Neck T-Shirt',
+			];
 
-			expect( orderBy ).toBe( 'title/asc' );
-			expect( featured ).toBe( 'on' );
-
-			// There's 5 columns layout, but only 4 featured products in test set
 			await expect( pageObject.products ).toHaveCount( 4 );
+			await expect( pageObject.productTitles ).toHaveText(
+				featuredProducts
+			);
 
 			await pageObject.publishAndGoToFrontend();
 
 			await expect( pageObject.products ).toHaveCount( 4 );
 		} );
 
-		test( 'Default Query Collection can be added', async ( {
+		test( 'Default Query Collection can be added and displays proper products', async ( {
 			pageObject,
 		} ) => {
 			await pageObject.createNewPostAndInsertBlock( 'productCatalog' );

@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { select } from '@wordpress/data';
 import { BlockEditProps } from '@wordpress/blocks';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
