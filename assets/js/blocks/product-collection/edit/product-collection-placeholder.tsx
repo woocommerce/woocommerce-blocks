@@ -19,11 +19,14 @@ import {
 /**
  * Internal dependencies
  */
-import type { ProductCollectionEditComponentProps } from '../types';
+import type {
+	ProductCollectionEditComponentProps,
+	ProductCollectionAttributes,
+} from '../types';
 import { getDefaultProductCollection } from '../constants';
 import Icon from '../icon';
 import blockJson from '../block.json';
-import { defaultQuery } from '../collections';
+import productCatalog from '../collections/product-catalog';
 
 type CollectionButtonProps = {
 	active: boolean;
@@ -73,7 +76,7 @@ const getDefaultChosenCollection = (
 	// configured. So it's either a collection or we need to return defaultQuery
 	// collection name;
 	if ( attributes.query ) {
-		return attributes.collection || defaultQuery.name;
+		return attributes.collection || productCatalog.name;
 	}
 
 	// Otherwise it should be the first available choice. We control collections
@@ -92,7 +95,7 @@ const ProductCollectionPlaceholder = (
 
 	// Get Collections
 	const blockCollections = [
-		defaultQuery,
+		productCatalog,
 		...useSelect( ( select ) => {
 			// @ts-expect-error Type definitions are missing
 			// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/wordpress__blocks/store/selectors.d.ts
