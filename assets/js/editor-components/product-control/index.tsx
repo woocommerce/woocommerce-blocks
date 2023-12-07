@@ -9,7 +9,7 @@ import {
 } from '@woocommerce/editor-components/search-list-control';
 import type {
 	SearchListControlProps,
-	renderItemArgs,
+	RenderItemArgs,
 } from '@woocommerce/editor-components/search-list-control/types';
 import { withInstanceId } from '@wordpress/compose';
 import {
@@ -103,7 +103,7 @@ const ProductControl = (
 	} = props;
 
 	const renderItemWithVariations = (
-		args: renderItemArgs< ProductResponseItem >
+		args: RenderItemArgs< ProductResponseItem >
 	) => {
 		const { item, search, depth = 0, isSelected, onSelect } = args;
 		const variationsCount =

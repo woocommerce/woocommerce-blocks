@@ -10,7 +10,7 @@ import { SelectControl } from '@wordpress/components';
 import { withSearchedCategories } from '@woocommerce/block-hocs';
 import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
 import classNames from 'classnames';
-import type { renderItemArgs } from '@woocommerce/editor-components/search-list-control/types';
+import type { RenderItemArgs } from '@woocommerce/editor-components/search-list-control/types';
 import type {
 	ProductCategoryResponseItem,
 	WithInjectedSearchedCategories,
@@ -62,7 +62,7 @@ const ProductCategoryControl = ( {
 	showReviewCount,
 }: ProductCategoryControlProps & WithInjectedSearchedCategories ) => {
 	const renderItem = (
-		args: renderItemArgs< ProductCategoryResponseItem >
+		args: RenderItemArgs< ProductCategoryResponseItem >
 	) => {
 		const { item, search, depth = 0 } = args;
 
