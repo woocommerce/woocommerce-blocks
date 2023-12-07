@@ -138,6 +138,7 @@ This selector will return the state from the collections store.
     - _query_ `object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.
     - _ids_ `array`: If the collection route has placeholders for ids you provide the values for those placeholders in this array (in order).
    	- _type_ `string`: type of the collections ie `items`.
+   	- _fallback_ `array` ( default: `[]` ):  fallback data for the collections.
 
 #### _Example_ <!-- omit in toc -->
 
@@ -172,7 +173,7 @@ This selector will return any error that occurred while fetching a collection.
 
 #### _Returns_ <!-- omit in toc -->
 
--   _error_ `object`: The error that occurred while fetching the collection with the following properties:
+-   `object`: The error that occurred while fetching the collection with the following properties:
    	-   _namespace_ `string`: The route namespace for the collection, eg. `/wc/blocks`.
    	-   _resourceName_ `string`: The resource name for the collection, eg. `products/attributes`.
    	-   _query_ `object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.

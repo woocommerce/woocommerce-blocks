@@ -305,7 +305,7 @@ Returns true if the customer prefers to collect their order, and false otherwise
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/checkout' );
+const store = select( CHECKOUT_STORE_KEY );
 const prefersCollection = store.prefersCollection();
 ```
 
