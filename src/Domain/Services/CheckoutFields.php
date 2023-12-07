@@ -362,7 +362,7 @@ class CheckoutFields {
 	}
 
 	/**
-	 * Returns an array of fields keys for a the address group.
+	 * Returns an array of fields keys for the address group.
 	 *
 	 * @return array An array of fields keys.
 	 */
@@ -371,7 +371,7 @@ class CheckoutFields {
 	}
 
 	/**
-	 * Returns an array of fields keys for a the contact group.
+	 * Returns an array of fields keys for the contact group.
 	 *
 	 * @return array An array of fields keys.
 	 */
@@ -380,7 +380,7 @@ class CheckoutFields {
 	}
 
 	/**
-	 * Returns an array of fields keys for a the additional area group.
+	 * Returns an array of fields keys for the additional area group.
 	 *
 	 * @return array An array of fields keys.
 	 */
