@@ -14,57 +14,6 @@ const blockData = {
 };
 
 test.describe( `${ blockData.name } Block`, () => {
-	let productId: number;
-	let firstReviewId: number;
-	let secondReviewId: number;
-	const firstReviewContent = 'Nice album!';
-	const secondReviewContent = 'Not bad.';
-
-	// Create product and reviews.
-	test.beforeAll( async ( { wcRestApiUtils } ) => {
-		await wcRestApiUtils.createProduct(
-			{
-				name: 'Product with reviews',
-				type: 'simple',
-				regular_price: '12.99',
-			},
-			( response ) => {
-				productId = response.data.id;
-			}
-		);
-		await wcRestApiUtils.createProductReview(
-			{
-				product_id: productId,
-				review: firstReviewContent,
-				reviewer: 'John Doe',
-				reviewer_email: 'john.doe@example.com',
-				rating: 5,
-			},
-			( response ) => {
-				firstReviewId = response.data.id;
-			}
-		);
-		await wcRestApiUtils.createProductReview(
-			{
-				product_id: productId,
-				review: secondReviewContent,
-				reviewer: 'John Doe',
-				reviewer_email: 'john.doe@example.com',
-				rating: 4,
-			},
-			( response ) => {
-				secondReviewId = response.data.id;
-			}
-		);
-	} );
-
-	// Remove product and reviews.
-	test.afterAll( async ( { wcRestApiUtils } ) => {
-		await wcRestApiUtils.deleteProductReview( firstReviewId );
-		await wcRestApiUtils.deleteProductReview( secondReviewId );
-		await wcRestApiUtils.deleteProduct( productId );
-	} );
-
 	test( 'renders a review in the editor and the frontend', async ( {
 		admin,
 		editor,
@@ -73,19 +22,17 @@ test.describe( `${ blockData.name } Block`, () => {
 	} ) => {
 		await admin.createNewPost();
 		await editor.insertBlock( { name: blockData.name } );
-		const productCheckbox = page.getByLabel(
-			'Product with reviews, has 2 reviews'
-		);
+		const productCheckbox = page.getByLabel( 'Hoodie, has 2 reviews' );
 		productCheckbox.check();
 		await expect( productCheckbox ).toBeChecked();
 		const doneButton = page.getByRole( 'button', { name: 'Done' } );
 		await doneButton.click();
 
-		await expect( page.getByText( firstReviewContent ) ).toBeVisible();
+		await expect( page.getByText( 'Nice album!' ) ).toBeVisible();
 
 		await editorUtils.publishAndVisitPost();
 
-		await expect( page.getByText( firstReviewContent ) ).toBeVisible();
+		await expect( page.getByText( 'Nice album!' ) ).toBeVisible();
 	} );
 
 	test( 'can change sort order in the frontend', async ( {
@@ -97,9 +44,7 @@ test.describe( `${ blockData.name } Block`, () => {
 	} ) => {
 		await admin.createNewPost();
 		await editor.insertBlock( { name: blockData.name } );
-		const productCheckbox = page.getByLabel(
-			'Product with reviews, has 2 reviews'
-		);
+		const productCheckbox = page.getByLabel( 'Hoodie, has 2 reviews' );
 		productCheckbox.check();
 		await expect( productCheckbox ).toBeChecked();
 		const doneButton = page.getByRole( 'button', { name: 'Done' } );
@@ -109,12 +54,12 @@ test.describe( `${ blockData.name } Block`, () => {
 		const block = await frontendUtils.getBlockByName( blockData.name );
 		let firstReview;
 		firstReview = block.locator( blockData.selectors.frontend.firstReview );
-		await expect( firstReview ).toHaveText( secondReviewContent );
+		await expect( firstReview ).toHaveText( 'Not bad.' );
 
 		const select = page.getByLabel( 'Order by' );
 		select.selectOption( 'Highest rating' );
 
 		firstReview = block.locator( blockData.selectors.frontend.firstReview );
-		await expect( firstReview ).toHaveText( firstReviewContent );
+		await expect( firstReview ).toHaveText( 'Nice album!' );
 	} );
 } );
