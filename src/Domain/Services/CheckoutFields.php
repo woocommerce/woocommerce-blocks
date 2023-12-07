@@ -238,7 +238,6 @@ class CheckoutFields {
 			'additional' => array( 'plugin_delivery_hour' ), // everything here will only be saved to order only.
 		);
 		add_filter( 'woocommerce_get_order_address', array( $this, 'add_additional_fields_to_address' ), 10, 3 );
-		add_filter( 'woocommerce_get_country_locale', array( $this, 'update_country_locale_with_fields' ) );
 		add_filter( 'woocommerce_get_country_locale_default', array( $this, 'update_default_locale_with_fields' ) );
 	}
 
@@ -287,27 +286,6 @@ class CheckoutFields {
 	}
 
 	/**
-	 * Update country-specific locales with additional fields that specify a country limitation.
-	 *
-	 * @param array $locales The locales to update.
-	 * @return mixed
-	 */
-	public function update_country_locale_with_fields( $locales ) {
-		foreach ( $this->additional_fields as $field_id => $additional_field ) {
-			// If field has country limitation only push into that country.
-			if ( ! empty( $additional_field['country_limitation'] ) && is_array( $additional_field['country_limitation'] ) && count( array_intersect( array_keys( $locales ), $additional_field['country_limitation'] ) ) > 0 ) {
-				foreach ( $additional_field['country_limitation'] as $country ) {
-					if ( ! empty( $locales[ $country ][ $field_id ] ) ) {
-						continue;
-					}
-					$locales[ $country ][ $field_id ] = $additional_field;
-				}
-			}
-		}
-		return $locales;
-	}
-
-	/**
 	 * Add fields data to the asset data registry.
 	 */
 	public function add_fields_data() {
@@ -350,13 +328,12 @@ class CheckoutFields {
 
 		// Insert new field into the correct location array.
 		$this->additional_fields[ $id ] = array(
-			'label'              => $options['label'],
-			'optionalLabel'      => ! empty( $options['optionalLabel'] ) ? $options['optionalLabel'] : '',
-			'required'           => ! empty( $options['required'] ) ? $options['required'] : false,
-			'hidden'             => ! empty( $options['hidden'] ) ? $options['hidden'] : false,
-			'autocomplete'       => ! empty( $options['autocomplete'] ) ? $options['autocomplete'] : '',
-			'autocapitalize'     => ! empty( $options['autocapitalize'] ) ? $options['autocapitalize'] : '',
-			'country_limitation' => ! empty( $options['country_limitation'] ) ? $options['country_limitation'] : '',
+			'label'          => $options['label'],
+			'optionalLabel'  => ! empty( $options['optionalLabel'] ) ? $options['optionalLabel'] : '',
+			'required'       => ! empty( $options['required'] ) ? $options['required'] : false,
+			'hidden'         => ! empty( $options['hidden'] ) ? $options['hidden'] : false,
+			'autocomplete'   => ! empty( $options['autocomplete'] ) ? $options['autocomplete'] : '',
+			'autocapitalize' => ! empty( $options['autocapitalize'] ) ? $options['autocapitalize'] : '',
 		);
 
 		array_push( $this->fields_locations[ $location ], $id );
