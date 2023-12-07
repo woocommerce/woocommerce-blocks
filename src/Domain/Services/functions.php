@@ -2,7 +2,7 @@
 
 use Automattic\WooCommerce\Blocks\Package;
 
-if ( ! function_exists( 'woocommerce_blocks_register_checkout_field' ) ) {
+if ( ! function_exists( 'woocommerce_blocks_register_checkout_field' ) && Package::feature()->is_experimental_build() ) {
 
 	/**
 	 * Register a checkout field.
