@@ -40,29 +40,25 @@ test.describe( 'Shopper → Translations', () => {
 		await frontendUtils.addToCart( REGULAR_PRICED_PRODUCT_NAME );
 		await frontendUtils.goToCart();
 
-		await page.waitForSelector( '.wp-block-woocommerce-filled-cart-block' );
+		const totalsHeader = page
+			.getByRole( 'cell', { name: 'Totaal' } )
+			.locator( 'span' );
+		await expect( totalsHeader ).toBeVisible();
 
-		const productHeader = page
-			.locator( '.wc-block-cart-items .wc-block-cart-items__header span' )
-			.first();
-		await expect( productHeader ).toHaveText( 'Product' );
-
-		const removeLink = page
-			.locator( '.wc-block-cart-item__remove-link' )
-			.first();
+		const removeLink = page.getByLabel( 'Verwijder Polo uit winkelwagen' );
+		await expect( removeLink ).toBeVisible();
 		await expect( removeLink ).toHaveText( 'Verwijder item' );
 
-		const submitButton = page
-			.locator( '.wc-block-cart__submit-button' )
-			.first();
-		await expect( submitButton ).toHaveText( 'Ga naar afrekenen' );
+		const sidebarHeader = page.getByText( 'Totaal winkelwagen' );
+		await expect( sidebarHeader ).toBeVisible();
 
-		const orderSummary = page.locator(
-			'.wp-block-woocommerce-cart-order-summary-block'
-		);
-		await expect( orderSummary ).toHaveText( /Subtotaal/ );
-		await expect( orderSummary ).toHaveText( /Een waardebon toevoegen/ );
-		await expect( orderSummary ).toHaveText( /Totaal/ );
+		const couponLink = page.getByLabel( 'Een waardebon toevoegen' );
+		await expect( couponLink ).toBeVisible();
+
+		const submitButton = page.getByRole( 'link', {
+			name: 'Ga naar afrekenen',
+		} );
+		await expect( submitButton ).toBeVisible();
 	} );
 
 	test( 'User can view translated Checkout block', async ( {
@@ -74,42 +70,48 @@ test.describe( 'Shopper → Translations', () => {
 		await frontendUtils.goToCart();
 		await frontendUtils.goToCheckout();
 
-		const contactHeading = page.locator(
-			'#contact-fields .wc-block-components-checkout-step__title'
-		);
-		await expect( contactHeading ).toHaveText( 'Contactgegevens' );
+		const contactHeading = page
+			.getByRole( 'group', { name: 'Contactgegevens' } )
+			.locator( 'h2' );
+		await expect( contactHeading ).toBeVisible();
 
-		const shippingHeading = page.locator(
-			'#shipping-fields .wc-block-components-checkout-step__title'
-		);
-		await expect( shippingHeading ).toHaveText( 'Verzendadres' );
+		const shippingHeading = page
+			.getByRole( 'group', { name: 'Verzendadres' } )
+			.locator( 'h2' );
+		await expect( shippingHeading ).toBeVisible();
 
-		const shippingOptionsHeading = page.locator(
-			'#shipping-option .wc-block-components-checkout-step__title'
-		);
-		await expect( shippingOptionsHeading ).toHaveText( 'Verzendopties' );
+		const shippingOptionsHeading = page
+			.getByRole( 'group', { name: 'Verzendopties' } )
+			.locator( 'h2' );
+		await expect( shippingOptionsHeading ).toBeVisible();
 
-		const paymentMethodHeading = page.locator(
-			'#payment-method .wc-block-components-checkout-step__title'
-		);
-		await expect( paymentMethodHeading ).toHaveText( 'Betaalopties' );
+		const paymentMethodHeading = page
+			.getByRole( 'group', { name: 'Betaalopties' } )
+			.locator( 'h2' );
+		await expect( paymentMethodHeading ).toBeVisible();
 
-		const returnToCart = page.locator(
-			'.wc-block-components-checkout-return-to-cart-button'
-		);
-		await expect( returnToCart ).toHaveText( 'Ga terug naar winkelwagen' );
+		const returnToCart = page.getByRole( 'link', {
+			name: 'Ga terug naar winkelwagen',
+		} );
+		await expect( returnToCart ).toBeVisible();
 
-		const submitButton = page.locator(
-			'.wc-block-components-checkout-place-order-button'
-		);
-		await expect( submitButton ).toHaveText( 'Plaats bestelling' );
+		const submitButton = page.getByRole( 'button', {
+			name: 'Plaats bestelling',
+		} );
+		await expect( submitButton ).toBeVisible();
 
-		const orderSummary = page.locator(
-			'.wp-block-woocommerce-checkout-order-summary-block'
-		);
-		await expect( orderSummary ).toHaveText( /Besteloverzicht/ );
-		await expect( orderSummary ).toHaveText( /Subtotaal/ );
-		await expect( orderSummary ).toHaveText( /Verzending/ );
-		await expect( orderSummary ).toHaveText( /Totaal/ );
+		const orderSummaryHeader = page.getByRole( 'button', {
+			name: 'Besteloverzicht',
+		} );
+		await expect( orderSummaryHeader ).toBeVisible();
+
+		const subtotalLabel = page.getByText( 'Subtotaal' );
+		await expect( subtotalLabel ).toBeVisible();
+
+		const shippingLabel = page.getByText( 'Verzending' );
+		await expect( shippingLabel ).toBeVisible();
+
+		const totalLabel = page.getByText( 'Totaal', { exact: true } );
+		await expect( totalLabel ).toBeVisible();
 	} );
 } );
