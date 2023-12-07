@@ -3,6 +3,7 @@
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
 use WP_Query;
+use WC_Tax;
 
 /**
  * ProductCollection class.
@@ -1049,29 +1050,117 @@ class ProductCollection extends AbstractBlock {
 			return [];
 		}
 
+		$adjust_for_taxes = $this->should_adjust_price_range_for_taxes();
+		if ( $adjust_for_taxes ) {
+			global $wpdb;
+
+			// Select only used tax classes to avoid unwanted calculations.
+			$product_tax_classes = $wpdb->get_col( "SELECT DISTINCT tax_class FROM {$wpdb->wc_product_meta_lookup};" );
+
+			if ( ! empty( $product_tax_classes ) ) {
+				$price_range = $this->adjust_price_range_for_tax_classes( $price_range, $product_tax_classes );
+			}
+		}
+
+		return $this->build_meta_query_for_price_range( $price_range );
+	}
+
+	/**
+	 * Determines if price filters need adjustment based on the tax display settings.
+	 *
+	 * This function checks if there's a discrepancy between how prices are stored in the database
+	 * and how they are displayed to the user, specifically with respect to tax inclusion or exclusion.
+	 * It returns true if an adjustment is needed, indicating that the price filters should account for this
+	 * discrepancy to display accurate prices.
+	 *
+	 * @return bool True if the price filters need to be adjusted for tax display settings, false otherwise.
+	 */
+	private function should_adjust_price_range_for_taxes() {
+		$display_setting      = get_option( 'woocommerce_tax_display_shop' ); // Tax display setting ('incl' or 'excl').
+		$price_storage_method = wc_prices_include_tax() ? 'incl' : 'excl';
+
+		return $display_setting !== $price_storage_method;
+	}
+
+	/**
+	 * Adjusts the price range for each tax class.
+	 * This function is only called if the price range needs to be adjusted for tax display settings.
+	 *
+	 * @param array $price_range Price range with 'min' and 'max' keys.
+	 * @param array $tax_classes Array of tax classes.
+	 * @return array Adjusted price range.
+	 */
+	private function adjust_price_range_for_tax_classes( array $price_range, array $tax_classes ): array {
+		foreach ( [ 'min', 'max' ] as $key ) {
+			if ( isset( $price_range[ $key ] ) ) {
+				foreach ( $tax_classes as $tax_class ) {
+					$price_range[ $key ] = $this->adjust_price_value_for_tax_class( $price_range[ $key ], $tax_class );
+				}
+			}
+		}
+		return $price_range;
+	}
+
+	/**
+	 * Adjusts a price filter based on a tax class and whether or not the amount includes or excludes taxes.
+	 *
+	 * This calculation logic is based on `wc_get_price_excluding_tax` and `wc_get_price_including_tax` in core.
+	 *
+	 * @param float  $price_value Price value to adjust.
+	 * @param string $tax_class Tax class for adjustment.
+	 * @return float Adjusted price value.
+	 */
+	private function adjust_price_value_for_tax_class( $price_value, $tax_class ) {
+		$tax_display    = get_option( 'woocommerce_tax_display_shop' );
+		$tax_rates      = WC_Tax::get_rates( $tax_class );
+		$base_tax_rates = WC_Tax::get_base_tax_rates( $tax_class );
+
+		// If prices are shown incl. tax, we want to remove the taxes from the filter amount to match prices stored excl. tax.
+		if ( 'incl' === $tax_display ) {
+			/**
+			 * Filters if taxes should be removed from locations outside the store base location.
+			 *
+			 * The woocommerce_adjust_non_base_location_prices filter can stop base taxes being taken off when dealing
+			 * with out of base locations. e.g. If a product costs 10 including tax, all users will pay 10
+			 * regardless of location and taxes.
+			 *
+			 * @since 2.6.0
+			 *
+			 * @internal Matches filter name in WooCommerce core.
+			 *
+			 * @param boolean $adjust_non_base_location_prices True by default.
+			 * @return boolean
+			 */
+			$taxes = apply_filters( 'woocommerce_adjust_non_base_location_prices', true ) ? WC_Tax::calc_tax( $price_value, $base_tax_rates, true ) : WC_Tax::calc_tax( $price_value, $tax_rates, true );
+			return $price_value - array_sum( $taxes );
+		}
+
+		// If prices are shown excl. tax, add taxes to match the prices stored in the DB.
+		$taxes = WC_Tax::calc_tax( $price_value, $tax_rates, false );
+
+		return $price_value + array_sum( $taxes );
+	}
+
+	/**
+	 * Constructs the meta query for filtering products within a specific price range.
+	 *
+	 * @param array $price_range Price range with 'min' and 'max' keys.
+	 * @return array Meta query for price range filtering.
+	 */
+	private function build_meta_query_for_price_range( array $price_range ): array {
 		$meta_query = [];
 
-		if ( isset( $price_range['min'] ) ) {
+		foreach ( $price_range as $key => $value ) {
+			$compare      = 'min' === $key ? '>=' : '<=';
 			$meta_query[] = [
 				'key'     => '_price',
-				'value'   => $price_range['min'],
-				'compare' => '>=',
+				'value'   => $value,
+				'compare' => $compare,
 				'type'    => 'DECIMAL(10,3)',
 			];
 		}
 
-		if ( isset( $price_range['max'] ) ) {
-			$meta_query[] = [
-				'key'     => '_price',
-				'value'   => $price_range['max'],
-				'compare' => '<=',
-				'type'    => 'DECIMAL(10,3)',
-			];
-		}
-
-		return [
-			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-			'meta_query' => $meta_query,
-		];
+		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+		return [ 'meta_query' => $meta_query ];
 	}
 }
