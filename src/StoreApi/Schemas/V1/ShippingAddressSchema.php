@@ -63,23 +63,31 @@ class ShippingAddressSchema extends AbstractAddressSchema {
 				[]
 			);
 
-			return $this->prepare_html_response(
-				array_merge(
-					[
-						'first_name' => $address->get_shipping_first_name(),
-						'last_name'  => $address->get_shipping_last_name(),
-						'company'    => $address->get_shipping_company(),
-						'address_1'  => $address->get_shipping_address_1(),
-						'address_2'  => $address->get_shipping_address_2(),
-						'city'       => $address->get_shipping_city(),
-						'state'      => $shipping_state,
-						'postcode'   => $address->get_shipping_postcode(),
-						'country'    => $shipping_country,
-						'phone'      => $address->get_shipping_phone(),
-					],
-					$additional_address_fields
-				)
+			$address_object = array_merge(
+				[
+					'first_name' => $address->get_shipping_first_name(),
+					'last_name'  => $address->get_shipping_last_name(),
+					'company'    => $address->get_shipping_company(),
+					'address_1'  => $address->get_shipping_address_1(),
+					'address_2'  => $address->get_shipping_address_2(),
+					'city'       => $address->get_shipping_city(),
+					'state'      => $shipping_state,
+					'postcode'   => $address->get_shipping_postcode(),
+					'country'    => $shipping_country,
+					'phone'      => $address->get_shipping_phone(),
+				],
+				$additional_address_fields
 			);
+
+			// Add any missing keys from additional_fields_controller to the address response.
+			foreach ( $this->additional_fields_controller->get_address_fields_keys() as $field ) {
+				if ( isset( $address_object[ $field ] ) ) {
+					continue;
+				}
+				$address_object[ $field ] = '';
+			}
+
+			return $this->prepare_html_response( $address_object );
 		}
 
 		throw new RouteException(
