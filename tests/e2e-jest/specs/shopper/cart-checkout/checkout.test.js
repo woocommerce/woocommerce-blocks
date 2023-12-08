@@ -10,7 +10,6 @@ import { visitAdminPage } from '@wordpress/e2e-test-utils';
 import {
 	shopper,
 	preventCompatibilityNotice,
-	BILLING_DETAILS,
 	SIMPLE_PHYSICAL_PRODUCT_NAME,
 	SIMPLE_VIRTUAL_PRODUCT_NAME,
 	BASE_URL,
