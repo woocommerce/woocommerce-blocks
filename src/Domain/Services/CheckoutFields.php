@@ -66,8 +66,6 @@ class CheckoutFields {
 	 * @param AssetDataRegistry $asset_data_registry Instance of the asset data registry.
 	 */
 	public function __construct( AssetDataRegistry $asset_data_registry ) {
-		require_once __DIR__ . '/functions.php';
-
 		$this->asset_data_registry = $asset_data_registry;
 		$this->core_fields         = array(
 			'email'      => array(
@@ -206,20 +204,18 @@ class CheckoutFields {
 
 		$this->fields_locations = array(
 			// omit email from shipping and billing fields.
-			'address'    => array_merge( \array_diff_key( array_keys( $this->core_fields ), array( 'email' ) ) ), // everything here will be saved to customer and order.
-			// @todo handle rendering contact fields.
-			'contact'    => array( 'email' ), // everything here will be saved to order, and optionally to customer.
-			// @todo handle rendering additional fields.
-			'additional' => array( 'plugin_delivery_hour' ), // everything here will only be saved to order only.
+			'address'    => array_merge( \array_diff_key( array_keys( $this->core_fields ), array( 'email' ) ) ),
+			'contact'    => array( 'email' ),
+			'additional' => array(),
 		);
+
 		add_filter( 'woocommerce_get_country_locale_default', array( $this, 'update_default_locale_with_fields' ) );
 	}
 
 	/**
-	 * Initialize hooks.
+	 * Initialize hooks. This is not run Store API requests.
 	 */
 	public function init() {
-		// @TODO: this should move to a class that only run on UI operations.
 		add_action( 'woocommerce_blocks_checkout_enqueue_data', array( $this, 'add_fields_data' ) );
 	}
 
@@ -258,6 +254,13 @@ class CheckoutFields {
 			return new \WP_Error( 'woocommerce_blocks_checkout_field_id_required', __( 'The field id is required.', 'woo-gutenberg-products-block' ) );
 		}
 
+		list( $namespace, $name ) = explode( '/', $options['id'] );
+
+		// Having $name empty means they didn't pass a namespace.
+		if ( empty( $name ) ) {
+			return new \WP_Error( 'woocommerce_blocks_checkout_field_namespace_required', __( 'An id must consist of namespace/name.', 'woo-gutenberg-products-block' ) );
+		}
+
 		if ( empty( $options['label'] ) ) {
 			return new \WP_Error( 'woocommerce_blocks_checkout_field_label_required', __( 'The field label is required.', 'woo-gutenberg-products-block' ) );
 		}
@@ -273,7 +276,6 @@ class CheckoutFields {
 		// At this point, the essentials fields and its location should be set.
 		$location = $options['location'];
 		$id       = $options['id'];
-
 		// Check to see if field is already in the array.
 		if ( ! empty( $this->additional_fields[ $id ] ) || in_array( $id, $this->fields_locations[ $location ], true ) ) {
 			return new \WP_Error( 'woocommerce_blocks_checkout_field_already_registered', __( 'The field is already registered.', 'woo-gutenberg-products-block' ) );
@@ -532,7 +534,6 @@ class CheckoutFields {
 		}
 
 		$meta_data[ $key ] = $value;
-		// @TODO: figure out why calling `set_meta_data` on WC_Customer isn't persisting the data.
 		if ( $object instanceof \WC_Customer ) {
 			if ( ! $object->get_id() ) {
 				wc()->session->set( $meta_key, $meta_data );

@@ -17,7 +17,6 @@ use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
  * StoreApi Main Class.
  */
 final class StoreApi {
-
 	/**
 	 * Init and hook in Store API functionality.
 	 *

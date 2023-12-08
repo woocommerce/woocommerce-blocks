@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CheckoutProvider } from '@woocommerce/base-context';
 import { useCheckoutAddress } from '@woocommerce/base-context/hooks';
-import { ADDITIONAL_FIELDS_KEYS } from '@woocommerce/block-settings';
+import { ADDRESS_FIELDS_KEYS } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -89,7 +89,7 @@ describe( 'AddressForm Component', () => {
 				type={ type }
 				onChange={ setShippingAddress }
 				values={ shippingAddress }
-				fields={ ADDITIONAL_FIELDS_KEYS }
+				fields={ ADDRESS_FIELDS_KEYS }
 			/>
 		);
 	};

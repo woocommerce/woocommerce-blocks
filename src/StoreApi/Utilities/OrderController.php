@@ -380,7 +380,6 @@ class OrderController {
 	 * @param \WP_Error $errors Error object.
 	 */
 	protected function validate_address_fields( \WC_Order $order, $address_type, \WP_Error $errors ) {
-		// Ideally get_country_locale would already include additional fields.
 		$all_locales    = wc()->countries->get_country_locale();
 		$address        = $order->get_address( $address_type );
 		$current_locale = isset( $all_locales[ $address['country'] ] ) ? $all_locales[ $address['country'] ] : [];
@@ -394,10 +393,6 @@ class OrderController {
 			}
 		}
 
-		/**
-		 * We are not using wc()->counties->get_default_address_fields() here because that is filtered. Instead, this array
-		 * is based on assets/js/base/components/cart-checkout/address-form/default-fields.js
-		 */
 		$fields              = $this->additional_fields_controller->get_fields();
 		$address_fields_keys = $this->additional_fields_controller->get_address_fields_keys();
 		$address_fields      = array_filter(

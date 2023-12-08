@@ -9,8 +9,6 @@ use Automattic\WooCommerce\StoreApi\Utilities\ValidationUtils;
  * Provides a generic address schema for composition in other schemas.
  */
 abstract class AbstractAddressSchema extends AbstractSchema {
-
-
 	/**
 	 * Term properties.
 	 *
@@ -95,9 +93,8 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 	 */
 	public function sanitize_callback( $address, $request, $param ) {
 		$validation_util = new ValidationUtils();
-		// Custom Fields Note: this doesn't support Select or Checkbox yet, only Text.
-		$address = array_merge( array_fill_keys( array_keys( $this->get_properties() ), '' ), (array) $address );
-		$address = array_reduce(
+		$address         = array_merge( array_fill_keys( array_keys( $this->get_properties() ), '' ), (array) $address );
+		$address         = array_reduce(
 			array_keys( $address ),
 			function( $carry, $key ) use ( $address, $validation_util ) {
 				if ( 'country' === $key ) {

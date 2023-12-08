@@ -413,6 +413,7 @@ class Checkout extends AbstractCartRoute {
 	 */
 	private function update_customer_from_request( \WP_REST_Request $request ) {
 		$customer = wc()->customer;
+
 		// Billing address is a required field.
 		foreach ( $request['billing_address'] as $key => $value ) {
 			if ( is_callable( [ $customer, "set_billing_$key" ] ) ) {
@@ -508,7 +509,6 @@ class Checkout extends AbstractCartRoute {
 
 				// Associate customer with the order. This is done before login to ensure the order is associated with
 				// the correct customer if login fails.
-				// @TODO: copy custom shipping/billing fields from the session to the newly created customer.
 				$this->order->set_customer_id( $customer_id );
 				$this->order->save();
 

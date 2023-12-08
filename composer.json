@@ -37,7 +37,8 @@
 		},
 		"files": [
 			"src/StoreApi/deprecated.php",
-			"src/StoreApi/functions.php"
+			"src/StoreApi/functions.php",
+			"src/Domain/Services/functions.php"
 		]
 	},
 	"autoload-dev": {

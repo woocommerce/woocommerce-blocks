@@ -11,7 +11,6 @@ use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
  * Shared functionality for checkout route.
  */
 trait CheckoutTrait {
-
 	/**
 	 * Prepare a single item for response. Handles setting the status based on the payment result.
 	 *
@@ -131,7 +130,6 @@ trait CheckoutTrait {
 		$this->order->set_customer_note( $request['customer_note'] ?? '' );
 		$this->order->set_payment_method( $this->get_request_payment_method_id( $request ) );
 		$this->order->set_payment_method_title( $this->get_request_payment_method_title( $request ) );
-
 		$this->persist_additional_fields_for_order( $request );
 
 		wc_do_deprecated_action(
@@ -192,7 +190,6 @@ trait CheckoutTrait {
 	 * @throws RouteException On error.
 	 */
 	private function persist_additional_fields_for_order( \WP_REST_Request $request ) {
-		// @TODO: finish this function to actually throw errors.
 		$errors         = new \WP_Error();
 		$request_fields = $request['additional_fields'] ?? [];
 		foreach ( $request_fields as $key => $value ) {
