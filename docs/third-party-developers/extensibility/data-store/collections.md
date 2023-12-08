@@ -2,19 +2,19 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Overview](#overview)
-- [Usage](#usage)
-- [Actions](#actions)
-   	- [receiveCollection( namespace, resourceName, queryString, ids = \[\], items = \[\], replace = false )](#receivecollection-namespace-resourcename-querystring-ids---items---replace--false-)
-   	- [receiveCollectionError](#receivecollectionerror)
-   	- [receiveLastModified](#receivelastmodified)
-- [Selectors](#selectors)
-   	- [getFromState](#getfromstate)
-   	- [getCollection](#getcollection)
-   	- [getCollectionHeader](#getcollectionheader)
-   	- [getCollectionHeaders](#getcollectionheaders)
-   	- [getCollectionError](#getcollectionerror)
-   	- [getCollectionLastModified](#getcollectionlastmodified)
+-   [Overview](#overview)
+-   [Usage](#usage)
+-   [Actions](#actions)
+    -   [receiveCollection( namespace, resourceName, queryString, ids = \[\], items = \[\], replace = false )](#receivecollection-namespace-resourcename-querystring-ids---items---replace--false-)
+    -   [receiveCollectionError](#receivecollectionerror)
+    -   [receiveLastModified](#receivelastmodified)
+-   [Selectors](#selectors)
+   	-   [getFromState](#getfromstate)
+   	-   [getCollection](#getcollection)
+   	-   [getCollectionHeader](#getcollectionheader)
+   	-   [getCollectionHeaders](#getcollectionheaders)
+   	-   [getCollectionError](#getcollectionerror)
+   	-   [getCollectionLastModified](#getcollectionlastmodified)
 
 ## Overview
 
