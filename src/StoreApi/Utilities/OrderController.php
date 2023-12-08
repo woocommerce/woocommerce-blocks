@@ -393,7 +393,7 @@ class OrderController {
 			}
 		}
 
-		$fields              = $this->additional_fields_controller->get_fields();
+		$fields              = $this->additional_fields_controller->get_additional_fields();
 		$address_fields_keys = $this->additional_fields_controller->get_address_fields_keys();
 		$address_fields      = array_filter(
 			$fields,

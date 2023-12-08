@@ -266,7 +266,7 @@ class CheckoutSchema extends AbstractSchema {
 	protected function get_additional_fields_schema() {
 		$additional_fields_keys = $this->additional_fields_controller->get_additional_fields_keys();
 
-		$fields = $this->additional_fields_controller->get_fields();
+		$fields = $this->additional_fields_controller->get_additional_fields();
 
 		$additional_fields = array_filter(
 			$fields,

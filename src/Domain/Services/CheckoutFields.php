@@ -223,7 +223,7 @@ class CheckoutFields {
 	 * Add fields data to the asset data registry.
 	 */
 	public function add_fields_data() {
-		$this->asset_data_registry->add( 'defaultFields', $this->get_fields(), true );
+		$this->asset_data_registry->add( 'defaultFields', array_merge( $this->get_core_fields(), $this->get_additional_fields() ), true );
 		$this->asset_data_registry->add( 'addressFieldsLocations', $this->fields_locations, true );
 	}
 
@@ -280,12 +280,21 @@ class CheckoutFields {
 	}
 
 	/**
-	 * Returns an array of all fields.
+	 * Returns an array of all core fields.
 	 *
 	 * @return array An array of fields.
 	 */
-	public function get_fields() {
-		return array_merge( $this->core_fields, $this->additional_fields );
+	public function get_core_fields() {
+		return $this->core_fields;
+	}
+
+	/**
+	 * Returns an array of all additional fields.
+	 *
+	 * @return array An array of fields.
+	 */
+	public function get_additional_fields() {
+		return $this->additional_fields;
 	}
 
 	/**
