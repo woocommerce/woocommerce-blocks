@@ -156,10 +156,11 @@ export const isAddressComplete = (
 	if ( ! address.country ) {
 		return false;
 	}
-	const fields = Object.keys(
-		defaultAddressFields
-	) as ( keyof AddressFields )[];
-	const addressFields = prepareAddressFields( fields, {}, address.country );
+	const addressFields = prepareAddressFields(
+		ADDRESS_FIELDS_KEYS,
+		{},
+		address.country
+	);
 
 	return addressFields.every(
 		( { key = '', hidden = false, required = false } ) => {
