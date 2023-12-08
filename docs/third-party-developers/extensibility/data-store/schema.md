@@ -101,7 +101,7 @@ This will returns the route from the given slice of the route state.
 
 ```js
 const store = select( SCHEMA_STORE_KEY );
-const route = store.getRouteFromResourceEntries(stateSlice, ids);
+const route = store.getRouteFromResourceEntries( stateSlice, ids );
 ```
 
 ### assembleRouteWithPlaceholders
@@ -122,7 +122,7 @@ This will return the assembled route with placeholders.
 
 ```js
 const store = select( SCHEMA_STORE_KEY );
-const route = store.assembleRouteWithPlaceholders(route, routePlaceholders, ids );
+const route = store.assembleRouteWithPlaceholders( route, routePlaceholders, ids );
 ```
 
 <!-- FEEDBACK -->
