@@ -203,7 +203,7 @@ This selector will return the last modified date for a collection.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/collections' );
+const store = select( COLLECTIONS_STORE_KEY );
 const lastModified = store.getCollectionLastModified(state, namespace, resourceName, queryString);
 ```
 
