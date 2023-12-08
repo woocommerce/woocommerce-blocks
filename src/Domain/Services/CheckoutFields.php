@@ -357,9 +357,7 @@ class CheckoutFields {
 	 *
 	 * @param string $key The field key.
 	 * @param mixed  $value The field value.
-	 * @param string $location The location to validate the field for (address|contact|additional).
-	 *
-	 * TODO: we might not need the location param here.
+	 * @param string $location The gslocation to validate the field for (address|contact|additional).
 	 *
 	 * @return true|\WP_Error True if the field is valid, a WP_Error otherwise.
 	 */
