@@ -5,6 +5,7 @@
 -   [Overview](#overview)
 -   [Usage](#usage)
 -   [Selectors](#selectors)
+    -   [getState](#getstate)
     -   [isPaymentIdle](#ispaymentidle)
     -   [isExpressPaymentStarted](#isexpresspaymentstarted)
     -   [isPaymentProcessing](#ispaymentprocessing)
@@ -18,12 +19,11 @@
     -   [getPaymentMethodData](#getpaymentmethoddata)
     -   [getSavedPaymentMethods](#getsavedpaymentmethods)
     -   [getActiveSavedPaymentMethods](#getactivesavedpaymentmethods)
+    -   [getIncompatiblePaymentMethods](#getincompatiblepaymentmethods)
     -   [getShouldSavePaymentMethod](#getshouldsavepaymentmethod)
     -   [paymentMethodsInitialized](#paymentmethodsinitialized)
     -   [expressPaymentMethodsInitialized](#expresspaymentmethodsinitialized)
-    -   [getPaymentResult](#getpaymentresult)
-    -   [getIncompatiblePaymentMethods](#getincompatiblepaymentmethods)
-    -   [getState](#getstate)
+   	-   [getPaymentResult](#getpaymentresult)
     -   [(@deprecated) isPaymentPristine](#deprecated-ispaymentpristine)
     -   [(@deprecated) isPaymentStarted](#deprecated-ispaymentstarted)
     -   [(@deprecated) isPaymentSuccess](#deprecated-ispaymentsuccess)
@@ -104,6 +104,38 @@ const { PAYMENT_STORE_KEY } = window.wc.wcBlocksData;
 ```
 
 ## Selectors
+
+### getState
+
+Returns the current state of the payment store.
+
+> 🚨 Instead of using this selector, the focused selectors should be used. This selector should only be used to mock selectors in our unit tests.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `object`: The current state of the payment store with the following properties:
+   	-  _status_ `string`: The current status of the payment process. Possible values are: `idle`, `started`, `processing`, `ready`, `error`, `success`, `failed`.
+   	-  _activePaymentMethod_ `string`: The ID of the active payment method.
+   	-  _activeSavedToken_ `string`: The ID of the active saved token.
+   	-  _availablePaymentMethods_ `object`: The available payment methods. This is currently just an object keyed by the payment method IDs. Each member contains a `name` entry with the payment method ID as its value.
+   	-  _availableExpressPaymentMethods_ `object`: The available express payment methods. This is currently just an object keyed by the payment method IDs. Each member contains a `name` entry with the payment method ID as its value.
+   	-  _savedPaymentMethods_ `object`: The saved payment methods for the current customer. This is an object, it will be specific to each payment method. As an example, Stripe's saved tokens are returned like so:
+   	- _paymentMethodData_ `object`: The current payment method data. This is specific to each payment method so further details cannot be provided here.
+   	- _paymentResult_ `object`: An object with the following properties:
+      		- _message_ `string`: The message returned by the payment gateway.
+      		- _paymentStatus_ `string`: The status of the payment. Possible values are: `success`, `failure`, `pending`, `error`, `not set`.
+      		- _paymentDetails_ `object`: The payment details returned by the payment gateway.
+      		- _redirectUrl_ `string`: The URL to redirect to after checkout is complete.
+   	- _paymentMethodsInitialized_ `boolean`: True if the payment methods have been initialized, false otherwise.
+   	- _expressPaymentMethodsInitialized_ `boolean`: True if the express payment methods have been initialized, false otherwise.
+   	- _shouldSavePaymentMethod_ `boolean`: True if the payment method should be saved, false otherwise.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( PAYMENT_STORE_KEY );
+const currentState = store.getState();
+```
 
 ### isPaymentIdle
 
@@ -376,6 +408,22 @@ const store = select( PAYMENT_STORE_KEY );
 const activeSavedPaymentMethods = store.getActiveSavedPaymentMethods();
 ```
 
+### getIncompatiblePaymentMethods
+
+Returns the list of payment methods that are incompatible with Checkout block.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `object`: A list of incompatible payment methods with the following properties, or an empty object if no payment or express payment methods have been initialized:
+   	-  _name_ `string`: The name of the payment method.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( PAYMENT_STORE_KEY );
+const incompatiblePaymentMethods = store.getIncompatiblePaymentMethods();
+```
+
 ### getShouldSavePaymentMethod
 
 Returns whether the payment method should be saved to the customer's account.
@@ -444,54 +492,6 @@ Returns the result of the last payment attempt.
 ```js
 const store = select( PAYMENT_STORE_KEY );
 const paymentResult = store.getPaymentResult();
-```
-
-### getIncompatiblePaymentMethods
-
-Returns the list of payment methods that are incompatible with Checkout block.
-
-#### _Returns_ <!-- omit in toc -->
-
--   `object`: A list of incompatible payment methods with the following properties, or an empty object if no payment or express payment methods have been initialized:
-   	-  _name_ `string`: The name of the payment method.
-
-#### _Example_ <!-- omit in toc -->
-
-```js
-const store = select( PAYMENT_STORE_KEY );
-const incompatiblePaymentMethods = store.getIncompatiblePaymentMethods();
-```
-
-### getState
-
-Returns the current state of the payment store.
-
-> 🚨 Instead of using this selector, the focused selectors should be used. This selector should only be used to mock selectors in our unit tests.
-
-#### _Returns_ <!-- omit in toc -->
-
--   `object`: The current state of the payment store with the following properties:
-   	-  _status_ `string`: The current status of the payment process. Possible values are: `idle`, `started`, `processing`, `ready`, `error`, `success`, `failed`.
-   	-  _activePaymentMethod_ `string`: The ID of the active payment method.
-   	-  _activeSavedToken_ `string`: The ID of the active saved token.
-   	-  _availablePaymentMethods_ `object`: The available payment methods. This is currently just an object keyed by the payment method IDs. Each member contains a `name` entry with the payment method ID as its value.
-   	-  _availableExpressPaymentMethods_ `object`: The available express payment methods. This is currently just an object keyed by the payment method IDs. Each member contains a `name` entry with the payment method ID as its value.
-   	-  _savedPaymentMethods_ `object`: The saved payment methods for the current customer. This is an object, it will be specific to each payment method. As an example, Stripe's saved tokens are returned like so:
-   	- _paymentMethodData_ `object`: The current payment method data. This is specific to each payment method so further details cannot be provided here.
-   	- _paymentResult_ `object`: An object with the following properties:
-      		- _message_ `string`: The message returned by the payment gateway.
-      		- _paymentStatus_ `string`: The status of the payment. Possible values are: `success`, `failure`, `pending`, `error`, `not set`.
-      		- _paymentDetails_ `object`: The payment details returned by the payment gateway.
-      		- _redirectUrl_ `string`: The URL to redirect to after checkout is complete.
-   	- _paymentMethodsInitialized_ `boolean`: True if the payment methods have been initialized, false otherwise.
-   	- _expressPaymentMethodsInitialized_ `boolean`: True if the express payment methods have been initialized, false otherwise.
-   	- _shouldSavePaymentMethod_ `boolean`: True if the payment method should be saved, false otherwise.
-
-#### _Example_ <!-- omit in toc -->
-
-```js
-const store = select( PAYMENT_STORE_KEY );
-const currentState = store.getState();
 ```
 
 ### (@deprecated) isPaymentPristine
