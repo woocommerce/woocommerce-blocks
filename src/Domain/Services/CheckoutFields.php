@@ -23,7 +23,7 @@ class CheckoutFields {
 	 *
 	 * @var array
 	 */
-	private $additional_fields;
+	private $additional_fields = [];
 
 	/**
 	 * Fields locations.
