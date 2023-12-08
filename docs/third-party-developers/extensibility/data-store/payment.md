@@ -466,6 +466,8 @@ const incompatiblePaymentMethods = store.getIncompatiblePaymentMethods();
 
 Returns the current state of the payment store.
 
+> 🚨 Instead of using this selector, the focused selectors should be used. This selector should only be used to mock selectors in our unit tests.
+
 #### _Returns_ <!-- omit in toc -->
 
 -   `object`: The current state of the payment store with the following properties:
