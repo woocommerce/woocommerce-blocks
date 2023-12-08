@@ -437,3 +437,41 @@ test.describe( 'Shopper → Checkout block → Place Order', () => {
 		).toBeVisible();
 	} );
 } );
+
+test.describe( 'Checkout Form Errors', () => {
+	test.use( {
+		storageState: process.env.CUSTOMERSTATE,
+	} );
+	test( 'User can see errors when form is incomplete', async ( {
+		frontendUtils,
+		page,
+	} ) => {
+		await frontendUtils.emptyCart();
+		await frontendUtils.goToShop();
+		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
+		await frontendUtils.goToCheckout();
+
+		await page.getByLabel( 'Email address' ).clear();
+		await page.getByRole( 'button', { name: 'Place order' } ).click();
+
+		// Verify that all required fields show the correct warning.
+		await expect(
+			page.getByText( 'Please enter a valid email address' )
+		).toBeVisible();
+		await expect(
+			page.getByText( 'Please enter a valid first name' )
+		).toBeVisible();
+		await expect(
+			page.getByText( 'Please enter a valid last name' )
+		).toBeVisible();
+		await expect(
+			page.getByText( 'Please enter a valid address' )
+		).toBeVisible();
+		await expect(
+			page.getByText( 'Please enter a valid city' )
+		).toBeVisible();
+		await expect(
+			page.getByText( 'Please enter a valid zip code' )
+		).toBeVisible();
+	} );
+} );
