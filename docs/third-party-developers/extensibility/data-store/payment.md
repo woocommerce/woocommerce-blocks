@@ -458,7 +458,7 @@ Returns the list of payment methods that are incompatible with Checkout block.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const incompatiblePaymentMethods = store.getIncompatiblePaymentMethods();
 ```
 
