@@ -452,7 +452,7 @@ Returns the list of payment methods that are incompatible with Checkout block.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `object`: A list of incompatible payment methods with the following properties:
+-   `object`: A list of incompatible payment methods with the following properties, or an empty object if no payment or express payment methods have been initialized:
    	-  _name_ `string`: The name of the payment method.
 
 #### _Example_ <!-- omit in toc -->
