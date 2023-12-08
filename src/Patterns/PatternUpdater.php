@@ -11,11 +11,6 @@ use WP_Error;
 class PatternUpdater {
 
 	/**
-	 * The patterns content option name.
-	 */
-	const WC_BLOCKS_PATTERNS_CONTENT = 'wc_blocks_patterns_content';
-
-	/**
 	 * All patterns that are actively in use in the Assembler.
 	 */
 	const WC_PATTERNS_IN_THE_ASSEMBLER = [
@@ -23,8 +18,6 @@ class PatternUpdater {
 		'woocommerce-blocks/hero-product-3-split',
 		'woocommerce-blocks/hero-product-chessboard',
 		'woocommerce-blocks/hero-product-split',
-		'woocommerce-blocks/product-query-product-gallery',
-		'woocommerce-blocks/product-collection-3-columns',
 		'woocommerce-blocks/product-collection-4-columns',
 		'woocommerce-blocks/product-collection-5-columns',
 		'woocommerce-blocks/social-follow-us-in-social-media',
@@ -43,6 +36,10 @@ class PatternUpdater {
 	 * @return bool|WP_Error
 	 */
 	public function generate_content( $ai_connection, $token, $images, $business_description ) {
+		if ( empty( $images ) ) {
+			return new \WP_Error( 'images_not_found', __( 'No images provided for generating AI content.', 'woo-gutenberg-products-block' ) );
+		}
+
 		if ( is_wp_error( $images ) ) {
 			return $images;
 		}

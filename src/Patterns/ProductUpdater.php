@@ -8,6 +8,44 @@ use WP_Error;
  * Pattern Images class.
  */
 class ProductUpdater {
+	const DUMMY_PRODUCTS = [
+		[
+			'title'       => 'Vintage Typewriter',
+			'image'       => 'images/pattern-placeholders/writing-typing-keyboard-technology-white-vintage.jpg',
+			'description' => 'A hit spy novel or a love letter? Anything you type using this vintage typewriter from the 20s is bound to make a mark.',
+			'price'       => 90,
+		],
+		[
+			'title'       => 'Leather-Clad Leisure Chair',
+			'image'       => 'images/pattern-placeholders/table-wood-house-chair-floor-window.jpg',
+			'description' => 'Sit back and relax in this comfy designer chair. High-grain leather and steel frame add luxury to your your leisure.',
+			'price'       => 249,
+		],
+		[
+			'title'       => 'Black and White Summer Portrait',
+			'image'       => 'images/pattern-placeholders/white-black-black-and-white-photograph-monochrome-photography.jpg',
+			'description' => 'This 24" x 30" high-quality print just exudes summer. Hang it on the wall and forget about the world outside.',
+			'price'       => 115,
+		],
+		[
+			'title'       => '3-Speed Bike',
+			'image'       => 'images/pattern-placeholders/road-sport-vintage-wheel-retro-old.jpg',
+			'description' => 'Zoom through the streets on this premium 3-speed bike. Manufactured and assembled in Germany in the 80s.',
+			'price'       => 115,
+		],
+		[
+			'title'       => 'Hi-Fi Headphones',
+			'image'       => 'images/pattern-placeholders/man-person-music-black-and-white-white-photography.jpg',
+			'description' => 'Experience your favorite songs in a new way with these premium hi-fi headphones.',
+			'price'       => 125,
+		],
+		[
+			'title'       => 'Retro Glass Jug (330 ml)',
+			'image'       => 'images/pattern-placeholders/drinkware-liquid-tableware-dishware-bottle-fluid.jpg',
+			'description' => 'Thick glass and a classic silhouette make this jug a must-have for any retro-inspired kitchen.',
+			'price'       => 115,
+		],
+	];
 
 	/**
 	 * Generate AI content and assign AI-managed images to Products.
@@ -50,6 +88,12 @@ class ProductUpdater {
 			return $dummy_products_to_update;
 		}
 
+		if ( empty( $dummy_products_to_update ) ) {
+			return array(
+				'product_content' => array(),
+			);
+		}
+
 		$products_information_list = $this->assign_ai_selected_images_to_dummy_products( $dummy_products_to_update, $images );
 
 		return $this->assign_ai_generated_content_to_dummy_products( $ai_connection, $token, $products_information_list, $business_description );
@@ -73,9 +117,8 @@ class ProductUpdater {
 		$dummy_products       = $this->fetch_product_ids( 'dummy' );
 		$dummy_products_count = count( $dummy_products );
 		$products_to_create   = max( 0, 6 - $real_products_count - $dummy_products_count );
-
 		while ( $products_to_create > 0 ) {
-			$this->create_new_product();
+			$this->create_new_product( self::DUMMY_PRODUCTS[ $products_to_create - 1 ] );
 			$products_to_create--;
 		}
 
@@ -146,19 +189,32 @@ class ProductUpdater {
 	/**
 	 * Creates a new product and assigns the _headstart_post meta to it.
 	 *
-	 * @return bool|int
+	 * @param array $product_data The product data.
+	 *
+	 * @return bool|int|\WP_Error
 	 */
-	public function create_new_product() {
-		$product      = new \WC_Product();
-		$random_price = wp_rand( 5, 50 );
+	public function create_new_product( $product_data ) {
+		$product = new \WC_Product();
 
-		$product->set_name( 'My Awesome Product' );
+		$product->set_name( $product_data['title'] );
 		$product->set_status( 'publish' );
-		$product->set_description( 'Product description' );
-		$product->set_price( $random_price );
-		$product->set_regular_price( $random_price );
+		$product->set_description( $product_data['description'] );
+		$product->set_price( $product_data['price'] );
+		$product->set_regular_price( $product_data['price'] );
 
 		$saved_product = $product->save();
+
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		$product_image_id = media_sideload_image( plugins_url( $product_data['image'], dirname( __DIR__ ) ), $product->get_id(), $product_data['title'], 'id' );
+		if ( is_wp_error( $product_image_id ) ) {
+			return new \WP_Error( 'error_uploading_image', $product_image_id->get_error_message() );
+		}
+
+		$product->set_image_id( $product_image_id );
+		$product->save();
 
 		return update_post_meta( $saved_product, '_headstart_post', true );
 	}
@@ -251,7 +307,28 @@ class ProductUpdater {
 
 		$product->set_name( $ai_generated_product_content['title'] );
 		$product->set_description( $ai_generated_product_content['description'] );
+		$product->set_regular_price( $ai_generated_product_content['price'] );
+		$product->set_slug( sanitize_title( $ai_generated_product_content['title'] ) );
+		$product->save();
 
+		$update_product_image = $this->update_product_image( $product, $ai_generated_product_content );
+
+		if ( is_wp_error( $update_product_image ) ) {
+			return $update_product_image;
+		}
+
+		$this->create_hash_for_ai_modified_product( $product );
+	}
+
+	/**
+	 * Update the product images with the AI-generated image.
+	 *
+	 * @param \WC_Product $product The product.
+	 * @param array       $ai_generated_product_content The AI-generated product content.
+	 *
+	 * @return string|true
+	 */
+	public function update_product_image( $product, $ai_generated_product_content ) {
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -271,7 +348,7 @@ class ProductUpdater {
 		$product->set_image_id( $product_image_id );
 		$product->save();
 
-		$this->create_hash_for_ai_modified_product( $product );
+		return true;
 	}
 
 	/**
@@ -286,12 +363,13 @@ class ProductUpdater {
 		$products_information_list = [];
 		$dummy_products_count      = count( $dummy_products_to_update );
 		for ( $i = 0; $i < $dummy_products_count; $i ++ ) {
-			$image_src = $ai_selected_images[ $i ]['URL'] ?? plugins_url( 'woocommerce-blocks/images/block-placeholders/product-image-gallery.svg' );
+			$image_src = $ai_selected_images[ $i ]['URL'] ?? '';
 			$image_alt = $ai_selected_images[ $i ]['title'] ?? '';
 
 			$products_information_list[] = [
 				'title'       => 'A product title',
 				'description' => 'A product description',
+				'price'       => 'The product price',
 				'image'       => [
 					'src' => esc_url( $image_src ),
 					'alt' => esc_attr( $image_alt ),
@@ -321,20 +399,24 @@ class ProductUpdater {
 		$prompts = [];
 		foreach ( $products_information_list as $product_information ) {
 			if ( ! empty( $product_information['image']['alt'] ) ) {
-				$prompts[] = sprintf( 'Generate a product name that exactly matches the following image description: "%s" and also is related to the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans. The returned result should not refer to people, only objects.', $product_information['image']['alt'], $business_description );
+				$prompts[] = sprintf( 'Generate a product name for a product that could be sold in a store and could be associated with the following image description: "%s" and also is related to the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans. The returned result should not refer to people, only objects.', $product_information['image']['alt'], $business_description );
 			} else {
-				$prompts[] = sprintf( 'Generate a product name that matches the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans.', $business_description );
+				$prompts[] = sprintf( 'Generate a product name for a product that could be sold in a store and matches the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans.', $business_description );
 			}
 		}
 
 		$expected_results_format = [];
 		foreach ( $products_information_list as $index => $product ) {
-			$expected_results_format[ $index ] = '';
+			$expected_results_format[ $index ] = [
+				'title' => '',
+				'price' => '',
+			];
 		}
 
 		$formatted_prompt = sprintf(
-			"Generate two-words titles for products using the following prompts for each one of them: '%s'. Ensure each entry is unique and does not repeat the given examples. Do not include backticks or the word json in the response. Here's an example format: '%s'.",
+			"Generate two-words titles and price for products using the following prompts for each one of them: '%s'. Ensure each entry is unique and does not repeat the given examples. It should be a number and it's not too low or too high for the corresponding product title being advertised. Convert the price to this currency: '%s'. Do not include backticks or the word json in the response. Here's an example format: '%s'.",
 			wp_json_encode( $prompts ),
+			get_woocommerce_currency(),
 			wp_json_encode( $expected_results_format )
 		);
 
@@ -343,7 +425,6 @@ class ProductUpdater {
 		while ( $ai_request_retries < 5 && ! $success ) {
 			$ai_request_retries ++;
 			$ai_response = $ai_connection->fetch_ai_response( $token, $formatted_prompt, 30 );
-
 			if ( is_wp_error( $ai_response ) ) {
 				continue;
 			}
@@ -381,7 +462,8 @@ class ProductUpdater {
 			}
 
 			foreach ( $products_information_list as $index => $product_information ) {
-				$products_information_list[ $index ]['title'] = str_replace( '"', '', $completion[ $index ] );
+				$products_information_list[ $index ]['title'] = str_replace( '"', '', $completion[ $index ]['title'] );
+				$products_information_list[ $index ]['price'] = $completion[ $index ]['price'];
 			}
 
 			$success = true;
@@ -394,5 +476,33 @@ class ProductUpdater {
 		return array(
 			'product_content' => $products_information_list,
 		);
+	}
+
+	/**
+	 * Reset the products content.
+	 */
+	public function reset_products_content() {
+		$dummy_products_to_update = $this->fetch_dummy_products_to_update();
+		$i                        = 0;
+		foreach ( $dummy_products_to_update as $product ) {
+			$product->set_name( self::DUMMY_PRODUCTS[ $i ]['title'] );
+			$product->set_description( self::DUMMY_PRODUCTS[ $i ]['description'] );
+			$product->set_regular_price( self::DUMMY_PRODUCTS[ $i ]['price'] );
+			$product->set_slug( sanitize_title( self::DUMMY_PRODUCTS[ $i ]['title'] ) );
+			$product->save();
+
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+
+			$product_image_id = media_sideload_image( plugins_url( self::DUMMY_PRODUCTS[ $i ]['image'], dirname( __DIR__ ) ), $product->get_id(), self::DUMMY_PRODUCTS[ $i ]['title'], 'id' );
+			$product_image_id = $product->set_image_id( $product_image_id );
+
+			$product->save();
+
+			$this->create_hash_for_ai_modified_product( $product );
+
+			$i++;
+		}
 	}
 }

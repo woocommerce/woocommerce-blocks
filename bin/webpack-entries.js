@@ -75,9 +75,7 @@ const blocks = {
 	},
 	'product-new': {},
 	'product-on-sale': {},
-	'product-query': {
-		isExperimental: true,
-	},
+	'product-query': {},
 	'product-results-count': {},
 	'product-search': {},
 	'product-tag': {},
@@ -242,8 +240,6 @@ const entries = {
 			'./assets/js/extensions/google-analytics/index.ts',
 		'wc-shipping-method-pickup-location':
 			'./assets/js/extensions/shipping-methods/pickup-location/index.js',
-		'wc-blocks-jetpack-woocommerce-analytics':
-			'./assets/js/extensions/jetpack/woocommerce-analytics/index.ts',
 	},
 	editor: {
 		'wc-blocks-classic-template-revert-button':

@@ -33,16 +33,20 @@ class ProductGalleryUtils {
 				$size = $crop_images ? self::CROP_IMAGE_SIZE_NAME : $size;
 
 				foreach ( $all_product_gallery_image_ids as $product_gallery_image_id ) {
-					if ( $crop_images ) {
-						self::maybe_generate_intermediate_image( $product_gallery_image_id, self::CROP_IMAGE_SIZE_NAME );
-					}
+					if ( '0' !== $product_gallery_image_id ) {
+						if ( $crop_images ) {
+							self::maybe_generate_intermediate_image( $product_gallery_image_id, self::CROP_IMAGE_SIZE_NAME );
+						}
 
-					$product_image_html = wp_get_attachment_image(
-						$product_gallery_image_id,
-						$size,
-						false,
-						$attributes
-					);
+						$product_image_html = wp_get_attachment_image(
+							$product_gallery_image_id,
+							$size,
+							false,
+							$attributes
+						);
+					} else {
+						$product_image_html = self::get_product_image_placeholder_html( $size, $attributes, $crop_images );
+					}
 
 					if ( $wrapper_class ) {
 						$product_image_html = '<div class="' . $wrapper_class . '">' . $product_image_html . '</div>';
@@ -80,6 +84,11 @@ class ProductGalleryUtils {
 		$featured_image_id = $product->get_image_id();
 		// All other product gallery images.
 		$product_gallery_image_ids = $product->get_gallery_image_ids();
+
+		// If the Product image is not set, we need to set it to a placeholder image.
+		if ( '' === $featured_image_id ) {
+			$featured_image_id = '0';
+		}
 
 		// We don't want to show the same image twice, so we have to remove the featured image from the gallery if it's there.
 		$unique_image_ids = array_unique(
@@ -144,5 +153,29 @@ class ProductGalleryUtils {
 		$image_metadata['sizes'][ $size ] = $new_image_metadata;
 
 		wp_update_attachment_metadata( $attachment_id, $image_metadata );
+	}
+
+	/**
+	 * Get the product image placeholder HTML.
+	 *
+	 * @param string $size Image size.
+	 * @param array  $attributes Attributes.
+	 * @param bool   $crop_images Whether to crop images.
+	 * @return string
+	 */
+	public static function get_product_image_placeholder_html( $size, $attributes, $crop_images ) {
+		$placeholder_image_id = get_option( 'woocommerce_placeholder_image', 0 );
+
+		if ( ! $placeholder_image_id ) {
+
+			// Return default fallback WooCommerce placeholder image.
+			return wc_placeholder_img( array( '', '' ), $attributes );
+		}
+
+		if ( $crop_images ) {
+			self::maybe_generate_intermediate_image( $placeholder_image_id, self::CROP_IMAGE_SIZE_NAME );
+		}
+
+		return wp_get_attachment_image( $placeholder_image_id, $size, false, $attributes );
 	}
 }
