@@ -198,7 +198,7 @@ This selector will return the last modified date for a collection.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `Date`: The last modified date for the collection, or `0` if there was no last modified date.
+-   `number`: The last modified date for the collection, or `0` if there was no last modified date.
 
 #### _Example_ <!-- omit in toc -->
 
