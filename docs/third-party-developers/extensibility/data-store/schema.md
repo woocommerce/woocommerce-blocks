@@ -121,7 +121,7 @@ This will return the assembled route with placeholders.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/schema' );
+const store = select( SCHEMA_STORE_KEY );
 const route = store.assembleRouteWithPlaceholders(route, routePlaceholders, ids);
 ```
 
