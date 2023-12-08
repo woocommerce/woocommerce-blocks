@@ -245,12 +245,16 @@ class CheckoutSchema extends AbstractSchema {
 	 * @return array
 	 */
 	protected function get_additional_fields_response( \WC_Order $order ) {
-		$additional_fields_keys = array_merge( $this->additional_fields_controller->get_contact_fields_keys(), $this->additional_fields_controller->get_additional_fields_keys() );
-
+		$fields   = $this->additional_fields_controller->get_all_fields_from_order( $order );
 		$response = [];
-		foreach ( $additional_fields_keys as $key ) {
-			$response[ $key ] = $this->additional_fields_controller->get_field_from_order( $key, $order );
+
+		foreach ( $fields as $key => $value ) {
+			if ( 0 === strpos( $key, '/billing/' ) || 0 === strpos( $key, '/shipping/' ) ) {
+				continue;
+			}
+			$response[ $key ] = $value;
 		}
+
 		return $response;
 	}
 

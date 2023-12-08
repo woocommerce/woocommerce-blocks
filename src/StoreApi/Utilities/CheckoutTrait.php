@@ -199,7 +199,7 @@ trait CheckoutTrait {
 				$errors[] = $e->getMessage();
 				continue;
 			}
-			$this->additional_fields_controller->persist_field( $key, $value, $this->order, true );
+			$this->additional_fields_controller->persist_field_for_order( $key, $value, $this->order, true );
 		}
 
 		if ( $errors->has_errors() ) {

@@ -220,21 +220,6 @@ class CheckoutFields {
 	}
 
 	/**
-	 * Update the default locale with additional fields without country limitations.
-	 *
-	 * @param array $locale The locale to update.
-	 * @return mixed
-	 */
-	public function update_default_locale_with_fields( $locale ) {
-		foreach ( $this->fields_locations['address'] as $field_id => $additional_field ) {
-			if ( empty( $locale[ $field_id ] ) ) {
-				$locale[ $field_id ] = $additional_field;
-			}
-		}
-		return $locale;
-	}
-
-	/**
 	 * Add fields data to the asset data registry.
 	 */
 	public function add_fields_data() {
@@ -304,16 +289,18 @@ class CheckoutFields {
 	}
 
 	/**
-	 * Returns an array of fields for a given group.
+	 * Update the default locale with additional fields without country limitations.
 	 *
-	 * @param string $location The location to get fields for (address|contact|additional).
-	 *
-	 * @return array An array of fields.
+	 * @param array $locale The locale to update.
+	 * @return mixed
 	 */
-	public function get_fields_for_location( $location ) {
-		if ( in_array( $location, array_keys( $this->fields_locations ), true ) ) {
-			return $this->fields_locations[ $location ];
+	public function update_default_locale_with_fields( $locale ) {
+		foreach ( $this->fields_locations['address'] as $field_id => $additional_field ) {
+			if ( empty( $locale[ $field_id ] ) ) {
+				$locale[ $field_id ] = $additional_field;
+			}
 		}
+		return $locale;
 	}
 
 	/**
@@ -341,6 +328,19 @@ class CheckoutFields {
 	 */
 	public function get_additional_fields_keys() {
 		return $this->fields_locations['additional'];
+	}
+
+	/**
+	 * Returns an array of fields for a given group.
+	 *
+	 * @param string $location The location to get fields for (address|contact|additional).
+	 *
+	 * @return array An array of fields.
+	 */
+	public function get_fields_for_location( $location ) {
+		if ( in_array( $location, array_keys( $this->fields_locations ), true ) ) {
+			return $this->fields_locations[ $location ];
+		}
 	}
 
 	/**
@@ -395,7 +395,7 @@ class CheckoutFields {
 	 *
 	 * @return void
 	 */
-	public function persist_field( $key, $value, $order, $set_customer = true ) {
+	public function persist_field_for_order( $key, $value, $order, $set_customer = true ) {
 		$this->set_array_meta( $key, $value, $order );
 		if ( $set_customer ) {
 			if ( isset( wc()->customer ) ) {
@@ -403,7 +403,6 @@ class CheckoutFields {
 			} elseif ( $order->get_customer_id() ) {
 				$customer = new \WC_Customer( $order->get_customer_id() );
 				$this->set_array_meta( $key, $value, $customer );
-				$customer->save();
 			}
 		}
 	}
@@ -419,82 +418,6 @@ class CheckoutFields {
 	 */
 	public function persist_field_for_customer( $key, $value, $customer ) {
 		$this->set_array_meta( $key, $value, $customer );
-	}
-
-	/**
-	 * Returns a field value for a given object.
-	 *
-	 * @param string       $key The field key.
-	 * @param \WC_Customer $customer The customer to get the field value for.
-	 * @param string       $group The group to get the field value for (shipping|billing|'') in which '' refers to the additional group.
-	 *
-	 * @return mixed The field value.
-	 */
-	public function get_field_from_customer( $key, $customer, $group = '' ) {
-		return $this->get_field_from_object( $key, $customer, $group );
-	}
-
-	/**
-	 * Returns a field value for a given order.
-	 *
-	 * @param string    $field The field key.
-	 * @param \WC_Order $order The order to get the field value for.
-	 * @param string    $group The group to get the field value for (shipping|billing|'') in which '' refers to the additional group.
-	 *
-	 * @return mixed The field value.
-	 */
-	public function get_field_from_order( $field, $order, $group = '' ) {
-		return $this->get_field_from_object( $field, $order, $group );
-	}
-
-	/**
-	 * Returns an array of all fields values for a given customer.
-	 *
-	 * @param \WC_Customer $customer The customer to get the fields for.
-	 *
-	 * @return array An array of fields.
-	 */
-	public function get_all_fields_from_customer( $customer ) {
-		$customer_id = $customer->get_id();
-		$meta_data   = [
-			'billing'    => [],
-			'shipping'   => [],
-			'additional' => [],
-		];
-		if ( ! $customer_id ) {
-			if ( isset( wc()->session ) ) {
-				$meta_data['billing']    = wc()->session->get( self::BILLING_FIELDS_KEY, [] );
-				$meta_data['shipping']   = wc()->session->get( self::SHIPPING_FIELDS_KEY, [] );
-				$meta_data['additional'] = wc()->session->get( self::ADDITIONAL_FIELDS_KEY, [] );
-			}
-		} else {
-			$meta_data['billing']    = get_user_meta( $customer_id, self::BILLING_FIELDS_KEY, true );
-			$meta_data['shipping']   = get_user_meta( $customer_id, self::SHIPPING_FIELDS_KEY, true );
-			$meta_data['additional'] = get_user_meta( $customer_id, self::ADDITIONAL_FIELDS_KEY, true );
-		}
-
-		return $this->format_meta_data( $meta_data );
-	}
-
-	/**
-	 * Returns an array of all fields values for a given order.
-	 *
-	 * @param \WC_Order $order The order to get the fields for.
-	 *
-	 * @return array An array of fields.
-	 */
-	public function get_all_fields_from_order( $order ) {
-		$meta_data = [
-			'billing'    => [],
-			'shipping'   => [],
-			'additional' => [],
-		];
-		if ( $order instanceof \WC_Order ) {
-			$meta_data['billing']    = $order->get_meta( self::BILLING_FIELDS_KEY, true );
-			$meta_data['shipping']   = $order->get_meta( self::SHIPPING_FIELDS_KEY, true );
-			$meta_data['additional'] = $order->get_meta( self::ADDITIONAL_FIELDS_KEY, true );
-		}
-		return $this->format_meta_data( $meta_data );
 	}
 
 	/**
@@ -549,6 +472,32 @@ class CheckoutFields {
 	/**
 	 * Returns a field value for a given object.
 	 *
+	 * @param string       $key The field key.
+	 * @param \WC_Customer $customer The customer to get the field value for.
+	 * @param string       $group The group to get the field value for (shipping|billing|'') in which '' refers to the additional group.
+	 *
+	 * @return mixed The field value.
+	 */
+	public function get_field_from_customer( $key, $customer, $group = '' ) {
+		return $this->get_field_from_object( $key, $customer, $group );
+	}
+
+	/**
+	 * Returns a field value for a given order.
+	 *
+	 * @param string    $field The field key.
+	 * @param \WC_Order $order The order to get the field value for.
+	 * @param string    $group The group to get the field value for (shipping|billing|'') in which '' refers to the additional group.
+	 *
+	 * @return mixed The field value.
+	 */
+	public function get_field_from_order( $field, $order, $group = '' ) {
+		return $this->get_field_from_object( $field, $order, $group );
+	}
+
+	/**
+	 * Returns a field value for a given object.
+	 *
 	 * @param string                 $key The field key.
 	 * @param \WC_Customer|\WC_Order $object The customer to get the field value for.
 	 * @param string                 $group The group to get the field value for (shipping|billing|'') in which '' refers to the additional group.
@@ -586,6 +535,56 @@ class CheckoutFields {
 		}
 
 		return $meta_data[ $key ];
+	}
+
+	/**
+	 * Returns an array of all fields values for a given customer.
+	 *
+	 * @param \WC_Customer $customer The customer to get the fields for.
+	 *
+	 * @return array An array of fields.
+	 */
+	public function get_all_fields_from_customer( $customer ) {
+		$customer_id = $customer->get_id();
+		$meta_data   = [
+			'billing'    => [],
+			'shipping'   => [],
+			'additional' => [],
+		];
+		if ( ! $customer_id ) {
+			if ( isset( wc()->session ) ) {
+				$meta_data['billing']    = wc()->session->get( self::BILLING_FIELDS_KEY, [] );
+				$meta_data['shipping']   = wc()->session->get( self::SHIPPING_FIELDS_KEY, [] );
+				$meta_data['additional'] = wc()->session->get( self::ADDITIONAL_FIELDS_KEY, [] );
+			}
+		} else {
+			$meta_data['billing']    = get_user_meta( $customer_id, self::BILLING_FIELDS_KEY, true );
+			$meta_data['shipping']   = get_user_meta( $customer_id, self::SHIPPING_FIELDS_KEY, true );
+			$meta_data['additional'] = get_user_meta( $customer_id, self::ADDITIONAL_FIELDS_KEY, true );
+		}
+
+		return $this->format_meta_data( $meta_data );
+	}
+
+	/**
+	 * Returns an array of all fields values for a given order.
+	 *
+	 * @param \WC_Order $order The order to get the fields for.
+	 *
+	 * @return array An array of fields.
+	 */
+	public function get_all_fields_from_order( $order ) {
+		$meta_data = [
+			'billing'    => [],
+			'shipping'   => [],
+			'additional' => [],
+		];
+		if ( $order instanceof \WC_Order ) {
+			$meta_data['billing']    = $order->get_meta( self::BILLING_FIELDS_KEY, true );
+			$meta_data['shipping']   = $order->get_meta( self::SHIPPING_FIELDS_KEY, true );
+			$meta_data['additional'] = $order->get_meta( self::ADDITIONAL_FIELDS_KEY, true );
+		}
+		return $this->format_meta_data( $meta_data );
 	}
 
 	/**

@@ -739,7 +739,7 @@ class OrderController {
 		);
 		$customer_fields = $this->additional_fields_controller->get_all_fields_from_customer( wc()->customer );
 		foreach ( $customer_fields as $key => $value ) {
-			$this->additional_fields_controller->persist_field( $key, $value, $order, false );
+			$this->additional_fields_controller->persist_field_for_order( $key, $value, $order, false );
 		}
 	}
 }
