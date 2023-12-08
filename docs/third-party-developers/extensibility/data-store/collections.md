@@ -188,7 +188,7 @@ or
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/collections' );
+const store = select( COLLECTIONS_STORE_KEY );
 const error = store.getCollectionError(state, namespace, resourceName, queryString);
 ```
 
