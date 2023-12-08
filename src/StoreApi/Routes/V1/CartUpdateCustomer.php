@@ -183,7 +183,7 @@ class CartUpdateCustomer extends AbstractCartRoute {
 			)
 		);
 		// We want to only get additional fields passed, since core ones are already saved.
-		$core_fields = array( 'first_name', 'last_name', 'company', 'address_1', 'address_2', 'city', 'state', 'postcode', 'country', 'phone', 'email' );
+		$core_fields = array_keys( $this->additional_fields_controller->get_core_fields() );
 
 		$additional_shipping_values = array_diff_key( $shipping, array_flip( $core_fields ) );
 		$additional_billing_values  = array_diff_key( $billing, array_flip( $core_fields ) );

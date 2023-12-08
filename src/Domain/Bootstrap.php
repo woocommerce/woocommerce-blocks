@@ -126,7 +126,7 @@ class Bootstrap {
 		$is_store_api_request = $is_rest && ! empty( $_SERVER['REQUEST_URI'] ) && ( false !== strpos( $_SERVER['REQUEST_URI'], trailingslashit( rest_get_url_prefix() ) . 'wc/store/' ) );
 
 		// Load and init assets.
-		$this->container->get( StoreApi::class )->init( $this->container->get( CheckoutFields::class ) );
+		$this->container->get( StoreApi::class )->init();
 		$this->container->get( PaymentsApi::class )->init();
 		$this->container->get( DraftOrders::class )->init();
 		$this->container->get( CreateAccount::class )->init();

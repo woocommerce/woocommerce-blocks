@@ -97,14 +97,19 @@ abstract class AbstractAddressSchema extends AbstractSchema {
 		$address         = array_reduce(
 			array_keys( $address ),
 			function( $carry, $key ) use ( $address, $validation_util ) {
-				if ( 'country' === $key ) {
-					$carry[ $key ] = wc_strtoupper( sanitize_text_field( wp_unslash( $address[ $key ] ) ) );
-				} elseif ( 'state' === $key ) {
-					$carry[ $key ] = $validation_util->format_state( sanitize_text_field( wp_unslash( $address[ $key ] ) ), $address['country'] );
-				} elseif ( 'postcode' === $key ) {
-					$carry[ $key ] = $address['postcode'] ? wc_format_postcode( sanitize_text_field( wp_unslash( $address['postcode'] ) ), $address['country'] ) : '';
-				} else {
-					$carry[ $key ] = sanitize_text_field( wp_unslash( $address[ $key ] ) );
+				switch ( $key ) {
+					case 'country':
+						$carry[ $key ] = wc_strtoupper( sanitize_text_field( wp_unslash( $address[ $key ] ) ) );
+						break;
+					case 'state':
+						$carry[ $key ] = $validation_util->format_state( sanitize_text_field( wp_unslash( $address[ $key ] ) ), $address['country'] );
+						break;
+					case 'postcode':
+						$carry[ $key ] = $address['postcode'] ? wc_format_postcode( sanitize_text_field( wp_unslash( $address['postcode'] ) ), $address['country'] ) : '';
+						break;
+					default:
+						$carry[ $key ] = sanitize_text_field( wp_unslash( $address[ $key ] ) );
+						break;
 				}
 				return $carry;
 			},
