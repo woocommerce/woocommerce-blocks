@@ -15,12 +15,10 @@ import {
 interface PaymentMethodErrorBoundaryProps {
 	isEditor: boolean;
 	children: React.ReactNode;
-	expressPaymentMethodId?: string | undefined;
 }
 
 class PaymentMethodErrorBoundary extends Component< PaymentMethodErrorBoundaryProps > {
 	state = { errorMessage: '', hasError: false };
-	expressPaymentMethodId = this.props.expressPaymentMethodId;
 	static getDerivedStateFromError( error: ReactError ): DerivedStateReturn {
 		return {
 			errorMessage: error.message,
