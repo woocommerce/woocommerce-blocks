@@ -116,7 +116,7 @@ Queries if the status is `idle`.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const isPaymentIdle = store.isPaymentIdle();
 ```
 
@@ -131,7 +131,7 @@ Queries if an express payment method has been clicked.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const isExpressPaymentStarted = store.isExpressPaymentStarted();
 ```
 
@@ -146,7 +146,7 @@ Queries if the status is `processing`.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const isPaymentProcessing = store.isPaymentProcessing();
 ```
 
@@ -161,7 +161,7 @@ Queries if the status is `ready`.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const isPaymentReady = store.isPaymentReady();
 ```
 
@@ -176,7 +176,7 @@ Queries if the status is `error`.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const hasPaymentError = store.hasPaymentError();
 ```
 
@@ -191,7 +191,7 @@ Returns whether an express payment method is active, this will be true when the 
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const isExpressPaymentMethodActive = store.isExpressPaymentMethodActive();
 ```
 
@@ -206,7 +206,7 @@ Returns the active saved token. Payment methods that customers have saved to the
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const activeSavedToken = store.getActiveSavedToken();
 ```
 
@@ -221,7 +221,7 @@ Returns the active payment method's ID.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const activePaymentMethod = store.getActivePaymentMethod();
 ```
 
@@ -236,7 +236,7 @@ Returns the available payment methods. This does not include express payment met
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const availablePaymentMethods = store.getAvailablePaymentMethods();
 ```
 
@@ -267,7 +267,7 @@ Returns the available express payment methods.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const availableExpressPaymentMethods =
 	store.getAvailableExpressPaymentMethods();
 ```
@@ -296,7 +296,7 @@ Returns the current payment method data. This will change every time the active 
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const paymentMethodData = store.getPaymentMethodData();
 ```
 
@@ -334,7 +334,7 @@ savedPaymentMethods: {
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const savedPaymentMethods = store.getSavedPaymentMethods();
 ```
 
@@ -372,7 +372,7 @@ activeSavedPaymentMethods: {
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const activeSavedPaymentMethods = store.getActiveSavedPaymentMethods();
 ```
 
@@ -387,7 +387,7 @@ Returns whether the payment method should be saved to the customer's account.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const shouldSavePaymentMethod = store.getShouldSavePaymentMethod();
 ```
 
@@ -402,7 +402,7 @@ Returns whether the payment methods have been initialized.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const paymentMethodsInitialized = store.paymentMethodsInitialized();
 ```
 
@@ -417,7 +417,7 @@ Returns whether the express payment methods have been initialized.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const expressPaymentMethodsInitialized =
 	store.expressPaymentMethodsInitialized();
 ```
@@ -442,7 +442,7 @@ Returns the result of the last payment attempt.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const paymentResult = store.getPaymentResult();
 ```
 
@@ -490,7 +490,7 @@ Returns the current state of the payment store.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const currentState = store.getState();
 ```
 
@@ -507,7 +507,7 @@ Queries if the status is `pristine`.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const isPaymentPristine = store.isPaymentPristine();
 ```
 
@@ -524,7 +524,7 @@ Queries if the status is `started`.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const isPaymentStarted = store.isPaymentStarted();
 ```
 
@@ -541,7 +541,7 @@ Queries if the status is `success`.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const isPaymentSuccess = store.isPaymentSuccess();
 ```
 
@@ -558,7 +558,7 @@ Queries if the status is `failed`.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const isPaymentFailed = store.isPaymentFailed();
 ```
 
@@ -582,7 +582,7 @@ Returns an object with booleans representing the payment status.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/payment' );
+const store = select( PAYMENT_STORE_KEY );
 const currentStatus = store.getCurrentStatus();
 ```
 

@@ -91,11 +91,11 @@ This will returns the route from the given slice of the route state.
 #### _Parameters_ <!-- omit in toc -->
 
 -   _stateSlice_ `object`: Slice of the route state from a given namespace and resource name.
--   _ids_ `array`: An array of id references that are to be replaced in route placeholders. If the route does not have placeholders, this can be an empty array.
+-   _ids_ `array` (default: `[]`): An array of id references that are to be replaced in route placeholders.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `string` or `null`: The route for the given resource entries, or null if no route is found.
+-   `string`: The route for the given resource entries, or an empty string if no route is found.
 
 #### _Example_ <!-- omit in toc -->
 
@@ -122,7 +122,7 @@ This will return the assembled route with placeholders.
 
 ```js
 const store = select( SCHEMA_STORE_KEY );
-const route = store.assembleRouteWithPlaceholders(route, routePlaceholders, ids);
+const route = store.assembleRouteWithPlaceholders(route, routePlaceholders, ids );
 ```
 
 <!-- FEEDBACK -->
