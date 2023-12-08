@@ -100,7 +100,7 @@ This will returns the route from the given slice of the route state.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/schema' );
+const store = select( SCHEMA_STORE_KEY );
 const route = store.getRouteFromResourceEntries(stateSlice, ids);
 ```
 
