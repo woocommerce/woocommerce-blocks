@@ -439,9 +439,8 @@ test.describe( 'Shopper → Checkout block → Place Order', () => {
 } );
 
 test.describe( 'Checkout Form Errors', () => {
-	test.use( {
-		storageState: process.env.CUSTOMERSTATE,
-	} );
+	test.use( { storageState: guestFile } );
+
 	test( 'User can see errors when form is incomplete', async ( {
 		frontendUtils,
 		page,
