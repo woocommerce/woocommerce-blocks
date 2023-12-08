@@ -8,7 +8,7 @@ import type {
 	CartShippingAddress,
 	CartBillingAddress,
 } from '@woocommerce/types';
-import { AddressFields, getSetting } from '@woocommerce/settings';
+import { AddressField, defaultFields } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -38,20 +38,21 @@ export interface CartState {
 	errors: ApiErrorResponse[];
 }
 
-/**
- * Default field properties.
- */
-export const defaultFields: AddressFields =
-	getSetting< AddressFields >( 'defaultFields' );
-
-const shippingAddress: Partial< CartShippingAddress > = {};
-const billingAddress: Partial< CartBillingAddress > = {};
-
+const shippingAddress: Partial<
+	CartShippingAddress & { email: AddressField }
+> = {};
 Object.keys( defaultFields ).forEach( ( key ) => {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore the default fields contain keys for each field.
 	shippingAddress[ key ] = '';
 } );
+delete shippingAddress.email;
 
+const billingAddress: Partial< CartBillingAddress & { email: AddressField } > =
+	{};
 Object.keys( defaultFields ).forEach( ( key ) => {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore the default fields contain keys for each field.
 	billingAddress[ key ] = '';
 } );
 
