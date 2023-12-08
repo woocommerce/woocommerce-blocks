@@ -1,7 +1,14 @@
 /**
  * External dependencies
  */
-import type { Cart, CartMeta, ApiErrorResponse } from '@woocommerce/types';
+import type {
+	Cart,
+	CartMeta,
+	ApiErrorResponse,
+	CartShippingAddress,
+	CartBillingAddress,
+} from '@woocommerce/types';
+import { AddressFields, getSetting } from '@woocommerce/settings';
 
 /**
  * Internal dependencies
@@ -30,37 +37,32 @@ export interface CartState {
 	metaData: CartMeta;
 	errors: ApiErrorResponse[];
 }
+
+/**
+ * Default field properties.
+ */
+export const defaultFields: AddressFields =
+	getSetting< AddressFields >( 'defaultFields' );
+
+const shippingAddress: Partial< CartShippingAddress > = {};
+const billingAddress: Partial< CartBillingAddress > = {};
+
+Object.keys( defaultFields ).forEach( ( key ) => {
+	shippingAddress[ key ] = '';
+} );
+
+Object.keys( defaultFields ).forEach( ( key ) => {
+	billingAddress[ key ] = '';
+} );
+
 export const defaultCartState: CartState = {
 	cartItemsPendingQuantity: EMPTY_PENDING_QUANTITY,
 	cartItemsPendingDelete: EMPTY_PENDING_DELETE,
 	cartData: {
 		coupons: EMPTY_CART_COUPONS,
 		shippingRates: EMPTY_SHIPPING_RATES,
-		shippingAddress: {
-			first_name: '',
-			last_name: '',
-			company: '',
-			address_1: '',
-			address_2: '',
-			city: '',
-			state: '',
-			postcode: '',
-			country: '',
-			phone: '',
-		},
-		billingAddress: {
-			first_name: '',
-			last_name: '',
-			company: '',
-			address_1: '',
-			address_2: '',
-			city: '',
-			state: '',
-			postcode: '',
-			country: '',
-			phone: '',
-			email: '',
-		},
+		shippingAddress: shippingAddress as CartShippingAddress,
+		billingAddress: billingAddress as CartBillingAddress,
 		items: EMPTY_CART_ITEMS,
 		itemsCount: 0,
 		itemsWeight: 0,
