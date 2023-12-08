@@ -178,12 +178,12 @@ test.describe( 'shopper → Local pickup', () => {
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
 		await frontendUtils.goToCheckout();
-		
+
 		await page.getByRole( 'radio', { name: 'Local Pickup free' } ).click();
 		await expect( page.getByLabel( 'Testing' ).last() ).toBeVisible();
-		
+
 		await checkoutPageObject.fillInCheckoutWithTestData();
-		
+
 		await page
 			.getByLabel( 'Email address' )
 			.fill( 'thisShouldRemainHere@mail.com' );
@@ -194,7 +194,7 @@ test.describe( 'shopper → Local pickup', () => {
 		await expect( page.getByLabel( 'Email address' ) ).toHaveValue(
 			'thisShouldRemainHere@mail.com'
 		);
-		
+
 		await page
 			.getByLabel( 'Email address' )
 			.fill( 'thisShouldRemainHereToo@mail.com' );
