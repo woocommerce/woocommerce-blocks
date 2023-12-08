@@ -143,7 +143,7 @@ This selector will return the state from the collections store.
 #### _Example_ <!-- omit in toc -->
 
 ```js
-const store = select( 'wc/store/collections' );
+const store = select( COLLECTIONS_STORE_KEY );
 const state = store.getFromState();
 ```
 
