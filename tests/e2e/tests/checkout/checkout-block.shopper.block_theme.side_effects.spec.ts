@@ -128,6 +128,7 @@ test.describe( 'shopper → Local pickup', () => {
 			.getByRole( 'button', { name: 'Save changes' } )
 			.click();
 	} );
+
 	test.afterEach( async ( { admin } ) => {
 		// Enable local pickup.
 		await admin.visitAdminPage(
@@ -141,6 +142,7 @@ test.describe( 'shopper → Local pickup', () => {
 			.getByRole( 'button', { name: 'Save changes' } )
 			.click();
 	} );
+
 	test( 'The shopper can choose a local pickup option', async ( {
 		page,
 		frontendUtils,
@@ -150,16 +152,20 @@ test.describe( 'shopper → Local pickup', () => {
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
 		await frontendUtils.goToCheckout();
+
 		await page.getByRole( 'radio', { name: 'Local Pickup free' } ).click();
 		await expect( page.getByLabel( 'Testing' ).last() ).toBeVisible();
 		await page.getByLabel( 'Testing' ).last().check();
+
 		await checkoutPageObject.fillInCheckoutWithTestData();
 		await checkoutPageObject.placeOrder();
+
 		await expect(
 			page.getByText( 'Collection from Testing' )
 		).toBeVisible();
 		await checkoutPageObject.verifyBillingDetails();
 	} );
+
 	// Switching between local pickup and shipping does affect the address. We should create a ticket for this.
 	// Let's skip the test until the bug is fixed.
 	// eslint-disable-next-line playwright/no-skipped-test
@@ -194,6 +200,7 @@ test.describe( 'shopper → Local pickup', () => {
 		);
 	} );
 } );
+
 test.describe( 'Payment Methods', () => {
 	test( 'User can change payment methods', async ( {
 		frontendUtils,
@@ -203,18 +210,21 @@ test.describe( 'Payment Methods', () => {
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
 		await frontendUtils.goToCheckout();
+
 		await page
 			.getByRole( 'radio', { name: 'Direct bank transfer' } )
 			.click();
 		await expect(
 			page.getByRole( 'radio', { name: 'Direct bank transfer' } )
 		).toBeChecked();
+
 		await page.getByRole( 'radio', { name: 'Cash on delivery' } ).click();
 		await expect(
 			page.getByRole( 'radio', { name: 'Cash on delivery' } )
 		).toBeChecked();
 	} );
 } );
+
 test.describe( 'Shipping and Billing Addresses', () => {
 	const billingTestData = {
 		firstname: 'John',
@@ -243,6 +253,7 @@ test.describe( 'Shipping and Billing Addresses', () => {
 	};
 	// `as string` is safe here because we know the variable is a string, it is defined above.
 	const blockSelectorInEditor = blockData.selectors.editor.block as string;
+
 	test.beforeEach(
 		async ( { editor, frontendUtils, admin, editorUtils } ) => {
 			await admin.visitSiteEditor( {
@@ -255,6 +266,7 @@ test.describe( 'Shipping and Billing Addresses', () => {
 				blockSelectorInEditor +
 					'  [data-type="woocommerce/checkout-shipping-address-block"]'
 			);
+
 			const checkbox = editor.page.getByRole( 'checkbox', {
 				name: 'Company',
 				exact: true,
@@ -305,7 +317,9 @@ test.describe( 'Shipping and Billing Addresses', () => {
 		await frontendUtils.goToShop();
 		await frontendUtils.addToCart( SIMPLE_PHYSICAL_PRODUCT_NAME );
 		await frontendUtils.goToCheckout();
+
 		await page.getByLabel( 'Use same address for billing' ).uncheck();
+
 		await checkoutPageObject.fillShippingDetails( shippingTestData );
 		await checkoutPageObject.fillBillingDetails( billingTestData );
 		await expect(
