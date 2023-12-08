@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { Disabled } from '@wordpress/components';
+import { Disabled, PanelBody } from '@wordpress/components';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { WC_BLOCKS_IMAGE_URL } from '@woocommerce/block-settings';
 import classNames from 'classnames';
@@ -25,26 +25,29 @@ interface EditProps
 
 export const Edit = ( { attributes, setAttributes, context }: EditProps ) => {
 	const blockProps = useBlockProps( {
-		className: 'wc-block-product-gallery-thumbnails',
+		className: classNames(
+			'wc-block-product-gallery-thumbnails',
+			`wc-block-product-gallery-thumbnails--number-of-thumbnails-${ context.thumbnailsNumberOfThumbnails }`,
+			`wc-block-product-gallery-thumbnails--position-${ context.thumbnailsPosition }`
+		),
 	} );
 
 	const Placeholder = () => {
 		return context.thumbnailsPosition !== ThumbnailsPosition.OFF ? (
-			<div
-				className={ classNames(
-					'wc-block-editor-product-gallery-thumbnails',
-					`wc-block-editor-product-gallery-thumbnails--${ context.thumbnailsPosition }`
-				) }
-			>
+			<div className="wc-block-editor-product-gallery-thumbnails">
 				{ [
 					...Array( context.thumbnailsNumberOfThumbnails ).keys(),
 				].map( ( index ) => {
 					return (
-						<img
+						<div
+							className="wc-block-product-gallery-thumbnails__thumbnail"
 							key={ index }
-							src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
-							alt="Placeholder"
-						/>
+						>
+							<img
+								src={ `${ WC_BLOCKS_IMAGE_URL }block-placeholders/product-image-gallery.svg` }
+								alt="Placeholder"
+							/>
+						</div>
 					);
 				} ) }
 			</div>
@@ -55,11 +58,13 @@ export const Edit = ( { attributes, setAttributes, context }: EditProps ) => {
 		<>
 			<div { ...blockProps }>
 				<InspectorControls>
-					<ProductGalleryThumbnailsBlockSettings
-						attributes={ attributes }
-						setAttributes={ setAttributes }
-						context={ context }
-					/>
+					<PanelBody>
+						<ProductGalleryThumbnailsBlockSettings
+							attributes={ attributes }
+							setAttributes={ setAttributes }
+							context={ context }
+						/>
+					</PanelBody>
 				</InspectorControls>
 				<Disabled>
 					<Placeholder />

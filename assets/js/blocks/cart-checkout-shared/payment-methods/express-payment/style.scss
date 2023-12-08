@@ -1,5 +1,4 @@
 $border-width: 1px;
-$border-radius: 5px;
 
 .wc-block-components-express-payment {
 	margin: auto;
@@ -26,7 +25,7 @@ $border-radius: 5px;
 
 .wc-block-components-express-payment--checkout {
 	/* stylelint-disable-next-line function-calc-no-unspaced-operator */
-	margin-top: calc($border-radius * 3);
+	margin-top: calc($universal-border-radius * 3);
 
 	.wc-block-components-express-payment__event-buttons {
 		list-style: none;
@@ -45,19 +44,19 @@ $border-radius: 5px;
 		left: 0;
 		position: absolute;
 		right: 0;
-		top: -$border-radius;
+		top: -$universal-border-radius;
 		vertical-align: middle;
 
 		// Pseudo-elements used to show the border before and after the title.
 		&::before {
 			border-left: $border-width solid currentColor;
 			border-top: $border-width solid currentColor;
-			border-radius: $border-radius 0 0 0;
+			border-radius: $universal-border-radius 0 0 0;
+			border-color: $universal-border-light;
 			content: "";
 			display: block;
-			height: $border-radius - $border-width;
+			height: $universal-border-radius - $border-width;
 			margin-right: $gap-small;
-			opacity: 0.3;
 			pointer-events: none;
 			width: #{$gap-large - $gap-small - $border-width * 2};
 		}
@@ -65,12 +64,12 @@ $border-radius: 5px;
 		&::after {
 			border-right: $border-width solid currentColor;
 			border-top: $border-width solid currentColor;
-			border-radius: 0 $border-radius 0 0;
+			border-radius: 0 $universal-border-radius 0 0;
+			border-color: $universal-border-light;
 			content: "";
 			display: block;
-			height: $border-radius - $border-width;
+			height: $universal-border-radius - $border-width;
 			margin-left: $gap-small;
-			opacity: 0.3;
 			pointer-events: none;
 			flex-grow: 1;
 		}
@@ -82,12 +81,10 @@ $border-radius: 5px;
 	}
 
 	.wc-block-components-express-payment__content {
-		@include with-translucent-border(0 $border-width $border-width);
-		padding: #{$gap-large - $border-radius} $gap-large $gap-large;
-
-		&::after {
-			border-radius: 0 0 $border-radius $border-radius;
-		}
+		border: $border-width solid $universal-border-light;
+		border-top: 0;
+		padding: #{$gap-large - $universal-border-radius} $gap-large $gap-large;
+		border-radius: 0 0 $universal-border-radius $universal-border-radius;
 
 		> p {
 			margin-bottom: em($gap);
@@ -128,8 +125,7 @@ $border-radius: 5px;
 	&::after {
 		content: " ";
 		flex: 1;
-		border-bottom: 1px solid;
-		opacity: 0.3;
+		border-bottom: 1px solid $universal-border-light;
 	}
 }
 

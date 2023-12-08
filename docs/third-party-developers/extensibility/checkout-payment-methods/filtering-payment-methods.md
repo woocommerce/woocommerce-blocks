@@ -36,7 +36,7 @@ import { registerPaymentMethodExtensionCallbacks } from '@woocommerce/blocks-reg
 #### `wc global`
 
 ```js
-const { registerPaymentMethodExtensionCallbacks } = wc.wcBlocksRegistry;
+const { registerPaymentMethodExtensionCallbacks } = window.wc.wcBlocksRegistry;
 ```
 
 ### Signature
@@ -90,7 +90,7 @@ interface CanMakePaymentArgument {
 	cart: Cart;
 	cartTotals: CartTotals;
 	cartNeedsShipping: boolean;
-	billingData: CartResponseBillingAddress;
+	billingAddress: CartResponseBillingAddress;
 	shippingAddress: CartResponseShippingAddress;
 	selectedShippingMethods: Record< string, unknown >;
 	paymentRequirements: Array< string >;
@@ -174,4 +174,3 @@ If you've added your payment method correctly with the correct `supports` values
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/checkout-payment-methods/filtering-payment-methods.md)
 
 <!-- /FEEDBACK -->
-

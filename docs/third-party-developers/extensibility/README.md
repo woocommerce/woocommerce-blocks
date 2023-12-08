@@ -2,6 +2,7 @@
 
 ## Table of Contents <!-- omit in toc -->
 
+-   [Imports and dependency extration](#imports-and-dependency-extration)
 -   [Hooks (actions and filters)](#hooks-actions-and-filters)
 -   [REST API](#rest-api)
 -   [Checkout Payment Methods](#checkout-payment-methods)
@@ -9,21 +10,38 @@
 
 These documents are all dealing with extensibility in the various WooCommerce Blocks.
 
+## Imports and dependency extration
+
+The documentation in this section will use window globals in code examples, for example:
+
+```js
+const { registerCheckoutFilters } = window.wc.blocksCheckout;
+```
+
+However, if you're using `@woocommerce/dependency-extraction-webpack-plugin` for enhanced dependency management you can instead use ES module syntax:
+
+```js
+import { registerCheckoutFilters } from '@woocommerce/blocks-checkout';
+```
+
+See <https://www.npmjs.com/package/@woocommerce/dependency-extraction-webpack-plugin> for more information.
+
 ## Hooks (actions and filters)
 
 | Document                      | Description                                             |
 | ----------------------------- | ------------------------------------------------------- |
 | [Actions](./hooks/actions.md) | Documentation covering action hooks on the server side. |
 | [Filters](./hooks/filters.md) | Documentation covering filter hooks on the server side. |
+| [Migrated Hooks](./hooks/migrated-hooks.md) | Documentation covering the migrated WooCommerce core hooks. |
 
 ## REST API
 
-| Document                                                                                       | Description                                                                        |
-|------------------------------------------------------------------------------------------------| ---------------------------------------------------------------------------------- |
-| [Exposing your data in the Store API.](./rest-api/extend-rest-api-add-data.md)                 | Explains how you can add additional data to Store API endpoints.                   |
-| [Available endpoints to extend with ExtendSchema](./rest-api/available-endpoints-to-extend.md) | A list of all available endpoints to extend.                                       |
-| [Available Formatters](./rest-api/extend-rest-api-formatters.md)                               | Available `Formatters` to format data for use in the Store API.                    |
-| [Updating the cart with the Store API](./rest-api/extend-rest-api-update-cart.md)              | Update the server-side cart following an action from the front-end.                |
+| Document                                                                                       | Description                                                         |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| [Exposing your data in the Store API.](./rest-api/extend-rest-api-add-data.md)                 | Explains how you can add additional data to Store API endpoints.    |
+| [Available endpoints to extend with ExtendSchema](./rest-api/available-endpoints-to-extend.md) | A list of all available endpoints to extend.                        |
+| [Available Formatters](./rest-api/extend-rest-api-formatters.md)                               | Available `Formatters` to format data for use in the Store API.     |
+| [Updating the cart with the Store API](./rest-api/extend-rest-api-update-cart.md)              | Update the server-side cart following an action from the front-end. |
 
 ## Checkout Payment Methods
 
@@ -56,4 +74,3 @@ In addition to the reference material below, [please see the `block-checkout` pa
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/README.md)
 
 <!-- /FEEDBACK -->
-

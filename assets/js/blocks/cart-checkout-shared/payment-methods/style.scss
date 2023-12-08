@@ -39,7 +39,7 @@
 		line-height: 1.375; // =22px when font-size is 16px.
 		background-color: #fff;
 		padding: em($gap-small) 0 em($gap-small) $gap;
-		border-radius: 4px;
+		border-radius: $universal-border-radius;
 		border: 1px solid $input-border-gray;
 		width: 100%;
 		font-family: inherit;
@@ -172,7 +172,7 @@
 
 .wc-block-checkout__payment-method {
 	.wc-block-components-radio-control__option {
-		padding-left: 56px;
+		padding-left: em($gap-huge);
 
 		&::after {
 			content: none;
@@ -196,9 +196,30 @@
 		font-weight: bold;
 	}
 
+	.wc-block-components-radio-control {
+		border: 1px solid $universal-border-light;
+		border-radius: $universal-border-radius;
+	}
 	.wc-block-components-radio-control-accordion-option,
 	.wc-block-components-radio-control__option {
-		@include with-translucent-border(1px 1px 0 1px);
+		border-top: 1px solid $universal-border-light;
+		&:first-child {
+			border-top: 0;
+		}
+	}
+	.wc-block-components-radio-control-accordion-option
+	.wc-block-components-radio-control__option {
+		border-width: 0;
+	}
+
+	.wc-block-components-radio-control-accordion-option:first-child::after {
+		border-top-left-radius: $universal-border-radius;
+		border-top-right-radius: $universal-border-radius;
+	}
+
+	.wc-block-components-radio-control-accordion-option:last-child::after {
+		border-bottom-left-radius: $universal-border-radius;
+		border-bottom-right-radius: $universal-border-radius;
 	}
 
 	.wc-block-components-radio-control__option:last-child::after,
@@ -214,6 +235,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: flex-start;
+			border-width: 0;
 		}
 		.wc-block-components-radio-control__label img {
 			height: 24px;

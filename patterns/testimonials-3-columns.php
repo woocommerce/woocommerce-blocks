@@ -6,28 +6,36 @@
  */
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
-$content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/testimonials-3-columns' );
+
+$main_header        = $content['titles'][0]['default'] ?? '';
+$first_review       = $content['titles'][1]['default'] ?? '';
+$second_review      = $content['titles'][2]['default'] ?? '';
+$third_review       = $content['titles'][3]['default'] ?? '';
+$first_description  = $content['descriptions'][0]['default'] ?? '';
+$second_description = $content['descriptions'][1]['default'] ?? '';
+$third_description  = $content['descriptions'][2]['default'] ?? '';
 ?>
-<!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}},"layout":{"type":"constrained","justifyContent":"left"}} -->
-<div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30)">
-	<!-- wp:heading {"level":3,"style":{"spacing":{"padding":{"right":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
-	<h3 class="wp-block-heading" style="padding-right:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)"><?php echo esc_html( $content['titles'][3]['default'] ); ?></h3>
+
+<!-- wp:group {"align":"wide","style":{"spacing":{"margin":{"top":"0px","bottom":"80px"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignwide" style="margin-top:0px;margin-bottom:80px">
+	<!-- wp:heading {"level":3,"align":"wide"} -->
+	<h3 class="wp-block-heading alignwide"><?php echo esc_html( $main_header ); ?></h3>
 	<!-- /wp:heading -->
 
-	<!-- wp:columns {"align":"full","style":{"spacing":{"padding":{"right":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
-	<div class="wp-block-columns alignfull" style="padding-right:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)">
+	<!-- wp:columns {"align":"wide"} -->
+	<div class="wp-block-columns alignwide">
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:paragraph -->
-			<p><strong><?php echo esc_html( $content['titles'][0]['default'] ); ?></strong></p>
+			<p><strong><?php echo esc_html( $first_review ); ?></strong></p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph -->
-			<p><?php echo esc_html( $content['descriptions'][0]['default'] ); ?></p>
+			<p><?php echo esc_html( $first_description ); ?></p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph -->
-			<p>~ Tanner P.</p>
+			<p>~ Sophia K.</p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:column -->
@@ -36,15 +44,15 @@ $content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/testimonials
 		<div class="wp-block-column">
 			<!-- wp:paragraph -->
 
-			<p><strong><?php echo esc_html( $content['titles'][1]['default'] ); ?></strong></p>
+			<p><strong><?php echo esc_html( $second_review ); ?></strong></p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph -->
-			<p><?php echo esc_html( $content['descriptions'][1]['default'] ); ?></p>
+			<p><?php echo esc_html( $second_description ); ?></p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph -->
-			<p>~ Abigail N.</p>
+			<p>~ Liam M.</p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:column -->
@@ -52,15 +60,15 @@ $content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/testimonials
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:paragraph -->
-			<p><strong><?php echo esc_html( $content['titles'][2]['default'] ); ?></strong></p>
+			<p><strong><?php echo esc_html( $third_review ); ?></strong></p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph -->
-			<p><?php echo esc_html( $content['descriptions'][2]['default'] ); ?></p>
+			<p><?php echo esc_html( $third_description ); ?></p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph -->
-			<p>~ Albert L.</p>
+			<p>~ Ava L.</p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:column -->

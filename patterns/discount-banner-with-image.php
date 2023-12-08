@@ -6,8 +6,8 @@
  */
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
-$content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/discount-banner-with-image' );
-$images  = PatternsHelper::get_pattern_images( 'woocommerce-blocks/discount-banner-with-image' );
+
+$description = $content['descriptions'][0]['default'] ?? '';
 ?>
 
 <!-- wp:columns {"verticalAlignment":"center","align":"wide","style":{"color":{"background":"#254094"},"spacing":{"padding":{"top":"30px","right":"30px","bottom":"30px","left":"30px"}}}} -->
@@ -25,13 +25,13 @@ $images  = PatternsHelper::get_pattern_images( 'woocommerce-blocks/discount-bann
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph {"style":{"typography":{"fontStyle":"normal","fontWeight":"300","fontSize":"35px","lineHeight":"0"},"color":{"text":"#ffffff"},"spacing":{"margin":{"bottom":"40px"}}}} -->
-			<p class="has-text-color" style="color:#ffffff;margin-bottom:40px;font-size:35px;font-style:normal;font-weight:300;line-height:0"><?php echo esc_html( $content['descriptions'][0]['default'] ); ?></p>
+			<p class="has-text-color" style="color:#ffffff;margin-bottom:40px;font-size:35px;font-style:normal;font-weight:300;line-height:0"><?php echo esc_html( $description ); ?></p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:buttons -->
 			<div class="wp-block-buttons">
-				<!-- wp:button {"style":{"color":{"background":"#ff7179","text":"#ffffff"},"border":{"radius":"40px"},"spacing":{"padding":{"top":"10px","bottom":"10px","left":"30px","right":"30px"}}}} -->
-				<div class="wp-block-button"><a class="wp-block-button__link has-text-color has-background wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" style="border-radius:40px;color:#ffffff;background-color:#ff7179;padding-top:10px;padding-right:30px;padding-bottom:10px;padding-left:30px">Shop now</a></div>
+				<!-- wp:button {"style":{"color":{"background":"#ff7179","text":"#ffffff"},"border":{"radius":"40px","width":"0px","style":"none"},"spacing":{"padding":{"top":"10px","bottom":"10px","left":"30px","right":"30px"}}}} -->
+				<div class="wp-block-button"><a class="wp-block-button__link has-text-color has-background wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>" style="border-style:none;border-width:0px;border-radius:40px;color:#ffffff;background-color:#ff7179;padding-top:10px;padding-right:30px;padding-bottom:10px;padding-left:30px">Shop now</a></div>
 				<!-- /wp:button -->
 			</div>
 			<!-- /wp:buttons -->

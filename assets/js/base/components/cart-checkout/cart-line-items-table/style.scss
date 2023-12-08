@@ -26,6 +26,9 @@ table.wc-block-cart-items {
 			width: 100px;
 			text-align: right;
 		}
+		th {
+			font-weight: 700;
+		}
 	}
 	.wc-block-cart-items__row {
 		.wc-block-cart-item__image img {
@@ -34,7 +37,8 @@ table.wc-block-cart-items {
 		}
 		.wc-block-cart-item__quantity {
 			.wc-block-cart-item__remove-link {
-				@include link-button;
+				@include link-button();
+				@include hover-effect();
 				@include font-size( smaller );
 
 				text-transform: none;
@@ -75,9 +79,9 @@ table.wc-block-cart-items {
 		.wc-block-cart-item__remove-link {
 			display: none;
 		}
-		&:not(.wc-block-mini-cart-items) {
+		&:not(.wc-block-mini-cart-items):not(:last-child) {
 			.wc-block-cart-items__row {
-				@include with-translucent-border( 0 0 1px );
+				border-bottom: 1px solid $universal-border-light;
 			}
 		}
 		.wc-block-cart-items__row {
@@ -120,14 +124,15 @@ table.wc-block-cart-items {
 	margin-bottom: 3em;
 
 	.wc-block-cart-items {
-		@include with-translucent-border( 0 0 1px );
+		border-spacing: 0;
+		border-bottom: 1px solid $universal-border-light;
 
 		th {
 			padding: 0.25rem $gap 0.25rem 0;
 			white-space: nowrap;
 		}
 		td {
-			@include with-translucent-border( 1px 0 0 );
+			border-top: 1px solid $universal-border-light;
 			padding: $gap 0 $gap $gap;
 			vertical-align: top;
 		}

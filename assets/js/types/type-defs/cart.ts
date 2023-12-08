@@ -123,6 +123,7 @@ export type CatalogVisibility = 'catalog' | 'hidden' | 'search' | 'visible';
 export interface CartItem {
 	key: string;
 	id: number;
+	type: string;
 	quantity: number;
 	catalog_visibility: CatalogVisibility;
 	quantity_limits: {
@@ -161,6 +162,7 @@ export interface CartFeeItemTotals extends CurrencyInfo {
 }
 
 export interface CartFeeItem {
+	key: string;
 	id: string;
 	name: string;
 	totals: CartFeeItemTotals;

@@ -12,14 +12,14 @@ The payment registry stores all the configuration information for each payment m
 
 ### Data Stores
 
-Data stores are used to keep track of data that is likely to change during a user’s session, such as the active payment method, wether the checkout has an error, etc. We split these data stores by areas of concern, so we have 2 data stores related to the checkout: `wc/store/checkout` [:file_folder:](https://href.li/?https://github.com/woocommerce/woocommerce-blocks/blob/4af2c0916a936369be8a4f0044683b90b3af4f0d/assets/js/data/checkout/index.ts#L1) and `wc/store/payment` [:file_folder:](https://href.li/?https://github.com/woocommerce/woocommerce-blocks/blob/4af2c0916a936369be8a4f0044683b90b3af4f0d/assets/js/data/payment-methods/index.ts#L1) . Data stores live in the `assets/js/data` folder.
+Data stores are used to keep track of data that is likely to change during a user’s session, such as the active payment method, whether the checkout has an error, etc. We split these data stores by areas of concern, so we have 2 data stores related to the checkout: `wc/store/checkout` [:file_folder:](https://href.li/?https://github.com/woocommerce/woocommerce-blocks/blob/4af2c0916a936369be8a4f0044683b90b3af4f0d/assets/js/data/checkout/index.ts#L1) and `wc/store/payment` [:file_folder:](https://href.li/?https://github.com/woocommerce/woocommerce-blocks/blob/4af2c0916a936369be8a4f0044683b90b3af4f0d/assets/js/data/payment-methods/index.ts#L1) . Data stores live in the `assets/js/data` folder.
 
 ### Contexts
 
-Contexts are used to make data available to the Checkout block. Each of these provide data and functions related to a specific area of concern, via the use of a hook. For example, if we wanted to use the `onPaymentProcessing` handler from the `PaymentEventsContext` context, we can do it like this:
+Contexts are used to make data available to the Checkout block. Each of these provide data and functions related to a specific area of concern, via the use of a hook. For example, if we wanted to use the `onPaymentSetup` handler from the `PaymentEventsContext` context, we can do it like this:
 
 ```js
-const { onPaymentProcessing } = usePaymentEventsContext();
+const { onPaymentSetup } = usePaymentEventsContext();
 ```
 
 The other job of contexts is to run side effects for our Checkout block. What typically happens is that the `CheckoutEvents` and `PaymentEvents` will listen for changes in the checkout and payment data stores, and dispatch actions on those stores based on some logic.
@@ -73,7 +73,7 @@ Once all the checkout processing is done and if there are no errors, the payment
 
 ### 6\. Emit the `payment_processing` event [:file_folder:](https://github.com/woocommerce/woocommerce-blocks/blob/4af2c0916a936369be8a4f0044683b90b3af4f0d/assets/js/data/payment-methods/thunks.ts#L42)
 
-The `payment_processing` event is emited. Otherplugins can register event listeners for this event and run their own code.
+The `payment_processing` event is emitted. Otherplugins can register event listeners for this event and run their own code.
 
 For example, the Stripe plugin checks the address and payment details here, and uses the stripe APIs to create a customer and payment reference within Stripe.
 
@@ -109,7 +109,7 @@ The `after_processing` status indicates that we've finished the main checkout pr
 
 If there are no errors, the `checkout_after_processing_with_success` event is triggered. This is where other plugins can run some code after the checkout process has been successful.
 
-Any event listeners registered on the `checkout_after_processing_with_successs` event will be executed. If there are no errors from the event listeners, `setComplete` action is called on the `checkout` data store to set the status to `complete` (step 13). An event listener can also return an error here, which will be displayed to the user.
+Any event listeners registered on the `checkout_after_processing_with_success` event will be executed. If there are no errors from the event listeners, `setComplete` action is called on the `checkout` data store to set the status to `complete` (step 13). An event listener can also return an error here, which will be displayed to the user.
 
 ### 12\. Emit the `checkout_after_processing_with_error` event [:file_folder:](https://github.com/woocommerce/woocommerce-blocks/blob/4af2c0916a936369be8a4f0044683b90b3af4f0d/assets/js/data/checkout/thunks.ts#L104-L116)
 
@@ -145,4 +145,3 @@ The `checkPaymentMethodsCanPay()` [function](https://github.com/woocommerce/wooc
 🐞 Found a mistake, or have a suggestion? [Leave feedback about this document here.](https://github.com/woocommerce/woocommerce-blocks/issues/new?assignees=&labels=type%3A+documentation&template=--doc-feedback.md&title=Feedback%20on%20./docs/third-party-developers/extensibility/checkout-block/how-checkout-processes-an-order.md)
 
 <!-- /FEEDBACK -->
-

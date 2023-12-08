@@ -77,11 +77,11 @@ class ProductGallery extends AbstractBlock {
 
 		$gallery_dialog = strtr(
 			'
-		<div class="wc-block-product-gallery-dialog__overlay" hidden data-wc-bind--hidden="!selectors.woocommerce.isDialogOpen">
-			<dialog data-wc-bind--open="selectors.woocommerce.isDialogOpen">
+		<div class="wc-block-product-gallery-dialog__overlay" hidden data-wc-bind--hidden="!context.isDialogOpen" data-wc-watch="callbacks.keyboardAccess">
+			<dialog data-wc-bind--open="context.isDialogOpen">
 			<div class="wc-block-product-gallery-dialog__header">
 			<div class="wc-block-product-galler-dialog__header-right">
-				<button class="wc-block-product-gallery-dialog__close" data-wc-on--click="actions.woocommerce.dialog.handleCloseButtonClick">
+				<button class="wc-block-product-gallery-dialog__close" data-wc-on--click="actions.closeDialog">
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect width="24" height="24" rx="2"/>
 						<path d="M13 11.8L19.1 5.5L18.1 4.5L12 10.7L5.9 4.5L4.9 5.5L11 11.8L4.5 18.5L5.5 19.5L12 12.9L18.5 19.5L19.5 18.5L13 11.8Z" fill="black"/>
@@ -121,29 +121,39 @@ class ProductGallery extends AbstractBlock {
 			$classname_single_image = 'is-single-product-gallery-image';
 		}
 
-		$number_of_thumbnails = $block->attributes['thumbnailsNumberOfThumbnails'] ?? 0;
-		$classname            = $attributes['className'] ?? '';
-		$dialog               = ( true === $attributes['fullScreenOnClick'] && isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ) ? $this->render_dialog() : '';
-		$post_id              = $block->context['postId'] ?? '';
-		$product              = wc_get_product( $post_id );
+		$number_of_thumbnails           = $block->attributes['thumbnailsNumberOfThumbnails'] ?? 0;
+		$classname                      = $attributes['className'] ?? '';
+		$dialog                         = isset( $attributes['mode'] ) && 'full' !== $attributes['mode'] ? $this->render_dialog() : '';
+		$post_id                        = $block->context['postId'] ?? '';
+		$product                        = wc_get_product( $post_id );
+		$product_gallery_first_image    = ProductGalleryUtils::get_product_gallery_image_ids( $product, 1 );
+		$product_gallery_first_image_id = reset( $product_gallery_first_image );
+		$product_id                     = strval( $product->get_id() );
 
 		$html = $this->inject_dialog( $content, $dialog );
 		$p    = new \WP_HTML_Tag_Processor( $html );
 
 		if ( $p->next_tag() ) {
-			$p->set_attribute( 'data-wc-interactive', true );
+			$p->set_attribute( 'data-wc-interactive', wp_json_encode( array( 'namespace' => 'woocommerce/product-gallery' ) ) );
 			$p->set_attribute(
 				'data-wc-context',
 				wp_json_encode(
 					array(
-						'woocommerce' => array(
-							'selectedImage'    => $product->get_image_id(),
-							'visibleImagesIds' => ProductGalleryUtils::get_product_gallery_image_ids( $product, $number_of_thumbnails, true ),
-							'isDialogOpen'     => false,
-						),
+						'selectedImage'                   => $product_gallery_first_image_id,
+						'firstMainImageId'                => $product_gallery_first_image_id,
+						'isDialogOpen'                    => false,
+						'visibleImagesIds'                => ProductGalleryUtils::get_product_gallery_image_ids( $product, $number_of_thumbnails, true ),
+						'dialogVisibleImagesIds'          => ProductGalleryUtils::get_product_gallery_image_ids( $product, null, false ),
+						'mouseIsOverPreviousOrNextButton' => false,
+						'productId'                       => $product_id,
 					)
 				)
 			);
+
+			if ( $product->is_type( 'variable' ) ) {
+				$p->set_attribute( 'data-wc-init--watch-changes-on-add-to-cart-form', 'callbacks.watchForChangesOnAddToCartForm' );
+			}
+
 			$p->add_class( $classname );
 			$p->add_class( $classname_single_image );
 			$html = $p->get_updated_html();

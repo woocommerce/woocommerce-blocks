@@ -6,22 +6,25 @@
  */
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
-$content = PatternsHelper::get_pattern_content( 'woocommerce-blocks/featured-category-cover-image' );
-$images  = PatternsHelper::get_pattern_images( 'woocommerce-blocks/featured-category-cover-image' );
 
-$image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/shop-jeans.png' );
+$image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/table-wood-house-chair-floor-window.jpg' );
+
+$category_title = $content['titles'][0]['default'] ?? '';
+$description    = $content['descriptions'][0]['default'] ?? '';
+$button         = $content['buttons'][0]['default'] ?? '';
 ?>
-<!-- wp:cover {"url":"<?php echo esc_url( $image1 ); ?>","dimRatio":50,"align":"wide","style":{"spacing":{"padding":{"top":"3%","right":"0%","bottom":"10%","left":"5%"},"margin":{"top":"0","bottom":"0"},"blockGap":"1%"}},"layout":{"type":"default"}} -->
-<div class="wp-block-cover alignwide" style="margin-top:0;margin-bottom:0;padding-top:3%;padding-right:0%;padding-bottom:10%;padding-left:5%">
+
+<!-- wp:cover {"url":"<?php echo esc_url( $image1 ); ?>","dimRatio":50,"focalPoint":{"x":0.5,"y":1},"align":"full","style":{"spacing":{"padding":{"top":"3%","right":"0%","bottom":"10%","left":"5%"},"margin":{"top":"0","bottom":"80px"},"blockGap":"1%"}},"layout":{"type":"default"}} -->
+<div class="wp-block-cover alignfull" style="margin-top:0;margin-bottom:80px;padding-top:3%;padding-right:0%;padding-bottom:10%;padding-left:5%">
 	<span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span>
-	<img class="wp-block-cover__image-background" alt="" src="<?php echo esc_url( $image1 ); ?>" data-object-fit="cover"/>
+	<img class="wp-block-cover__image-background" alt="" src="<?php echo esc_url( $image1 ); ?>" style="object-position:50% 100%" data-object-fit="cover" data-object-position="50% 100%"/>
 	<div class="wp-block-cover__inner-container">
 		<!-- wp:heading {"level":3} -->
-		<h3 class="wp-block-heading"><?php echo esc_html( $content['titles'][0]['default'] ); ?></h3>
+		<h3 class="wp-block-heading"><?php echo esc_html( $category_title ); ?></h3>
 		<!-- /wp:heading -->
 
 		<!-- wp:paragraph -->
-		<p><?php echo esc_html( $content['descriptions'][0]['default'] ); ?></p>
+		<p><?php echo esc_html( $description ); ?></p>
 		<!-- /wp:paragraph -->
 
 		<!-- wp:buttons {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}}} -->
@@ -29,7 +32,7 @@ $image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholder
 			<!-- wp:button -->
 			<div class="wp-block-button">
 				<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="wp-block-button__link wp-element-button">
-					<?php echo esc_html( $content['buttons'][0]['default'] ); ?>
+					<?php echo esc_html( $button ); ?>
 				</a>
 			</div>
 			<!-- /wp:button -->
