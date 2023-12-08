@@ -10,7 +10,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - name: 'Add Merge Notice'
-        uses: 'actions/github-script@v5'
+        uses: 'actions/github-script@v7'
         with:
           script: |
               github.rest.issues.createComment( {
@@ -22,7 +22,7 @@ jobs:
                 Thank you!'
               } );
       - name: 'Close'
-        uses: 'actions/github-script@v5'
+        uses: 'actions/github-script@v7'
         with:
           script: |
             github.rest.issues.update({
