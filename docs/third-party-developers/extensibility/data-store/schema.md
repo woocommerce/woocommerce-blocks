@@ -95,7 +95,7 @@ This will returns the route from the given slice of the route state.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `string` | `null`: The route for the given resource entries, or null if no route is found.
+-   `string` or `null`: The route for the given resource entries, or null if no route is found.
 
 #### _Example_ <!-- omit in toc -->
 

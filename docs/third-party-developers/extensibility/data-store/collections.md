@@ -2,19 +2,19 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Overview](#overview)
--   [Usage](#usage)
--   [Actions](#actions)
-    -   [receiveCollection( namespace, resourceName, queryString, ids = \[\], items = \[\], replace = false )](#receivecollection-namespace-resourcename-querystring-ids---items---replace--false-)
-    -   [receiveCollectionError](#receivecollectionerror)
-    -   [receiveLastModified](#receivelastmodified)
--   [Selectors](#selectors)
-    -   [getCollection](#getcollection)
-    -   [getCollectionHeader](#getcollectionheader)
-    -   [getFromState](#getfromstate)
-    -   [getCollectionHeaders](#getcollectionheaders)
-    -   [getCollectionError](#getcollectionerror)
-    -   [getCollectionLastModified](#getcollectionlastmodified)
+- [Overview](#overview)
+- [Usage](#usage)
+- [Actions](#actions)
+   	- [receiveCollection( namespace, resourceName, queryString, ids = \[\], items = \[\], replace = false )](#receivecollection-namespace-resourcename-querystring-ids---items---replace--false-)
+   	- [receiveCollectionError](#receivecollectionerror)
+   	- [receiveLastModified](#receivelastmodified)
+- [Selectors](#selectors)
+   	- [getFromState](#getfromstate)
+   	- [getCollection](#getcollection)
+   	- [getCollectionHeader](#getcollectionheader)
+   	- [getCollectionHeaders](#getcollectionheaders)
+   	- [getCollectionError](#getcollectionerror)
+   	- [getCollectionLastModified](#getcollectionlastmodified)
 
 ## Overview
 
@@ -25,7 +25,7 @@ The Collections Store allows to retrieve product-related collections within WooC
 To utilize this store you will import the COLLECTIONS_STORE_KEY in any module referencing it. Assuming `@woocommerce/block-data` is registered as an external pointing to `wc.wcBlocksData` you can import the key via:
 
 ```js
-const { COLLECTIONS_STORE_KEY } = window.wc.wcBlocksData;
+const { COLLECTIONS_STORE_KEY } =window.wc.wcBlocksData;
 ```
 
 ## Actions
@@ -94,16 +94,37 @@ dispatch( receiveLastModified( timestamp ) );
 
 ## Selectors
 
+### getFromState
+
+This selector will return the state from the collections store.
+
+#### _Returns_ <!-- omit in toc -->
+
+-   `object`: The state from the collections storew ith the following properties:
+   	- _namespace_ `string`: The route namespace for the collection, eg. `/wc/blocks`.
+    - _resourceName_ `string`: The resource name for the collection, eg. `products/attributes`.
+    - _query_ `object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.
+    - _ids_ `array`: If the collection route has placeholders for ids you provide the values for those placeholders in this array (in order).
+   	- _type_ `string`: type of the collections ie `items`.
+
+or
+
+- `array | null | undefined`: Returns a fallback value (specified as a parameter) when the collection lacks matching headers for the provided arguments.
+
+#### _Example_ <!-- omit in toc -->
+
+```js
+const store = select( COLLECTIONS_STORE_KEY );
+const state = store.getFromState( state, namespace, resourceName, queryString, ids, type, fallback );
+```
+
 ### getCollection
 
 This selector will return the collection for the given arguments. It has a sibling resolver, so if the selector has never been resolved, the resolver will make a request to the server for the collection and dispatch results to the store.
 
 #### _Returns_ <!-- omit in toc -->
 
--   _namespace_ `string`: The route namespace for the collection, eg. `/wc/blocks`.
--   _resourceName_ `string`: The resource name for the collection, eg. `products/attributes`.
--   _query_ `object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.
--   _ids_ `array`: If the collection route has placeholders for ids you provide the values for those placeholders in this array (in order).
+-   `object`:  Returns the `getFromState` object (see [`getFromState`](#getfromstate)).
 
 ### getCollectionHeader
 
@@ -126,45 +147,19 @@ or
     -   _query_ `Object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.
     -   _ids_ `Array`: If the collection route has placeholders for ids you provide the values for those placeholders in this array (in order).
 
-### getFromState
-
-This selector will return the state from the collections store.
-
-#### _Returns_ <!-- omit in toc -->
-
--   `object`: The state from the collections storew ith the following properties:
-   	- _namespace_ `string`: The route namespace for the collection, eg. `/wc/blocks`.
-    - _resourceName_ `string`: The resource name for the collection, eg. `products/attributes`.
-    - _query_ `object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.
-    - _ids_ `array`: If the collection route has placeholders for ids you provide the values for those placeholders in this array (in order).
-   	- _type_ `string`: type of the collections ie `items`.
-   	- _fallback_ `array` ( default: `[]` ):  fallback data for the collections.
-
-#### _Example_ <!-- omit in toc -->
-
-```js
-const store = select( COLLECTIONS_STORE_KEY );
-const state = store.getFromState();
-```
-
 ### getCollectionHeaders
 
 This selector will return the headers for a collection.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `object`: The headers for the collection with the following keys:
-   	-   _namespace_ `string`: The route namespace for the collection, eg. `/wc/blocks`.
-   	-   _resourceName_ `string`: The resource name for the collection, eg. `products/attributes`.
-   	-   _query_ `object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.
-   	-   _ids_ `array`: If the collection route has placeholders for ids you provide the values for those placeholders in this array (in order).
-   	-   _type_ `string`: `headers` for this selector.
+-   `object`:  Returns the `getFromState` object (see [`getFromState`](#getfromstate)).
 
 #### _Example_ <!-- omit in toc -->
 
 ```js
 const store = select( COLLECTIONS_STORE_KEY );
-const headers = store.getCollectionHeaders(state, namespace, resourceName, queryString);
+const headers = store.getCollectionHeaders( state, namespace, resourceName, queryString );
 ```
 
 ### getCollectionError
@@ -173,23 +168,13 @@ This selector will return any error that occurred while fetching a collection.
 
 #### _Returns_ <!-- omit in toc -->
 
--   `object`: The error that occurred while fetching the collection with the following properties:
-   	-   _namespace_ `string`: The route namespace for the collection, eg. `/wc/blocks`.
-   	-   _resourceName_ `string`: The resource name for the collection, eg. `products/attributes`.
-   	-   _query_ `object`: The query arguments for the collection, eg. `{ order: 'ASC', sortBy: Price }`.
-   	-   _ids_ `array`: If the collection route has placeholders for ids you provide the values for those placeholders in this array (in order).
-   	-   _type_ `string`: `error` for this selector.
-
-or
-
-- `null`: If the collection does not have any error.
-
+-   `object`:  Returns the `getFromState` object (see [`getFromState`](#getfromstate)).
 
 #### _Example_ <!-- omit in toc -->
 
 ```js
 const store = select( COLLECTIONS_STORE_KEY );
-const error = store.getCollectionError(state, namespace, resourceName, queryString);
+const error = store.getCollectionError( state, namespace, resourceName, queryString );
 ```
 
 ### getCollectionLastModified
@@ -204,7 +189,7 @@ This selector will return the last modified date for a collection.
 
 ```js
 const store = select( COLLECTIONS_STORE_KEY );
-const lastModified = store.getCollectionLastModified(state, namespace, resourceName, queryString);
+const lastModified = store.getCollectionLastModified( state, namespace, resourceName, queryString );
 ```
 
 <!-- FEEDBACK -->
