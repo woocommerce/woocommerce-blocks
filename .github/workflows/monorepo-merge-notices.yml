@@ -17,9 +17,9 @@ jobs:
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: 'WooCommerce Blocks [has been merged into the WooCommerce Monorepo](https://developer.woo.com/2023/12/01/woocommerce-blocks-merging-into-the-woocommerce-monorepo/).\n\n\
-                From now on, please open any issues or pull requests in the [woocommerce/woocommerce](https://github.com/woocommerce/woocommerce) repository.\n\n\
-                Thank you!'
+                body: 'Thank you for your interest in contributing to WooCommerce!\n\n\
+                WooCommerce Blocks [has been merged into the WooCommerce Monorepo](https://developer.woo.com/2023/12/01/woocommerce-blocks-merging-into-the-woocommerce-monorepo/).\n\n\
+                From now on, please open any issues or pull requests in the [woocommerce/woocommerce](https://github.com/woocommerce/woocommerce) repository.'
               } );
       - name: 'Close'
         uses: 'actions/github-script@v7'
