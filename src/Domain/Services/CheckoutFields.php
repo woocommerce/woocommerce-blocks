@@ -269,11 +269,10 @@ class CheckoutFields {
 		// Insert new field into the correct location array.
 		$this->additional_fields[ $id ] = array(
 			'label'          => $options['label'],
-			'optionalLabel'  => $options['optionalLabel'] ?: '',
-			'required'       => $options['required'] ?: false,
-			'hidden'         => $options['hidden'] ?: false,
-			'autocomplete'   => $options['autocomplete'] ?: '',
-			'autocapitalize' => $options['autocapitalize'] ?: '',
+			'optionalLabel'  => empty( $options['optionalLabel'] ) ? '' : $options['optionalLabel'],
+			'required'       => empty( $options['required'] ) ? false : $options['required'],
+			'autocomplete'   => empty( $options['autocomplete'] ) ? '' : $options['autocomplete'],
+			'autocapitalize' => empty( $options['autocapitalize'] ) ? '' : $options['autocapitalize'],
 		);
 
 		$this->fields_locations[ $location ][] = $id;
