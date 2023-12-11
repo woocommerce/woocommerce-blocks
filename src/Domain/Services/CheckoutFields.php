@@ -554,10 +554,11 @@ class CheckoutFields {
 	 * Returns an array of all fields values for a given customer.
 	 *
 	 * @param \WC_Customer $customer The customer to get the fields for.
+	 * @param bool         $all Whether to return all fields or only the ones that are still registered. Default false.
 	 *
 	 * @return array An array of fields.
 	 */
-	public function get_all_fields_from_customer( $customer ) {
+	public function get_all_fields_from_customer( $customer, $all = false ) {
 		$customer_id = $customer->get_id();
 		$meta_data   = [
 			'billing'    => [],
@@ -576,17 +577,18 @@ class CheckoutFields {
 			$meta_data['additional'] = get_user_meta( $customer_id, self::ADDITIONAL_FIELDS_KEY, true );
 		}
 
-		return $this->format_meta_data( $meta_data );
+		return $this->format_meta_data( $meta_data, $all );
 	}
 
 	/**
 	 * Returns an array of all fields values for a given order.
 	 *
 	 * @param \WC_Order $order The order to get the fields for.
+	 * @param bool      $all Whether to return all fields or only the ones that are still registered. Default false.
 	 *
 	 * @return array An array of fields.
 	 */
-	public function get_all_fields_from_order( $order ) {
+	public function get_all_fields_from_order( $order, $all = false ) {
 		$meta_data = [
 			'billing'    => [],
 			'shipping'   => [],
@@ -597,17 +599,18 @@ class CheckoutFields {
 			$meta_data['shipping']   = $order->get_meta( self::SHIPPING_FIELDS_KEY, true );
 			$meta_data['additional'] = $order->get_meta( self::ADDITIONAL_FIELDS_KEY, true );
 		}
-		return $this->format_meta_data( $meta_data );
+		return $this->format_meta_data( $meta_data, $all );
 	}
 
 	/**
 	 * Returns an array of all fields values for a given meta object. It would add the billing or shipping prefix to the keys.
 	 *
 	 * @param array $meta The meta data to format.
+	 * @param bool  $all Whether to return all fields or only the ones that are still registered. Default false.
 	 *
 	 * @return array An array of fields.
 	 */
-	private function format_meta_data( $meta ) {
+	private function format_meta_data( $meta, $all = false ) {
 		$billing_fields    = $meta['billing'] ?? [];
 		$shipping_fields   = $meta['shipping'] ?? [];
 		$additional_fields = $meta['additional'] ?? [];
@@ -616,18 +619,27 @@ class CheckoutFields {
 
 		if ( is_array( $billing_fields ) ) {
 			foreach ( $billing_fields as $key => $value ) {
+				if ( ! $all && ! $this->is_field( $key ) ) {
+					continue;
+				}
 				$fields[ '/billing/' . $key ] = $value;
 			}
 		}
 
 		if ( is_array( $shipping_fields ) ) {
 			foreach ( $shipping_fields as $key => $value ) {
+				if ( ! $all && ! $this->is_field( $key ) ) {
+					continue;
+				}
 				$fields[ '/shipping/' . $key ] = $value;
 			}
 		}
 
 		if ( is_array( $additional_fields ) ) {
 			foreach ( $additional_fields as $key => $value ) {
+				if ( ! $all && ! $this->is_field( $key ) ) {
+					continue;
+				}
 				$fields[ $key ] = $value;
 			}
 		}
