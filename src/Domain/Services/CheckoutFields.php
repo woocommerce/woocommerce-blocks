@@ -266,9 +266,16 @@ class CheckoutFields {
 			return new \WP_Error( 'woocommerce_blocks_checkout_field_already_registered', __( 'The field is already registered.', 'woo-gutenberg-products-block' ) );
 		}
 
+		// Hidden fields are not supported right now. They will be registered with hidden => false.
+		if ( ! empty( $options['hidden'] ) && true === $options['hidden'] ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+			trigger_error( sprintf( 'Registering a field with hidden set to true is not supported. The field "%s" will be registered as visible.', esc_html( $id ) ), E_USER_WARNING );
+		}
+
 		// Insert new field into the correct location array.
 		$this->additional_fields[ $id ] = array(
 			'label'          => $options['label'],
+			'hidden'         => false,
 			'optionalLabel'  => empty( $options['optionalLabel'] ) ? '' : $options['optionalLabel'],
 			'required'       => empty( $options['required'] ) ? false : $options['required'],
 			'autocomplete'   => empty( $options['autocomplete'] ) ? '' : $options['autocomplete'],
