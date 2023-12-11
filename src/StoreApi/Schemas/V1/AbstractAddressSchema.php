@@ -2,13 +2,34 @@
 namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 
 use Automattic\WooCommerce\StoreApi\Utilities\ValidationUtils;
-
+use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFields;
+use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
+use Automattic\WooCommerce\StoreApi\SchemaController;
+use Automattic\WooCommerce\Blocks\Package;
 /**
  * AddressSchema class.
  *
  * Provides a generic address schema for composition in other schemas.
  */
 abstract class AbstractAddressSchema extends AbstractSchema {
+
+	/**
+	 * Additional fields controller.
+	 *
+	 * @var CheckoutFields
+	 */
+	protected $additional_fields_controller;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param ExtendSchema     $extend ExtendSchema instance.
+	 * @param SchemaController $controller Schema Controller instance.
+	 */
+	public function __construct( ExtendSchema $extend, SchemaController $controller ) {
+		parent::__construct( $extend, $controller );
+		$this->additional_fields_controller = Package::container()->get( CheckoutFields::class );
+	}
 	/**
 	 * Term properties.
 	 *

@@ -4,7 +4,8 @@ namespace Automattic\WooCommerce\StoreApi\Schemas\V1;
 use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\Payments\PaymentResult;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
-
+use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFields;
+use Automattic\WooCommerce\Blocks\Package;
 
 /**
  * CheckoutSchema class.
@@ -46,6 +47,13 @@ class CheckoutSchema extends AbstractSchema {
 	protected $image_attachment_schema;
 
 	/**
+	 * Additional fields controller.
+	 *
+	 * @var CheckoutFields
+	 */
+	protected $additional_fields_controller;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param ExtendSchema     $extend Rest Extending instance.
@@ -53,9 +61,10 @@ class CheckoutSchema extends AbstractSchema {
 	 */
 	public function __construct( ExtendSchema $extend, SchemaController $controller ) {
 		parent::__construct( $extend, $controller );
-		$this->billing_address_schema  = $this->controller->get( BillingAddressSchema::IDENTIFIER );
-		$this->shipping_address_schema = $this->controller->get( ShippingAddressSchema::IDENTIFIER );
-		$this->image_attachment_schema = $this->controller->get( ImageAttachmentSchema::IDENTIFIER );
+		$this->billing_address_schema       = $this->controller->get( BillingAddressSchema::IDENTIFIER );
+		$this->shipping_address_schema      = $this->controller->get( ShippingAddressSchema::IDENTIFIER );
+		$this->image_attachment_schema      = $this->controller->get( ImageAttachmentSchema::IDENTIFIER );
+		$this->additional_fields_controller = Package::container()->get( CheckoutFields::class );
 	}
 
 	/**

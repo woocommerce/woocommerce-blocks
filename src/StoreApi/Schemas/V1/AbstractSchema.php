@@ -34,12 +34,6 @@ abstract class AbstractSchema {
 	protected $controller;
 
 	/**
-	 * Checkout fields controller.
-	 *
-	 * @var CheckoutFields
-	 */
-	protected CheckoutFields $additional_fields_controller;
-	/**
 	 * Extending key that gets added to endpoint.
 	 *
 	 * @var string
@@ -53,9 +47,8 @@ abstract class AbstractSchema {
 	 * @param SchemaController $controller Schema Controller instance.
 	 */
 	public function __construct( ExtendSchema $extend, SchemaController $controller ) {
-		$this->extend                       = $extend;
-		$this->controller                   = $controller;
-		$this->additional_fields_controller = Package::container()->get( CheckoutFields::class );
+		$this->extend     = $extend;
+		$this->controller = $controller;
 	}
 
 	/**

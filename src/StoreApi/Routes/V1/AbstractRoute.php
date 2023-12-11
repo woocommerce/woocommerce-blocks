@@ -36,13 +36,6 @@ abstract class AbstractRoute implements RouteInterface {
 	protected $schema_controller;
 
 	/**
-	 * Checkout fields controller.
-	 *
-	 * @var CheckoutFields
-	 */
-	protected CheckoutFields $additional_fields_controller;
-
-	/**
 	 * The routes schema.
 	 *
 	 * @var string
@@ -63,9 +56,8 @@ abstract class AbstractRoute implements RouteInterface {
 	 * @param AbstractSchema   $schema Schema class for this route.
 	 */
 	public function __construct( SchemaController $schema_controller, AbstractSchema $schema ) {
-		$this->schema_controller            = $schema_controller;
-		$this->schema                       = $schema;
-		$this->additional_fields_controller = Package::container()->get( CheckoutFields::class );
+		$this->schema_controller = $schema_controller;
+		$this->schema            = $schema;
 	}
 
 	/**

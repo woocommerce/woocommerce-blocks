@@ -101,7 +101,7 @@ class OrderSchema extends AbstractSchema {
 		$this->shipping_address_schema = $this->controller->get( ShippingAddressSchema::IDENTIFIER );
 		$this->billing_address_schema  = $this->controller->get( BillingAddressSchema::IDENTIFIER );
 		$this->error_schema            = $this->controller->get( ErrorSchema::IDENTIFIER );
-		$this->order_controller        = new OrderController( $this->additional_fields_controller );
+		$this->order_controller        = new OrderController();
 	}
 
 	/**

@@ -4,6 +4,7 @@ namespace Automattic\WooCommerce\StoreApi\Utilities;
 use \Exception;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFields;
+use Automattic\WooCommerce\Blocks\Package;
 
 /**
  * OrderController class.
@@ -20,11 +21,9 @@ class OrderController {
 
 	/**
 	 * Constructor.
-	 *
-	 * @param CheckoutFields $additional_fields_controller Checkout fields controller.
 	 */
-	public function __construct( CheckoutFields $additional_fields_controller ) {
-		$this->additional_fields_controller = $additional_fields_controller;
+	public function __construct() {
+		$this->additional_fields_controller = Package::container()->get( CheckoutFields::class );
 	}
 
 	/**
