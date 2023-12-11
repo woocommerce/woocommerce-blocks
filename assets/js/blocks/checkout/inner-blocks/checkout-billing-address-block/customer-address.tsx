@@ -102,11 +102,7 @@ const CustomerAddress = ( {
 				/>
 			</>
 		),
-		[
-			addressFieldsConfig,
-			billingAddress,
-			onChangeAddress,
-		]
+		[ addressFieldsConfig, billingAddress, onChangeAddress ]
 	);
 
 	return (
