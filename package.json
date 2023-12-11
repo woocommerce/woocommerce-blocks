@@ -232,7 +232,7 @@
 		"markdown-it": "13.0.1",
 		"merge-config": "2.0.0",
 		"mini-css-extract-plugin": "2.7.6",
-		"patch-package": "6.4.7",
+		"patch-package": "8.0.0",
 		"postcss": "8.4.31",
 		"postcss-loader": "7.3.3",
 		"prettier": "npm:wp-prettier@2.6.2",
