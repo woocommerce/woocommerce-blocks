@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🐞 Bug Report
+    url: https://github.com/woocommerce/woocommerce/issues/new/choose
+    about: WooCommerce Blocks has been merged into the WooCommerce monorepo! Please open all issues in the monorepo as they will not be responded to here.
