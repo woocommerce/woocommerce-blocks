@@ -210,7 +210,7 @@
 		"eslint-plugin-rulesdir": "^0.2.2",
 		"eslint-plugin-storybook": "^0.6.15",
 		"eslint-plugin-woocommerce": "file:bin/eslint-plugin-woocommerce",
-		"eslint-plugin-you-dont-need-lodash-underscore": "6.12.0",
+		"eslint-plugin-you-dont-need-lodash-underscore": "6.13.0",
 		"expect-puppeteer": "6.1.1",
 		"fast-xml-parser": "4.2.4",
 		"follow-redirects": "1.15.1",
