@@ -50,6 +50,9 @@ const blocks = {
 	'product-category': {},
 	'product-categories': {},
 	'product-collection': {},
+	'product-collection-no-results': {
+		customDir: 'product-collection/inner-blocks/no-results',
+	},
 	'product-gallery': {
 		isExperimental: true,
 	},
@@ -72,9 +75,7 @@ const blocks = {
 	},
 	'product-new': {},
 	'product-on-sale': {},
-	'product-query': {
-		isExperimental: true,
-	},
+	'product-query': {},
 	'product-results-count': {},
 	'product-search': {},
 	'product-tag': {},
@@ -96,8 +97,16 @@ const blocks = {
 	'collection-filters': {
 		isExperimental: true,
 	},
+	'collection-stock-filter': {
+		isExperimental: true,
+		customDir: 'collection-filters/inner-blocks/stock-filter',
+	},
 	'collection-price-filter': {
 		customDir: 'collection-filters/inner-blocks/price-filter',
+		isExperimental: true,
+	},
+	'collection-attribute-filter': {
+		customDir: 'collection-filters/inner-blocks/attribute-filter',
 		isExperimental: true,
 	},
 	'order-confirmation-summary': {
@@ -196,6 +205,10 @@ const entries = {
 		priceFormat: './packages/prices/index.js',
 		blocksCheckout: './packages/checkout/index.js',
 		blocksComponents: './packages/components/index.ts',
+
+		// interactivity components, exported as separate entries for now
+		'wc-interactivity-dropdown':
+			'./packages/interactivity-components/dropdown/index.ts',
 	},
 	main: {
 		// Shared blocks code
@@ -227,8 +240,6 @@ const entries = {
 			'./assets/js/extensions/google-analytics/index.ts',
 		'wc-shipping-method-pickup-location':
 			'./assets/js/extensions/shipping-methods/pickup-location/index.js',
-		'wc-blocks-jetpack-woocommerce-analytics':
-			'./assets/js/extensions/jetpack/woocommerce-analytics/index.ts',
 	},
 	editor: {
 		'wc-blocks-classic-template-revert-button':

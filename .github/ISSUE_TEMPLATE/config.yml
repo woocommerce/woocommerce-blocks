@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ⛵ WooCommerce Blocks has been merged into WooCommerce ⛵
+    url: https://github.com/woocommerce/woocommerce/issues/new/choose
+    about: We have merged WooCommerce Blocks into the `woocommerce/woocommerce` repository and all new issues should be opened there.

@@ -16,7 +16,7 @@ import { Icon, commentContent } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import EditorContainerBlock from '../editor-container-block.js';
+import EditorContainerBlock from '../editor-container-block';
 import NoReviewsPlaceholder from './no-reviews-placeholder';
 import {
 	getBlockControls,
@@ -127,7 +127,7 @@ const ReviewsByCategoryEditor = ( {
 						} }
 						showReviewCount={ true }
 					/>
-					<Button isPrimary onClick={ onDone }>
+					<Button variant="primary" onClick={ onDone }>
 						{ __( 'Done', 'woo-gutenberg-products-block' ) }
 					</Button>
 				</div>

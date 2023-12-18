@@ -78,9 +78,17 @@ export class CheckoutPage {
 		await this.page.evaluate( 'document.activeElement.blur()' );
 	}
 
-	async placeOrder() {
+	/**
+	 * Place order and wait for redirect to order received page.
+	 *
+	 * @param  waitForRedirect If false, then the method will not wait for the redirect to order received page. Useful
+	 *                         when testing for errors on the checkout page.
+	 */
+	async placeOrder( waitForRedirect = true ) {
 		await this.page.getByText( 'Place Order', { exact: true } ).click();
-		await this.page.waitForURL( /order-received/ );
+		if ( waitForRedirect ) {
+			await this.page.waitForURL( /order-received/ );
+		}
 	}
 
 	async verifyAddressDetails(
@@ -91,8 +99,16 @@ export class CheckoutPage {
 			...this.testData,
 			...overrideAddressDetails,
 		};
-		const selector = `.wc-block-order-confirmation-${ shippingOrBilling }-address`;
-		const addressContainer = this.page.locator( selector );
+
+		const legacySelector = `.woocommerce-column--${ shippingOrBilling }-address`;
+		const blockSelector = `.wc-block-order-confirmation-${ shippingOrBilling }-address`;
+
+		let addressContainer = this.page.locator( blockSelector );
+
+		if ( ! ( await addressContainer.isVisible() ) ) {
+			addressContainer = this.page.locator( legacySelector );
+		}
+
 		await expect(
 			addressContainer.getByText( customerAddressDetails.firstname )
 		).toBeVisible();
@@ -254,7 +270,7 @@ export class CheckoutPage {
 		shippingName: string,
 		shippingPrice: string
 	) {
-		const shipping = this.page.getByLabel( shippingName );
+		const shipping = this.page.getByLabel( shippingName ).first();
 		await expect( shipping ).toBeVisible();
 		if (
 			! ( await this.isShippingRateSelected(
@@ -374,5 +390,35 @@ export class CheckoutPage {
 			];
 
 		return orderId;
+	}
+
+	async verifyBillingDetails( overrideData = {} ) {
+		const testData = { ...this.testData, ...overrideData };
+		const {
+			firstname,
+			lastname,
+			city,
+			postcode,
+			phone,
+			addressfirstline,
+			addresssecondline,
+		} = testData;
+		const billingAddressSection = this.page.locator(
+			'[data-block-name="woocommerce/order-confirmation-billing-address"]'
+		);
+		await expect(
+			billingAddressSection.getByText( `${ firstname } ${ lastname }` )
+		).toBeVisible();
+		await expect( billingAddressSection.getByText( city ) ).toBeVisible();
+		await expect(
+			billingAddressSection.getByText( postcode )
+		).toBeVisible();
+		await expect( billingAddressSection.getByText( phone ) ).toBeVisible();
+		await expect(
+			billingAddressSection.getByText( addressfirstline )
+		).toBeVisible();
+		await expect(
+			billingAddressSection.getByText( addresssecondline )
+		).toBeVisible();
 	}
 }

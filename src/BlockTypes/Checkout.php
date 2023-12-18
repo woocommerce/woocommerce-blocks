@@ -343,22 +343,21 @@ class Checkout extends AbstractBlock {
 		}
 
 		if ( $is_block_editor && ! $this->asset_data_registry->exists( 'incompatibleExtensions' ) ) {
-			if ( ! class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			if ( ! class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) || ! function_exists( 'get_plugins' ) ) {
 				return;
 			}
 
-			if ( ! function_exists( 'get_plugin_data' ) ) {
-				require_once ABSPATH . 'wp-admin/includes/plugin.php';
-			}
-
 			$declared_extensions     = \Automattic\WooCommerce\Utilities\FeaturesUtil::get_compatible_plugins_for_feature( 'cart_checkout_blocks' );
+			$all_plugins             = \get_plugins(); // Note that `get_compatible_plugins_for_feature` calls `get_plugins` internally, so this is already in cache.
 			$incompatible_extensions = array_reduce(
 				$declared_extensions['incompatible'],
-				function( $acc, $item ) {
-					$plugin = get_plugin_data( WP_PLUGIN_DIR . '/' . $item );
-					$acc[]  = [
-						'id'    => $plugin['TextDomain'],
-						'title' => $plugin['Name'],
+				function( $acc, $item ) use ( $all_plugins ) {
+					$plugin      = $all_plugins[ $item ] ?? null;
+					$plugin_id   = $plugin['TextDomain'] ?? dirname( $item );
+					$plugin_name = $plugin['Name'] ?? $plugin_id;
+					$acc[]       = [
+						'id'    => $plugin_id,
+						'title' => $plugin_name,
 					];
 					return $acc;
 				},
@@ -422,11 +421,13 @@ class Checkout extends AbstractBlock {
 
 		// Filter out payment methods that are not enabled.
 		foreach ( $payment_methods as $payment_method_group => $saved_payment_methods ) {
-			$payment_methods[ $payment_method_group ] = array_filter(
-				$saved_payment_methods,
-				function( $saved_payment_method ) use ( $payment_gateways ) {
-					return in_array( $saved_payment_method['method']['gateway'], array_keys( $payment_gateways ), true );
-				}
+			$payment_methods[ $payment_method_group ] = array_values(
+				array_filter(
+					$saved_payment_methods,
+					function( $saved_payment_method ) use ( $payment_gateways ) {
+						return in_array( $saved_payment_method['method']['gateway'], array_keys( $payment_gateways ), true );
+					}
+				)
 			);
 		}
 

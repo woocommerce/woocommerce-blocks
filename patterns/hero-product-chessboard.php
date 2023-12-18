@@ -7,8 +7,8 @@
 
 use Automattic\WooCommerce\Blocks\Patterns\PatternsHelper;
 
-$image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/sweet-restaurant-celebration-food-chocolate-cupcake.png' );
-$image2 = PatternsHelper::get_image_url( $images, 1, 'images/pattern-placeholders/dish-meal-food-breakfast-dessert-eat.png' );
+$image1 = PatternsHelper::get_image_url( $images, 0, 'images/pattern-placeholders/plant-white-leaf-flower-vase-green.jpg' );
+$image2 = PatternsHelper::get_image_url( $images, 1, 'images/pattern-placeholders/table-wood-house-chair-floor-window.jpg' );
 
 $first_title  = $content['titles'][0]['default'] ?? '';
 $second_title = $content['titles'][1]['default'] ?? '';
@@ -17,6 +17,8 @@ $third_title  = $content['titles'][2]['default'] ?? '';
 $first_description  = $content['descriptions'][0]['default'] ?? '';
 $second_description = $content['descriptions'][1]['default'] ?? '';
 $third_description  = $content['descriptions'][2]['default'] ?? '';
+
+$button = $content['buttons'][0]['default'] ?? '';
 ?>
 
 <!-- wp:group {"align":"full","style":{"spacing":{"margin":{"top":"0px","bottom":"80px"}}},"layout":{"type":"constrained"}} -->
@@ -54,7 +56,7 @@ $third_description  = $content['descriptions'][2]['default'] ?? '';
 				<div class="wp-block-buttons" style="margin-top:64px">
 					<!-- wp:button {"textAlign":"left"} -->
 					<div class="wp-block-button has-custom-font-size">
-						<a class="wp-block-button__link has-text-align-left wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>">Shop now</a>
+						<a class="wp-block-button__link has-text-align-left wp-element-button" href="<?php echo esc_url( get_permalink( wc_get_page_id( 'shop' ) ) ); ?>"><?php echo esc_html( $button ); ?></a>
 					</div>
 					<!-- /wp:button -->
 				</div>

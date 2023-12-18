@@ -46,7 +46,7 @@ export class FrontendUtils {
 
 	async goToCheckout() {
 		await this.page.goto( '/checkout', {
-			waitUntil: 'commit',
+			waitUntil: 'domcontentloaded',
 		} );
 	}
 
@@ -176,5 +176,11 @@ export class FrontendUtils {
 		await locator.click();
 		await locator.press( 'End' );
 		await locator.press( 'Shift+Home' );
+	}
+
+	async gotoMyAccount() {
+		await this.page.goto( '/my-account', {
+			waitUntil: 'commit',
+		} );
 	}
 }

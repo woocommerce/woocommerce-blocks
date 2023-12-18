@@ -30,13 +30,13 @@ import type {
 	SearchListItem as SearchListItemProps,
 	SearchListControlProps,
 	SearchListMessages,
-	renderItemArgs,
+	RenderItemArgs,
 	ListItemsProps,
 	SearchListItemsContainerProps,
 } from './types';
 import './style.scss';
 
-const defaultRenderListItem = ( args: renderItemArgs ): JSX.Element => {
+const defaultRenderListItem = ( args: RenderItemArgs ): JSX.Element => {
 	return <SearchListItem { ...args } />;
 };
 
@@ -122,7 +122,7 @@ const SelectedListItems = < T extends object = object >( {
 				<strong>{ messages.selected( selectedCount ) }</strong>
 				{ selectedCount > 0 ? (
 					<Button
-						isLink
+						variant="link"
 						isDestructive
 						onClick={ () => onChange( [] ) }
 						aria-label={ messages.clear }
@@ -163,7 +163,7 @@ const ListItemsContainer = < T extends object = object >( {
 		return (
 			<div className="woocommerce-search-list__list is-not-found">
 				<span className="woocommerce-search-list__not-found-icon">
-					<Icon icon={ info } />
+					<Icon icon={ info } role="img" />
 				</span>
 				<span className="woocommerce-search-list__not-found-text">
 					{ search

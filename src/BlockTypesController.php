@@ -239,6 +239,7 @@ final class BlockTypesController {
 			'ProductCategories',
 			'ProductCategory',
 			'ProductCollection',
+			'ProductCollectionNoResults',
 			'ProductImage',
 			'ProductImageGallery',
 			'ProductNew',
@@ -296,7 +297,9 @@ final class BlockTypesController {
 			$block_types[] = 'ProductGalleryPager';
 			$block_types[] = 'ProductGalleryThumbnails';
 			$block_types[] = 'CollectionFilters';
+			$block_types[] = 'CollectionStockFilter';
 			$block_types[] = 'CollectionPriceFilter';
+			$block_types[] = 'CollectionAttributeFilter';
 		}
 
 		/**

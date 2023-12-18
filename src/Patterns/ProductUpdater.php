@@ -8,18 +8,64 @@ use WP_Error;
  * Pattern Images class.
  */
 class ProductUpdater {
+	const DUMMY_PRODUCTS = [
+		[
+			'title'       => 'Vintage Typewriter',
+			'image'       => 'images/pattern-placeholders/writing-typing-keyboard-technology-white-vintage.jpg',
+			'description' => 'A hit spy novel or a love letter? Anything you type using this vintage typewriter from the 20s is bound to make a mark.',
+			'price'       => 90,
+		],
+		[
+			'title'       => 'Leather-Clad Leisure Chair',
+			'image'       => 'images/pattern-placeholders/table-wood-house-chair-floor-window.jpg',
+			'description' => 'Sit back and relax in this comfy designer chair. High-grain leather and steel frame add luxury to your your leisure.',
+			'price'       => 249,
+		],
+		[
+			'title'       => 'Black and White Summer Portrait',
+			'image'       => 'images/pattern-placeholders/white-black-black-and-white-photograph-monochrome-photography.jpg',
+			'description' => 'This 24" x 30" high-quality print just exudes summer. Hang it on the wall and forget about the world outside.',
+			'price'       => 115,
+		],
+		[
+			'title'       => '3-Speed Bike',
+			'image'       => 'images/pattern-placeholders/road-sport-vintage-wheel-retro-old.jpg',
+			'description' => 'Zoom through the streets on this premium 3-speed bike. Manufactured and assembled in Germany in the 80s.',
+			'price'       => 115,
+		],
+		[
+			'title'       => 'Hi-Fi Headphones',
+			'image'       => 'images/pattern-placeholders/man-person-music-black-and-white-white-photography.jpg',
+			'description' => 'Experience your favorite songs in a new way with these premium hi-fi headphones.',
+			'price'       => 125,
+		],
+		[
+			'title'       => 'Retro Glass Jug (330 ml)',
+			'image'       => 'images/pattern-placeholders/drinkware-liquid-tableware-dishware-bottle-fluid.jpg',
+			'description' => 'Thick glass and a classic silhouette make this jug a must-have for any retro-inspired kitchen.',
+			'price'       => 115,
+		],
+	];
 
 	/**
 	 * Generate AI content and assign AI-managed images to Products.
 	 *
-	 * @param Connection $ai_connection The AI connection.
-	 * @param string     $token The JWT token.
-	 * @param array      $images The array of images.
-	 * @param string     $business_description The business description.
+	 * @param Connection      $ai_connection The AI connection.
+	 * @param string|WP_Error $token The JWT token.
+	 * @param array|WP_Error  $images The array of images.
+	 * @param string          $business_description The business description.
 	 *
 	 * @return array|WP_Error The generated content for the products. An error if the content could not be generated.
 	 */
 	public function generate_content( $ai_connection, $token, $images, $business_description ) {
+		if ( is_wp_error( $images ) ) {
+			return $images;
+		}
+
+		if ( is_wp_error( $token ) ) {
+			return $token;
+		}
+
 		if ( empty( $business_description ) ) {
 			return new \WP_Error( 'missing_business_description', __( 'No business description provided for generating AI content.', 'woo-gutenberg-products-block' ) );
 		}
@@ -36,26 +82,21 @@ class ProductUpdater {
 			}
 		}
 
-		$ai_selected_products_images = $this->get_images_information( $images );
-		$products_information_list   = $this->assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images );
+		$dummy_products_to_update = $this->fetch_dummy_products_to_update();
 
-		$response = $this->generate_product_content( $ai_connection, $token, $products_information_list );
-
-		if ( is_wp_error( $response ) ) {
-			$error_msg = $response;
-		} elseif ( empty( $response ) || ! isset( $response['completion'] ) ) {
-			$error_msg = new \WP_Error( 'missing_completion_key', __( 'The response from the AI service is empty or missing the completion key.', 'woo-gutenberg-products-block' ) );
+		if ( is_wp_error( $dummy_products_to_update ) ) {
+			return $dummy_products_to_update;
 		}
 
-		if ( isset( $error_msg ) ) {
-			return $error_msg;
+		if ( empty( $dummy_products_to_update ) ) {
+			return array(
+				'product_content' => array(),
+			);
 		}
 
-		$product_content = json_decode( $response['completion'], true );
+		$products_information_list = $this->assign_ai_selected_images_to_dummy_products( $dummy_products_to_update, $images );
 
-		return array(
-			'product_content' => $product_content,
-		);
+		return $this->assign_ai_generated_content_to_dummy_products( $ai_connection, $token, $products_information_list, $business_description );
 	}
 
 	/**
@@ -64,32 +105,25 @@ class ProductUpdater {
 	 * @return array|WP_Error An array with the dummy products that need to have their content updated by AI.
 	 */
 	public function fetch_dummy_products_to_update() {
-		$real_products = $this->fetch_product_ids();
+		$real_products       = $this->fetch_product_ids();
+		$real_products_count = count( $real_products );
 
-		if ( is_array( $real_products ) && count( $real_products ) > 0 ) {
+		if ( is_array( $real_products ) && $real_products_count > 6 ) {
 			return array(
 				'product_content' => array(),
 			);
 		}
 
-		$dummy_products = $this->fetch_product_ids( 'dummy' );
-
-		if ( ! is_array( $dummy_products ) ) {
-			return new \WP_Error( 'failed_to_fetch_dummy_products', __( 'Failed to fetch dummy products.', 'woo-gutenberg-products-block' ) );
-		}
-
-		$dummy_products_count          = count( $dummy_products );
-		$expected_dummy_products_count = 6;
-		$products_to_create            = max( 0, $expected_dummy_products_count - $dummy_products_count );
-
+		$dummy_products       = $this->fetch_product_ids( 'dummy' );
+		$dummy_products_count = count( $dummy_products );
+		$products_to_create   = max( 0, 6 - $real_products_count - $dummy_products_count );
 		while ( $products_to_create > 0 ) {
-			$this->create_new_product();
+			$this->create_new_product( self::DUMMY_PRODUCTS[ $products_to_create - 1 ] );
 			$products_to_create--;
 		}
 
 		// Identify dummy products that need to have their content updated.
 		$dummy_products_ids = $this->fetch_product_ids( 'dummy' );
-
 		if ( ! is_array( $dummy_products_ids ) ) {
 			return new \WP_Error( 'failed_to_fetch_dummy_products', __( 'Failed to fetch dummy products.', 'woo-gutenberg-products-block' ) );
 		}
@@ -140,10 +174,12 @@ class ProductUpdater {
 
 		$timestamp_created  = strtotime( $formatted_date_created );
 		$timestamp_modified = strtotime( $formatted_date_modified );
+		$timestamp_current  = time();
 
-		$dummy_product_not_modified = abs( $timestamp_modified - $timestamp_created ) < 60;
+		$dummy_product_recently_modified = abs( $timestamp_current - $timestamp_modified ) < 10;
+		$dummy_product_not_modified      = abs( $timestamp_modified - $timestamp_created ) < 60;
 
-		if ( $current_product_hash === $ai_modified_product_hash || $dummy_product_not_modified ) {
+		if ( $current_product_hash === $ai_modified_product_hash || $dummy_product_not_modified || $dummy_product_recently_modified ) {
 			return true;
 		}
 
@@ -153,19 +189,32 @@ class ProductUpdater {
 	/**
 	 * Creates a new product and assigns the _headstart_post meta to it.
 	 *
-	 * @return bool|int
+	 * @param array $product_data The product data.
+	 *
+	 * @return bool|int|\WP_Error
 	 */
-	public function create_new_product() {
-		$product      = new \WC_Product();
-		$random_price = wp_rand( 5, 50 );
+	public function create_new_product( $product_data ) {
+		$product = new \WC_Product();
 
-		$product->set_name( 'My Awesome Product' );
+		$product->set_name( $product_data['title'] );
 		$product->set_status( 'publish' );
-		$product->set_description( 'Product description' );
-		$product->set_price( $random_price );
-		$product->set_regular_price( $random_price );
+		$product->set_description( $product_data['description'] );
+		$product->set_price( $product_data['price'] );
+		$product->set_regular_price( $product_data['price'] );
 
 		$saved_product = $product->save();
+
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		$product_image_id = media_sideload_image( plugins_url( $product_data['image'], dirname( __DIR__ ) ), $product->get_id(), $product_data['title'], 'id' );
+		if ( is_wp_error( $product_image_id ) ) {
+			return new \WP_Error( 'error_uploading_image', $product_image_id->get_error_message() );
+		}
+
+		$product->set_image_id( $product_image_id );
+		$product->save();
 
 		return update_post_meta( $saved_product, '_headstart_post', true );
 	}
@@ -175,9 +224,9 @@ class ProductUpdater {
 	 *
 	 * @param string $type The type of products to fetch.
 	 *
-	 * @return array
+	 * @return array|null
 	 */
-	public function fetch_product_ids( $type = 'user_created' ) {
+	public function fetch_product_ids( string $type = 'user_created' ) {
 		global $wpdb;
 
 		if ( 'user_created' === $type ) {
@@ -237,12 +286,17 @@ class ProductUpdater {
 	/**
 	 * Update the product content with the AI-generated content.
 	 *
-	 * @param \WC_Product $product The product.
-	 * @param array       $ai_generated_product_content The AI-generated content.
+	 * @param array $ai_generated_product_content The AI-generated product content.
 	 *
 	 * @return string|void
 	 */
-	public function update_product_content( $product, $ai_generated_product_content ) {
+	public function update_product_content( $ai_generated_product_content ) {
+		if ( ! isset( $ai_generated_product_content['product_id'] ) ) {
+			return;
+		}
+
+		$product = wc_get_product( $ai_generated_product_content['product_id'] );
+
 		if ( ! $product instanceof \WC_Product ) {
 			return;
 		}
@@ -251,6 +305,30 @@ class ProductUpdater {
 			return;
 		}
 
+		$product->set_name( $ai_generated_product_content['title'] );
+		$product->set_description( $ai_generated_product_content['description'] );
+		$product->set_regular_price( $ai_generated_product_content['price'] );
+		$product->set_slug( sanitize_title( $ai_generated_product_content['title'] ) );
+		$product->save();
+
+		$update_product_image = $this->update_product_image( $product, $ai_generated_product_content );
+
+		if ( is_wp_error( $update_product_image ) ) {
+			return $update_product_image;
+		}
+
+		$this->create_hash_for_ai_modified_product( $product );
+	}
+
+	/**
+	 * Update the product images with the AI-generated image.
+	 *
+	 * @param \WC_Product $product The product.
+	 * @param array       $ai_generated_product_content The AI-generated product content.
+	 *
+	 * @return string|true
+	 */
+	public function update_product_image( $product, $ai_generated_product_content ) {
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -258,7 +336,8 @@ class ProductUpdater {
 		// Since the media_sideload_image function is expensive and can take longer to complete
 		// the process of downloading the external image and uploading it to the media library,
 		// here we are increasing the time limit to avoid any issues.
-		set_time_limit( 60 );
+		set_time_limit( 150 );
+		wp_raise_memory_limit( 'image' );
 
 		$product_image_id = media_sideload_image( $ai_generated_product_content['image']['src'], $product->get_id(), $ai_generated_product_content['image']['alt'], 'id' );
 
@@ -266,97 +345,40 @@ class ProductUpdater {
 			return $product_image_id->get_error_message();
 		}
 
-		$product->set_name( $ai_generated_product_content['title'] );
-		$product->set_description( $ai_generated_product_content['description'] );
 		$product->set_image_id( $product_image_id );
-
 		$product->save();
 
-		$this->create_hash_for_ai_modified_product( $product );
+		return true;
 	}
 
 	/**
 	 * Assigns the default content for the products.
 	 *
-	 * @param array $ai_selected_products_images The images information.
+	 * @param array $dummy_products_to_update The dummy products to update.
+	 * @param array $ai_selected_images The images' information.
 	 *
 	 * @return array[]
 	 */
-	public function assign_ai_selected_images_to_dummy_products_information_list( $ai_selected_products_images ) {
-		$default_image = [
-			'src' => esc_url( plugins_url( 'woocommerce-blocks/images/block-placeholders/product-image-gallery.svg' ) ),
-			'alt' => 'The placeholder for a product image.',
-		];
+	public function assign_ai_selected_images_to_dummy_products( $dummy_products_to_update, $ai_selected_images ) {
+		$products_information_list = [];
+		$dummy_products_count      = count( $dummy_products_to_update );
+		for ( $i = 0; $i < $dummy_products_count; $i ++ ) {
+			$image_src = $ai_selected_images[ $i ]['URL'] ?? '';
+			$image_alt = $ai_selected_images[ $i ]['title'] ?? '';
 
-		return [
-			[
+			$products_information_list[] = [
 				'title'       => 'A product title',
 				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[0] ?? $default_image,
-			],
-			[
-				'title'       => 'A product title',
-				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[1] ?? $default_image,
-			],
-			[
-				'title'       => 'A product title',
-				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[2] ?? $default_image,
-			],
-			[
-				'title'       => 'A product title',
-				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[3] ?? $default_image,
-			],
-			[
-				'title'       => 'A product title',
-				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[4] ?? $default_image,
-			],
-			[
-				'title'       => 'A product title',
-				'description' => 'A product description',
-				'image'       => $ai_selected_products_images[5] ?? $default_image,
-			],
-		];
-	}
-
-	/**
-	 * Get the images information.
-	 *
-	 * @param array $images The array of images.
-	 *
-	 * @return array
-	 */
-	public function get_images_information( $images ) {
-		if ( is_wp_error( $images ) ) {
-			return [
-				'src' => 'images/block-placeholders/product-image-gallery.svg',
-				'alt' => 'The placeholder for a product image.',
+				'price'       => 'The product price',
+				'image'       => [
+					'src' => esc_url( $image_src ),
+					'alt' => esc_attr( $image_alt ),
+				],
+				'product_id'  => $dummy_products_to_update[ $i ]->get_id(),
 			];
 		}
 
-		$count              = 0;
-		$placeholder_images = [];
-		foreach ( $images as $image ) {
-			if ( $count >= 6 ) {
-				break;
-			}
-
-			if ( ! isset( $image['title'] ) || ! isset( $image['thumbnails']['medium'] ) ) {
-				continue;
-			}
-
-			$placeholder_images[] = [
-				'src' => esc_url( $image['thumbnails']['medium'] ),
-				'alt' => esc_attr( $image['title'] ),
-			];
-
-			++ $count;
-		}
-
-		return $placeholder_images;
+		return $products_information_list;
 	}
 
 	/**
@@ -364,19 +386,123 @@ class ProductUpdater {
 	 *
 	 * @param Connection $ai_connection The AI connection.
 	 * @param string     $token The JWT token.
-	 * @param array      $products_default_content The default content for the products.
+	 * @param array      $products_information_list The products information list.
+	 * @param string     $business_description The business description.
 	 *
 	 * @return array|int|string|\WP_Error
 	 */
-	public function generate_product_content( $ai_connection, $token, $products_default_content ) {
-		$store_description = get_option( 'woo_ai_describe_store_description' );
-
-		if ( ! $store_description ) {
-			return new \WP_Error( 'missing_store_description', __( 'The store description is required to generate the content for your site.', 'woo-gutenberg-products-block' ) );
+	public function assign_ai_generated_content_to_dummy_products( $ai_connection, $token, $products_information_list, $business_description ) {
+		if ( empty( $business_description ) ) {
+			return new \WP_Error( 'missing_store_description', __( 'The store description is required to generate content for your site.', 'woo-gutenberg-products-block' ) );
 		}
 
-		$prompt = sprintf( 'Given the following business description: "%1s" and the assigned value for the alt property in the JSON below, generate new titles and descriptions for each one of the products listed below and assign them as the new values for the JSON: %2s. Each one of the titles should be unique and must be limited to 29 characters. The response should be only a JSON string, with no intro or explanations.', $store_description, wp_json_encode( $products_default_content ) );
+		$prompts = [];
+		foreach ( $products_information_list as $product_information ) {
+			if ( ! empty( $product_information['image']['alt'] ) ) {
+				$prompts[] = sprintf( 'Generate a product name for a product that could be sold in a store and could be associated with the following image description: "%s" and also is related to the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans. The returned result should not refer to people, only objects.', $product_information['image']['alt'], $business_description );
+			} else {
+				$prompts[] = sprintf( 'Generate a product name for a product that could be sold in a store and matches the following business description: "%s". Do not include any adjectives or descriptions of the qualities of the product and always refer to objects or services, not humans.', $business_description );
+			}
+		}
 
-		return $ai_connection->fetch_ai_response( $token, $prompt, 60 );
+		$expected_results_format = [];
+		foreach ( $products_information_list as $index => $product ) {
+			$expected_results_format[ $index ] = [
+				'title' => '',
+				'price' => '',
+			];
+		}
+
+		$formatted_prompt = sprintf(
+			"Generate two-words titles and price for products using the following prompts for each one of them: '%s'. Ensure each entry is unique and does not repeat the given examples. It should be a number and it's not too low or too high for the corresponding product title being advertised. Convert the price to this currency: '%s'. Do not include backticks or the word json in the response. Here's an example format: '%s'.",
+			wp_json_encode( $prompts ),
+			get_woocommerce_currency(),
+			wp_json_encode( $expected_results_format )
+		);
+
+		$ai_request_retries = 0;
+		$success            = false;
+		while ( $ai_request_retries < 5 && ! $success ) {
+			$ai_request_retries ++;
+			$ai_response = $ai_connection->fetch_ai_response( $token, $formatted_prompt, 30 );
+			if ( is_wp_error( $ai_response ) ) {
+				continue;
+			}
+
+			if ( empty( $ai_response ) ) {
+				continue;
+			}
+
+			if ( ! isset( $ai_response['completion'] ) ) {
+				continue;
+			}
+
+			$completion = json_decode( $ai_response['completion'], true );
+
+			if ( ! is_array( $completion ) ) {
+				continue;
+			}
+
+			$diff = array_diff_key( $expected_results_format, $completion );
+
+			if ( ! empty( $diff ) ) {
+				continue;
+			}
+
+			$empty_results = false;
+			foreach ( $completion as $completion_item ) {
+				if ( empty( $completion_item ) ) {
+					$empty_results = true;
+					break;
+				}
+			}
+
+			if ( $empty_results ) {
+				continue;
+			}
+
+			foreach ( $products_information_list as $index => $product_information ) {
+				$products_information_list[ $index ]['title'] = str_replace( '"', '', $completion[ $index ]['title'] );
+				$products_information_list[ $index ]['price'] = $completion[ $index ]['price'];
+			}
+
+			$success = true;
+		}
+
+		if ( ! $success ) {
+			return new WP_Error( 'failed_to_fetch_ai_responses', __( 'Failed to fetch AI responses for products.', 'woo-gutenberg-products-block' ) );
+		}
+
+		return array(
+			'product_content' => $products_information_list,
+		);
+	}
+
+	/**
+	 * Reset the products content.
+	 */
+	public function reset_products_content() {
+		$dummy_products_to_update = $this->fetch_dummy_products_to_update();
+		$i                        = 0;
+		foreach ( $dummy_products_to_update as $product ) {
+			$product->set_name( self::DUMMY_PRODUCTS[ $i ]['title'] );
+			$product->set_description( self::DUMMY_PRODUCTS[ $i ]['description'] );
+			$product->set_regular_price( self::DUMMY_PRODUCTS[ $i ]['price'] );
+			$product->set_slug( sanitize_title( self::DUMMY_PRODUCTS[ $i ]['title'] ) );
+			$product->save();
+
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+
+			$product_image_id = media_sideload_image( plugins_url( self::DUMMY_PRODUCTS[ $i ]['image'], dirname( __DIR__ ) ), $product->get_id(), self::DUMMY_PRODUCTS[ $i ]['title'], 'id' );
+			$product_image_id = $product->set_image_id( $product_image_id );
+
+			$product->save();
+
+			$this->create_hash_for_ai_modified_product( $product );
+
+			$i++;
+		}
 	}
 }
