@@ -1,3 +1,11 @@
+# 📣 Announcement: New documentation location
+
+The documentation for WooCommerce Blocks has moved to the [WooCommerce monorepo](https://github.com/woocommerce/woocommerce/tree/trunk/plugins/woocommerce-blocks/docs/).
+
+Please refer to the documentation in the new location as the files in this repository will no longer be updated and the repository will be archived.
+
+---
+
 # Translations in FSE templates
 
 To make the WooCommerce Blocks plugin inclusive, all user-facing strings should be translatable. Managing [Translations in PHP files](../../internal-developers/translations/translations-in-PHP-files.md) and [Translations in JS/TS files](../../internal-developers/translations/translations-in-JS-TS-files.md) is simple as PHP and JS/TS are languages are programming languages which contain translation function. In comparison, FSE-templates are using plain HTML. As HTML is a markup language and not a programming language, translation functions such as `__()` and `_n()` are not available in HTML. Therefore, translations within FSE-templates require a different approach.

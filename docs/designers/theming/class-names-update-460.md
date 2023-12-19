@@ -1,3 +1,11 @@
+# 📣 Announcement: New documentation location
+
+The documentation for WooCommerce Blocks has moved to the [WooCommerce monorepo](https://github.com/woocommerce/woocommerce/tree/trunk/plugins/woocommerce-blocks/docs/).
+
+Please refer to the documentation in the new location as the files in this repository will no longer be updated and the repository will be archived.
+
+---
+
 # Class names update in 4.6.0
 
 In [WooCommerce Blocks 4.6.0](https://developer.woocommerce.com/2021/03/02/woocommerce-blocks-4-6-0-release-notes/) we replaced the classes as listed below.
