@@ -1,3 +1,11 @@
+# 📣 Announcement: New documentation location
+
+The documentation for WooCommerce Blocks has moved to the [WooCommerce monorepo](https://github.com/woocommerce/woocommerce/tree/trunk/plugins/woocommerce-blocks/docs/).
+
+Please refer to the documentation in the new location as the files in this repository will no longer be updated and the repository will be archived.
+
+---
+
 # Translations for lazy-loaded components
 
 The Mini-Cart block as well as inner blocks of the Cart and the Checkout blocks are lazy-loaded. To lazy-load them, the translation chunks needs to be registered. This takes place in `/src/BlockTypes/AbstractBlock.php`:

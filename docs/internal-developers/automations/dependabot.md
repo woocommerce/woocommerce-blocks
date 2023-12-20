@@ -1,3 +1,11 @@
+# 📣 Announcement: New documentation location
+
+The documentation for WooCommerce Blocks has moved to the [WooCommerce monorepo](https://github.com/woocommerce/woocommerce/tree/trunk/plugins/woocommerce-blocks/docs/).
+
+Please refer to the documentation in the new location as the files in this repository will no longer be updated and the repository will be archived.
+
+---
+
 # Dependabot
 
 This repository uses [`Dependabot`](https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/configuring-dependabot-security-updates) to help with keeping all the package dependencies (NPM, Composer, GitHub Actions) up to date. Without this in place, it's very easy to let the package versions we're using go stale and end up with a backlog of chores for updating those in the future. It is essential to keep dependencies updated to avoid security problems and lower overall upgrade costs.

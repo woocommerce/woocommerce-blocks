@@ -1,3 +1,11 @@
+# 📣 Announcement: New documentation location
+
+The documentation for WooCommerce Blocks has moved to the [WooCommerce monorepo](https://github.com/woocommerce/woocommerce/tree/trunk/plugins/woocommerce-blocks/docs/).
+
+Please refer to the documentation in the new location as the files in this repository will no longer be updated and the repository will be archived.
+
+---
+
 # Block Client APIs
 
 This folder contains documentation for API interfaces for Blocks. In _most cases_, these docs describe APIs and interfaces that are _internal_ only, and thus are provided to assist with developing the blocks in this repository. Documentation will tend to focus on high level overviews.

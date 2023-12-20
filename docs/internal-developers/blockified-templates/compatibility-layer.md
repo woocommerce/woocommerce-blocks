@@ -1,3 +1,11 @@
+# 📣 Announcement: New documentation location
+
+The documentation for WooCommerce Blocks has moved to the [WooCommerce monorepo](https://github.com/woocommerce/woocommerce/tree/trunk/plugins/woocommerce-blocks/docs/).
+
+Please refer to the documentation in the new location as the files in this repository will no longer be updated and the repository will be archived.
+
+---
+
 # Compatibility Layer - [AbstractTemplateCompatibility.php](https://github.com/woocommerce/woocommerce-blocks/blob/trunk/src/Templates/AbstractTemplateCompatibility.php)
 
 The Compatibility Layer ensures that blockified templates work correctly with extensions that use hooks to extend their behavior. It appends/pre-appends the corresponding hooks to each block. Also, it removes the default callbacks added to those hooks by WooCommerce.

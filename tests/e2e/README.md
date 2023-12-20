@@ -1,3 +1,11 @@
+# 📣 Announcement: New documentation location
+
+The documentation for WooCommerce Blocks has moved to the [WooCommerce monorepo](https://github.com/woocommerce/woocommerce/tree/trunk/plugins/woocommerce-blocks/docs/).
+
+Please refer to the documentation in the new location as the files in this repository will no longer be updated and the repository will be archived.
+
+---
+
 # WooCommerce Blocks Playwright End to End Tests
 
 This is the documentation for the new E2E testing setup based on Playwright and wp-env. Over time, these playwright E2E tests should replace the current [Puppeteer E2E tests](../e2e-jest/).
