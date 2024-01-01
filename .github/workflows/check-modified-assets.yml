@@ -72,7 +72,7 @@ jobs:
         run: npm run build:check-assets
 
       - name: Download assets (trunk)
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: assets-list
           path: assets-list
