@@ -134,7 +134,7 @@
 		"@storybook/react": "7.5.2",
 		"@storybook/react-webpack5": "^7.5.2",
 		"@testing-library/dom": "9.3.3",
-		"@testing-library/jest-dom": "5.16.5",
+		"@testing-library/jest-dom": "6.1.6",
 		"@testing-library/react": "12.1.5",
 		"@testing-library/react-hooks": "7.0.2",
 		"@testing-library/user-event": "13.5.0",
