@@ -227,16 +227,16 @@
         },
         {
             "name": "automattic/jetpack-connection",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Automattic/jetpack-connection.git",
-                "reference": "e8fc17b9f7af2b5f353aa94701beea87210c685e"
+                "reference": "92242d3133a9e9657597901fb4a3ad17a460c79b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Automattic/jetpack-connection/zipball/e8fc17b9f7af2b5f353aa94701beea87210c685e",
-                "reference": "e8fc17b9f7af2b5f353aa94701beea87210c685e",
+                "url": "https://api.github.com/repos/Automattic/jetpack-connection/zipball/92242d3133a9e9657597901fb4a3ad17a460c79b",
+                "reference": "92242d3133a9e9657597901fb4a3ad17a460c79b",
                 "shasum": ""
             },
             "require": {
@@ -249,7 +249,7 @@
                 "php": ">=7.0"
             },
             "require-dev": {
-                "automattic/jetpack-changelogger": "^4.0.4",
+                "automattic/jetpack-changelogger": "^4.0.5",
                 "automattic/wordbless": "@dev",
                 "brain/monkey": "2.6.1",
                 "yoast/phpunit-polyfills": "1.1.0"
@@ -285,9 +285,9 @@
             ],
             "description": "Everything needed to connect to the Jetpack infrastructure",
             "support": {
-                "source": "https://github.com/Automattic/jetpack-connection/tree/v2.1.0"
+                "source": "https://github.com/Automattic/jetpack-connection/tree/v2.1.1"
             },
-            "time": "2023-12-03T23:58:03+00:00"
+            "time": "2024-01-04T15:59:34+00:00"
         },
         {
             "name": "automattic/jetpack-constants",
