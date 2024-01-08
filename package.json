@@ -159,7 +159,7 @@
 		"@types/wordpress__editor": "^13.6.3",
 		"@types/wordpress__notices": "^3.5.0",
 		"@types/wordpress__wordcount": "^2.4.2",
-		"@typescript-eslint/eslint-plugin": "5.56.0",
+		"@typescript-eslint/eslint-plugin": "6.18.0",
 		"@typescript-eslint/parser": "5.56.0",
 		"@woocommerce/api": "0.2.0",
 		"@woocommerce/data": "4.1.0",
