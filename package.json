@@ -119,7 +119,7 @@
 		"@babel/preset-typescript": "7.23.2",
 		"@bartekbp/typescript-checkstyle": "5.0.0",
 		"@octokit/action": "5.0.2",
-		"@octokit/graphql": "5.0.5",
+		"@octokit/graphql": "7.0.2",
 		"@playwright/test": "1.38.1",
 		"@storybook/addon-a11y": "7.5.2",
 		"@storybook/addon-actions": "^7.5.3",
