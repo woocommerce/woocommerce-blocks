@@ -247,6 +247,11 @@ class BlockPatterns {
 				$content = $pattern_data_from_dictionary['content'];
 				$images  = $pattern_data_from_dictionary['images'] ?? array();
 			}
+
+			if ( is_null( $images ) ) {
+				$images = array();
+			}
+			
 			include $file;
 			$pattern_data['content'] = ob_get_clean();
 
