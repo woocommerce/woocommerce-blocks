@@ -142,7 +142,7 @@
 		"@types/dinero.js": "1.9.0",
 		"@types/dompurify": "2.3.4",
 		"@types/gtag.js": "0.0.10",
-		"@types/jest": "27.5.2",
+		"@types/jest": "29.5.11",
 		"@types/jest-environment-puppeteer": "5.0.2",
 		"@types/jquery": "3.5.14",
 		"@types/lodash": "4.14.182",
