@@ -116,7 +116,7 @@
 		"@babel/plugin-proposal-optional-chaining": "7.21.0",
 		"@babel/plugin-syntax-jsx": "7.22.5",
 		"@babel/polyfill": "7.12.1",
-		"@babel/preset-typescript": "7.23.2",
+		"@babel/preset-typescript": "7.23.3",
 		"@bartekbp/typescript-checkstyle": "5.0.0",
 		"@octokit/action": "5.0.2",
 		"@octokit/graphql": "5.0.5",
