@@ -1,3 +1,11 @@
+# 📣 Announcement: New documentation location
+
+The documentation for WooCommerce Blocks has moved to the [WooCommerce monorepo](https://github.com/woocommerce/woocommerce/tree/trunk/plugins/woocommerce-blocks/docs/).
+
+Please refer to the documentation in the new location as the files in this repository will no longer be updated and the repository will be archived.
+
+---
+
 # Class names update in 3.3.0
 
 In [WooCommerce Blocks 3.3.0](https://developer.woocommerce.com/2020/09/02/woocommerce-blocks-3-3-0-release-notes/), we introduced express payment methods in the Cart block. In order to make it easy to write styles for express payment methods for the Cart and Checkout blocks separately, we updated several class names:
