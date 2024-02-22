@@ -11,7 +11,7 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 == This Plugin is Deprecated ==
 As of December 2023, we [merged the standalone WooCommerce Blocks plugin into WooCommerce itself](https://developer.woo.com/2023/12/11/the-woo-blocks-merge-to-the-monorepo-is-complete-along-with-monorepo-tool-enhancements/). All future development will now take place directly in WooCommerce.
 
-If you're building Blocks-based functionality for WooCommerce, you no longer need this plugin.
+Any sites with WooCommerce 8.5.0 or greater will have access to the latest WooCommerce Blocks
 
 == Description ==
 
