@@ -63,6 +63,7 @@ class ProductReviews extends AbstractRoute {
 			'order'         => $request['order'],
 			'number'        => $request['per_page'],
 			'post__in'      => $request['product_id'],
+			'parent'      => (int) $request['parent'],
 		);
 
 		/**
