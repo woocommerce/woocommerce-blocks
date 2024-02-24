@@ -3,12 +3,28 @@ namespace Automattic\WooCommerce\StoreApi\Utilities;
 
 use \Exception;
 use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
+use Automattic\WooCommerce\Blocks\Domain\Services\CheckoutFields;
+use Automattic\WooCommerce\Blocks\Package;
 
 /**
  * OrderController class.
  * Helper class which creates and syncs orders with the cart.
  */
 class OrderController {
+
+	/**
+	 * Checkout fields controller.
+	 *
+	 * @var CheckoutFields
+	 */
+	private CheckoutFields $additional_fields_controller;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->additional_fields_controller = Package::container()->get( CheckoutFields::class );
+	}
 
 	/**
 	 * Create order and set props based on global settings.
@@ -132,7 +148,12 @@ class OrderController {
 					'shipping_phone'      => $order->get_shipping_phone(),
 				]
 			);
+			$order_fields = $this->additional_fields_controller->get_all_fields_from_order( $order );
 
+			$customer_fields = $this->additional_fields_controller->filter_fields_for_customer( $order_fields );
+			foreach ( $customer_fields as $key => $value ) {
+				$this->additional_fields_controller->persist_field_for_customer( $key, $value, $customer );
+			}
 			$customer->save();
 		};
 	}
@@ -274,16 +295,16 @@ class OrderController {
 	protected function validate_addresses( \WC_Order $order ) {
 		$errors           = new \WP_Error();
 		$needs_shipping   = wc()->cart->needs_shipping();
-		$billing_address  = $order->get_address( 'billing' );
-		$shipping_address = $order->get_address( 'shipping' );
+		$billing_country  = $order->get_billing_country();
+		$shipping_country = $order->get_shipping_country();
 
-		if ( $needs_shipping && ! $this->validate_allowed_country( $shipping_address['country'], (array) wc()->countries->get_shipping_countries() ) ) {
+		if ( $needs_shipping && ! $this->validate_allowed_country( $shipping_country, (array) wc()->countries->get_shipping_countries() ) ) {
 			throw new RouteException(
 				'woocommerce_rest_invalid_address_country',
 				sprintf(
 					/* translators: %s country code. */
 					__( 'Sorry, we do not ship orders to the provided country (%s)', 'woo-gutenberg-products-block' ),
-					$shipping_address['country']
+					$shipping_country
 				),
 				400,
 				[
@@ -292,13 +313,13 @@ class OrderController {
 			);
 		}
 
-		if ( ! $this->validate_allowed_country( $billing_address['country'], (array) wc()->countries->get_allowed_countries() ) ) {
+		if ( ! $this->validate_allowed_country( $billing_country, (array) wc()->countries->get_allowed_countries() ) ) {
 			throw new RouteException(
 				'woocommerce_rest_invalid_address_country',
 				sprintf(
 					/* translators: %s country code. */
 					__( 'Sorry, we do not allow orders from the provided country (%s)', 'woo-gutenberg-products-block' ),
-					$billing_address['country']
+					$billing_country
 				),
 				400,
 				[
@@ -308,9 +329,9 @@ class OrderController {
 		}
 
 		if ( $needs_shipping ) {
-			$this->validate_address_fields( $shipping_address, 'shipping', $errors );
+			$this->validate_address_fields( $order, 'shipping', $errors );
 		}
-		$this->validate_address_fields( $billing_address, 'billing', $errors );
+		$this->validate_address_fields( $order, 'billing', $errors );
 
 		if ( ! $errors->has_errors() ) {
 			return;
@@ -353,56 +374,33 @@ class OrderController {
 	/**
 	 * Check all required address fields are set and return errors if not.
 	 *
-	 * @param array     $address Address array.
+	 * @param \WC_Order $order Order object.
 	 * @param string    $address_type billing or shipping address, used in error messages.
 	 * @param \WP_Error $errors Error object.
 	 */
-	protected function validate_address_fields( $address, $address_type, \WP_Error $errors ) {
+	protected function validate_address_fields( \WC_Order $order, $address_type, \WP_Error $errors ) {
 		$all_locales    = wc()->countries->get_country_locale();
+		$address        = $order->get_address( $address_type );
 		$current_locale = isset( $all_locales[ $address['country'] ] ) ? $all_locales[ $address['country'] ] : [];
 
-		/**
-		 * We are not using wc()->counties->get_default_address_fields() here because that is filtered. Instead, this array
-		 * is based on assets/js/base/components/cart-checkout/address-form/default-address-fields.js
-		 */
-		$address_fields = [
-			'first_name' => [
-				'label'    => __( 'First name', 'woo-gutenberg-products-block' ),
-				'required' => true,
-			],
-			'last_name'  => [
-				'label'    => __( 'Last name', 'woo-gutenberg-products-block' ),
-				'required' => true,
-			],
-			'company'    => [
-				'label'    => __( 'Company', 'woo-gutenberg-products-block' ),
-				'required' => false,
-			],
-			'address_1'  => [
-				'label'    => __( 'Address', 'woo-gutenberg-products-block' ),
-				'required' => true,
-			],
-			'address_2'  => [
-				'label'    => __( 'Apartment, suite, etc.', 'woo-gutenberg-products-block' ),
-				'required' => false,
-			],
-			'country'    => [
-				'label'    => __( 'Country/Region', 'woo-gutenberg-products-block' ),
-				'required' => true,
-			],
-			'city'       => [
-				'label'    => __( 'City', 'woo-gutenberg-products-block' ),
-				'required' => true,
-			],
-			'state'      => [
-				'label'    => __( 'State/County', 'woo-gutenberg-products-block' ),
-				'required' => true,
-			],
-			'postcode'   => [
-				'label'    => __( 'Postal code', 'woo-gutenberg-products-block' ),
-				'required' => true,
-			],
-		];
+		$additional_fields = $this->additional_fields_controller->get_all_fields_from_order( $order );
+
+		foreach ( $additional_fields as $field_id => $field_value ) {
+			$prefix = '/' . $address_type . '/';
+			if ( strpos( $field_id, $prefix ) === 0 ) {
+				$address[ str_replace( $prefix, '', $field_id ) ] = $field_value;
+			}
+		}
+
+		$fields              = $this->additional_fields_controller->get_additional_fields();
+		$address_fields_keys = $this->additional_fields_controller->get_address_fields_keys();
+		$address_fields      = array_filter(
+			$fields,
+			function( $key ) use ( $address_fields_keys ) {
+				return in_array( $key, $address_fields_keys, true );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
 
 		if ( $current_locale ) {
 			foreach ( $current_locale as $key => $field ) {
@@ -738,5 +736,9 @@ class OrderController {
 				'shipping_phone'      => wc()->customer->get_shipping_phone(),
 			]
 		);
+		$customer_fields = $this->additional_fields_controller->get_all_fields_from_customer( wc()->customer );
+		foreach ( $customer_fields as $key => $value ) {
+			$this->additional_fields_controller->persist_field_for_order( $key, $value, $order, false );
+		}
 	}
 }
