@@ -63,8 +63,6 @@ class ProductDetails extends AbstractBlock {
 			woocommerce_output_product_data_tabs();
 		}
 
-		$tabs = ob_get_clean();
-
-		return $tabs;
+		return ob_get_clean();
 	}
 }
